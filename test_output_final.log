@@ -1,0 +1,1077 @@
+=== RUN   TestAllInSeries
+=== RUN   TestAllInSeries/fixtures
+=== RUN   TestAllInSeries/fixtures/containernodepoolnestedvirt
+    ratcheting.go:497: skipping re-reconciliation test for gvk container.cnrm.cloud.google.com/v1beta1, Kind=ContainerNodePool
+    unified_test.go:268: not yet using SSA for create of resources in group "container.cnrm.cloud.google.com"
+    harness.go:243: starting envtest apiserver
+    harness.go:438: creating mock gcp
+I1207 15:50:16.532350 1640245 mock_http_roundtrip.go:202] "serving mock gcp grpc server" address="127.0.0.2:36537"
+I1207 15:50:16.538716 1640245 mockgcp_http.go:291] mockgcp request: POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
+I1207 15:50:16.540032 1640245 mockgcp_http.go:320] mockgcp response: POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false => 200
+I1207 15:50:16.544026 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks
+I1207 15:50:16.549005 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616548-aac7de73-e634-419e-a75d-a3f070ae86f5"
+I1207 15:50:16.549528 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks => 200
+I1207 15:50:16.549574 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-central1/subnetworks
+I1207 15:50:16.549748 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616548-aac7de73-e634-419e-a75d-a3f070ae86f5
+I1207 15:50:16.550293 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-central1/operations/operation-1765140616550-4aab7bd9-fe9e-4f40-9822-ad03d9cf7302"
+I1207 15:50:16.550431 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616548-aac7de73-e634-419e-a75d-a3f070ae86f5 => 200
+I1207 15:50:16.550507 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-central1/subnetworks => 200
+I1207 15:50:16.550656 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-central1/operations/operation-1765140616550-4aab7bd9-fe9e-4f40-9822-ad03d9cf7302
+I1207 15:50:16.551167 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-central1/operations/operation-1765140616550-4aab7bd9-fe9e-4f40-9822-ad03d9cf7302 => 200
+I1207 15:50:16.551261 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west1/subnetworks
+I1207 15:50:16.551699 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west1/operations/operation-1765140616551-99ef92fa-1eb0-46f3-9913-56af3336fc8a"
+I1207 15:50:16.551891 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west1/subnetworks => 200
+I1207 15:50:16.551960 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west1/operations/operation-1765140616551-99ef92fa-1eb0-46f3-9913-56af3336fc8a
+I1207 15:50:16.552270 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west1/operations/operation-1765140616551-99ef92fa-1eb0-46f3-9913-56af3336fc8a => 200
+I1207 15:50:16.552330 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west1/subnetworks
+I1207 15:50:16.552615 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-west1/operations/operation-1765140616552-9895097b-04b0-487e-847f-26b2fbeebd94"
+I1207 15:50:16.552744 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west1/subnetworks => 200
+I1207 15:50:16.552796 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west1/operations/operation-1765140616552-9895097b-04b0-487e-847f-26b2fbeebd94
+I1207 15:50:16.553030 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west1/operations/operation-1765140616552-9895097b-04b0-487e-847f-26b2fbeebd94 => 200
+I1207 15:50:16.553080 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east1/subnetworks
+I1207 15:50:16.553377 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-east1/operations/operation-1765140616553-e68f3858-86ac-4e66-817d-c3306e214a44"
+I1207 15:50:16.553495 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east1/subnetworks => 200
+I1207 15:50:16.553583 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east1/operations/operation-1765140616553-e68f3858-86ac-4e66-817d-c3306e214a44
+I1207 15:50:16.553845 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east1/operations/operation-1765140616553-e68f3858-86ac-4e66-817d-c3306e214a44 => 200
+I1207 15:50:16.553902 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east1/subnetworks
+I1207 15:50:16.554176 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-east1/operations/operation-1765140616554-d79aa75c-2fd0-4fc1-8119-18dabcba4f9d"
+I1207 15:50:16.554299 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east1/subnetworks => 200
+I1207 15:50:16.554347 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east1/operations/operation-1765140616554-d79aa75c-2fd0-4fc1-8119-18dabcba4f9d
+I1207 15:50:16.554570 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east1/operations/operation-1765140616554-d79aa75c-2fd0-4fc1-8119-18dabcba4f9d => 200
+I1207 15:50:16.554617 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast1/subnetworks
+I1207 15:50:16.554888 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-northeast1/operations/operation-1765140616554-26cd8a55-ac02-4902-9614-edaa778e9487"
+I1207 15:50:16.555011 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast1/subnetworks => 200
+I1207 15:50:16.555058 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast1/operations/operation-1765140616554-26cd8a55-ac02-4902-9614-edaa778e9487
+I1207 15:50:16.555336 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast1/operations/operation-1765140616554-26cd8a55-ac02-4902-9614-edaa778e9487 => 200
+I1207 15:50:16.555390 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast1/subnetworks
+I1207 15:50:16.555662 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-southeast1/operations/operation-1765140616555-5909f021-a97f-4fe2-8b50-3d4a365bd88b"
+I1207 15:50:16.555790 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast1/subnetworks => 200
+I1207 15:50:16.555843 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast1/operations/operation-1765140616555-5909f021-a97f-4fe2-8b50-3d4a365bd88b
+I1207 15:50:16.556074 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast1/operations/operation-1765140616555-5909f021-a97f-4fe2-8b50-3d4a365bd88b => 200
+I1207 15:50:16.556127 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east4/subnetworks
+I1207 15:50:16.556617 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-east4/operations/operation-1765140616556-a39a5c98-3305-49a1-b7cd-710392319144"
+I1207 15:50:16.556865 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east4/subnetworks => 200
+I1207 15:50:16.556916 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east4/operations/operation-1765140616556-a39a5c98-3305-49a1-b7cd-710392319144
+I1207 15:50:16.557372 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east4/operations/operation-1765140616556-a39a5c98-3305-49a1-b7cd-710392319144 => 200
+I1207 15:50:16.557477 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast1/subnetworks
+I1207 15:50:16.557873 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/australia-southeast1/operations/operation-1765140616557-9c3e82c1-b678-4951-b43d-af143fc481d0"
+I1207 15:50:16.558058 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast1/subnetworks => 200
+I1207 15:50:16.558160 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast1/operations/operation-1765140616557-9c3e82c1-b678-4951-b43d-af143fc481d0
+I1207 15:50:16.558529 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast1/operations/operation-1765140616557-9c3e82c1-b678-4951-b43d-af143fc481d0 => 200
+I1207 15:50:16.558589 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west2/subnetworks
+I1207 15:50:16.558890 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west2/operations/operation-1765140616558-74be2644-70cd-46b8-927b-82e587efcc44"
+I1207 15:50:16.559038 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west2/subnetworks => 200
+I1207 15:50:16.559092 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west2/operations/operation-1765140616558-74be2644-70cd-46b8-927b-82e587efcc44
+I1207 15:50:16.559458 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west2/operations/operation-1765140616558-74be2644-70cd-46b8-927b-82e587efcc44 => 200
+I1207 15:50:16.559535 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west3/subnetworks
+I1207 15:50:16.559842 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west3/operations/operation-1765140616559-fbb4ddb3-d0af-4386-9535-78a3a20935ba"
+I1207 15:50:16.560017 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west3/subnetworks => 200
+I1207 15:50:16.560067 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west3/operations/operation-1765140616559-fbb4ddb3-d0af-4386-9535-78a3a20935ba
+I1207 15:50:16.560325 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west3/operations/operation-1765140616559-fbb4ddb3-d0af-4386-9535-78a3a20935ba => 200
+I1207 15:50:16.560374 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-east1/subnetworks
+I1207 15:50:16.560722 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/southamerica-east1/operations/operation-1765140616560-b65ab570-1c1e-4dba-b76b-6ea97e38c3dd"
+I1207 15:50:16.560895 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-east1/subnetworks => 200
+I1207 15:50:16.560974 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-east1/operations/operation-1765140616560-b65ab570-1c1e-4dba-b76b-6ea97e38c3dd
+I1207 15:50:16.561312 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-east1/operations/operation-1765140616560-b65ab570-1c1e-4dba-b76b-6ea97e38c3dd => 200
+I1207 15:50:16.561366 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south1/subnetworks
+I1207 15:50:16.561694 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-south1/operations/operation-1765140616561-32771bea-694c-401f-9cc3-03e937d67b97"
+I1207 15:50:16.561925 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south1/subnetworks => 200
+I1207 15:50:16.561987 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south1/operations/operation-1765140616561-32771bea-694c-401f-9cc3-03e937d67b97
+I1207 15:50:16.562289 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south1/operations/operation-1765140616561-32771bea-694c-401f-9cc3-03e937d67b97 => 200
+I1207 15:50:16.562371 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast1/subnetworks
+I1207 15:50:16.562716 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/northamerica-northeast1/operations/operation-1765140616562-0d830db3-c1f1-4fa1-b0ae-55883a1aa1d5"
+I1207 15:50:16.562834 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast1/subnetworks => 200
+I1207 15:50:16.562891 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast1/operations/operation-1765140616562-0d830db3-c1f1-4fa1-b0ae-55883a1aa1d5
+I1207 15:50:16.563147 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast1/operations/operation-1765140616562-0d830db3-c1f1-4fa1-b0ae-55883a1aa1d5 => 200
+I1207 15:50:16.563203 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west4/subnetworks
+I1207 15:50:16.563485 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west4/operations/operation-1765140616563-223a71bc-5544-4464-bc90-47b558fdb8cf"
+I1207 15:50:16.563628 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west4/subnetworks => 200
+I1207 15:50:16.563678 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west4/operations/operation-1765140616563-223a71bc-5544-4464-bc90-47b558fdb8cf
+I1207 15:50:16.563903 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west4/operations/operation-1765140616563-223a71bc-5544-4464-bc90-47b558fdb8cf => 200
+I1207 15:50:16.563957 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north1/subnetworks
+I1207 15:50:16.564204 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-north1/operations/operation-1765140616564-4192cd9b-5811-4b42-b18f-fbf78d27750c"
+I1207 15:50:16.564328 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north1/subnetworks => 200
+I1207 15:50:16.564373 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north1/operations/operation-1765140616564-4192cd9b-5811-4b42-b18f-fbf78d27750c
+I1207 15:50:16.564648 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north1/operations/operation-1765140616564-4192cd9b-5811-4b42-b18f-fbf78d27750c => 200
+I1207 15:50:16.564700 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west2/subnetworks
+I1207 15:50:16.564936 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-west2/operations/operation-1765140616564-c53fdfef-4b5d-4b65-9316-077dcb080dcf"
+I1207 15:50:16.565047 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west2/subnetworks => 200
+I1207 15:50:16.565098 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west2/operations/operation-1765140616564-c53fdfef-4b5d-4b65-9316-077dcb080dcf
+I1207 15:50:16.565478 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west2/operations/operation-1765140616564-c53fdfef-4b5d-4b65-9316-077dcb080dcf => 200
+I1207 15:50:16.565526 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east2/subnetworks
+I1207 15:50:16.565850 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-east2/operations/operation-1765140616565-fa0b216f-5158-4a57-97bb-e1ebd795ab20"
+I1207 15:50:16.565981 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east2/subnetworks => 200
+I1207 15:50:16.566030 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east2/operations/operation-1765140616565-fa0b216f-5158-4a57-97bb-e1ebd795ab20
+I1207 15:50:16.566317 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east2/operations/operation-1765140616565-fa0b216f-5158-4a57-97bb-e1ebd795ab20 => 200
+I1207 15:50:16.566386 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west6/subnetworks
+I1207 15:50:16.566743 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west6/operations/operation-1765140616566-c3cb853a-d95f-4f38-aeb4-1b3f6901bee0"
+I1207 15:50:16.566884 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west6/subnetworks => 200
+I1207 15:50:16.566934 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west6/operations/operation-1765140616566-c3cb853a-d95f-4f38-aeb4-1b3f6901bee0
+I1207 15:50:16.567202 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west6/operations/operation-1765140616566-c3cb853a-d95f-4f38-aeb4-1b3f6901bee0 => 200
+I1207 15:50:16.567261 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast2/subnetworks
+I1207 15:50:16.567582 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-northeast2/operations/operation-1765140616567-dd23d6ab-43d4-44ab-918f-2c9e9d2e31cd"
+I1207 15:50:16.567720 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast2/subnetworks => 200
+I1207 15:50:16.567768 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast2/operations/operation-1765140616567-dd23d6ab-43d4-44ab-918f-2c9e9d2e31cd
+I1207 15:50:16.568040 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast2/operations/operation-1765140616567-dd23d6ab-43d4-44ab-918f-2c9e9d2e31cd => 200
+I1207 15:50:16.568091 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast3/subnetworks
+I1207 15:50:16.568625 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-northeast3/operations/operation-1765140616568-4ad01772-4704-4697-8618-dbb2c0006b29"
+I1207 15:50:16.568838 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast3/subnetworks => 200
+I1207 15:50:16.568892 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast3/operations/operation-1765140616568-4ad01772-4704-4697-8618-dbb2c0006b29
+I1207 15:50:16.569341 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast3/operations/operation-1765140616568-4ad01772-4704-4697-8618-dbb2c0006b29 => 200
+I1207 15:50:16.569443 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west3/subnetworks
+I1207 15:50:16.569850 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-west3/operations/operation-1765140616569-5477e587-5bd0-46c2-b7fd-b1e67f44ad3f"
+I1207 15:50:16.570000 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west3/subnetworks => 200
+I1207 15:50:16.570054 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west3/operations/operation-1765140616569-5477e587-5bd0-46c2-b7fd-b1e67f44ad3f
+I1207 15:50:16.570361 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west3/operations/operation-1765140616569-5477e587-5bd0-46c2-b7fd-b1e67f44ad3f => 200
+I1207 15:50:16.570419 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west4/subnetworks
+I1207 15:50:16.570687 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-west4/operations/operation-1765140616570-00136443-72c3-4c5d-8c41-ff3021e5da96"
+I1207 15:50:16.570838 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west4/subnetworks => 200
+I1207 15:50:16.570897 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west4/operations/operation-1765140616570-00136443-72c3-4c5d-8c41-ff3021e5da96
+I1207 15:50:16.571196 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west4/operations/operation-1765140616570-00136443-72c3-4c5d-8c41-ff3021e5da96 => 200
+I1207 15:50:16.571248 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast2/subnetworks
+I1207 15:50:16.571535 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-southeast2/operations/operation-1765140616571-421dd3bc-f093-4e8c-88c1-67e0638fdc84"
+I1207 15:50:16.571707 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast2/subnetworks => 200
+I1207 15:50:16.571762 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast2/operations/operation-1765140616571-421dd3bc-f093-4e8c-88c1-67e0638fdc84
+I1207 15:50:16.572055 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast2/operations/operation-1765140616571-421dd3bc-f093-4e8c-88c1-67e0638fdc84 => 200
+I1207 15:50:16.572125 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-central2/subnetworks
+I1207 15:50:16.572483 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-central2/operations/operation-1765140616572-18b85db0-9214-4931-9bbe-95de4e7d37f6"
+I1207 15:50:16.572650 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-central2/subnetworks => 200
+I1207 15:50:16.572706 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-central2/operations/operation-1765140616572-18b85db0-9214-4931-9bbe-95de4e7d37f6
+I1207 15:50:16.572998 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-central2/operations/operation-1765140616572-18b85db0-9214-4931-9bbe-95de4e7d37f6 => 200
+I1207 15:50:16.573056 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast2/subnetworks
+I1207 15:50:16.573402 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/northamerica-northeast2/operations/operation-1765140616573-32ad9d52-d5b4-4700-94a9-0e9923604961"
+I1207 15:50:16.573585 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast2/subnetworks => 200
+I1207 15:50:16.573656 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast2/operations/operation-1765140616573-32ad9d52-d5b4-4700-94a9-0e9923604961
+I1207 15:50:16.574057 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast2/operations/operation-1765140616573-32ad9d52-d5b4-4700-94a9-0e9923604961 => 200
+I1207 15:50:16.574161 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south2/subnetworks
+I1207 15:50:16.574530 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-south2/operations/operation-1765140616574-4ebf5681-d33b-4a5f-9ac8-fb55ab2de98b"
+I1207 15:50:16.574714 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south2/subnetworks => 200
+I1207 15:50:16.574758 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south2/operations/operation-1765140616574-4ebf5681-d33b-4a5f-9ac8-fb55ab2de98b
+I1207 15:50:16.575035 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south2/operations/operation-1765140616574-4ebf5681-d33b-4a5f-9ac8-fb55ab2de98b => 200
+I1207 15:50:16.575086 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast2/subnetworks
+I1207 15:50:16.575361 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/australia-southeast2/operations/operation-1765140616575-22522ab9-6a9f-4ea5-bbac-780b51b14c44"
+I1207 15:50:16.575575 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast2/subnetworks => 200
+I1207 15:50:16.575638 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast2/operations/operation-1765140616575-22522ab9-6a9f-4ea5-bbac-780b51b14c44
+I1207 15:50:16.575985 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast2/operations/operation-1765140616575-22522ab9-6a9f-4ea5-bbac-780b51b14c44 => 200
+I1207 15:50:16.576035 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-west1/subnetworks
+I1207 15:50:16.576316 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/southamerica-west1/operations/operation-1765140616576-1c6b6b57-0e84-4775-bd3b-5124496c24bb"
+I1207 15:50:16.576490 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-west1/subnetworks => 200
+I1207 15:50:16.576547 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-west1/operations/operation-1765140616576-1c6b6b57-0e84-4775-bd3b-5124496c24bb
+I1207 15:50:16.577020 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-west1/operations/operation-1765140616576-1c6b6b57-0e84-4775-bd3b-5124496c24bb => 200
+I1207 15:50:16.577148 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west8/subnetworks
+I1207 15:50:16.577639 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west8/operations/operation-1765140616577-37d43869-8165-40cc-be3b-c61d7d87f752"
+I1207 15:50:16.577776 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west8/subnetworks => 200
+I1207 15:50:16.577828 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west8/operations/operation-1765140616577-37d43869-8165-40cc-be3b-c61d7d87f752
+I1207 15:50:16.578151 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west8/operations/operation-1765140616577-37d43869-8165-40cc-be3b-c61d7d87f752 => 200
+I1207 15:50:16.578249 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west9/subnetworks
+I1207 15:50:16.578599 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west9/operations/operation-1765140616578-2213c0af-966a-4ad8-8913-953eb9c77c54"
+I1207 15:50:16.578755 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west9/subnetworks => 200
+I1207 15:50:16.578826 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west9/operations/operation-1765140616578-2213c0af-966a-4ad8-8913-953eb9c77c54
+I1207 15:50:16.579176 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west9/operations/operation-1765140616578-2213c0af-966a-4ad8-8913-953eb9c77c54 => 200
+I1207 15:50:16.579280 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east5/subnetworks
+I1207 15:50:16.579717 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-east5/operations/operation-1765140616579-2c9e411f-d279-4610-910b-235485dea2a2"
+I1207 15:50:16.579926 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east5/subnetworks => 200
+I1207 15:50:16.579995 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east5/operations/operation-1765140616579-2c9e411f-d279-4610-910b-235485dea2a2
+I1207 15:50:16.580414 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east5/operations/operation-1765140616579-2c9e411f-d279-4610-910b-235485dea2a2 => 200
+I1207 15:50:16.580504 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-southwest1/subnetworks
+I1207 15:50:16.580957 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-southwest1/operations/operation-1765140616580-eeda5c17-4417-42ee-8c60-ebef9ebb076d"
+I1207 15:50:16.581126 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-southwest1/subnetworks => 200
+I1207 15:50:16.581215 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-southwest1/operations/operation-1765140616580-eeda5c17-4417-42ee-8c60-ebef9ebb076d
+I1207 15:50:16.581686 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-southwest1/operations/operation-1765140616580-eeda5c17-4417-42ee-8c60-ebef9ebb076d => 200
+I1207 15:50:16.581753 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-south1/subnetworks
+I1207 15:50:16.582133 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-south1/operations/operation-1765140616582-af3b4468-932d-450e-b800-0640cbff0f90"
+I1207 15:50:16.582297 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-south1/subnetworks => 200
+I1207 15:50:16.582348 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-south1/operations/operation-1765140616582-af3b4468-932d-450e-b800-0640cbff0f90
+I1207 15:50:16.582660 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-south1/operations/operation-1765140616582-af3b4468-932d-450e-b800-0640cbff0f90 => 200
+I1207 15:50:16.582749 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-west1/subnetworks
+I1207 15:50:16.583116 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/me-west1/operations/operation-1765140616583-606d1dcc-5b0b-4147-826f-8abd82fc5432"
+I1207 15:50:16.583252 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-west1/subnetworks => 200
+I1207 15:50:16.583311 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-west1/operations/operation-1765140616583-606d1dcc-5b0b-4147-826f-8abd82fc5432
+I1207 15:50:16.583674 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-west1/operations/operation-1765140616583-606d1dcc-5b0b-4147-826f-8abd82fc5432 => 200
+I1207 15:50:16.583731 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west12/subnetworks
+I1207 15:50:16.584007 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west12/operations/operation-1765140616583-ab4820ce-e644-43f2-a4eb-fdba12b5287b"
+I1207 15:50:16.584122 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west12/subnetworks => 200
+I1207 15:50:16.584171 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west12/operations/operation-1765140616583-ab4820ce-e644-43f2-a4eb-fdba12b5287b
+I1207 15:50:16.584415 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west12/operations/operation-1765140616583-ab4820ce-e644-43f2-a4eb-fdba12b5287b => 200
+I1207 15:50:16.584463 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-central1/subnetworks
+I1207 15:50:16.584762 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/me-central1/operations/operation-1765140616584-2be71b6f-0067-4d5f-adc8-b4a0098677a3"
+I1207 15:50:16.584883 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-central1/subnetworks => 200
+I1207 15:50:16.584930 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-central1/operations/operation-1765140616584-2be71b6f-0067-4d5f-adc8-b4a0098677a3
+I1207 15:50:16.585278 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-central1/operations/operation-1765140616584-2be71b6f-0067-4d5f-adc8-b4a0098677a3 => 200
+I1207 15:50:16.585347 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west10/subnetworks
+I1207 15:50:16.585657 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west10/operations/operation-1765140616585-e425f85c-2691-4a7f-9446-78c20a0ef265"
+I1207 15:50:16.585792 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west10/subnetworks => 200
+I1207 15:50:16.585846 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west10/operations/operation-1765140616585-e425f85c-2691-4a7f-9446-78c20a0ef265
+I1207 15:50:16.586194 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west10/operations/operation-1765140616585-e425f85c-2691-4a7f-9446-78c20a0ef265 => 200
+I1207 15:50:16.586278 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/africa-south1/subnetworks
+I1207 15:50:16.586607 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/africa-south1/operations/operation-1765140616586-bb9967d2-5bcb-460d-9442-3e8d6887100e"
+I1207 15:50:16.586751 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/africa-south1/subnetworks => 200
+I1207 15:50:16.586811 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/africa-south1/operations/operation-1765140616586-bb9967d2-5bcb-460d-9442-3e8d6887100e
+I1207 15:50:16.587185 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/africa-south1/operations/operation-1765140616586-bb9967d2-5bcb-460d-9442-3e8d6887100e => 200
+I1207 15:50:16.587253 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-south1/subnetworks
+I1207 15:50:16.587575 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/northamerica-south1/operations/operation-1765140616587-f1c5c8a5-917d-40b4-9c61-1eb79cda0d6b"
+I1207 15:50:16.587727 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-south1/subnetworks => 200
+I1207 15:50:16.587775 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-south1/operations/operation-1765140616587-f1c5c8a5-917d-40b4-9c61-1eb79cda0d6b
+I1207 15:50:16.588166 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-south1/operations/operation-1765140616587-f1c5c8a5-917d-40b4-9c61-1eb79cda0d6b => 200
+I1207 15:50:16.588230 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north2/subnetworks
+I1207 15:50:16.588556 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-north2/operations/operation-1765140616588-a304e316-95bc-4f81-a4cd-e1eaa36f4869"
+I1207 15:50:16.588730 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north2/subnetworks => 200
+I1207 15:50:16.588800 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north2/operations/operation-1765140616588-a304e316-95bc-4f81-a4cd-e1eaa36f4869
+I1207 15:50:16.589150 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north2/operations/operation-1765140616588-a304e316-95bc-4f81-a4cd-e1eaa36f4869 => 200
+I1207 15:50:16.589422 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.589894 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616589-731aa347-ab33-4371-9ac4-a98d2d3d64e6"
+I1207 15:50:16.590058 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.590126 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616589-731aa347-ab33-4371-9ac4-a98d2d3d64e6
+I1207 15:50:16.590422 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616589-731aa347-ab33-4371-9ac4-a98d2d3d64e6 => 200
+I1207 15:50:16.590526 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/aggregated/subnetworks
+I1207 15:50:16.592832 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/aggregated/subnetworks => 200
+I1207 15:50:16.594077 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.594431 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616594-67f000bf-53ac-4587-9c87-9c7cf2a5e0e5"
+I1207 15:50:16.594616 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.594683 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616594-67f000bf-53ac-4587-9c87-9c7cf2a5e0e5
+I1207 15:50:16.594992 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616594-67f000bf-53ac-4587-9c87-9c7cf2a5e0e5 => 200
+I1207 15:50:16.595054 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.595388 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616595-b2d900b8-d92d-4b38-85d7-895e12d2552e"
+I1207 15:50:16.595579 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.595649 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616595-b2d900b8-d92d-4b38-85d7-895e12d2552e
+I1207 15:50:16.595955 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616595-b2d900b8-d92d-4b38-85d7-895e12d2552e => 200
+I1207 15:50:16.596039 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.596379 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616596-1c22ccdd-e867-40a1-b600-db3a71e6948c"
+I1207 15:50:16.596541 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.596604 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616596-1c22ccdd-e867-40a1-b600-db3a71e6948c
+I1207 15:50:16.597092 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616596-1c22ccdd-e867-40a1-b600-db3a71e6948c => 200
+I1207 15:50:16.597201 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.597627 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616597-fcacceed-739d-4139-b4b6-74505d55e58e"
+I1207 15:50:16.597780 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.597869 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616597-fcacceed-739d-4139-b4b6-74505d55e58e
+I1207 15:50:16.598340 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616597-fcacceed-739d-4139-b4b6-74505d55e58e => 200
+I1207 15:50:16.598405 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.598831 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616598-0a0725af-59c5-446d-a31b-7c9b00996409"
+I1207 15:50:16.599015 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.599065 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616598-0a0725af-59c5-446d-a31b-7c9b00996409
+I1207 15:50:16.599441 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616598-0a0725af-59c5-446d-a31b-7c9b00996409 => 200
+I1207 15:50:16.599570 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.599937 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616599-012dc128-6a58-488d-a0cd-d1b845b2815f"
+I1207 15:50:16.600129 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.600201 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616599-012dc128-6a58-488d-a0cd-d1b845b2815f
+I1207 15:50:16.600515 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616599-012dc128-6a58-488d-a0cd-d1b845b2815f => 200
+I1207 15:50:16.600568 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.601035 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616601-5b79bdc1-200f-4534-b7f3-6136f79ec436"
+I1207 15:50:16.601239 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.601286 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616601-5b79bdc1-200f-4534-b7f3-6136f79ec436
+I1207 15:50:16.601584 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616601-5b79bdc1-200f-4534-b7f3-6136f79ec436 => 200
+I1207 15:50:16.601638 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.602012 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616601-4399bcd4-c491-4a8b-ad16-f7d2916d0563"
+I1207 15:50:16.602168 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.602216 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616601-4399bcd4-c491-4a8b-ad16-f7d2916d0563
+I1207 15:50:16.602444 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616601-4399bcd4-c491-4a8b-ad16-f7d2916d0563 => 200
+I1207 15:50:16.602495 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.602758 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616602-be26c5e4-3c05-4770-afd0-273d3d715c03"
+I1207 15:50:16.602940 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.603029 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616602-be26c5e4-3c05-4770-afd0-273d3d715c03
+I1207 15:50:16.603462 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616602-be26c5e4-3c05-4770-afd0-273d3d715c03 => 200
+I1207 15:50:16.603555 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.603923 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616603-52ced18d-0943-48e9-b7d9-d9da89d207a4"
+I1207 15:50:16.604080 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.604139 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616603-52ced18d-0943-48e9-b7d9-d9da89d207a4
+I1207 15:50:16.604511 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616603-52ced18d-0943-48e9-b7d9-d9da89d207a4 => 200
+I1207 15:50:16.604603 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.605035 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616605-e93aa566-f6c6-48e2-93b9-08f0224dbba4"
+I1207 15:50:16.605189 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.605244 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616605-e93aa566-f6c6-48e2-93b9-08f0224dbba4
+I1207 15:50:16.605573 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616605-e93aa566-f6c6-48e2-93b9-08f0224dbba4 => 200
+I1207 15:50:16.605635 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.605899 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616605-e1f4c9ce-816c-487f-a098-d364d8998d7b"
+I1207 15:50:16.606055 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.606128 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616605-e1f4c9ce-816c-487f-a098-d364d8998d7b
+I1207 15:50:16.606483 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616605-e1f4c9ce-816c-487f-a098-d364d8998d7b => 200
+I1207 15:50:16.606575 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.606951 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616606-7af9a783-8382-4e6a-9a2f-a8e7fe0ae32c"
+I1207 15:50:16.607130 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.607236 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616606-7af9a783-8382-4e6a-9a2f-a8e7fe0ae32c
+I1207 15:50:16.607635 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616606-7af9a783-8382-4e6a-9a2f-a8e7fe0ae32c => 200
+I1207 15:50:16.607708 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.608096 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616608-41d0d03d-6574-4cb9-bcc2-7ce2fb1590f1"
+I1207 15:50:16.608288 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.608353 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616608-41d0d03d-6574-4cb9-bcc2-7ce2fb1590f1
+I1207 15:50:16.608783 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616608-41d0d03d-6574-4cb9-bcc2-7ce2fb1590f1 => 200
+I1207 15:50:16.608899 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.609420 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616609-3d7f5fa8-1a22-467f-85f0-b188f29503d9"
+I1207 15:50:16.609574 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.609650 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616609-3d7f5fa8-1a22-467f-85f0-b188f29503d9
+I1207 15:50:16.610008 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616609-3d7f5fa8-1a22-467f-85f0-b188f29503d9 => 200
+I1207 15:50:16.610094 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.610422 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616610-e42d2215-0c1e-4c54-b5e4-f6eaaeed90e8"
+I1207 15:50:16.610576 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.610629 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616610-e42d2215-0c1e-4c54-b5e4-f6eaaeed90e8
+I1207 15:50:16.611002 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616610-e42d2215-0c1e-4c54-b5e4-f6eaaeed90e8 => 200
+I1207 15:50:16.611072 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.611478 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616611-7593b1fe-3f03-47f4-bc42-ff7e666b5b5a"
+I1207 15:50:16.611691 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.611743 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616611-7593b1fe-3f03-47f4-bc42-ff7e666b5b5a
+I1207 15:50:16.612119 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616611-7593b1fe-3f03-47f4-bc42-ff7e666b5b5a => 200
+I1207 15:50:16.612203 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.612611 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616612-7705ee58-111b-4ff4-9032-589781d12ce0"
+I1207 15:50:16.612798 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.612850 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616612-7705ee58-111b-4ff4-9032-589781d12ce0
+I1207 15:50:16.613173 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616612-7705ee58-111b-4ff4-9032-589781d12ce0 => 200
+I1207 15:50:16.613260 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.613613 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616613-ead550bc-7fb3-4f7f-8982-715417b58e02"
+I1207 15:50:16.613784 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.613865 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616613-ead550bc-7fb3-4f7f-8982-715417b58e02
+I1207 15:50:16.614255 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616613-ead550bc-7fb3-4f7f-8982-715417b58e02 => 200
+I1207 15:50:16.614316 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.614647 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616614-80b6f9e9-48c2-45c2-9560-43b7dac9978d"
+I1207 15:50:16.614794 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.614844 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616614-80b6f9e9-48c2-45c2-9560-43b7dac9978d
+I1207 15:50:16.615177 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616614-80b6f9e9-48c2-45c2-9560-43b7dac9978d => 200
+I1207 15:50:16.615243 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.615575 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616615-c583d032-40a4-44ac-b636-2639f08453f4"
+I1207 15:50:16.615750 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.615808 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616615-c583d032-40a4-44ac-b636-2639f08453f4
+I1207 15:50:16.616107 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616615-c583d032-40a4-44ac-b636-2639f08453f4 => 200
+I1207 15:50:16.616176 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.616499 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616616-00554b29-c6ca-41b5-84f1-d15373c8c90f"
+I1207 15:50:16.616667 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.616723 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616616-00554b29-c6ca-41b5-84f1-d15373c8c90f
+I1207 15:50:16.617019 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616616-00554b29-c6ca-41b5-84f1-d15373c8c90f => 200
+I1207 15:50:16.617103 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.617469 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616617-f85bdbcd-5cc9-419f-a117-e4f76fb4f5b9"
+I1207 15:50:16.617630 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.617693 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616617-f85bdbcd-5cc9-419f-a117-e4f76fb4f5b9
+I1207 15:50:16.618170 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616617-f85bdbcd-5cc9-419f-a117-e4f76fb4f5b9 => 200
+I1207 15:50:16.618259 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.618711 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616618-4898cd1b-2ad9-45e1-9611-a30f54f0309a"
+I1207 15:50:16.618853 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.618910 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616618-4898cd1b-2ad9-45e1-9611-a30f54f0309a
+I1207 15:50:16.619237 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616618-4898cd1b-2ad9-45e1-9611-a30f54f0309a => 200
+I1207 15:50:16.619301 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.619654 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616619-5c063c11-bcaa-44af-8146-b10996650c72"
+I1207 15:50:16.619822 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.619875 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616619-5c063c11-bcaa-44af-8146-b10996650c72
+I1207 15:50:16.620239 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616619-5c063c11-bcaa-44af-8146-b10996650c72 => 200
+I1207 15:50:16.620297 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.620570 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616620-2aa57475-a651-4767-add2-14b1d8959f5d"
+I1207 15:50:16.620704 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.620773 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616620-2aa57475-a651-4767-add2-14b1d8959f5d
+I1207 15:50:16.621101 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616620-2aa57475-a651-4767-add2-14b1d8959f5d => 200
+I1207 15:50:16.621206 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.621554 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616621-f5e99d00-9485-42ca-9cc0-47fe16242b98"
+I1207 15:50:16.621717 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.621767 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616621-f5e99d00-9485-42ca-9cc0-47fe16242b98
+I1207 15:50:16.622052 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616621-f5e99d00-9485-42ca-9cc0-47fe16242b98 => 200
+I1207 15:50:16.622126 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.622410 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616622-30230f9e-1537-4cca-852e-f04b74c5dd9a"
+I1207 15:50:16.622555 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.622607 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616622-30230f9e-1537-4cca-852e-f04b74c5dd9a
+I1207 15:50:16.622841 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616622-30230f9e-1537-4cca-852e-f04b74c5dd9a => 200
+I1207 15:50:16.622894 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.623208 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616623-e5e399d9-2b09-4e7c-8a75-3deaa5bfe519"
+I1207 15:50:16.623413 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.623474 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616623-e5e399d9-2b09-4e7c-8a75-3deaa5bfe519
+I1207 15:50:16.623892 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616623-e5e399d9-2b09-4e7c-8a75-3deaa5bfe519 => 200
+I1207 15:50:16.623964 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.624320 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616624-9225acd2-fbea-490d-925d-74b729e4dc19"
+I1207 15:50:16.624469 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.624541 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616624-9225acd2-fbea-490d-925d-74b729e4dc19
+I1207 15:50:16.624929 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616624-9225acd2-fbea-490d-925d-74b729e4dc19 => 200
+I1207 15:50:16.624990 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.625331 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616625-b135aac6-dfcc-47e8-b0e9-684380ff438e"
+I1207 15:50:16.625476 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.625532 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616625-b135aac6-dfcc-47e8-b0e9-684380ff438e
+I1207 15:50:16.625860 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616625-b135aac6-dfcc-47e8-b0e9-684380ff438e => 200
+I1207 15:50:16.625929 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.626292 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616626-1a90f1c1-eaf3-4b33-8c12-0bbb0425b367"
+I1207 15:50:16.626475 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.626551 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616626-1a90f1c1-eaf3-4b33-8c12-0bbb0425b367
+I1207 15:50:16.626949 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616626-1a90f1c1-eaf3-4b33-8c12-0bbb0425b367 => 200
+I1207 15:50:16.627012 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.627376 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616627-8ff285cf-5da5-4071-8854-ca8a0c5f4160"
+I1207 15:50:16.627601 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.627657 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616627-8ff285cf-5da5-4071-8854-ca8a0c5f4160
+I1207 15:50:16.627959 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616627-8ff285cf-5da5-4071-8854-ca8a0c5f4160 => 200
+I1207 15:50:16.628060 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.628421 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616628-84e9cbd2-c762-4112-80ea-e7a4f13f6e4d"
+I1207 15:50:16.628562 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.628613 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616628-84e9cbd2-c762-4112-80ea-e7a4f13f6e4d
+I1207 15:50:16.628866 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616628-84e9cbd2-c762-4112-80ea-e7a4f13f6e4d => 200
+I1207 15:50:16.628925 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.629269 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616629-5e47b6a2-8432-4354-968d-89ac12311952"
+I1207 15:50:16.629426 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.629491 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616629-5e47b6a2-8432-4354-968d-89ac12311952
+I1207 15:50:16.629830 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616629-5e47b6a2-8432-4354-968d-89ac12311952 => 200
+I1207 15:50:16.629896 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.630200 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616630-c939b62a-52d6-4ede-96ff-ba6735c32b31"
+I1207 15:50:16.630339 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.630390 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616630-c939b62a-52d6-4ede-96ff-ba6735c32b31
+I1207 15:50:16.630696 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616630-c939b62a-52d6-4ede-96ff-ba6735c32b31 => 200
+I1207 15:50:16.630756 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.631058 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616631-2cd91267-10d0-4389-ba94-aeefaa0d49ac"
+I1207 15:50:16.631229 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.631281 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616631-2cd91267-10d0-4389-ba94-aeefaa0d49ac
+I1207 15:50:16.631571 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616631-2cd91267-10d0-4389-ba94-aeefaa0d49ac => 200
+I1207 15:50:16.631627 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.631888 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616631-d1403b1c-8105-4ace-b6f6-24b1522cfa09"
+I1207 15:50:16.632038 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.632088 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616631-d1403b1c-8105-4ace-b6f6-24b1522cfa09
+I1207 15:50:16.632417 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616631-d1403b1c-8105-4ace-b6f6-24b1522cfa09 => 200
+I1207 15:50:16.632482 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.632801 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616632-7795a86b-6ef0-4226-907f-9df13f60b4b4"
+I1207 15:50:16.632943 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.632996 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616632-7795a86b-6ef0-4226-907f-9df13f60b4b4
+I1207 15:50:16.633290 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616632-7795a86b-6ef0-4226-907f-9df13f60b4b4 => 200
+I1207 15:50:16.633348 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.633661 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616633-8bc1b677-7024-4d28-b8c7-2b533192a3d3"
+I1207 15:50:16.633817 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.633865 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616633-8bc1b677-7024-4d28-b8c7-2b533192a3d3
+I1207 15:50:16.634195 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616633-8bc1b677-7024-4d28-b8c7-2b533192a3d3 => 200
+I1207 15:50:16.634245 1640245 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I1207 15:50:16.634550 1640245 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1765140616634-9183b3da-3404-40e7-8283-db86bed0cf86"
+I1207 15:50:16.634699 1640245 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I1207 15:50:16.634775 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616634-9183b3da-3404-40e7-8283-db86bed0cf86
+I1207 15:50:16.635136 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616634-9183b3da-3404-40e7-8283-db86bed0cf86 => 200
+I1207 15:50:16.640480 1640245 mockgcp_http.go:291] mockgcp request: GET https://cloudresourcemanager.googleapis.com/v1/operations/operation-1765140616539-be1adce5-5d8d-4b1b-a0ba-2b787e35018f?alt=json&prettyPrint=false
+I1207 15:50:16.640654 1640245 mockgcp_http.go:320] mockgcp response: GET https://cloudresourcemanager.googleapis.com/v1/operations/operation-1765140616539-be1adce5-5d8d-4b1b-a0ba-2b787e35018f?alt=json&prettyPrint=false => 200
+I1207 15:50:16.741055 1640245 mockgcp_http.go:291] mockgcp request: GET https://cloudresourcemanager.googleapis.com/v1/operations/operation-1765140616539-be1adce5-5d8d-4b1b-a0ba-2b787e35018f?alt=json&prettyPrint=false
+I1207 15:50:16.741193 1640245 mockgcp_http.go:320] mockgcp response: GET https://cloudresourcemanager.googleapis.com/v1/operations/operation-1765140616539-be1adce5-5d8d-4b1b-a0ba-2b787e35018f?alt=json&prettyPrint=false => 200
+I1207 15:50:16.841562 1640245 mockgcp_http.go:291] mockgcp request: GET https://cloudresourcemanager.googleapis.com/v1/operations/operation-1765140616539-be1adce5-5d8d-4b1b-a0ba-2b787e35018f?alt=json&prettyPrint=false
+I1207 15:50:16.841672 1640245 mockgcp_http.go:320] mockgcp response: GET https://cloudresourcemanager.googleapis.com/v1/operations/operation-1765140616539-be1adce5-5d8d-4b1b-a0ba-2b787e35018f?alt=json&prettyPrint=false => 200
+I1207 15:50:16.942026 1640245 mockgcp_http.go:291] mockgcp request: GET https://cloudresourcemanager.googleapis.com/v1/operations/operation-1765140616539-be1adce5-5d8d-4b1b-a0ba-2b787e35018f?alt=json&prettyPrint=false
+I1207 15:50:16.942139 1640245 mockgcp_http.go:320] mockgcp response: GET https://cloudresourcemanager.googleapis.com/v1/operations/operation-1765140616539-be1adce5-5d8d-4b1b-a0ba-2b787e35018f?alt=json&prettyPrint=false => 200
+I1207 15:50:17.020290 1640245 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616548-aac7de73-e634-419e-a75d-a3f070ae86f5
+I1207 15:50:17.020933 1640245 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1765140616548-aac7de73-e634-419e-a75d-a3f070ae86f5 => 200
+I1207 15:50:17.043194 1640245 mockgcp_http.go:291] mockgcp request: GET https://cloudresourcemanager.googleapis.com/v1/operations/operation-1765140616539-be1adce5-5d8d-4b1b-a0ba-2b787e35018f?alt=json&prettyPrint=false
+I1207 15:50:17.043407 1640245 mockgcp_http.go:320] mockgcp response: GET https://cloudresourcemanager.googleapis.com/v1/operations/operation-1765140616539-be1adce5-5d8d-4b1b-a0ba-2b787e35018f?alt=json&prettyPrint=false => 200
+I1207 15:50:17.043463 1640245 mockgcp_http.go:291] mockgcp request: GET https://cloudresourcemanager.googleapis.com/v1/projects/mock-project?alt=json&prettyPrint=false
+I1207 15:50:17.044056 1640245 mockgcp_http.go:320] mockgcp response: GET https://cloudresourcemanager.googleapis.com/v1/projects/mock-project?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:17 [INFO] Authenticating using configured Google JSON 'access_token'...
+2025/12/07 15:50:17 [INFO]   -- Scopes: [https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/drive.readonly]
+2025/12/07 15:50:17 [INFO] Authenticating using configured Google JSON 'access_token'...
+2025/12/07 15:50:17 [INFO]   -- Scopes: [https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/drive.readonly]
+2025/12/07 15:50:17 [DEBUG] Waiting for state to become: [success]
+I1207 15:50:17.053589 1640245 mockgcp_http.go:291] mockgcp request: GET https://openidconnect.googleapis.com/v1/userinfo?alt=json
+2025/12/07 15:50:17 response: 200 {"email":"test@example.com"}
+2025/12/07 15:50:17 [INFO] Terraform is using this identity: test@example.com
+{"severity":"info","timestamp":"2025-12-07T15:50:17.202-0500","logger":"controller-runtime.webhook","msg":"Registering webhook","path":"/deny-unknown-fields"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.202-0500","logger":"controller-runtime.webhook","msg":"Registering webhook","path":"/iam-validation"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.202-0500","logger":"controller-runtime.webhook","msg":"Registering webhook","path":"/iam-defaulter"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.202-0500","logger":"controller-runtime.webhook","msg":"Registering webhook","path":"/container-annotation-handler"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.205-0500","logger":"controller-runtime.webhook","msg":"Registering webhook","path":"/management-conflict-annotation-defaulter"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.205-0500","logger":"controller-runtime.webhook","msg":"Registering webhook","path":"/generic-defaulter"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.205-0500","logger":"controller-runtime.webhook","msg":"Registering webhook","path":"/resource-validation"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.205-0500","logger":"controller-runtime.webhook","msg":"Registering webhook","path":"/state-into-spec-validation"}
+    harness.go:762: waiting for webhook to start (webhook server has not been started yet)
+{"severity":"info","timestamp":"2025-12-07T15:50:17.205-0500","logger":"controller-runtime.webhook","msg":"Starting webhook server"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.206-0500","logger":"controller-runtime.certwatcher","msg":"Updated current TLS certificate"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.206-0500","logger":"controller-runtime.webhook","msg":"Serving webhook server","host":"127.0.0.1","port":34791}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.206-0500","logger":"controller-runtime.certwatcher","msg":"Starting certificate poll+watcher","interval":"10s"}
+    ratcheting.go:497: skipping re-reconciliation test for gvk container.cnrm.cloud.google.com/v1beta1, Kind=ContainerNodePool
+    unified_test.go:268: not yet using SSA for create of resources in group "container.cnrm.cloud.google.com"
+    unified_test.go:442: running with controller overrides: map[]
+    samples.go:132: using legacy create to create object (should ideally use server-side apply) GVK container.cnrm.cloud.google.com/v1beta1, Kind=ContainerCluster name cluster-sample-kdjt6shrwt2e6ri
+{"severity":"info","timestamp":"2025-12-07T15:50:17.340-0500","msg":"processing request","operation":"CREATE","handler":"container annotation handler","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.342-0500","msg":"done processing request","operation":"CREATE","handler":"container annotation handler","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.344-0500","msg":"processing request","operation":"CREATE","handler":"generic defaulter","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.344-0500","msg":"done processing request","operation":"CREATE","handler":"generic defaulter","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.345-0500","msg":"processing request","operation":"CREATE","handler":"management conflict annotation defaulter","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.346-0500","msg":"done processing request","operation":"CREATE","handler":"management conflict annotation defaulter","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.347-0500","msg":"processing request","operation":"CREATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.348-0500","msg":"done processing request","operation":"CREATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.348-0500","msg":"processing request","operation":"CREATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.349-0500","msg":"done processing request","operation":"CREATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+    samples.go:132: using legacy create to create object (should ideally use server-side apply) GVK container.cnrm.cloud.google.com/v1beta1, Kind=ContainerNodePool name nodepool-sample-kdjt6shrwt2e6ri
+{"severity":"info","timestamp":"2025-12-07T15:50:17.352-0500","msg":"processing request","operation":"CREATE","handler":"container annotation handler","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.354-0500","msg":"done processing request","operation":"CREATE","handler":"container annotation handler","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.355-0500","msg":"processing request","operation":"CREATE","handler":"generic defaulter","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.355-0500","msg":"done processing request","operation":"CREATE","handler":"generic defaulter","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.355-0500","msg":"processing request","operation":"CREATE","handler":"management conflict annotation defaulter","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.357-0500","msg":"done processing request","operation":"CREATE","handler":"management conflict annotation defaulter","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.358-0500","msg":"processing request","operation":"CREATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.358-0500","msg":"done processing request","operation":"CREATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.358-0500","msg":"processing request","operation":"CREATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.358-0500","msg":"done processing request","operation":"CREATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.362-0500","msg":"resource does not yet have status","kind":"ContainerCluster","name":"cluster-sample-kdjt6shrwt2e6ri"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.362-0500","msg":"resource does not yet have status","kind":"ContainerNodePool","name":"nodepool-sample-kdjt6shrwt2e6ri"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.408-0500","msg":"parent reconciler starting","controller":"containercluster-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerCluster","ContainerCluster":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"cluster-sample-kdjt6shrwt2e6ri","reconcileID":"8435fa06-fc08-4bee-abf9-e2f6ca901d3c","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.408-0500","msg":"parent reconciler starting","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"5e85437d-50d4-43cd-aae9-b6a4408b2886","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.612-0500","msg":"routing to controller","controller":"containercluster-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerCluster","ContainerCluster":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"cluster-sample-kdjt6shrwt2e6ri","reconcileID":"8435fa06-fc08-4bee-abf9-e2f6ca901d3c","type":"tf"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.612-0500","msg":"routing to TF reconciler","controller":"containercluster-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerCluster","ContainerCluster":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"cluster-sample-kdjt6shrwt2e6ri","reconcileID":"8435fa06-fc08-4bee-abf9-e2f6ca901d3c"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.612-0500","logger":"containercluster-controller","msg":"starting reconcile","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.612-0500","msg":"routing to controller","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"5e85437d-50d4-43cd-aae9-b6a4408b2886","type":"tf"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.612-0500","msg":"routing to TF reconciler","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"5e85437d-50d4-43cd-aae9-b6a4408b2886"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.612-0500","logger":"containernodepool-controller","msg":"starting reconcile","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.616-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.616-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.616-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.617-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.617-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.617-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.617-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.618-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+2025/12/07 15:50:17 http: TLS handshake error from 127.0.0.1:42076: EOF
+2025/12/07 15:50:17 [DEBUG] matching ID mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri to regex (?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+).
+2025/12/07 15:50:17 [DEBUG] importing project = mock-project
+2025/12/07 15:50:17 [DEBUG] importing location = us-central1-a
+2025/12/07 15:50:17 [DEBUG] importing name = cluster-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:17 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:17 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:17 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:17.623190 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+{"severity":"info","timestamp":"2025-12-07T15:50:17.623-0500","logger":"containernodepool-controller","msg":"reference ContainerCluster kdjt6shrwt2e6ri/cluster-sample-kdjt6shrwt2e6ri is not ready","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+I1207 15:50:17.624628 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 404
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Stopping retries, last request failed with non-retryable error: googleapi: got HTTP response code 404 with body: HTTP/0.0 404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{"error":{"code":404,"message":"Not found: projects/mock-project/zones/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri.","status":"NOT_FOUND","errors":[{"domain":"global","message":"Not found: projects/mock-project/zones/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri.","reason":"notFound"}]}}
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:17 [WARN] Removing Container Cluster "cluster-sample-kdjt6shrwt2e6ri" because it's gone
+{"severity":"info","timestamp":"2025-12-07T15:50:17.649-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.649-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.649-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.650-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.655-0500","logger":"containercluster-controller","msg":"creating/updating underlying resource","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+2025/12/07 15:50:17 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:17 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:17 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:17.659700 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:17.660291 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 404
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Stopping retries, last request failed with non-retryable error: googleapi: got HTTP response code 404 with body: HTTP/0.0 404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{"error":{"code":404,"message":"Not found: projects/mock-project/zones/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri.","status":"NOT_FOUND","errors":[{"domain":"global","message":"Not found: projects/mock-project/zones/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri.","reason":"notFound"}]}}
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:17 [DEBUG] Locking "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:17 [DEBUG] Locked "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:17 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:17 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:17 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:17 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:17.661879 1640245 mockgcp_http.go:291] mockgcp request: POST https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters?alt=json&prettyPrint=false
+I1207 15:50:17.664981 1640245 mockgcp_http.go:320] mockgcp response: POST https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:17 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:17 [DEBUG] Waiting for state to become: [DONE]
+2025/12/07 15:50:17 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:17 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:17 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:17.665538 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-1765140617664-e0017ce5-259a-46c6-9650-ee2149d4ab08?alt=json&prettyPrint=false
+I1207 15:50:17.666211 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-1765140617664-e0017ce5-259a-46c6-9650-ee2149d4ab08?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:17 [DEBUG] Got DONE while polling for operation operation-1765140617664-e0017ce5-259a-46c6-9650-ee2149d4ab08's status
+2025/12/07 15:50:17 [INFO] GKE cluster cluster-sample-kdjt6shrwt2e6ri has been created
+2025/12/07 15:50:17 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:17 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:17 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:17.666706 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:17.667933 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:17 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:17 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:17 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:17 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:17.669781 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:17.670623 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:17 [DEBUG] Cluster "cluster-sample-kdjt6shrwt2e6ri" has status "RUNNING" with message "".
+2025/12/07 15:50:17 [DEBUG] Unlocking "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:17 [DEBUG] Unlocked "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+{"severity":"info","timestamp":"2025-12-07T15:50:17.676-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.676-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.676-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.677-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.684-0500","logger":"containercluster-controller","msg":"successfully finished reconcile","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"time to next reconciliation":"6m23.863007446s"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.684-0500","msg":"parent reconciler starting","controller":"containercluster-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerCluster","ContainerCluster":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"cluster-sample-kdjt6shrwt2e6ri","reconcileID":"6a76577c-b9e2-41ce-ae97-b13e734fbf65","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.686-0500","msg":"routing to controller","controller":"containercluster-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerCluster","ContainerCluster":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"cluster-sample-kdjt6shrwt2e6ri","reconcileID":"6a76577c-b9e2-41ce-ae97-b13e734fbf65","type":"tf"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.686-0500","msg":"routing to TF reconciler","controller":"containercluster-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerCluster","ContainerCluster":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"cluster-sample-kdjt6shrwt2e6ri","reconcileID":"6a76577c-b9e2-41ce-ae97-b13e734fbf65"}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.686-0500","logger":"containercluster-controller","msg":"starting reconcile","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+2025/12/07 15:50:17 [DEBUG] matching ID mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri to regex (?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+).
+2025/12/07 15:50:17 [DEBUG] importing project = mock-project
+2025/12/07 15:50:17 [DEBUG] importing location = us-central1-a
+2025/12/07 15:50:17 [DEBUG] importing name = cluster-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:17 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:17 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:17 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:17.693096 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:17.693908 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:17 [DEBUG] Retry Transport: Returning after 1 attempts
+{"severity":"info","timestamp":"2025-12-07T15:50:17.719-0500","logger":"containercluster-controller","msg":"underlying resource already up to date","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.725-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.725-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.725-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.725-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:17.733-0500","logger":"containercluster-controller","msg":"successfully finished reconcile","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"time to next reconciliation":"12m12.043775798s"}
+{"severity":"info","timestamp":"2025-12-07T15:50:18.365-0500","msg":"resource is not ready","kind":"ContainerNodePool","name":"nodepool-sample-kdjt6shrwt2e6ri","conditions":[{"lastTransitionTime":"2025-12-07T15:50:17-05:00","message":"reference ContainerCluster kdjt6shrwt2e6ri/cluster-sample-kdjt6shrwt2e6ri is not ready","reason":"DependencyNotReady","status":"False","type":"Ready"}]}
+{"severity":"info","timestamp":"2025-12-07T15:50:18.365-0500","msg":"resource is ready","kind":"ContainerCluster","name":"cluster-sample-kdjt6shrwt2e6ri"}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.365-0500","msg":"resource is not ready","kind":"ContainerNodePool","name":"nodepool-sample-kdjt6shrwt2e6ri","conditions":[{"lastTransitionTime":"2025-12-07T15:50:17-05:00","message":"reference ContainerCluster kdjt6shrwt2e6ri/cluster-sample-kdjt6shrwt2e6ri is not ready","reason":"DependencyNotReady","status":"False","type":"Ready"}]}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.628-0500","msg":"parent reconciler starting","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"39a2ccf6-7e3b-4179-82b1-b7c7b98105ee","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.630-0500","msg":"routing to controller","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"39a2ccf6-7e3b-4179-82b1-b7c7b98105ee","type":"tf"}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.631-0500","msg":"routing to TF reconciler","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"39a2ccf6-7e3b-4179-82b1-b7c7b98105ee"}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.631-0500","logger":"containernodepool-controller","msg":"starting reconcile","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+2025/12/07 15:50:19 [DEBUG] matching ID mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri/nodepool-sample-kdjt6shrwt2e6ri to regex (?P<project>[^/]+)/(?P<location>[^/]+)/(?P<cluster>[^/]+)/(?P<name>[^/]+).
+2025/12/07 15:50:19 [DEBUG] importing project = mock-project
+2025/12/07 15:50:19 [DEBUG] importing location = us-central1-a
+2025/12/07 15:50:19 [DEBUG] importing cluster = cluster-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:19 [DEBUG] importing name = nodepool-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:19 [DEBUG] parent cluster cluster-sample-kdjt6shrwt2e6ri does not match regex projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)
+2025/12/07 15:50:19 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:19 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:19 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:19.641049 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:19.641576 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 404
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Stopping retries, last request failed with non-retryable error: googleapi: got HTTP response code 404 with body: HTTP/0.0 404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{"error":{"code":404,"message":"nodePool \"projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri\" not found","status":"NOT_FOUND","errors":[{"domain":"global","message":"nodePool \"projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri\" not found","reason":"notFound"}]}}
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:19 [WARN] Removing Container NodePool nodepool-sample-kdjt6shrwt2e6ri because it's gone
+{"severity":"info","timestamp":"2025-12-07T15:50:19.654-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.654-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.654-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.654-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.660-0500","logger":"containernodepool-controller","msg":"creating/updating underlying resource","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+2025/12/07 15:50:19 [DEBUG] parent cluster cluster-sample-kdjt6shrwt2e6ri does not match regex projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)
+2025/12/07 15:50:19 [DEBUG] RLocking "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:19 [DEBUG] RLocked "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:19 [DEBUG] Locking "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:19 [DEBUG] Locked "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:19 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:19 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:19 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:19.664549 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:19.665103 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 404
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Stopping retries, last request failed with non-retryable error: googleapi: got HTTP response code 404 with body: HTTP/0.0 404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{"error":{"code":404,"message":"nodePool \"projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri\" not found","status":"NOT_FOUND","errors":[{"domain":"global","message":"nodePool \"projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri\" not found","reason":"notFound"}]}}
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:19 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:19 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:19 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:19 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:19.665790 1640245 mockgcp_http.go:291] mockgcp request: POST https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools?alt=json&prettyPrint=false
+I1207 15:50:19.666615 1640245 mockgcp_http.go:320] mockgcp response: POST https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:19 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:19 [DEBUG] Waiting for state to become: [DONE]
+2025/12/07 15:50:19 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:19 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:19 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:19.667054 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-1765140619666-2b0f0791-0f42-454b-97ef-595128505b0e?alt=json&prettyPrint=false
+I1207 15:50:19.667621 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-1765140619666-2b0f0791-0f42-454b-97ef-595128505b0e?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:19 [DEBUG] Got DONE while polling for operation operation-1765140619666-2b0f0791-0f42-454b-97ef-595128505b0e's status
+2025/12/07 15:50:19 [INFO] GKE NodePool nodepool-sample-kdjt6shrwt2e6ri has been created
+2025/12/07 15:50:19 [DEBUG] parent cluster cluster-sample-kdjt6shrwt2e6ri does not match regex projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)
+2025/12/07 15:50:19 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:19 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:19 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:19.667966 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:19.668581 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:19 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:19 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:19 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:19 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:19.669196 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:19.669702 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:19 [DEBUG] NodePool "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri" has status "RUNNING" with message "".
+2025/12/07 15:50:19 [DEBUG] Unlocking "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:19 [DEBUG] Unlocked "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:19 [DEBUG] RUnlocking "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:19 [DEBUG] RUnlocked "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+{"severity":"info","timestamp":"2025-12-07T15:50:19.673-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.673-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.673-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.674-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.681-0500","logger":"containernodepool-controller","msg":"successfully finished reconcile","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"time to next reconciliation":"14m28.281375526s"}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.681-0500","msg":"parent reconciler starting","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"8f84cdbe-91f2-463f-9e7d-9f768ad6b5db","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.683-0500","msg":"routing to controller","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"8f84cdbe-91f2-463f-9e7d-9f768ad6b5db","type":"tf"}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.683-0500","msg":"routing to TF reconciler","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"8f84cdbe-91f2-463f-9e7d-9f768ad6b5db"}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.683-0500","logger":"containernodepool-controller","msg":"starting reconcile","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+2025/12/07 15:50:19 [DEBUG] matching ID mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri/nodepool-sample-kdjt6shrwt2e6ri to regex (?P<project>[^/]+)/(?P<location>[^/]+)/(?P<cluster>[^/]+)/(?P<name>[^/]+).
+2025/12/07 15:50:19 [DEBUG] importing project = mock-project
+2025/12/07 15:50:19 [DEBUG] importing location = us-central1-a
+2025/12/07 15:50:19 [DEBUG] importing cluster = cluster-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:19 [DEBUG] importing name = nodepool-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:19 [DEBUG] parent cluster cluster-sample-kdjt6shrwt2e6ri does not match regex projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)
+2025/12/07 15:50:19 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:19 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:19 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:19.691762 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:19.692495 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:19 [DEBUG] parent cluster cluster-sample-kdjt6shrwt2e6ri does not match regex projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)
+2025/12/07 15:50:19 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:19 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:19 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:19.693112 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:19.693793 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:19 [DEBUG] Retry Transport: Returning after 1 attempts
+{"severity":"info","timestamp":"2025-12-07T15:50:19.702-0500","logger":"containernodepool-controller","msg":"underlying resource already up to date","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.705-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.705-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.706-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.706-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:19.712-0500","logger":"containernodepool-controller","msg":"successfully finished reconcile","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"time to next reconciliation":"9m44.965149439s"}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.365-0500","msg":"resource is ready","kind":"ContainerNodePool","name":"nodepool-sample-kdjt6shrwt2e6ri"}
+    samples.go:154: using server-side apply to update object
+{"severity":"info","timestamp":"2025-12-07T15:50:20.369-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.369-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.369-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.369-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.371-0500","msg":"parent reconciler starting","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"81305271-5787-4c4f-950d-7dd558acaa4f","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.372-0500","msg":"resource status.observedGeneration is behind current generation","kind":"ContainerNodePool","name":"nodepool-sample-kdjt6shrwt2e6ri","status.observedGeneration":2,"generation":3}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.373-0500","msg":"routing to controller","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"81305271-5787-4c4f-950d-7dd558acaa4f","type":"tf"}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.373-0500","msg":"routing to TF reconciler","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"81305271-5787-4c4f-950d-7dd558acaa4f"}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.373-0500","logger":"containernodepool-controller","msg":"starting reconcile","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+2025/12/07 15:50:20 [DEBUG] matching ID mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri/nodepool-sample-kdjt6shrwt2e6ri to regex (?P<project>[^/]+)/(?P<location>[^/]+)/(?P<cluster>[^/]+)/(?P<name>[^/]+).
+2025/12/07 15:50:20 [DEBUG] importing project = mock-project
+2025/12/07 15:50:20 [DEBUG] importing location = us-central1-a
+2025/12/07 15:50:20 [DEBUG] importing cluster = cluster-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:20 [DEBUG] importing name = nodepool-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:20 [DEBUG] parent cluster cluster-sample-kdjt6shrwt2e6ri does not match regex projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)
+2025/12/07 15:50:20 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:20 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:20 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:20.384042 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:20.384674 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:20 [DEBUG] parent cluster cluster-sample-kdjt6shrwt2e6ri does not match regex projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)
+2025/12/07 15:50:20 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:20 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:20 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:20.385004 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:20.385432 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Returning after 1 attempts
+{"severity":"info","timestamp":"2025-12-07T15:50:20.394-0500","msg":"detected changes to fields; triggering update","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"81305271-5787-4c4f-950d-7dd558acaa4f","changedFields":["autoscaling.0.max_node_count","node_config.0.taint.#","node_config.0.taint.0.effect","node_config.0.taint.0.key","node_config.0.taint.0.value"]}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.394-0500","logger":"containernodepool-controller","msg":"creating/updating underlying resource","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+2025/12/07 15:50:20 [DEBUG] parent cluster cluster-sample-kdjt6shrwt2e6ri does not match regex projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)
+2025/12/07 15:50:20 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:20 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:20 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:20 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:20.398888 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:20.399619 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:20 [DEBUG] NodePool "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri" has status "RUNNING" with message "".
+2025/12/07 15:50:20 [DEBUG] RLocking "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:20 [DEBUG] RLocked "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:20 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:20 [DEBUG] Locking "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:20 [DEBUG] Locked "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:20 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:20 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:20 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:20.400430 1640245 mockgcp_http.go:291] mockgcp request: PUT https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:20.401330 1640245 cluster.go:225] UpdateCluster update: {
+  desired_node_pool_id: "nodepool-sample-kdjt6shrwt2e6ri"
+  desired_node_pool_autoscaling: {
+    enabled: true
+    min_node_count: 1
+    max_node_count: 5
+  }
+}
+name: "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri"
+I1207 15:50:20.401571 1640245 mockgcp_http.go:320] mockgcp response: PUT https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:20 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:20 [DEBUG] Waiting for state to become: [DONE]
+2025/12/07 15:50:20 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:20 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:20 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:20.401908 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-1765140620401-3f2545b2-7c64-41d6-9573-9f0523f6c280?alt=json&prettyPrint=false
+I1207 15:50:20.402351 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-1765140620401-3f2545b2-7c64-41d6-9573-9f0523f6c280?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:20 [DEBUG] Got DONE while polling for operation operation-1765140620401-3f2545b2-7c64-41d6-9573-9f0523f6c280's status
+2025/12/07 15:50:20 [DEBUG] Unlocking "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:20 [DEBUG] Unlocked "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:20 [INFO] Updated autoscaling in Node Pool projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:20 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:20 [DEBUG] Locking "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:20 [DEBUG] Locked "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:20 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:20 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:20 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:20.403566 1640245 mockgcp_http.go:291] mockgcp request: PUT https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:20.404086 1640245 nodepool.go:286] UpdateNodePool name: "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+taints: {
+  taints: {
+    key: "newKey"
+    value: "newValue"
+    effect: NO_SCHEDULE
+  }
+}
+I1207 15:50:20.404297 1640245 mockgcp_http.go:320] mockgcp response: PUT https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:20 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:20 [DEBUG] Waiting for state to become: [DONE]
+2025/12/07 15:50:20 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:20 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:20 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:20.404616 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-1765140620404-be8a27da-1abd-4eb8-ab82-41793f783a25?alt=json&prettyPrint=false
+I1207 15:50:20.405061 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-1765140620404-be8a27da-1abd-4eb8-ab82-41793f783a25?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:20 [DEBUG] Got DONE while polling for operation operation-1765140620404-be8a27da-1abd-4eb8-ab82-41793f783a25's status
+2025/12/07 15:50:20 [DEBUG] Unlocking "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:20 [DEBUG] Unlocked "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:20 [INFO] Updated taints for Node Pool projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:20 [DEBUG] RUnlocking "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:20 [DEBUG] RUnlocked "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:20 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:20 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:20 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:20 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:20.405692 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:20.406707 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:20 [DEBUG] Cluster "cluster-sample-kdjt6shrwt2e6ri" has status "RUNNING" with message "".
+2025/12/07 15:50:20 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:20 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:20 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:20 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:20.407269 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:20.407910 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:20 [DEBUG] NodePool "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri" has status "RUNNING" with message "".
+2025/12/07 15:50:20 [DEBUG] parent cluster cluster-sample-kdjt6shrwt2e6ri does not match regex projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)
+2025/12/07 15:50:20 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:20 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:20 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:20.408368 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:20.408842 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:20 [DEBUG] Retry Transport: Returning after 1 attempts
+{"severity":"info","timestamp":"2025-12-07T15:50:20.413-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.413-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.413-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.413-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:20.421-0500","logger":"containernodepool-controller","msg":"successfully finished reconcile","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"time to next reconciliation":"8m24.294646856s"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.375-0500","msg":"resource is ready","kind":"ContainerNodePool","name":"nodepool-sample-kdjt6shrwt2e6ri"}
+    ratcheting.go:497: skipping re-reconciliation test for gvk container.cnrm.cloud.google.com/v1beta1, Kind=ContainerNodePool
+{"severity":"info","timestamp":"2025-12-07T15:50:21.375-0500","msg":"Deleting resource","kind":"ContainerNodePool","name":"nodepool-sample-kdjt6shrwt2e6ri"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.379-0500","msg":"Deleting resource","kind":"ContainerCluster","name":"cluster-sample-kdjt6shrwt2e6ri"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.379-0500","msg":"parent reconciler starting","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"5dcc373f-bf92-498b-945d-7abbeaef6ac1","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.381-0500","logger":"containernodepool-deletion-defender-controller","msg":"starting deletion defender finalization","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.381-0500","msg":"routing to controller","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"5dcc373f-bf92-498b-945d-7abbeaef6ac1","type":"tf"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.381-0500","msg":"routing to TF reconciler","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"5dcc373f-bf92-498b-945d-7abbeaef6ac1"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.381-0500","logger":"containernodepool-controller","msg":"starting reconcile","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.383-0500","msg":"parent reconciler starting","controller":"containercluster-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerCluster","ContainerCluster":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"cluster-sample-kdjt6shrwt2e6ri","reconcileID":"1ecef463-e62e-4674-ae58-dcc0c1bb1412","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.385-0500","logger":"containernodepool-controller","msg":"finalizing resource deletion","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.385-0500","logger":"containernodepool-controller","msg":"deletion defender has not yet been finalized; requeuing","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.385-0500","logger":"containercluster-deletion-defender-controller","msg":"starting deletion defender finalization","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.385-0500","msg":"routing to controller","controller":"containercluster-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerCluster","ContainerCluster":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"cluster-sample-kdjt6shrwt2e6ri","reconcileID":"1ecef463-e62e-4674-ae58-dcc0c1bb1412","type":"tf"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.385-0500","msg":"routing to TF reconciler","controller":"containercluster-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerCluster","ContainerCluster":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"cluster-sample-kdjt6shrwt2e6ri","reconcileID":"1ecef463-e62e-4674-ae58-dcc0c1bb1412"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.385-0500","logger":"containercluster-controller","msg":"starting reconcile","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.388-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.388-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.388-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.388-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.390-0500","logger":"containercluster-controller","msg":"finalizing resource deletion","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.390-0500","logger":"containercluster-controller","msg":"deletion defender has not yet been finalized; requeuing","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.390-0500","msg":"parent reconciler starting","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"eccc53ff-3ccb-49d4-b65a-21511dd6004e","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.390-0500","logger":"containernodepool-deletion-defender-controller","msg":"successfully finalized deletion defense","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.394-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.394-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.394-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.394-0500","msg":"routing to controller","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"eccc53ff-3ccb-49d4-b65a-21511dd6004e","type":"tf"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.394-0500","msg":"routing to TF reconciler","controller":"containernodepool-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerNodePool","ContainerNodePool":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"nodepool-sample-kdjt6shrwt2e6ri","reconcileID":"eccc53ff-3ccb-49d4-b65a-21511dd6004e"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.394-0500","logger":"containernodepool-controller","msg":"starting reconcile","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.394-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.398-0500","msg":"parent reconciler starting","controller":"containercluster-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerCluster","ContainerCluster":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"cluster-sample-kdjt6shrwt2e6ri","reconcileID":"5aaed6f0-ef86-400d-9d68-5a21d551bb73","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.398-0500","logger":"containercluster-deletion-defender-controller","msg":"successfully finalized deletion defense","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.401-0500","logger":"containernodepool-controller","msg":"finalizing resource deletion","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.403-0500","msg":"routing to controller","controller":"containercluster-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerCluster","ContainerCluster":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"cluster-sample-kdjt6shrwt2e6ri","reconcileID":"5aaed6f0-ef86-400d-9d68-5a21d551bb73","type":"tf"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.403-0500","msg":"routing to TF reconciler","controller":"containercluster-parent-controller","controllerGroup":"container.cnrm.cloud.google.com","controllerKind":"ContainerCluster","ContainerCluster":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"namespace":"kdjt6shrwt2e6ri","name":"cluster-sample-kdjt6shrwt2e6ri","reconcileID":"5aaed6f0-ef86-400d-9d68-5a21d551bb73"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.403-0500","logger":"containercluster-controller","msg":"starting reconcile","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.407-0500","logger":"containercluster-controller","msg":"finalizing resource deletion","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+2025/12/07 15:50:21 [DEBUG] matching ID mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri/nodepool-sample-kdjt6shrwt2e6ri to regex (?P<project>[^/]+)/(?P<location>[^/]+)/(?P<cluster>[^/]+)/(?P<name>[^/]+).
+2025/12/07 15:50:21 [DEBUG] importing project = mock-project
+2025/12/07 15:50:21 [DEBUG] importing location = us-central1-a
+2025/12/07 15:50:21 [DEBUG] importing cluster = cluster-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:21 [DEBUG] importing name = nodepool-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:21 [DEBUG] matching ID mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri to regex (?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+).
+2025/12/07 15:50:21 [DEBUG] importing project = mock-project
+2025/12/07 15:50:21 [DEBUG] importing location = us-central1-a
+2025/12/07 15:50:21 [DEBUG] importing name = cluster-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:21 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:21 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:21 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:21.415782 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+2025/12/07 15:50:21 [DEBUG] parent cluster cluster-sample-kdjt6shrwt2e6ri does not match regex projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)
+2025/12/07 15:50:21 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:21 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:21 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:21.416217 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:21.416595 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+I1207 15:50:21.416627 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:21 [DEBUG] parent cluster cluster-sample-kdjt6shrwt2e6ri does not match regex projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)
+2025/12/07 15:50:21 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:21 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:21 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:21.416921 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:21.417372 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Returning after 1 attempts
+{"severity":"info","timestamp":"2025-12-07T15:50:21.417-0500","logger":"containernodepool-controller","msg":"deleting underlying resource","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+2025/12/07 15:50:21 [DEBUG] parent cluster cluster-sample-kdjt6shrwt2e6ri does not match regex projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)
+2025/12/07 15:50:21 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:21 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:21 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:21 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:21.418284 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+{"severity":"info","timestamp":"2025-12-07T15:50:21.418-0500","logger":"containercluster-controller","msg":"deleting underlying resource","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+2025/12/07 15:50:21 [DEBUG] Waiting for state to become: [success]
+I1207 15:50:21.418708 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:21 [DEBUG] NodePool "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri" has status "RUNNING" with message "".
+2025/12/07 15:50:21 [DEBUG] RLocking "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:21 [DEBUG] RLocked "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:21 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:21 [DEBUG] Locking "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:21 [DEBUG] Locked "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:21 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:21 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:21 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:21 [DEBUG] Retry Transport: request attempt 0
+2025/12/07 15:50:21 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:21 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:21.419115 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:21.419137 1640245 mockgcp_http.go:291] mockgcp request: DELETE https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:21.419750 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Returning after 1 attempts
+I1207 15:50:21.419848 1640245 mockgcp_http.go:320] mockgcp response: DELETE https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:21 [DEBUG] Cluster "cluster-sample-kdjt6shrwt2e6ri" has status "RUNNING" with message "".
+2025/12/07 15:50:21 [DEBUG] Deleting GKE cluster cluster-sample-kdjt6shrwt2e6ri
+2025/12/07 15:50:21 [DEBUG] Locking "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:21 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:21 [DEBUG] Waiting for state to become: [DONE]
+2025/12/07 15:50:21 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:21 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:21 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:21.420260 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-1765140621419-0f8900c1-27de-4d0e-8671-14e726cb2d25?alt=json&prettyPrint=false
+I1207 15:50:21.420743 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-1765140621419-0f8900c1-27de-4d0e-8671-14e726cb2d25?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:21 [DEBUG] Got DONE while polling for operation operation-1765140621419-0f8900c1-27de-4d0e-8671-14e726cb2d25's status
+2025/12/07 15:50:21 [INFO] GKE NodePool projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri has been deleted
+2025/12/07 15:50:21 [DEBUG] Unlocking "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:21 [DEBUG] Unlocked "projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri/nodePools/nodepool-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:21 [DEBUG] RUnlocking "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:21 [DEBUG] RUnlocked "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:21 [DEBUG] Locked "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:21 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:21 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:21 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:21 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:21.421301 1640245 mockgcp_http.go:291] mockgcp request: DELETE https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false
+I1207 15:50:21.421994 1640245 mockgcp_http.go:320] mockgcp response: DELETE https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:21 [INFO] Instantiating GKE client for path https://container.googleapis.com/
+2025/12/07 15:50:21 [DEBUG] Waiting for state to become: [DONE]
+2025/12/07 15:50:21 [DEBUG] Waiting for state to become: [success]
+2025/12/07 15:50:21 [DEBUG] Retry Transport: starting RoundTrip retry loop
+2025/12/07 15:50:21 [DEBUG] Retry Transport: request attempt 0
+I1207 15:50:21.422370 1640245 mockgcp_http.go:291] mockgcp request: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-1765140621421-5f653ceb-e635-4e43-b998-2e12e6bf0bf8?alt=json&prettyPrint=false
+I1207 15:50:21.422824 1640245 mockgcp_http.go:320] mockgcp response: GET https://container.googleapis.com/v1beta1/projects/mock-project/locations/us-central1-a/operations/operation-1765140621421-5f653ceb-e635-4e43-b998-2e12e6bf0bf8?alt=json&prettyPrint=false => 200
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Stopping retries, last request was successful
+2025/12/07 15:50:21 [DEBUG] Retry Transport: Returning after 1 attempts
+2025/12/07 15:50:21 [DEBUG] Got DONE while polling for operation operation-1765140621421-5f653ceb-e635-4e43-b998-2e12e6bf0bf8's status
+2025/12/07 15:50:21 [INFO] GKE cluster projects/mock-project/locations/us-central1-a/clusters/cluster-sample-kdjt6shrwt2e6ri has been deleted
+2025/12/07 15:50:21 [DEBUG] Unlocking "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+2025/12/07 15:50:21 [DEBUG] Unlocked "google-container-cluster/mock-project/us-central1-a/cluster-sample-kdjt6shrwt2e6ri"
+{"severity":"info","timestamp":"2025-12-07T15:50:21.429-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.429-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.429-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.429-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerNodePool","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.431-0500","msg":"processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.431-0500","msg":"processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.431-0500","msg":"done processing request","operation":"UPDATE","handler":"state-into-spec validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.431-0500","msg":"done processing request","operation":"UPDATE","handler":"unknown fields validation","kind":"ContainerCluster","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"result-code":200,"result-reason":""}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.432-0500","logger":"containernodepool-controller","msg":"successfully finished reconcile","controllerType":"terraform","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"time to next reconciliation":"9m38.756026311s"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.434-0500","logger":"containernodepool-deletion-defender-controller","msg":"resource not found in API server; finishing reconcile","resource":{"name":"nodepool-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.435-0500","logger":"containercluster-controller","msg":"successfully finished reconcile","controllerType":"terraform","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"},"time to next reconciliation":"8m30.289856281s"}
+{"severity":"info","timestamp":"2025-12-07T15:50:21.435-0500","logger":"containercluster-deletion-defender-controller","msg":"resource not found in API server; finishing reconcile","resource":{"name":"cluster-sample-kdjt6shrwt2e6ri","namespace":"kdjt6shrwt2e6ri"}}
+{"severity":"info","timestamp":"2025-12-07T15:50:22.387-0500","msg":"Done waiting for resource to delete","kind":"ContainerNodePool","name":"nodepool-sample-kdjt6shrwt2e6ri"}
+{"severity":"info","timestamp":"2025-12-07T15:50:22.387-0500","msg":"Done waiting for resource to delete","kind":"ContainerCluster","name":"cluster-sample-kdjt6shrwt2e6ri"}
+    harness.go:713: waiting for controller-runtime manager shutdown
+{"severity":"info","timestamp":"2025-12-07T15:50:22.388-0500","msg":"Stopping and waiting for non leader election runnables"}
+2025/12/07 15:50:22 [DEBUG] parent context canceled, cleaning up batcher batches
+{"severity":"info","timestamp":"2025-12-07T15:50:22.388-0500","msg":"Stopping and waiting for leader election runnables"}
+2025/12/07 15:50:22 [DEBUG] Stopping batcher "IAM"
+{"severity":"info","timestamp":"2025-12-07T15:50:22.388-0500","logger":"controller-runtime.webhook","msg":"Shutting down webhook server with timeout of 1 minute"}
+{"severity":"info","timestamp":"2025-12-07T15:50:22.388-0500","msg":"Stopping and waiting for caches"}
+2025/12/07 15:50:22 [DEBUG] parent context canceled, cleaning up batcher batches
+2025/12/07 15:50:22 [DEBUG] Stopping batcher "Service Usage"
+{"severity":"info","timestamp":"2025-12-07T15:50:22.388-0500","msg":"Stopping and waiting for webhooks"}
+{"severity":"info","timestamp":"2025-12-07T15:50:22.388-0500","msg":"Stopping and waiting for HTTP servers"}
+{"severity":"info","timestamp":"2025-12-07T15:50:22.388-0500","msg":"Wait completed, proceeding to shutdown the manager"}
+    harness.go:715: controller-runtime manager is shutdown
+=== NAME  TestAllInSeries
+    unified_test.go:157: shutting down manager
+--- PASS: TestAllInSeries (12.60s)
+    --- PASS: TestAllInSeries/fixtures (12.60s)
+        --- PASS: TestAllInSeries/fixtures/containernodepoolnestedvirt (12.38s)
+PASS
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/tests/e2e	12.962s

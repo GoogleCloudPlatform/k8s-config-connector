@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,6 +41,10 @@ func (c *FakeNetworkservicesV1alpha1) NetworkServicesEdgeCacheOrigins(namespace 
 
 func (c *FakeNetworkservicesV1alpha1) NetworkServicesEdgeCacheServices(namespace string) v1alpha1.NetworkServicesEdgeCacheServiceInterface {
 	return &FakeNetworkServicesEdgeCacheServices{c, namespace}
+}
+
+func (c *FakeNetworkservicesV1alpha1) NetworkServicesServiceBindings(namespace string) v1alpha1.NetworkServicesServiceBindingInterface {
+	return &FakeNetworkServicesServiceBindings{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

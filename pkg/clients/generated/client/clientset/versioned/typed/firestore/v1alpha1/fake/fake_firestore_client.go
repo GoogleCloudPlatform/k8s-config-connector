@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,8 +31,16 @@ type FakeFirestoreV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeFirestoreV1alpha1) FirestoreDatabases(namespace string) v1alpha1.FirestoreDatabaseInterface {
-	return &FakeFirestoreDatabases{c, namespace}
+func (c *FakeFirestoreV1alpha1) FirestoreBackupSchedules(namespace string) v1alpha1.FirestoreBackupScheduleInterface {
+	return &FakeFirestoreBackupSchedules{c, namespace}
+}
+
+func (c *FakeFirestoreV1alpha1) FirestoreDocuments(namespace string) v1alpha1.FirestoreDocumentInterface {
+	return &FakeFirestoreDocuments{c, namespace}
+}
+
+func (c *FakeFirestoreV1alpha1) FirestoreFields(namespace string) v1alpha1.FirestoreFieldInterface {
+	return &FakeFirestoreFields{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

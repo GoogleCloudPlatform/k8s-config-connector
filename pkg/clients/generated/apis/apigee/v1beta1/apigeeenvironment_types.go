@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import (
 )
 
 type ApigeeEnvironmentSpec struct {
-	/* Immutable. */
+	/* Reference to parent Apigee Organization. */
 	ApigeeOrganizationRef v1alpha1.ResourceRef `json:"apigeeOrganizationRef"`
 
 	/* Optional. Description of the environment. */
@@ -51,9 +51,12 @@ type ApigeeEnvironmentSpec struct {
 	// +optional
 	Properties map[string]string `json:"properties,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The ApigeeEnvironment name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type EnvironmentObservedStateStatus struct {
 }
 
 type ApigeeEnvironmentStatus struct {
@@ -64,6 +67,10 @@ type ApigeeEnvironmentStatus struct {
 	// +optional
 	CreatedAt *int64 `json:"createdAt,omitempty"`
 
+	/* A unique specifier for the ApigeeEnvironment resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* Output only. Last modification time of this environment as milliseconds since epoch. */
 	// +optional
 	LastModifiedAt *int64 `json:"lastModifiedAt,omitempty"`
@@ -72,7 +79,11 @@ type ApigeeEnvironmentStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. State of the environment. Values other than ACTIVE means the resource is not ready to use. Possible values: STATE_UNSPECIFIED, CREATING, ACTIVE, DELETING */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *EnvironmentObservedStateStatus `json:"observedState,omitempty"`
+
+	/* Output only. State of the environment. Values other than ACTIVE means the resource is not ready to use. */
 	// +optional
 	State *string `json:"state,omitempty"`
 }
@@ -81,7 +92,7 @@ type ApigeeEnvironmentStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapigeeenvironment;gcpapigeeenvironments
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

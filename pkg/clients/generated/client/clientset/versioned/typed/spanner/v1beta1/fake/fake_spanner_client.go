@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,6 +29,10 @@ import (
 
 type FakeSpannerV1beta1 struct {
 	*testing.Fake
+}
+
+func (c *FakeSpannerV1beta1) SpannerBackupSchedules(namespace string) v1beta1.SpannerBackupScheduleInterface {
+	return &FakeSpannerBackupSchedules{c, namespace}
 }
 
 func (c *FakeSpannerV1beta1) SpannerDatabases(namespace string) v1beta1.SpannerDatabaseInterface {

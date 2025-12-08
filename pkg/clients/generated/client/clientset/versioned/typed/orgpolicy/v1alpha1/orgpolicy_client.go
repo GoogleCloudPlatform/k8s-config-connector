@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import (
 
 type OrgpolicyV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	OrgPolicyCustomConstraintsGetter
+	OrgPolicyPoliciesGetter
 }
 
 // OrgpolicyV1alpha1Client is used to interact with features provided by the orgpolicy.cnrm.cloud.google.com group.
@@ -39,8 +39,8 @@ type OrgpolicyV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *OrgpolicyV1alpha1Client) OrgPolicyCustomConstraints(namespace string) OrgPolicyCustomConstraintInterface {
-	return newOrgPolicyCustomConstraints(c, namespace)
+func (c *OrgpolicyV1alpha1Client) OrgPolicyPolicies(namespace string) OrgPolicyPolicyInterface {
+	return newOrgPolicyPolicies(c, namespace)
 }
 
 // NewForConfig creates a new OrgpolicyV1alpha1Client for the given config.

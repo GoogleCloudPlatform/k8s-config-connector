@@ -30,7 +30,7 @@ go run ./scripts/generate-go-crd-clients
 
 # Generate deepcopy etc
 echo "Generating deepcopy for go types"
-go generate ./pkg/clients/...
+go generate ./pkg/clients/generated/apis/...
 
 # Generate the clients
 echo "Generating clients"
@@ -45,10 +45,12 @@ do
 done
 
 # Join API/version names into a comma-separated list
-printf -v JOINED '%s,' "${API_VERSIONS[@]:1}"
-JOINED="${JOINED}${API_VERSIONS[0]}"
+IFS=,
+JOINED="${API_VERSIONS[*]}"
+unset IFS
 
 cd ${REPO_ROOT}
+echo "JOINED: $JOINED"
 go run k8s.io/code-generator/cmd/client-gen@v0.29.0 \
   --clientset-name versioned \
   --input-base github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis \

@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,10 +33,6 @@ type FakeBigqueryreservationV1alpha1 struct {
 
 func (c *FakeBigqueryreservationV1alpha1) BigQueryReservationCapacityCommitments(namespace string) v1alpha1.BigQueryReservationCapacityCommitmentInterface {
 	return &FakeBigQueryReservationCapacityCommitments{c, namespace}
-}
-
-func (c *FakeBigqueryreservationV1alpha1) BigQueryReservationReservations(namespace string) v1alpha1.BigQueryReservationReservationInterface {
-	return &FakeBigQueryReservationReservations{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

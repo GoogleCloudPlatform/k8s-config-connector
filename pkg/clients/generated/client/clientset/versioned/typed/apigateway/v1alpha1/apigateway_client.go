@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import (
 
 type ApigatewayV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	APIGatewayAPIsGetter
 	APIGatewayAPIConfigsGetter
 	APIGatewayGatewaysGetter
 }
@@ -39,10 +38,6 @@ type ApigatewayV1alpha1Interface interface {
 // ApigatewayV1alpha1Client is used to interact with features provided by the apigateway.cnrm.cloud.google.com group.
 type ApigatewayV1alpha1Client struct {
 	restClient rest.Interface
-}
-
-func (c *ApigatewayV1alpha1Client) APIGatewayAPIs(namespace string) APIGatewayAPIInterface {
-	return newAPIGatewayAPIs(c, namespace)
 }
 
 func (c *ApigatewayV1alpha1Client) APIGatewayAPIConfigs(namespace string) APIGatewayAPIConfigInterface {

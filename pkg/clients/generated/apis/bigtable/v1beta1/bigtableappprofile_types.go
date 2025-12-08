@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,41 +35,49 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type AppprofileDataBoostIsolationReadOnly struct {
+	/* The Compute Billing Owner for this Data Boost App Profile. */
+	// +optional
+	ComputeBillingOwner *string `json:"computeBillingOwner,omitempty"`
+}
+
 type AppprofileSingleClusterRouting struct {
-	/* If true, CheckAndMutateRow and ReadModifyWriteRow requests are allowed by this app profile.
-	It is unsafe to send these requests to the same table/row/column in multiple clusters. */
+	/* Whether or not `CheckAndMutateRow` and `ReadModifyWriteRow` requests are allowed by this app profile. It is unsafe to send these requests to the same table/row/column in multiple clusters. */
 	// +optional
 	AllowTransactionalWrites *bool `json:"allowTransactionalWrites,omitempty"`
 
 	/* The cluster to which read/write requests should be routed. */
-	ClusterId string `json:"clusterId"`
+	// +optional
+	ClusterId *string `json:"clusterId,omitempty"`
 }
 
 type AppprofileStandardIsolation struct {
-	/* The priority of requests sent using this app profile. Possible values: ["PRIORITY_LOW", "PRIORITY_MEDIUM", "PRIORITY_HIGH"]. */
-	Priority string `json:"priority"`
+	/* The priority of requests sent using this app profile. */
+	// +optional
+	Priority *string `json:"priority,omitempty"`
 }
 
 type BigtableAppProfileSpec struct {
-	/* Long form description of the use case for this app profile. */
+	/* Specifies that this app profile is intended for read-only usage via the Data Boost feature. Please opt-in to this feature by setting the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation. */
+	// +optional
+	DataBoostIsolationReadOnly *AppprofileDataBoostIsolationReadOnly `json:"dataBoostIsolationReadOnly,omitempty"`
+
+	/* Long form description of the use case for this AppProfile. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The instance to create the app profile within. */
-	// +optional
-	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	/* InstanceRef defines the resource reference to BigtableInstance, which "External" field holds the GCP identifier for the KRM object. */
+	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
-	/* The set of clusters to route to. The order is ignored; clusters will be tried in order of distance. If left empty, all clusters are eligible. */
+	/* The set of clusters to route to, if using multi cluster routing. The order is ignored; clusters will be tried in order of distance. If left empty, all clusters are eligible. */
 	// +optional
 	MultiClusterRoutingClusterIds []string `json:"multiClusterRoutingClusterIds,omitempty"`
 
-	/* If true, read/write requests are routed to the nearest cluster in the instance, and will fail over to the nearest cluster that is available
-	in the event of transient errors or delays. Clusters in a region are considered equidistant. Choosing this option sacrifices read-your-writes
-	consistency to improve availability. */
+	/* Use a multi-cluster routing policy. */
 	// +optional
 	MultiClusterRoutingUseAny *bool `json:"multiClusterRoutingUseAny,omitempty"`
 
-	/* Immutable. Optional. The appProfileId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The BigtableAppProfile name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -86,7 +94,11 @@ type BigtableAppProfileStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableAppProfile's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The unique name of the requested app profile. Values are of the form 'projects/<project>/instances/<instance>/appProfiles/<appProfileId>'. */
+	/* A unique specifier for the BigtableAppProfile resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	/* The unique name of the app profile. Values are of the form `projects/{project}/instances/{instance}/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 

@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import (
 type BigqueryanalyticshubV1beta1Interface interface {
 	RESTClient() rest.Interface
 	BigQueryAnalyticsHubDataExchangesGetter
+	BigQueryAnalyticsHubListingsGetter
 }
 
 // BigqueryanalyticshubV1beta1Client is used to interact with features provided by the bigqueryanalyticshub.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type BigqueryanalyticshubV1beta1Client struct {
 
 func (c *BigqueryanalyticshubV1beta1Client) BigQueryAnalyticsHubDataExchanges(namespace string) BigQueryAnalyticsHubDataExchangeInterface {
 	return newBigQueryAnalyticsHubDataExchanges(c, namespace)
+}
+
+func (c *BigqueryanalyticshubV1beta1Client) BigQueryAnalyticsHubListings(namespace string) BigQueryAnalyticsHubListingInterface {
+	return newBigQueryAnalyticsHubListings(c, namespace)
 }
 
 // NewForConfig creates a new BigqueryanalyticshubV1beta1Client for the given config.

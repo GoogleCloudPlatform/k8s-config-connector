@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import (
 type PubsubV1beta1Interface interface {
 	RESTClient() rest.Interface
 	PubSubSchemasGetter
+	PubSubSnapshotsGetter
 	PubSubSubscriptionsGetter
 	PubSubTopicsGetter
 }
@@ -43,6 +44,10 @@ type PubsubV1beta1Client struct {
 
 func (c *PubsubV1beta1Client) PubSubSchemas(namespace string) PubSubSchemaInterface {
 	return newPubSubSchemas(c, namespace)
+}
+
+func (c *PubsubV1beta1Client) PubSubSnapshots(namespace string) PubSubSnapshotInterface {
+	return newPubSubSnapshots(c, namespace)
 }
 
 func (c *PubsubV1beta1Client) PubSubSubscriptions(namespace string) PubSubSubscriptionInterface {

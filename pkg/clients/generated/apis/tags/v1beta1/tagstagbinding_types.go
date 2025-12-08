@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,12 +36,14 @@ import (
 )
 
 type TagsTagBindingSpec struct {
+	/* ParentRef is a reference to a parent resource. */
 	ParentRef v1alpha1.ResourceRef `json:"parentRef"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* TagsTagValueRef is a reference to a TagsTagValue resource. */
 	TagValueRef v1alpha1.ResourceRef `json:"tagValueRef"`
 }
 
@@ -49,7 +51,11 @@ type TagsTagBindingStatus struct {
 	/* Conditions represent the latest available observations of the
 	   TagsTagBinding's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The generated id for the TagBinding. This is a string of the form: 'tagBindings/{full-resource-name}/{tag-value-name}'. */
+	/* A unique specifier for the TagsTagBinding resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	/* The generated id for the TagBinding. This is a string of the form: tagBindings/{full-resource-name}/{tag-value-name}. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 

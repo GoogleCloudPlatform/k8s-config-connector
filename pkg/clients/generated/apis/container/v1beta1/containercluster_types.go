@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -227,6 +227,16 @@ type ClusterConfigConnectorConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
+type ClusterControlPlaneEndpointsConfig struct {
+	/* DNS endpoint configuration. */
+	// +optional
+	DnsEndpointConfig *ClusterDnsEndpointConfig `json:"dnsEndpointConfig,omitempty"`
+
+	/* IP endpoint configuration. */
+	// +optional
+	IpEndpointsConfig *ClusterIpEndpointsConfig `json:"ipEndpointsConfig,omitempty"`
+}
+
 type ClusterCostManagementConfig struct {
 	/* Whether to enable GKE cost allocation. When you enable GKE cost allocation, the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery. Defaults to false. */
 	Enabled bool `json:"enabled"`
@@ -269,6 +279,12 @@ type ClusterDnsConfig struct {
 	/* The scope of access to cluster DNS records. */
 	// +optional
 	ClusterDnsScope *string `json:"clusterDnsScope,omitempty"`
+}
+
+type ClusterDnsEndpointConfig struct {
+	/* Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false. */
+	// +optional
+	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
 }
 
 type ClusterEnableK8sBetaApis struct {
@@ -412,6 +428,12 @@ type ClusterIpAllocationPolicy struct {
 	/* Immutable. The IP Stack type of the cluster. Choose between IPV4 and IPV4_IPV6. Default type is IPV4 Only if not set. */
 	// +optional
 	StackType *string `json:"stackType,omitempty"`
+}
+
+type ClusterIpEndpointsConfig struct {
+	/* Controls whether to allow direct IP access. When false, configuration of masterAuthorizedNetworksConfig, privateClusterConfig.enablePrivateEndpoint, privateClusterConfig.privateEndpointSubnetwork and privateClusterConfig.masterGlobalAccessConfig fields won't be used, and privateClusterConfig.privateEndpoint and privateClusterConfig.publicEndpoint fields won't be populated. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 type ClusterIstioConfig struct {
@@ -792,7 +814,7 @@ type ClusterPrivateClusterConfig struct {
 	// +optional
 	EnablePrivateEndpoint *bool `json:"enablePrivateEndpoint,omitempty"`
 
-	/* Immutable. Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking. */
+	/* Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking. */
 	// +optional
 	EnablePrivateNodes *bool `json:"enablePrivateNodes,omitempty"`
 
@@ -1061,6 +1083,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	ConfidentialNodes *ClusterConfidentialNodes `json:"confidentialNodes,omitempty"`
 
+	/* Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disable IP endpoint. Other IP endpoint configurations are available in private_cluster_config. */
+	// +optional
+	ControlPlaneEndpointsConfig *ClusterControlPlaneEndpointsConfig `json:"controlPlaneEndpointsConfig,omitempty"`
+
 	/* Cost management configuration for the cluster. */
 	// +optional
 	CostManagementConfig *ClusterCostManagementConfig `json:"costManagementConfig,omitempty"`
@@ -1270,6 +1296,18 @@ type ContainerClusterSpec struct {
 	WorkloadIdentityConfig *ClusterWorkloadIdentityConfig `json:"workloadIdentityConfig,omitempty"`
 }
 
+type ClusterControlPlaneEndpointsConfigStatus struct {
+	/* DNS endpoint configuration. */
+	// +optional
+	DnsEndpointConfig *ClusterDnsEndpointConfigStatus `json:"dnsEndpointConfig,omitempty"`
+}
+
+type ClusterDnsEndpointConfigStatus struct {
+	/* The cluster's DNS endpoint. */
+	// +optional
+	Endpoint *string `json:"endpoint,omitempty"`
+}
+
 type ClusterMasterAuthStatus struct {
 	/* Base64 encoded public certificate used by clients to authenticate to the cluster endpoint. */
 	// +optional
@@ -1281,6 +1319,10 @@ type ClusterMasterAuthStatus struct {
 }
 
 type ClusterObservedStateStatus struct {
+	/* Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disable IP endpoint. Other IP endpoint configurations are available in private_cluster_config. */
+	// +optional
+	ControlPlaneEndpointsConfig *ClusterControlPlaneEndpointsConfigStatus `json:"controlPlaneEndpointsConfig,omitempty"`
+
 	/* DEPRECATED. Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission. */
 	// +optional
 	MasterAuth *ClusterMasterAuthStatus `json:"masterAuth,omitempty"`

@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,6 +37,10 @@ func (c *FakeDatastreamV1alpha1) DatastreamConnectionProfiles(namespace string) 
 
 func (c *FakeDatastreamV1alpha1) DatastreamPrivateConnections(namespace string) v1alpha1.DatastreamPrivateConnectionInterface {
 	return &FakeDatastreamPrivateConnections{c, namespace}
+}
+
+func (c *FakeDatastreamV1alpha1) DatastreamRoutes(namespace string) v1alpha1.DatastreamRouteInterface {
+	return &FakeDatastreamRoutes{c, namespace}
 }
 
 func (c *FakeDatastreamV1alpha1) DatastreamStreams(namespace string) v1alpha1.DatastreamStreamInterface {

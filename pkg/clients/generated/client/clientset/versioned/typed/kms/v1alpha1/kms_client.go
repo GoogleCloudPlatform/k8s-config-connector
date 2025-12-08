@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,9 +31,7 @@ import (
 
 type KmsV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	KMSAutokeyConfigsGetter
 	KMSCryptoKeyVersionsGetter
-	KMSKeyHandlesGetter
 	KMSKeyRingImportJobsGetter
 	KMSSecretCiphertextsGetter
 }
@@ -43,16 +41,8 @@ type KmsV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *KmsV1alpha1Client) KMSAutokeyConfigs(namespace string) KMSAutokeyConfigInterface {
-	return newKMSAutokeyConfigs(c, namespace)
-}
-
 func (c *KmsV1alpha1Client) KMSCryptoKeyVersions(namespace string) KMSCryptoKeyVersionInterface {
 	return newKMSCryptoKeyVersions(c, namespace)
-}
-
-func (c *KmsV1alpha1Client) KMSKeyHandles(namespace string) KMSKeyHandleInterface {
-	return newKMSKeyHandles(c, namespace)
 }
 
 func (c *KmsV1alpha1Client) KMSKeyRingImportJobs(namespace string) KMSKeyRingImportJobInterface {

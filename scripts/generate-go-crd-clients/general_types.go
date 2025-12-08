@@ -48,6 +48,7 @@ func (g *GeneralTypes) Generate() {
 
 	g.Print("import (\n")
 	g.Print("\"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1\"")
+	g.Print("apiextensionsv1 \"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1\"")
 	g.Print("metav1 \"k8s.io/apimachinery/pkg/apis/meta/v1\"")
 	g.Print(")")
 
@@ -200,7 +201,7 @@ func (g *GeneralTypes) structField(f *fieldProperties) {
 
 func (g *GeneralTypes) WriteHeader() {
 	header := `
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.

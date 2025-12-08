@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,48 +36,71 @@ import (
 )
 
 type DataCatalogEntryGroupSpec struct {
-	/* Entry group description, which can consist of several sentences or paragraphs that describe entry group contents. */
+	/* Entry group description. Can consist of several sentences or paragraphs that describe the entry group contents. Default value is an empty string. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* A short name to identify the entry group, for example, "analytics data - jan 2011". */
+	/* A short name to identify the entry group, for example, "analytics data - jan 2011". Default value is an empty string. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Immutable. The id of the entry group to create. The id must begin with a letter or underscore,
-	contain only English letters, numbers and underscores, and be at most 64 characters. */
-	EntryGroupId string `json:"entryGroupId"`
+	Location string `json:"location"`
 
-	/* The project that this resource belongs to. */
+	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. EntryGroup location region. */
-	// +optional
-	Region *string `json:"region,omitempty"`
+	/* The DataCatalogEntryGroup name. If not given, the metadata.name will be used. */
+	ResourceID string `json:"resourceID"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* Optional. When set to [true], it means DataCatalog EntryGroup was transferred to Dataplex Catalog Service. It makes EntryGroup and its Entries to be read-only in DataCatalog. However, new Tags on EntryGroup and its Entries can be created. After setting the flag to [true] it cannot be unset. */
 	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+	TransferredToDataplex *bool `json:"transferredToDataplex,omitempty"`
+}
+
+type EntrygroupDataCatalogTimestampsStatus struct {
+	/* Creation timestamp of the resource within the given system. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Timestamp of the last modification of the resource or its metadata within
+	a given system.
+
+	Note: Depending on the source system, not every modification updates this
+	timestamp.
+	For example, BigQuery timestamps every metadata modification but not data
+	or permission changes. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type EntrygroupObservedStateStatus struct {
+	/* Output only. Timestamps of the entry group. Default value is empty. */
+	// +optional
+	DataCatalogTimestamps *EntrygroupDataCatalogTimestampsStatus `json:"dataCatalogTimestamps,omitempty"`
 }
 
 type DataCatalogEntryGroupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataCatalogEntryGroup's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The resource name of the entry group in URL format. Example: projects/{project}/locations/{location}/entryGroups/{entryGroupId}. */
+	/* A unique specifier for the DataCatalogEntryGroup resource in GCP. */
 	// +optional
-	Name *string `json:"name,omitempty"`
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *EntrygroupObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatacatalogentrygroup;gcpdatacatalogentrygroups
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

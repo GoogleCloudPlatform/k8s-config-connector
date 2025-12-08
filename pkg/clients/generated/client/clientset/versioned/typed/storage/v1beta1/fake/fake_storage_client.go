@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,6 +29,10 @@ import (
 
 type FakeStorageV1beta1 struct {
 	*testing.Fake
+}
+
+func (c *FakeStorageV1beta1) StorageAnywhereCaches(namespace string) v1beta1.StorageAnywhereCacheInterface {
+	return &FakeStorageAnywhereCaches{c, namespace}
 }
 
 func (c *FakeStorageV1beta1) StorageBuckets(namespace string) v1beta1.StorageBucketInterface {

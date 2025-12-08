@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ type ComputeTargetTCPProxySpec struct {
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
-	/* Immutable. The ComputeTargetTCPProxy name. If not given, the metadata.name will be used. */
+	/* The ComputeTargetTCPProxy name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }

@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,6 +37,10 @@ func (c *FakeIapV1beta1) IAPBrands(namespace string) v1beta1.IAPBrandInterface {
 
 func (c *FakeIapV1beta1) IAPIdentityAwareProxyClients(namespace string) v1beta1.IAPIdentityAwareProxyClientInterface {
 	return &FakeIAPIdentityAwareProxyClients{c, namespace}
+}
+
+func (c *FakeIapV1beta1) IAPSettingses(namespace string) v1beta1.IAPSettingsInterface {
+	return &FakeIAPSettingses{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

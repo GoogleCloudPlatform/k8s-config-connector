@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,6 +37,14 @@ func (c *FakeKmsV1beta1) KMSAutokeyConfigs(namespace string) v1beta1.KMSAutokeyC
 
 func (c *FakeKmsV1beta1) KMSCryptoKeys(namespace string) v1beta1.KMSCryptoKeyInterface {
 	return &FakeKMSCryptoKeys{c, namespace}
+}
+
+func (c *FakeKmsV1beta1) KMSImportJobs(namespace string) v1beta1.KMSImportJobInterface {
+	return &FakeKMSImportJobs{c, namespace}
+}
+
+func (c *FakeKmsV1beta1) KMSKeyHandles(namespace string) v1beta1.KMSKeyHandleInterface {
+	return &FakeKMSKeyHandles{c, namespace}
 }
 
 func (c *FakeKmsV1beta1) KMSKeyRings(namespace string) v1beta1.KMSKeyRingInterface {

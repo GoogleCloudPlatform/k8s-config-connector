@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,6 +29,10 @@ import (
 
 type FakeBigquerydatapolicyV1alpha1 struct {
 	*testing.Fake
+}
+
+func (c *FakeBigquerydatapolicyV1alpha1) BigQueryDataPolicies(namespace string) v1alpha1.BigQueryDataPolicyInterface {
+	return &FakeBigQueryDataPolicies{c, namespace}
 }
 
 func (c *FakeBigquerydatapolicyV1alpha1) BigQueryDataPolicyDataPolicies(namespace string) v1alpha1.BigQueryDataPolicyDataPolicyInterface {

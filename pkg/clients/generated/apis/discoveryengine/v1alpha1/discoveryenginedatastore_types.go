@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ type DiscoveryEngineDataStoreSpec struct {
 	/* The ID of the project in which the resource belongs. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. The DiscoveryEngineDataStore name. If not given, the metadata.name will be used. */
+	/* The DiscoveryEngineDataStore name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 

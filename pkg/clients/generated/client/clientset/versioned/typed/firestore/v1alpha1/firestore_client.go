@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +31,9 @@ import (
 
 type FirestoreV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	FirestoreDatabasesGetter
+	FirestoreBackupSchedulesGetter
+	FirestoreDocumentsGetter
+	FirestoreFieldsGetter
 }
 
 // FirestoreV1alpha1Client is used to interact with features provided by the firestore.cnrm.cloud.google.com group.
@@ -39,8 +41,16 @@ type FirestoreV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *FirestoreV1alpha1Client) FirestoreDatabases(namespace string) FirestoreDatabaseInterface {
-	return newFirestoreDatabases(c, namespace)
+func (c *FirestoreV1alpha1Client) FirestoreBackupSchedules(namespace string) FirestoreBackupScheduleInterface {
+	return newFirestoreBackupSchedules(c, namespace)
+}
+
+func (c *FirestoreV1alpha1Client) FirestoreDocuments(namespace string) FirestoreDocumentInterface {
+	return newFirestoreDocuments(c, namespace)
+}
+
+func (c *FirestoreV1alpha1Client) FirestoreFields(namespace string) FirestoreFieldInterface {
+	return newFirestoreFields(c, namespace)
 }
 
 // NewForConfig creates a new FirestoreV1alpha1Client for the given config.

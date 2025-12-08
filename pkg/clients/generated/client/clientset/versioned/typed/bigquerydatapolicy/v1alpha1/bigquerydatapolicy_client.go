@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,12 +31,17 @@ import (
 
 type BigquerydatapolicyV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	BigQueryDataPoliciesGetter
 	BigQueryDataPolicyDataPoliciesGetter
 }
 
 // BigquerydatapolicyV1alpha1Client is used to interact with features provided by the bigquerydatapolicy.cnrm.cloud.google.com group.
 type BigquerydatapolicyV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *BigquerydatapolicyV1alpha1Client) BigQueryDataPolicies(namespace string) BigQueryDataPolicyInterface {
+	return newBigQueryDataPolicies(c, namespace)
 }
 
 func (c *BigquerydatapolicyV1alpha1Client) BigQueryDataPolicyDataPolicies(namespace string) BigQueryDataPolicyDataPolicyInterface {

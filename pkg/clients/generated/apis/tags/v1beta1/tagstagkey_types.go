@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,32 +36,43 @@ import (
 )
 
 type TagsTagKeySpec struct {
-	/* User-assigned description of the TagKey. Must not exceed 256 characters. */
+	/* Optional. User-assigned description of the TagKey. Must not exceed 256
+	characters.
+
+	Read-write. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Input only. The resource name of the new TagKey's parent. Must be of the form organizations/{org_id} or projects/{project_id_or_number}. */
+	/* Immutable. The resource name of the TagKey's parent. A TagKey can be parented by an Organization or a Project. For a TagKey parented by an Organization, its parent must be in the form `organizations/{org_id}`. For a TagKey parented by a Project, its parent can be in the form `projects/{project_id}` or `projects/{project_number}`. */
 	Parent string `json:"parent"`
 
-	/* Immutable. Optional. A purpose cannot be changed once set.
+	/* Optional. A purpose denotes that this Tag is intended for use in policies
+	of a specific policy engine, and will involve that policy engine in
+	management operations involving this Tag. A purpose does not grant a
+	policy engine exclusive rights to the Tag, and it may be referenced by
+	other policy engines.
 
-	A purpose denotes that this Tag is intended for use in policies of a specific policy engine, and will involve that policy engine in management operations involving this Tag. Possible values: ["GCE_FIREWALL"]. */
+	A purpose cannot be changed once set. */
 	// +optional
 	Purpose *string `json:"purpose,omitempty"`
 
-	/* Immutable. Optional. Purpose data cannot be changed once set.
+	/* Optional. Purpose data corresponds to the policy system that the tag is
+	intended for. See documentation for `Purpose` for formatting of this field.
 
-	Purpose data corresponds to the policy system that the tag is intended for. For example, the GCE_FIREWALL purpose expects data in the following format: 'network = "<project-name>/<vpc-name>"'. */
+	Purpose data cannot be changed once set. */
 	// +optional
 	PurposeData map[string]string `json:"purposeData,omitempty"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* The TagsTagKey name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. Input only. The user friendly name for a TagKey. The short name should be unique for TagKeys within the same tag namespace.
+	/* Required. Immutable. The user friendly name for a TagKey. The short name
+	should be unique for TagKeys within the same tag namespace.
 
-	The short name must be 1-63 characters, beginning and ending with an alphanumeric character ([a-z0-9A-Z]) with dashes (-), underscores (_), dots (.), and alphanumerics between. */
+	The short name must be 1-63 characters, beginning and ending with
+	an alphanumeric character ([a-z0-9A-Z]) with dashes (-), underscores (_),
+	dots (.), and alphanumerics between. */
 	ShortName string `json:"shortName"`
 }
 
@@ -69,17 +80,19 @@ type TagsTagKeyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   TagsTagKey's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. Creation time.
-
-	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	/* Output only. Creation time. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
+
+	/* A unique specifier for the TagsTagKey resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* The generated numeric id for the TagKey. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* Output only. Namespaced name of the TagKey. */
+	/* Output only. Immutable. Namespaced name of the TagKey. */
 	// +optional
 	NamespacedName *string `json:"namespacedName,omitempty"`
 
@@ -87,9 +100,7 @@ type TagsTagKeyStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. Update time.
-
-	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	/* Output only. Update time. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }

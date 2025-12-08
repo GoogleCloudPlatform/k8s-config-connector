@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ type IapV1beta1Interface interface {
 	RESTClient() rest.Interface
 	IAPBrandsGetter
 	IAPIdentityAwareProxyClientsGetter
+	IAPSettingsesGetter
 }
 
 // IapV1beta1Client is used to interact with features provided by the iap.cnrm.cloud.google.com group.
@@ -46,6 +47,10 @@ func (c *IapV1beta1Client) IAPBrands(namespace string) IAPBrandInterface {
 
 func (c *IapV1beta1Client) IAPIdentityAwareProxyClients(namespace string) IAPIdentityAwareProxyClientInterface {
 	return newIAPIdentityAwareProxyClients(c, namespace)
+}
+
+func (c *IapV1beta1Client) IAPSettingses(namespace string) IAPSettingsInterface {
+	return newIAPSettingses(c, namespace)
 }
 
 // NewForConfig creates a new IapV1beta1Client for the given config.

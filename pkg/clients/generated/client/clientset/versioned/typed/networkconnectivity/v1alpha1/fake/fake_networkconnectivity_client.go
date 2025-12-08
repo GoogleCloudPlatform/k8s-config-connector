@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,6 +29,10 @@ import (
 
 type FakeNetworkconnectivityV1alpha1 struct {
 	*testing.Fake
+}
+
+func (c *FakeNetworkconnectivityV1alpha1) NetworkConnectivityInternalRanges(namespace string) v1alpha1.NetworkConnectivityInternalRangeInterface {
+	return &FakeNetworkConnectivityInternalRanges{c, namespace}
 }
 
 func (c *FakeNetworkconnectivityV1alpha1) NetworkConnectivityServiceConnectionPolicies(namespace string) v1alpha1.NetworkConnectivityServiceConnectionPolicyInterface {

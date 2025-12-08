@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,6 +41,10 @@ func (c *FakeVertexaiV1beta1) VertexAIEndpoints(namespace string) v1beta1.Vertex
 
 func (c *FakeVertexaiV1beta1) VertexAIIndexes(namespace string) v1beta1.VertexAIIndexInterface {
 	return &FakeVertexAIIndexes{c, namespace}
+}
+
+func (c *FakeVertexaiV1beta1) VertexAIMetadataStores(namespace string) v1beta1.VertexAIMetadataStoreInterface {
+	return &FakeVertexAIMetadataStores{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
