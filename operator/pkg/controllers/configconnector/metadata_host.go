@@ -53,8 +53,8 @@ func (r *Reconciler) applyMetadataHost(ctx context.Context, cc *corev1beta1.Conf
 	log.Info("applying GCE_METADATA_HOST environment variable", "metadataHost", cc.Spec.MetadataHost)
 
 	for _, item := range m.Items {
-		// Apply to StatefulSets (controller-manager, deletiondefender, etc.)
-		if item.Kind != "StatefulSet" && item.Kind != "Deployment" {
+		// Apply to workloads that access GCP metadata (StatefulSets, Deployments, DaemonSets)
+		if item.Kind != "StatefulSet" && item.Kind != "Deployment" && item.Kind != "DaemonSet" {
 			continue
 		}
 
@@ -74,7 +74,7 @@ func addMetadataHostEnvVar(container map[string]interface{}, metadataHost string
 	// Get existing env vars or create empty slice
 	existingEnv, _, _ := unstructured.NestedSlice(container, "env")
 
-	// Check if GCE_METADATA_HOST is already set
+	// Check if GCE_METADATA_HOST is already set - if so, don't override it
 	for _, e := range existingEnv {
 		envMap, ok := e.(map[string]interface{})
 		if !ok {
@@ -82,11 +82,8 @@ func addMetadataHostEnvVar(container map[string]interface{}, metadataHost string
 		}
 		name, _, _ := unstructured.NestedString(envMap, "name")
 		if name == "GCE_METADATA_HOST" {
-			// Already set, update the value
-			if err := unstructured.SetNestedField(envMap, metadataHost, "value"); err != nil {
-				return fmt.Errorf("failed to update GCE_METADATA_HOST value: %w", err)
-			}
-			return unstructured.SetNestedSlice(container, existingEnv, "env")
+			// Already set, preserve existing value
+			return nil
 		}
 	}
 
