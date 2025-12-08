@@ -461,6 +461,9 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		if path, changed := boolPtrChanged(actualObs.TrackClientAddress, desiredObs.TrackClientAddress, "observability_config.track_client_address", log); changed {
 			updatePaths = append(updatePaths, path)
 		}
+		if path, changed := boolPtrChanged(actualObs.TrackClientAddress, desiredObs.TrackClientAddress, "observability_config.assistive_experiences_enabled", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
 	}
 
 	if desired.QueryInsightsInstanceConfig != nil {

@@ -23,9 +23,9 @@ spec:
   instanceTypeRef:
     name: alloydbcluster-${uniqueId}
   queryInsightsConfig:
-    queryPlansPerMinute: 5
-    queryStringLength: 1024
-    recordApplicationTags: false
-    recordClientAddress: false
+    queryPlansPerMinute: 10
+    queryStringLength: 1025
+    recordApplicationTags: true
+    recordClientAddress: true
   machineConfig:
     cpuCount: 2
