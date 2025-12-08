@@ -60,6 +60,10 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	if obj.GeminiConfig == nil {
 		obj.GeminiConfig = &pb.GeminiInstanceConfig{}
 	}
+	if obj.ObservabilityConfig == nil {
+		obj.ObservabilityConfig = &pb.Instance_ObservabilityInstanceConfig{}
+		obj.ObservabilityConfig.Enabled = PtrTo(false)
+	}
 
 	obsEnabled := obj.ObservabilityConfig != nil &&
 		obj.ObservabilityConfig.Enabled != nil &&
@@ -86,7 +90,7 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	}
 	// Note: QPM defaults to 5 when Obs is enabled!
 	if obj.ObservabilityConfig.QueryPlansPerMinute == nil {
-		obj.ObservabilityConfig.QueryPlansPerMinute = PtrTo(int32(5))
+		obj.ObservabilityConfig.QueryPlansPerMinute = PtrTo(int32(20))
 	}
 	if obj.ObservabilityConfig.RecordApplicationTags == nil {
 		obj.ObservabilityConfig.RecordApplicationTags = PtrTo(false)
