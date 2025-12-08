@@ -58,6 +58,7 @@ func instanceFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_LabelsAnnotations(".labels")
 	f.Unimplemented_NotYetTriaged(".network_config.allocated_ip_range_override")
+	f.Unimplemented_NotYetTriaged(".network_config.network")
 	f.Unimplemented_NotYetTriaged(".gemini_config")
 	f.Unimplemented_NotYetTriaged(".update_policy")
 	f.Unimplemented_NotYetTriaged(".client_connection_config")
