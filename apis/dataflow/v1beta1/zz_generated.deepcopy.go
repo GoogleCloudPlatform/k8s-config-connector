@@ -427,7 +427,7 @@ func (in *DataflowFlexTemplateJobSpec) DeepCopyInto(out *DataflowFlexTemplateJob
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(refsv1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.KmsKeyNameRef != nil {
