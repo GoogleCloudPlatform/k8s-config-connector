@@ -1,6 +1,8 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/tools/patch-proto
 
-go 1.22
+go 1.24.0
+
+toolchain go1.24.6
 
 require (
 	github.com/smacker/go-tree-sitter v0.0.0-20240625050157-a31a98a7c0f6

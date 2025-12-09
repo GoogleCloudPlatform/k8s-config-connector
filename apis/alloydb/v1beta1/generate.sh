@@ -27,14 +27,13 @@ REPO_ROOT="${SCRIPT_DIR}/../../.."
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
-  --service google.cloud.alloydb.v1 \
-  --api-version alloydb.cnrm.cloud.google.com/v1beta1  \
+  --service google.cloud.alloydb.v1beta \
+  --api-version alloydb.cnrm.cloud.google.com/v1beta1 \
   --resource AlloyDBCluster:Cluster \
   --resource AlloyDBInstance:Instance \
-  --resource AlloyDBUser:User \
   --resource AlloyDBBackup:Backup
 
-go run . generate-mapper --service google.cloud.alloydb.v1 --api-version alloydb.cnrm.cloud.google.com/v1beta1
+go run . generate-mapper --service google.cloud.alloydb.v1beta --api-version alloydb.cnrm.cloud.google.com/v1beta1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
