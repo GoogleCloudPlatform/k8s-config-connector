@@ -144,6 +144,7 @@ X-Xss-Protection: 0
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
+    "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
     "parent": "tagKeys/${tagKeyID}",
     "shortName": "valuename",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -171,6 +172,7 @@ X-Xss-Protection: 0
   "description": "For valuename resources.",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
+  "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
   "parent": "tagKeys/${tagKeyID}",
   "shortName": "valuename",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -227,6 +229,7 @@ X-Xss-Protection: 0
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
+    "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
     "parent": "tagKeys/${tagKeyID}",
     "shortName": "valuename",
     "updateTime": "2024-04-01T12:34:56.123456Z"
