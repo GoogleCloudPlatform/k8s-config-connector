@@ -57,3 +57,11 @@ spec:
   reservedPeeringRanges:
   - name: computeaddress-${uniqueId}
   service: servicenetworking.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  name: geminicloudassist.googleapis.com
+spec:
+  projectRef:
+    external: ${projectId}
