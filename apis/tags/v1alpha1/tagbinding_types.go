@@ -26,7 +26,7 @@ var TagsLocationTagBindingGVK = GroupVersion.WithKind("TagsLocationTagBinding")
 // +kcc:spec:proto=google.cloud.resourcemanager.v3.TagBinding
 type TagsLocationTagBindingSpec struct {
 	// +kcc:ref=Project
-	ParentRef *v1beta1.ParentRef `json:"parentRef"`
+	ParentRef *v1beta1.TagsTagBindingParentRef `json:"parentRef"`
 
 	// The location for the resource being tagged.
 	// +required

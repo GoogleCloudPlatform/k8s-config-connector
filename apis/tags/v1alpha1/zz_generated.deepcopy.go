@@ -108,7 +108,7 @@ func (in *TagsLocationTagBindingSpec) DeepCopyInto(out *TagsLocationTagBindingSp
 	*out = *in
 	if in.ParentRef != nil {
 		in, out := &in.ParentRef, &out.ParentRef
-		*out = new(v1beta1.ParentRef)
+		*out = new(v1beta1.TagsTagBindingParentRef)
 		**out = **in
 	}
 	if in.TagValueRef != nil {

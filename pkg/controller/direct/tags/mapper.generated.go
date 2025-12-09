@@ -50,7 +50,7 @@ func TagsLocationTagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagB
 	}
 	out := &krmtagsv1alpha1.TagsLocationTagBindingSpec{}
 	if in.GetParent() != "" {
-		out.ParentRef = &krm.ParentRef{External: in.GetParent()}
+		out.ParentRef = &krm.TagsTagBindingParentRef{External: in.GetParent()}
 	}
 	if in.GetTagValue() != "" {
 		out.TagValueRef = &krm.TagsTagValueRef{External: in.GetTagValue()}
