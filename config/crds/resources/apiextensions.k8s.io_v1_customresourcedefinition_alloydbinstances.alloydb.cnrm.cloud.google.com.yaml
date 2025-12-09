@@ -214,10 +214,6 @@ spec:
                 type: object
               observabilityConfig:
                 properties:
-                  assistiveExperiencesEnabled:
-                    description: Whether assistive experiences are enabled for this
-                      AlloyDB instance.
-                    type: boolean
                   enabled:
                     description: Observability feature status for an instance. This
                       flag is turned "off" by default.
@@ -243,10 +239,6 @@ spec:
                   trackActiveQueries:
                     description: Track actively running queries on the instance. If
                       not set, this flag is "off" by default.
-                    type: boolean
-                  trackClientAddress:
-                    description: Track client address for an instance. If not set,
-                      default value is "off".
                     type: boolean
                   trackWaitEvents:
                     description: Track wait events during query execution for an instance.
@@ -586,10 +578,6 @@ spec:
                 type: object
               observabilityConfig:
                 properties:
-                  assistiveExperiencesEnabled:
-                    description: Whether assistive experiences are enabled for this
-                      AlloyDB instance.
-                    type: boolean
                   enabled:
                     description: Observability feature status for an instance. This
                       flag is turned "off" by default.
@@ -615,10 +603,6 @@ spec:
                   trackActiveQueries:
                     description: Track actively running queries on the instance. If
                       not set, this flag is "off" by default.
-                    type: boolean
-                  trackClientAddress:
-                    description: Track client address for an instance. If not set,
-                      default value is "off".
                     type: boolean
                   trackWaitEvents:
                     description: Track wait events during query execution for an instance.
