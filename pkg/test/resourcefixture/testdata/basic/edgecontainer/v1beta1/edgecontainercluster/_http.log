@@ -566,13 +566,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "cluster \"projects/${projectId}/locations/us-central1/clusters/edgecontainercluster-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "cluster \"projects/${projectId}/locations/us-central1/clusters/edgecontainercluster-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
