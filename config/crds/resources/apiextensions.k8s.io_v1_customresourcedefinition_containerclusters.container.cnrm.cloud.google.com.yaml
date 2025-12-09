@@ -408,6 +408,15 @@ spec:
                       when deciding to remove nodes from a cluster. Can be BALANCED
                       or OPTIMIZE_UTILIZATION. Defaults to BALANCED.
                     type: string
+                  defaultComputeClassConfig:
+                    description: Configuration of default Compute Engine machine class
+                      to use for node autoprovisioning node pools in the cluster.
+                    properties:
+                      enabled:
+                        description: Whether the default Compute Engine machine class
+                          is enabled for new autoprovisioned node pools.
+                        type: boolean
+                    type: object
                   enabled:
                     description: Whether node auto-provisioning is enabled. Resource
                       limits for cpu and memory must be defined to enable node auto-provisioning.
@@ -477,6 +486,16 @@ spec:
                         description: Controls whether user traffic is allowed over
                           this endpoint. Note that GCP-managed services may still
                           use the endpoint even if this is false.
+                        type: boolean
+                      enableKubernetesCertificatesViaDns:
+                        description: Controls whether Kubernetes certificates are
+                          enabled for this endpoint. can be set to true if allow_external_traffic
+                          is true.
+                        type: boolean
+                      enableKubernetesTokensViaDns:
+                        description: Controls whether Kubernetes tokens are enabled
+                          for this endpoint. can be set to true if allow_external_traffic
+                          is true.
                         type: boolean
                     type: object
                   ipEndpointsConfig:
@@ -565,6 +584,10 @@ spec:
                 description: DEPRECATED. Deprecated in favor of binary_authorization.
                   Enable Binary Authorization for this cluster. If enabled, all container
                   images will be validated by Google Binary Authorization.
+                type: boolean
+              enableCiliumClusterwideNetworkPolicy:
+                description: Whether Cilium Cluster-Wide Network Policy is enabled
+                  on this cluster.
                 type: boolean
               enableFqdnNetworkPolicy:
                 description: Whether FQDN Network Policy is enabled on this cluster.
