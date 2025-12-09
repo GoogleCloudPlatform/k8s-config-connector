@@ -26,6 +26,8 @@ func (c *interceptingGCPClient) getOrCreateRateLimiter(u *url.URL) (*rate.Limite
 		klog.Fatal("nil URL for GCP call")
 	}
 	klog.V(2).Info("getOrCreateRateLimiter", "API", u.Host)
+	c.rateLimiterMutex.Lock()
+	defer c.rateLimiterMutex.Unlock()
 	if _, ok := c.rateLimiters[u.Host]; !ok {
 		c.rateLimiters[u.Host] = rate.NewLimiter(rate.Limit(c.qps), c.burst)
 	}
