@@ -22,7 +22,7 @@ spec:
   defaultMaxPodsPerNode: 200
   fleet:
     projectRef:
-      name: project-${uniqueId}
+      external: ${projectId}
   location: us-central1
   networking:
     clusterIpv4CidrBlocks:
