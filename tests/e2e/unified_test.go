@@ -330,7 +330,7 @@ func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.Reso
 	computeDiff := func(oldP, newP string) string {
 		var out bytes.Buffer
 
-		cmd := exec.CommandContext(ctx, "diff", oldP, newP)
+		cmd := exec.CommandContext(ctx, "diff", "-u", oldP, newP)
 		cmd.Stdout = &out
 		cmd.Stderr = os.Stderr
 
