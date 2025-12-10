@@ -2157,11 +2157,6 @@
 [missing_field] crd=firestoreindexes.firestore.cnrm.cloud.google.com version=v1beta1: field ".spec.queryScope" is not set in unstructured objects
 [missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.binauthz.enabled" is not set in unstructured objects
 [missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.configSync.metricsGcpServiceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.configSync.oci.gcpServiceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.configSync.oci.policyDir" is not set in unstructured objects
-[missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.configSync.oci.secretType" is not set in unstructured objects
-[missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.configSync.oci.syncRepo" is not set in unstructured objects
-[missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.configSync.oci.syncWaitSecs" is not set in unstructured objects
 [missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.configSync.preventDrift" is not set in unstructured objects
 [missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.hierarchyController.enableHierarchicalResourceQuota" is not set in unstructured objects
 [missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.hierarchyController.enablePodTreeLabels" is not set in unstructured objects
