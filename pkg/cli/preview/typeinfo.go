@@ -38,6 +38,7 @@ type typeInfo struct {
 	factory func() Object
 	gvr     GroupVersionResource
 	gvk     schema.GroupVersionKind
+	Scope   meta.RESTScope
 }
 
 // getTypeInfoForGVK returns the type information for the given GVK.
@@ -111,6 +112,7 @@ func (s *typeStore) getTypeInfo(obj client.Object) (*typeInfo, error) {
 	}
 	typeInfo.gvk = gvk
 	typeInfo.gvr = GroupVersionResource(restMapping.Resource)
+	typeInfo.Scope = restMapping.Scope
 	return typeInfo, nil
 }
 

@@ -18,6 +18,7 @@ import (
 	"context"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -66,5 +67,12 @@ func (r *TagsTagKeyRef) ValidateExternal(ref string) error {
 }
 
 func (r *TagsTagKeyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	fallback := func(u *unstructured.Unstructured) string {
+		name, _, _ := unstructured.NestedString(u.Object, "status", "name")
+		if name != "" {
+			return "tagKeys/" + name
+		}
+		return ""
+	}
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

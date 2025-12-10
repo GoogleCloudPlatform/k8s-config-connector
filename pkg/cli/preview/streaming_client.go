@@ -123,10 +123,10 @@ func (c *StreamingClient) Get(ctx context.Context, typeInfo *typeInfo, namespace
 }
 
 // List lists the objects for the given type.
-func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, listener ListListener) error {
+func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, namespace string, listener ListListener) error {
 	log := klog.FromContext(ctx)
 
-	u := c.resourceURL(typeInfo.gvr, "", "")
+	u := c.resourceURL(typeInfo.gvr, namespace, "")
 
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
@@ -200,10 +200,10 @@ type WatchListener interface {
 }
 
 // Watch watches the given type.
-func (c *StreamingClient) Watch(ctx context.Context, typeInfo *typeInfo, watchOptions WatchOptions, listener WatchListener) error {
+func (c *StreamingClient) Watch(ctx context.Context, typeInfo *typeInfo, namespace string, watchOptions WatchOptions, listener WatchListener) error {
 	log := klog.FromContext(ctx)
 
-	u := c.resourceURL(typeInfo.gvr, "", "")
+	u := c.resourceURL(typeInfo.gvr, namespace, "")
 
 	q := u.Query()
 	q.Set("watch", "true")

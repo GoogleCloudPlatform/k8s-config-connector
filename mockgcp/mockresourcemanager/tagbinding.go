@@ -25,6 +25,8 @@ import (
 	"strings"
 
 	lropb "cloud.google.com/go/longrunning/autogen/longrunningpb"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
@@ -46,11 +48,33 @@ func (s *TagBindingsServer) normalizeParent(parent string) (string, error) {
 }
 
 func (s *TagBindingsServer) CreateTagBinding(ctx context.Context, req *pb.CreateTagBindingRequest) (*lropb.Operation, error) {
-	tagValue, err := s.tagValues.GetNamespacedTagValue(ctx, &pb.GetNamespacedTagValueRequest{
-		Name: req.GetTagBinding().GetTagValueNamespacedName(),
-	})
-	if err != nil {
-		return nil, err
+	var tagValue *pb.TagValue
+
+	// For methods that support TagValue namespaced name, only one of
+	// tag_value_namespaced_name or tag_value may be filled. Requests with both
+	// fields will be rejected.
+	if req.GetTagBinding().GetTagValue() != "" && req.GetTagBinding().GetTagValueNamespacedName() != "" {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid request: both TagValue and TagValueNamespacedName are set")
+	}
+
+	if req.GetTagBinding().GetTagValue() != "" {
+		found, err := s.tagValues.GetTagValue(ctx, &pb.GetTagValueRequest{
+			Name: req.GetTagBinding().GetTagValue(),
+		})
+		if err != nil {
+			return nil, err
+		}
+		tagValue = found
+	} else if req.GetTagBinding().GetTagValueNamespacedName() != "" {
+		found, err := s.tagValues.GetNamespacedTagValue(ctx, &pb.GetNamespacedTagValueRequest{
+			Name: req.GetTagBinding().GetTagValueNamespacedName(),
+		})
+		if err != nil {
+			return nil, err
+		}
+		tagValue = found
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid request: must specify TagValue or TagValueNamespacedName")
 	}
 
 	obj := proto.Clone(req.TagBinding).(*pb.TagBinding)

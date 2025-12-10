@@ -172,8 +172,10 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		return nil, fmt.Errorf("error validating manager options: BaseContext is unexpectedly set")
 	}
 	opts.BaseContext = func() context.Context {
-		// Log the fields that cause object updates
-		ctx = structuredreporting.ContextWithListener(ctx, &structuredreporting.LogFieldUpdates{})
+		// If listener already exists, do not add another
+		if _, exists := structuredreporting.GetListenerFromContext(ctx); !exists {
+			ctx = structuredreporting.ContextWithListener(ctx, &structuredreporting.LogFieldUpdates{})
+		}
 
 		return ctx
 	}

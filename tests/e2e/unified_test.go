@@ -18,6 +18,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"hash/fnv"
 	"io"
@@ -25,6 +26,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"slices"
 	"strconv"
@@ -243,6 +245,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					}
 
 					opt.Create = append(opt.Create, primaryResource)
+					opt.PrimaryResource = primaryResource
 
 					if fixture.Update != nil {
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
@@ -273,11 +276,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					return primaryResource, opt
 				}
 
-				// Start gradually, only running for apikeyskey and tagstagkey fixtures initially
+				// Start gradually, only running for apikeyskey and tags* fixtures initially
 				forceDirect := false
 				if strings.Contains(fixture.TestKey, "/apikeyskey/") {
 					forceDirect = true
-				} else if strings.Contains(fixture.TestKey, "/tagstagkey/") {
+				} else if strings.Contains(fixture.TestKey, "/tagstagkey/") || strings.Contains(fixture.TestKey, "/tagstagvalue/") {
 					forceDirect = true
 				}
 
@@ -301,6 +304,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					scenarioOptionsWithFallback.ForceDirectController = false
 					runScenario(ctx, t, scenarioOptionsWithFallback, fixture, loadFixture)
 				}
+
+				createDiffs(t, ctx, fixture)
 			})
 		}
 	})
@@ -308,6 +313,64 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 	// Do a cleanup while we can still handle the error.
 	t.Logf("shutting down manager")
 	cancel()
+}
+
+func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.ResourceFixture) {
+	dir := fixture.AbsoluteSourceDir
+
+	fileExists := func(p string) bool {
+		if _, err := os.Stat(p); err != nil {
+			if !os.IsNotExist(err) {
+				t.Errorf("error checking if file exists %q: %v", p, err)
+			}
+			return false
+		}
+		return true
+	}
+
+	computeDiff := func(oldP, newP string) string {
+		var out bytes.Buffer
+
+		cmd := exec.CommandContext(ctx, "diff", oldP, newP)
+		cmd.Stdout = &out
+		cmd.Stderr = os.Stderr
+
+		if err := cmd.Run(); err != nil {
+			// Ignore exit code 1 (which means files differ)
+			var exitError *exec.ExitError
+			if errors.As(err, &exitError) && exitError.ExitCode() == 1 {
+				// This is expected when files differ, so do not treat as an error
+			} else {
+				t.Errorf("error running diff command: %v", err)
+			}
+		}
+
+		return out.String()
+	}
+
+	// _http.log
+	{
+		oldPath := filepath.Join(dir, "_http_old_controller.log")
+		newPath := filepath.Join(dir, "_http.log")
+
+		if fileExists(oldPath) && fileExists(newPath) {
+			diff := computeDiff(oldPath, newPath)
+			test.CompareGoldenFile(t, filepath.Join(dir, "_http.diff"), diff)
+		}
+	}
+
+	// _final_object.yaml
+	{
+		oldPath := filepath.Join(dir, "_final_object_old_controller.golden.yaml")
+		// newPath := filepath.Join(dir, "_final_object.yaml")
+		newPath := filepath.Join(dir, "_generated_object_"+fixture.Name+".golden.yaml")
+
+		if fileExists(oldPath) && fileExists(newPath) {
+			diff := computeDiff(oldPath, newPath)
+			test.CompareGoldenFile(t, filepath.Join(dir, "_final_object.diff"), diff)
+		}
+	}
+
 }
 
 type ScenarioOptions struct {
@@ -355,7 +418,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 
 					// If this test wants us to fallback to the old controller, make sure that there is an old controller
 					if options.FallbackToOldController {
-						primaryGK := opt.Create[0].GroupVersionKind().GroupKind()
+						primaryGK := opt.PrimaryResource.GroupVersionKind().GroupKind()
 						config := resourceconfig.LoadConfig()[primaryGK]
 						if len(config.SupportedControllers) <= 1 {
 							t.Skipf("test is falling back to old controller, but there is no old controller for %v", primaryGK)
@@ -1040,6 +1103,7 @@ func TestIAM_AllInSeries(t *testing.T) {
 					}
 
 					opt.Create = append(opt.Create, primaryResource)
+					opt.PrimaryResource = primaryResource
 
 					if fixture.Update != nil {
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
@@ -1064,7 +1128,7 @@ func TestIAM_AllInSeries(t *testing.T) {
 func buildControllerOverrides(t *testing.T, scenario create.CreateDeleteTestOptions, options ScenarioOptions) map[string]k8scontrollertype.ReconcilerType {
 	controllerOverrides := make(map[string]k8scontrollertype.ReconcilerType)
 
-	primaryResource := scenario.Create[0]
+	primaryResource := scenario.PrimaryResource
 	primaryGK := primaryResource.GroupVersionKind().GroupKind()
 
 	if options.FallbackToOldController {
