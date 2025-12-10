@@ -19,8 +19,10 @@ metadata:
   labels:
     label-one: value-two
 spec:
+  # This is a trick, we update the spec metadata.generation despite only having label updates
   projectRef:
-    name: mcsd-${uniqueId}
+    #name: mcsd-project
+    external: mcsd-${uniqueId}
   location: global
   # The resourceID must be "multiclusterservicediscovery" if you want to use
   # multi-cluster service discovery feature.

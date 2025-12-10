@@ -136,6 +136,7 @@ func RewriteRequest(r *http.Request, newURL *url.URL) *http.Request {
 func (m *ServeMux) addMetadata(ctx context.Context, r *http.Request) metadata.MD {
 	md := make(map[string]string)
 	md["path"] = r.URL.Path
+	md["query"] = r.URL.RawQuery
 
 	v := r.Context().Value(originalPath)
 	if v != nil {
