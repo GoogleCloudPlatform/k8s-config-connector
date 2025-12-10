@@ -37,13 +37,11 @@ if [ "$(git tag -l "v${VERSION}")" ]; then
 fi
 echo "Tag v$VERSION does not exist. Proceeding."
 
-# 3. Find the commit that last modified the VERSION file. This is the commit we will tag.
-COMMIT_HASH=$(git log -1 --pretty=format:%H "${VERSION_FILE}")
-if [ -z "$COMMIT_HASH" ]; then
-  echo "ERROR: Could not find a commit for ${VERSION_FILE}."
-  exit 1
-fi
-echo "Found commit to tag: ${COMMIT_HASH}"
+# 3. Use the current commit (HEAD) as the tag target.
+# We tag the end of the release PR (which includes 3 commits), not just the first commit that bumped the version.
+# We assume this script runs on the tip of the release branch/PR.
+COMMIT_HASH=$(git rev-parse HEAD)
+echo "Using HEAD as commit to tag: ${COMMIT_HASH}"
 
 # 4. Verify the version in the file at the target commit matches the version from HEAD.
 # This ensures we're tagging the right commit.
