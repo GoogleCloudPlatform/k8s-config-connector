@@ -63,6 +63,14 @@ type PreviewInstanceOptions struct {
 	// (Upstream GCP may be mocked in tests)
 	UpstreamGCPHTTPClient *http.Client
 
+	// UpstreamGCPQPS is the QPS to use when talking to upstream (real) GCP
+	// This limit is per API.
+	UpstreamGCPQPS float64
+
+	// UpstreamGCPBurst is the burst to use when talking to upstream (real) GCP
+	// This limit is per API.
+	UpstreamGCPBurst int
+
 	// Namespace is the namespace of the cluster to preview
 	// If empty, all namespaces are previewed
 	Namespace string
@@ -82,7 +90,7 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 		return nil, err
 	}
 
-	hookGCP := newInterceptingGCPClient(upstreamGCPHTTPClient, authorization)
+	hookGCP := newInterceptingGCPClient(upstreamGCPHTTPClient, authorization, options.UpstreamGCPQPS, options.UpstreamGCPBurst)
 
 	i := &PreviewInstance{}
 	i.hookGCP = hookGCP
