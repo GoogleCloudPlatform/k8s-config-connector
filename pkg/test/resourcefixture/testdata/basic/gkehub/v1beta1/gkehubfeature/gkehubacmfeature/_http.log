@@ -362,9 +362,7 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
     }
   ]
 }
@@ -446,14 +444,10 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
     },
     {
-      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
     }
   ]
 }
@@ -655,14 +649,10 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
     },
     {
-      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
     }
   ]
 }

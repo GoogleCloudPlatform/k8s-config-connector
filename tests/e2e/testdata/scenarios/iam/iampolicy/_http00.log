@@ -217,9 +217,7 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/2763459391/services/compute.googleapis.com",
-      "parent": "projects/2763459391",
-      "state": "ENABLED"
+      "name": "projects/2763459391/services/compute.googleapis.com"
     }
   ]
 }
