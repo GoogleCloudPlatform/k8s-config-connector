@@ -23,6 +23,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta"
@@ -43,6 +44,9 @@ func (s *GKEHubFeature) GetFeature(ctx context.Context, req *pb.GetFeatureReques
 
 	obj := &pb.Feature{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%v' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -61,6 +65,9 @@ func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeature
 
 	obj := proto.Clone(req.Resource).(*pb.Feature)
 	obj.Name = fqn
+	if obj.Spec == nil {
+		obj.Spec = &pb.CommonFeatureSpec{}
+	}
 
 	// Mimic the GCP API validation logic.
 	for id, spec := range obj.MembershipSpecs {
@@ -75,16 +82,28 @@ func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeature
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	metadata := &pb.OperationMetadata{
-		Target:     fqn,
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion: "v1beta",
 		CreateTime: now,
-		EndTime:    now,
+		Target:     fqn,
+		Verb:       "create",
 	}
-	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
+
 		result := proto.Clone(obj).(*pb.Feature)
 		result.CreateTime = now
 		result.UpdateTime = now
 		result.ResourceState = &pb.FeatureResourceState{State: pb.FeatureResourceState_ACTIVE}
+
+		if err := s.storage.Update(ctx, fqn, result); err != nil {
+			return nil, err
+		}
+
+		// LRO result does not include labels
+		result.Labels = nil
+
 		return result, nil
 	})
 }
@@ -111,10 +130,10 @@ func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeature
 	for _, path := range paths {
 		switch path {
 		case "labels":
-			obj.Labels = req.Resource.GetLabels()
+			obj.Labels = req.GetResource().GetLabels()
 		// Spec is in the GCP API, not a KRM Spec
 		case "spec":
-			obj.Spec = req.GetResource().Spec
+			obj.Spec = req.GetResource().GetSpec()
 		case "membershipSpecs":
 			obj.MembershipSpecs = updateMembershipSpecsMap(obj.MembershipSpecs, req.GetResource().GetMembershipSpecs())
 		default:
@@ -126,15 +145,27 @@ func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeature
 		return nil, err
 	}
 
-	metadata := &pb.OperationMetadata{
-		Target:     fqn,
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion: "v1beta",
 		CreateTime: now,
-		EndTime:    now,
+		Target:     fqn,
+		Verb:       "update",
 	}
-	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
+
 		result := proto.Clone(obj).(*pb.Feature)
 		result.UpdateTime = now
 		result.ResourceState = &pb.FeatureResourceState{State: pb.FeatureResourceState_ACTIVE}
+
+		if err := s.storage.Update(ctx, fqn, result); err != nil {
+			return nil, err
+		}
+
+		// LRO result does not include labels
+		result.Labels = nil
+
 		return result, nil
 	})
 }
@@ -165,10 +196,15 @@ func (s *GKEHubFeature) DeleteFeature(ctx context.Context, req *pb.DeleteFeature
 		}
 		return &longrunningpb.Operation{}, err
 	}
-	metadata := &pb.OperationMetadata{
-		Target:     fqn,
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion: "v1beta",
 		CreateTime: now,
-		EndTime:    now,
+		Target:     fqn,
+		Verb:       "delete",
 	}
-	return s.operations.DoneLRO(ctx, name.String(), metadata, &pb.Feature{})
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
+		return &emptypb.Empty{}, nil
+	})
 }
