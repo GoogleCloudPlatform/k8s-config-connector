@@ -8,19 +8,28 @@ metadata:
   - cnrm.cloud.google.com/deletion-defender
   generation: 2
   labels:
+    app.kubernetes.io/component: mock-component
+    app.kubernetes.io/instance: mock-instance
+    app.kubernetes.io/managed-by: configmanagement.gke.io
+    app.kubernetes.io/name: mock-app
+    app.kubernetes.io/part-of: mock-part-of
+    app.kubernetes.io/version: v1.0.0
+    applyset.kubernetes.io/id: mock-applyset-id
     cnrm-test: "true"
+    configmanagement.gke.io/sync-name: mock-sync-name
+    configmanagement.gke.io/sync-namespace: mock-sync-namespace
+    custom-label: bar
   name: workflow-${uniqueId}
   namespace: ${uniqueId}
 spec:
   callLogLevel: LOG_ALL_CALLS
   description: Updated Example workflow
+  executionHistoryLevel: EXECUTION_HISTORY_DETAILED
   kmsCryptoKeyRef:
     name: kmscryptokey-${uniqueId}-updated
-  labels:
-    env: dev
   location: us-central1
   projectRef:
-    external: ${projectId}
+    external: projects/${projectId}
   serviceAccountRef:
     name: gsa-${uniqueId}-updated
   sourceContents: |-
@@ -49,8 +58,12 @@ status:
   externalRef: projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}
   observedGeneration: 2
   observedState:
+    allKMSKeys:
+    - ""
+    allKMSKeysVersions:
+    - cryptoKeyVersions/1
     createTime: "1970-01-01T00:00:00Z"
     revisionCreateTime: "2024-04-01T12:34:56.123456Z"
-    revisionId: revision-id-placeholder
+    revisionID: revision-id-placeholder
     state: ACTIVE
     updateTime: "1970-01-01T00:00:00Z"
