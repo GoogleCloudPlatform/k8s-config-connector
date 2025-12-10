@@ -17,10 +17,12 @@ package mockserviceusage
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -271,6 +273,47 @@ func (s *ServiceUsageV1) ListServices(ctx context.Context, req *pb.ListServicesR
 			Parent: fmt.Sprintf("projects/%d", project.Number),
 			State:  state,
 		})
+	}
+
+	// Implement field filtering
+	// TODO: Can we mame this generic?  Is it used in other APIs?
+	{
+		md, _ := metadata.FromIncomingContext(ctx)
+		query := ""
+		if md != nil {
+			for _, v := range md.Get("query") {
+				query = v
+			}
+		}
+		fields := ""
+		if query != "" {
+			q, err := url.ParseQuery(query)
+			if err != nil {
+				return nil, status.Errorf(codes.InvalidArgument, "unable to parse query %q: %v", query, err)
+			}
+			fields = q.Get("fields")
+		}
+		if fields != "" {
+			include := make(map[string]bool)
+			for _, field := range strings.Split(fields, ",") {
+				include[field] = true
+			}
+
+			for _, service := range response.Services {
+				if !include["services/name"] {
+					service.Name = ""
+				}
+				if !include["services/parent"] {
+					service.Parent = ""
+				}
+				if !include["services/state"] {
+					service.State = pb.State_STATE_UNSPECIFIED
+				}
+			}
+			if !include["nextPageToken"] {
+				response.NextPageToken = ""
+			}
+		}
 	}
 
 	return response, nil
