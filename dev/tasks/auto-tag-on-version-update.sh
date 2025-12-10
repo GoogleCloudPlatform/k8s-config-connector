@@ -37,13 +37,47 @@ if [ "$(git tag -l "v${VERSION}")" ]; then
 fi
 echo "Tag v$VERSION does not exist. Proceeding."
 
-# 3. Find the commit that last modified the VERSION file. This is the commit we will tag.
-COMMIT_HASH=$(git log -1 --pretty=format:%H "${VERSION_FILE}")
-if [ -z "$COMMIT_HASH" ]; then
-  echo "ERROR: Could not find a commit for ${VERSION_FILE}."
+# 3. Use the current commit (HEAD) as the tag target.
+# We tag the end of the release PR (which includes 3 commits), not just the first commit that bumped the version.
+# We assume this script runs on the tip of the release branch/PR.
+COMMIT_HASH=$(git rev-parse HEAD)
+if [ -z "${COMMIT_HASH}" ]; then
+  echo "ERROR: Could not determine commit hash."
   exit 1
 fi
-echo "Found commit to tag: ${COMMIT_HASH}"
+echo "Using HEAD as commit to tag: ${COMMIT_HASH}"
+
+# 4. Verify the commit messages of the last 3 commits.
+# Expected order (oldest to newest):
+# 1. Release <VERSION>
+# 2. Update alpha CRDs for Release <VERSION>
+# 3. Update golden files for operator controllers
+
+# HEAD~2 (First commit)
+MSG_FIRST=$(git log --format=%s -n 1 HEAD~2)
+EXPECTED_FIRST="Release ${VERSION}"
+if [ "${MSG_FIRST}" != "${EXPECTED_FIRST}" ]; then
+  echo "ERROR: HEAD~2 commit message '${MSG_FIRST}' does not match expected '${EXPECTED_FIRST}'"
+  exit 1
+fi
+
+# HEAD~1 (Second commit)
+MSG_SECOND=$(git log --format=%s -n 1 HEAD~1)
+EXPECTED_SECOND="Update alpha CRDs for Release ${VERSION}"
+if [ "${MSG_SECOND}" != "${EXPECTED_SECOND}" ]; then
+  echo "ERROR: HEAD~1 commit message '${MSG_SECOND}' does not match expected '${EXPECTED_SECOND}'"
+  exit 1
+fi
+
+# HEAD (Third commit)
+MSG_THIRD=$(git log --format=%s -n 1 HEAD)
+EXPECTED_THIRD="Update golden files for operator controllers"
+if [ "${MSG_THIRD}" != "${EXPECTED_THIRD}" ]; then
+  echo "ERROR: HEAD commit message '${MSG_THIRD}' does not match expected '${EXPECTED_THIRD}'"
+  exit 1
+fi
+
+echo "Verified last 3 commit messages match release pattern."
 
 # 4. Verify the version in the file at the target commit matches the version from HEAD.
 # This ensures we're tagging the right commit.
