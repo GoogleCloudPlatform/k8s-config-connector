@@ -20,7 +20,7 @@ metadata:
     label-one: value-one
 spec:
   projectRef:
-    name: mcsd-${uniqueId}
+    name: mcsd-project
   location: global
   # The resourceID must be "multiclusterservicediscovery" if you want to use
   # multi-cluster service discovery feature.

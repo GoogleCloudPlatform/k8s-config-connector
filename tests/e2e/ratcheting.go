@@ -321,9 +321,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupBackup"}:
 	case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupRestorePlan"}:
 	case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupRestore"}:
-	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeatureMembership"}:
-	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeature"}:
-	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubMembership"}:
 	case schema.GroupKind{Group: "healthcare.cnrm.cloud.google.com", Kind: "HealthcareConsentStore"}:
 	case schema.GroupKind{Group: "healthcare.cnrm.cloud.google.com", Kind: "HealthcareDataset"}:
 	case schema.GroupKind{Group: "healthcare.cnrm.cloud.google.com", Kind: "HealthcareDICOMStore"}:
