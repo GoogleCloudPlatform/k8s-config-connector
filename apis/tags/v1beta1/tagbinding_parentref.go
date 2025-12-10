@@ -17,8 +17,10 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storage "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -42,8 +44,13 @@ type TagsTagBindingParentRef struct {
 var _ refs.Ref = &TagsTagBindingParentRef{}
 
 func (r *TagsTagBindingParentRef) GetGVK() schema.GroupVersionKind {
-	// Add other kinds here as they are supported
-	return refs.ProjectGVK
+	_, id := r.resolveReference()
+
+	if id == nil {
+		return schema.GroupVersionKind{}
+	}
+
+	return id.GetGVK()
 }
 
 func (r *TagsTagBindingParentRef) GetNamespacedName() types.NamespacedName {
@@ -62,39 +69,51 @@ func (r *TagsTagBindingParentRef) SetExternal(ref string) {
 }
 
 func (r *TagsTagBindingParentRef) ValidateExternal(ref string) error {
-	gvk := r.GetGVK()
-	switch gvk {
-	case refs.ProjectGVK:
-		id := &refs.ProjectRef{
-			Name:      r.Name,
-			Namespace: r.Namespace,
-			External:  r.External,
-		}
-		if err := id.ValidateExternal(ref); err != nil {
-			return err
-		}
-		return nil
-	default:
-		return fmt.Errorf("format of %s external=%q was not known", gvk.Kind, ref)
+	_, id := r.resolveReference()
+	if id == nil {
+		return fmt.Errorf("unknown format for external reference %q", r.External)
 	}
+
+	if err := id.ValidateExternal(ref); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *TagsTagBindingParentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	gvk := r.GetGVK()
-	switch gvk {
-	case refs.ProjectGVK:
-		id := &refs.ProjectRef{
-			Name:      r.Name,
-			Namespace: r.Namespace,
-			External:  r.External,
+	service, id := r.resolveReference()
+	if id == nil {
+		return fmt.Errorf("unknown format for external reference %q", r.External)
+	}
+
+	if err := id.Normalize(ctx, reader, defaultNamespace); err != nil {
+		return err
+	}
+
+	// Include the service qualification in case of ambiguities
+	r.External = "//" + service + "/" + id.GetExternal()
+
+	return nil
+}
+
+func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref) {
+	if suffix, ok := strings.CutPrefix(r.External, "//storage.googleapis.com/"); ok {
+		service := "storage.googleapis.com"
+
+		tokens := strings.Split(suffix, "/")
+		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "buckets" {
+			return service, &storage.StorageBucketRef{
+				External:  suffix,
+				Name:      r.Name,
+				Namespace: r.Namespace,
+			}
 		}
-		if err := id.Normalize(ctx, reader, defaultNamespace); err != nil {
-			return err
-		}
-		// Include the service qualification in case of ambiguities
-		r.External = "//cloudresourcemanager.googleapis.com/" + id.External
-		return nil
-	default:
-		return fmt.Errorf("unsupported gvk for reference %v", gvk)
+		return "", nil
+	}
+
+	return "cloudresourcemanager.googleapis.com", &refs.ProjectRef{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+		External:  r.External,
 	}
 }

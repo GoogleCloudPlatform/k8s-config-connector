@@ -47,6 +47,25 @@ type ProjectRef struct {
 	Kind string `json:"kind,omitempty"`
 }
 
+func (r *ProjectRef) GetGVK() schema.GroupVersionKind {
+	return ProjectGVK
+}
+
+func (r *ProjectRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ProjectRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ProjectRef) SetExternal(ref string) {
+	r.External = ref
+}
+
 // AsProjectRef converts a generic ResourceRef into a ProjectRef
 func AsProjectRef(in *v1alpha1.ResourceRef) *ProjectRef {
 	if in == nil {
