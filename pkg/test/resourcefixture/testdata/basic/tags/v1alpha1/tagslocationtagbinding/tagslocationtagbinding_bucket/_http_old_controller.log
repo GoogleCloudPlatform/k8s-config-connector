@@ -323,7 +323,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint
+POST https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -355,7 +355,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-${uniqueId}
+GET https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings/?alt=json&pageSize=300&parent=%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -381,10 +381,9 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fstorage.googleapis.com%252Fprojects%252F_%252Fbuckets%252Fstoragebucket-${uniqueId}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-${uniqueId}/tagValues/${tagValueID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=tagBindings%2F%252F%252Fstorage.googleapis.com%252Fprojects%252F_%252Fbuckets%252Fstoragebucket-${uniqueId}%2FtagValues%2F${tagValueID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

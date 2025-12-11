@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -94,4 +95,49 @@ func (r *StorageBucketRef) NormalizedExternal(ctx context.Context, reader client
 
 	r.External = fmt.Sprintf("projects/%s/buckets/%s", projectID, resourceID)
 	return r.External, nil
+}
+
+func (r *StorageBucketRef) GetGVK() schema.GroupVersionKind {
+	return StorageBucketGVK
+}
+
+func (r *StorageBucketRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *StorageBucketRef) GetExternal() string {
+	return r.External
+}
+
+func (r *StorageBucketRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *StorageBucketRef) ValidateExternal(ref string) error {
+	id := &StorageBucketIdentity{}
+	if err := id.FromExternal(r.GetExternal()); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *StorageBucketRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		// Backward compatible to Terraform/DCL based resource, which does not have status.externalRef.
+		resourceID, err := refsv1beta1.GetResourceID(u)
+		if err != nil {
+			return ""
+		}
+
+		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+
+		return fmt.Sprintf("projects/%s/buckets/%s", projectID, resourceID)
+	}
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
