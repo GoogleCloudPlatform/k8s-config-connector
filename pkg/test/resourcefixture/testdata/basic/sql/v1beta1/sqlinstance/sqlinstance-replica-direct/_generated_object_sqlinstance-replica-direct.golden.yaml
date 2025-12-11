@@ -18,6 +18,12 @@ spec:
   masterInstanceRef:
     name: sqlinstance-master-direct-${uniqueId}
   region: us-central1
+  replicaConfiguration:
+    password:
+      valueFrom:
+        secretKeyRef:
+          key: password
+          name: secret-${uniqueId}
   settings:
     locationPreference:
       zone: us-central1-b
