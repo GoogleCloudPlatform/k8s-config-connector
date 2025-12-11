@@ -17,6 +17,7 @@ package mockalloydb
 import (
 	"context"
 	"fmt"
+	"log"
 	"strings"
 
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -34,7 +35,6 @@ func (s *AlloyDBAdminV1) GetInstance(ctx context.Context, req *pb.GetInstanceReq
 	if err != nil {
 		return nil, err
 	}
-
 	fqn := name.String()
 
 	obj := &pb.Instance{}
@@ -69,14 +69,7 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 		obj.ObservabilityConfig.Enabled != nil &&
 		*obj.ObservabilityConfig.Enabled
 	if !obsEnabled {
-		if obj.QueryInsightsConfig == nil {
-			obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{
-				QueryPlansPerMinute:   PtrTo(uint32(5)),
-				QueryStringLength:     uint32(1024),
-				RecordApplicationTags: PtrTo(false),
-				RecordClientAddress:   PtrTo(false),
-			}
-		}
+		applyDefaultInsightsConfig(obj)
 	} else {
 		obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{}
 	}
@@ -156,6 +149,7 @@ func (s *AlloyDBAdminV1) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	obj := proto.Clone(req.Instance).(*pb.Instance)
 	obj.Name = fqn
+	log.Printf("vkanishk: Creating instance with name: %s", fqn)
 	setInstanceFields(name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -299,4 +293,15 @@ func (s *AlloyDBAdminV1) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 		result := &emptypb.Empty{}
 		return result, nil
 	})
+}
+
+func applyDefaultInsightsConfig(obj *pb.Instance) {
+	if obj.QueryInsightsConfig == nil {
+		obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{
+			QueryPlansPerMinute:   PtrTo(uint32(5)),
+			QueryStringLength:     uint32(1024),
+			RecordApplicationTags: PtrTo(false),
+			RecordClientAddress:   PtrTo(false),
+		}
+	}
 }
