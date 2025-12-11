@@ -2600,7 +2600,7 @@ spec:
         env:
         - name: CONFIG_CONNECTOR_VERSION
           value: 1.126.0
-        image: gcr.io/gke-release/cnrm/recorder:1.126.0
+        image: gcr.io/maqiuyu-kcc-test-2/cnrm/recorder:b76c630
         imagePullPolicy: Always
         name: recorder
         ports:
@@ -2664,7 +2664,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: gcr.io/gke-release/cnrm/webhook:1.126.0
+        image: gcr.io/maqiuyu-kcc-test-2/cnrm/webhook:b76c630
         imagePullPolicy: Always
         name: webhook
         ports:
@@ -2722,7 +2722,7 @@ spec:
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /var/secrets/google/key.json
-        image: gcr.io/gke-release/cnrm/controller:1.126.0
+        image: gcr.io/maqiuyu-kcc-test-2/cnrm/controller:b76c630
         imagePullPolicy: Always
         name: manager
         ports:
@@ -2782,7 +2782,7 @@ spec:
       containers:
       - command:
         - /configconnector/deletiondefender
-        image: gcr.io/gke-release/cnrm/deletiondefender:1.126.0
+        image: gcr.io/maqiuyu-kcc-test-2/cnrm/deletiondefender:b76c630
         imagePullPolicy: Always
         name: deletiondefender
         ports:

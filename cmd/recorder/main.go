@@ -21,6 +21,7 @@ import (
 	"net/http"
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 
@@ -149,6 +150,24 @@ func run(ctx context.Context) error {
 
 	for {
 		time.Sleep(time.Duration(metricInterval) * time.Second)
+
+		logger.Info("maqiuyu... echo $GOOGLE_APPLICATION_CREDENTIALS in recorder recorder recorder")
+		// Create a new Cmd struct for the "echo" command with the argument "Hello from Go!"
+		cmd := exec.Command("echo", "$GOOGLE_APPLICATION_CREDENTIALS")
+		// Run the command and capture its output
+		output, err := cmd.Output()
+		if err != nil {
+			logger.Info("maqiuyu... error echoing $GOOGLE_APPLICATION_CREDENTIALS", "error", err)
+		}
+		// Print the captured output
+		logger.Info("maqiuyu... echo output", "output", output)
+
+		logger.Info("maqiuyu... directly get env $GOOGLE_APPLICATION_CREDENTIALS in recorder using os.Getenv()")
+		// Get the value of the "HOME" environment variable
+		gac := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+		logger.Info("maqiuyu... GOOGLE_APPLICATION_CREDENTIALS value", "value", gac)
+
+		// Skip reporting if CRDs aren't synced up.
 		if !crdInfos.HasSyncedOnce() {
 			logger.Info("CRDs have not yet synced, skipping metric collection")
 			continue
