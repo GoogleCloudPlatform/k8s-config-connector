@@ -181,7 +181,7 @@ func (n *resourceRecordSetName) String() string {
 }
 
 func (s *MockService) parseResourceRecordSetName(project, managedZone, name, recordType string) (*resourceRecordSetName, error) {
-	projectData, err := s.Projects.GetProjectByIDOrNumber(project)
+	projectData, err := s.projects.GetProjectByIDOrNumber(project)
 	if err != nil {
 		return nil, err
 	}

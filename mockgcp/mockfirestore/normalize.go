@@ -31,14 +31,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.earliestVersionTime", TimePlaceholder)
 	replacements.ReplacePath(".earliestVersionTime", TimePlaceholder)
 
-	// freeTier cannot be set (the first database is always freeTier=true)
-	replacements.ReplacePath(".freeTier", true)
-	replacements.ReplacePath(".response.freeTier", true)
-
-	// realtimeUpdatesMode is not yet in our protos.
-	replacements.RemovePath(".realtimeUpdatesMode")
-	replacements.RemovePath(".response.realtimeUpdatesMode")
-
 	// Fields
 	replacements.ReplacePath(".response.startTime", TimePlaceholder)
 
