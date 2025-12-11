@@ -1,0 +1,42 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringAlertPolicy
+metadata:
+  name: monitoringalertpolicy-${uniqueId}
+spec:
+  displayName: Test Alert Policy
+  enabled: true
+  # notificationChannels:
+  #   - name: monitoringnotificationchannel1-${uniqueId}
+  #   - name: monitoringnotificationchannel2-${uniqueId}
+  combiner: AND_WITH_MATCHING_RESOURCE
+  conditions:
+    - displayName: Very high CPU usage
+      conditionThreshold:
+        filter: metric.type="compute.googleapis.com/instance/cpu/utilization" AND resource.type="gce_instance"
+        thresholdValue: 0.9
+        comparison: COMPARISON_GT
+        duration: 900s
+        trigger:
+          count: 1
+        aggregations:
+          - perSeriesAligner: ALIGN_MAX
+            alignmentPeriod: 60s
+            crossSeriesReducer: REDUCE_MEAN
+            groupByFields:
+              - project
+              - resource.label.instance_id
+              - resource.label.zone
