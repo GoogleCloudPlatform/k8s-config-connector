@@ -3,6 +3,7 @@ kind: TagsTagBinding
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -24,6 +25,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}
   name: '%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}'
   observedGeneration: 2

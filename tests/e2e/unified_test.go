@@ -280,7 +280,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				forceDirect := false
 				if strings.Contains(fixture.TestKey, "/apikeyskey/") {
 					forceDirect = true
-				} else if strings.Contains(fixture.TestKey, "/tagstagkey/") || strings.Contains(fixture.TestKey, "/tagstagvalue/") {
+				} else if strings.Contains(fixture.TestKey, "/tag") {
 					forceDirect = true
 				}
 
