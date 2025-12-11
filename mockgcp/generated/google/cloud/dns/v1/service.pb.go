@@ -2572,7 +2572,7 @@ type Policy struct {
 	AlternativeNameServerConfig *PolicyAlternativeNameServerConfig `protobuf:"bytes,1,opt,name=alternative_name_server_config,json=alternativeNameServerConfig" json:"alternative_name_server_config,omitempty"`
 	// A mutable string of at most 1024 characters associated with this resource for the user's convenience. Has no effect on the policy's function.
 	Description *string `protobuf:"bytes,2,opt,name=description" json:"description,omitempty"`
-	// Configurations related to DNS64 for this Policy.
+	// Configurations related to DNS64 for this policy.
 	Dns64Config *PolicyDns64Config `protobuf:"bytes,3,opt,name=dns64_config,json=dns64Config" json:"dns64_config,omitempty"`
 	// Allows networks bound to this policy to receive DNS queries sent by VMs or applications over VPN connections. When enabled, a virtual IP address is allocated from each of the subnetworks that are bound to this policy.
 	EnableInboundForwarding *bool `protobuf:"varint,4,opt,name=enable_inbound_forwarding,json=enableInboundForwarding" json:"enable_inbound_forwarding,omitempty"`
@@ -2874,7 +2874,7 @@ type PolicyDns64ConfigScope struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Controls whether DNS64 is enabled globally at the network level.
+	// Controls whether DNS64 is enabled globally for all networks bound to the policy.
 	AllQueries *bool   `protobuf:"varint,1,opt,name=all_queries,json=allQueries" json:"all_queries,omitempty"`
 	Kind       *string `protobuf:"bytes,2,opt,name=kind" json:"kind,omitempty"`
 }

@@ -2331,6 +2331,10 @@ type OrganizationsApisKeyvaluemapsServerClient interface {
 	CreateOrganizationsApisKeyvaluemap(ctx context.Context, in *CreateOrganizationsApisKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error)
 	// Deletes a key value map from an API proxy.
 	DeleteOrganizationsApisKeyvaluemap(ctx context.Context, in *DeleteOrganizationsApisKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error)
+	// Get the key value map scoped to an organization, environment, or API proxy.
+	GetOrganizationsApisKeyvaluemap(ctx context.Context, in *GetOrganizationsApisKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error)
+	// Update the key value map scoped to an organization, environment, or API proxy.
+	UpdateOrganizationsApisKeyvaluemap(ctx context.Context, in *UpdateOrganizationsApisKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error)
 }
 
 type organizationsApisKeyvaluemapsServerClient struct {
@@ -2359,6 +2363,24 @@ func (c *organizationsApisKeyvaluemapsServerClient) DeleteOrganizationsApisKeyva
 	return out, nil
 }
 
+func (c *organizationsApisKeyvaluemapsServerClient) GetOrganizationsApisKeyvaluemap(ctx context.Context, in *GetOrganizationsApisKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error) {
+	out := new(GoogleCloudApigeeV1KeyValueMap)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsApisKeyvaluemapsServer/GetOrganizationsApisKeyvaluemap", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsApisKeyvaluemapsServerClient) UpdateOrganizationsApisKeyvaluemap(ctx context.Context, in *UpdateOrganizationsApisKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error) {
+	out := new(GoogleCloudApigeeV1KeyValueMap)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsApisKeyvaluemapsServer/UpdateOrganizationsApisKeyvaluemap", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrganizationsApisKeyvaluemapsServerServer is the server API for OrganizationsApisKeyvaluemapsServer service.
 // All implementations must embed UnimplementedOrganizationsApisKeyvaluemapsServerServer
 // for forward compatibility
@@ -2367,6 +2389,10 @@ type OrganizationsApisKeyvaluemapsServerServer interface {
 	CreateOrganizationsApisKeyvaluemap(context.Context, *CreateOrganizationsApisKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error)
 	// Deletes a key value map from an API proxy.
 	DeleteOrganizationsApisKeyvaluemap(context.Context, *DeleteOrganizationsApisKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error)
+	// Get the key value map scoped to an organization, environment, or API proxy.
+	GetOrganizationsApisKeyvaluemap(context.Context, *GetOrganizationsApisKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error)
+	// Update the key value map scoped to an organization, environment, or API proxy.
+	UpdateOrganizationsApisKeyvaluemap(context.Context, *UpdateOrganizationsApisKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error)
 	mustEmbedUnimplementedOrganizationsApisKeyvaluemapsServerServer()
 }
 
@@ -2379,6 +2405,12 @@ func (UnimplementedOrganizationsApisKeyvaluemapsServerServer) CreateOrganization
 }
 func (UnimplementedOrganizationsApisKeyvaluemapsServerServer) DeleteOrganizationsApisKeyvaluemap(context.Context, *DeleteOrganizationsApisKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrganizationsApisKeyvaluemap not implemented")
+}
+func (UnimplementedOrganizationsApisKeyvaluemapsServerServer) GetOrganizationsApisKeyvaluemap(context.Context, *GetOrganizationsApisKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrganizationsApisKeyvaluemap not implemented")
+}
+func (UnimplementedOrganizationsApisKeyvaluemapsServerServer) UpdateOrganizationsApisKeyvaluemap(context.Context, *UpdateOrganizationsApisKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateOrganizationsApisKeyvaluemap not implemented")
 }
 func (UnimplementedOrganizationsApisKeyvaluemapsServerServer) mustEmbedUnimplementedOrganizationsApisKeyvaluemapsServerServer() {
 }
@@ -2430,6 +2462,42 @@ func _OrganizationsApisKeyvaluemapsServer_DeleteOrganizationsApisKeyvaluemap_Han
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrganizationsApisKeyvaluemapsServer_GetOrganizationsApisKeyvaluemap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrganizationsApisKeyvaluemapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsApisKeyvaluemapsServerServer).GetOrganizationsApisKeyvaluemap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsApisKeyvaluemapsServer/GetOrganizationsApisKeyvaluemap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsApisKeyvaluemapsServerServer).GetOrganizationsApisKeyvaluemap(ctx, req.(*GetOrganizationsApisKeyvaluemapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsApisKeyvaluemapsServer_UpdateOrganizationsApisKeyvaluemap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateOrganizationsApisKeyvaluemapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsApisKeyvaluemapsServerServer).UpdateOrganizationsApisKeyvaluemap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsApisKeyvaluemapsServer/UpdateOrganizationsApisKeyvaluemap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsApisKeyvaluemapsServerServer).UpdateOrganizationsApisKeyvaluemap(ctx, req.(*UpdateOrganizationsApisKeyvaluemapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrganizationsApisKeyvaluemapsServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsApisKeyvaluemapsServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2444,6 +2512,14 @@ var OrganizationsApisKeyvaluemapsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteOrganizationsApisKeyvaluemap",
 			Handler:    _OrganizationsApisKeyvaluemapsServer_DeleteOrganizationsApisKeyvaluemap_Handler,
+		},
+		{
+			MethodName: "GetOrganizationsApisKeyvaluemap",
+			Handler:    _OrganizationsApisKeyvaluemapsServer_GetOrganizationsApisKeyvaluemap_Handler,
+		},
+		{
+			MethodName: "UpdateOrganizationsApisKeyvaluemap",
+			Handler:    _OrganizationsApisKeyvaluemapsServer_UpdateOrganizationsApisKeyvaluemap_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -10006,6 +10082,10 @@ type OrganizationsEnvironmentsKeyvaluemapsServerClient interface {
 	CreateOrganizationsEnvironmentsKeyvaluemap(ctx context.Context, in *CreateOrganizationsEnvironmentsKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error)
 	// Deletes a key value map from an environment.
 	DeleteOrganizationsEnvironmentsKeyvaluemap(ctx context.Context, in *DeleteOrganizationsEnvironmentsKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error)
+	// Get the key value map scoped to an organization, environment, or API proxy.
+	GetOrganizationsEnvironmentsKeyvaluemap(ctx context.Context, in *GetOrganizationsEnvironmentsKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error)
+	// Update the key value map scoped to an organization, environment, or API proxy.
+	UpdateOrganizationsEnvironmentsKeyvaluemap(ctx context.Context, in *UpdateOrganizationsEnvironmentsKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error)
 }
 
 type organizationsEnvironmentsKeyvaluemapsServerClient struct {
@@ -10034,6 +10114,24 @@ func (c *organizationsEnvironmentsKeyvaluemapsServerClient) DeleteOrganizationsE
 	return out, nil
 }
 
+func (c *organizationsEnvironmentsKeyvaluemapsServerClient) GetOrganizationsEnvironmentsKeyvaluemap(ctx context.Context, in *GetOrganizationsEnvironmentsKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error) {
+	out := new(GoogleCloudApigeeV1KeyValueMap)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsKeyvaluemapsServer/GetOrganizationsEnvironmentsKeyvaluemap", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsEnvironmentsKeyvaluemapsServerClient) UpdateOrganizationsEnvironmentsKeyvaluemap(ctx context.Context, in *UpdateOrganizationsEnvironmentsKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error) {
+	out := new(GoogleCloudApigeeV1KeyValueMap)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsKeyvaluemapsServer/UpdateOrganizationsEnvironmentsKeyvaluemap", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrganizationsEnvironmentsKeyvaluemapsServerServer is the server API for OrganizationsEnvironmentsKeyvaluemapsServer service.
 // All implementations must embed UnimplementedOrganizationsEnvironmentsKeyvaluemapsServerServer
 // for forward compatibility
@@ -10042,6 +10140,10 @@ type OrganizationsEnvironmentsKeyvaluemapsServerServer interface {
 	CreateOrganizationsEnvironmentsKeyvaluemap(context.Context, *CreateOrganizationsEnvironmentsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error)
 	// Deletes a key value map from an environment.
 	DeleteOrganizationsEnvironmentsKeyvaluemap(context.Context, *DeleteOrganizationsEnvironmentsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error)
+	// Get the key value map scoped to an organization, environment, or API proxy.
+	GetOrganizationsEnvironmentsKeyvaluemap(context.Context, *GetOrganizationsEnvironmentsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error)
+	// Update the key value map scoped to an organization, environment, or API proxy.
+	UpdateOrganizationsEnvironmentsKeyvaluemap(context.Context, *UpdateOrganizationsEnvironmentsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error)
 	mustEmbedUnimplementedOrganizationsEnvironmentsKeyvaluemapsServerServer()
 }
 
@@ -10054,6 +10156,12 @@ func (UnimplementedOrganizationsEnvironmentsKeyvaluemapsServerServer) CreateOrga
 }
 func (UnimplementedOrganizationsEnvironmentsKeyvaluemapsServerServer) DeleteOrganizationsEnvironmentsKeyvaluemap(context.Context, *DeleteOrganizationsEnvironmentsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrganizationsEnvironmentsKeyvaluemap not implemented")
+}
+func (UnimplementedOrganizationsEnvironmentsKeyvaluemapsServerServer) GetOrganizationsEnvironmentsKeyvaluemap(context.Context, *GetOrganizationsEnvironmentsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrganizationsEnvironmentsKeyvaluemap not implemented")
+}
+func (UnimplementedOrganizationsEnvironmentsKeyvaluemapsServerServer) UpdateOrganizationsEnvironmentsKeyvaluemap(context.Context, *UpdateOrganizationsEnvironmentsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateOrganizationsEnvironmentsKeyvaluemap not implemented")
 }
 func (UnimplementedOrganizationsEnvironmentsKeyvaluemapsServerServer) mustEmbedUnimplementedOrganizationsEnvironmentsKeyvaluemapsServerServer() {
 }
@@ -10105,6 +10213,42 @@ func _OrganizationsEnvironmentsKeyvaluemapsServer_DeleteOrganizationsEnvironment
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrganizationsEnvironmentsKeyvaluemapsServer_GetOrganizationsEnvironmentsKeyvaluemap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrganizationsEnvironmentsKeyvaluemapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsEnvironmentsKeyvaluemapsServerServer).GetOrganizationsEnvironmentsKeyvaluemap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsKeyvaluemapsServer/GetOrganizationsEnvironmentsKeyvaluemap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsEnvironmentsKeyvaluemapsServerServer).GetOrganizationsEnvironmentsKeyvaluemap(ctx, req.(*GetOrganizationsEnvironmentsKeyvaluemapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsEnvironmentsKeyvaluemapsServer_UpdateOrganizationsEnvironmentsKeyvaluemap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateOrganizationsEnvironmentsKeyvaluemapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsEnvironmentsKeyvaluemapsServerServer).UpdateOrganizationsEnvironmentsKeyvaluemap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsKeyvaluemapsServer/UpdateOrganizationsEnvironmentsKeyvaluemap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsEnvironmentsKeyvaluemapsServerServer).UpdateOrganizationsEnvironmentsKeyvaluemap(ctx, req.(*UpdateOrganizationsEnvironmentsKeyvaluemapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrganizationsEnvironmentsKeyvaluemapsServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsEnvironmentsKeyvaluemapsServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -10119,6 +10263,14 @@ var OrganizationsEnvironmentsKeyvaluemapsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteOrganizationsEnvironmentsKeyvaluemap",
 			Handler:    _OrganizationsEnvironmentsKeyvaluemapsServer_DeleteOrganizationsEnvironmentsKeyvaluemap_Handler,
+		},
+		{
+			MethodName: "GetOrganizationsEnvironmentsKeyvaluemap",
+			Handler:    _OrganizationsEnvironmentsKeyvaluemapsServer_GetOrganizationsEnvironmentsKeyvaluemap_Handler,
+		},
+		{
+			MethodName: "UpdateOrganizationsEnvironmentsKeyvaluemap",
+			Handler:    _OrganizationsEnvironmentsKeyvaluemapsServer_UpdateOrganizationsEnvironmentsKeyvaluemap_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -14380,6 +14532,10 @@ type OrganizationsKeyvaluemapsServerClient interface {
 	CreateOrganizationsKeyvaluemap(ctx context.Context, in *CreateOrganizationsKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error)
 	// Deletes a key value map from an organization.
 	DeleteOrganizationsKeyvaluemap(ctx context.Context, in *DeleteOrganizationsKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error)
+	// Get the key value map scoped to an organization, environment, or API proxy.
+	GetOrganizationsKeyvaluemap(ctx context.Context, in *GetOrganizationsKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error)
+	// Update the key value map scoped to an organization, environment, or API proxy.
+	UpdateOrganizationsKeyvaluemap(ctx context.Context, in *UpdateOrganizationsKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error)
 }
 
 type organizationsKeyvaluemapsServerClient struct {
@@ -14408,6 +14564,24 @@ func (c *organizationsKeyvaluemapsServerClient) DeleteOrganizationsKeyvaluemap(c
 	return out, nil
 }
 
+func (c *organizationsKeyvaluemapsServerClient) GetOrganizationsKeyvaluemap(ctx context.Context, in *GetOrganizationsKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error) {
+	out := new(GoogleCloudApigeeV1KeyValueMap)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsKeyvaluemapsServer/GetOrganizationsKeyvaluemap", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsKeyvaluemapsServerClient) UpdateOrganizationsKeyvaluemap(ctx context.Context, in *UpdateOrganizationsKeyvaluemapRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1KeyValueMap, error) {
+	out := new(GoogleCloudApigeeV1KeyValueMap)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsKeyvaluemapsServer/UpdateOrganizationsKeyvaluemap", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrganizationsKeyvaluemapsServerServer is the server API for OrganizationsKeyvaluemapsServer service.
 // All implementations must embed UnimplementedOrganizationsKeyvaluemapsServerServer
 // for forward compatibility
@@ -14416,6 +14590,10 @@ type OrganizationsKeyvaluemapsServerServer interface {
 	CreateOrganizationsKeyvaluemap(context.Context, *CreateOrganizationsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error)
 	// Deletes a key value map from an organization.
 	DeleteOrganizationsKeyvaluemap(context.Context, *DeleteOrganizationsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error)
+	// Get the key value map scoped to an organization, environment, or API proxy.
+	GetOrganizationsKeyvaluemap(context.Context, *GetOrganizationsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error)
+	// Update the key value map scoped to an organization, environment, or API proxy.
+	UpdateOrganizationsKeyvaluemap(context.Context, *UpdateOrganizationsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error)
 	mustEmbedUnimplementedOrganizationsKeyvaluemapsServerServer()
 }
 
@@ -14428,6 +14606,12 @@ func (UnimplementedOrganizationsKeyvaluemapsServerServer) CreateOrganizationsKey
 }
 func (UnimplementedOrganizationsKeyvaluemapsServerServer) DeleteOrganizationsKeyvaluemap(context.Context, *DeleteOrganizationsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrganizationsKeyvaluemap not implemented")
+}
+func (UnimplementedOrganizationsKeyvaluemapsServerServer) GetOrganizationsKeyvaluemap(context.Context, *GetOrganizationsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrganizationsKeyvaluemap not implemented")
+}
+func (UnimplementedOrganizationsKeyvaluemapsServerServer) UpdateOrganizationsKeyvaluemap(context.Context, *UpdateOrganizationsKeyvaluemapRequest) (*GoogleCloudApigeeV1KeyValueMap, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateOrganizationsKeyvaluemap not implemented")
 }
 func (UnimplementedOrganizationsKeyvaluemapsServerServer) mustEmbedUnimplementedOrganizationsKeyvaluemapsServerServer() {
 }
@@ -14479,6 +14663,42 @@ func _OrganizationsKeyvaluemapsServer_DeleteOrganizationsKeyvaluemap_Handler(srv
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrganizationsKeyvaluemapsServer_GetOrganizationsKeyvaluemap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrganizationsKeyvaluemapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsKeyvaluemapsServerServer).GetOrganizationsKeyvaluemap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsKeyvaluemapsServer/GetOrganizationsKeyvaluemap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsKeyvaluemapsServerServer).GetOrganizationsKeyvaluemap(ctx, req.(*GetOrganizationsKeyvaluemapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsKeyvaluemapsServer_UpdateOrganizationsKeyvaluemap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateOrganizationsKeyvaluemapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsKeyvaluemapsServerServer).UpdateOrganizationsKeyvaluemap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsKeyvaluemapsServer/UpdateOrganizationsKeyvaluemap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsKeyvaluemapsServerServer).UpdateOrganizationsKeyvaluemap(ctx, req.(*UpdateOrganizationsKeyvaluemapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrganizationsKeyvaluemapsServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsKeyvaluemapsServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -14493,6 +14713,14 @@ var OrganizationsKeyvaluemapsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteOrganizationsKeyvaluemap",
 			Handler:    _OrganizationsKeyvaluemapsServer_DeleteOrganizationsKeyvaluemap_Handler,
+		},
+		{
+			MethodName: "GetOrganizationsKeyvaluemap",
+			Handler:    _OrganizationsKeyvaluemapsServer_GetOrganizationsKeyvaluemap_Handler,
+		},
+		{
+			MethodName: "UpdateOrganizationsKeyvaluemap",
+			Handler:    _OrganizationsKeyvaluemapsServer_UpdateOrganizationsKeyvaluemap_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -15153,6 +15381,247 @@ var OrganizationsSecurityAssessmentResultsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BatchComputeOrganizationsSecurityAssessmentResult",
 			Handler:    _OrganizationsSecurityAssessmentResultsServer_BatchComputeOrganizationsSecurityAssessmentResult_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/apigee/v1/service.proto",
+}
+
+// OrganizationsSecurityFeedbackServerClient is the client API for OrganizationsSecurityFeedbackServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type OrganizationsSecurityFeedbackServerClient interface {
+	// Creates a new report containing customer feedback.
+	CreateOrganizationsSecurityFeedback(ctx context.Context, in *CreateOrganizationsSecurityFeedbackRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityFeedback, error)
+	// Deletes a specific feedback report. Used for "undo" of a feedback submission.
+	DeleteOrganizationsSecurityFeedback(ctx context.Context, in *DeleteOrganizationsSecurityFeedbackRequest, opts ...grpc.CallOption) (*GoogleProtobufEmpty, error)
+	// Gets a specific customer feedback report.
+	GetOrganizationsSecurityFeedback(ctx context.Context, in *GetOrganizationsSecurityFeedbackRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityFeedback, error)
+	// Lists all feedback reports which have already been submitted.
+	ListOrganizationsSecurityFeedback(ctx context.Context, in *ListOrganizationsSecurityFeedbackRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListSecurityFeedbackResponse, error)
+	// Updates a specific feedback report.
+	PatchOrganizationsSecurityFeedback(ctx context.Context, in *PatchOrganizationsSecurityFeedbackRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityFeedback, error)
+}
+
+type organizationsSecurityFeedbackServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewOrganizationsSecurityFeedbackServerClient(cc grpc.ClientConnInterface) OrganizationsSecurityFeedbackServerClient {
+	return &organizationsSecurityFeedbackServerClient{cc}
+}
+
+func (c *organizationsSecurityFeedbackServerClient) CreateOrganizationsSecurityFeedback(ctx context.Context, in *CreateOrganizationsSecurityFeedbackRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityFeedback, error) {
+	out := new(GoogleCloudApigeeV1SecurityFeedback)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/CreateOrganizationsSecurityFeedback", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsSecurityFeedbackServerClient) DeleteOrganizationsSecurityFeedback(ctx context.Context, in *DeleteOrganizationsSecurityFeedbackRequest, opts ...grpc.CallOption) (*GoogleProtobufEmpty, error) {
+	out := new(GoogleProtobufEmpty)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/DeleteOrganizationsSecurityFeedback", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsSecurityFeedbackServerClient) GetOrganizationsSecurityFeedback(ctx context.Context, in *GetOrganizationsSecurityFeedbackRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityFeedback, error) {
+	out := new(GoogleCloudApigeeV1SecurityFeedback)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/GetOrganizationsSecurityFeedback", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsSecurityFeedbackServerClient) ListOrganizationsSecurityFeedback(ctx context.Context, in *ListOrganizationsSecurityFeedbackRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListSecurityFeedbackResponse, error) {
+	out := new(GoogleCloudApigeeV1ListSecurityFeedbackResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/ListOrganizationsSecurityFeedback", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsSecurityFeedbackServerClient) PatchOrganizationsSecurityFeedback(ctx context.Context, in *PatchOrganizationsSecurityFeedbackRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityFeedback, error) {
+	out := new(GoogleCloudApigeeV1SecurityFeedback)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/PatchOrganizationsSecurityFeedback", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// OrganizationsSecurityFeedbackServerServer is the server API for OrganizationsSecurityFeedbackServer service.
+// All implementations must embed UnimplementedOrganizationsSecurityFeedbackServerServer
+// for forward compatibility
+type OrganizationsSecurityFeedbackServerServer interface {
+	// Creates a new report containing customer feedback.
+	CreateOrganizationsSecurityFeedback(context.Context, *CreateOrganizationsSecurityFeedbackRequest) (*GoogleCloudApigeeV1SecurityFeedback, error)
+	// Deletes a specific feedback report. Used for "undo" of a feedback submission.
+	DeleteOrganizationsSecurityFeedback(context.Context, *DeleteOrganizationsSecurityFeedbackRequest) (*GoogleProtobufEmpty, error)
+	// Gets a specific customer feedback report.
+	GetOrganizationsSecurityFeedback(context.Context, *GetOrganizationsSecurityFeedbackRequest) (*GoogleCloudApigeeV1SecurityFeedback, error)
+	// Lists all feedback reports which have already been submitted.
+	ListOrganizationsSecurityFeedback(context.Context, *ListOrganizationsSecurityFeedbackRequest) (*GoogleCloudApigeeV1ListSecurityFeedbackResponse, error)
+	// Updates a specific feedback report.
+	PatchOrganizationsSecurityFeedback(context.Context, *PatchOrganizationsSecurityFeedbackRequest) (*GoogleCloudApigeeV1SecurityFeedback, error)
+	mustEmbedUnimplementedOrganizationsSecurityFeedbackServerServer()
+}
+
+// UnimplementedOrganizationsSecurityFeedbackServerServer must be embedded to have forward compatible implementations.
+type UnimplementedOrganizationsSecurityFeedbackServerServer struct {
+}
+
+func (UnimplementedOrganizationsSecurityFeedbackServerServer) CreateOrganizationsSecurityFeedback(context.Context, *CreateOrganizationsSecurityFeedbackRequest) (*GoogleCloudApigeeV1SecurityFeedback, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOrganizationsSecurityFeedback not implemented")
+}
+func (UnimplementedOrganizationsSecurityFeedbackServerServer) DeleteOrganizationsSecurityFeedback(context.Context, *DeleteOrganizationsSecurityFeedbackRequest) (*GoogleProtobufEmpty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrganizationsSecurityFeedback not implemented")
+}
+func (UnimplementedOrganizationsSecurityFeedbackServerServer) GetOrganizationsSecurityFeedback(context.Context, *GetOrganizationsSecurityFeedbackRequest) (*GoogleCloudApigeeV1SecurityFeedback, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrganizationsSecurityFeedback not implemented")
+}
+func (UnimplementedOrganizationsSecurityFeedbackServerServer) ListOrganizationsSecurityFeedback(context.Context, *ListOrganizationsSecurityFeedbackRequest) (*GoogleCloudApigeeV1ListSecurityFeedbackResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsSecurityFeedback not implemented")
+}
+func (UnimplementedOrganizationsSecurityFeedbackServerServer) PatchOrganizationsSecurityFeedback(context.Context, *PatchOrganizationsSecurityFeedbackRequest) (*GoogleCloudApigeeV1SecurityFeedback, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchOrganizationsSecurityFeedback not implemented")
+}
+func (UnimplementedOrganizationsSecurityFeedbackServerServer) mustEmbedUnimplementedOrganizationsSecurityFeedbackServerServer() {
+}
+
+// UnsafeOrganizationsSecurityFeedbackServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OrganizationsSecurityFeedbackServerServer will
+// result in compilation errors.
+type UnsafeOrganizationsSecurityFeedbackServerServer interface {
+	mustEmbedUnimplementedOrganizationsSecurityFeedbackServerServer()
+}
+
+func RegisterOrganizationsSecurityFeedbackServerServer(s grpc.ServiceRegistrar, srv OrganizationsSecurityFeedbackServerServer) {
+	s.RegisterService(&OrganizationsSecurityFeedbackServer_ServiceDesc, srv)
+}
+
+func _OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateOrganizationsSecurityFeedbackRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSecurityFeedbackServerServer).CreateOrganizationsSecurityFeedback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/CreateOrganizationsSecurityFeedback",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSecurityFeedbackServerServer).CreateOrganizationsSecurityFeedback(ctx, req.(*CreateOrganizationsSecurityFeedbackRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsSecurityFeedbackServer_DeleteOrganizationsSecurityFeedback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteOrganizationsSecurityFeedbackRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSecurityFeedbackServerServer).DeleteOrganizationsSecurityFeedback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/DeleteOrganizationsSecurityFeedback",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSecurityFeedbackServerServer).DeleteOrganizationsSecurityFeedback(ctx, req.(*DeleteOrganizationsSecurityFeedbackRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsSecurityFeedbackServer_GetOrganizationsSecurityFeedback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrganizationsSecurityFeedbackRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSecurityFeedbackServerServer).GetOrganizationsSecurityFeedback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/GetOrganizationsSecurityFeedback",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSecurityFeedbackServerServer).GetOrganizationsSecurityFeedback(ctx, req.(*GetOrganizationsSecurityFeedbackRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListOrganizationsSecurityFeedbackRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSecurityFeedbackServerServer).ListOrganizationsSecurityFeedback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/ListOrganizationsSecurityFeedback",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSecurityFeedbackServerServer).ListOrganizationsSecurityFeedback(ctx, req.(*ListOrganizationsSecurityFeedbackRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchOrganizationsSecurityFeedbackRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSecurityFeedbackServerServer).PatchOrganizationsSecurityFeedback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/PatchOrganizationsSecurityFeedback",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSecurityFeedbackServerServer).PatchOrganizationsSecurityFeedback(ctx, req.(*PatchOrganizationsSecurityFeedbackRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// OrganizationsSecurityFeedbackServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsSecurityFeedbackServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var OrganizationsSecurityFeedbackServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer",
+	HandlerType: (*OrganizationsSecurityFeedbackServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateOrganizationsSecurityFeedback",
+			Handler:    _OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_Handler,
+		},
+		{
+			MethodName: "DeleteOrganizationsSecurityFeedback",
+			Handler:    _OrganizationsSecurityFeedbackServer_DeleteOrganizationsSecurityFeedback_Handler,
+		},
+		{
+			MethodName: "GetOrganizationsSecurityFeedback",
+			Handler:    _OrganizationsSecurityFeedbackServer_GetOrganizationsSecurityFeedback_Handler,
+		},
+		{
+			MethodName: "ListOrganizationsSecurityFeedback",
+			Handler:    _OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_Handler,
+		},
+		{
+			MethodName: "PatchOrganizationsSecurityFeedback",
+			Handler:    _OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
