@@ -23,6 +23,7 @@ import (
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
 	"k8s.io/klog/v2"
 )
 
@@ -39,7 +40,8 @@ func (m *grpcMux) AddService(client any) {
 	n := goType.NumMethod()
 	for i := 0; i < n; i++ {
 		method := goType.Method(i)
-		goTypeMethodNames[method.Name] = true
+		methodName := string(method.Name)
+		goTypeMethodNames[methodName] = true
 
 		for j := 0; j < method.Type.NumOut(); j++ {
 			out := method.Type.Out(j)
@@ -53,29 +55,38 @@ func (m *grpcMux) AddService(client any) {
 		klog.Fatalf("found no protobuf types in %T", client)
 	}
 
+	// TODO: Is there a better way to match this?
+	serviceMatches := func(service protoreflect.ServiceDescriptor) bool {
+		methods := service.Methods()
+		methodNames := make(map[string]bool)
+		for j := range methods.Len() {
+			method := methods.Get(j)
+			methodName := string(method.Name())
+			methodNames[methodName] = true
+			if !goTypeMethodNames[methodName] {
+				return false
+			}
+		}
+		for goTypeMethodName := range goTypeMethodNames {
+			if !methodNames[goTypeMethodName] {
+				//klog.Infof("service %v missing method %v", service.FullName(), goTypeMethodName)
+				return false
+			}
+		}
+		return true
+	}
 	// Use the protobuf types to find the FileDescriptor, from there we can find the services
 	var matchingServices []protoreflect.ServiceDescriptor
 	for _, protoType := range discoveredProtobufTypes {
 		msg := reflect.New(protoType).Elem().Interface()
 		md := msg.(proto.Message).ProtoReflect().Descriptor()
 		fd := md.ParentFile()
+		klog.Infof("parent file is %v", fd.FullName())
 
 		services := fd.Services()
 		for i := range services.Len() {
 			service := services.Get(i)
-
-			isMatch := true
-			methods := service.Methods()
-			for j := range methods.Len() {
-				method := methods.Get(j)
-				if !goTypeMethodNames[string(method.Name())] {
-					isMatch = false
-					break
-				}
-			}
-
-			// TODO: Is there a better way to match this?
-			if isMatch {
+			if serviceMatches(service) {
 				matchingServices = append(matchingServices, service)
 			}
 		}
@@ -85,10 +96,27 @@ func (m *grpcMux) AddService(client any) {
 	}
 
 	if len(matchingServices) == 0 {
-		klog.Fatalf("cannot match service for %v", goType.Name())
+		// Try instead using the global registry
+		protoregistry.GlobalFiles.RangeFiles(func(fd protoreflect.FileDescriptor) bool {
+			services := fd.Services()
+			for i := range services.Len() {
+				service := services.Get(i)
+				if serviceMatches(service) {
+					matchingServices = append(matchingServices, service)
+				}
+			}
+			return true
+		})
+	}
+
+	if len(matchingServices) == 0 {
+		klog.Fatalf("cannot match service for %T %v", client, goType.Name())
 	}
 	if len(matchingServices) > 1 {
-		klog.Fatalf("found multiple matching service for %v", goType.Name())
+		for _, s := range matchingServices {
+			klog.Infof("matching service: %v", s.FullName())
+		}
+		klog.Fatalf("found multiple matching service for %T %v", client, goType.Name())
 	}
 
 	s, err := newGRPCService(client, matchingServices[0])
