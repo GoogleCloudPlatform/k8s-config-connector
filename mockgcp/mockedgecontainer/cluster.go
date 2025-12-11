@@ -24,6 +24,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgecontainer/v1"
 )
 
@@ -51,7 +52,7 @@ func (s *EdgeContainerV1) CreateCluster(ctx context.Context, req *pb.CreateClust
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Cluster).(*pb.Cluster)
+	obj := common.ProtoClone(req.Cluster)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -66,7 +67,56 @@ func (s *EdgeContainerV1) CreateCluster(ctx context.Context, req *pb.CreateClust
 	opPrefix := req.GetParent()
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
-		result := proto.Clone(obj).(*pb.Cluster)
+		result := common.ProtoClone(obj)
+		result.CreateTime = nil
+		result.UpdateTime = nil
+
+		return result, nil
+	})
+}
+
+func (s *EdgeContainerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*longrunning.Operation, error) {
+	name, err := s.parseClusterName(req.GetCluster().GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	existing := &pb.Cluster{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	now := time.Now()
+
+	updated := common.ProtoClone(existing)
+	paths := req.GetUpdateMask().GetPaths()
+	for _, path := range paths {
+		switch path {
+		case "labels":
+			updated.Labels = req.GetCluster().GetLabels()
+		case "defaultMaxPodsPerNode":
+			updated.DefaultMaxPodsPerNode = req.GetCluster().GetDefaultMaxPodsPerNode()
+		default:
+			return nil, fmt.Errorf("UpdateCluster: unsupported update_mask path (in mockgcp) %q", path)
+		}
+	}
+
+	updated.UpdateTime = timestamppb.New(now)
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	op := &pb.OperationMetadata{
+		CreateTime: timestamppb.New(now),
+		EndTime:    timestamppb.New(now),
+	}
+	opPrefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
+		// Many fields are not populated in the LRO result
+		result := common.ProtoClone(updated)
 		result.CreateTime = nil
 		result.UpdateTime = nil
 
