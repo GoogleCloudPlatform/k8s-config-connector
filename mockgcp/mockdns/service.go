@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
@@ -34,8 +35,9 @@ func init() {
 
 // MockService represents a mocked dns service.
 type MockService struct {
-	*common.MockEnvironment
 	storage storage.Storage
+
+	projects projects.ProjectStore
 
 	operations *dnsOperations
 
@@ -46,9 +48,9 @@ type MockService struct {
 // New creates a dnsService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
-		MockEnvironment: env,
-		storage:         storage,
-		operations:      newDNSOperationsService(storage),
+		storage:    storage,
+		projects:   env.Projects,
+		operations: newDNSOperationsService(storage),
 	}
 	s.resourceRecordSetsService = &resourceRecordSetsService{MockService: s}
 	s.managedZonesService = &managedZonesService{MockService: s}
