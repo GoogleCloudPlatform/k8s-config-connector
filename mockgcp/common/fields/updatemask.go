@@ -18,59 +18,11 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"unicode"
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/klog/v2"
 )
-
-// UpdateMask wraps a FieldMask and provides utility functions.
-type UpdateMask struct {
-	mask *fieldmaskpb.FieldMask
-}
-
-// NewUpdateMask creates a new UpdateMask from the given FieldMask.
-func NewUpdateMask(mask *fieldmaskpb.FieldMask) *UpdateMask {
-	mask = proto.Clone(mask).(*fieldmaskpb.FieldMask)
-
-	// Ensure the paths are in JSON format
-	for i := range mask.Paths {
-		mask.Paths[i] = protoToJSONName(mask.Paths[i])
-	}
-
-	return &UpdateMask{mask: mask}
-}
-
-// protoToJSONName converts a FieldMask from proto field names to JSON field names.
-func protoToJSONName(s string) string {
-	var r []rune
-	shouldUpper := false
-	for _, c := range s {
-		if c == '_' {
-			shouldUpper = true
-			continue
-		}
-		if shouldUpper {
-			c = unicode.ToUpper(c)
-			shouldUpper = false
-		}
-		r = append(r, c)
-	}
-
-	return string(r)
-}
-
-// HasJSONPath returns true if the given JSON field path is in the UpdateMask.
-func (u *UpdateMask) HasJSONPath(path string) bool {
-	for _, p := range u.mask.Paths {
-		if p == path {
-			return true
-		}
-	}
-	return false
-}
 
 // UpdateByFieldMask updates the `original` Message with the `update` Message value in the given `updatePaths` fields
 func UpdateByFieldMask(original, update proto.Message, updatePaths []string) error {
@@ -94,13 +46,16 @@ func walk(original, update proto.Message, path string) error {
 }
 
 func replace(original, update protoreflect.Message, fieldName string) error {
-	originalFd := original.Descriptor().Fields().ByJSONName(fieldName)
-	originalVal := original.Get(originalFd)
-	updateFd := update.Descriptor().Fields().ByJSONName(fieldName)
+	originalFd := getFieldDescriptor(original.Descriptor().Fields(), fieldName)
+	if originalFd == nil {
+		return fmt.Errorf("field %q not found in %s", fieldName, original.Descriptor().FullName())
+	}
+	updateFd := getFieldDescriptor(update.Descriptor().Fields(), fieldName)
 	updateVal := update.Get(updateFd)
 
 	// Update Map
 	if originalFd.IsMap() {
+		originalVal := original.Mutable(originalFd)
 		originalVal.Map().Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
 			originalVal.Map().Clear(k)
 			return true
@@ -113,6 +68,7 @@ func replace(original, update protoreflect.Message, fieldName string) error {
 	}
 	// Update List
 	if originalFd.IsList() {
+		originalVal := original.Mutable(originalFd)
 		originalVal.List().Truncate(0)
 		for i := 0; i < updateVal.List().Len(); i++ {
 			originalVal.List().Append(updateVal.List().Get(i))
@@ -121,7 +77,17 @@ func replace(original, update protoreflect.Message, fieldName string) error {
 	}
 
 	switch originalFd.Kind() {
-	case protoreflect.MessageKind, protoreflect.StringKind, protoreflect.DoubleKind, protoreflect.Int32Kind, protoreflect.Int64Kind, protoreflect.Uint64Kind, protoreflect.BoolKind, protoreflect.EnumKind:
+	case protoreflect.MessageKind, protoreflect.GroupKind:
+		if !original.IsValid() {
+			return fmt.Errorf("%s is read-only or empty", fieldName)
+		}
+		if update.Has(updateFd) {
+			original.Set(updateFd, updateVal)
+		} else {
+			original.Clear(originalFd)
+		}
+		return nil
+	case protoreflect.StringKind, protoreflect.DoubleKind, protoreflect.Int32Kind, protoreflect.Int64Kind, protoreflect.Uint64Kind, protoreflect.BoolKind, protoreflect.EnumKind:
 		if !original.IsValid() {
 			return fmt.Errorf("%s is read-only or empty", fieldName)
 		}
@@ -135,11 +101,27 @@ func replace(original, update protoreflect.Message, fieldName string) error {
 
 // originalChildMessage get the orignal Message's mutable reference to the `fieldName“ composite.
 func originalChildMessage(m protoreflect.Message, fieldName string) proto.Message {
-	fd := m.Descriptor().Fields().ByJSONName(fieldName)
+	fd := getFieldDescriptor(m.Descriptor().Fields(), fieldName)
+	if fd == nil {
+		// Panic or return nil? The caller expects a message.
+		// If we return nil, next call might panic.
+		// We'll panic with a clear message.
+		panic(fmt.Errorf("field %q not found in %s", fieldName, m.Descriptor().FullName()))
+	}
 	return m.Mutable(fd).Message().Interface()
 }
 
 func updateChildMessage(m protoreflect.Message, fieldName string) proto.Message {
-	fd := m.Descriptor().Fields().ByJSONName(fieldName)
+	fd := getFieldDescriptor(m.Descriptor().Fields(), fieldName)
+	if fd == nil {
+		panic(fmt.Errorf("field %q not found in %s", fieldName, m.Descriptor().FullName()))
+	}
 	return m.Get(fd).Message().Interface()
+}
+
+func getFieldDescriptor(fields protoreflect.FieldDescriptors, name string) protoreflect.FieldDescriptor {
+	if fd := fields.ByName(protoreflect.Name(name)); fd != nil {
+		return fd
+	}
+	return fields.ByJSONName(name)
 }

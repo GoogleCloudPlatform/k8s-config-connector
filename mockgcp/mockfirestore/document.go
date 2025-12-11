@@ -36,6 +36,12 @@ import (
 	"github.com/google/uuid"
 )
 
+type firestoreServer struct {
+	*MockService
+	pb.UnimplementedFirestoreServer
+}
+
+
 func (s *firestoreServer) GetDocument(ctx context.Context, req *pb.GetDocumentRequest) (*pb.Document, error) {
 	name, err := s.parseDocumentName(req.GetName())
 	if err != nil {

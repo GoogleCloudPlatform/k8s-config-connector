@@ -1,0 +1,28 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesEdgeCacheService
+metadata:
+  name: networkservicesedgecacheservice-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  description: "Test EdgeCacheService"
+  routing:
+    hostRules:
+      - hosts:
+          - "example.com"
+        pathMatcher: "path-matcher-1"
+    pathMatchers:
+      - name: "path-matcher-1"
+        routeRules:
+          - priority: 1
+            matchRules:
+              - prefixMatch: "/"
+            routeAction:
+              cdnPolicy:
+                cacheMode: "CACHE_ALL_STATIC"
+                defaultTTL: "3600s"
+              compressionMode: "AUTOMATIC"
+            routeMethods:
+              - "GET"
+              - "HEAD"

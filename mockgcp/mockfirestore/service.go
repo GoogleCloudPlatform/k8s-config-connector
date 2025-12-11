@@ -17,15 +17,13 @@ package mockfirestore
 // +tool:mockgcp-service
 // http.host: firestore.googleapis.com
 // proto.service: google.firestore.admin.v1.FirestoreAdmin
-// proto.service: google.firestore.v1.Firestore
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -33,6 +31,7 @@ import (
 
 	adminpb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	pb "cloud.google.com/go/firestore/apiv1/firestorepb"
+	pb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/firestore/admin/v1"
 )
 
 func init() {
@@ -66,21 +65,19 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	grpcMux, err := httptogrpc.NewGRPCMux(conn)
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		pb_http.RegisterFirestoreAdminHandler,
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
-		return nil, fmt.Errorf("error building grpc service: %w", err)
+		return nil, err
 	}
 
-	grpcMux.AddService(adminpb.NewFirestoreAdminClient(conn))
-	grpcMux.AddService(pb.NewFirestoreClient(conn))
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
+	}
 
-	grpcMux.AddOperationsPath("/v1/{prefix=projects/*/databases/*}/operations/{name=**}", conn)
-
-	return grpcMux, nil
-}
-
-// firestoreServer implements the FirestoreServer interface.
-type firestoreServer struct {
-	*MockService
-	pb.UnimplementedFirestoreServer
+	return mux, nil
 }
