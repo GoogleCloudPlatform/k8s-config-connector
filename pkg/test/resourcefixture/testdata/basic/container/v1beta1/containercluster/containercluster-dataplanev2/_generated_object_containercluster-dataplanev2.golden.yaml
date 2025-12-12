@@ -28,6 +28,7 @@ spec:
       minimum: 100
       resourceType: memory
   datapathProvider: ADVANCED_DATAPATH
+  enableCiliumClusterwideNetworkPolicy: false
   initialNodeCount: 1
   ipAllocationPolicy:
     clusterIpv4CidrBlock: /20
