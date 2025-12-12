@@ -566,6 +566,10 @@ spec:
                   Enable Binary Authorization for this cluster. If enabled, all container
                   images will be validated by Google Binary Authorization.
                 type: boolean
+              enableCiliumClusterwideNetworkPolicy:
+                description: Whether Cilium cluster-wide network policy is enabled
+                  on this cluster.
+                type: boolean
               enableFqdnNetworkPolicy:
                 description: Whether FQDN Network Policy is enabled on this cluster.
                 type: boolean
