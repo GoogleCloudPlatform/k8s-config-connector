@@ -475,9 +475,8 @@ spec:
                 type: object
               controlPlaneEndpointsConfig:
                 description: Configuration for all of the cluster's control plane
-                  endpoints. Currently supports only DNS endpoint configuration and
-                  disable IP endpoint. Other IP endpoint configurations are available
-                  in private_cluster_config.
+                  endpoints, including DNS and IP endpoint settings (enable/disable,
+                  public access, global access).
                 properties:
                   dnsEndpointConfig:
                     description: DNS endpoint configuration.
@@ -501,6 +500,18 @@ spec:
                   ipEndpointsConfig:
                     description: IP endpoint configuration.
                     properties:
+                      enableGlobalAccess:
+                        description: Controls whether the control plane's private
+                          endpoint is accessible from sources in other regions. It
+                          is invalid to specify both PrivateClusterMasterGlobalAccessConfig.enabled
+                          and this field at the same time.
+                        type: boolean
+                      enablePublicEndpoint:
+                        description: 'EnablePublicEndpoint: Controls whether the control
+                          plane allows access through a public IP. It is invalid to
+                          specify both PrivateClusterConfig.enablePrivateEndpoint
+                          and this field at the same time.'
+                        type: boolean
                       enabled:
                         description: Controls whether to allow direct IP access. When
                           false, configuration of masterAuthorizedNetworksConfig,
@@ -942,6 +953,9 @@ spec:
                         enableMetrics:
                           description: Whether or not the advanced datapath metrics
                             are enabled.
+                          type: boolean
+                        enableRelay:
+                          description: Whether or not Relay is enabled.
                           type: boolean
                         relayMode:
                           description: Mode used to make Relay available.
@@ -1866,9 +1880,8 @@ spec:
                 properties:
                   controlPlaneEndpointsConfig:
                     description: Configuration for all of the cluster's control plane
-                      endpoints. Currently supports only DNS endpoint configuration
-                      and disable IP endpoint. Other IP endpoint configurations are
-                      available in private_cluster_config.
+                      endpoints, including DNS and IP endpoint settings (enable/disable,
+                      public access, global access).
                     properties:
                       dnsEndpointConfig:
                         description: DNS endpoint configuration.
