@@ -573,9 +573,9 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		obj.ClusterTelemetry = &pb.ClusterTelemetry{}
 	}
 
-	if obj.ClusterTelemetry.Type == pb.ClusterTelemetry_UNSPECIFIED {
-		obj.ClusterTelemetry.Type = pb.ClusterTelemetry_ENABLED
-	}
+	// if obj.ClusterTelemetry.Type == pb.ClusterTelemetry_UNSPECIFIED {
+	// 	obj.ClusterTelemetry.Type = pb.ClusterTelemetry_ENABLED
+	// }
 
 	if obj.CurrentMasterVersion == "" {
 		obj.CurrentMasterVersion = obj.InitialClusterVersion
@@ -834,7 +834,6 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 
 	// NetworkConfig
 	if networkConfig := obj.NetworkConfig; networkConfig != nil {
-
 	}
 
 	if obj.ControlPlaneEndpointsConfig == nil {
@@ -888,17 +887,27 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		dnsEndpointConfig.Endpoint = fmt.Sprintf("gke-12345trewq-${projectNumber}.%s.gke.goog", obj.Location)
 	}
 
-	if obj.ProtectConfig == nil {
-		obj.ProtectConfig = &pb.ProtectConfig{}
+	// if obj.ProtectConfig == nil {
+	// 	obj.ProtectConfig = &pb.ProtectConfig{}
+	// }
+	// if obj.ProtectConfig.WorkloadConfig == nil {
+	// 	obj.ProtectConfig.WorkloadConfig = &pb.WorkloadConfig{}
+	// }
+	// if obj.ProtectConfig.WorkloadConfig.AuditMode == nil {
+	// 	obj.ProtectConfig.WorkloadConfig.AuditMode = PtrTo(pb.WorkloadConfig_BASIC)
+	// }
+	// if obj.ProtectConfig.WorkloadVulnerabilityMode == nil {
+	// 	obj.ProtectConfig.WorkloadVulnerabilityMode = PtrTo(pb.ProtectConfig_WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED)
+	// }
+
+	if obj.RbacBindingConfig == nil {
+		obj.RbacBindingConfig = &pb.RBACBindingConfig{}
 	}
-	if obj.ProtectConfig.WorkloadConfig == nil {
-		obj.ProtectConfig.WorkloadConfig = &pb.WorkloadConfig{}
+	if obj.RbacBindingConfig.EnableInsecureBindingSystemAuthenticated == nil {
+		obj.RbacBindingConfig.EnableInsecureBindingSystemAuthenticated = PtrTo(true)
 	}
-	if obj.ProtectConfig.WorkloadConfig.AuditMode == nil {
-		obj.ProtectConfig.WorkloadConfig.AuditMode = PtrTo(pb.WorkloadConfig_BASIC)
-	}
-	if obj.ProtectConfig.WorkloadVulnerabilityMode == nil {
-		obj.ProtectConfig.WorkloadVulnerabilityMode = PtrTo(pb.ProtectConfig_WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED)
+	if obj.RbacBindingConfig.EnableInsecureBindingSystemUnauthenticated == nil {
+		obj.RbacBindingConfig.EnableInsecureBindingSystemUnauthenticated = PtrTo(true)
 	}
 
 	if obj.RbacBindingConfig == nil {
