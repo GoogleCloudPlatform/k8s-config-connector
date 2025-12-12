@@ -17,125 +17,64 @@ package configconnector
 import (
 	"testing"
 
-	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/controller"
-	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
-
-func TestAddMetadataHostEnvVar(t *testing.T) {
-	t.Parallel()
-
-	tests := []struct {
-		name         string
-		container    map[string]interface{}
-		metadataHost string
-		wantEnvValue string
-		wantPreserve bool // true if existing GCE_METADATA_HOST should be preserved
-	}{
-		{
-			name: "add to container with no env vars",
-			container: map[string]interface{}{
-				"name": "manager",
-			},
-			metadataHost: "metadata.google.internal",
-			wantEnvValue: "metadata.google.internal",
-		},
-		{
-			name: "add to container with existing env vars",
-			container: map[string]interface{}{
-				"name": "manager",
-				"env": []interface{}{
-					map[string]interface{}{"name": "EXISTING_VAR", "value": "existing"},
-				},
-			},
-			metadataHost: "metadata.google.internal",
-			wantEnvValue: "metadata.google.internal",
-		},
-		{
-			name: "preserve existing GCE_METADATA_HOST",
-			container: map[string]interface{}{
-				"name": "manager",
-				"env": []interface{}{
-					map[string]interface{}{"name": "GCE_METADATA_HOST", "value": "custom.endpoint"},
-				},
-			},
-			metadataHost: "metadata.google.internal",
-			wantEnvValue: "custom.endpoint", // preserved, not overwritten
-			wantPreserve: true,
-		},
-		{
-			name: "IPv6 address format",
-			container: map[string]interface{}{
-				"name": "manager",
-			},
-			metadataHost: "[fd20:ce::254]",
-			wantEnvValue: "[fd20:ce::254]",
-		},
-		{
-			name: "DNS hostname with port",
-			container: map[string]interface{}{
-				"name": "manager",
-			},
-			metadataHost: "metadata.google.internal:8080",
-			wantEnvValue: "metadata.google.internal:8080",
-		},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
-
-			// Make a copy to avoid mutation issues
-			container := copyContainer(tc.container)
-
-			err := addMetadataHostEnvVar(container, tc.metadataHost)
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-
-			envs, _, _ := unstructured.NestedSlice(container, "env")
-			var found bool
-			for _, e := range envs {
-				envMap, ok := e.(map[string]interface{})
-				if !ok {
-					continue
-				}
-				name, _, _ := unstructured.NestedString(envMap, "name")
-				if name == "GCE_METADATA_HOST" {
-					found = true
-					value, _, _ := unstructured.NestedString(envMap, "value")
-					if value != tc.wantEnvValue {
-						t.Errorf("env var value = %q, want %q", value, tc.wantEnvValue)
-					}
-				}
-			}
-			if !found {
-				t.Errorf("env var GCE_METADATA_HOST not found")
-			}
-		})
-	}
-}
 
 func TestApplyMetadataHost(t *testing.T) {
 	t.Parallel()
 
+	statefulSetGVK := schema.GroupVersionKind{
+		Group:   appsv1.SchemeGroupVersion.Group,
+		Version: appsv1.SchemeGroupVersion.Version,
+		Kind:    "StatefulSet",
+	}
+
+	deploymentGVK := schema.GroupVersionKind{
+		Group:   appsv1.SchemeGroupVersion.Group,
+		Version: appsv1.SchemeGroupVersion.Version,
+		Kind:    "Deployment",
+	}
+
 	tests := []struct {
-		name         string
-		metadataHost string
-		wantEnvVar   bool // whether GCE_METADATA_HOST should be in containers
+		name           string
+		controllerName string
+		controllerGVK  schema.GroupVersionKind
+		metadataHost   string
+		wantEnvVar     bool
 	}{
 		{
-			name:         "metadataHost not set - no changes",
-			metadataHost: "",
-			wantEnvVar:   false,
+			name:           "metadataHost not set - no changes",
+			controllerName: "cnrm-controller-manager",
+			controllerGVK:  statefulSetGVK,
+			metadataHost:   "",
+			wantEnvVar:     false,
 		},
 		{
-			name:         "metadataHost set - inject env var",
-			metadataHost: "metadata.google.internal",
-			wantEnvVar:   true,
+			name:           "metadataHost set on StatefulSet - inject env var",
+			controllerName: "cnrm-controller-manager",
+			controllerGVK:  statefulSetGVK,
+			metadataHost:   "metadata.google.internal",
+			wantEnvVar:     true,
+		},
+		{
+			name:           "metadataHost set on Deployment - inject env var",
+			controllerName: "cnrm-webhook-manager",
+			controllerGVK:  deploymentGVK,
+			metadataHost:   "metadata.google.internal",
+			wantEnvVar:     true,
+		},
+		{
+			name:           "IPv6 address format",
+			controllerName: "cnrm-controller-manager",
+			controllerGVK:  statefulSetGVK,
+			metadataHost:   "[fd20:ce::254]",
+			wantEnvVar:     true,
 		},
 	}
 
@@ -144,30 +83,106 @@ func TestApplyMetadataHost(t *testing.T) {
 			t.Parallel()
 			ctx := t.Context()
 
-			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
-			defer stop()
-			c := mgr.GetClient()
-
-			cc := &corev1beta1.ConfigConnector{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "configconnector.core.cnrm.cloud.google.com",
-				},
-				Spec: corev1beta1.ConfigConnectorSpec{
-					Mode:         "cluster",
-					MetadataHost: tc.metadataHost,
-				},
-			}
-
 			m := testcontroller.ParseObjects(ctx, t, testcontroller.GetClusterModeWorkloadIdentityManifest())
-			r := newConfigConnectorReconciler(c)
 
-			if err := r.applyMetadataHost(ctx, cc, m); err != nil {
+			err := controllers.ApplyMetadataHost(m, tc.controllerName, tc.controllerGVK, tc.metadataHost)
+			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
-			// Check StatefulSet and Deployment containers for env var
+			// Check the specified controller for env var
 			for _, item := range m.Items {
-				if item.Kind != "StatefulSet" && item.Kind != "Deployment" {
+				if item.GroupVersionKind() != tc.controllerGVK {
+					continue
+				}
+				if item.GetName() != tc.controllerName {
+					continue
+				}
+
+				hasEnvVar := checkForEnvVar(t, item.UnstructuredObject(), "GCE_METADATA_HOST")
+				if hasEnvVar != tc.wantEnvVar {
+					t.Errorf("kind=%s name=%s: GCE_METADATA_HOST present=%v, want=%v",
+						item.Kind, item.GetName(), hasEnvVar, tc.wantEnvVar)
+				}
+				if tc.wantEnvVar && tc.metadataHost != "" {
+					value := getEnvVarValue(t, item.UnstructuredObject(), "GCE_METADATA_HOST")
+					if value != tc.metadataHost {
+						t.Errorf("GCE_METADATA_HOST value = %q, want %q", value, tc.metadataHost)
+					}
+				}
+			}
+		})
+	}
+}
+
+func TestApplyControllerResourceCR_MetadataHost(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name           string
+		controllerName string
+		metadataHost   string
+		wantEnvVar     bool
+	}{
+		{
+			name:           "cnrm-controller-manager with metadataHost",
+			controllerName: "cnrm-controller-manager",
+			metadataHost:   "metadata.google.internal",
+			wantEnvVar:     true,
+		},
+		{
+			name:           "cnrm-webhook-manager with metadataHost",
+			controllerName: "cnrm-webhook-manager",
+			metadataHost:   "metadata.google.internal",
+			wantEnvVar:     true,
+		},
+		{
+			name:           "cnrm-controller-manager without metadataHost",
+			controllerName: "cnrm-controller-manager",
+			metadataHost:   "",
+			wantEnvVar:     false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			ctx := t.Context()
+
+			cr := &customizev1beta1.ControllerResource{}
+			cr.Name = tc.controllerName
+			cr.Spec.MetadataHost = tc.metadataHost
+
+			m := testcontroller.ParseObjects(ctx, t, testcontroller.GetClusterModeWorkloadIdentityManifest())
+
+			// Determine the GVK based on controller name
+			var controllerGVK schema.GroupVersionKind
+			switch tc.controllerName {
+			case "cnrm-controller-manager", "cnrm-deletiondefender", "cnrm-unmanaged-detector":
+				controllerGVK = schema.GroupVersionKind{
+					Group:   appsv1.SchemeGroupVersion.Group,
+					Version: appsv1.SchemeGroupVersion.Version,
+					Kind:    "StatefulSet",
+				}
+			case "cnrm-webhook-manager", "cnrm-resource-stats-recorder":
+				controllerGVK = schema.GroupVersionKind{
+					Group:   appsv1.SchemeGroupVersion.Group,
+					Version: appsv1.SchemeGroupVersion.Version,
+					Kind:    "Deployment",
+				}
+			}
+
+			err := controllers.ApplyMetadataHost(m, cr.Name, controllerGVK, cr.Spec.MetadataHost)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			// Check for env var
+			for _, item := range m.Items {
+				if item.GroupVersionKind() != controllerGVK {
+					continue
+				}
+				if item.GetName() != tc.controllerName {
 					continue
 				}
 
@@ -179,82 +194,6 @@ func TestApplyMetadataHost(t *testing.T) {
 			}
 		})
 	}
-}
-
-func TestTransformForMetadataHost(t *testing.T) {
-	t.Parallel()
-
-	tests := []struct {
-		name         string
-		metadataHost string
-		wantErr      bool
-	}{
-		{
-			name:         "valid hostname",
-			metadataHost: "metadata.google.internal",
-			wantErr:      false,
-		},
-		{
-			name:         "empty metadataHost",
-			metadataHost: "",
-			wantErr:      false,
-		},
-		{
-			name:         "IPv6 address",
-			metadataHost: "[fd20:ce::254]",
-			wantErr:      false,
-		},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
-			ctx := t.Context()
-
-			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
-			defer stop()
-			c := mgr.GetClient()
-
-			r := newConfigConnectorReconciler(c)
-			transform := r.transformForMetadataHost()
-
-			cc := &corev1beta1.ConfigConnector{
-				ObjectMeta: metav1.ObjectMeta{Name: "configconnector.core.cnrm.cloud.google.com"},
-				Spec:       corev1beta1.ConfigConnectorSpec{MetadataHost: tc.metadataHost},
-			}
-
-			m := testcontroller.ParseObjects(ctx, t, testcontroller.GetClusterModeWorkloadIdentityManifest())
-
-			err := transform(ctx, cc, m)
-			if (err != nil) != tc.wantErr {
-				t.Errorf("transform error = %v, wantErr = %v", err, tc.wantErr)
-			}
-		})
-	}
-}
-
-// copyContainer creates a deep copy of a container map
-func copyContainer(src map[string]interface{}) map[string]interface{} {
-	dst := make(map[string]interface{})
-	for k, v := range src {
-		switch val := v.(type) {
-		case []interface{}:
-			newSlice := make([]interface{}, len(val))
-			for i, item := range val {
-				if m, ok := item.(map[string]interface{}); ok {
-					newSlice[i] = copyContainer(m)
-				} else {
-					newSlice[i] = item
-				}
-			}
-			dst[k] = newSlice
-		case map[string]interface{}:
-			dst[k] = copyContainer(val)
-		default:
-			dst[k] = v
-		}
-	}
-	return dst
 }
 
 // checkForEnvVar checks if a workload object has a specific env var in any container
@@ -284,4 +223,34 @@ func checkForEnvVar(t *testing.T, obj *unstructured.Unstructured, envName string
 		}
 	}
 	return false
+}
+
+// getEnvVarValue returns the value of a specific env var from a workload object
+func getEnvVarValue(t *testing.T, obj *unstructured.Unstructured, envName string) string {
+	t.Helper()
+
+	containers, found, _ := unstructured.NestedSlice(obj.Object, "spec", "template", "spec", "containers")
+	if !found {
+		return ""
+	}
+
+	for _, c := range containers {
+		container, ok := c.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		envs, _, _ := unstructured.NestedSlice(container, "env")
+		for _, e := range envs {
+			envMap, ok := e.(map[string]interface{})
+			if !ok {
+				continue
+			}
+			name, _, _ := unstructured.NestedString(envMap, "name")
+			if name == envName {
+				value, _, _ := unstructured.NestedString(envMap, "value")
+				return value
+			}
+		}
+	}
+	return ""
 }
