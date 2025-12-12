@@ -105,10 +105,6 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 		}
 	}
 
-	if obj.NetworkConfig.DefaultSnatStatus == nil {
-		obj.NetworkConfig.DefaultSnatStatus = &pb.DefaultSnatStatus{}
-	}
-
 	if obj.NetworkConfig.ServiceExternalIpsConfig == nil {
 		obj.NetworkConfig.ServiceExternalIpsConfig = &pb.ServiceExternalIPsConfig{}
 	}
