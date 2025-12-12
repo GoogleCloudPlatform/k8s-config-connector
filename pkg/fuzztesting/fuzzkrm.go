@@ -23,6 +23,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/testing/protocmp"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
@@ -229,4 +230,40 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 		t.Logf("p2 = %v", prototext.Format(p2))
 		t.Errorf("roundtrip failed for KRM %T; diff:\n%s", krm, diff)
 	}
+}
+
+// VisitValues is a helper function that visits all values in a proto message,
+// calling the provided function for each value.
+// It is useful for applying filters.
+func VisitValues(m proto.Message, fn func(path string, fd protoreflect.FieldDescriptor, v protoreflect.Value) protoreflect.Value) {
+	visitValues("", m.ProtoReflect(), fn)
+}
+
+func visitValues(parentPath string, m protoreflect.Message, fn func(path string, fd protoreflect.FieldDescriptor, v protoreflect.Value) protoreflect.Value) {
+	m.Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+		path := parentPath + "." + string(fd.Name())
+		v2 := fn(path, fd, v)
+		m.Set(fd, v2)
+
+		switch fd.Kind() {
+		case protoreflect.MessageKind, protoreflect.GroupKind:
+			if fd.IsList() {
+				list := v.List()
+				for i := 0; i < list.Len(); i++ {
+					visitValues(path+"[]", list.Get(i).Message(), fn)
+				}
+			} else if fd.IsMap() {
+				mapField := v.Map()
+				if fd.MapValue().Kind() == protoreflect.MessageKind {
+					mapField.Range(func(mapKey protoreflect.MapKey, mapValue protoreflect.Value) bool {
+						visitValues(path+"[key="+mapKey.String()+"]", mapValue.Message(), fn)
+						return true
+					})
+				}
+			} else {
+				visitValues(path, v.Message(), fn)
+			}
+		}
+		return true
+	})
 }
