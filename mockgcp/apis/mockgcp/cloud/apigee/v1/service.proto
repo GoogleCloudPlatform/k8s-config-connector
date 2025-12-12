@@ -412,6 +412,21 @@ service OrganizationsApisKeyvaluemapsServer {
       delete: "/v1/{name=organizations/*/apis/*/keyvaluemaps/*}"
     };
   };
+
+  // Get the key value map scoped to an organization, environment, or API proxy.
+  rpc GetOrganizationsApisKeyvaluemap(GetOrganizationsApisKeyvaluemapRequest) returns (GoogleCloudApigeeV1KeyValueMap) {
+    option (google.api.http) = {
+      get: "/v1/{name=organizations/*/apis/*/keyvaluemaps/*}"
+    };
+  };
+
+  // Update the key value map scoped to an organization, environment, or API proxy.
+  rpc UpdateOrganizationsApisKeyvaluemap(UpdateOrganizationsApisKeyvaluemapRequest) returns (GoogleCloudApigeeV1KeyValueMap) {
+    option (google.api.http) = {
+      put: "/v1/{name=organizations/*/apis/*/keyvaluemaps/*}"
+      body: "organizations_apis_keyvaluemap"
+    };
+  };
 }
 
 service OrganizationsApisKeyvaluemapsEntriesServer {
@@ -1618,6 +1633,21 @@ service OrganizationsEnvironmentsKeyvaluemapsServer {
       delete: "/v1/{name=organizations/*/environments/*/keyvaluemaps/*}"
     };
   };
+
+  // Get the key value map scoped to an organization, environment, or API proxy.
+  rpc GetOrganizationsEnvironmentsKeyvaluemap(GetOrganizationsEnvironmentsKeyvaluemapRequest) returns (GoogleCloudApigeeV1KeyValueMap) {
+    option (google.api.http) = {
+      get: "/v1/{name=organizations/*/environments/*/keyvaluemaps/*}"
+    };
+  };
+
+  // Update the key value map scoped to an organization, environment, or API proxy.
+  rpc UpdateOrganizationsEnvironmentsKeyvaluemap(UpdateOrganizationsEnvironmentsKeyvaluemapRequest) returns (GoogleCloudApigeeV1KeyValueMap) {
+    option (google.api.http) = {
+      put: "/v1/{name=organizations/*/environments/*/keyvaluemaps/*}"
+      body: "organizations_environments_keyvaluemap"
+    };
+  };
 }
 
 service OrganizationsEnvironmentsKeyvaluemapsEntriesServer {
@@ -2300,6 +2330,21 @@ service OrganizationsKeyvaluemapsServer {
       delete: "/v1/{name=organizations/*/keyvaluemaps/*}"
     };
   };
+
+  // Get the key value map scoped to an organization, environment, or API proxy.
+  rpc GetOrganizationsKeyvaluemap(GetOrganizationsKeyvaluemapRequest) returns (GoogleCloudApigeeV1KeyValueMap) {
+    option (google.api.http) = {
+      get: "/v1/{name=organizations/*/keyvaluemaps/*}"
+    };
+  };
+
+  // Update the key value map scoped to an organization, environment, or API proxy.
+  rpc UpdateOrganizationsKeyvaluemap(UpdateOrganizationsKeyvaluemapRequest) returns (GoogleCloudApigeeV1KeyValueMap) {
+    option (google.api.http) = {
+      put: "/v1/{name=organizations/*/keyvaluemaps/*}"
+      body: "organizations_keyvaluemap"
+    };
+  };
 }
 
 service OrganizationsKeyvaluemapsEntriesServer {
@@ -2399,6 +2444,46 @@ service OrganizationsSecurityAssessmentResultsServer {
     option (google.api.http) = {
       post: "/v1/{name=organizations/*/securityAssessmentResults}:batchCompute"
       body: "organizations_security_assessment_result"
+    };
+  };
+}
+
+service OrganizationsSecurityFeedbackServer {
+
+  // Creates a new report containing customer feedback.
+  rpc CreateOrganizationsSecurityFeedback(CreateOrganizationsSecurityFeedbackRequest) returns (GoogleCloudApigeeV1SecurityFeedback) {
+    option (google.api.http) = {
+      post: "/v1/{parent=organizations/*}/securityFeedback"
+      body: "organizations_security_feedback"
+    };
+  };
+
+  // Deletes a specific feedback report. Used for "undo" of a feedback submission.
+  rpc DeleteOrganizationsSecurityFeedback(DeleteOrganizationsSecurityFeedbackRequest) returns (GoogleProtobufEmpty) {
+    option (google.api.http) = {
+      delete: "/v1/{name=organizations/*/securityFeedback/*}"
+    };
+  };
+
+  // Gets a specific customer feedback report.
+  rpc GetOrganizationsSecurityFeedback(GetOrganizationsSecurityFeedbackRequest) returns (GoogleCloudApigeeV1SecurityFeedback) {
+    option (google.api.http) = {
+      get: "/v1/{name=organizations/*/securityFeedback/*}"
+    };
+  };
+
+  // Lists all feedback reports which have already been submitted.
+  rpc ListOrganizationsSecurityFeedback(ListOrganizationsSecurityFeedbackRequest) returns (GoogleCloudApigeeV1ListSecurityFeedbackResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=organizations/*}/securityFeedback"
+    };
+  };
+
+  // Updates a specific feedback report.
+  rpc PatchOrganizationsSecurityFeedback(PatchOrganizationsSecurityFeedbackRequest) returns (GoogleCloudApigeeV1SecurityFeedback) {
+    option (google.api.http) = {
+      patch: "/v1/{name=organizations/*/securityFeedback/*}"
+      body: "organizations_security_feedback"
     };
   };
 }
@@ -2877,7 +2962,7 @@ message GoogleCloudApigeeV1AddonsConfig {
 
 // Request for AdjustDeveloperBalance.
 message GoogleCloudApigeeV1AdjustDeveloperBalanceRequest {
-  // * A positive value of `adjustment` means that that the API provider wants to adjust the balance for an under-charged developer i.e. the balance of the developer will decrease. * A negative value of `adjustment` means that that the API provider wants to adjust the balance for an over-charged developer i.e. the balance of the developer will increase.
+  // * A positive value of `adjustment` means that that the API provider wants to adjust the balance for an under-charged developer i.e. the balance of the developer will decrease. * A negative value of `adjustment` means that that the API provider wants to adjust the balance for an over-charged developer i.e. the balance of the developer will increase. NOTE: An adjustment cannot increase the balance of the developer beyond the balance as of the most recent credit. For example, if a developer's balance is updated to be $100, and they spend $10, a negative adjustment can only increase the balance of the developer to $100.
   GoogleTypeMoney adjustment = 1 [json_name="adjustment"];
 }
 
@@ -3050,24 +3135,32 @@ message GoogleCloudApigeeV1ApiProduct {
   GoogleCloudApigeeV1GrpcOperationGroup grpc_operation_group = 9 [json_name="grpcOperationGroup"];
   // Response only. Modified time of this environment as milliseconds since epoch.
   int64 last_modified_at = 10 [json_name="lastModifiedAt"];
+  // Optional. Configuration used to group Apigee proxies with resources, method types, LLM model and quotas. The resource refers to the resource URI (excluding the base path). With this grouping, the API product creator is able to fine-tune and give precise control over which REST methods have access to specific resources, specific LLM model and how many calls can be made (using the `quota` setting). **Note:** The `api_resources` setting cannot be specified for both the API product and llm operation group; otherwise the call will fail.
+  GoogleCloudApigeeV1LlmOperationGroup llm_operation_group = 11 [json_name="llmOperationGroup"];
+  // Optional. Number of LLM tokens permitted per app by this API product for the specified `llm_quota_interval` and `llm_quota_time_unit`. For example, an `llm_quota` of 50,000, for an `llm_quota_interval` of 12 and an `llm_quota_time_unit` of hours means 50,000 llm tokens are allowed to be used every 12 hours.
+  string llm_quota = 12 [json_name="llmQuota"];
+  // Optional. Time interval over which the number of tokens from LLM responses is calculated.
+  string llm_quota_interval = 13 [json_name="llmQuotaInterval"];
+  // Optional. Time unit defined for the `llm_quota_interval`. Valid values include `minute`, `hour`, `day`, or `month`.
+  string llm_quota_time_unit = 14 [json_name="llmQuotaTimeUnit"];
   // Internal name of the API product. Characters you can use in the name are restricted to: `A-Z0-9._\-$ %`. **Note:** The internal name cannot be edited when updating the API product.
-  string name = 11 [json_name="name"];
+  string name = 15 [json_name="name"];
   // Configuration used to group Apigee proxies or remote services with resources, method types, and quotas. The resource refers to the resource URI (excluding the base path). With this grouping, the API product creator is able to fine-tune and give precise control over which REST methods have access to specific resources and how many calls can be made (using the `quota` setting). **Note:** The `api_resources` setting cannot be specified for both the API product and operation group; otherwise the call will fail.
-  GoogleCloudApigeeV1OperationGroup operation_group = 12 [json_name="operationGroup"];
+  GoogleCloudApigeeV1OperationGroup operation_group = 16 [json_name="operationGroup"];
   // Comma-separated list of API proxy names to which this API product is bound. By specifying API proxies, you can associate resources in the API product with specific API proxies, preventing developers from accessing those resources through other API proxies. Apigee rejects requests to API proxies that are not listed. **Note:** The API proxy names must already exist in the specified environment as they will be validated upon creation.
-  repeated string proxies = 13 [json_name="proxies"];
+  repeated string proxies = 17 [json_name="proxies"];
   // Number of request messages permitted per app by this API product for the specified `quotaInterval` and `quotaTimeUnit`. For example, a `quota` of 50, for a `quotaInterval` of 12 and a `quotaTimeUnit` of hours means 50 requests are allowed every 12 hours.
-  string quota = 14 [json_name="quota"];
+  string quota = 18 [json_name="quota"];
   // Scope of the quota decides how the quota counter gets applied and evaluate for quota violation. If the Scope is set as PROXY, then all the operations defined for the APIproduct that are associated with the same proxy will share the same quota counter set at the APIproduct level, making it a global counter at a proxy level. If the Scope is set as OPERATION, then each operations get the counter set at the API product dedicated, making it a local counter. Note that, the QuotaCounterScope applies only when an operation does not have dedicated quota set for itself.
-  string quota_counter_scope = 15 [json_name="quotaCounterScope"];
+  string quota_counter_scope = 19 [json_name="quotaCounterScope"];
   // Time interval over which the number of request messages is calculated.
-  string quota_interval = 16 [json_name="quotaInterval"];
+  string quota_interval = 20 [json_name="quotaInterval"];
   // Time unit defined for the `quotaInterval`. Valid values include `minute`, `hour`, `day`, or `month`.
-  string quota_time_unit = 17 [json_name="quotaTimeUnit"];
+  string quota_time_unit = 21 [json_name="quotaTimeUnit"];
   // Comma-separated list of OAuth scopes that are validated at runtime. Apigee validates that the scopes in any access token presented match the scopes defined in the OAuth policy associated with the API product.
-  repeated string scopes = 18 [json_name="scopes"];
+  repeated string scopes = 22 [json_name="scopes"];
   // Optional. The resource ID of the parent Space. If not set, the parent resource will be the Organization. To learn how Spaces can be used to manage resources, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
-  string space = 19 [json_name="space"];
+  string space = 23 [json_name="space"];
 }
 
 message GoogleCloudApigeeV1ApiProductRef {
@@ -3360,18 +3453,34 @@ message GoogleCloudApigeeV1Attributes {
 
 // Request for BatchComputeSecurityAssessmentResults.
 message GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequest {
+  // An array of API Hub APIs to assess. A maximum of 1 API can be assessed.
+  GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestApiHubApiArray api_hub_apis = 1 [json_name="apiHubApis"];
+  // An array of API Hub Gateways to assess. A maximum of 3 gateways can be assessed.
+  GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestApiHubGatewayArray api_hub_gateways = 2 [json_name="apiHubGateways"];
   // Include only these resources.
-  GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestResourceArray include = 1 [json_name="include"];
+  GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestResourceArray include = 3 [json_name="include"];
   // Include all resources under the scope.
-  GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestIncludeAll include_all_resources = 2 [json_name="includeAllResources"];
+  GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestIncludeAll include_all_resources = 4 [json_name="includeAllResources"];
   // Optional. The maximum number of results to return. The service may return fewer than this value. If unspecified, at most 50 results will be returned.
-  int32 page_size = 3 [json_name="pageSize"];
+  int32 page_size = 5 [json_name="pageSize"];
   // Optional. A page token, received from a previous `BatchComputeSecurityAssessmentResults` call. Provide this to retrieve the subsequent page.
-  string page_token = 4 [json_name="pageToken"];
+  string page_token = 6 [json_name="pageToken"];
   // Required. Name of the profile that is used for computation.
-  string profile = 5 [json_name="profile"];
-  // Required. Scope of the resources for the computation. For Apigee, the environment is the scope of the resources.
-  string scope = 6 [json_name="scope"];
+  string profile = 7 [json_name="profile"];
+  // Optional. Scope of the resources for the computation. When computing scores for Apigee proxies, the scope should be set to the environment of the resources. When computing scores for API Hub deployments, api_hub_scope should be set instead.
+  string scope = 8 [json_name="scope"];
+}
+
+// Message for the array of API Hub APIs.
+message GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestApiHubApiArray {
+  // Required. The array of API Hub API IDs. Format: `projects/{project}/locations/{location}/apis/{api}`
+  repeated string apis = 1 [json_name="apis"];
+}
+
+// Message for the array of API Hub Gateways.
+message GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestApiHubGatewayArray {
+  // Required. The array of API Hub Gateway IDs. Format: `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+  repeated string gateways = 1 [json_name="gateways"];
 }
 
 // Message for include_all_resources option.
@@ -3386,7 +3495,7 @@ message GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestResourceA
 
 // Resource for which we are computing security assessment.
 message GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestResourceArrayResource {
-  // Required. Name of this resource.
+  // Required. Name of this resource. For an Apigee API Proxy, this should be the id of the API proxy. For an API Hub Deployment, this should be the id of the deployment.
   string name = 1 [json_name="name"];
   // Required. Type of this resource.
   string type = 2 [json_name="type"];
@@ -4394,22 +4503,28 @@ message GoogleCloudApigeeV1Instance {
   string host = 7 [json_name="host"];
   // Optional. Comma-separated list of CIDR blocks of length 22 and/or 28 used to create the Apigee instance. Providing CIDR ranges is optional. You can provide just /22 or /28 or both (or neither). Ranges you provide should be freely available as part of a larger named range you have allocated to the Service Networking peering. If this parameter is not provided, Apigee automatically requests an available /22 and /28 CIDR block from Service Networking. Use the /22 CIDR block for configuring your firewall needs to allow traffic from Apigee. Input formats: `a.b.c.d/22` or `e.f.g.h/28` or `a.b.c.d/22,e.f.g.h/28`
   string ip_range = 8 [json_name="ipRange"];
+  // Output only. Indicates whether the instance is version locked. If true, the instance will not be updated by automated runtime rollouts. This is only supported for Apigee X instances.
+  bool is_version_locked = 9 [json_name="isVersionLocked"];
   // Output only. Time the instance was last modified in milliseconds since epoch.
-  int64 last_modified_at = 9 [json_name="lastModifiedAt"];
+  int64 last_modified_at = 10 [json_name="lastModifiedAt"];
   // Required. Compute Engine location where the instance resides.
-  string location = 10 [json_name="location"];
+  string location = 11 [json_name="location"];
+  // Optional. Apigee customers can set the preferred window to perform maintenance on the instance (day of the week and time of day).
+  GoogleCloudApigeeV1MaintenanceUpdatePolicy maintenance_update_policy = 12 [json_name="maintenanceUpdatePolicy"];
   // Required. Resource ID of the instance. Values must match the regular expression `^a-z{0,30}[a-z\d]$`.
-  string name = 11 [json_name="name"];
+  string name = 13 [json_name="name"];
   // Optional. Size of the CIDR block range that will be reserved by the instance. PAID organizations support `SLASH_16` to `SLASH_20` and defaults to `SLASH_16`. Evaluation organizations support only `SLASH_23`.
-  string peering_cidr_range = 12 [json_name="peeringCidrRange"];
+  string peering_cidr_range = 14 [json_name="peeringCidrRange"];
   // Output only. Port number of the exposed Apigee endpoint.
-  string port = 13 [json_name="port"];
+  string port = 15 [json_name="port"];
   // Output only. Version of the runtime system running in the instance. The runtime system is the set of components that serve the API Proxy traffic in your Environments.
-  string runtime_version = 14 [json_name="runtimeVersion"];
+  string runtime_version = 16 [json_name="runtimeVersion"];
+  // Output only. Time and date of the scheduled maintenance for this instance. This field is only populated for instances that have opted into Maintenance Window and if there is an upcoming maintenance. Cleared once the maintenance is complete.
+  GoogleCloudApigeeV1ScheduledMaintenance scheduled_maintenance = 17 [json_name="scheduledMaintenance"];
   // Output only. Resource name of the service attachment created for the instance in the format: `projects/*/regions/*/serviceAttachments/*` Apigee customers can privately forward traffic to this service attachment using the PSC endpoints.
-  string service_attachment = 15 [json_name="serviceAttachment"];
+  string service_attachment = 18 [json_name="serviceAttachment"];
   // Output only. State of the instance. Values other than `ACTIVE` means the resource is not ready to use.
-  string state = 16 [json_name="state"];
+  string state = 19 [json_name="state"];
 }
 
 // InstanceAttachment represents the installation of an environment onto an instance.
@@ -4477,8 +4592,10 @@ message GoogleCloudApigeeV1KeyValueEntry {
 message GoogleCloudApigeeV1KeyValueMap {
   // Required. Flag that specifies whether entry values will be encrypted. This field is retained for backward compatibility and the value of encrypted will always be `true`. Apigee X and hybrid do not support unencrypted key value maps.
   bool encrypted = 1 [json_name="encrypted"];
+  // Optional. Flag that specifies whether entry values will be masked when returned.
+  bool masked_values = 2 [json_name="maskedValues"];
   // Required. ID of the key value map.
-  string name = 2 [json_name="name"];
+  string name = 3 [json_name="name"];
 }
 
 // Datastore for Certificates and Aliases.
@@ -4733,6 +4850,14 @@ message GoogleCloudApigeeV1ListSecurityActionsResponse {
   repeated GoogleCloudApigeeV1SecurityAction security_actions = 2 [json_name="securityActions"];
 }
 
+// Response for ListSecurityFeedback
+message GoogleCloudApigeeV1ListSecurityFeedbackResponse {
+  // A token that can be sent as `page_token` in `ListSecurityFeedbackRequest` to retrieve the next page. If this field is omitted, there are no subsequent pages.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // List of SecurityFeedback reports.
+  repeated GoogleCloudApigeeV1SecurityFeedback security_feedback = 2 [json_name="securityFeedback"];
+}
+
 // Response for ListSecurityIncidents.
 message GoogleCloudApigeeV1ListSecurityIncidentsResponse {
   // A token that can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
@@ -4799,6 +4924,60 @@ message GoogleCloudApigeeV1ListTraceConfigOverridesResponse {
   string next_page_token = 1 [json_name="nextPageToken"];
   // List all trace configuration overrides in an environment.
   repeated GoogleCloudApigeeV1TraceConfigOverride trace_config_overrides = 2 [json_name="traceConfigOverrides"];
+}
+
+// Represents the pairing of REST resource path, model and the actions (verbs) allowed on the resource path.
+message GoogleCloudApigeeV1LlmOperation {
+  // Optional. methods refers to the REST verbs as in https://httpwg.org/specs/rfc9110.html For example: GET, POST, PUT, DELETE, etc. They need to be in uppercase. When none specified, all verb types are allowed.
+  repeated string methods = 1 [json_name="methods"];
+  // Required. LLM model name associated with the API proxy
+  string model = 2 [json_name="model"];
+  // Required. REST resource path associated with the API proxy or remote service.
+  string resource = 3 [json_name="resource"];
+}
+
+// Binds the resources in an API proxy or remote service with the allowed REST methods and associated quota enforcement.
+message GoogleCloudApigeeV1LlmOperationConfig {
+  // Required. Name of the API proxy or remote service with which the resources, methods, and quota are associated.
+  string api_source = 1 [json_name="apiSource"];
+  // Optional. Custom attributes associated with the operation.
+  repeated GoogleCloudApigeeV1Attribute attributes = 2 [json_name="attributes"];
+  // Required. List of resource/method/model for the API proxy to which quota will applied. **Note**: Currently, you can specify only a single resource/method/model mapping. The call will fail if more than one resource/method/model mappings are provided.
+  repeated GoogleCloudApigeeV1LlmOperation llm_operations = 3 [json_name="llmOperations"];
+  // Required. LLM token Quota parameters to be enforced for the resources, methods, and API source & LLM model combination. If none are specified, quota enforcement will not be done.
+  GoogleCloudApigeeV1LlmTokenQuota llm_token_quota = 4 [json_name="llmTokenQuota"];
+}
+
+// List of LLM operation configuration details associated with Apigee API proxies.
+message GoogleCloudApigeeV1LlmOperationGroup {
+  // Required. List of LLM operation configurations for either Apigee API proxies that are associated with this API product.
+  repeated GoogleCloudApigeeV1LlmOperationConfig operation_configs = 1 [json_name="operationConfigs"];
+}
+
+// LLM Token Quota contains the essential parameters needed that can be applied on the resources, methods, models, API source combination associated with this API product. While LLM Token Quota is optional, setting it prevents requests from exceeding the provisioned parameters.
+message GoogleCloudApigeeV1LlmTokenQuota {
+  // Required. Time interval over which the number of request messages is calculated.
+  string interval = 1 [json_name="interval"];
+  // Required. Upper limit of LLM tokens allowed for the time interval and time unit specified. Requests exceeding this limit will be rejected.
+  string limit = 2 [json_name="limit"];
+  // Optional. Time unit defined for the `interval`. Valid values include `minute`, `hour`, `day`, or `month`. If `limit` and `interval` are valid, the default value is `hour`; otherwise, the default is null.
+  string time_unit = 3 [json_name="timeUnit"];
+}
+
+// MaintenanceUpdatePolicy specifies the preferred window to perform maintenance on the instance (day of the week and time of day).
+message GoogleCloudApigeeV1MaintenanceUpdatePolicy {
+  // Optional. Maintenance channel to specify relative scheduling for maintenance.
+  string maintenance_channel = 1 [json_name="maintenanceChannel"];
+  // Optional. Preferred windows to perform maintenance. Currently limited to 1.
+  repeated GoogleCloudApigeeV1MaintenanceUpdatePolicyMaintenanceWindow maintenance_windows = 2 [json_name="maintenanceWindows"];
+}
+
+// MaintenanceWindow specifies the preferred day of the week and time of day to perform maintenance.
+message GoogleCloudApigeeV1MaintenanceUpdatePolicyMaintenanceWindow {
+  // Required. Preferred day of the week for maintenance, e.g. MONDAY, TUESDAY, etc.
+  string day = 1 [json_name="day"];
+  // Required. The start time (UTC) of the maintenance window.
+  GoogleTypeTimeOfDay start_time = 2 [json_name="startTime"];
 }
 
 // Encapsulates additional information about query execution.
@@ -5534,6 +5713,12 @@ message GoogleCloudApigeeV1RuntimeTraceSamplingConfig {
   float sampling_rate = 2 [json_name="samplingRate"];
 }
 
+// Scheduled maintenance information for an instance.
+message GoogleCloudApigeeV1ScheduledMaintenance {
+  // Output only. The start time (UTC) of the scheduled maintenance.
+  .google.protobuf.Timestamp start_time = 1 [json_name="startTime"];
+}
+
 // Response for Schema call
 message GoogleCloudApigeeV1Schema {
   // List of schema fields grouped as dimensions.
@@ -5716,12 +5901,28 @@ message GoogleCloudApigeeV1SecurityAssessmentResult {
 
 // Resource for which we are computing security assessment.
 message GoogleCloudApigeeV1SecurityAssessmentResultResource {
-  // Required. Name of this resource.
-  string name = 1 [json_name="name"];
+  // Output only. Additional details for the API Hub deployment.
+  GoogleCloudApigeeV1SecurityAssessmentResultResourceApiHubDeploymentDetails api_hub_deployment_details = 1 [json_name="apiHubDeploymentDetails"];
+  // Required. Name of this resource. For an Apigee API Proxy, this should be the id of the API proxy. For an API Hub Deployment, this should be the id of the deployment.
+  string name = 2 [json_name="name"];
   // The revision id for the resource. In case of Apigee, this is proxy revision id.
-  string resource_revision_id = 2 [json_name="resourceRevisionId"];
+  string resource_revision_id = 3 [json_name="resourceRevisionId"];
   // Required. Type of this resource.
-  string type = 3 [json_name="type"];
+  string type = 4 [json_name="type"];
+}
+
+// Additional details if the resource is an API Hub deployment.
+message GoogleCloudApigeeV1SecurityAssessmentResultResourceApiHubDeploymentDetails {
+  // The display name of the API Hub deployment.
+  string display_name = 1 [json_name="displayName"];
+  // The gateway for the API Hub deployment. Format: `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+  string gateway = 2 [json_name="gateway"];
+  // The gateway type for the API Hub deployment.
+  string gateway_type = 3 [json_name="gatewayType"];
+  // The resource uri for the API Hub deployment.
+  string resource_uri = 4 [json_name="resourceUri"];
+  // The source project for the API Hub deployment.
+  string source_project = 5 [json_name="sourceProject"];
 }
 
 // The result of the assessment.
@@ -5767,6 +5968,34 @@ message GoogleCloudApigeeV1SecurityAssessmentResultScoringResultAssessmentRecomm
   string uri = 2 [json_name="uri"];
 }
 
+// Represents a feedback report from an Advanced API Security customer.
+message GoogleCloudApigeeV1SecurityFeedback {
+  // Optional. Optional text the user can provide for additional, unstructured context.
+  string comment = 1 [json_name="comment"];
+  // Output only. The time when this specific feedback id was created.
+  .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // Optional. The display name of the feedback.
+  string display_name = 3 [json_name="displayName"];
+  // Required. One or more attribute/value pairs for constraining the feedback.
+  repeated GoogleCloudApigeeV1SecurityFeedbackFeedbackContext feedback_contexts = 4 [json_name="feedbackContexts"];
+  // Required. The type of feedback being submitted.
+  string feedback_type = 5 [json_name="feedbackType"];
+  // Output only. Identifier. The feedback name is intended to be a system-generated uuid.
+  string name = 6 [json_name="name"];
+  // Optional. The reason for the feedback.
+  string reason = 7 [json_name="reason"];
+  // Output only. The time when this specific feedback id was updated.
+  .google.protobuf.Timestamp update_time = 8 [json_name="updateTime"];
+}
+
+// FeedbackContext captures the intent of the submitted feedback.
+message GoogleCloudApigeeV1SecurityFeedbackFeedbackContext {
+  // Required. The attribute the user is providing feedback about.
+  string attribute = 1 [json_name="attribute"];
+  // Required. The values of the attribute the user is providing feedback about.
+  repeated string values = 2 [json_name="values"];
+}
+
 // Represents an SecurityIncident resource.
 message GoogleCloudApigeeV1SecurityIncident {
   // Output only. Detection types which are part of the incident. Examples: Flooder, OAuth Abuser, Static Content Scraper, Anomaly Detection.
@@ -5801,7 +6030,7 @@ message GoogleCloudApigeeV1SecurityMonitoringCondition {
   string name = 4 [json_name="name"];
   // Required. ID of security profile of the security monitoring condition.
   string profile = 5 [json_name="profile"];
-  // Required. Scope of the security monitoring condition. For Apigee, the environment is the scope of the resources.
+  // Optional. Scope of the security monitoring condition. For Apigee, the environment is the scope of the resources.
   string scope = 6 [json_name="scope"];
   // Output only. Total number of deployed resources within scope.
   int32 total_deployed_resources = 7 [json_name="totalDeployedResources"];
@@ -5879,14 +6108,24 @@ message GoogleCloudApigeeV1SecurityProfileV2 {
   string name = 4 [json_name="name"];
   // Required. The configuration for each assessment in this profile. Key is the name/id of the assessment.
   map<string, GoogleCloudApigeeV1SecurityProfileV2ProfileAssessmentConfig> profile_assessment_configs = 5 [json_name="profileAssessmentConfigs"];
+  // Optional. The risk assessment type of the security profile. Defaults to ADVANCED_API_SECURITY.
+  string risk_assessment_type = 6 [json_name="riskAssessmentType"];
   // Output only. The time of the security profile update.
-  .google.protobuf.Timestamp update_time = 6 [json_name="updateTime"];
+  .google.protobuf.Timestamp update_time = 7 [json_name="updateTime"];
 }
 
 // The configuration definition for a specific assessment.
 message GoogleCloudApigeeV1SecurityProfileV2ProfileAssessmentConfig {
+  // Include only these Gateway Types.
+  GoogleCloudApigeeV1SecurityProfileV2ProfileAssessmentConfigApiHubGatewayTypeArray include = 1 [json_name="include"];
   // The weight of the assessment.
-  string weight = 1 [json_name="weight"];
+  string weight = 2 [json_name="weight"];
+}
+
+// Message for the array of API Hub Gateway Types.
+message GoogleCloudApigeeV1SecurityProfileV2ProfileAssessmentConfigApiHubGatewayTypeArray {
+  // Required. The array of API Hub Gateway Types.
+  repeated string gateway_types = 1 [json_name="gatewayTypes"];
 }
 
 // SecurityReport saves all the information about the created security report.
@@ -6352,6 +6591,8 @@ message GoogleLongrunningListOperationsResponse {
   string next_page_token = 1 [json_name="nextPageToken"];
   // A list of operations that matches the specified filter in the request.
   repeated .google.longrunning.Operation operations = 2 [json_name="operations"];
+  // Unordered list. Unreachable resources. Populated when the request sets `ListOperationsRequest.return_partial_success` and reads across collections. For example, when attempting to list all resources across all supported locations.
+  repeated string unreachable = 3 [json_name="unreachable"];
 }
 
 // A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); }
@@ -6412,6 +6653,18 @@ message GoogleTypeMoney {
   int32 nanos = 2 [json_name="nanos"];
   // The whole units of the amount. For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
   int64 units = 3 [json_name="units"];
+}
+
+// Represents a time of day. The date and time zone are either not significant or are specified elsewhere. An API may choose to allow leap seconds. Related types are google.type.Date and `google.protobuf.Timestamp`.
+message GoogleTypeTimeOfDay {
+  // Hours of a day in 24 hour format. Must be greater than or equal to 0 and typically must be less than or equal to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.
+  int32 hours = 1 [json_name="hours"];
+  // Minutes of an hour. Must be greater than or equal to 0 and less than or equal to 59.
+  int32 minutes = 2 [json_name="minutes"];
+  // Fractions of seconds, in nanoseconds. Must be greater than or equal to 0 and less than or equal to 999,999,999.
+  int32 nanos = 3 [json_name="nanos"];
+  // Seconds of a minute. Must be greater than or equal to 0 and typically must be less than or equal to 59. An API may allow the value 60 if it allows leap-seconds.
+  int32 seconds = 4 [json_name="seconds"];
 }
 
 message ListHybridIssuersRequest {
@@ -6651,6 +6904,15 @@ message CreateOrganizationsApisKeyvaluemapRequest {
 
 message DeleteOrganizationsApisKeyvaluemapRequest {
   string name = 1;
+}
+
+message GetOrganizationsApisKeyvaluemapRequest {
+  string name = 1;
+}
+
+message UpdateOrganizationsApisKeyvaluemapRequest {
+  string name = 1;
+  GoogleCloudApigeeV1KeyValueMap organizations_apis_keyvaluemap = 2;
 }
 
 message CreateOrganizationsApisKeyvaluemapsEntryRequest {
@@ -7385,6 +7647,15 @@ message DeleteOrganizationsEnvironmentsKeyvaluemapRequest {
   string name = 1;
 }
 
+message GetOrganizationsEnvironmentsKeyvaluemapRequest {
+  string name = 1;
+}
+
+message UpdateOrganizationsEnvironmentsKeyvaluemapRequest {
+  string name = 1;
+  GoogleCloudApigeeV1KeyValueMap organizations_environments_keyvaluemap = 2;
+}
+
 message CreateOrganizationsEnvironmentsKeyvaluemapsEntryRequest {
   string parent = 1;
   GoogleCloudApigeeV1KeyValueEntry organizations_environments_keyvaluemaps_entry = 2;
@@ -7853,6 +8124,15 @@ message DeleteOrganizationsKeyvaluemapRequest {
   string name = 1;
 }
 
+message GetOrganizationsKeyvaluemapRequest {
+  string name = 1;
+}
+
+message UpdateOrganizationsKeyvaluemapRequest {
+  string name = 1;
+  GoogleCloudApigeeV1KeyValueMap organizations_keyvaluemap = 2;
+}
+
 message CreateOrganizationsKeyvaluemapsEntryRequest {
   string parent = 1;
   GoogleCloudApigeeV1KeyValueEntry organizations_keyvaluemaps_entry = 2;
@@ -7921,6 +8201,32 @@ message UpdateOrganizationsReportRequest {
 message BatchComputeOrganizationsSecurityAssessmentResultRequest {
   string name = 1;
   GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequest organizations_security_assessment_result = 2;
+}
+
+message CreateOrganizationsSecurityFeedbackRequest {
+  string parent = 1;
+  string security_feedback_id = 2;
+  GoogleCloudApigeeV1SecurityFeedback organizations_security_feedback = 3;
+}
+
+message DeleteOrganizationsSecurityFeedbackRequest {
+  string name = 1;
+}
+
+message GetOrganizationsSecurityFeedbackRequest {
+  string name = 1;
+}
+
+message ListOrganizationsSecurityFeedbackRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
+}
+
+message PatchOrganizationsSecurityFeedbackRequest {
+  string name = 1;
+  string update_mask = 2;
+  GoogleCloudApigeeV1SecurityFeedback organizations_security_feedback = 3;
 }
 
 message CreateOrganizationsSecurityMonitoringConditionRequest {
@@ -8004,16 +8310,19 @@ message CreateOrganizationsSecurityProfilesV2Request {
 
 message DeleteOrganizationsSecurityProfilesV2Request {
   string name = 1;
+  string risk_assessment_type = 2;
 }
 
 message GetOrganizationsSecurityProfilesV2Request {
   string name = 1;
+  string risk_assessment_type = 2;
 }
 
 message ListOrganizationsSecurityProfilesV2Request {
   int32 page_size = 1;
   string page_token = 2;
   string parent = 3;
+  string risk_assessment_type = 4;
 }
 
 message PatchOrganizationsSecurityProfilesV2Request {

@@ -17,11 +17,23 @@
 set -o errexit
 set -o nounset
 set -o pipefail
+shopt -s nullglob
 
 # Setting GOPATH changes behaviour of k8s codegen tools
 unset GOPATH
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# Optional filters passed through to generate-types-file.go. Leave unset to regenerate all APIs.
+# Temporary scoped-generation knob to limit codegen blast radius when filters are set.
+GEN_ALLOWED_SERVICES="${GEN_ALLOWED_SERVICES:-}"
+GEN_ALLOWED_KINDS="${GEN_ALLOWED_KINDS:-}"
+export GEN_ALLOWED_SERVICES
+export GEN_ALLOWED_KINDS
+
+if [[ -n "${GEN_ALLOWED_SERVICES}" || -n "${GEN_ALLOWED_KINDS}" ]]; then
+  echo "Using filters - services: '${GEN_ALLOWED_SERVICES}', kinds: '${GEN_ALLOWED_KINDS}'"
+fi
 cd "${REPO_ROOT}"
 
 # Generate strong-typed definitions for existing CRDs
@@ -43,6 +55,11 @@ for DIR in "${API_DIRS[@]}";
 do
   API_VERSIONS+=($(echo ${DIR} | cut -d'/' -f 2,3))
 done
+
+if [ ${#API_VERSIONS[@]} -eq 0 ]; then
+  echo "No generated APIs found under pkg/clients/generated/apis; ensure GEN_ALLOWED_SERVICES/GEN_ALLOWED_KINDS permit at least one CRD."
+  exit 1
+fi
 
 # Join API/version names into a comma-separated list
 printf -v JOINED '%s,' "${API_VERSIONS[@]:1}"

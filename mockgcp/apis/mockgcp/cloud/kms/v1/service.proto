@@ -30,7 +30,7 @@ service FoldersServer {
     };
   };
 
-  // Gets the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  // Gets the KeyAccessJustificationsPolicyConfig for a given organization, folder, or project.
   rpc GetKajPolicyConfigFolder(GetKajPolicyConfigFolderRequest) returns (KeyAccessJustificationsPolicyConfig) {
     option (google.api.http) = {
       get: "/v1/{name=folders/*/kajPolicyConfig}"
@@ -45,7 +45,7 @@ service FoldersServer {
     };
   };
 
-  // Updates the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  // Updates the KeyAccessJustificationsPolicyConfig for a given organization, folder, or project.
   rpc UpdateKajPolicyConfigFolder(UpdateKajPolicyConfigFolderRequest) returns (KeyAccessJustificationsPolicyConfig) {
     option (google.api.http) = {
       patch: "/v1/{name=folders/*/kajPolicyConfig}"
@@ -56,14 +56,14 @@ service FoldersServer {
 
 service OrganizationsServer {
 
-  // Gets the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  // Gets the KeyAccessJustificationsPolicyConfig for a given organization, folder, or project.
   rpc GetKajPolicyConfigOrganization(GetKajPolicyConfigOrganizationRequest) returns (KeyAccessJustificationsPolicyConfig) {
     option (google.api.http) = {
       get: "/v1/{name=organizations/*/kajPolicyConfig}"
     };
   };
 
-  // Updates the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  // Updates the KeyAccessJustificationsPolicyConfig for a given organization, folder, or project.
   rpc UpdateKajPolicyConfigOrganization(UpdateKajPolicyConfigOrganizationRequest) returns (KeyAccessJustificationsPolicyConfig) {
     option (google.api.http) = {
       patch: "/v1/{name=organizations/*/kajPolicyConfig}"
@@ -74,7 +74,7 @@ service OrganizationsServer {
 
 service ProjectsServer {
 
-  // Gets the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  // Gets the KeyAccessJustificationsPolicyConfig for a given organization, folder, or project.
   rpc GetKajPolicyConfigProject(GetKajPolicyConfigProjectRequest) returns (KeyAccessJustificationsPolicyConfig) {
     option (google.api.http) = {
       get: "/v1/{name=projects/*/kajPolicyConfig}"
@@ -102,7 +102,7 @@ service ProjectsServer {
     };
   };
 
-  // Updates the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  // Updates the KeyAccessJustificationsPolicyConfig for a given organization, folder, or project.
   rpc UpdateKajPolicyConfigProject(UpdateKajPolicyConfigProjectRequest) returns (KeyAccessJustificationsPolicyConfig) {
     option (google.api.http) = {
       patch: "/v1/{name=projects/*/kajPolicyConfig}"

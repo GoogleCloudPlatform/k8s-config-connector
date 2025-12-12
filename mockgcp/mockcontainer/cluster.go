@@ -325,6 +325,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredDefaultEnablePrivateNodes = nil
 	}
 
+	if update.DesiredEnableCiliumClusterwideNetworkPolicy != nil {
+		if obj.NetworkConfig == nil {
+			obj.NetworkConfig = &pb.NetworkConfig{}
+		}
+		obj.NetworkConfig.EnableCiliumClusterwideNetworkPolicy = update.DesiredEnableCiliumClusterwideNetworkPolicy
+		update.DesiredEnableCiliumClusterwideNetworkPolicy = nil
+	}
+
 	// TODO: Support more updates!
 
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
@@ -713,6 +721,7 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 	if obj.ControlPlaneEndpointsConfig.DnsEndpointConfig == nil {
 		obj.ControlPlaneEndpointsConfig.DnsEndpointConfig = &pb.ControlPlaneEndpointsConfig_DNSEndpointConfig{}
 	}
+	// Always set the computed endpoint field
 	obj.ControlPlaneEndpointsConfig.DnsEndpointConfig.Endpoint = fmt.Sprintf("gke-12345trewq-${projectNumber}.%s.gke.goog", obj.Location)
 
 	if obj.ProtectConfig == nil {

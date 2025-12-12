@@ -408,6 +408,15 @@ spec:
                       when deciding to remove nodes from a cluster. Can be BALANCED
                       or OPTIMIZE_UTILIZATION. Defaults to BALANCED.
                     type: string
+                  defaultComputeClassConfig:
+                    description: Configuration of default Compute Engine machine class
+                      to use for node autoprovisioning node pools in the cluster.
+                    properties:
+                      enabled:
+                        description: Whether the default Compute Engine machine class
+                          is enabled for new autoprovisioned node pools.
+                        type: boolean
+                    type: object
                   enabled:
                     description: Whether node auto-provisioning is enabled. Resource
                       limits for cpu and memory must be defined to enable node auto-provisioning.
@@ -466,9 +475,8 @@ spec:
                 type: object
               controlPlaneEndpointsConfig:
                 description: Configuration for all of the cluster's control plane
-                  endpoints. Currently supports only DNS endpoint configuration and
-                  disable IP endpoint. Other IP endpoint configurations are available
-                  in private_cluster_config.
+                  endpoints, including DNS and IP endpoint settings (enable/disable,
+                  public access, global access).
                 properties:
                   dnsEndpointConfig:
                     description: DNS endpoint configuration.
@@ -478,10 +486,32 @@ spec:
                           this endpoint. Note that GCP-managed services may still
                           use the endpoint even if this is false.
                         type: boolean
+                      enableKubernetesCertificatesViaDns:
+                        description: Controls whether Kubernetes certificates are
+                          enabled for this endpoint. can be set to true if allow_external_traffic
+                          is true.
+                        type: boolean
+                      enableKubernetesTokensViaDns:
+                        description: Controls whether Kubernetes tokens are enabled
+                          for this endpoint. can be set to true if allow_external_traffic
+                          is true.
+                        type: boolean
                     type: object
                   ipEndpointsConfig:
                     description: IP endpoint configuration.
                     properties:
+                      enableGlobalAccess:
+                        description: Controls whether the control plane's private
+                          endpoint is accessible from sources in other regions. It
+                          is invalid to specify both PrivateClusterMasterGlobalAccessConfig.enabled
+                          and this field at the same time.
+                        type: boolean
+                      enablePublicEndpoint:
+                        description: 'EnablePublicEndpoint: Controls whether the control
+                          plane allows access through a public IP. It is invalid to
+                          specify both PrivateClusterConfig.enablePrivateEndpoint
+                          and this field at the same time.'
+                        type: boolean
                       enabled:
                         description: Controls whether to allow direct IP access. When
                           false, configuration of masterAuthorizedNetworksConfig,
@@ -565,6 +595,10 @@ spec:
                 description: DEPRECATED. Deprecated in favor of binary_authorization.
                   Enable Binary Authorization for this cluster. If enabled, all container
                   images will be validated by Google Binary Authorization.
+                type: boolean
+              enableCiliumClusterwideNetworkPolicy:
+                description: Whether Cilium Cluster-Wide Network Policy is enabled
+                  on this cluster.
                 type: boolean
               enableFqdnNetworkPolicy:
                 description: Whether FQDN Network Policy is enabled on this cluster.
@@ -919,6 +953,9 @@ spec:
                         enableMetrics:
                           description: Whether or not the advanced datapath metrics
                             are enabled.
+                          type: boolean
+                        enableRelay:
+                          description: Whether or not Relay is enabled.
                           type: boolean
                         relayMode:
                           description: Mode used to make Relay available.
@@ -1843,9 +1880,8 @@ spec:
                 properties:
                   controlPlaneEndpointsConfig:
                     description: Configuration for all of the cluster's control plane
-                      endpoints. Currently supports only DNS endpoint configuration
-                      and disable IP endpoint. Other IP endpoint configurations are
-                      available in private_cluster_config.
+                      endpoints, including DNS and IP endpoint settings (enable/disable,
+                      public access, global access).
                     properties:
                       dnsEndpointConfig:
                         description: DNS endpoint configuration.
