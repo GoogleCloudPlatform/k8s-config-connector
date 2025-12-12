@@ -99,22 +99,26 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
+    "gettable": true,
+    "ready": true
   },
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "Dependent Project",
-    "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectNumber}",
-    "parent": "organizations/${organizationID}",
+    "lifecycleState": "ACTIVE",
+    "name": "Dependent Project",
+    "parent": {
+      "id": "${organizationID}",
+      "type": "organization"
+    },
     "projectId": "example-project-01",
-    "state": "ACTIVE"
+    "projectNumber": "${projectNumber}"
   }
 }
 
@@ -256,10 +260,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
   "name": "operations/${operationID}"
 }
 
@@ -338,10 +338,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
   "name": "operations/${operationID}"
 }
 
@@ -423,10 +419,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
   "name": "operations/${operationID}"
 }
 
@@ -511,10 +503,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
   "name": "operations/${operationID}"
 }
 

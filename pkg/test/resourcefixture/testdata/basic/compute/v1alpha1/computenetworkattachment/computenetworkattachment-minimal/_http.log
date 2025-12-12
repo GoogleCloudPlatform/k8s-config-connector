@@ -336,22 +336,26 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
+    "gettable": true,
+    "ready": true
   },
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "project-1-${uniqueId}",
-    "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectNumber}",
-    "parent": "organizations/${organizationID}",
+    "lifecycleState": "ACTIVE",
+    "name": "project-1-${uniqueId}",
+    "parent": {
+      "id": "${organizationID}",
+      "type": "organization"
+    },
     "projectId": "project-1-${uniqueId}",
-    "state": "ACTIVE"
+    "projectNumber": "${projectNumber}"
   }
 }
 
@@ -536,22 +540,26 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
+    "gettable": true,
+    "ready": true
   },
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "project-2-${uniqueId}",
-    "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectNumber}",
-    "parent": "organizations/${organizationID}",
+    "lifecycleState": "ACTIVE",
+    "name": "project-2-${uniqueId}",
+    "parent": {
+      "id": "${organizationID}",
+      "type": "organization"
+    },
     "projectId": "project-2-${uniqueId}",
-    "state": "ACTIVE"
+    "projectNumber": "${projectNumber}"
   }
 }
 

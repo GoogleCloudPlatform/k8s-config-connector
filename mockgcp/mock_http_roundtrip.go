@@ -71,6 +71,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsublite"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrecaptchaenterprise"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockredis"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecuresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicenetworking"
@@ -107,6 +108,8 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	env := &common.MockEnvironment{
 		KubeClient: k8sClient,
 	}
+
+	env.Projects = mockresourcemanager.NewProjectStore(storage)
 
 	workflowEngine, err := workflows.NewEngine(mockHTTPClient)
 	if err != nil {

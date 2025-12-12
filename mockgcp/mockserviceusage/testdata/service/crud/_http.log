@@ -22,9 +22,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.api.serviceusage.v1.OperationMetadata"
-  },
   "name": "operations/${operationID}"
 }
 
@@ -89,10 +86,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
   "name": "operations/${operationID}"
 }
 
