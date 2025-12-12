@@ -2184,6 +2184,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 			PrivateIpv6GoogleAccess:   d.Get("private_ipv6_google_access").(string),
 			EnableL4ilbSubsetting:     d.Get("enable_l4_ilb_subsetting").(bool),
 			DnsConfig:                 expandDnsConfig(d.Get("dns_config")),
+			EnableK8sTokensViaDns:     d.Get("enable_k8s_tokens_via_dns").(bool),
 			GatewayApiConfig:          expandGatewayApiConfig(d.Get("gateway_api_config")),
 			EnableMultiNetworking:     d.Get("enable_multi_networking").(bool),
 			EnableFqdnNetworkPolicy:            d.Get("enable_fqdn_network_policy").(bool),
@@ -2705,6 +2706,15 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	if err := d.Set("enable_cilium_clusterwide_network_policy", cluster.NetworkConfig.EnableCiliumClusterwideNetworkPolicy); err != nil {
 		return fmt.Errorf("Error setting enable_cilium_clusterwide_network_policy: %s", err)
 	}
+	if err := d.Set("enable_k8s_tokens_via_dns", cluster.NetworkConfig.EnableK8sTokensViaDns); err != nil {
+		return fmt.Errorf("Error setting enable_k8s_tokens_via_dns: %s", err)
+	}
+	if err := d.Set("gateway_api_config", flattenGatewayApiConfig(cluster.NetworkConfig.GatewayApiConfig)); err != nil {
+		return fmt.Errorf("Error setting gateway_api_config: %s", err)
+	}
+	if err := d.Set("enable_k8s_beta_apis", flattenEnableK8sBetaApis(cluster.EnableK8sBetaApis)); err != nil {
+		return fmt.Errorf("Error setting enable_k8s_beta_apis: %s", err)
+	}
 	if err := d.Set("private_ipv6_google_access", cluster.NetworkConfig.PrivateIpv6GoogleAccess); err != nil {
 		return fmt.Errorf("Error setting private_ipv6_google_access: %s", err)
 	}
@@ -3183,6 +3193,54 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s Cilium Clusterwide Network Policy has been updated to %v", d.Id(), enabled)
+	}
+
+	if d.HasChange("enable_k8s_tokens_via_dns") {
+		enabled := d.Get("enable_k8s_tokens_via_dns").(bool)
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredEnableK8sTokensViaDns: enabled,
+			},
+		}
+		updateF := updateFunc(req, "updating k8s tokens via dns")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s K8s Tokens Via DNS has been updated to %v", d.Id(), enabled)
+	}
+
+	if d.HasChange("gateway_api_config") {
+		c := d.Get("gateway_api_config")
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredGatewayApiConfig: expandGatewayApiConfig(c),
+			},
+		}
+		updateF := updateFunc(req, "updating gateway api config")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s Gateway API Config has been updated", d.Id())
+	}
+
+	if d.HasChange("enable_k8s_beta_apis") {
+		c := d.Get("enable_k8s_beta_apis")
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredEnableK8sBetaApis: expandEnableK8sBetaApis(c, nil),
+			},
+		}
+		updateF := updateFunc(req, "updating enable k8s beta apis")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s Enable K8s Beta APIs has been updated", d.Id())
 	}
 
 	if d.HasChange("cost_management_config") {
