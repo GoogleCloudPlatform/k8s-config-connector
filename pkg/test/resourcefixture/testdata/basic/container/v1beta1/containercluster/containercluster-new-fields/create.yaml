@@ -9,10 +9,10 @@ spec:
   enableK8sTokensViaDNS: true
   enableFqdnNetworkPolicy: true
   datapathProvider: ADVANCED_DATAPATH # Required for Cilium
-  enableK8sBetaAPIs:
+  enableK8sBetaApis:
     enabledApis:
     - "v1beta1"
-  gatewayAPIConfig:
+  gatewayApiConfig:
     channel: "CHANNEL_STANDARD"
   clusterAutoscaling:
     enabled: true

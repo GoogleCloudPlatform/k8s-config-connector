@@ -2184,12 +2184,11 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 			PrivateIpv6GoogleAccess:   d.Get("private_ipv6_google_access").(string),
 			EnableL4ilbSubsetting:     d.Get("enable_l4_ilb_subsetting").(bool),
 			DnsConfig:                 expandDnsConfig(d.Get("dns_config")),
-			EnableK8sTokensViaDns:     d.Get("enable_k8s_tokens_via_dns").(bool),
 			GatewayApiConfig:          expandGatewayApiConfig(d.Get("gateway_api_config")),
 			EnableMultiNetworking:     d.Get("enable_multi_networking").(bool),
-			EnableFqdnNetworkPolicy:            d.Get("enable_fqdn_network_policy").(bool),
+			EnableFqdnNetworkPolicy:   d.Get("enable_fqdn_network_policy").(bool),
 			EnableCiliumClusterwideNetworkPolicy: d.Get("enable_cilium_clusterwide_network_policy").(bool),
-			DefaultEnablePrivateNodes:          expandDefaultEnablePrivateNodes(d),
+			DefaultEnablePrivateNodes: expandDefaultEnablePrivateNodes(d),
 		},
 		MasterAuth:           expandMasterAuth(d.Get("master_auth")),
 		NotificationConfig:   expandNotificationConfig(d.Get("notification_config")),
@@ -2706,9 +2705,7 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	if err := d.Set("enable_cilium_clusterwide_network_policy", cluster.NetworkConfig.EnableCiliumClusterwideNetworkPolicy); err != nil {
 		return fmt.Errorf("Error setting enable_cilium_clusterwide_network_policy: %s", err)
 	}
-	if err := d.Set("enable_k8s_tokens_via_dns", cluster.NetworkConfig.EnableK8sTokensViaDns); err != nil {
-		return fmt.Errorf("Error setting enable_k8s_tokens_via_dns: %s", err)
-	}
+
 	if err := d.Set("gateway_api_config", flattenGatewayApiConfig(cluster.NetworkConfig.GatewayApiConfig)); err != nil {
 		return fmt.Errorf("Error setting gateway_api_config: %s", err)
 	}
@@ -3195,21 +3192,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		log.Printf("[INFO] GKE cluster %s Cilium Clusterwide Network Policy has been updated to %v", d.Id(), enabled)
 	}
 
-	if d.HasChange("enable_k8s_tokens_via_dns") {
-		enabled := d.Get("enable_k8s_tokens_via_dns").(bool)
-		req := &container.UpdateClusterRequest{
-			Update: &container.ClusterUpdate{
-				DesiredEnableK8sTokensViaDns: enabled,
-			},
-		}
-		updateF := updateFunc(req, "updating k8s tokens via dns")
-		// Call update serially.
-		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
-			return err
-		}
 
-		log.Printf("[INFO] GKE cluster %s K8s Tokens Via DNS has been updated to %v", d.Id(), enabled)
-	}
 
 	if d.HasChange("gateway_api_config") {
 		c := d.Get("gateway_api_config")
@@ -3231,7 +3214,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		c := d.Get("enable_k8s_beta_apis")
 		req := &container.UpdateClusterRequest{
 			Update: &container.ClusterUpdate{
-				DesiredEnableK8sBetaApis: expandEnableK8sBetaApis(c, nil),
+				DesiredK8sBetaApis: expandEnableK8sBetaApis(c, nil),
 			},
 		}
 		updateF := updateFunc(req, "updating enable k8s beta apis")

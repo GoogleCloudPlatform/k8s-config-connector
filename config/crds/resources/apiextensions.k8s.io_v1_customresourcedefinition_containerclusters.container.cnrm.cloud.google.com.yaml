@@ -581,7 +581,7 @@ spec:
                 description: Whether Intra-node visibility is enabled for this cluster.
                   This makes same node pod to pod traffic visible for VPC network.
                 type: boolean
-              enableK8sBetaAPIs:
+              enableK8sBetaApis:
                 description: Configuration for Kubernetes Beta APIs.
                 properties:
                   enabledApis:
@@ -623,16 +623,16 @@ spec:
                 description: Immutable. Whether to enable Cloud TPU resources in this
                   cluster.
                 type: boolean
-              gatewayAPIConfig:
-                description: Configuration for GKE Gateway API controller.
+              gatewayApiConfig:
+                description: GatewayAPIConfig contains the desired config of Gateway
+                  API on this cluster.
                 properties:
                   channel:
-                    description: The Gateway API release channel to use for Gateway
-                      API.
+                    description: 'The Gateway API release channel to use for Gateway
+                      API. Possible values: "CHANNEL_STANDARD", "CHANNEL_DISABLED"'
                     type: string
-                required:
-                - channel
                 type: object
+
               identityServiceConfig:
                 description: Configuration for Identity Service which allows customers
                   to use external identity providers with the K8S API.
