@@ -23,7 +23,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.monitoring.v3 \
   --api-version monitoring.cnrm.cloud.google.com/v1beta1  \
-  --resource MonitoringNotificationChannel:NotificationChannel
+  --resource MonitoringNotificationChannel:NotificationChannel \
+  --resource MonitoringAlertPolicy:AlertPolicy
 
 go run . generate-mapper \
   --service google.monitoring.v3 \
