@@ -30,7 +30,6 @@ spec:
     - maximum: 1000
       minimum: 100
       resourceType: memory
-  enableCiliumClusterwideNetworkPolicy: false
   initialNodeCount: 1
   ipAllocationPolicy:
     clusterIpv4CidrBlock: /20
