@@ -113,12 +113,12 @@ func PrivateEnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.Privat
 	out.CloudComposerNetworkIPv4CIDRBlock = direct.LazyPtr(in.GetCloudComposerNetworkIpv4CidrBlock())
 	out.EnablePrivatelyUsedPublicIPs = direct.LazyPtr(in.GetEnablePrivatelyUsedPublicIps())
 	if in.GetCloudComposerConnectionSubnetwork() != "" {
-		out.CloudComposerConnectionSubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
+		out.CloudComposerConnectionSubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
 	}
 	// MISSING: WebServerIPV4ReservedRange
 	// MISSING: CloudComposerNetworkIPV4ReservedRange
 	if in.GetCloudComposerConnectionSubnetwork() != "" {
-		out.CloudComposerConnectionSubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
+		out.CloudComposerConnectionSubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
 	}
 	out.NetworkingConfig = NetworkingConfig_FromProto(mapCtx, in.GetNetworkingConfig())
 	return out
@@ -191,7 +191,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
 	// MISSING: OauthScopes
