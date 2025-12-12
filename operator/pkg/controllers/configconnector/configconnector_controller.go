@@ -716,6 +716,11 @@ func (r *Reconciler) applyControllerResourceCR(ctx context.Context, cr *customiz
 		r.log.Error(err, "failed to apply customization", "Name", cr.Name)
 		return r.handleApplyControllerResourceCRFailed(ctx, cr, fmt.Sprintf("failed to apply customization %s: %v", cr.Name, err))
 	}
+	// Apply metadata host customization if specified
+	if err := controllers.ApplyMetadataHost(m, cr.Name, controllerGVK, cr.Spec.MetadataHost); err != nil {
+		r.log.Error(err, "failed to apply metadata host", "Name", cr.Name)
+		return r.handleApplyControllerResourceCRFailed(ctx, cr, fmt.Sprintf("failed to apply metadata host %s: %v", cr.Name, err))
+	}
 	return r.handleApplyControllerResourceCRSucceeded(ctx, cr)
 }
 
