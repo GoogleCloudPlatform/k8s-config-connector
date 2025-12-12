@@ -49,11 +49,8 @@ type ControllerResourceSpec struct {
 	// +optional
 	// +kubebuilder:default=Disabled
 	VerticalPodAutoscalerMode *VPAMode `json:"verticalPodAutoscalerMode,omitempty"`
-	// MetadataHost specifies the hostname to use for GCP metadata server requests.
-	// This is useful for IPv6-only GKE clusters where the default metadata IP (169.254.169.254)
-	// is not reachable. Set this to "metadata.google.internal" for IPv6 environments.
-	// When set, this value is injected as the GCE_METADATA_HOST environment variable
-	// into the controller containers.
+	// MetadataHost overrides the GCP metadata server hostname (injected as GCE_METADATA_HOST).
+	// Useful for IPv6-only clusters where the default 169.254.169.254 is unreachable.
 	// +optional
 	MetadataHost string `json:"metadataHost,omitempty"`
 }
