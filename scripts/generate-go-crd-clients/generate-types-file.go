@@ -74,8 +74,48 @@ type svkMap struct {
 	Defs    []resourceDefinition
 }
 
+// parseFilterEnv reads a comma/space/semicolon separated env var into a lowercase set.
+// Empty or unset env vars return a nil set to indicate "no filter".
+func parseFilterEnv(envVar string) sets.String {
+	value := os.Getenv(envVar)
+	if value == "" {
+		return nil
+	}
+	parts := strings.FieldsFunc(value, func(r rune) bool {
+		return r == ',' || r == ' ' || r == ';'
+	})
+	filter := sets.NewString()
+	for _, p := range parts {
+		p = strings.TrimSpace(p)
+		if p == "" {
+			continue
+		}
+		filter.Insert(strings.ToLower(p))
+	}
+	if len(filter) == 0 {
+		return nil
+	}
+	return filter
+}
+
+// includeResource applies optional service/kind filters to a resource definition.
+func includeResource(rd *resourceDefinition, serviceFilter, kindFilter sets.String) bool {
+	if len(serviceFilter) > 0 && !serviceFilter.Has(strings.ToLower(rd.Service)) {
+		return false
+	}
+	if len(kindFilter) > 0 && !kindFilter.Has(strings.ToLower(rd.Kind)) {
+		return false
+	}
+	return true
+}
+
 func main() {
 	var resources []*resourceDefinition
+	servicesFilter := parseFilterEnv("GEN_ALLOWED_SERVICES")
+	kindsFilter := parseFilterEnv("GEN_ALLOWED_KINDS")
+	// Example:
+	// export GEN_ALLOWED_SERVICES="container,compute"
+	// export GEN_ALLOWED_KINDS="containercluster,computenetwork"
 	registerKinds := make(map[string]*svkMap)
 	crdsDir := repo.GetCRDsPath()
 	crdsPath, err := filepath.Abs(crdsDir)
@@ -88,7 +128,13 @@ func main() {
 	}
 
 	for _, crdFile := range crdFiles {
-		resources = append(resources, constructResourceDefinitions(crdsPath, crdFile.Name())...)
+		for _, rd := range constructResourceDefinitions(crdsPath, crdFile.Name()) {
+			if !includeResource(rd, servicesFilter, kindsFilter) {
+				continue
+			}
+			fmt.Printf("Including resource: %s/%s/%s\n", rd.Service, rd.Version.Name, rd.Kind)
+			resources = append(resources, rd)
+		}
 	}
 
 	for _, rd := range resources {
@@ -108,10 +154,24 @@ func main() {
 	}
 	makeStructNamesUniquePerKind(registerKinds)
 
-	// clear out all generated types files
+	// Clear generated types for targeted services; if no filters, clear everything
 	typesDir := repo.GetTypesGeneratedApisPath()
-	if err := os.RemoveAll(typesDir); err != nil {
-		log.Fatalf("error deleting dir %v: %v", typesDir, err)
+	filtersActive := len(servicesFilter) > 0 || len(kindsFilter) > 0
+	if !filtersActive {
+		if err := os.RemoveAll(typesDir); err != nil {
+			log.Fatalf("error deleting dir %v: %v", typesDir, err)
+		}
+	} else {
+		targetServices := sets.NewString()
+		for _, rd := range resources {
+			targetServices.Insert(rd.Service)
+		}
+		for svc := range targetServices {
+			dir := path.Join(typesDir, svc)
+			if err := os.RemoveAll(dir); err != nil {
+				log.Fatalf("error deleting dir %v: %v", dir, err)
+			}
+		}
 	}
 	if err := os.MkdirAll(typesDir, 0700); err != nil {
 		log.Fatalf("error recreating dir %v: %v", typesDir, err)
@@ -546,6 +606,9 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 
 func formatToGoLiteral(t string) string {
 	switch t {
+	case "":
+		// Some schemas omit a literal; default to string to avoid panics during generation.
+		return "string"
 	case "string":
 		return "string"
 	case "boolean":
@@ -553,6 +616,8 @@ func formatToGoLiteral(t string) string {
 	case "integer":
 		return "int64"
 	case "float", "number":
+		return "float64"
+	case "double":
 		return "float64"
 	default:
 		panic(fmt.Errorf("expected a JSONLiteral but got %v", t))
