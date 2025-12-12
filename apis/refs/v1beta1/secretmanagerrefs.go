@@ -38,7 +38,19 @@ type SecretManagerSecretRef struct {
 
 type SecretManagerSecret struct {
 	Ref        *SecretManagerSecretRef
+	Location   string
 	ResourceID string
+}
+
+func GetSecretLocation(u *unstructured.Unstructured) (string, error) {
+	location, _, err := unstructured.NestedString(u.Object, "spec", "location")
+	if err != nil {
+		return "", fmt.Errorf("error reading spec.location from %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
+	}
+	if location == "" {
+		return "global", nil
+	}
+	return location, nil
 }
 
 // ResolveSecretManagerSecretRef will resolve a partial SecretManagerSecretRef to a SecretManagerSecret.
@@ -61,9 +73,16 @@ func ResolveSecretManagerSecretRef(ctx context.Context, reader client.Reader, sr
 			ref = &SecretManagerSecretRef{
 				External: fmt.Sprintf("projects/%s/secrets/%s", tokens[1], tokens[3]),
 			}
-			return &SecretManagerSecret{Ref: ref, ResourceID: tokens[3]}, nil
+			return &SecretManagerSecret{Ref: ref, Location: "global", ResourceID: tokens[3]}, nil
 		}
-		return nil, fmt.Errorf("format of secretManagerSecretRef external=%q was not known (use projects/<projectId>/secrets/<secretID>)", ref.External)
+
+		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "secrets" {
+			ref = &SecretManagerSecretRef{
+				External: fmt.Sprintf("projects/%s/locations/%s/secrets/%s", tokens[1], tokens[3], tokens[5]),
+			}
+			return &SecretManagerSecret{Ref: ref, Location: tokens[3], ResourceID: tokens[5]}, nil
+		}
+		return nil, fmt.Errorf("format of secretManagerSecretRef external=%q was not known (use projects/<projectId>/secrets/<secretID> or projects/<projectId>/locations/<location>/secrets/<secretID>)", ref.External)
 	}
 
 	key := types.NamespacedName{
@@ -93,19 +112,30 @@ func ResolveSecretManagerSecretRef(ctx context.Context, reader client.Reader, sr
 		return nil, err
 	}
 
+	location, err := GetSecretLocation(secret)
+	if err != nil {
+		return nil, err
+	}
+
 	secretProjectID, err := ResolveProjectID(ctx, reader, secret)
 	if err != nil {
 		return nil, err
 	}
 
-	ref = &SecretManagerSecretRef{
-		External: fmt.Sprintf("projects/%s/secrets/%s", secretProjectID, secretResourceID),
+	if location == "global" {
+		ref = &SecretManagerSecretRef{
+			External: fmt.Sprintf("projects/%s/secrets/%s", secretProjectID, secretResourceID),
+		}
+	} else {
+		ref = &SecretManagerSecretRef{
+			External: fmt.Sprintf("projects/%s/locations/%s/secrets/%s", secretProjectID, location, secretResourceID),
+		}
 	}
 
 	return &SecretManagerSecret{Ref: ref, ResourceID: secretResourceID}, nil
 }
 
-func ResolveSecretIDForObject(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (*SecretManagerSecret, error) {
+func ResolveSecretForObject(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (*SecretManagerSecret, error) {
 	ref := &SecretManagerSecretRef{}
 	refObj, found, err := unstructured.NestedMap(obj.Object, "spec", "secretRef")
 	if err != nil {
@@ -155,7 +185,14 @@ func ResolveSecretManagerSecretVersionRef(ctx context.Context, reader client.Rea
 			}
 			return ref, nil
 		}
-		return nil, fmt.Errorf("format of secretManagerSecretVersionRef external=%q was not known (use projects/<projectId>/secrets/<secretID>/versions/<versionID>)", ref.External)
+
+		if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "secrets" && tokens[6] == "versions" {
+			ref = &SecretManagerSecretVersionRef{
+				External: fmt.Sprintf("projects/%s/locations/%s/secrets/%s/versions/%s", tokens[1], tokens[3], tokens[5], tokens[7]),
+			}
+			return ref, nil
+		}
+		return nil, fmt.Errorf("format of secretManagerSecretVersionRef external=%q was not known (use projects/<projectId>/secrets/<secretID>/versions/<versionID> or projects/<projectId>/locations/<location>/secrets/<secretID>/versions/<versionID>)", ref.External)
 	}
 
 	key := types.NamespacedName{
@@ -190,13 +227,20 @@ func ResolveSecretManagerSecretVersionRef(ctx context.Context, reader client.Rea
 		return nil, err
 	}
 
-	secretID, err := ResolveSecretIDForObject(ctx, reader, secretversion)
+	secret, err := ResolveSecretForObject(ctx, reader, secretversion)
 	if err != nil {
 		return nil, err
 	}
 
-	ref = &SecretManagerSecretVersionRef{
-		External: fmt.Sprintf("projects/%s/secrets/%s/versions/%s", secretversionProjectID, secretID.ResourceID, secretversionResourceID),
+	location := secret.Location
+	if location == "" || location == "global" {
+		ref = &SecretManagerSecretVersionRef{
+			External: fmt.Sprintf("projects/%s/secrets/%s/versions/%s", secretversionProjectID, secret.ResourceID, secretversionResourceID),
+		}
+	} else {
+		ref = &SecretManagerSecretVersionRef{
+			External: fmt.Sprintf("projects/%s/locations/%s/secrets/%s/versions/%s", secretversionProjectID, secret.Location, secret.ResourceID, secretversionResourceID),
+		}
 	}
 
 	return ref, nil
