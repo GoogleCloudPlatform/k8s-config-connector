@@ -1,0 +1,5 @@
+- exec: gcloud sql instances create mysql-${uniqueId} --database-version=MYSQL_8_4 --tier=db-c4a-highmem-2 --region=us-central1 --root-password=password123
+- exec: gcloud sql instances describe mysql-${uniqueId}
+- exec: gcloud sql instances patch mysql-${uniqueId} --edition=ENTERPRISE
+- exec: gcloud sql instances describe mysql-${uniqueId}
+- exec: gcloud sql instances delete mysql-${uniqueId} --quiet
