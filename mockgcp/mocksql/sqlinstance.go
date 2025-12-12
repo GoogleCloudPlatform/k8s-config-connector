@@ -436,6 +436,17 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
 		obj.DatabaseInstalledVersion = "SQLSERVER_2017_EXPRESS_CU31_GDR"
 
+	case pb.SqlDatabaseVersion_SQLSERVER_2019_ENTERPRISE:
+		obj.MaintenanceVersion = "SQLSERVER_2019_ENTERPRISE_CU32_GDR.R20251019.02_00"
+		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
+			{
+				DisplayName:  asRef("SQL Server 2022 Enterprise"),
+				MajorVersion: asRef("SQLSERVER_2022_ENTERPRISE"),
+				Name:         asRef("SQLSERVER_2022_ENTERPRISE"),
+			},
+		}
+		obj.DatabaseInstalledVersion = "SQLSERVER_2019_ENTERPRISE_CU32_GDR"
+
 	case pb.SqlDatabaseVersion_SQLSERVER_2019_EXPRESS:
 		obj.DatabaseInstalledVersion = "SQLSERVER_2019_EXPRESS_CU26"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
