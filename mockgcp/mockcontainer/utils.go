@@ -16,8 +16,12 @@ package mockcontainer
 
 import (
 	"context"
+	"crypto/md5"
+	"encoding/hex"
+	"fmt"
 	"strings"
 
+	"github.com/gogo/protobuf/proto"
 	"google.golang.org/grpc/metadata"
 	"k8s.io/klog/v2"
 )
@@ -32,25 +36,6 @@ func ValueOf[T any](t *T) T {
 		return zeroVal
 	}
 	return *t
-}
-
-// AsZonalLink will convert a "location" link to a "zonal" link, if the location is a zone.
-// For example, projects/${projectNumber}/locations/us-central1-a/operations/${operationID}
-// will be converted to projects/${projectNumber}/zones/us-central1-a/operations/${operationID}
-func AsZonalLink(link string) string {
-	tokens := strings.Split(link, "/")
-
-	for i := 0; i+1 < len(tokens); i++ {
-		switch tokens[i] {
-		case "locations":
-			location := tokens[i+1]
-			if isZone(location) {
-				tokens[i] = "zones"
-			}
-		}
-	}
-
-	return strings.Join(tokens, "/")
 }
 
 // isZone returns true if the location appears to be a GCP zone (as oppposed to a region)
@@ -83,8 +68,11 @@ func getAPIVersion(ctx context.Context) string {
 	return version
 }
 
-// buildSelfLink constructs a full self link (including https://container.googleapis.com/<version>/)
-func buildSelfLink(ctx context.Context, fqn string) string {
-	version := getAPIVersion(ctx)
-	return "https://container.googleapis.com/" + version + "/" + fqn
+func computeEtag(obj proto.Message) string {
+	b, err := proto.Marshal(obj)
+	if err != nil {
+		panic(fmt.Sprintf("converting to proto: %v", err))
+	}
+	hash := md5.Sum(b)
+	return hex.EncodeToString(hash[:])
 }
