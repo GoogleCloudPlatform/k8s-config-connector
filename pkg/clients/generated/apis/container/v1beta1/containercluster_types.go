@@ -227,6 +227,16 @@ type ClusterConfigConnectorConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
+type ClusterControlPlaneEndpointsConfig struct {
+	/* DNS endpoint configuration. */
+	// +optional
+	DnsEndpointConfig *ClusterDnsEndpointConfig `json:"dnsEndpointConfig,omitempty"`
+
+	/* IP endpoint configuration. */
+	// +optional
+	IpEndpointsConfig *ClusterIpEndpointsConfig `json:"ipEndpointsConfig,omitempty"`
+}
+
 type ClusterCostManagementConfig struct {
 	/* Whether to enable GKE cost allocation. When you enable GKE cost allocation, the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery. Defaults to false. */
 	Enabled bool `json:"enabled"`
@@ -271,7 +281,13 @@ type ClusterDnsConfig struct {
 	ClusterDnsScope *string `json:"clusterDnsScope,omitempty"`
 }
 
-type ClusterEnableK8sBetaApis struct {
+type ClusterDnsEndpointConfig struct {
+	/* Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false. */
+	// +optional
+	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
+}
+
+type ClusterEnableK8sBetaAPIs struct {
 	/* Enabled Kubernetes Beta APIs. */
 	EnabledApis []string `json:"enabledApis"`
 }
@@ -301,7 +317,7 @@ type ClusterFilter struct {
 	EventType []string `json:"eventType"`
 }
 
-type ClusterGatewayApiConfig struct {
+type ClusterGatewayAPIConfig struct {
 	/* The Gateway API release channel to use for Gateway API. */
 	Channel string `json:"channel"`
 }
@@ -414,6 +430,12 @@ type ClusterIpAllocationPolicy struct {
 	StackType *string `json:"stackType,omitempty"`
 }
 
+type ClusterIpEndpointsConfig struct {
+	/* Controls whether to allow direct IP access. When false, configuration of masterAuthorizedNetworksConfig, privateClusterConfig.enablePrivateEndpoint, privateClusterConfig.privateEndpointSubnetwork and privateClusterConfig.masterGlobalAccessConfig fields won't be used, and privateClusterConfig.privateEndpoint and privateClusterConfig.publicEndpoint fields won't be populated. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 type ClusterIstioConfig struct {
 	/* The authentication type between services in Istio. Available options include AUTH_MUTUAL_TLS. */
 	// +optional
@@ -503,6 +525,10 @@ type ClusterManagement struct {
 	/* Specifies whether node auto-upgrade is enabled for the node pool. If enabled, node auto-upgrade helps keep the nodes in your node pool up to date with the latest release version of Kubernetes. */
 	// +optional
 	AutoUpgrade *bool `json:"autoUpgrade,omitempty"`
+
+	/* Whether the default compute class is enabled for the node pool. */
+	// +optional
+	DefaultComputeClassEnabled *bool `json:"defaultComputeClassEnabled,omitempty"`
 
 	/* Specifies the Auto Upgrade knobs for the node pool. */
 	// +optional
@@ -792,7 +818,7 @@ type ClusterPrivateClusterConfig struct {
 	// +optional
 	EnablePrivateEndpoint *bool `json:"enablePrivateEndpoint,omitempty"`
 
-	/* Immutable. Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking. */
+	/* Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking. */
 	// +optional
 	EnablePrivateNodes *bool `json:"enablePrivateNodes,omitempty"`
 
@@ -1061,6 +1087,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	ConfidentialNodes *ClusterConfidentialNodes `json:"confidentialNodes,omitempty"`
 
+	/* Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disable IP endpoint. Other IP endpoint configurations are available in private_cluster_config. */
+	// +optional
+	ControlPlaneEndpointsConfig *ClusterControlPlaneEndpointsConfig `json:"controlPlaneEndpointsConfig,omitempty"`
+
 	/* Cost management configuration for the cluster. */
 	// +optional
 	CostManagementConfig *ClusterCostManagementConfig `json:"costManagementConfig,omitempty"`
@@ -1097,6 +1127,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	EnableBinaryAuthorization *bool `json:"enableBinaryAuthorization,omitempty"`
 
+	/* Whether CiliumClusterwideNetworkPolicy is enabled on this cluster. */
+	// +optional
+	EnableCiliumClusterwideNetworkPolicy *bool `json:"enableCiliumClusterwideNetworkPolicy,omitempty"`
+
 	/* Whether FQDN Network Policy is enabled on this cluster. */
 	// +optional
 	EnableFqdnNetworkPolicy *bool `json:"enableFqdnNetworkPolicy,omitempty"`
@@ -1107,7 +1141,11 @@ type ContainerClusterSpec struct {
 
 	/* Configuration for Kubernetes Beta APIs. */
 	// +optional
-	EnableK8sBetaApis *ClusterEnableK8sBetaApis `json:"enableK8sBetaApis,omitempty"`
+	EnableK8sBetaAPIs *ClusterEnableK8sBetaAPIs `json:"enableK8sBetaAPIs,omitempty"`
+
+	/* Whether to allow access to the cluster's control plane endpoint for any user who has a valid service account token. */
+	// +optional
+	EnableK8sTokensViaDNS *bool `json:"enableK8sTokensViaDNS,omitempty"`
 
 	/* Immutable. Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. */
 	// +optional
@@ -1135,7 +1173,7 @@ type ContainerClusterSpec struct {
 
 	/* Configuration for GKE Gateway API controller. */
 	// +optional
-	GatewayApiConfig *ClusterGatewayApiConfig `json:"gatewayApiConfig,omitempty"`
+	GatewayAPIConfig *ClusterGatewayAPIConfig `json:"gatewayAPIConfig,omitempty"`
 
 	/* Configuration for Identity Service which allows customers to use external identity providers with the K8S API. */
 	// +optional
@@ -1270,6 +1308,18 @@ type ContainerClusterSpec struct {
 	WorkloadIdentityConfig *ClusterWorkloadIdentityConfig `json:"workloadIdentityConfig,omitempty"`
 }
 
+type ClusterControlPlaneEndpointsConfigStatus struct {
+	/* DNS endpoint configuration. */
+	// +optional
+	DnsEndpointConfig *ClusterDnsEndpointConfigStatus `json:"dnsEndpointConfig,omitempty"`
+}
+
+type ClusterDnsEndpointConfigStatus struct {
+	/* The cluster's DNS endpoint. */
+	// +optional
+	Endpoint *string `json:"endpoint,omitempty"`
+}
+
 type ClusterMasterAuthStatus struct {
 	/* Base64 encoded public certificate used by clients to authenticate to the cluster endpoint. */
 	// +optional
@@ -1281,6 +1331,10 @@ type ClusterMasterAuthStatus struct {
 }
 
 type ClusterObservedStateStatus struct {
+	/* Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disable IP endpoint. Other IP endpoint configurations are available in private_cluster_config. */
+	// +optional
+	ControlPlaneEndpointsConfig *ClusterControlPlaneEndpointsConfigStatus `json:"controlPlaneEndpointsConfig,omitempty"`
+
 	/* DEPRECATED. Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission. */
 	// +optional
 	MasterAuth *ClusterMasterAuthStatus `json:"masterAuth,omitempty"`
