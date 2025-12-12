@@ -318,6 +318,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredDefaultEnablePrivateNodes = nil
 	}
 
+	if update.DesiredEnableCiliumClusterwideNetworkPolicy != nil {
+		if obj.NetworkConfig == nil {
+			obj.NetworkConfig = &pb.NetworkConfig{}
+		}
+		obj.NetworkConfig.EnableCiliumClusterwideNetworkPolicy = update.DesiredEnableCiliumClusterwideNetworkPolicy
+		update.DesiredEnableCiliumClusterwideNetworkPolicy = nil
+	}
+
 	// TODO: Support more updates!
 
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
