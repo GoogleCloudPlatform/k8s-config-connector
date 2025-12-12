@@ -127,7 +127,7 @@ service ManagedZonesServer {
 
 service PoliciesServer {
 
-  // Creates a new Policy.
+  // Creates a new policy.
   rpc CreatePolicy(CreatePolicyRequest) returns (Policy) {
     option (google.api.http) = {
       post: "/dns/v1/projects/{project}/policies"
@@ -135,28 +135,28 @@ service PoliciesServer {
     };
   };
 
-  // Deletes a previously created Policy. Fails if the policy is still being referenced by a network.
+  // Deletes a previously created policy. Fails if the policy is still being referenced by a network.
   rpc DeletePolicy(DeletePolicyRequest) returns (.google.protobuf.Empty) {
     option (google.api.http) = {
       delete: "/dns/v1/projects/{project}/policies/{name}"
     };
   };
 
-  // Fetches the representation of an existing Policy.
+  // Fetches the representation of an existing policy.
   rpc GetPolicy(GetPolicyRequest) returns (Policy) {
     option (google.api.http) = {
       get: "/dns/v1/projects/{project}/policies/{name}"
     };
   };
 
-  // Enumerates all Policies associated with a project.
+  // Enumerates all policies associated with a project.
   rpc ListPolicies(ListPoliciesRequest) returns (PoliciesListResponse) {
     option (google.api.http) = {
       get: "/dns/v1/projects/{project}/policies"
     };
   };
 
-  // Applies a partial update to an existing Policy.
+  // Applies a partial update to an existing policy.
   rpc PatchPolicy(PatchPolicyRequest) returns (PoliciesPatchResponse) {
     option (google.api.http) = {
       patch: "/dns/v1/projects/{project}/policies/{name}"
@@ -164,7 +164,7 @@ service PoliciesServer {
     };
   };
 
-  // Updates an existing Policy.
+  // Updates an existing policy.
   rpc UpdatePolicy(UpdatePolicyRequest) returns (PoliciesUpdateResponse) {
     option (google.api.http) = {
       put: "/dns/v1/projects/{project}/policies/{name}"
@@ -679,7 +679,7 @@ message Policy {
   optional PolicyAlternativeNameServerConfig alternative_name_server_config = 1 [json_name="alternativeNameServerConfig"];
   // A mutable string of at most 1024 characters associated with this resource for the user's convenience. Has no effect on the policy's function.
   optional string description = 2 [json_name="description"];
-  // Configurations related to DNS64 for this Policy.
+  // Configurations related to DNS64 for this policy.
   optional PolicyDns64Config dns64_config = 3 [json_name="dns64Config"];
   // Allows networks bound to this policy to receive DNS queries sent by VMs or applications over VPN connections. When enabled, a virtual IP address is allocated from each of the subnetworks that are bound to this policy.
   optional bool enable_inbound_forwarding = 4 [json_name="enableInboundForwarding"];
@@ -718,7 +718,7 @@ message PolicyDns64Config {
 }
 
 message PolicyDns64ConfigScope {
-  // Controls whether DNS64 is enabled globally at the network level.
+  // Controls whether DNS64 is enabled globally for all networks bound to the policy.
   optional bool all_queries = 1 [json_name="allQueries"];
   optional string kind = 2 [json_name="kind"];
 }

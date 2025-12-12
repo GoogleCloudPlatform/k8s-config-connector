@@ -718,17 +718,17 @@ var ManagedZonesServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PoliciesServerClient interface {
-	// Creates a new Policy.
+	// Creates a new policy.
 	CreatePolicy(ctx context.Context, in *CreatePolicyRequest, opts ...grpc.CallOption) (*Policy, error)
-	// Deletes a previously created Policy. Fails if the policy is still being referenced by a network.
+	// Deletes a previously created policy. Fails if the policy is still being referenced by a network.
 	DeletePolicy(ctx context.Context, in *DeletePolicyRequest, opts ...grpc.CallOption) (*empty.Empty, error)
-	// Fetches the representation of an existing Policy.
+	// Fetches the representation of an existing policy.
 	GetPolicy(ctx context.Context, in *GetPolicyRequest, opts ...grpc.CallOption) (*Policy, error)
-	// Enumerates all Policies associated with a project.
+	// Enumerates all policies associated with a project.
 	ListPolicies(ctx context.Context, in *ListPoliciesRequest, opts ...grpc.CallOption) (*PoliciesListResponse, error)
-	// Applies a partial update to an existing Policy.
+	// Applies a partial update to an existing policy.
 	PatchPolicy(ctx context.Context, in *PatchPolicyRequest, opts ...grpc.CallOption) (*PoliciesPatchResponse, error)
-	// Updates an existing Policy.
+	// Updates an existing policy.
 	UpdatePolicy(ctx context.Context, in *UpdatePolicyRequest, opts ...grpc.CallOption) (*PoliciesUpdateResponse, error)
 }
 
@@ -798,17 +798,17 @@ func (c *policiesServerClient) UpdatePolicy(ctx context.Context, in *UpdatePolic
 // All implementations must embed UnimplementedPoliciesServerServer
 // for forward compatibility
 type PoliciesServerServer interface {
-	// Creates a new Policy.
+	// Creates a new policy.
 	CreatePolicy(context.Context, *CreatePolicyRequest) (*Policy, error)
-	// Deletes a previously created Policy. Fails if the policy is still being referenced by a network.
+	// Deletes a previously created policy. Fails if the policy is still being referenced by a network.
 	DeletePolicy(context.Context, *DeletePolicyRequest) (*empty.Empty, error)
-	// Fetches the representation of an existing Policy.
+	// Fetches the representation of an existing policy.
 	GetPolicy(context.Context, *GetPolicyRequest) (*Policy, error)
-	// Enumerates all Policies associated with a project.
+	// Enumerates all policies associated with a project.
 	ListPolicies(context.Context, *ListPoliciesRequest) (*PoliciesListResponse, error)
-	// Applies a partial update to an existing Policy.
+	// Applies a partial update to an existing policy.
 	PatchPolicy(context.Context, *PatchPolicyRequest) (*PoliciesPatchResponse, error)
-	// Updates an existing Policy.
+	// Updates an existing policy.
 	UpdatePolicy(context.Context, *UpdatePolicyRequest) (*PoliciesUpdateResponse, error)
 	mustEmbedUnimplementedPoliciesServerServer()
 }

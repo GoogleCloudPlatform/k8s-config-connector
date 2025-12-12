@@ -3045,6 +3045,126 @@ func local_request_OrganizationsApisKeyvaluemapsServer_DeleteOrganizationsApisKe
 
 }
 
+func request_OrganizationsApisKeyvaluemapsServer_GetOrganizationsApisKeyvaluemap_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsApisKeyvaluemapsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetOrganizationsApisKeyvaluemapRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetOrganizationsApisKeyvaluemap(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsApisKeyvaluemapsServer_GetOrganizationsApisKeyvaluemap_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsApisKeyvaluemapsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetOrganizationsApisKeyvaluemapRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetOrganizationsApisKeyvaluemap(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsApisKeyvaluemapsServer_UpdateOrganizationsApisKeyvaluemap_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsApisKeyvaluemapsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateOrganizationsApisKeyvaluemapRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsApisKeyvaluemap); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.UpdateOrganizationsApisKeyvaluemap(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsApisKeyvaluemapsServer_UpdateOrganizationsApisKeyvaluemap_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsApisKeyvaluemapsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateOrganizationsApisKeyvaluemapRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsApisKeyvaluemap); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.UpdateOrganizationsApisKeyvaluemap(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_OrganizationsApisKeyvaluemapsEntriesServer_CreateOrganizationsApisKeyvaluemapsEntry_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsApisKeyvaluemapsEntriesServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateOrganizationsApisKeyvaluemapsEntryRequest
 	var metadata runtime.ServerMetadata
@@ -12417,6 +12537,126 @@ func local_request_OrganizationsEnvironmentsKeyvaluemapsServer_DeleteOrganizatio
 
 }
 
+func request_OrganizationsEnvironmentsKeyvaluemapsServer_GetOrganizationsEnvironmentsKeyvaluemap_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsEnvironmentsKeyvaluemapsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetOrganizationsEnvironmentsKeyvaluemapRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetOrganizationsEnvironmentsKeyvaluemap(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsEnvironmentsKeyvaluemapsServer_GetOrganizationsEnvironmentsKeyvaluemap_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsEnvironmentsKeyvaluemapsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetOrganizationsEnvironmentsKeyvaluemapRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetOrganizationsEnvironmentsKeyvaluemap(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsEnvironmentsKeyvaluemapsServer_UpdateOrganizationsEnvironmentsKeyvaluemap_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsEnvironmentsKeyvaluemapsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateOrganizationsEnvironmentsKeyvaluemapRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsEnvironmentsKeyvaluemap); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.UpdateOrganizationsEnvironmentsKeyvaluemap(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsEnvironmentsKeyvaluemapsServer_UpdateOrganizationsEnvironmentsKeyvaluemap_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsEnvironmentsKeyvaluemapsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateOrganizationsEnvironmentsKeyvaluemapRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsEnvironmentsKeyvaluemap); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.UpdateOrganizationsEnvironmentsKeyvaluemap(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_OrganizationsEnvironmentsKeyvaluemapsEntriesServer_CreateOrganizationsEnvironmentsKeyvaluemapsEntry_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsEnvironmentsKeyvaluemapsEntriesServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateOrganizationsEnvironmentsKeyvaluemapsEntryRequest
 	var metadata runtime.ServerMetadata
@@ -17767,6 +18007,126 @@ func local_request_OrganizationsKeyvaluemapsServer_DeleteOrganizationsKeyvaluema
 
 }
 
+func request_OrganizationsKeyvaluemapsServer_GetOrganizationsKeyvaluemap_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsKeyvaluemapsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetOrganizationsKeyvaluemapRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetOrganizationsKeyvaluemap(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsKeyvaluemapsServer_GetOrganizationsKeyvaluemap_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsKeyvaluemapsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetOrganizationsKeyvaluemapRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetOrganizationsKeyvaluemap(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsKeyvaluemapsServer_UpdateOrganizationsKeyvaluemap_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsKeyvaluemapsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateOrganizationsKeyvaluemapRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsKeyvaluemap); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.UpdateOrganizationsKeyvaluemap(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsKeyvaluemapsServer_UpdateOrganizationsKeyvaluemap_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsKeyvaluemapsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateOrganizationsKeyvaluemapRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsKeyvaluemap); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.UpdateOrganizationsKeyvaluemap(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_OrganizationsKeyvaluemapsEntriesServer_CreateOrganizationsKeyvaluemapsEntry_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsKeyvaluemapsEntriesServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateOrganizationsKeyvaluemapsEntryRequest
 	var metadata runtime.ServerMetadata
@@ -18521,6 +18881,352 @@ func local_request_OrganizationsSecurityAssessmentResultsServer_BatchComputeOrga
 	}
 
 	msg, err := server.BatchComputeOrganizationsSecurityAssessmentResult(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0 = &utilities.DoubleArray{Encoding: map[string]int{"organizations_security_feedback": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+)
+
+func request_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsSecurityFeedbackServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateOrganizationsSecurityFeedbackRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsSecurityFeedback); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.CreateOrganizationsSecurityFeedback(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsSecurityFeedbackServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateOrganizationsSecurityFeedbackRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsSecurityFeedback); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.CreateOrganizationsSecurityFeedback(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsSecurityFeedbackServer_DeleteOrganizationsSecurityFeedback_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsSecurityFeedbackServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteOrganizationsSecurityFeedbackRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.DeleteOrganizationsSecurityFeedback(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsSecurityFeedbackServer_DeleteOrganizationsSecurityFeedback_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsSecurityFeedbackServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteOrganizationsSecurityFeedbackRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.DeleteOrganizationsSecurityFeedback(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsSecurityFeedbackServer_GetOrganizationsSecurityFeedback_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsSecurityFeedbackServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetOrganizationsSecurityFeedbackRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetOrganizationsSecurityFeedback(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsSecurityFeedbackServer_GetOrganizationsSecurityFeedback_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsSecurityFeedbackServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetOrganizationsSecurityFeedbackRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetOrganizationsSecurityFeedback(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsSecurityFeedbackServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListOrganizationsSecurityFeedbackRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ListOrganizationsSecurityFeedback(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsSecurityFeedbackServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListOrganizationsSecurityFeedbackRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListOrganizationsSecurityFeedback(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0 = &utilities.DoubleArray{Encoding: map[string]int{"organizations_security_feedback": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+)
+
+func request_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsSecurityFeedbackServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PatchOrganizationsSecurityFeedbackRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsSecurityFeedback); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.PatchOrganizationsSecurityFeedback(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsSecurityFeedbackServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PatchOrganizationsSecurityFeedbackRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsSecurityFeedback); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.PatchOrganizationsSecurityFeedback(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -19561,6 +20267,10 @@ func local_request_OrganizationsSecurityProfilesV2Server_CreateOrganizationsSecu
 
 }
 
+var (
+	filter_OrganizationsSecurityProfilesV2Server_DeleteOrganizationsSecurityProfilesV2_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
 func request_OrganizationsSecurityProfilesV2Server_DeleteOrganizationsSecurityProfilesV2_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsSecurityProfilesV2ServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteOrganizationsSecurityProfilesV2Request
 	var metadata runtime.ServerMetadata
@@ -19580,6 +20290,13 @@ func request_OrganizationsSecurityProfilesV2Server_DeleteOrganizationsSecurityPr
 	protoReq.Name, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityProfilesV2Server_DeleteOrganizationsSecurityProfilesV2_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.DeleteOrganizationsSecurityProfilesV2(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -19608,10 +20325,21 @@ func local_request_OrganizationsSecurityProfilesV2Server_DeleteOrganizationsSecu
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityProfilesV2Server_DeleteOrganizationsSecurityProfilesV2_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
 	msg, err := server.DeleteOrganizationsSecurityProfilesV2(ctx, &protoReq)
 	return msg, metadata, err
 
 }
+
+var (
+	filter_OrganizationsSecurityProfilesV2Server_GetOrganizationsSecurityProfilesV2_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
 
 func request_OrganizationsSecurityProfilesV2Server_GetOrganizationsSecurityProfilesV2_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsSecurityProfilesV2ServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetOrganizationsSecurityProfilesV2Request
@@ -19632,6 +20360,13 @@ func request_OrganizationsSecurityProfilesV2Server_GetOrganizationsSecurityProfi
 	protoReq.Name, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityProfilesV2Server_GetOrganizationsSecurityProfilesV2_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.GetOrganizationsSecurityProfilesV2(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -19658,6 +20393,13 @@ func local_request_OrganizationsSecurityProfilesV2Server_GetOrganizationsSecurit
 	protoReq.Name, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsSecurityProfilesV2Server_GetOrganizationsSecurityProfilesV2_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := server.GetOrganizationsSecurityProfilesV2(ctx, &protoReq)
@@ -22881,6 +23623,56 @@ func RegisterOrganizationsApisKeyvaluemapsServerHandlerServer(ctx context.Contex
 		}
 
 		forward_OrganizationsApisKeyvaluemapsServer_DeleteOrganizationsApisKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsApisKeyvaluemapsServer_GetOrganizationsApisKeyvaluemap_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApisKeyvaluemapsServer/GetOrganizationsApisKeyvaluemap", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/apis/*/keyvaluemaps/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsApisKeyvaluemapsServer_GetOrganizationsApisKeyvaluemap_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApisKeyvaluemapsServer_GetOrganizationsApisKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_OrganizationsApisKeyvaluemapsServer_UpdateOrganizationsApisKeyvaluemap_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApisKeyvaluemapsServer/UpdateOrganizationsApisKeyvaluemap", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/apis/*/keyvaluemaps/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsApisKeyvaluemapsServer_UpdateOrganizationsApisKeyvaluemap_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApisKeyvaluemapsServer_UpdateOrganizationsApisKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -26910,6 +27702,56 @@ func RegisterOrganizationsEnvironmentsKeyvaluemapsServerHandlerServer(ctx contex
 
 	})
 
+	mux.Handle("GET", pattern_OrganizationsEnvironmentsKeyvaluemapsServer_GetOrganizationsEnvironmentsKeyvaluemap_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsKeyvaluemapsServer/GetOrganizationsEnvironmentsKeyvaluemap", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/environments/*/keyvaluemaps/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsEnvironmentsKeyvaluemapsServer_GetOrganizationsEnvironmentsKeyvaluemap_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsEnvironmentsKeyvaluemapsServer_GetOrganizationsEnvironmentsKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_OrganizationsEnvironmentsKeyvaluemapsServer_UpdateOrganizationsEnvironmentsKeyvaluemap_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsKeyvaluemapsServer/UpdateOrganizationsEnvironmentsKeyvaluemap", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/environments/*/keyvaluemaps/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsEnvironmentsKeyvaluemapsServer_UpdateOrganizationsEnvironmentsKeyvaluemap_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsEnvironmentsKeyvaluemapsServer_UpdateOrganizationsEnvironmentsKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -29183,6 +30025,56 @@ func RegisterOrganizationsKeyvaluemapsServerHandlerServer(ctx context.Context, m
 
 	})
 
+	mux.Handle("GET", pattern_OrganizationsKeyvaluemapsServer_GetOrganizationsKeyvaluemap_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsKeyvaluemapsServer/GetOrganizationsKeyvaluemap", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/keyvaluemaps/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsKeyvaluemapsServer_GetOrganizationsKeyvaluemap_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsKeyvaluemapsServer_GetOrganizationsKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_OrganizationsKeyvaluemapsServer_UpdateOrganizationsKeyvaluemap_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsKeyvaluemapsServer/UpdateOrganizationsKeyvaluemap", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/keyvaluemaps/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsKeyvaluemapsServer_UpdateOrganizationsKeyvaluemap_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsKeyvaluemapsServer_UpdateOrganizationsKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -29516,6 +30408,140 @@ func RegisterOrganizationsSecurityAssessmentResultsServerHandlerServer(ctx conte
 		}
 
 		forward_OrganizationsSecurityAssessmentResultsServer_BatchComputeOrganizationsSecurityAssessmentResult_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+// RegisterOrganizationsSecurityFeedbackServerHandlerServer registers the http handlers for service OrganizationsSecurityFeedbackServer to "mux".
+// UnaryRPC     :call OrganizationsSecurityFeedbackServerServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterOrganizationsSecurityFeedbackServerHandlerFromEndpoint instead.
+func RegisterOrganizationsSecurityFeedbackServerHandlerServer(ctx context.Context, mux *runtime.ServeMux, server OrganizationsSecurityFeedbackServerServer) error {
+
+	mux.Handle("POST", pattern_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/CreateOrganizationsSecurityFeedback", runtime.WithHTTPPathPattern("/v1/{parent=organizations/*}/securityFeedback"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_OrganizationsSecurityFeedbackServer_DeleteOrganizationsSecurityFeedback_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/DeleteOrganizationsSecurityFeedback", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/securityFeedback/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsSecurityFeedbackServer_DeleteOrganizationsSecurityFeedback_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsSecurityFeedbackServer_DeleteOrganizationsSecurityFeedback_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsSecurityFeedbackServer_GetOrganizationsSecurityFeedback_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/GetOrganizationsSecurityFeedback", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/securityFeedback/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsSecurityFeedbackServer_GetOrganizationsSecurityFeedback_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsSecurityFeedbackServer_GetOrganizationsSecurityFeedback_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/ListOrganizationsSecurityFeedback", runtime.WithHTTPPathPattern("/v1/{parent=organizations/*}/securityFeedback"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PATCH", pattern_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/PatchOrganizationsSecurityFeedback", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/securityFeedback/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -32488,6 +33514,50 @@ func RegisterOrganizationsApisKeyvaluemapsServerHandlerClient(ctx context.Contex
 
 	})
 
+	mux.Handle("GET", pattern_OrganizationsApisKeyvaluemapsServer_GetOrganizationsApisKeyvaluemap_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApisKeyvaluemapsServer/GetOrganizationsApisKeyvaluemap", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/apis/*/keyvaluemaps/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsApisKeyvaluemapsServer_GetOrganizationsApisKeyvaluemap_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApisKeyvaluemapsServer_GetOrganizationsApisKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_OrganizationsApisKeyvaluemapsServer_UpdateOrganizationsApisKeyvaluemap_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApisKeyvaluemapsServer/UpdateOrganizationsApisKeyvaluemap", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/apis/*/keyvaluemaps/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsApisKeyvaluemapsServer_UpdateOrganizationsApisKeyvaluemap_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApisKeyvaluemapsServer_UpdateOrganizationsApisKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -32495,12 +33565,20 @@ var (
 	pattern_OrganizationsApisKeyvaluemapsServer_CreateOrganizationsApisKeyvaluemap_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "organizations", "apis", "parent", "keyvaluemaps"}, ""))
 
 	pattern_OrganizationsApisKeyvaluemapsServer_DeleteOrganizationsApisKeyvaluemap_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "organizations", "apis", "keyvaluemaps", "name"}, ""))
+
+	pattern_OrganizationsApisKeyvaluemapsServer_GetOrganizationsApisKeyvaluemap_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "organizations", "apis", "keyvaluemaps", "name"}, ""))
+
+	pattern_OrganizationsApisKeyvaluemapsServer_UpdateOrganizationsApisKeyvaluemap_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "organizations", "apis", "keyvaluemaps", "name"}, ""))
 )
 
 var (
 	forward_OrganizationsApisKeyvaluemapsServer_CreateOrganizationsApisKeyvaluemap_0 = runtime.ForwardResponseMessage
 
 	forward_OrganizationsApisKeyvaluemapsServer_DeleteOrganizationsApisKeyvaluemap_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsApisKeyvaluemapsServer_GetOrganizationsApisKeyvaluemap_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsApisKeyvaluemapsServer_UpdateOrganizationsApisKeyvaluemap_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterOrganizationsApisKeyvaluemapsEntriesServerHandlerFromEndpoint is same as RegisterOrganizationsApisKeyvaluemapsEntriesServerHandler but
@@ -38065,6 +39143,50 @@ func RegisterOrganizationsEnvironmentsKeyvaluemapsServerHandlerClient(ctx contex
 
 	})
 
+	mux.Handle("GET", pattern_OrganizationsEnvironmentsKeyvaluemapsServer_GetOrganizationsEnvironmentsKeyvaluemap_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsKeyvaluemapsServer/GetOrganizationsEnvironmentsKeyvaluemap", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/environments/*/keyvaluemaps/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsEnvironmentsKeyvaluemapsServer_GetOrganizationsEnvironmentsKeyvaluemap_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsEnvironmentsKeyvaluemapsServer_GetOrganizationsEnvironmentsKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_OrganizationsEnvironmentsKeyvaluemapsServer_UpdateOrganizationsEnvironmentsKeyvaluemap_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsKeyvaluemapsServer/UpdateOrganizationsEnvironmentsKeyvaluemap", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/environments/*/keyvaluemaps/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsEnvironmentsKeyvaluemapsServer_UpdateOrganizationsEnvironmentsKeyvaluemap_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsEnvironmentsKeyvaluemapsServer_UpdateOrganizationsEnvironmentsKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -38072,12 +39194,20 @@ var (
 	pattern_OrganizationsEnvironmentsKeyvaluemapsServer_CreateOrganizationsEnvironmentsKeyvaluemap_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "organizations", "environments", "parent", "keyvaluemaps"}, ""))
 
 	pattern_OrganizationsEnvironmentsKeyvaluemapsServer_DeleteOrganizationsEnvironmentsKeyvaluemap_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "organizations", "environments", "keyvaluemaps", "name"}, ""))
+
+	pattern_OrganizationsEnvironmentsKeyvaluemapsServer_GetOrganizationsEnvironmentsKeyvaluemap_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "organizations", "environments", "keyvaluemaps", "name"}, ""))
+
+	pattern_OrganizationsEnvironmentsKeyvaluemapsServer_UpdateOrganizationsEnvironmentsKeyvaluemap_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "organizations", "environments", "keyvaluemaps", "name"}, ""))
 )
 
 var (
 	forward_OrganizationsEnvironmentsKeyvaluemapsServer_CreateOrganizationsEnvironmentsKeyvaluemap_0 = runtime.ForwardResponseMessage
 
 	forward_OrganizationsEnvironmentsKeyvaluemapsServer_DeleteOrganizationsEnvironmentsKeyvaluemap_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsEnvironmentsKeyvaluemapsServer_GetOrganizationsEnvironmentsKeyvaluemap_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsEnvironmentsKeyvaluemapsServer_UpdateOrganizationsEnvironmentsKeyvaluemap_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterOrganizationsEnvironmentsKeyvaluemapsEntriesServerHandlerFromEndpoint is same as RegisterOrganizationsEnvironmentsKeyvaluemapsEntriesServerHandler but
@@ -41213,6 +42343,50 @@ func RegisterOrganizationsKeyvaluemapsServerHandlerClient(ctx context.Context, m
 
 	})
 
+	mux.Handle("GET", pattern_OrganizationsKeyvaluemapsServer_GetOrganizationsKeyvaluemap_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsKeyvaluemapsServer/GetOrganizationsKeyvaluemap", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/keyvaluemaps/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsKeyvaluemapsServer_GetOrganizationsKeyvaluemap_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsKeyvaluemapsServer_GetOrganizationsKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_OrganizationsKeyvaluemapsServer_UpdateOrganizationsKeyvaluemap_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsKeyvaluemapsServer/UpdateOrganizationsKeyvaluemap", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/keyvaluemaps/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsKeyvaluemapsServer_UpdateOrganizationsKeyvaluemap_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsKeyvaluemapsServer_UpdateOrganizationsKeyvaluemap_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -41220,12 +42394,20 @@ var (
 	pattern_OrganizationsKeyvaluemapsServer_CreateOrganizationsKeyvaluemap_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "organizations", "parent", "keyvaluemaps"}, ""))
 
 	pattern_OrganizationsKeyvaluemapsServer_DeleteOrganizationsKeyvaluemap_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "organizations", "keyvaluemaps", "name"}, ""))
+
+	pattern_OrganizationsKeyvaluemapsServer_GetOrganizationsKeyvaluemap_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "organizations", "keyvaluemaps", "name"}, ""))
+
+	pattern_OrganizationsKeyvaluemapsServer_UpdateOrganizationsKeyvaluemap_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "organizations", "keyvaluemaps", "name"}, ""))
 )
 
 var (
 	forward_OrganizationsKeyvaluemapsServer_CreateOrganizationsKeyvaluemap_0 = runtime.ForwardResponseMessage
 
 	forward_OrganizationsKeyvaluemapsServer_DeleteOrganizationsKeyvaluemap_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsKeyvaluemapsServer_GetOrganizationsKeyvaluemap_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsKeyvaluemapsServer_UpdateOrganizationsKeyvaluemap_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterOrganizationsKeyvaluemapsEntriesServerHandlerFromEndpoint is same as RegisterOrganizationsKeyvaluemapsEntriesServerHandler but
@@ -41718,6 +42900,181 @@ var (
 
 var (
 	forward_OrganizationsSecurityAssessmentResultsServer_BatchComputeOrganizationsSecurityAssessmentResult_0 = runtime.ForwardResponseMessage
+)
+
+// RegisterOrganizationsSecurityFeedbackServerHandlerFromEndpoint is same as RegisterOrganizationsSecurityFeedbackServerHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterOrganizationsSecurityFeedbackServerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.Dial(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+
+	return RegisterOrganizationsSecurityFeedbackServerHandler(ctx, mux, conn)
+}
+
+// RegisterOrganizationsSecurityFeedbackServerHandler registers the http handlers for service OrganizationsSecurityFeedbackServer to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterOrganizationsSecurityFeedbackServerHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterOrganizationsSecurityFeedbackServerHandlerClient(ctx, mux, NewOrganizationsSecurityFeedbackServerClient(conn))
+}
+
+// RegisterOrganizationsSecurityFeedbackServerHandlerClient registers the http handlers for service OrganizationsSecurityFeedbackServer
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "OrganizationsSecurityFeedbackServerClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "OrganizationsSecurityFeedbackServerClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "OrganizationsSecurityFeedbackServerClient" to call the correct interceptors.
+func RegisterOrganizationsSecurityFeedbackServerHandlerClient(ctx context.Context, mux *runtime.ServeMux, client OrganizationsSecurityFeedbackServerClient) error {
+
+	mux.Handle("POST", pattern_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/CreateOrganizationsSecurityFeedback", runtime.WithHTTPPathPattern("/v1/{parent=organizations/*}/securityFeedback"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_OrganizationsSecurityFeedbackServer_DeleteOrganizationsSecurityFeedback_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/DeleteOrganizationsSecurityFeedback", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/securityFeedback/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsSecurityFeedbackServer_DeleteOrganizationsSecurityFeedback_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsSecurityFeedbackServer_DeleteOrganizationsSecurityFeedback_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsSecurityFeedbackServer_GetOrganizationsSecurityFeedback_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/GetOrganizationsSecurityFeedback", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/securityFeedback/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsSecurityFeedbackServer_GetOrganizationsSecurityFeedback_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsSecurityFeedbackServer_GetOrganizationsSecurityFeedback_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/ListOrganizationsSecurityFeedback", runtime.WithHTTPPathPattern("/v1/{parent=organizations/*}/securityFeedback"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PATCH", pattern_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityFeedbackServer/PatchOrganizationsSecurityFeedback", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/securityFeedback/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+var (
+	pattern_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "organizations", "parent", "securityFeedback"}, ""))
+
+	pattern_OrganizationsSecurityFeedbackServer_DeleteOrganizationsSecurityFeedback_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "organizations", "securityFeedback", "name"}, ""))
+
+	pattern_OrganizationsSecurityFeedbackServer_GetOrganizationsSecurityFeedback_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "organizations", "securityFeedback", "name"}, ""))
+
+	pattern_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "organizations", "parent", "securityFeedback"}, ""))
+
+	pattern_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "organizations", "securityFeedback", "name"}, ""))
+)
+
+var (
+	forward_OrganizationsSecurityFeedbackServer_CreateOrganizationsSecurityFeedback_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsSecurityFeedbackServer_DeleteOrganizationsSecurityFeedback_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsSecurityFeedbackServer_GetOrganizationsSecurityFeedback_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsSecurityFeedbackServer_ListOrganizationsSecurityFeedback_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsSecurityFeedbackServer_PatchOrganizationsSecurityFeedback_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterOrganizationsSecurityMonitoringConditionsServerHandlerFromEndpoint is same as RegisterOrganizationsSecurityMonitoringConditionsServerHandler but

@@ -14,7 +14,7 @@ import (
 	"net/http"
 
 	extDataplexpb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
-	extIampb "cloud.google.com/go/iam/apiv1/iampb"
+	iampb_0 "cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -654,7 +654,7 @@ var (
 )
 
 func request_ContentService_GetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.ContentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.GetIamPolicyRequest
+	var protoReq iampb_0.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -687,7 +687,7 @@ func request_ContentService_GetIamPolicy_0(ctx context.Context, marshaler runtim
 }
 
 func local_request_ContentService_GetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.ContentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.GetIamPolicyRequest
+	var protoReq iampb_0.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -724,7 +724,7 @@ var (
 )
 
 func request_ContentService_GetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.ContentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.GetIamPolicyRequest
+	var protoReq iampb_0.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -757,7 +757,7 @@ func request_ContentService_GetIamPolicy_1(ctx context.Context, marshaler runtim
 }
 
 func local_request_ContentService_GetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.ContentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.GetIamPolicyRequest
+	var protoReq iampb_0.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -790,7 +790,7 @@ func local_request_ContentService_GetIamPolicy_1(ctx context.Context, marshaler 
 }
 
 func request_ContentService_SetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.ContentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.SetIamPolicyRequest
+	var protoReq iampb_0.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -824,7 +824,7 @@ func request_ContentService_SetIamPolicy_0(ctx context.Context, marshaler runtim
 }
 
 func local_request_ContentService_SetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.ContentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.SetIamPolicyRequest
+	var protoReq iampb_0.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -858,7 +858,7 @@ func local_request_ContentService_SetIamPolicy_0(ctx context.Context, marshaler 
 }
 
 func request_ContentService_SetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.ContentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.SetIamPolicyRequest
+	var protoReq iampb_0.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -892,7 +892,7 @@ func request_ContentService_SetIamPolicy_1(ctx context.Context, marshaler runtim
 }
 
 func local_request_ContentService_SetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.ContentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.SetIamPolicyRequest
+	var protoReq iampb_0.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -926,7 +926,7 @@ func local_request_ContentService_SetIamPolicy_1(ctx context.Context, marshaler 
 }
 
 func request_ContentService_TestIamPermissions_0(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.ContentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.TestIamPermissionsRequest
+	var protoReq iampb_0.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -960,7 +960,7 @@ func request_ContentService_TestIamPermissions_0(ctx context.Context, marshaler 
 }
 
 func local_request_ContentService_TestIamPermissions_0(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.ContentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.TestIamPermissionsRequest
+	var protoReq iampb_0.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -994,7 +994,7 @@ func local_request_ContentService_TestIamPermissions_0(ctx context.Context, mars
 }
 
 func request_ContentService_TestIamPermissions_1(ctx context.Context, marshaler runtime.Marshaler, client extDataplexpb.ContentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.TestIamPermissionsRequest
+	var protoReq iampb_0.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1028,7 +1028,7 @@ func request_ContentService_TestIamPermissions_1(ctx context.Context, marshaler 
 }
 
 func local_request_ContentService_TestIamPermissions_1(ctx context.Context, marshaler runtime.Marshaler, server extDataplexpb.ContentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extIampb.TestIamPermissionsRequest
+	var protoReq iampb_0.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)

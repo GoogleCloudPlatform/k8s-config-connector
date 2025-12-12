@@ -775,7 +775,7 @@ message DataMaskingStatistics {
   optional bool data_masking_applied = 1 [json_name="dataMaskingApplied"];
 }
 
-// Data policy option proto, it currently supports name only, will support precedence later.
+// Data policy option. For more information, see [Mask data by applying data policies to a column](https://cloud.google.com/bigquery/docs/column-data-masking#data-policies-on-column/).
 message DataPolicyOption {
   // Data policy resource name in the form of projects/project_id/locations/location_id/dataPolicies/data_policy_id.
   optional string name = 1 [json_name="name"];
@@ -1200,6 +1200,8 @@ message ExternalDataConfiguration {
   optional string time_zone = 25 [json_name="timeZone"];
   // Optional. Format used to parse TIMESTAMP values. Supports C-style and SQL-style values.
   optional string timestamp_format = 26 [json_name="timestampFormat"];
+  // Precisions (maximum number of total digits in base 10) for seconds of TIMESTAMP types that are allowed to the destination table for autodetection mode. Available for the formats: CSV. For the CSV Format, Possible values include: Not Specified, [], or [6]: timestamp(6) for all auto detected TIMESTAMP columns [6, 12]: timestamp(6) for all auto detected TIMESTAMP columns that have less than 6 digits of subseconds. timestamp(12) for all auto detected TIMESTAMP columns that have more than 6 digits of subseconds. [12]: timestamp(12) for all auto detected TIMESTAMP columns. The order of the elements in this array is ignored. Inputs that have higher precision than the highest target precision in this array will be truncated.
+  repeated int32 timestamp_target_precision = 27 [json_name="timestampTargetPrecision"];
 }
 
 // Configures the access a dataset defined in an external metadata storage.
@@ -1226,7 +1228,7 @@ message ExternalRuntimeOptions {
 
 // The external service cost is a portion of the total cost, these costs are not additive with total_bytes_billed. Moreover, this field only track external service costs that will show up as BigQuery costs (e.g. training BigQuery ML job with google cloud CAIP or Automl Tables services), not other costs which may be accrued by running the query (e.g. reading from Bigtable or Cloud Storage). The external service costs with different billing sku (e.g. CAIP job is charged based on VM usage) are converted to BigQuery billed_bytes and slot_ms with equivalent amount of US dollars. Services may not directly correlate to these metrics, but these are the equivalents for billing purposes. Output only.
 message ExternalServiceCost {
-  // The billing method used for the external job. This field is only used when billed on the services sku, set to "SERVICES_SKU". Otherwise, it is unspecified for backward compatibility.
+  // The billing method used for the external job. This field, set to `SERVICES_SKU`, is only used when billing under the services SKU. Otherwise, it is unspecified for backward compatibility.
   optional string billing_method = 1 [json_name="billingMethod"];
   // External service cost in terms of bigquery bytes billed.
   optional int64 bytes_billed = 2 [json_name="bytesBilled"];
@@ -1424,6 +1426,28 @@ message HparamTuningTrial {
   optional int64 trial_id = 10 [json_name="trialId"];
 }
 
+// Statistics related to Incremental Query Results. Populated as part of JobStatistics2. This feature is not yet available.
+message IncrementalResultStats {
+  // Reason why incremental query results are/were not written by the query.
+  optional string disabled_reason = 1 [json_name="disabledReason"];
+  // The time at which the result table's contents were modified. May be absent if no results have been written or the query has completed.
+  optional .google.protobuf.Timestamp result_set_last_modify_time = 2 [json_name="resultSetLastModifyTime"];
+  // The time at which the result table's contents were completely replaced. May be absent if no results have been written or the query has completed.
+  optional .google.protobuf.Timestamp result_set_last_replace_time = 3 [json_name="resultSetLastReplaceTime"];
+}
+
+// Statistics for index pruning.
+message IndexPruningStats {
+  // The base table reference.
+  optional TableReference base_table = 1 [json_name="baseTable"];
+  // The index id.
+  optional string index_id = 2 [json_name="indexId"];
+  // The number of parallel inputs after index pruning.
+  optional int64 post_index_pruning_parallel_input_count = 3 [json_name="postIndexPruningParallelInputCount"];
+  // The number of parallel inputs before index pruning.
+  optional int64 pre_index_pruning_parallel_input_count = 4 [json_name="preIndexPruningParallelInputCount"];
+}
+
 // Reason about why no search index was used in the search query (or sub-query).
 message IndexUnusedReason {
   // Specifies the base table involved in the reason that no search index was used.
@@ -1536,7 +1560,7 @@ message JobConfiguration {
   optional bool dry_run = 2 [json_name="dryRun"];
   // [Pick one] Configures an extract job.
   optional JobConfigurationExtract extract = 3 [json_name="extract"];
-  // Optional. Job timeout in milliseconds. If this time limit is exceeded, BigQuery will attempt to stop a longer job, but may not always succeed in canceling it before the job completes. For example, a job that takes more than 60 seconds to complete has a better chance of being stopped than a job that takes 10 seconds to complete.
+  // Optional. Job timeout in milliseconds relative to the job creation time. If this time limit is exceeded, BigQuery attempts to stop the job, but might not always succeed in canceling it before the job completes. For example, a job that takes more than 60 seconds to complete has a better chance of being stopped than a job that takes 10 seconds to complete.
   optional int64 job_timeout_ms = 4 [json_name="jobTimeoutMs"];
   // Output only. The type of the job. Can be QUERY, LOAD, EXTRACT, COPY or UNKNOWN.
   optional string job_type = 5 [json_name="jobType"];
@@ -1544,10 +1568,12 @@ message JobConfiguration {
   map<string, string> labels = 6 [json_name="labels"];
   // [Pick one] Configures a load job.
   optional JobConfigurationLoad load = 7 [json_name="load"];
+  // Optional. A target limit on the rate of slot consumption by this job. If set to a value > 0, BigQuery will attempt to limit the rate of slot consumption by this job to keep it below the configured limit, even if the job is eligible for more slots based on fair scheduling. The unused slots will be available for other jobs and queries to use. Note: This feature is not yet generally available.
+  optional int32 max_slots = 8 [json_name="maxSlots"];
   // [Pick one] Configures a query job.
-  optional JobConfigurationQuery query = 8 [json_name="query"];
+  optional JobConfigurationQuery query = 9 [json_name="query"];
   // Optional. The reservation that job would use. User can specify a reservation to execute the job. If reservation is not set, reservation is determined based on the rules defined by the reservation assignments. The expected format is `projects/{project}/locations/{location}/reservations/{reservation}`.
-  optional string reservation = 9 [json_name="reservation"];
+  optional string reservation = 10 [json_name="reservation"];
 }
 
 // JobConfigurationExtract configures a job that exports data from a BigQuery table into Google Cloud Storage.
@@ -1642,7 +1668,7 @@ message JobConfigurationLoad {
   optional string schema_inline = 32 [json_name="schemaInline"];
   // [Deprecated] The format of the schemaInline property.
   optional string schema_inline_format = 33 [json_name="schemaInlineFormat"];
-  // Allows the schema of the destination table to be updated as a side effect of the load job if a schema is autodetected or supplied in the job configuration. Schema update options are supported in two cases: when writeDisposition is WRITE_APPEND; when writeDisposition is WRITE_TRUNCATE and the destination table is a partition of a table, specified by partition decorators. For normal tables, WRITE_TRUNCATE will always overwrite the schema. One or more of the following values are specified: * ALLOW_FIELD_ADDITION: allow adding a nullable field to the schema. * ALLOW_FIELD_RELAXATION: allow relaxing a required field in the original schema to nullable.
+  // Allows the schema of the destination table to be updated as a side effect of the load job if a schema is autodetected or supplied in the job configuration. Schema update options are supported in three cases: when writeDisposition is WRITE_APPEND; when writeDisposition is WRITE_TRUNCATE_DATA; when writeDisposition is WRITE_TRUNCATE and the destination table is a partition of a table, specified by partition decorators. For normal tables, WRITE_TRUNCATE will always overwrite the schema. One or more of the following values are specified: * ALLOW_FIELD_ADDITION: allow adding a nullable field to the schema. * ALLOW_FIELD_RELAXATION: allow relaxing a required field in the original schema to nullable.
   repeated string schema_update_options = 34 [json_name="schemaUpdateOptions"];
   // Optional. The number of rows at the top of a CSV file that BigQuery will skip when loading the data. The default value is 0. This property is useful if you have header rows in the file that should be skipped. When autodetect is on, the behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N > 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema.
   optional int32 skip_leading_rows = 35 [json_name="skipLeadingRows"];
@@ -1660,10 +1686,12 @@ message JobConfigurationLoad {
   optional string time_zone = 41 [json_name="timeZone"];
   // Optional. Date format used for parsing TIMESTAMP values.
   optional string timestamp_format = 42 [json_name="timestampFormat"];
+  // Precisions (maximum number of total digits in base 10) for seconds of TIMESTAMP types that are allowed to the destination table for autodetection mode. Available for the formats: CSV. For the CSV Format, Possible values include: Not Specified, [], or [6]: timestamp(6) for all auto detected TIMESTAMP columns [6, 12]: timestamp(6) for all auto detected TIMESTAMP columns that have less than 6 digits of subseconds. timestamp(12) for all auto detected TIMESTAMP columns that have more than 6 digits of subseconds. [12]: timestamp(12) for all auto detected TIMESTAMP columns. The order of the elements in this array is ignored. Inputs that have higher precision than the highest target precision in this array will be truncated.
+  repeated int32 timestamp_target_precision = 43 [json_name="timestampTargetPrecision"];
   // Optional. If sourceFormat is set to "AVRO", indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
-  optional bool use_avro_logical_types = 43 [json_name="useAvroLogicalTypes"];
+  optional bool use_avro_logical_types = 44 [json_name="useAvroLogicalTypes"];
   // Optional. Specifies the action that occurs if the destination table already exists. The following values are supported: * WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the data, removes the constraints and uses the schema from the load job. * WRITE_TRUNCATE_DATA: If the table already exists, BigQuery overwrites the data, but keeps the constraints and schema of the existing table. * WRITE_APPEND: If the table already exists, BigQuery appends the data to the table. * WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result. The default value is WRITE_APPEND. Each action is atomic and only occurs if BigQuery is able to complete the job successfully. Creation, truncation and append actions occur as one atomic update upon job completion.
-  optional string write_disposition = 44 [json_name="writeDisposition"];
+  optional string write_disposition = 45 [json_name="writeDisposition"];
 }
 
 // JobConfigurationQuery configures a BigQuery query job.
@@ -1704,7 +1732,7 @@ message JobConfigurationQuery {
   repeated QueryParameter query_parameters = 17 [json_name="queryParameters"];
   // Range partitioning specification for the destination table. Only one of timePartitioning and rangePartitioning should be specified.
   optional RangePartitioning range_partitioning = 18 [json_name="rangePartitioning"];
-  // Allows the schema of the destination table to be updated as a side effect of the query job. Schema update options are supported in two cases: when writeDisposition is WRITE_APPEND; when writeDisposition is WRITE_TRUNCATE and the destination table is a partition of a table, specified by partition decorators. For normal tables, WRITE_TRUNCATE will always overwrite the schema. One or more of the following values are specified: * ALLOW_FIELD_ADDITION: allow adding a nullable field to the schema. * ALLOW_FIELD_RELAXATION: allow relaxing a required field in the original schema to nullable.
+  // Allows the schema of the destination table to be updated as a side effect of the query job. Schema update options are supported in three cases: when writeDisposition is WRITE_APPEND; when writeDisposition is WRITE_TRUNCATE_DATA; when writeDisposition is WRITE_TRUNCATE and the destination table is a partition of a table, specified by partition decorators. For normal tables, WRITE_TRUNCATE will always overwrite the schema. One or more of the following values are specified: * ALLOW_FIELD_ADDITION: allow adding a nullable field to the schema. * ALLOW_FIELD_RELAXATION: allow relaxing a required field in the original schema to nullable.
   repeated string schema_update_options = 19 [json_name="schemaUpdateOptions"];
   // Options controlling the execution of scripts.
   optional ScriptOptions script_options = 20 [json_name="scriptOptions"];
@@ -1822,24 +1850,26 @@ message JobStatistics {
   optional JobStatistics2 query = 12 [json_name="query"];
   // Output only. Quotas which delayed this job's start time.
   repeated string quota_deferments = 13 [json_name="quotaDeferments"];
+  // Output only. The reservation group path of the reservation assigned to this job. This field has a limit of 10 nested reservation groups. This is to maintain consistency between reservatins info schema and jobs info schema. The first reservation group is the root reservation group and the last is the leaf or lowest level reservation group.
+  repeated string reservation_group_path = 14 [json_name="reservationGroupPath"];
   // Output only. Job resource usage breakdown by reservation. This field reported misleading information and will no longer be populated.
-  repeated JobStatisticsReservationUsage reservation_usage = 14 [json_name="reservationUsage"];
+  repeated JobStatisticsReservationUsage reservation_usage = 15 [json_name="reservationUsage"];
   // Output only. Name of the primary reservation assigned to this job. Note that this could be different than reservations reported in the reservation usage field if parent reservations were used to execute this job.
-  optional string reservation_id = 15 [json_name="reservation_id"];
+  optional string reservation_id = 16 [json_name="reservation_id"];
   // Output only. Statistics for row-level security. Present only for query and extract jobs.
-  optional RowLevelSecurityStatistics row_level_security_statistics = 16 [json_name="rowLevelSecurityStatistics"];
+  optional RowLevelSecurityStatistics row_level_security_statistics = 17 [json_name="rowLevelSecurityStatistics"];
   // Output only. If this a child job of a script, specifies information about the context of this job within the script.
-  optional ScriptStatistics script_statistics = 17 [json_name="scriptStatistics"];
+  optional ScriptStatistics script_statistics = 18 [json_name="scriptStatistics"];
   // Output only. Information of the session if this job is part of one.
-  optional SessionInfo session_info = 18 [json_name="sessionInfo"];
+  optional SessionInfo session_info = 19 [json_name="sessionInfo"];
   // Output only. Start time of this job, in milliseconds since the epoch. This field will be present when the job transitions from the PENDING state to either RUNNING or DONE.
-  optional int64 start_time = 19 [json_name="startTime"];
+  optional int64 start_time = 20 [json_name="startTime"];
   // Output only. Total bytes processed for the job.
-  optional int64 total_bytes_processed = 20 [json_name="totalBytesProcessed"];
+  optional int64 total_bytes_processed = 21 [json_name="totalBytesProcessed"];
   // Output only. Slot-milliseconds for the job.
-  optional int64 total_slot_ms = 21 [json_name="totalSlotMs"];
+  optional int64 total_slot_ms = 22 [json_name="totalSlotMs"];
   // Output only. [Alpha] Information of the multi-statement transaction if this job is part of one. This property is only expected on a child job or a job that is in a session. A script parent job is not part of the transaction started in the script.
-  optional TransactionInfo transaction_info = 22 [json_name="transactionInfo"];
+  optional TransactionInfo transaction_info = 23 [json_name="transactionInfo"];
 }
 
 message JobStatistics2ReservationUsage {
@@ -1883,62 +1913,64 @@ message JobStatistics2 {
   optional ExportDataStatistics export_data_statistics = 16 [json_name="exportDataStatistics"];
   // Output only. Job cost breakdown as bigquery internal cost and external service costs.
   repeated ExternalServiceCost external_service_costs = 17 [json_name="externalServiceCosts"];
+  // Output only. Statistics related to incremental query results, if enabled for the query. This feature is not yet available.
+  optional IncrementalResultStats incremental_result_stats = 18 [json_name="incrementalResultStats"];
   // Output only. Statistics for a LOAD query.
-  optional LoadQueryStatistics load_query_statistics = 18 [json_name="loadQueryStatistics"];
+  optional LoadQueryStatistics load_query_statistics = 19 [json_name="loadQueryStatistics"];
   // Output only. Statistics of materialized views of a query job.
-  optional MaterializedViewStatistics materialized_view_statistics = 19 [json_name="materializedViewStatistics"];
+  optional MaterializedViewStatistics materialized_view_statistics = 20 [json_name="materializedViewStatistics"];
   // Output only. Statistics of metadata cache usage in a query for BigLake tables.
-  optional MetadataCacheStatistics metadata_cache_statistics = 20 [json_name="metadataCacheStatistics"];
+  optional MetadataCacheStatistics metadata_cache_statistics = 21 [json_name="metadataCacheStatistics"];
   // Output only. Statistics of a BigQuery ML training job.
-  optional MlStatistics ml_statistics = 21 [json_name="mlStatistics"];
+  optional MlStatistics ml_statistics = 22 [json_name="mlStatistics"];
   // Deprecated.
-  optional BigQueryModelTraining model_training = 22 [json_name="modelTraining"];
+  optional BigQueryModelTraining model_training = 23 [json_name="modelTraining"];
   // Deprecated.
-  optional int32 model_training_current_iteration = 23 [json_name="modelTrainingCurrentIteration"];
+  optional int32 model_training_current_iteration = 24 [json_name="modelTrainingCurrentIteration"];
   // Deprecated.
-  optional int64 model_training_expected_total_iteration = 24 [json_name="modelTrainingExpectedTotalIteration"];
+  optional int64 model_training_expected_total_iteration = 25 [json_name="modelTrainingExpectedTotalIteration"];
   // Output only. The number of rows affected by a DML statement. Present only for DML statements INSERT, UPDATE or DELETE.
-  optional int64 num_dml_affected_rows = 25 [json_name="numDmlAffectedRows"];
+  optional int64 num_dml_affected_rows = 26 [json_name="numDmlAffectedRows"];
   // Output only. Performance insights.
-  optional PerformanceInsights performance_insights = 26 [json_name="performanceInsights"];
+  optional PerformanceInsights performance_insights = 27 [json_name="performanceInsights"];
   // Output only. Query optimization information for a QUERY job.
-  optional QueryInfo query_info = 27 [json_name="queryInfo"];
+  optional QueryInfo query_info = 28 [json_name="queryInfo"];
   // Output only. Describes execution plan for the query.
-  repeated ExplainQueryStage query_plan = 28 [json_name="queryPlan"];
+  repeated ExplainQueryStage query_plan = 29 [json_name="queryPlan"];
   // Output only. Referenced routines for the job.
-  repeated RoutineReference referenced_routines = 29 [json_name="referencedRoutines"];
+  repeated RoutineReference referenced_routines = 30 [json_name="referencedRoutines"];
   // Output only. Referenced tables for the job.
-  repeated TableReference referenced_tables = 30 [json_name="referencedTables"];
+  repeated TableReference referenced_tables = 31 [json_name="referencedTables"];
   // Output only. Job resource usage breakdown by reservation. This field reported misleading information and will no longer be populated.
-  repeated JobStatistics2ReservationUsage reservation_usage = 31 [json_name="reservationUsage"];
+  repeated JobStatistics2ReservationUsage reservation_usage = 32 [json_name="reservationUsage"];
   // Output only. The schema of the results. Present only for successful dry run of non-legacy SQL queries.
-  optional TableSchema schema = 32 [json_name="schema"];
+  optional TableSchema schema = 33 [json_name="schema"];
   // Output only. Search query specific statistics.
-  optional SearchStatistics search_statistics = 33 [json_name="searchStatistics"];
+  optional SearchStatistics search_statistics = 34 [json_name="searchStatistics"];
   // Output only. Statistics of a Spark procedure job.
-  optional SparkStatistics spark_statistics = 34 [json_name="sparkStatistics"];
+  optional SparkStatistics spark_statistics = 35 [json_name="sparkStatistics"];
   // Output only. The type of query statement, if valid. Possible values: * `SELECT`: [`SELECT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#select_list) statement. * `ASSERT`: [`ASSERT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/debugging-statements#assert) statement. * `INSERT`: [`INSERT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#insert_statement) statement. * `UPDATE`: [`UPDATE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#update_statement) statement. * `DELETE`: [`DELETE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language) statement. * `MERGE`: [`MERGE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language) statement. * `CREATE_TABLE`: [`CREATE TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_statement) statement, without `AS SELECT`. * `CREATE_TABLE_AS_SELECT`: [`CREATE TABLE AS SELECT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_statement) statement. * `CREATE_VIEW`: [`CREATE VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_view_statement) statement. * `CREATE_MODEL`: [`CREATE MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-create#create_model_statement) statement. * `CREATE_MATERIALIZED_VIEW`: [`CREATE MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_materialized_view_statement) statement. * `CREATE_FUNCTION`: [`CREATE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_function_statement) statement. * `CREATE_TABLE_FUNCTION`: [`CREATE TABLE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_function_statement) statement. * `CREATE_PROCEDURE`: [`CREATE PROCEDURE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_procedure) statement. * `CREATE_ROW_ACCESS_POLICY`: [`CREATE ROW ACCESS POLICY`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_row_access_policy_statement) statement. * `CREATE_SCHEMA`: [`CREATE SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_schema_statement) statement. * `CREATE_SNAPSHOT_TABLE`: [`CREATE SNAPSHOT TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_snapshot_table_statement) statement. * `CREATE_SEARCH_INDEX`: [`CREATE SEARCH INDEX`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_search_index_statement) statement. * `DROP_TABLE`: [`DROP TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_table_statement) statement. * `DROP_EXTERNAL_TABLE`: [`DROP EXTERNAL TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_external_table_statement) statement. * `DROP_VIEW`: [`DROP VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_view_statement) statement. * `DROP_MODEL`: [`DROP MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-drop-model) statement. * `DROP_MATERIALIZED_VIEW`: [`DROP MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_materialized_view_statement) statement. * `DROP_FUNCTION` : [`DROP FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_function_statement) statement. * `DROP_TABLE_FUNCTION` : [`DROP TABLE FUNCTION`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_table_function) statement. * `DROP_PROCEDURE`: [`DROP PROCEDURE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_procedure_statement) statement. * `DROP_SEARCH_INDEX`: [`DROP SEARCH INDEX`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_search_index) statement. * `DROP_SCHEMA`: [`DROP SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_schema_statement) statement. * `DROP_SNAPSHOT_TABLE`: [`DROP SNAPSHOT TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_snapshot_table_statement) statement. * `DROP_ROW_ACCESS_POLICY`: [`DROP [ALL] ROW ACCESS POLICY|POLICIES`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#drop_row_access_policy_statement) statement. * `ALTER_TABLE`: [`ALTER TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_table_set_options_statement) statement. * `ALTER_VIEW`: [`ALTER VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_view_set_options_statement) statement. * `ALTER_MATERIALIZED_VIEW`: [`ALTER MATERIALIZED VIEW`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_materialized_view_set_options_statement) statement. * `ALTER_SCHEMA`: [`ALTER SCHEMA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_schema_set_options_statement) statement. * `SCRIPT`: [`SCRIPT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/procedural-language). * `TRUNCATE_TABLE`: [`TRUNCATE TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#truncate_table_statement) statement. * `CREATE_EXTERNAL_TABLE`: [`CREATE EXTERNAL TABLE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_external_table_statement) statement. * `EXPORT_DATA`: [`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements#export_data_statement) statement. * `EXPORT_MODEL`: [`EXPORT MODEL`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-export-model) statement. * `LOAD_DATA`: [`LOAD DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements#load_data_statement) statement. * `CALL`: [`CALL`](https://cloud.google.com/bigquery/docs/reference/standard-sql/procedural-language#call) statement.
-  optional string statement_type = 35 [json_name="statementType"];
+  optional string statement_type = 36 [json_name="statementType"];
   // Output only. Describes a timeline of job execution.
-  repeated QueryTimelineSample timeline = 36 [json_name="timeline"];
+  repeated QueryTimelineSample timeline = 37 [json_name="timeline"];
   // Output only. If the project is configured to use on-demand pricing, then this field contains the total bytes billed for the job. If the project is configured to use flat-rate pricing, then you are not billed for bytes and this field is informational only.
-  optional int64 total_bytes_billed = 37 [json_name="totalBytesBilled"];
+  optional int64 total_bytes_billed = 38 [json_name="totalBytesBilled"];
   // Output only. Total bytes processed for the job.
-  optional int64 total_bytes_processed = 38 [json_name="totalBytesProcessed"];
+  optional int64 total_bytes_processed = 39 [json_name="totalBytesProcessed"];
   // Output only. For dry-run jobs, totalBytesProcessed is an estimate and this field specifies the accuracy of the estimate. Possible values can be: UNKNOWN: accuracy of the estimate is unknown. PRECISE: estimate is precise. LOWER_BOUND: estimate is lower bound of what the query would cost. UPPER_BOUND: estimate is upper bound of what the query would cost.
-  optional string total_bytes_processed_accuracy = 39 [json_name="totalBytesProcessedAccuracy"];
+  optional string total_bytes_processed_accuracy = 40 [json_name="totalBytesProcessedAccuracy"];
   // Output only. Total number of partitions processed from all partitioned tables referenced in the job.
-  optional int64 total_partitions_processed = 40 [json_name="totalPartitionsProcessed"];
-  // Output only. Total slot-milliseconds for the job that run on external services and billed on the service SKU. This field is only populated for jobs that have external service costs, and is the total of the usage for costs whose billing method is "SERVICES_SKU".
-  optional int64 total_services_sku_slot_ms = 41 [json_name="totalServicesSkuSlotMs"];
+  optional int64 total_partitions_processed = 41 [json_name="totalPartitionsProcessed"];
+  // Output only. Total slot milliseconds for the job that ran on external services and billed on the services SKU. This field is only populated for jobs that have external service costs, and is the total of the usage for costs whose billing method is `"SERVICES_SKU"`.
+  optional int64 total_services_sku_slot_ms = 42 [json_name="totalServicesSkuSlotMs"];
   // Output only. Slot-milliseconds for the job.
-  optional int64 total_slot_ms = 42 [json_name="totalSlotMs"];
+  optional int64 total_slot_ms = 43 [json_name="totalSlotMs"];
   // Output only. Total bytes transferred for cross-cloud queries such as Cross Cloud Transfer and CREATE TABLE AS SELECT (CTAS).
-  optional int64 transferred_bytes = 43 [json_name="transferredBytes"];
+  optional int64 transferred_bytes = 44 [json_name="transferredBytes"];
   // Output only. GoogleSQL only: list of undeclared query parameters detected during a dry run validation.
-  repeated QueryParameter undeclared_query_parameters = 44 [json_name="undeclaredQueryParameters"];
+  repeated QueryParameter undeclared_query_parameters = 45 [json_name="undeclaredQueryParameters"];
   // Output only. Vector Search query specific statistics.
-  optional VectorSearchStatistics vector_search_statistics = 45 [json_name="vectorSearchStatistics"];
+  optional VectorSearchStatistics vector_search_statistics = 46 [json_name="vectorSearchStatistics"];
 }
 
 // Statistics for a load job.
@@ -2304,6 +2336,16 @@ message ProjectReference {
   optional string project_id = 1 [json_name="projectId"];
 }
 
+// The column metadata index pruning statistics.
+message PruningStats {
+  // The number of parallel inputs matched.
+  optional int64 post_cmeta_pruning_parallel_input_count = 1 [json_name="postCmetaPruningParallelInputCount"];
+  // The number of partitions matched.
+  optional int64 post_cmeta_pruning_partition_count = 2 [json_name="postCmetaPruningPartitionCount"];
+  // The number of parallel inputs scanned.
+  optional int64 pre_cmeta_pruning_parallel_input_count = 3 [json_name="preCmetaPruningParallelInputCount"];
+}
+
 // Options for a user-defined Python function.
 message PythonOptions {
   // Required. The name of the function defined in Python code as the entry point when the Python UDF is invoked.
@@ -2388,28 +2430,30 @@ message QueryRequest {
   optional string location = 12 [json_name="location"];
   // Optional. The maximum number of rows of data to return per page of results. Setting this flag to a small value such as 1000 and then paging through results might improve reliability when the query result set is large. In addition to this limit, responses are also limited to 10 MB. By default, there is no maximum row count, and only the byte limit applies.
   optional uint32 max_results = 13 [json_name="maxResults"];
+  // Optional. A target limit on the rate of slot consumption by this query. If set to a value > 0, BigQuery will attempt to limit the rate of slot consumption by this query to keep it below the configured limit, even if the query is eligible for more slots based on fair scheduling. The unused slots will be available for other jobs and queries to use. Note: This feature is not yet generally available.
+  optional int32 max_slots = 14 [json_name="maxSlots"];
   // Optional. Limits the bytes billed for this query. Queries with bytes billed above this limit will fail (without incurring a charge). If unspecified, the project default is used.
-  optional int64 maximum_bytes_billed = 14 [json_name="maximumBytesBilled"];
+  optional int64 maximum_bytes_billed = 15 [json_name="maximumBytesBilled"];
   // GoogleSQL only. Set to POSITIONAL to use positional (?) query parameters or to NAMED to use named (@myparam) query parameters in this query.
-  optional string parameter_mode = 15 [json_name="parameterMode"];
+  optional string parameter_mode = 16 [json_name="parameterMode"];
   // This property is deprecated.
-  optional bool preserve_nulls = 16 [json_name="preserveNulls"];
+  optional bool preserve_nulls = 17 [json_name="preserveNulls"];
   // Required. A query string to execute, using Google Standard SQL or legacy SQL syntax. Example: "SELECT COUNT(f1) FROM myProjectId.myDatasetId.myTableId".
-  optional string query = 17 [json_name="query"];
+  optional string query = 18 [json_name="query"];
   // Query parameters for GoogleSQL queries.
-  repeated QueryParameter query_parameters = 18 [json_name="queryParameters"];
+  repeated QueryParameter query_parameters = 19 [json_name="queryParameters"];
   // Optional. A unique user provided identifier to ensure idempotent behavior for queries. Note that this is different from the job_id. It has the following properties: 1. It is case-sensitive, limited to up to 36 ASCII characters. A UUID is recommended. 2. Read only queries can ignore this token since they are nullipotent by definition. 3. For the purposes of idempotency ensured by the request_id, a request is considered duplicate of another only if they have the same request_id and are actually duplicates. When determining whether a request is a duplicate of another request, all parameters in the request that may affect the result are considered. For example, query, connection_properties, query_parameters, use_legacy_sql are parameters that affect the result and are considered when determining whether a request is a duplicate, but properties like timeout_ms don't affect the result and are thus not considered. Dry run query requests are never considered duplicate of another request. 4. When a duplicate mutating query request is detected, it returns: a. the results of the mutation if it completes successfully within the timeout. b. the running operation if it is still in progress at the end of the timeout. 5. Its lifetime is limited to 15 minutes. In other words, if two requests are sent with the same request_id, but more than 15 minutes apart, idempotency is not guaranteed.
-  optional string request_id = 19 [json_name="requestId"];
+  optional string request_id = 20 [json_name="requestId"];
   // Optional. The reservation that jobs.query request would use. User can specify a reservation to execute the job.query. The expected format is `projects/{project}/locations/{location}/reservations/{reservation}`.
-  optional string reservation = 20 [json_name="reservation"];
+  optional string reservation = 21 [json_name="reservation"];
   // Optional. Optional: Specifies the maximum amount of time, in milliseconds, that the client is willing to wait for the query to complete. By default, this limit is 10 seconds (10,000 milliseconds). If the query is complete, the jobComplete field in the response is true. If the query has not yet completed, jobComplete is false. You can request a longer timeout period in the timeoutMs field. However, the call is not guaranteed to wait for the specified timeout; it typically returns after around 200 seconds (200,000 milliseconds), even if the query is not complete. If jobComplete is false, you can continue to wait for the query to complete by calling the getQueryResults method until the jobComplete field in the getQueryResults response is true.
-  optional uint32 timeout_ms = 21 [json_name="timeoutMs"];
+  optional uint32 timeout_ms = 22 [json_name="timeoutMs"];
   // Specifies whether to use BigQuery's legacy SQL dialect for this query. The default value is true. If set to false, the query will use BigQuery's GoogleSQL: https://cloud.google.com/bigquery/sql-reference/ When useLegacySql is set to false, the value of flattenResults is ignored; query will be run as if flattenResults is false.
-  optional bool use_legacy_sql = 22 [json_name="useLegacySql"];
+  optional bool use_legacy_sql = 23 [json_name="useLegacySql"];
   // Optional. Whether to look for the result in the query cache. The query cache is a best-effort cache that will be flushed whenever tables in the query are modified. The default value is true.
-  optional bool use_query_cache = 23 [json_name="useQueryCache"];
+  optional bool use_query_cache = 24 [json_name="useQueryCache"];
   // Optional. This is only supported for SELECT query. If set, the query is allowed to write results incrementally to the temporary result table. This may incur a performance penalty. This option cannot be used with Legacy SQL. This feature is not yet available.
-  optional bool write_incremental_results = 24 [json_name="writeIncrementalResults"];
+  optional bool write_incremental_results = 25 [json_name="writeIncrementalResults"];
 }
 
 message QueryResponse {
@@ -2563,7 +2607,7 @@ message Routine {
   optional int64 creation_time = 2 [json_name="creationTime"];
   // Optional. If set to `DATA_MASKING`, the function is validated and made available as a masking function. For more information, see [Create custom masking routines](https://cloud.google.com/bigquery/docs/user-defined-functions#custom-mask).
   optional string data_governance_type = 3 [json_name="dataGovernanceType"];
-  // Required. The body of the routine. For functions, this is the expression in the AS clause. If language=SQL, it is the substring inside (but excluding) the parentheses. For example, for the function created with the following statement: `CREATE FUNCTION JoinLines(x string, y string) as (concat(x, "\n", y))` The definition_body is `concat(x, "\n", y)` (\n is not replaced with linebreak). If language=JAVASCRIPT, it is the evaluated string in the AS clause. For example, for the function created with the following statement: `CREATE FUNCTION f() RETURNS STRING LANGUAGE js AS 'return "\n";\n'` The definition_body is `return "\n";\n` Note that both \n are replaced with linebreaks.
+  // Required. The body of the routine. For functions, this is the expression in the AS clause. If `language = "SQL"`, it is the substring inside (but excluding) the parentheses. For example, for the function created with the following statement: `CREATE FUNCTION JoinLines(x string, y string) as (concat(x, "\n", y))` The definition_body is `concat(x, "\n", y)` (\n is not replaced with linebreak). If `language="JAVASCRIPT"`, it is the evaluated string in the AS clause. For example, for the function created with the following statement: `CREATE FUNCTION f() RETURNS STRING LANGUAGE js AS 'return "\n";\n'` The definition_body is `return "\n";\n` Note that both \n are replaced with linebreaks. If `definition_body` references another routine, then that routine must be fully qualified with its project ID.
   optional string definition_body = 4 [json_name="definitionBody"];
   // Optional. The description of the routine, if defined.
   optional string description = 5 [json_name="description"];
@@ -2687,10 +2731,12 @@ message ScriptStatistics {
 
 // Statistics for a search query. Populated as part of JobStatistics2.
 message SearchStatistics {
+  // Search index pruning statistics, one for each base table that has a search index. If a base table does not have a search index or the index does not help with pruning on the base table, then there is no pruning statistics for that table.
+  repeated IndexPruningStats index_pruning_stats = 1 [json_name="indexPruningStats"];
   // When `indexUsageMode` is `UNUSED` or `PARTIALLY_USED`, this field explains why indexes were not used in all or part of the search query. If `indexUsageMode` is `FULLY_USED`, this field is not populated.
-  repeated IndexUnusedReason index_unused_reasons = 1 [json_name="indexUnusedReasons"];
+  repeated IndexUnusedReason index_unused_reasons = 2 [json_name="indexUnusedReasons"];
   // Specifies the index usage mode for the query.
-  optional string index_usage_mode = 2 [json_name="indexUsageMode"];
+  optional string index_usage_mode = 3 [json_name="indexUsageMode"];
 }
 
 // Serializer and deserializer information.
@@ -3094,7 +3140,7 @@ message TableFieldSchema {
   optional TableFieldSchemaCategories categories = 1 [json_name="categories"];
   // Optional. Field collation can be set only when the type of field is STRING. The following values are supported: * 'und:ci': undetermined locale, case insensitive. * '': empty string. Default to case-sensitive behavior.
   optional string collation = 2 [json_name="collation"];
-  // Optional. Data policy options, will replace the data_policies.
+  // Optional. Data policies attached to this field, used for field-level access control.
   repeated DataPolicyOption data_policies = 3 [json_name="dataPolicies"];
   // Optional. A SQL expression to specify the [default value] (https://cloud.google.com/bigquery/docs/default-values) for this field.
   optional string default_value_expression = 4 [json_name="defaultValueExpression"];
@@ -3120,8 +3166,10 @@ message TableFieldSchema {
   optional string rounding_mode = 14 [json_name="roundingMode"];
   // Optional. See documentation for precision.
   optional int64 scale = 15 [json_name="scale"];
+  // Optional. Precision (maximum number of total digits in base 10) for seconds of TIMESTAMP type. Possible values include: * 6 (Default, for TIMESTAMP type with microsecond precision) * 12 (For TIMESTAMP type with picosecond precision)
+  optional int64 timestamp_precision = 16 [json_name="timestampPrecision"];
   // Required. The field data type. Possible values include: * STRING * BYTES * INTEGER (or INT64) * FLOAT (or FLOAT64) * BOOLEAN (or BOOL) * TIMESTAMP * DATE * TIME * DATETIME * GEOGRAPHY * NUMERIC * BIGNUMERIC * JSON * RECORD (or STRUCT) * RANGE Use of RECORD/STRUCT indicates that the field contains a nested schema.
-  optional string type = 16 [json_name="type"];
+  optional string type = 17 [json_name="type"];
 }
 
 message View {
@@ -3163,14 +3211,16 @@ message TableList {
 message TableMetadataCacheUsage {
   // Free form human-readable reason metadata caching was unused for the job.
   optional string explanation = 1 [json_name="explanation"];
+  // The column metadata index pruning statistics.
+  optional PruningStats pruning_stats = 2 [json_name="pruningStats"];
   // Duration since last refresh as of this job for managed tables (indicates metadata cache staleness as seen by this job).
-  optional .google.protobuf.Duration staleness = 2 [json_name="staleness"];
+  optional .google.protobuf.Duration staleness = 3 [json_name="staleness"];
   // Metadata caching eligible table referenced in the query.
-  optional TableReference table_reference = 3 [json_name="tableReference"];
+  optional TableReference table_reference = 4 [json_name="tableReference"];
   // [Table type](https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#Table.FIELDS.type).
-  optional string table_type = 4 [json_name="tableType"];
+  optional string table_type = 5 [json_name="tableType"];
   // Reason for not using metadata caching for the table.
-  optional string unused_reason = 5 [json_name="unusedReason"];
+  optional string unused_reason = 6 [json_name="unusedReason"];
 }
 
 message TableReference {
@@ -3292,132 +3342,150 @@ message TrainingOptions {
   optional bool early_stop = 28 [json_name="earlyStop"];
   // If true, enable global explanation during training.
   optional bool enable_global_explain = 29 [json_name="enableGlobalExplain"];
+  // The idle TTL of the endpoint before the resources get destroyed. The default value is 6.5 hours.
+  optional .google.protobuf.Duration endpoint_idle_ttl = 30 [json_name="endpointIdleTtl"];
   // Feedback type that specifies which algorithm to run for matrix factorization.
-  optional string feedback_type = 30 [json_name="feedbackType"];
+  optional string feedback_type = 31 [json_name="feedbackType"];
   // Whether the model should include intercept during model training.
-  optional bool fit_intercept = 31 [json_name="fitIntercept"];
+  optional bool fit_intercept = 32 [json_name="fitIntercept"];
   // The forecast limit lower bound that was used during ARIMA model training with limits. To see more details of the algorithm: https://otexts.com/fpp2/limits.html
-  optional double forecast_limit_lower_bound = 32 [json_name="forecastLimitLowerBound"];
+  optional double forecast_limit_lower_bound = 33 [json_name="forecastLimitLowerBound"];
   // The forecast limit upper bound that was used during ARIMA model training with limits.
-  optional double forecast_limit_upper_bound = 33 [json_name="forecastLimitUpperBound"];
+  optional double forecast_limit_upper_bound = 34 [json_name="forecastLimitUpperBound"];
   // Hidden units for dnn models.
-  repeated int64 hidden_units = 34 [json_name="hiddenUnits"];
+  repeated int64 hidden_units = 35 [json_name="hiddenUnits"];
   // The geographical region based on which the holidays are considered in time series modeling. If a valid value is specified, then holiday effects modeling is enabled.
-  optional string holiday_region = 35 [json_name="holidayRegion"];
+  optional string holiday_region = 36 [json_name="holidayRegion"];
   // A list of geographical regions that are used for time series modeling.
-  repeated string holiday_regions = 36 [json_name="holidayRegions"];
+  repeated string holiday_regions = 37 [json_name="holidayRegions"];
   // The number of periods ahead that need to be forecasted.
-  optional int64 horizon = 37 [json_name="horizon"];
+  optional int64 horizon = 38 [json_name="horizon"];
   // The target evaluation metrics to optimize the hyperparameters for.
-  repeated string hparam_tuning_objectives = 38 [json_name="hparamTuningObjectives"];
+  repeated string hparam_tuning_objectives = 39 [json_name="hparamTuningObjectives"];
+  // The id of a Hugging Face model. For example, `google/gemma-2-2b-it`.
+  optional string hugging_face_model_id = 40 [json_name="huggingFaceModelId"];
   // Include drift when fitting an ARIMA model.
-  optional bool include_drift = 39 [json_name="includeDrift"];
+  optional bool include_drift = 41 [json_name="includeDrift"];
   // Specifies the initial learning rate for the line search learn rate strategy.
-  optional double initial_learn_rate = 40 [json_name="initialLearnRate"];
+  optional double initial_learn_rate = 42 [json_name="initialLearnRate"];
   // Name of input label columns in training data.
-  repeated string input_label_columns = 41 [json_name="inputLabelColumns"];
+  repeated string input_label_columns = 43 [json_name="inputLabelColumns"];
   // Name of the instance weight column for training data. This column isn't be used as a feature.
-  optional string instance_weight_column = 42 [json_name="instanceWeightColumn"];
+  optional string instance_weight_column = 44 [json_name="instanceWeightColumn"];
   // Number of integral steps for the integrated gradients explain method.
-  optional int64 integrated_gradients_num_steps = 43 [json_name="integratedGradientsNumSteps"];
+  optional int64 integrated_gradients_num_steps = 45 [json_name="integratedGradientsNumSteps"];
   // Name of the column used to determine the rows corresponding to control and test. Applies to contribution analysis models.
-  optional string is_test_column = 44 [json_name="isTestColumn"];
+  optional string is_test_column = 46 [json_name="isTestColumn"];
   // Item column specified for matrix factorization models.
-  optional string item_column = 45 [json_name="itemColumn"];
+  optional string item_column = 47 [json_name="itemColumn"];
   // The column used to provide the initial centroids for kmeans algorithm when kmeans_initialization_method is CUSTOM.
-  optional string kmeans_initialization_column = 46 [json_name="kmeansInitializationColumn"];
+  optional string kmeans_initialization_column = 48 [json_name="kmeansInitializationColumn"];
   // The method used to initialize the centroids for kmeans algorithm.
-  optional string kmeans_initialization_method = 47 [json_name="kmeansInitializationMethod"];
+  optional string kmeans_initialization_method = 49 [json_name="kmeansInitializationMethod"];
   // L1 regularization coefficient to activations.
-  optional double l1_reg_activation = 48 [json_name="l1RegActivation"];
+  optional double l1_reg_activation = 50 [json_name="l1RegActivation"];
   // L1 regularization coefficient.
-  optional double l1_regularization = 49 [json_name="l1Regularization"];
+  optional double l1_regularization = 51 [json_name="l1Regularization"];
   // L2 regularization coefficient.
-  optional double l2_regularization = 50 [json_name="l2Regularization"];
+  optional double l2_regularization = 52 [json_name="l2Regularization"];
   // Weights associated with each label class, for rebalancing the training data. Only applicable for classification models.
-  map<string, double> label_class_weights = 51 [json_name="labelClassWeights"];
+  map<string, double> label_class_weights = 53 [json_name="labelClassWeights"];
   // Learning rate in training. Used only for iterative training algorithms.
-  optional double learn_rate = 52 [json_name="learnRate"];
+  optional double learn_rate = 54 [json_name="learnRate"];
   // The strategy to determine learn rate for the current iteration.
-  optional string learn_rate_strategy = 53 [json_name="learnRateStrategy"];
+  optional string learn_rate_strategy = 55 [json_name="learnRateStrategy"];
   // Type of loss function used during training run.
-  optional string loss_type = 54 [json_name="lossType"];
+  optional string loss_type = 56 [json_name="lossType"];
+  // The type of the machine used to deploy and serve the model.
+  optional string machine_type = 57 [json_name="machineType"];
   // The maximum number of iterations in training. Used only for iterative training algorithms.
-  optional int64 max_iterations = 55 [json_name="maxIterations"];
+  optional int64 max_iterations = 58 [json_name="maxIterations"];
   // Maximum number of trials to run in parallel.
-  optional int64 max_parallel_trials = 56 [json_name="maxParallelTrials"];
+  optional int64 max_parallel_trials = 59 [json_name="maxParallelTrials"];
+  // The maximum number of machine replicas that will be deployed on an endpoint. The default value is equal to min_replica_count.
+  optional int64 max_replica_count = 60 [json_name="maxReplicaCount"];
   // The maximum number of time points in a time series that can be used in modeling the trend component of the time series. Don't use this option with the `timeSeriesLengthFraction` or `minTimeSeriesLength` options.
-  optional int64 max_time_series_length = 57 [json_name="maxTimeSeriesLength"];
+  optional int64 max_time_series_length = 61 [json_name="maxTimeSeriesLength"];
   // Maximum depth of a tree for boosted tree models.
-  optional int64 max_tree_depth = 58 [json_name="maxTreeDepth"];
+  optional int64 max_tree_depth = 62 [json_name="maxTreeDepth"];
   // The apriori support minimum. Applies to contribution analysis models.
-  optional double min_apriori_support = 59 [json_name="minAprioriSupport"];
+  optional double min_apriori_support = 63 [json_name="minAprioriSupport"];
   // When early_stop is true, stops training when accuracy improvement is less than 'min_relative_progress'. Used only for iterative training algorithms.
-  optional double min_relative_progress = 60 [json_name="minRelativeProgress"];
+  optional double min_relative_progress = 64 [json_name="minRelativeProgress"];
+  // The minimum number of machine replicas that will be always deployed on an endpoint. This value must be greater than or equal to 1. The default value is 1.
+  optional int64 min_replica_count = 65 [json_name="minReplicaCount"];
   // Minimum split loss for boosted tree models.
-  optional double min_split_loss = 61 [json_name="minSplitLoss"];
+  optional double min_split_loss = 66 [json_name="minSplitLoss"];
   // The minimum number of time points in a time series that are used in modeling the trend component of the time series. If you use this option you must also set the `timeSeriesLengthFraction` option. This training option ensures that enough time points are available when you use `timeSeriesLengthFraction` in trend modeling. This is particularly important when forecasting multiple time series in a single query using `timeSeriesIdColumn`. If the total number of time points is less than the `minTimeSeriesLength` value, then the query uses all available time points.
-  optional int64 min_time_series_length = 62 [json_name="minTimeSeriesLength"];
+  optional int64 min_time_series_length = 67 [json_name="minTimeSeriesLength"];
   // Minimum sum of instance weight needed in a child for boosted tree models.
-  optional int64 min_tree_child_weight = 63 [json_name="minTreeChildWeight"];
+  optional int64 min_tree_child_weight = 68 [json_name="minTreeChildWeight"];
+  // The name of a Vertex model garden publisher model. Format is `publishers/{publisher}/models/{model}@{optional_version_id}`.
+  optional string model_garden_model_name = 69 [json_name="modelGardenModelName"];
   // The model registry.
-  optional string model_registry = 64 [json_name="modelRegistry"];
+  optional string model_registry = 70 [json_name="modelRegistry"];
   // Google Cloud Storage URI from which the model was imported. Only applicable for imported models.
-  optional string model_uri = 65 [json_name="modelUri"];
+  optional string model_uri = 71 [json_name="modelUri"];
   // A specification of the non-seasonal part of the ARIMA model: the three components (p, d, q) are the AR order, the degree of differencing, and the MA order.
-  optional ArimaOrder non_seasonal_order = 66 [json_name="nonSeasonalOrder"];
+  optional ArimaOrder non_seasonal_order = 72 [json_name="nonSeasonalOrder"];
   // Number of clusters for clustering models.
-  optional int64 num_clusters = 67 [json_name="numClusters"];
+  optional int64 num_clusters = 73 [json_name="numClusters"];
   // Num factors specified for matrix factorization models.
-  optional int64 num_factors = 68 [json_name="numFactors"];
+  optional int64 num_factors = 74 [json_name="numFactors"];
   // Number of parallel trees constructed during each iteration for boosted tree models.
-  optional int64 num_parallel_tree = 69 [json_name="numParallelTree"];
+  optional int64 num_parallel_tree = 75 [json_name="numParallelTree"];
   // Number of principal components to keep in the PCA model. Must be <= the number of features.
-  optional int64 num_principal_components = 70 [json_name="numPrincipalComponents"];
+  optional int64 num_principal_components = 76 [json_name="numPrincipalComponents"];
   // Number of trials to run this hyperparameter tuning job.
-  optional int64 num_trials = 71 [json_name="numTrials"];
+  optional int64 num_trials = 77 [json_name="numTrials"];
   // Optimization strategy for training linear regression models.
-  optional string optimization_strategy = 72 [json_name="optimizationStrategy"];
+  optional string optimization_strategy = 78 [json_name="optimizationStrategy"];
   // Optimizer used for training the neural nets.
-  optional string optimizer = 73 [json_name="optimizer"];
+  optional string optimizer = 79 [json_name="optimizer"];
   // The minimum ratio of cumulative explained variance that needs to be given by the PCA model.
-  optional double pca_explained_variance_ratio = 74 [json_name="pcaExplainedVarianceRatio"];
+  optional double pca_explained_variance_ratio = 80 [json_name="pcaExplainedVarianceRatio"];
   // The solver for PCA.
-  optional string pca_solver = 75 [json_name="pcaSolver"];
+  optional string pca_solver = 81 [json_name="pcaSolver"];
+  // Corresponds to the label key of a reservation resource used by Vertex AI. To target a SPECIFIC_RESERVATION by name, use `compute.googleapis.com/reservation-name` as the key and specify the name of your reservation as its value.
+  optional string reservation_affinity_key = 82 [json_name="reservationAffinityKey"];
+  // Specifies the reservation affinity type used to configure a Vertex AI resource. The default value is `NO_RESERVATION`.
+  optional string reservation_affinity_type = 83 [json_name="reservationAffinityType"];
+  // Corresponds to the label values of a reservation resource used by Vertex AI. This must be the full resource name of the reservation or reservation block.
+  repeated string reservation_affinity_values = 84 [json_name="reservationAffinityValues"];
   // Number of paths for the sampled Shapley explain method.
-  optional int64 sampled_shapley_num_paths = 76 [json_name="sampledShapleyNumPaths"];
+  optional int64 sampled_shapley_num_paths = 85 [json_name="sampledShapleyNumPaths"];
   // If true, scale the feature values by dividing the feature standard deviation. Currently only apply to PCA.
-  optional bool scale_features = 77 [json_name="scaleFeatures"];
+  optional bool scale_features = 86 [json_name="scaleFeatures"];
   // Whether to standardize numerical features. Default to true.
-  optional bool standardize_features = 78 [json_name="standardizeFeatures"];
+  optional bool standardize_features = 87 [json_name="standardizeFeatures"];
   // Subsample fraction of the training data to grow tree to prevent overfitting for boosted tree models.
-  optional double subsample = 79 [json_name="subsample"];
+  optional double subsample = 88 [json_name="subsample"];
   // Based on the selected TF version, the corresponding docker image is used to train external models.
-  optional string tf_version = 80 [json_name="tfVersion"];
+  optional string tf_version = 89 [json_name="tfVersion"];
   // Column to be designated as time series data for ARIMA model.
-  optional string time_series_data_column = 81 [json_name="timeSeriesDataColumn"];
+  optional string time_series_data_column = 90 [json_name="timeSeriesDataColumn"];
   // The time series id column that was used during ARIMA model training.
-  optional string time_series_id_column = 82 [json_name="timeSeriesIdColumn"];
+  optional string time_series_id_column = 91 [json_name="timeSeriesIdColumn"];
   // The time series id columns that were used during ARIMA model training.
-  repeated string time_series_id_columns = 83 [json_name="timeSeriesIdColumns"];
+  repeated string time_series_id_columns = 92 [json_name="timeSeriesIdColumns"];
   // The fraction of the interpolated length of the time series that's used to model the time series trend component. All of the time points of the time series are used to model the non-trend component. This training option accelerates modeling training without sacrificing much forecasting accuracy. You can use this option with `minTimeSeriesLength` but not with `maxTimeSeriesLength`.
-  optional double time_series_length_fraction = 84 [json_name="timeSeriesLengthFraction"];
+  optional double time_series_length_fraction = 93 [json_name="timeSeriesLengthFraction"];
   // Column to be designated as time series timestamp for ARIMA model.
-  optional string time_series_timestamp_column = 85 [json_name="timeSeriesTimestampColumn"];
+  optional string time_series_timestamp_column = 94 [json_name="timeSeriesTimestampColumn"];
   // Tree construction algorithm for boosted tree models.
-  optional string tree_method = 86 [json_name="treeMethod"];
+  optional string tree_method = 95 [json_name="treeMethod"];
   // Smoothing window size for the trend component. When a positive value is specified, a center moving average smoothing is applied on the history trend. When the smoothing window is out of the boundary at the beginning or the end of the trend, the first element or the last element is padded to fill the smoothing window before the average is applied.
-  optional int64 trend_smoothing_window_size = 87 [json_name="trendSmoothingWindowSize"];
+  optional int64 trend_smoothing_window_size = 96 [json_name="trendSmoothingWindowSize"];
   // User column specified for matrix factorization models.
-  optional string user_column = 88 [json_name="userColumn"];
+  optional string user_column = 97 [json_name="userColumn"];
   // The version aliases to apply in Vertex AI model registry. Always overwrite if the version aliases exists in a existing model.
-  repeated string vertex_ai_model_version_aliases = 89 [json_name="vertexAiModelVersionAliases"];
+  repeated string vertex_ai_model_version_aliases = 98 [json_name="vertexAiModelVersionAliases"];
   // Hyperparameter for matrix factoration when implicit feedback type is specified.
-  optional double wals_alpha = 90 [json_name="walsAlpha"];
+  optional double wals_alpha = 99 [json_name="walsAlpha"];
   // Whether to train a model from the last checkpoint.
-  optional bool warm_start = 91 [json_name="warmStart"];
+  optional bool warm_start = 100 [json_name="warmStart"];
   // User-selected XGBoost versions for training of XGBoost models.
-  optional string xgboost_version = 92 [json_name="xgboostVersion"];
+  optional string xgboost_version = 101 [json_name="xgboostVersion"];
 }
 
 // Information about a single training query run for the model.
