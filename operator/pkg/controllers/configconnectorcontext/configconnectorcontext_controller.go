@@ -563,22 +563,28 @@ func (r *Reconciler) applyNamespacedControllerResource(ctx context.Context, cr *
 		Kind:    "StatefulSet",
 	}
 	if cr.Spec.VerticalPodAutoscalerMode != nil && *cr.Spec.VerticalPodAutoscalerMode == customizev1beta1.VPAModeEnabled {
-		switch cr.Name {
-		case "cnrm-controller-manager":
-			sts := &appsv1.StatefulSet{}
-			sts.Namespace = cr.Namespace
-			sts.Name = cr.Name
-			if err := controllers.EnsureVPAForStatefulSet(ctx, r.client, sts, *cr.Spec.VerticalPodAutoscalerMode); err != nil {
-				return r.handleApplyNamespacedControllerResourceFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to ensure VPA for StatefulSet %s: %v", cr.Name, err))
+		found := false
+		sts := &appsv1.StatefulSet{}
+		for _, item := range m.Items {
+			if item.GroupVersionKind() == controllerGVK && strings.HasPrefix(item.GetName(), cr.Name) {
+				sts.Name = item.GetName()
+				sts.Namespace = item.GetNamespace()
+				if err := controllers.EnsureVPAForStatefulSet(ctx, r.client, sts, *cr.Spec.VerticalPodAutoscalerMode); err != nil {
+					return r.handleApplyNamespacedControllerResourceFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to ensure VPA for StatefulSet %s: %v", sts.Name, err))
+				}
+				found = true
+				break
 			}
-		default:
-			r.log.Info("unrecognized controller resource name for VPA configuration", "name", cr.Name)
+		}
+		if !found {
+			r.log.Info("controller resource not found in the manifest for VPA configuration", "name", cr.Name)
 		}
 
 		// If VPA is enabled, we try to get the recommendations and use them as the container resource customization.
-		recommendations, err := controllers.GetVPARecommendations(ctx, r.client, cr.Namespace, cr.Name)
+		// We use the StatefulSet's name and namespace because the VPA is created with the same name and namespace as the target StatefulSet.
+		recommendations, err := controllers.GetVPARecommendations(ctx, r.client, sts.Namespace, sts.Name)
 		if err != nil {
-			r.log.Error(err, "failed to get VPA recommendations", "Name", cr.Name, "Namespace", cr.Namespace)
+			r.log.Error(err, "failed to get VPA recommendations", "Name", sts.Name, "Namespace", sts.Namespace)
 			// We don't fail the reconciliation here, just log the error and proceed with existing containers (which should be empty if VPA is enabled, but just in case).
 		} else if len(recommendations) > 0 {
 			// Construct ContainerResourceSpec from recommendations
