@@ -241,6 +241,10 @@ type Instance_ObservabilityInstanceConfig struct {
 	//  If not set, default value is "off".
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_client_address
 	TrackClientAddress *bool `json:"trackClientAddress,omitempty"`
+
+	// Whether assistive experiences are enabled for this AlloyDB instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.assistive_experiences_enabled
+	AssistiveExperiencesEnabled *bool `json:"assistiveExperiencesEnabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig
@@ -386,20 +390,16 @@ type GcaInstanceConfigObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.GeminiClusterConfig
 type GeminiClusterConfigObservedState struct {
-	// Output only. Whether the Gemini in Databases add-on is enabled for the
-	//  cluster. It will be true only if the add-on has been enabled for the
-	//  billing account corresponding to the cluster. Its status is toggled from
-	//  the Admin Control Center (ACC) and cannot be toggled using AlloyDB's APIs.
+	// Output only. Deprecated and unused. This field will be removed in the near
+	//  future.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.GeminiClusterConfig.entitled
 	Entitled *bool `json:"entitled,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.GeminiInstanceConfig
 type GeminiInstanceConfigObservedState struct {
-	// Output only. Whether the Gemini in Databases add-on is enabled for the
-	//  instance. It will be true only if the add-on has been enabled for the
-	//  billing account corresponding to the instance. Its status is toggled from
-	//  the Admin Control Center (ACC) and cannot be toggled using AlloyDB's APIs.
+	// Output only. Deprecated and unused. This field will be removed in the near
+	//  future.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.GeminiInstanceConfig.entitled
 	Entitled *bool `json:"entitled,omitempty"`
 }

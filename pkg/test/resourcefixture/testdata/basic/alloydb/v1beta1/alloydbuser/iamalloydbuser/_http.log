@@ -864,6 +864,7 @@ X-Xss-Protection: 0
       }
     ],
     "observabilityConfig": {
+      "assistiveExperiencesEnabled": false,
       "enabled": false,
       "maxQueryStringLength": 10240,
       "preserveComments": false,
@@ -1091,6 +1092,7 @@ X-Xss-Protection: 0
     }
   ],
   "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
     "enabled": false,
     "maxQueryStringLength": 10240,
     "preserveComments": false,
