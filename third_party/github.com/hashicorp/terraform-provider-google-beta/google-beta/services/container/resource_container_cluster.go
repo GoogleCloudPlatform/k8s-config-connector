@@ -619,6 +619,12 @@ func ResourceContainerCluster() *schema.Resource {
 													Computed:    true,
 													Description: `Specifies whether node auto-upgrade is enabled for the node pool. If enabled, node auto-upgrade helps keep the nodes in your node pool up to date with the latest release version of Kubernetes.`,
 												},
+												"default_compute_class_enabled": {
+													Type:        schema.TypeBool,
+													Optional:    true,
+													Computed:    true,
+													Description: `Whether the default compute class is enabled for the node pool.`,
+												},
 												"auto_repair": {
 													Type:        schema.TypeBool,
 													Optional:    true,
@@ -1929,6 +1935,18 @@ func ResourceContainerCluster() *schema.Resource {
 				Description: `Whether FQDN Network Policy is enabled on this cluster.`,
 				Default:     false,
 			},
+			"enable_cilium_clusterwide_network_policy": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: `Whether CiliumClusterwideNetworkPolicy is enabled on this cluster.`,
+				Default:     false,
+			},
+			"enable_k8s_tokens_via_dns": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: `Whether to allow access to the cluster's control plane endpoint for any user who has a valid service account token.`,
+				Default:     false,
+			},
 			"private_ipv6_google_access": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -2168,8 +2186,9 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 			DnsConfig:                 expandDnsConfig(d.Get("dns_config")),
 			GatewayApiConfig:          expandGatewayApiConfig(d.Get("gateway_api_config")),
 			EnableMultiNetworking:     d.Get("enable_multi_networking").(bool),
-			EnableFqdnNetworkPolicy:   d.Get("enable_fqdn_network_policy").(bool),
-			DefaultEnablePrivateNodes: expandDefaultEnablePrivateNodes(d),
+			EnableFqdnNetworkPolicy:            d.Get("enable_fqdn_network_policy").(bool),
+			EnableCiliumClusterwideNetworkPolicy: d.Get("enable_cilium_clusterwide_network_policy").(bool),
+			DefaultEnablePrivateNodes:          expandDefaultEnablePrivateNodes(d),
 		},
 		MasterAuth:           expandMasterAuth(d.Get("master_auth")),
 		NotificationConfig:   expandNotificationConfig(d.Get("notification_config")),
@@ -2683,6 +2702,9 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	if err := d.Set("enable_fqdn_network_policy", cluster.NetworkConfig.EnableFqdnNetworkPolicy); err != nil {
 		return fmt.Errorf("Error setting enable_fqdn_network_policy: %s", err)
 	}
+	if err := d.Set("enable_cilium_clusterwide_network_policy", cluster.NetworkConfig.EnableCiliumClusterwideNetworkPolicy); err != nil {
+		return fmt.Errorf("Error setting enable_cilium_clusterwide_network_policy: %s", err)
+	}
 	if err := d.Set("private_ipv6_google_access", cluster.NetworkConfig.PrivateIpv6GoogleAccess); err != nil {
 		return fmt.Errorf("Error setting private_ipv6_google_access: %s", err)
 	}
@@ -3145,6 +3167,22 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s FQDN Network Policy has been updated to %v", d.Id(), enabled)
+	}
+
+	if d.HasChange("enable_cilium_clusterwide_network_policy") {
+		enabled := d.Get("enable_cilium_clusterwide_network_policy").(bool)
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredEnableCiliumClusterwideNetworkPolicy: enabled,
+			},
+		}
+		updateF := updateFunc(req, "updating cilium clusterwide network policy")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s Cilium Clusterwide Network Policy has been updated to %v", d.Id(), enabled)
 	}
 
 	if d.HasChange("cost_management_config") {
