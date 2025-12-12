@@ -19,7 +19,6 @@ metadata:
     label-one: "value-two"
   name: cluster-sample-${uniqueId}
 spec:
-  enableCiliumClusterwideNetworkPolicy: false
   location: us-central1-a
   initialNodeCount: 1
   loggingService: none
