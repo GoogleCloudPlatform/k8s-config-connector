@@ -25,7 +25,7 @@ The release notes should include the following sections if applicable:
 - Bug Fixes
 
 To get the list of contributors, you can use a command like this, replacing the versions accordingly:
-`git log {{index args 0}}...{{index args 1}} | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
+`git log {{previous_release_tag}}...{{current_release_tag}} --merges --pretty=format:"%s" | grep -o "#[0-9]*" | tr -d "#" | xargs -I {} gh pr view {} --json author,reviews --jq '.author.login, .reviews[].author.login' | sort | uniq`
 
 When you are done, save the release notes to `docs/releasenotes/release-{{index args 1 | split "." | slice 0 2 | join "."}}.md`.
 """
