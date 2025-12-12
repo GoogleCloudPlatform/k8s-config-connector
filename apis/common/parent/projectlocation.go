@@ -74,9 +74,12 @@ type ProjectAndLocationRef struct {
 }
 
 func (p *ProjectAndLocationRef) Build(ctx context.Context, reader client.Reader, othernamespace string, parent Parent) error {
+	if parent == nil {
+		return fmt.Errorf("projectAndLocation is nil, unable to build parent")
+	}
 	projectAndLocation, ok := parent.(*ProjectAndLocationParent)
 	if !ok {
-		return fmt.Errorf("build invalid parent, except %T", &ProjectAndLocationParent{})
+		return fmt.Errorf("build invalid parent, expect %T", &ProjectAndLocationParent{})
 	}
 	project, err := refsv1beta1.ResolveProject(ctx, reader, othernamespace, p.ProjectRef)
 	if err != nil {
