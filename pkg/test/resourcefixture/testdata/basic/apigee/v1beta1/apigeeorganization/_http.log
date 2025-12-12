@@ -314,9 +314,7 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/${projectNumber}/services/apigee.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/apigee.googleapis.com"
     }
   ]
 }
@@ -398,14 +396,10 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/${projectNumber}/services/apigee.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/apigee.googleapis.com"
     },
     {
-      "name": "projects/${projectNumber}/services/compute.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
     }
   ]
 }

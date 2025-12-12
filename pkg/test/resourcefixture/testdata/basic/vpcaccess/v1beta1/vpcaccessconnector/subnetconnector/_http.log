@@ -314,9 +314,7 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/${projectNumber}/services/compute.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
     }
   ]
 }
@@ -398,14 +396,10 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/${projectNumber}/services/compute.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
     },
     {
-      "name": "projects/${projectNumber}/services/vpcaccess.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/vpcaccess.googleapis.com"
     }
   ]
 }
@@ -930,14 +924,10 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/${projectNumber}/services/compute.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
     },
     {
-      "name": "projects/${projectNumber}/services/vpcaccess.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/vpcaccess.googleapis.com"
     }
   ]
 }
