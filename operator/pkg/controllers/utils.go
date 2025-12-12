@@ -704,7 +704,13 @@ func ApplyMetadataHost(m *manifest.Objects, targetControllerName string, control
 func addMetadataHostEnvVarFn(metadataHost string) func(container map[string]interface{}) error {
 	return func(container map[string]interface{}) error {
 		// Get existing env vars or create empty slice
-		existingEnv, _, _ := unstructured.NestedSlice(container, "env")
+		existingEnv, found, err := unstructured.NestedSlice(container, "env")
+		if err != nil {
+			return fmt.Errorf("error getting container env list: %w", err)
+		}
+		if !found {
+			existingEnv = []interface{}{}
+		}
 
 		// Check if GCE_METADATA_HOST is already set - if so, don't override it
 		for _, e := range existingEnv {
@@ -712,7 +718,10 @@ func addMetadataHostEnvVarFn(metadataHost string) func(container map[string]inte
 			if !ok {
 				continue
 			}
-			name, _, _ := unstructured.NestedString(envMap, "name")
+			name, _, err := unstructured.NestedString(envMap, "name")
+			if err != nil {
+				return fmt.Errorf("error getting env var name: %w", err)
+			}
 			if name == "GCE_METADATA_HOST" {
 				// Already set, preserve existing value
 				return nil
