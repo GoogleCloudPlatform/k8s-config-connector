@@ -685,17 +685,21 @@ func ApplyMetadataHost(m *manifest.Objects, targetControllerName string, control
 		return nil
 	}
 
+	count := 0
 	for _, item := range m.Items {
 		if item.GroupVersionKind() != controllerGVK {
 			continue
 		}
-		if item.GetName() != targetControllerName {
+		if !strings.HasPrefix(item.GetName(), targetControllerName) {
 			continue
 		}
 		if err := item.MutateContainers(addMetadataHostEnvVarFn(metadataHost)); err != nil {
 			return fmt.Errorf("failed to apply metadata host to %s/%s: %w", item.Kind, item.GetName(), err)
 		}
-		return nil
+		count++
+	}
+	if count == 0 {
+		return fmt.Errorf("metadata host customization for %s: controller not found in manifest", targetControllerName)
 	}
 	return nil
 }

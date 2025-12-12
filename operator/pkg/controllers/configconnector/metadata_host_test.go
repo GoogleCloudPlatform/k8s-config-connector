@@ -15,6 +15,7 @@
 package configconnector
 
 import (
+	"strings"
 	"testing"
 
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
@@ -47,6 +48,7 @@ func TestApplyMetadataHost(t *testing.T) {
 		controllerGVK  schema.GroupVersionKind
 		metadataHost   string
 		wantEnvVar     bool
+		wantErr        bool
 	}{
 		{
 			name:           "metadataHost not set - no changes",
@@ -54,6 +56,7 @@ func TestApplyMetadataHost(t *testing.T) {
 			controllerGVK:  statefulSetGVK,
 			metadataHost:   "",
 			wantEnvVar:     false,
+			wantErr:        false,
 		},
 		{
 			name:           "metadataHost set on StatefulSet - inject env var",
@@ -61,13 +64,7 @@ func TestApplyMetadataHost(t *testing.T) {
 			controllerGVK:  statefulSetGVK,
 			metadataHost:   "metadata.google.internal",
 			wantEnvVar:     true,
-		},
-		{
-			name:           "metadataHost set on Deployment - inject env var",
-			controllerName: "cnrm-webhook-manager",
-			controllerGVK:  deploymentGVK,
-			metadataHost:   "metadata.google.internal",
-			wantEnvVar:     true,
+			wantErr:        false,
 		},
 		{
 			name:           "IPv6 address format",
@@ -75,6 +72,23 @@ func TestApplyMetadataHost(t *testing.T) {
 			controllerGVK:  statefulSetGVK,
 			metadataHost:   "[fd20:ce::254]",
 			wantEnvVar:     true,
+			wantErr:        false,
+		},
+		{
+			name:           "controller not found - error",
+			controllerName: "cnrm-webhook-manager",
+			controllerGVK:  deploymentGVK,
+			metadataHost:   "metadata.google.internal",
+			wantEnvVar:     false,
+			wantErr:        true,
+		},
+		{
+			name:           "non-existent controller - error",
+			controllerName: "non-existent-controller",
+			controllerGVK:  statefulSetGVK,
+			metadataHost:   "metadata.google.internal",
+			wantEnvVar:     false,
+			wantErr:        true,
 		},
 	}
 
@@ -86,6 +100,12 @@ func TestApplyMetadataHost(t *testing.T) {
 			m := testcontroller.ParseObjects(ctx, t, testcontroller.GetClusterModeWorkloadIdentityManifest())
 
 			err := controllers.ApplyMetadataHost(m, tc.controllerName, tc.controllerGVK, tc.metadataHost)
+			if tc.wantErr {
+				if err == nil {
+					t.Fatalf("expected error, got nil")
+				}
+				return
+			}
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
@@ -95,7 +115,7 @@ func TestApplyMetadataHost(t *testing.T) {
 				if item.GroupVersionKind() != tc.controllerGVK {
 					continue
 				}
-				if item.GetName() != tc.controllerName {
+				if !strings.HasPrefix(item.GetName(), tc.controllerName) {
 					continue
 				}
 
@@ -123,24 +143,28 @@ func TestApplyControllerResourceCR_MetadataHost(t *testing.T) {
 		controllerName string
 		metadataHost   string
 		wantEnvVar     bool
+		wantErr        bool
 	}{
 		{
 			name:           "cnrm-controller-manager with metadataHost",
 			controllerName: "cnrm-controller-manager",
 			metadataHost:   "metadata.google.internal",
 			wantEnvVar:     true,
-		},
-		{
-			name:           "cnrm-webhook-manager with metadataHost",
-			controllerName: "cnrm-webhook-manager",
-			metadataHost:   "metadata.google.internal",
-			wantEnvVar:     true,
+			wantErr:        false,
 		},
 		{
 			name:           "cnrm-controller-manager without metadataHost",
 			controllerName: "cnrm-controller-manager",
 			metadataHost:   "",
 			wantEnvVar:     false,
+			wantErr:        false,
+		},
+		{
+			name:           "non-existent controller returns error",
+			controllerName: "cnrm-webhook-manager",
+			metadataHost:   "metadata.google.internal",
+			wantEnvVar:     false,
+			wantErr:        true,
 		},
 	}
 
@@ -173,6 +197,12 @@ func TestApplyControllerResourceCR_MetadataHost(t *testing.T) {
 			}
 
 			err := controllers.ApplyMetadataHost(m, cr.Name, controllerGVK, cr.Spec.MetadataHost)
+			if tc.wantErr {
+				if err == nil {
+					t.Fatalf("expected error, got nil")
+				}
+				return
+			}
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
@@ -182,7 +212,7 @@ func TestApplyControllerResourceCR_MetadataHost(t *testing.T) {
 				if item.GroupVersionKind() != controllerGVK {
 					continue
 				}
-				if item.GetName() != tc.controllerName {
+				if !strings.HasPrefix(item.GetName(), tc.controllerName) {
 					continue
 				}
 
