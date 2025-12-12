@@ -1,12 +1,9 @@
-POST https://serviceusage.googleapis.com/v1/projects/${projectId}/services/container.googleapis.com:enable?alt=json
+GET https://serviceusage.googleapis.com/v2beta/projects/${projectId}/consumerPolicies/default?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Type: application/json
 
-{}
-
-200 OK
+404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

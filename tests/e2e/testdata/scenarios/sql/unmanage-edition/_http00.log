@@ -174,17 +174,18 @@ X-Xss-Protection: 0
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 7,
+        "retainedBackups": 15,
         "retentionUnit": "COUNT"
       },
-      "enabled": false,
+      "binaryLogEnabled": true,
+      "enabled": true,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
-      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+      "transactionLogRetentionDays": 14,
+      "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "10",
+    "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
