@@ -1,0 +1,48 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+  name: arrepository-${uniqueId}
+  labels:
+    cnrm-test: "true"
+    env: "test"
+spec:
+  resourceID: arrepository-full-${uniqueId}
+  description: "full configuration test repository"
+  format: DOCKER
+  location: us-west1
+  mode: STANDARD_REPOSITORY
+  dockerConfig:
+    immutableTags: true
+  cleanupPolicyDryRun: true
+  cleanupPolicies:
+    - id: "delete-old-versions"
+      action: DELETE
+      condition:
+        olderThan: "30d"
+        tagState: UNTAGGED
+    - id: "keep-recent-releases"  
+      action: KEEP
+      condition:
+        tagPrefixes:
+          - "release-"
+        newerThan: "7d"
+      mostRecentVersions:
+        keepCount: 5
+        packageNamePrefixes:
+          - "prod/"
