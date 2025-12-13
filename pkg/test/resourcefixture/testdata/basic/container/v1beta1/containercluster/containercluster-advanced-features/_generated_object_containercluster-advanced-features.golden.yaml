@@ -32,10 +32,7 @@ spec:
   datapathProvider: ADVANCED_DATAPATH
   enableCiliumClusterwideNetworkPolicy: true
   enableFqdnNetworkPolicy: true
-  enableK8sBetaApis:
-    enabledApis:
-    - v1beta1
-  enableK8sTokensViaDNS: false
+  enableK8sTokensViaDns: false
   gatewayApiConfig:
     channel: CHANNEL_STANDARD
   initialNodeCount: 1

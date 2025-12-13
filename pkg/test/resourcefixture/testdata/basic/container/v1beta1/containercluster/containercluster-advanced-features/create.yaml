@@ -6,11 +6,19 @@ spec:
   location: us-west2
   initialNodeCount: 1
   enableCiliumClusterwideNetworkPolicy: true
-  enableK8sTokensViaDNS: false # Updated to false
+  controlPlaneEndpointsConfig:
+    dnsEndpointConfig:
+      allowExternalTraffic: true
+      enableKubernetesTokensViaDns: true
   enableFqdnNetworkPolicy: true
-  datapathProvider: ADVANCED_DATAPATH
+  datapathProvider: ADVANCED_DATAPATH # Required for Cilium
+
+  gatewayApiConfig:
+    channel: "CHANNEL_STANDARD"
   clusterAutoscaling:
     enabled: true
+    defaultComputeClassConfig:
+      enabled: true
     resourceLimits:
     - resourceType: cpu
       minimum: 1
@@ -20,4 +28,4 @@ spec:
       maximum: 8
     autoProvisioningDefaults:
       management:
-        defaultComputeClassEnabled: true
+        autoUpgrade: true

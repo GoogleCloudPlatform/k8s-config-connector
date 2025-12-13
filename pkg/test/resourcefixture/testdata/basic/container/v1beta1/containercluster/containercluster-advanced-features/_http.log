@@ -79,11 +79,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "privateEndpointSubnetwork": ""
       }
     },
-    "enableK8sBetaApis": {
-      "enabledApis": [
-        "v1beta1"
-      ]
-    },
     "initialNodeCount": 1,
     "ipAllocationPolicy": {
       "stackType": "IPV4",
@@ -295,11 +290,6 @@ X-Xss-Protection: 0
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
   },
-  "enableK8sBetaApis": {
-    "enabledApis": [
-      "v1beta1"
-    ]
-  },
   "endpoint": "1.23.456.78",
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
@@ -656,11 +646,6 @@ X-Xss-Protection: 0
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
   },
-  "enableK8sBetaApis": {
-    "enabledApis": [
-      "v1beta1"
-    ]
-  },
   "endpoint": "1.23.456.78",
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
@@ -1016,11 +1001,6 @@ X-Xss-Protection: 0
   },
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
-  },
-  "enableK8sBetaApis": {
-    "enabledApis": [
-      "v1beta1"
-    ]
   },
   "endpoint": "1.23.456.78",
   "enterpriseConfig": {

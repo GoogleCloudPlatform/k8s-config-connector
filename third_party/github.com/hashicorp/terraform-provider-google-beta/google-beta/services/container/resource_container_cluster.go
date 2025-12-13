@@ -2178,26 +2178,26 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		ClusterTelemetry: expandClusterTelemetry(d.Get("cluster_telemetry")),
 		EnableTpu:        d.Get("enable_tpu").(bool),
 		NetworkConfig: &container.NetworkConfig{
-			EnableIntraNodeVisibility: d.Get("enable_intranode_visibility").(bool),
-			DefaultSnatStatus:         expandDefaultSnatStatus(d.Get("default_snat_status")),
-			DatapathProvider:          d.Get("datapath_provider").(string),
-			PrivateIpv6GoogleAccess:   d.Get("private_ipv6_google_access").(string),
-			EnableL4ilbSubsetting:     d.Get("enable_l4_ilb_subsetting").(bool),
-			DnsConfig:                 expandDnsConfig(d.Get("dns_config")),
-			GatewayApiConfig:          expandGatewayApiConfig(d.Get("gateway_api_config")),
-			EnableMultiNetworking:     d.Get("enable_multi_networking").(bool),
-			EnableFqdnNetworkPolicy:   d.Get("enable_fqdn_network_policy").(bool),
+			EnableIntraNodeVisibility:            d.Get("enable_intranode_visibility").(bool),
+			DefaultSnatStatus:                    expandDefaultSnatStatus(d.Get("default_snat_status")),
+			DatapathProvider:                     d.Get("datapath_provider").(string),
+			PrivateIpv6GoogleAccess:              d.Get("private_ipv6_google_access").(string),
+			EnableL4ilbSubsetting:                d.Get("enable_l4_ilb_subsetting").(bool),
+			DnsConfig:                            expandDnsConfig(d.Get("dns_config")),
+			GatewayApiConfig:                     expandGatewayApiConfig(d.Get("gateway_api_config")),
+			EnableMultiNetworking:                d.Get("enable_multi_networking").(bool),
+			EnableFqdnNetworkPolicy:              d.Get("enable_fqdn_network_policy").(bool),
 			EnableCiliumClusterwideNetworkPolicy: d.Get("enable_cilium_clusterwide_network_policy").(bool),
-			DefaultEnablePrivateNodes: expandDefaultEnablePrivateNodes(d),
+			DefaultEnablePrivateNodes:            expandDefaultEnablePrivateNodes(d),
 		},
-		MasterAuth:           expandMasterAuth(d.Get("master_auth")),
-		NotificationConfig:   expandNotificationConfig(d.Get("notification_config")),
-		ConfidentialNodes:    expandConfidentialNodes(d.Get("confidential_nodes")),
-		ResourceLabels:       tpgresource.ExpandStringMap(d, "resource_labels"),
-		NodePoolAutoConfig:   expandNodePoolAutoConfig(d.Get("node_pool_auto_config")),
-		ProtectConfig:        expandProtectConfig(d.Get("protect_config")),
-		CostManagementConfig: expandCostManagementConfig(d.Get("cost_management_config")),
-		EnableK8sBetaApis:    expandEnableK8sBetaApis(d.Get("enable_k8s_beta_apis"), nil),
+		MasterAuth:                 expandMasterAuth(d.Get("master_auth")),
+		NotificationConfig:         expandNotificationConfig(d.Get("notification_config")),
+		ConfidentialNodes:          expandConfidentialNodes(d.Get("confidential_nodes")),
+		ResourceLabels:             tpgresource.ExpandStringMap(d, "resource_labels"),
+		NodePoolAutoConfig:         expandNodePoolAutoConfig(d.Get("node_pool_auto_config")),
+		ProtectConfig:              expandProtectConfig(d.Get("protect_config")),
+		CostManagementConfig:       expandCostManagementConfig(d.Get("cost_management_config")),
+		EnableK8sBetaApis:          expandEnableK8sBetaApis(d.Get("enable_k8s_beta_apis"), nil),
 	}
 
 	v := d.Get("enable_shielded_nodes")
@@ -3191,8 +3191,6 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		log.Printf("[INFO] GKE cluster %s Cilium Clusterwide Network Policy has been updated to %v", d.Id(), enabled)
 	}
-
-
 
 	if d.HasChange("gateway_api_config") {
 		c := d.Get("gateway_api_config")

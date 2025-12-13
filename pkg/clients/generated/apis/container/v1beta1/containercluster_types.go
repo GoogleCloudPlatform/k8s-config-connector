@@ -204,6 +204,10 @@ type ClusterClusterAutoscaling struct {
 	// +optional
 	AutoscalingProfile *string `json:"autoscalingProfile,omitempty"`
 
+	/* Configuration of default Compute Engine machine class to use for node autoprovisioning node pools in the cluster. */
+	// +optional
+	DefaultComputeClassConfig *ClusterDefaultComputeClassConfig `json:"defaultComputeClassConfig,omitempty"`
+
 	/* Whether node auto-provisioning is enabled. Resource limits for cpu and memory must be defined to enable node auto-provisioning. */
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`
@@ -258,6 +262,12 @@ type ClusterDatabaseEncryption struct {
 	State string `json:"state"`
 }
 
+type ClusterDefaultComputeClassConfig struct {
+	/* Whether the default Compute Engine machine class is enabled for new autoprovisioned node pools. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 type ClusterDefaultSnatStatus struct {
 	/* When disabled is set to false, default IP masquerade rules will be applied to the nodes to prevent sNAT on cluster internal traffic. */
 	Disabled bool `json:"disabled"`
@@ -285,9 +295,13 @@ type ClusterDnsEndpointConfig struct {
 	/* Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false. */
 	// +optional
 	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
+
+	/* Controls whether Kubernetes tokens are enabled for this endpoint. can be set to true if allow_external_traffic is true. */
+	// +optional
+	EnableKubernetesTokensViaDns *bool `json:"enableKubernetesTokensViaDns,omitempty"`
 }
 
-type ClusterEnableK8sBetaAPIs struct {
+type ClusterEnableK8sBetaApis struct {
 	/* Enabled Kubernetes Beta APIs. */
 	EnabledApis []string `json:"enabledApis"`
 }
@@ -317,7 +331,7 @@ type ClusterFilter struct {
 	EventType []string `json:"eventType"`
 }
 
-type ClusterGatewayAPIConfig struct {
+type ClusterGatewayApiConfig struct {
 	/* The Gateway API release channel to use for Gateway API. */
 	Channel string `json:"channel"`
 }
@@ -1141,11 +1155,7 @@ type ContainerClusterSpec struct {
 
 	/* Configuration for Kubernetes Beta APIs. */
 	// +optional
-	EnableK8sBetaAPIs *ClusterEnableK8sBetaAPIs `json:"enableK8sBetaAPIs,omitempty"`
-
-	/* Whether to allow access to the cluster's control plane endpoint for any user who has a valid service account token. */
-	// +optional
-	EnableK8sTokensViaDNS *bool `json:"enableK8sTokensViaDNS,omitempty"`
+	EnableK8sBetaApis *ClusterEnableK8sBetaApis `json:"enableK8sBetaApis,omitempty"`
 
 	/* Immutable. Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. */
 	// +optional
@@ -1173,7 +1183,7 @@ type ContainerClusterSpec struct {
 
 	/* Configuration for GKE Gateway API controller. */
 	// +optional
-	GatewayAPIConfig *ClusterGatewayAPIConfig `json:"gatewayAPIConfig,omitempty"`
+	GatewayApiConfig *ClusterGatewayApiConfig `json:"gatewayApiConfig,omitempty"`
 
 	/* Configuration for Identity Service which allows customers to use external identity providers with the K8S API. */
 	// +optional

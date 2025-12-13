@@ -592,7 +592,7 @@ spec:
                 required:
                 - enabledApis
                 type: object
-              enableK8sTokensViaDNS:
+              enableK8sTokensViaDns:
                 description: Whether to allow access to the cluster's control plane
                   endpoint for any user who has a valid service account token.
                 type: boolean
@@ -624,15 +624,15 @@ spec:
                   cluster.
                 type: boolean
               gatewayApiConfig:
-                description: GatewayAPIConfig contains the desired config of Gateway
-                  API on this cluster.
+                description: Configuration for GKE Gateway API controller.
                 properties:
                   channel:
-                    description: 'The Gateway API release channel to use for Gateway
-                      API. Possible values: "CHANNEL_STANDARD", "CHANNEL_DISABLED"'
+                    description: The Gateway API release channel to use for Gateway
+                      API.
                     type: string
+                required:
+                - channel
                 type: object
-
               identityServiceConfig:
                 description: Configuration for Identity Service which allows customers
                   to use external identity providers with the K8S API.
