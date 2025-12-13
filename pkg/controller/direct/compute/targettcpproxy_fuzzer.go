@@ -29,8 +29,8 @@ func init() {
 
 func computeTargetTCPProxyFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.TargetTcpProxy{},
-		ComputeTargetTCPProxySpec_FromProto, ComputeTargetTCPProxySpec_ToProto,
-		ComputeTargetTCPProxyStatus_FromProto, ComputeTargetTCPProxyStatus_ToProto,
+		ComputeTargetTCPProxySpec_v1beta1_FromProto, ComputeTargetTCPProxySpec_v1beta1_ToProto,
+		ComputeTargetTCPProxyStatus_v1beta1_FromProto, ComputeTargetTCPProxyStatus_v1beta1_ToProto,
 	)
 
 	// Spec fields
