@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,12 +31,17 @@ import (
 
 type FirestoreV1beta1Interface interface {
 	RESTClient() rest.Interface
+	FirestoreDatabasesGetter
 	FirestoreIndexesGetter
 }
 
 // FirestoreV1beta1Client is used to interact with features provided by the firestore.cnrm.cloud.google.com group.
 type FirestoreV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *FirestoreV1beta1Client) FirestoreDatabases(namespace string) FirestoreDatabaseInterface {
+	return newFirestoreDatabases(c, namespace)
 }
 
 func (c *FirestoreV1beta1Client) FirestoreIndexes(namespace string) FirestoreIndexInterface {

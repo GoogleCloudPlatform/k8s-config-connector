@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,10 +36,10 @@ import (
 )
 
 type ServiceIdentitySpec struct {
-	/* The project that this resource belongs to. */
+	/* The project that this service identity belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The service of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The service name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -48,6 +48,7 @@ type ServiceIdentityStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ServiceIdentity's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The email address of the service account that a service producer would use to access consumer resources. */
 	// +optional
 	Email *string `json:"email,omitempty"`
 

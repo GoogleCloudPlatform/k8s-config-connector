@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@ type IAMPolicySpec struct {
 	// +optional
 	Bindings []PolicyBindings `json:"bindings,omitempty"`
 
-	/* Immutable. Required. The GCP resource to set the IAM policy on. */
+	/* Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...) */
 	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
 }
 

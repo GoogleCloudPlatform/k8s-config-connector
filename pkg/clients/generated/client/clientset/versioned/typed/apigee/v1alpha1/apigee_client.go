@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,11 +32,6 @@ import (
 type ApigeeV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	ApigeeAddonsConfigsGetter
-	ApigeeEndpointAttachmentsGetter
-	ApigeeEnvgroupsGetter
-	ApigeeEnvgroupAttachmentsGetter
-	ApigeeInstancesGetter
-	ApigeeInstanceAttachmentsGetter
 	ApigeeNATAddressesGetter
 	ApigeeSyncAuthorizationsGetter
 }
@@ -48,26 +43,6 @@ type ApigeeV1alpha1Client struct {
 
 func (c *ApigeeV1alpha1Client) ApigeeAddonsConfigs(namespace string) ApigeeAddonsConfigInterface {
 	return newApigeeAddonsConfigs(c, namespace)
-}
-
-func (c *ApigeeV1alpha1Client) ApigeeEndpointAttachments(namespace string) ApigeeEndpointAttachmentInterface {
-	return newApigeeEndpointAttachments(c, namespace)
-}
-
-func (c *ApigeeV1alpha1Client) ApigeeEnvgroups(namespace string) ApigeeEnvgroupInterface {
-	return newApigeeEnvgroups(c, namespace)
-}
-
-func (c *ApigeeV1alpha1Client) ApigeeEnvgroupAttachments(namespace string) ApigeeEnvgroupAttachmentInterface {
-	return newApigeeEnvgroupAttachments(c, namespace)
-}
-
-func (c *ApigeeV1alpha1Client) ApigeeInstances(namespace string) ApigeeInstanceInterface {
-	return newApigeeInstances(c, namespace)
-}
-
-func (c *ApigeeV1alpha1Client) ApigeeInstanceAttachments(namespace string) ApigeeInstanceAttachmentInterface {
-	return newApigeeInstanceAttachments(c, namespace)
 }
 
 func (c *ApigeeV1alpha1Client) ApigeeNATAddresses(namespace string) ApigeeNATAddressInterface {

@@ -65,6 +65,12 @@ var (
 		Kind:    reflect.TypeOf(DatastreamPrivateConnection{}).Name(),
 	}
 
+	DatastreamRouteGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DatastreamRoute{}).Name(),
+	}
+
 	DatastreamStreamGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

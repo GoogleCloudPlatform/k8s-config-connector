@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,22 +35,114 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type InstanceAutoscalingConfig struct {
+	/* Required. Autoscaling limits for an instance. */
+	// +optional
+	AutoscalingLimits *InstanceAutoscalingLimits `json:"autoscalingLimits,omitempty"`
+
+	/* Required. The autoscaling targets for an instance. */
+	// +optional
+	AutoscalingTargets *InstanceAutoscalingTargets `json:"autoscalingTargets,omitempty"`
+}
+
+type InstanceAutoscalingLimits struct {
+	/* Maximum number of nodes allocated to the instance. If set, this number should be greater than or equal to min_nodes. */
+	// +optional
+	MaxNodes *int32 `json:"maxNodes,omitempty"`
+
+	/* Maximum number of processing units allocated to the instance. If set, this number should be multiples of 1000 and be greater than or equal to min_processing_units. */
+	// +optional
+	MaxProcessingUnits *int32 `json:"maxProcessingUnits,omitempty"`
+
+	/* Minimum number of nodes allocated to the instance. If set, this number should be greater than or equal to 1. */
+	// +optional
+	MinNodes *int32 `json:"minNodes,omitempty"`
+
+	/* Minimum number of processing units allocated to the instance. If set, this number should be multiples of 1000. */
+	// +optional
+	MinProcessingUnits *int32 `json:"minProcessingUnits,omitempty"`
+}
+
+type InstanceAutoscalingTargets struct {
+	/* Required. The target high priority cpu utilization percentage that the autoscaler should be trying to achieve for the instance. This number is on a scale from 0 (no utilization) to 100 (full utilization). The valid range is [10, 90] inclusive. */
+	// +optional
+	HighPriorityCpuUtilizationPercent *int32 `json:"highPriorityCpuUtilizationPercent,omitempty"`
+
+	/* Required. The target storage utilization percentage that the autoscaler should be trying to achieve for the instance. This number is on a scale from 0 (no utilization) to 100 (full utilization). The valid range is [10, 100] inclusive. */
+	// +optional
+	StorageUtilizationPercent *int32 `json:"storageUtilizationPercent,omitempty"`
+}
+
 type SpannerInstanceSpec struct {
+	/* Optional. The autoscaling configuration. Autoscaling is enabled if this field is set. When autoscaling is enabled, node_count and processing_units are treated as OUTPUT_ONLY fields and reflect the current compute capacity allocated to the instance. */
+	// +optional
+	AutoscalingConfig *InstanceAutoscalingConfig `json:"autoscalingConfig,omitempty"`
+
 	/* Immutable. The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. It determines where your data is stored. Values are typically of the form 'regional-europe-west1' , 'us-central' etc. In order to obtain a valid list please consult the [Configuration section of the docs](https://cloud.google.com/spanner/docs/instances). */
 	Config string `json:"config"`
+
+	/* Optional. Controls the default backup schedule behavior for new databases
+	within the instance. By default, a backup schedule is created automatically
+	when a new database is created in a new instance.
+
+	Note that the `AUTOMATIC` value isn't permitted for free instances,
+	as backups and backup schedules aren't supported for free instances.
+
+	In the `GetInstance` or `ListInstances` response, if the value of
+	`default_backup_schedule_type` isn't set, or set to `NONE`, Spanner doesn't
+	create a default backup schedule for new databases in the instance. */
+	// +optional
+	DefaultBackupScheduleType *string `json:"defaultBackupScheduleType,omitempty"`
 
 	/* The descriptive name for this instance as it appears in UIs. Must be unique per project and between 4 and 30 characters in length. */
 	DisplayName string `json:"displayName"`
 
+	/* Optional. The `Edition` of the current instance. Currently accepted values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS. If edition is unspecified, it has automatically upgraded to the lowest edition that matches your usage pattern. */
 	// +optional
-	NumNodes *int64 `json:"numNodes,omitempty"`
+	Edition *string `json:"edition,omitempty"`
+
+	/* Cloud Labels are a flexible and lightweight mechanism for organizing cloud
+	resources into groups that reflect a customer's organizational needs and
+	deployment strategies. Cloud Labels can be used to filter collections of
+	resources. They can be used to control how resource metrics are aggregated.
+	And they can be used as arguments to policy management rules (e.g. route,
+	firewall, load balancing, etc.).
+
+	- Label keys must be between 1 and 63 characters long and must conform to
+	the following regular expression: `[a-z][a-z0-9_-]{0,62}`.
+	- Label values must be between 0 and 63 characters long and must conform
+	to the regular expression `[a-z0-9_-]{0,63}`.
+	- No more than 64 labels can be associated with a given resource.
+
+	See https://goo.gl/xmQnxf for more information on and examples of labels.
+
+	If you plan to use labels in your own code, please note that additional
+	characters may be allowed in the future. And so you are advised to use an
+	internal label representation, such as JSON, which doesn't rely upon
+	specific characters being disallowed.  For example, representing labels
+	as the string:  name + "_" + value  would prove problematic if we were to
+	allow "_" in a future release. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 
 	// +optional
-	ProcessingUnits *int64 `json:"processingUnits,omitempty"`
+	NumNodes *int32 `json:"numNodes,omitempty"`
 
-	/* Immutable. The SpannerInstance name. If not given, the metadata.name will be used. */
+	// +optional
+	ProcessingUnits *int32 `json:"processingUnits,omitempty"`
+
+	/* The SpannerInstance name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type InstanceObservedStateStatus struct {
+	/* NumNodes and ProcessUnits is output fields with AutoScaler is set. */
+	// +optional
+	NumNodes *int32 `json:"numNodes,omitempty"`
+
+	// +optional
+	ProcessingUnits *int32 `json:"processingUnits,omitempty"`
 }
 
 type SpannerInstanceStatus struct {
@@ -64,6 +156,10 @@ type SpannerInstanceStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *InstanceObservedStateStatus `json:"observedState,omitempty"`
 
 	/* Instance status: 'CREATING' or 'READY'. */
 	// +optional

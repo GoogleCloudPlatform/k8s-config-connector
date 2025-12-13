@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ type NetworkservicesV1alpha1Interface interface {
 	NetworkServicesEdgeCacheKeysetsGetter
 	NetworkServicesEdgeCacheOriginsGetter
 	NetworkServicesEdgeCacheServicesGetter
+	NetworkServicesServiceBindingsGetter
 }
 
 // NetworkservicesV1alpha1Client is used to interact with features provided by the networkservices.cnrm.cloud.google.com group.
@@ -51,6 +52,10 @@ func (c *NetworkservicesV1alpha1Client) NetworkServicesEdgeCacheOrigins(namespac
 
 func (c *NetworkservicesV1alpha1Client) NetworkServicesEdgeCacheServices(namespace string) NetworkServicesEdgeCacheServiceInterface {
 	return newNetworkServicesEdgeCacheServices(c, namespace)
+}
+
+func (c *NetworkservicesV1alpha1Client) NetworkServicesServiceBindings(namespace string) NetworkServicesServiceBindingInterface {
+	return newNetworkServicesServiceBindings(c, namespace)
 }
 
 // NewForConfig creates a new NetworkservicesV1alpha1Client for the given config.

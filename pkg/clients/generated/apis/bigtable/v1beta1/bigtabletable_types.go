@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,25 +41,34 @@ type TableColumnFamily struct {
 }
 
 type BigtableTableSpec struct {
-	/* Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days. */
+	/* Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days.. */
 	// +optional
 	ChangeStreamRetention *string `json:"changeStreamRetention,omitempty"`
 
-	/* A group of columns within a table which share a common configuration. This can be specified multiple times. */
+	/* The names of the column families that should be created immediately upon table creation, specified by name. The values that may be set are specified here. At least one column family must be specified. */
 	// +optional
 	ColumnFamily []TableColumnFamily `json:"columnFamily,omitempty"`
 
-	/* A field to make the table protected against data loss i.e. when set to PROTECTED, deleting the table, the column families in the table, and the instance containing the table would be prohibited. If not provided, currently deletion protection will be set to UNPROTECTED as it is the API default value. */
+	/* NOTE: DeletionProtection proto field is changed from string (1.38) to bool (1.40) in cloud.google.com/go/bigtable/admin/apiv2/adminpb
+	Set to true to make the table protected against data loss. i.e. deleting
+	the following resources through Admin APIs are prohibited:
+
+	* The table.
+	* The column families in the table.
+	* The instance containing the table.
+
+	Note one can still delete the data stored in the table through Data APIs. */
 	// +optional
 	DeletionProtection *string `json:"deletionProtection,omitempty"`
 
-	/* The name of the Bigtable instance. */
+	/* Immutable. The instance to create the table in. */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The BigtableTable name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* A list of predefined keys to split the table on. */
 	// +optional
 	SplitKeys []string `json:"splitKeys,omitempty"`
 }
@@ -68,6 +77,10 @@ type BigtableTableStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableTable's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the BigtableTable resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

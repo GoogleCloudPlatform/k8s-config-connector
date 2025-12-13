@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,8 +31,20 @@ type FakeGkebackupV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeGkebackupV1alpha1) GKEBackupBackups(namespace string) v1alpha1.GKEBackupBackupInterface {
+	return &FakeGKEBackupBackups{c, namespace}
+}
+
 func (c *FakeGkebackupV1alpha1) GKEBackupBackupPlans(namespace string) v1alpha1.GKEBackupBackupPlanInterface {
 	return &FakeGKEBackupBackupPlans{c, namespace}
+}
+
+func (c *FakeGkebackupV1alpha1) GKEBackupRestores(namespace string) v1alpha1.GKEBackupRestoreInterface {
+	return &FakeGKEBackupRestores{c, namespace}
+}
+
+func (c *FakeGkebackupV1alpha1) GKEBackupRestorePlans(namespace string) v1alpha1.GKEBackupRestorePlanInterface {
+	return &FakeGKEBackupRestorePlans{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

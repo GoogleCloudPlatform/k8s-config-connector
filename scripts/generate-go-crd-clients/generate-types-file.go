@@ -502,6 +502,8 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 		}
 	case "float", "number":
 		return "float64"
+	case "any", "schemaless":
+		return "apiextensionsv1.JSON"
 	case "object":
 		if isSec {
 			return "v1alpha1.SecretKeyRef"
@@ -536,7 +538,12 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 			if valueType == "object" {
 				goType = strings.Title(desc.ShortName)
 			} else {
-				goType = formatToGoLiteral(valueType)
+				if valueType == "" {
+					// If valueType is empty, it's likely an arbitrary JSON object; use apiextensionsv1.JSON
+					goType = "apiextensionsv1.JSON"
+				} else {
+					goType = formatToGoLiteral(valueType)
+				}
 			}
 			return fmt.Sprintf("map[string]%v", goType)
 		}
@@ -554,6 +561,8 @@ func formatToGoLiteral(t string) string {
 		return "int64"
 	case "float", "number":
 		return "float64"
+	case "any", "schemaless":
+		return "apiextensionsv1.JSON"
 	default:
 		panic(fmt.Errorf("expected a JSONLiteral but got %v", t))
 	}

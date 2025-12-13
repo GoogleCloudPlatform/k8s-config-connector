@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -45,10 +45,6 @@ func (c *FakeVertexaiV1alpha1) VertexAIFeaturestoreEntityTypeFeatures(namespace 
 
 func (c *FakeVertexaiV1alpha1) VertexAIIndexEndpoints(namespace string) v1alpha1.VertexAIIndexEndpointInterface {
 	return &FakeVertexAIIndexEndpoints{c, namespace}
-}
-
-func (c *FakeVertexaiV1alpha1) VertexAIMetadataStores(namespace string) v1alpha1.VertexAIMetadataStoreInterface {
-	return &FakeVertexAIMetadataStores{c, namespace}
 }
 
 func (c *FakeVertexaiV1alpha1) VertexAITensorboards(namespace string) v1alpha1.VertexAITensorboardInterface {

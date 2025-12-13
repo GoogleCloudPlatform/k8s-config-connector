@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,21 +36,15 @@ import (
 )
 
 type DataCatalogTaxonomySpec struct {
-	/* A list of policy types that are activated for this taxonomy. If not set,
-	defaults to an empty list. Possible values: ["POLICY_TYPE_UNSPECIFIED", "FINE_GRAINED_ACCESS_CONTROL"]. */
+	/* A list of policy types that are activated for this taxonomy. If not set, defaults to an empty list. Possible values: ["POLICY_TYPE_UNSPECIFIED", "FINE_GRAINED_ACCESS_CONTROL"]. */
 	// +optional
 	ActivatedPolicyTypes []string `json:"activatedPolicyTypes,omitempty"`
 
-	/* Description of this taxonomy. It must: contain only unicode characters,
-	tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes
-	long when encoded in UTF-8. If not set, defaults to an empty description. */
+	/* Description of this taxonomy. It must: contain only unicode characters, tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes long when encoded in UTF-8. If not set, defaults to an empty description. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* User defined name of this taxonomy.
-	It must: contain only unicode letters, numbers, underscores, dashes
-	and spaces; not start or end with spaces; and be at most 200 bytes
-	long when encoded in UTF-8. */
+	/* User defined name of this taxonomy. It must: contain only unicode letters, numbers, underscores, dashes and spaces; not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8. */
 	DisplayName string `json:"displayName"`
 
 	/* The project that this resource belongs to. */
@@ -65,18 +59,71 @@ type DataCatalogTaxonomySpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type TaxonomyObservedStateStatus struct {
+	/* Output only. Number of policy tags in this taxonomy. */
+	// +optional
+	PolicyTagCount *int32 `json:"policyTagCount,omitempty"`
+
+	/* Output only. Identity of the service which owns the Taxonomy. This field is only populated when the taxonomy is created by a Google Cloud service. Currently only 'DATAPLEX' is supported. */
+	// +optional
+	Service *TaxonomyServiceStatus `json:"service,omitempty"`
+
+	/* Output only. Creation and modification timestamps of this taxonomy. */
+	// +optional
+	TaxonomyTimestamps *TaxonomyTaxonomyTimestampsStatus `json:"taxonomyTimestamps,omitempty"`
+}
+
+type TaxonomyServiceStatus struct {
+	/* The service agent for the service. */
+	// +optional
+	Identity *string `json:"identity,omitempty"`
+
+	/* The Google Cloud service name. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
+type TaxonomyTaxonomyTimestampsStatus struct {
+	/* Creation timestamp of the resource within the given system. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. Expiration timestamp of the resource within the given system.
+
+	Currently only applicable to BigQuery resources. */
+	// +optional
+	ExpiredTime *string `json:"expiredTime,omitempty"`
+
+	/* Timestamp of the last modification of the resource or its metadata within
+	a given system.
+
+	Note: Depending on the source system, not every modification updates this
+	timestamp.
+	For example, BigQuery timestamps every metadata modification but not data
+	or permission changes. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
 type DataCatalogTaxonomyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataCatalogTaxonomy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Resource name of this taxonomy, whose format is:
-	"projects/{project}/locations/{region}/taxonomies/{taxonomy}". */
+	/* A unique specifier for the DataCatalogTaxonomy resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	/* Resource name of this taxonomy, whose format is: "projects/{project}/locations/{region}/taxonomies/{taxonomy}". */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *TaxonomyObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

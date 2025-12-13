@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ type GuestpolicyArtifacts struct {
 	// +optional
 	Gcs *GuestpolicyGcs `json:"gcs,omitempty"`
 
-	/* Required. ID of the artifact, which the installation and update steps of this recipe can reference. Artifacts in a recipe cannot have the same id. */
+	/* Required. Id of the artifact, which the installation and update steps of this recipe can reference. Artifacts in a recipe cannot have the same id. */
 	// +optional
 	Id *string `json:"id,omitempty"`
 

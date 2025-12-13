@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ type DatastreamV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	DatastreamConnectionProfilesGetter
 	DatastreamPrivateConnectionsGetter
+	DatastreamRoutesGetter
 	DatastreamStreamsGetter
 }
 
@@ -47,6 +48,10 @@ func (c *DatastreamV1alpha1Client) DatastreamConnectionProfiles(namespace string
 
 func (c *DatastreamV1alpha1Client) DatastreamPrivateConnections(namespace string) DatastreamPrivateConnectionInterface {
 	return newDatastreamPrivateConnections(c, namespace)
+}
+
+func (c *DatastreamV1alpha1Client) DatastreamRoutes(namespace string) DatastreamRouteInterface {
+	return newDatastreamRoutes(c, namespace)
 }
 
 func (c *DatastreamV1alpha1Client) DatastreamStreams(namespace string) DatastreamStreamInterface {
