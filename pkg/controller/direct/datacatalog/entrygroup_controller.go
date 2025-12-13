@@ -146,7 +146,7 @@ func (a *entryGroupAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	log.V(2).Info("creating datacatalog entrygroup", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := DataCatalogEntryGroupSpec_ToProto(mapCtx, &a.desired.Spec)
+	desired := DataCatalogEntryGroupSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -163,7 +163,7 @@ func (a *entryGroupAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	log.V(2).Info("successfully created datacatalog entrygroup in gcp", "name", a.id)
 
 	status := &krm.DataCatalogEntryGroupStatus{}
-	status.ObservedState = DataCatalogEntryGroupObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DataCatalogEntryGroupObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -176,7 +176,7 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	log.V(2).Info("updating datacatalog entrygroup", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := DataCatalogEntryGroupSpec_ToProto(mapCtx, &a.desired.Spec)
+	desired := DataCatalogEntryGroupSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -215,7 +215,7 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 
 	status := &krm.DataCatalogEntryGroupStatus{}
-	status.ObservedState = DataCatalogEntryGroupObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DataCatalogEntryGroupObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -230,7 +230,7 @@ func (a *entryGroupAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 
 	obj := &krm.DataCatalogEntryGroup{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DataCatalogEntryGroupSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DataCatalogEntryGroupSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
