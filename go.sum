@@ -19,6 +19,10 @@ cloud.google.com/go/apigateway v1.7.7 h1:ehKUTy+QFsb3n07fEi18S2dpDDjCV4UlRyrbwfZ
 cloud.google.com/go/apigateway v1.7.7/go.mod h1:j1bCmrUK1BzVHpiIyTApxB7cRyhivKzltqLmp6j6i7U=
 cloud.google.com/go/apikeys v1.1.12 h1:ZTFWJ1ibGjiIrIhhtdWOm7AGJd+y9R17dVujlgU//6E=
 cloud.google.com/go/apikeys v1.1.12/go.mod h1:3tqZUj8CmCJm0maQyLufgyO5Ghf3AZQ6hcSkIqsSIm4=
+cloud.google.com/go/appengine v1.9.6 h1:JJyY8icMmQeWfQ+d36IhkGvd3Guzvw0UAkvxT0wmUx8=
+cloud.google.com/go/appengine v1.9.6/go.mod h1:jPp9T7Opvzl97qytaRGPwoH7pFI3GAcLDaui1K8PNjY=
+cloud.google.com/go/appengine v1.9.7 h1:IxGz6j5xv0nTJX285wu95Vn6KEi2CeV9vbyRgCSEAoU=
+cloud.google.com/go/appengine v1.9.7/go.mod h1:y1XpGVeAhbsNzHida79cHbr3pFRsym0ob8xnC8yphbo=
 cloud.google.com/go/apphub v0.2.4 h1:lhsd/6+16NUshw8c52T+DfMaAz04SX6ItMr8caGbtgY=
 cloud.google.com/go/apphub v0.2.4/go.mod h1:QJw0OWQIQv/NvBz2/RJGAD6iJTLamf3vqOEsvFMixHw=
 cloud.google.com/go/asset v1.21.1 h1:i55wWC/EwVdHMyJgRfbLp/L6ez4nQuOpZwSxkuqN9ek=
@@ -125,6 +129,8 @@ cloud.google.com/go/profiler v0.4.1 h1:Q7+lOvikTGMJ/IAWocpYYGit4SIIoILmVZfEEWTOR
 cloud.google.com/go/profiler v0.4.1/go.mod h1:LBrtEX6nbvhv1w/e5CPZmX9ajGG9BGLtGbv56Tg4SHs=
 cloud.google.com/go/pubsub/v2 v2.0.0 h1:0qS6mRJ41gD1lNmM/vdm6bR7DQu6coQcVwD+VPf0Bz0=
 cloud.google.com/go/pubsub/v2 v2.0.0/go.mod h1:0aztFxNzVQIRSZ8vUr79uH2bS3jwLebwK6q1sgEub+E=
+cloud.google.com/go/pubsublite v1.8.2 h1:jLQozsEVr+c6tOU13vDugtnaBSUy/PD5zK6mhm+uF1Y=
+cloud.google.com/go/pubsublite v1.8.2/go.mod h1:4r8GSa9NznExjuLPEJlF1VjOPOpgf3IT6k8x/YgaOPI=
 cloud.google.com/go/recaptchaenterprise/v2 v2.20.4 h1:P4QMryKcWdi4LIe1Sx0b2ZOAQv5gVfdzPt2peXcN32Y=
 cloud.google.com/go/recaptchaenterprise/v2 v2.20.4/go.mod h1:3H8nb8j8N7Ss2eJ+zr+/H7gyorfzcxiDEtVBDvDjwDQ=
 cloud.google.com/go/redis v1.18.2 h1:JlHLceAOILEmbn+NIS7l+vmUKkFuobLToCWTxL7NGcQ=
