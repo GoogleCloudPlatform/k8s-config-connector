@@ -107,6 +107,8 @@ func (d *dashboardDefaulter) visitDashboard(obj *pb.Dashboard) {
 		d.visitMosaicLayout(layout.MosaicLayout)
 	case *pb.Dashboard_GridLayout:
 		d.visitGridLayout(layout.GridLayout)
+	case nil:
+		// No layout specified; nothing to do.
 	default:
 		klog.Fatalf("unknown layout type %T in mockgcp dashboards", layout)
 	}
@@ -349,13 +351,15 @@ func (d *dashboardValidator) visitTextWidget(obj *pb.Widget_Text) {
 }
 
 func (s *DashboardsService) UpdateDashboard(ctx context.Context, req *pb.UpdateDashboardRequest) (*pb.Dashboard, error) {
+	log := klog.FromContext(ctx)
 	name, err := s.parseDashboardName(req.GetDashboard().GetName())
 	if err != nil {
 		return nil, err
 	}
 
 	if req.GetDashboard().GetEtag() == "" {
-		return nil, status.Errorf(codes.InvalidArgument, "Update Dashboard should specify a non empty etag.")
+		// gcloud sends requests without an etag (sometimes?)
+		log.Info("allowing UpdateDashboard request with empty etag")
 	}
 
 	if req.ValidateOnly {
