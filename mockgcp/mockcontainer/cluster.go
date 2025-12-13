@@ -658,63 +658,6 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 		obj.NetworkPolicy = nil
 	}
 
-	if obj.PrivateClusterConfig == nil {
-		obj.PrivateClusterConfig = &pb.PrivateClusterConfig{}
-	}
-	if obj.PrivateClusterConfig.PublicEndpoint == "" {
-		obj.PrivateClusterConfig.PublicEndpoint = "8.8.8.8"
-	}
-	if obj.NetworkConfig != nil && obj.NetworkConfig.DefaultEnablePrivateNodes != nil {
-		obj.PrivateClusterConfig.EnablePrivateNodes = *obj.NetworkConfig.DefaultEnablePrivateNodes
-	}
-
-	if obj.ControlPlaneEndpointsConfig == nil {
-		obj.ControlPlaneEndpointsConfig = &pb.ControlPlaneEndpointsConfig{}
-	}
-	if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig != nil {
-
-		if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.Enabled != nil &&
-			*obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.Enabled {
-
-			// The deprecated PrivateClusterConfig.PrivateEndpoint field seems to
-			// be populated only when IP endpoints config is enabled.
-			if obj.PrivateClusterConfig.PrivateEndpoint == "" {
-				obj.PrivateClusterConfig.PrivateEndpoint = "10.128.0.2"
-			}
-
-			if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpoint == "" {
-				obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpoint = "10.128.0.2"
-			}
-			if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.EnablePublicEndpoint != nil &&
-				*obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.EnablePublicEndpoint {
-
-				if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PublicEndpoint == "" {
-					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PublicEndpoint = "8.8.8.8"
-				}
-				if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig == nil {
-					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
-				}
-				obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(true)
-
-				if obj.MasterAuthorizedNetworksConfig == nil {
-					obj.MasterAuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
-				}
-				obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(true)
-			} else {
-				if !obj.MasterAuthorizedNetworksConfig.Enabled {
-					return fmt.Errorf("'masterAuthorizedNetworksConfig' must be enabled when private endpoint is enabled")
-				} else if obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled != nil &&
-					*obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled {
-					return fmt.Errorf("'masterAuthorizedNetworksConfig.gcpPublicCidrsAccessEnabled' cannot be true if private endpoint is enabled")
-				}
-			}
-		}
-	}
-	if obj.ControlPlaneEndpointsConfig.DnsEndpointConfig == nil {
-		obj.ControlPlaneEndpointsConfig.DnsEndpointConfig = &pb.ControlPlaneEndpointsConfig_DNSEndpointConfig{}
-	}
-	obj.ControlPlaneEndpointsConfig.DnsEndpointConfig.Endpoint = fmt.Sprintf("gke-12345trewq-${projectNumber}.%s.gke.goog", obj.Location)
-
 	if obj.ProtectConfig == nil {
 		obj.ProtectConfig = &pb.ProtectConfig{}
 	}
@@ -744,6 +687,110 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 
 	if obj.SecurityPostureConfig.VulnerabilityMode == nil {
 		obj.SecurityPostureConfig.VulnerabilityMode = PtrTo(pb.SecurityPostureConfig_VULNERABILITY_MODE_UNSPECIFIED)
+	}
+
+	if err := populatePrivateClusterConfigMasterAuthorizedNetworksConfig(obj); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func populatePrivateClusterConfigMasterAuthorizedNetworksConfig(obj *pb.Cluster) error {
+	if obj.ControlPlaneEndpointsConfig == nil {
+		obj.ControlPlaneEndpointsConfig = &pb.ControlPlaneEndpointsConfig{}
+	}
+	if obj.ControlPlaneEndpointsConfig.DnsEndpointConfig == nil {
+		obj.ControlPlaneEndpointsConfig.DnsEndpointConfig = &pb.ControlPlaneEndpointsConfig_DNSEndpointConfig{}
+	}
+	obj.ControlPlaneEndpointsConfig.DnsEndpointConfig.Endpoint = fmt.Sprintf("gke-12345trewq-${projectNumber}.%s.gke.goog", obj.Location)
+
+	if obj.PrivateClusterConfig == nil {
+		obj.PrivateClusterConfig = &pb.PrivateClusterConfig{}
+	}
+	if obj.PrivateClusterConfig.PublicEndpoint == "" {
+		obj.PrivateClusterConfig.PublicEndpoint = "8.8.8.8"
+	}
+
+	if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig != nil {
+
+		if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.Enabled != nil &&
+			*obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.Enabled {
+
+			// The deprecated PrivateClusterConfig.PrivateEndpoint field seems to
+			// be populated only when IP endpoints config is enabled.
+			if obj.PrivateClusterConfig.PrivateEndpoint == "" {
+				obj.PrivateClusterConfig.PrivateEndpoint = "10.128.0.2"
+			}
+			if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpoint == "" {
+				obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpoint = "10.128.0.2"
+			}
+
+			if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.GlobalAccess != nil {
+				if *obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.GlobalAccess {
+					if obj.PrivateClusterConfig.MasterGlobalAccessConfig == nil {
+						obj.PrivateClusterConfig.MasterGlobalAccessConfig = &pb.PrivateClusterMasterGlobalAccessConfig{}
+					}
+					obj.PrivateClusterConfig.MasterGlobalAccessConfig.Enabled = true
+				} else if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpointSubnetwork == "" {
+					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.GlobalAccess = nil
+				}
+			}
+
+			if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpointSubnetwork != "" {
+				privateEndpointSubnetwork := obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpointSubnetwork
+				if strings.HasPrefix(privateEndpointSubnetwork, "https://www.googleapis.com/compute/v1/") {
+					privateEndpointSubnetwork = strings.TrimPrefix(privateEndpointSubnetwork, "https://www.googleapis.com/compute/v1/")
+				}
+				obj.PrivateClusterConfig.PrivateEndpointSubnetwork = privateEndpointSubnetwork
+				obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpointSubnetwork = privateEndpointSubnetwork
+			}
+
+			if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.EnablePublicEndpoint != nil {
+				obj.PrivateClusterConfig.EnablePrivateEndpoint = !*obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.EnablePublicEndpoint
+			}
+
+			if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.EnablePublicEndpoint != nil &&
+				*obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.EnablePublicEndpoint {
+
+				if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PublicEndpoint == "" {
+					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PublicEndpoint = "8.8.8.8"
+				}
+				if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig == nil {
+					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
+				}
+				obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(true)
+
+				if obj.MasterAuthorizedNetworksConfig == nil {
+					obj.MasterAuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
+				}
+				obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(true)
+			} else {
+				if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig == nil {
+					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
+				}
+				if obj.MasterAuthorizedNetworksConfig == nil {
+					obj.MasterAuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
+				}
+
+				isMasterCIDR := obj.PrivateClusterConfig != nil && obj.PrivateClusterConfig.MasterIpv4CidrBlock != ""
+				isAdopt := obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.Enabled
+
+				if isMasterCIDR || isAdopt {
+					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.Enabled = true
+					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(false)
+					obj.MasterAuthorizedNetworksConfig.Enabled = true
+					obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(false)
+				}
+
+				obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.PrivateEndpointEnforcementEnabled = PtrTo(true)
+				obj.MasterAuthorizedNetworksConfig.PrivateEndpointEnforcementEnabled = PtrTo(true)
+			}
+		}
+	}
+
+	if obj.NetworkConfig != nil && obj.NetworkConfig.DefaultEnablePrivateNodes != nil {
+		obj.PrivateClusterConfig.EnablePrivateNodes = *obj.NetworkConfig.DefaultEnablePrivateNodes
 	}
 
 	return nil

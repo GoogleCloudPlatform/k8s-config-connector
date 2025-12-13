@@ -492,7 +492,7 @@ X-Xss-Protection: 0
       "enabled": true,
       "globalAccess": false,
       "privateEndpoint": "10.128.0.2",
-      "privateEndpointSubnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${subnetworkID}",
+      "privateEndpointSubnetwork": "projects/${projectId}/regions/northamerica-northeast2/subnetworks/${subnetworkID}",
       "publicEndpoint": "8.8.8.8"
     }
   },
@@ -648,6 +648,7 @@ X-Xss-Protection: 0
   "privateClusterConfig": {
     "enablePrivateNodes": true,
     "privateEndpoint": "10.128.0.2",
+    "privateEndpointSubnetwork": "projects/${projectId}/regions/northamerica-northeast2/subnetworks/${subnetworkID}",
     "publicEndpoint": "8.8.8.8"
   },
   "protectConfig": {
@@ -697,7 +698,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "enablePublicEndpoint": false,
         "enabled": true,
         "globalAccess": true,
-        "privateEndpointSubnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${subnetworkID}"
+        "privateEndpointSubnetwork": "projects/${projectId}/regions/northamerica-northeast2/subnetworks/${subnetworkID}"
       }
     }
   }
@@ -793,13 +794,14 @@ X-Xss-Protection: 0
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
         "enabled": true,
-        "gcpPublicCidrsAccessEnabled": false
+        "gcpPublicCidrsAccessEnabled": false,
+        "privateEndpointEnforcementEnabled": true
       },
       "enablePublicEndpoint": false,
       "enabled": true,
       "globalAccess": true,
       "privateEndpoint": "10.128.0.2",
-      "privateEndpointSubnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${subnetworkID}"
+      "privateEndpointSubnetwork": "projects/${projectId}/regions/northamerica-northeast2/subnetworks/${subnetworkID}"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -852,7 +854,8 @@ X-Xss-Protection: 0
   },
   "masterAuthorizedNetworksConfig": {
     "enabled": true,
-    "gcpPublicCidrsAccessEnabled": false
+    "gcpPublicCidrsAccessEnabled": false,
+    "privateEndpointEnforcementEnabled": true
   },
   "monitoringConfig": {
     "advancedDatapathObservabilityConfig": {},
@@ -955,7 +958,11 @@ X-Xss-Protection: 0
   "privateClusterConfig": {
     "enablePrivateEndpoint": true,
     "enablePrivateNodes": true,
+    "masterGlobalAccessConfig": {
+      "enabled": true
+    },
     "privateEndpoint": "10.128.0.2",
+    "privateEndpointSubnetwork": "projects/${projectId}/regions/northamerica-northeast2/subnetworks/${subnetworkID}",
     "publicEndpoint": "8.8.8.8"
   },
   "protectConfig": {

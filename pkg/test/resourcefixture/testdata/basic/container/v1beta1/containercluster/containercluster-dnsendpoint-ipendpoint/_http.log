@@ -846,7 +846,8 @@ X-Xss-Protection: 0
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
         "enabled": true,
-        "gcpPublicCidrsAccessEnabled": false
+        "gcpPublicCidrsAccessEnabled": false,
+        "privateEndpointEnforcementEnabled": true
       },
       "enablePublicEndpoint": false,
       "enabled": true,
@@ -904,7 +905,8 @@ X-Xss-Protection: 0
   },
   "masterAuthorizedNetworksConfig": {
     "enabled": true,
-    "gcpPublicCidrsAccessEnabled": false
+    "gcpPublicCidrsAccessEnabled": false,
+    "privateEndpointEnforcementEnabled": true
   },
   "monitoringConfig": {
     "advancedDatapathObservabilityConfig": {},

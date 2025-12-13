@@ -50,6 +50,7 @@ go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixture
 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/gkehub 2>&1
 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/gkebackup 2>&1
 
+go test -test.count=1 -timeout 600s -v ./tests/e2e -run TestE2EScript/scenarios/containercluster 2>&1
 go test -test.count=1 -timeout 600s -v ./tests/e2e -run TestE2EScript/scenarios/gkehubfeaturemembership 2>&1
 # Last step of test case "scenarios/fields/management/gkehub/featuremembership/set_unset" may trigger
 # the following error when running locally possibly due to SSA:
