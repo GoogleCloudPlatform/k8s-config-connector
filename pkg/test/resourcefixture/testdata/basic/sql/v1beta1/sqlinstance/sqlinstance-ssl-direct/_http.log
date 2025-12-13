@@ -136,7 +136,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-ssl-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseInstalledVersion": "POSTGRES_16_10",
   "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -159,7 +159,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_16_10.R20251004.01_07",
   "name": "sqlinstance-ssl-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -218,7 +218,19 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
+    }
+  ]
 }
 
 ---
@@ -272,7 +284,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-ssl-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseInstalledVersion": "POSTGRES_16_10",
   "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -295,7 +307,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_16_10.R20251004.01_07",
   "name": "sqlinstance-ssl-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -354,7 +366,19 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
+    }
+  ]
 }
 
 ---
@@ -367,7 +391,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_16_10.R20251004.01_07",
   "name": "sqlinstance-ssl-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -481,7 +505,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-ssl-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseInstalledVersion": "POSTGRES_16_10",
   "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -504,7 +528,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_16_10.R20251004.01_07",
   "name": "sqlinstance-ssl-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -564,7 +588,19 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
+    }
+  ]
 }
 
 ---

@@ -89,9 +89,28 @@ func (s *sqlUsersService) List(ctx context.Context, req *pb.SqlUsersListRequest)
 }
 
 func (s *sqlUsersService) Insert(ctx context.Context, req *pb.SqlUsersInsertRequest) (*pb.Operation, error) {
-	name, err := s.buildUserName(req.GetProject(), req.GetInstance(), req.GetBody().GetName())
+	name, user, err := s.createUser(ctx, req)
 	if err != nil {
 		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetProject: name.Project.ID,
+		OperationType: pb.Operation_CREATE_USER,
+		Status:        pb.Operation_DONE, // Operation returns LRO, but it is (always?) done
+	}
+
+	return s.operations.startLRO(ctx, op, user, func() (proto.Message, error) {
+		return user, nil
+	})
+}
+
+// createUser inserts a user without starting an operation.
+// It is used for default user creation, as well as by the Insert method.
+func (s *sqlUsersService) createUser(ctx context.Context, req *pb.SqlUsersInsertRequest) (*UserName, *pb.User, error) {
+	name, err := s.buildUserName(req.GetProject(), req.GetInstance(), req.GetBody().GetName())
+	if err != nil {
+		return nil, nil, err
 	}
 
 	fqn := name.String()
@@ -115,18 +134,10 @@ func (s *sqlUsersService) Insert(ctx context.Context, req *pb.SqlUsersInsertRequ
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	op := &pb.Operation{
-		TargetProject: name.Project.ID,
-		OperationType: pb.Operation_CREATE_USER,
-		Status:        pb.Operation_DONE, // Operation returns LRO, but it is (always?) done
-	}
-
-	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
-		return obj, nil
-	})
+	return name, obj, nil
 }
 
 func (s *sqlUsersService) Update(ctx context.Context, req *pb.SqlUsersUpdateRequest) (*pb.Operation, error) {

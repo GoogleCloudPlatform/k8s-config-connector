@@ -18,11 +18,18 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
+const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
+
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// SQLUser
 	replacements.ReplacePath(".items[].passwordPolicy.status.passwordExpirationTime", "2025-06-19T01:02:03Z")
+
+	// Operations
+	replacements.ReplacePath(".items[].startTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].endTime", PlaceholderTimestamp)
+	replacements.ReplacePath(".items[].insertTime", PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
