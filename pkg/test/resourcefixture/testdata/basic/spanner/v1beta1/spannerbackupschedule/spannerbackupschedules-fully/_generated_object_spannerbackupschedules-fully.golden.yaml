@@ -11,7 +11,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   encryptionConfig:
-    encryptionType: GOOGLE_DEFAULT_ENCRYPTION
+    encryptionType: CUSTOMER_MANAGED_ENCRYPTION
     kmsKeyRef:
       name: kmscryptokey-${uniqueId}
   fullBackupSpec: {}
