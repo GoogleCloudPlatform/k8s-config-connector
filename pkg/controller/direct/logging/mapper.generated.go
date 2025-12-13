@@ -14,14 +14,14 @@
 
 // +generated:mapper
 // krm.group: logging.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.logging.v2
 
 package logging
 
 import (
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
@@ -21,7 +21,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -30,7 +29,7 @@ var _ identity.Identity = &LinkIdentity{}
 // LinkIdentity defines the resource reference to LoggingLink, which "External" field
 // holds the GCP identifier for the KRM object.
 type LinkIdentity struct {
-	parent *loggingv1beta1.LogBucketIdentity
+	parent *LogBucketIdentity
 	id     string
 }
 
@@ -42,7 +41,7 @@ func (i *LinkIdentity) ID() string {
 	return i.id
 }
 
-func (i *LinkIdentity) Parent() *loggingv1beta1.LogBucketIdentity {
+func (i *LinkIdentity) Parent() *LogBucketIdentity {
 	return i.parent
 }
 
@@ -51,7 +50,7 @@ func (i *LinkIdentity) FromExternal(ref string) error {
 	if len(tokens) != 2 {
 		return fmt.Errorf("format of LoggingLink external=%q was not known (use projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}/links/{{linkID}})", ref)
 	}
-	i.parent = &loggingv1beta1.LogBucketIdentity{}
+	i.parent = &LogBucketIdentity{}
 	if err := i.parent.FromExternal(tokens[0]); err != nil {
 		return err
 	}
@@ -71,7 +70,7 @@ func (obj *LoggingLink) GetIdentity(ctx context.Context, reader client.Reader) (
 	if err := obj.Spec.LoggingLogBucketRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-	newIdentity.parent = &loggingv1beta1.LogBucketIdentity{}
+	newIdentity.parent = &LogBucketIdentity{}
 	if err := newIdentity.parent.FromExternal(obj.Spec.LoggingLogBucketRef.GetExternal()); err != nil {
 		return nil, fmt.Errorf("parsing parentRef.external=%q: %w", obj.Spec.LoggingLogBucketRef.GetExternal(), err)
 	}
