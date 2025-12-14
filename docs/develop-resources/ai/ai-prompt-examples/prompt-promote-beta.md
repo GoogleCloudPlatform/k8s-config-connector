@@ -15,6 +15,7 @@
 > *   **Documentation:** Refer to `docs/develop-resources/ai/scenarios/alpha-to-beta.md` and `docs/ai/how-to-promote-resource.md`.
 > *   **Troubleshooting:** Refer to `scenarios/troubleshooting.md` for common errors (Proto Noise, lint failures, Envtest).
 > *   **Git Author:** Use `git commit --author="<User Name> <user@google.com>"`.
+> *   **License Headers:** Ensure all new files have the standard Apache 2.0 license header with the current year (2025).
 >
 > **Workflow:**
 >     1.  **Copy Version:** Copy `v1alpha1` API directory to `v1beta1`.

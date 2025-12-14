@@ -23,6 +23,9 @@
 *   **Unrelated Lint Errors:** `make ready-pr` might fail due to lint errors in files you didn't touch (e.g., auto-generated files).
     *   **Fix:** `git restore <unrelated_file>` or `git checkout -- <unrelated_file>` to revert them. DO NOT try to fix lint errors in files you don't own.
 *   **Proto Noise:** If `make generate` produces 10k+ lines of changes in `mockgcp/` for services you aren't touching, **REVERT THEM**. This is "noise" and will block review.
+*   **License Headers:**
+    *   **Error:** `make ready-pr` or CI fails on `verify-boilerplate`.
+    *   **Fix:** Ensure all new files (even generated ones if manageable) have the Apache 2.0 license header with the **current year (2025)**.
 
 ### Client Generation Failures
 *   **Panic in `deepcopy-gen`:** Often caused by using `interface{}` or `any` in API types.

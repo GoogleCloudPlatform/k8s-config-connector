@@ -19,6 +19,7 @@
 > *   **NOISE CONTROL (Critical):** Do NOT include unrelated `mockgcp/` proto updates. If `make generate` adds thousands of lines of unrelated proto changes (e.g., from other services), **REVERT** those changes. Only commit changes relevant to your resource.
 > *   **Field Naming:** Ensure JSON tag matches the GCP field name (camelCase).
 > *   **Atomic PRs (CRITICAL):** Submit **ONE PR per field**. Do NOT bundle multiple fields unless they are strictly dependent. This dramatically speeds up review and verification.
+> *   **License Headers:** Ensure all new files have the standard Apache 2.0 license header with the current year (2025).
 > *   **Code Cleanliness:** Address all linting issues (including `typecheck`) by fixing the root cause. Do NOT use `//nolint` directives to bypass errors unless absolutely necessary and documented.
 >
 > **Workflow:**
