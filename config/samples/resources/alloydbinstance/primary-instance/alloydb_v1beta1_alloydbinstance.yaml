@@ -24,18 +24,6 @@ spec:
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"
     password.enforce_complexity: "on"
-  queryInsightsConfig:
-    queryPlansPerMinute: 5
-    queryStringLength: 1024
-    recordApplicationTags: false
-    recordClientAddress: false
-  observabilityConfig:
-    enabled: true
-    preserveComments: false
-    maxQueryStringLength: 10240
-    recordApplicationTags: false
-    queryPlansPerMinute: 11
-    trackActiveQueries: true
   machineConfig:
     cpuCount: 2
   networkConfig:
