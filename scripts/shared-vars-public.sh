@@ -113,6 +113,7 @@ SUPPORTED_SERVICES=(
   vmwareengine.googleapis.com
   workstations.googleapis.com
   storage.googleapis.com
+  geminicloudassist.googleapis.com
 )
 
 # Regex used to match long running tests cases (10m+ runtime). Any new

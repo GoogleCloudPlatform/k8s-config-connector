@@ -76,6 +76,9 @@ func AlloyDBInstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 	out.Uid = direct.LazyPtr(in.Uid)
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 
+	out.ObservedState = &krm.AlloyDBInstanceObservedState{}
+	out.ObservedState.ObservabilityInstanceConfig = Instance_ObservabilityInstanceConfigObservedState_FromProto(mapCtx, in.GetObservabilityConfig())
+
 	return out
 }
 
@@ -93,6 +96,7 @@ func AlloyDBInstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBIns
 	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
 	out.Uid = direct.ValueOf(in.Uid)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ObservabilityConfig = Instance_ObservabilityInstanceConfigObservedState_ToProto(mapCtx, in.ObservedState.ObservabilityInstanceConfig)
 
 	return out
 }

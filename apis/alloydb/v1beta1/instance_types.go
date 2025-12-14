@@ -133,10 +133,8 @@ type AlloyDBInstanceStatus struct {
 	// A unique specifier for the AlloyDBInstance resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* NOTYET
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *AlloyDBInstanceObservedState `json:"observedState,omitempty"`
-	*/
 
 	// Time the Instance was created in UTC.
 	CreateTime *string `json:"createTime,omitempty"`
@@ -152,12 +150,6 @@ type AlloyDBInstanceStatus struct {
 	// networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used
 	// for outbound connections.
 	OutboundPublicIPAddresses []string `json:"outboundPublicIpAddresses,omitempty"`
-
-	// Output only. Track wait event types during query execution for an
-	// instance. This flag is turned "on" by default but tracking is enabled
-	// only after observability enabled flag is also turned on. This is
-	// read-only flag and only modifiable by internal API.
-	TrackWaitEventTypes *bool `json:"trackWaitEventTypes,omitempty"`
 
 	// The public IP addresses for the Instance. This is available
 	// ONLY when networkConfig.enablePublicIp is set to true. This is the
@@ -180,13 +172,14 @@ type AlloyDBInstanceStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-/* NOTYET
 // AlloyDBInstanceSpec defines the desired state of AlloyDBInstance
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance
 // AlloyDBInstanceObservedState is the state of the AlloyDBInstance resource as most recently observed in GCP.
 type AlloyDBInstanceObservedState struct {
+	// Observability feature status for an instance.
+	// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig
+	ObservabilityInstanceConfig *Instance_ObservabilityInstanceConfigObservedState `json:"observabilityConfig,omitempty"`
 }
-*/
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

@@ -106,6 +106,13 @@ func resolveInstanceType(ctx context.Context, reader client.Reader, obj *krm.All
 	return nil
 }
 
+func validateConfig(spec *krm.AlloyDBInstanceSpec) error {
+	if spec.ObservabilityInstanceConfig != nil && spec.QueryInsightsInstanceConfig != nil {
+		return fmt.Errorf("cannot specify both observabilityConfig and queryInsightsConfig; please use only one")
+	}
+	return nil
+}
+
 func (m *instanceModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.AlloyDBInstance{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
@@ -178,6 +185,10 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 		return err
 	}
 
+	if err := validateConfig(&a.desired.Spec); err != nil {
+		return err
+	}
+
 	desired := a.desired.DeepCopy()
 	resource := AlloyDBInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -242,6 +253,10 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	mapCtx := &direct.MapContext{}
 
 	if err := resolveInstanceType(ctx, a.reader, a.desired, false); err != nil {
+		return err
+	}
+
+	if err := validateConfig(&a.desired.Spec); err != nil {
 		return err
 	}
 

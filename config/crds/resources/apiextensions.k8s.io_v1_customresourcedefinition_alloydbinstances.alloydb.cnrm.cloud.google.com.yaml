@@ -345,6 +345,22 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  observabilityConfig:
+                    description: Observability feature status for an instance.
+                    properties:
+                      trackWaitEventTypes:
+                        description: Output only. Track wait event types during query
+                          execution for an instance. This flag is turned "on" by default
+                          but tracking is enabled only after observability enabled
+                          flag is also turned on. This is read-only flag and only
+                          modifiable by internal API.
+                        type: boolean
+                    type: object
+                type: object
               outboundPublicIpAddresses:
                 description: The outbound public IP addresses for the instance. This
                   is available ONLY when networkConfig.enableOutboundPublicIp is set
@@ -366,12 +382,6 @@ spec:
               state:
                 description: The current state of the alloydb instance.
                 type: string
-              trackWaitEventTypes:
-                description: Output only. Track wait event types during query execution
-                  for an instance. This flag is turned "on" by default but tracking
-                  is enabled only after observability enabled flag is also turned
-                  on. This is read-only flag and only modifiable by internal API.
-                type: boolean
               uid:
                 description: The system-generated UID of the resource.
                 type: string
@@ -707,6 +717,22 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  observabilityConfig:
+                    description: Observability feature status for an instance.
+                    properties:
+                      trackWaitEventTypes:
+                        description: Output only. Track wait event types during query
+                          execution for an instance. This flag is turned "on" by default
+                          but tracking is enabled only after observability enabled
+                          flag is also turned on. This is read-only flag and only
+                          modifiable by internal API.
+                        type: boolean
+                    type: object
+                type: object
               outboundPublicIpAddresses:
                 description: The outbound public IP addresses for the instance. This
                   is available ONLY when networkConfig.enableOutboundPublicIp is set
@@ -728,12 +754,6 @@ spec:
               state:
                 description: The current state of the alloydb instance.
                 type: string
-              trackWaitEventTypes:
-                description: Output only. Track wait event types during query execution
-                  for an instance. This flag is turned "on" by default but tracking
-                  is enabled only after observability enabled flag is also turned
-                  on. This is read-only flag and only modifiable by internal API.
-                type: boolean
               uid:
                 description: The system-generated UID of the resource.
                 type: string
