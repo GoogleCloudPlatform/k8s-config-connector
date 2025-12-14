@@ -17,6 +17,7 @@ package partialpolicy
 import (
 	"fmt"
 	"sort"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 )
@@ -37,7 +38,7 @@ type iamBindingKey struct {
 // The status.AllBindings in the returned IAMPartialPolicy reflects a mix of user specified bindings and the existing bindings associated with the GCP resource.
 // The merge strategy takes effect on the member level with {role, condition} tuples as keys.
 // The status.LastAppliedBindings in the returned IAMPartialPolicy reflects a list of canonical bindings that specified by users.
-func ComputePartialPolicyWithMergedBindings(partialPolicy *v1beta1.IAMPartialPolicy, livePolicy *v1beta1.IAMPolicy, resolver MemberIdentityResolver) (*v1beta1.IAMPartialPolicy, error) {
+func ComputePartialPolicyWithMergedBindings(partialPolicy *v1beta1.IAMPartialPolicy, livePolicy *v1beta1.IAMPolicy, resolver MemberIdentityResolver, controllerType string) (*v1beta1.IAMPartialPolicy, error) {
 	desiredPartialPolicy := partialPolicy.DeepCopy()
 	specifiedBindings, err := ConvertIAMPartialBindingsToIAMPolicyBindings(partialPolicy, resolver)
 	if err != nil {
@@ -56,6 +57,16 @@ func ComputePartialPolicyWithMergedBindings(partialPolicy *v1beta1.IAMPartialPol
 	desiredPartialPolicy.Status.LastAppliedBindings = specifiedBindings
 	sortBindingSlice(desiredAllBindings)
 	desiredPartialPolicy.Status.AllBindings = desiredAllBindings
+
+	// Set the controller actuation timestamp
+	now := time.Now().Format(time.RFC3339)
+	if controllerType == "direct" {
+		desiredPartialPolicy.Status.LastDirectControllerActuation = now
+	} else {
+		// Any non-direct controller type is treated as legacy
+		desiredPartialPolicy.Status.LastLegacyControllerActuation = now
+	}
+
 	return desiredPartialPolicy, nil
 }
 
@@ -66,7 +77,7 @@ func ComputePartialPolicyWithMergedBindings(partialPolicy *v1beta1.IAMPartialPol
 // The status.AllBindings in the returned IAMPartialPolicy reflects the remaining bindings that are computed by pruning last applied bindings (bindings managed by KCC)
 // from all the existing bindings from the underlying IAM Policy.
 // The status.LastAppliedBindings in the returned IAMPartialPolicy will be cleared.
-func ComputePartialPolicyWithRemainingBindings(partialPolicy *v1beta1.IAMPartialPolicy, livePolicy *v1beta1.IAMPolicy) *v1beta1.IAMPartialPolicy {
+func ComputePartialPolicyWithRemainingBindings(partialPolicy *v1beta1.IAMPartialPolicy, livePolicy *v1beta1.IAMPolicy, controllerType string) *v1beta1.IAMPartialPolicy {
 	desiredPartialPolicy := partialPolicy.DeepCopy()
 	remainingBindings := removeMembersPerBinding(livePolicy.Spec.Bindings, partialPolicy.Status.LastAppliedBindings)
 	// record the remaining bindings as (new) all bindings.
@@ -74,6 +85,16 @@ func ComputePartialPolicyWithRemainingBindings(partialPolicy *v1beta1.IAMPartial
 	desiredPartialPolicy.Status.AllBindings = remainingBindings
 	// clear last applied bindings
 	desiredPartialPolicy.Status.LastAppliedBindings = make([]v1beta1.IAMPolicyBinding, 0)
+
+	// Set the controller actuation timestamp
+	now := time.Now().Format(time.RFC3339)
+	if controllerType == "direct" {
+		desiredPartialPolicy.Status.LastDirectControllerActuation = now
+	} else {
+		// Any non-direct controller type is treated as legacy
+		desiredPartialPolicy.Status.LastLegacyControllerActuation = now
+	}
+
 	return desiredPartialPolicy
 }
 

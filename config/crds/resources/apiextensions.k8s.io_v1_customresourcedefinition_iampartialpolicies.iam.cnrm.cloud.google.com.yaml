@@ -341,6 +341,14 @@ spec:
                   - role
                   type: object
                 type: array
+              lastDirectControllerActuation:
+                description: LastDirectControllerActuation is the timestamp when the
+                  direct controller last actuated this resource.
+                type: string
+              lastLegacyControllerActuation:
+                description: LastLegacyControllerActuation is the timestamp when the
+                  legacy controller last actuated this resource.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
