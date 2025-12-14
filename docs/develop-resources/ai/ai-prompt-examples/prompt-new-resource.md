@@ -35,7 +35,7 @@
 > *   **GKE Constraints:** If copying `nodeAutoProvisioning`, ensure `autoUpgrade: true` is set for REGULAR release channel.
 > *   **Client Generation:** If `make generate-go-client` fails or panics, it is often due to syntax errors in `_types.go` or missing imports. Verify the API types compile *before* running generation.
 > *   **Field Naming:** JSON tags MUST be `camelCase`. Watch out for acronyms (e.g., `enableNestedVirtualization`, NOT `enableNestedvirtualization` or `EnableNestedVirtualization`).
-> *   **License Headers:** Ensure all new files have the standard Apache 2.0 license header.
+> *   **License Headers:** Ensure all new files have the standard Apache 2.0 license header with the current year (2025).
 > *   **Code Cleanliness:** Fix all lint errors. Do NOT use `//nolint` directives.
 >
 > **Workflow:** Execute the following 4-Phase Plan. **Create Draft PRs after Phase 1 and 2.**
