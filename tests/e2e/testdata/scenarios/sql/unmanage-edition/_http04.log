@@ -234,14 +234,15 @@ X-Xss-Protection: 0
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 15,
+        "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
       "binaryLogEnabled": true,
       "enabled": true,
       "kind": "sql#backupConfiguration",
+      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 14,
+      "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
