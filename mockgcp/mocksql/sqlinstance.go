@@ -637,6 +637,9 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	backupConfiguration := settings.BackupConfiguration
 	if backupConfiguration == nil {
 		backupConfiguration = &pb.BackupConfiguration{}
+		if isEnterprisePlus {
+			backupConfiguration.Enabled = wrapperspb.Bool(true)
+		}
 		settings.BackupConfiguration = backupConfiguration
 	} else {
 		if isPostgres(obj) {
@@ -652,7 +655,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	backupConfiguration.Kind = "sql#backupConfiguration"
 
 	if backupConfiguration.BinaryLogEnabled == nil {
-		if isEnterprisePlus {
+		if isEnterprisePlus && backupConfiguration.GetEnabled().GetValue() {
 			backupConfiguration.BinaryLogEnabled = wrapperspb.Bool(true)
 		}
 	}
@@ -684,11 +687,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	}
 
 	if backupConfiguration.Enabled == nil {
-		if isEnterprisePlus {
-			backupConfiguration.Enabled = wrapperspb.Bool(true)
-		} else {
-			backupConfiguration.Enabled = wrapperspb.Bool(false)
-		}
+		backupConfiguration.Enabled = wrapperspb.Bool(false)
 	}
 
 	if settings.BackupConfiguration.TransactionLogRetentionDays == nil {
@@ -706,7 +705,6 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 			backupConfiguration.TransactionalLogStorageState = PtrTo(pb.BackupConfiguration_CLOUD_STORAGE)
 		} else {
 			backupConfiguration.TransactionalLogStorageState = PtrTo(pb.BackupConfiguration_TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED)
-
 		}
 	}
 
@@ -789,7 +787,21 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	}
 
 	if settings := req.GetBody().GetSettings(); settings != nil {
-		if settings.Edition != pb.Settings_EDITION_UNSPECIFIED {
+		if newEdition := settings.Edition; newEdition != pb.Settings_EDITION_UNSPECIFIED && obj.Settings.Edition != newEdition {
+			// Changing edition may impact defaults, so we reset some fields to allow
+			// them to be re-populated later.
+			if backupConfiguration := obj.Settings.BackupConfiguration; backupConfiguration != nil {
+				backupConfiguration.BackupRetentionSettings = nil
+				backupConfiguration.TransactionLogRetentionDays = nil
+				backupConfiguration.ReplicationLogArchivingEnabled = nil
+			}
+			if newEdition == pb.Settings_ENTERPRISE_PLUS {
+				if obj.Settings.DataCacheConfig == nil {
+					obj.Settings.DataCacheConfig = &pb.DataCacheConfig{}
+				}
+				obj.Settings.DataCacheConfig.DataCacheEnabled = true
+			}
+
 			obj.Settings.Edition = settings.Edition
 		}
 		if settings.Tier != "" {
@@ -817,6 +829,8 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	}
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(obj.GetSettings().GetSettingsVersion().GetValue() + 1)
+
+	populateDefaults(obj)
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
