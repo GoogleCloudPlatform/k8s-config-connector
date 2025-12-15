@@ -17,6 +17,7 @@ package mockgcptests
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"io/fs"
 	"os"
@@ -134,11 +135,30 @@ func TestScripts(t *testing.T) {
 					cmd.Dir = testDir
 
 					t.Logf("executing step type: %s  cmd: %q", stepType, stepCmd)
+					exitCode := 0
+
 					if err := cmd.Run(); err != nil {
+						var exitError *exec.ExitError
+						if errors.As(err, &exitError) {
+							exitCode = exitError.ExitCode()
+						}
+
+						if exitCode == step.ExpectExitCode {
+							t.Logf("command exited with expected exit code %d", exitCode)
+						} else {
+							t.Logf("stdout: %v", stdout.String())
+							t.Logf("stderr: %v", stderr.String())
+							t.Logf("exitCode: %v", exitCode)
+
+							t.Errorf("error running step type: %s  cmd: %q: %v", stepType, stepCmd, err)
+						}
+					}
+
+					if exitCode != step.ExpectExitCode {
 						t.Logf("stdout: %v", stdout.String())
 						t.Logf("stderr: %v", stderr.String())
 
-						t.Errorf("error running step type: %s  cmd: %q: %v", stepType, stepCmd, err)
+						t.Errorf("unexpected exit code  %v running step type: %s  cmd: %q", exitCode, stepType, stepCmd)
 					}
 
 					if step.SetEnv != "" {
@@ -242,6 +262,9 @@ type Step struct {
 	Pre    string `json:"pre"`
 	Post   string `json:"post"`
 	SetEnv string `json:"setEnv"`
+
+	// ExpectExitCode is the expected exit code for the command. Defaults to 0 if not specified.
+	ExpectExitCode int `json:"expectExitCode,omitempty"`
 }
 
 func loadScript(t *testing.T, dir string, placeholders Placeholders) *Script {
