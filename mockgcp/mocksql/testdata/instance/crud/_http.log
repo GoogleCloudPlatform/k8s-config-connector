@@ -387,6 +387,8 @@ X-Xss-Protection: 0
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
+    "activationPolicy": "ALWAYS",
+    "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
         "retainedBackups": 7,
@@ -553,6 +555,8 @@ X-Xss-Protection: 0
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
+    "activationPolicy": "ALWAYS",
+    "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
         "retainedBackups": 7,
