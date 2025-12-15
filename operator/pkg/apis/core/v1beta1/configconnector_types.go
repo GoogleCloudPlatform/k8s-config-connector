@@ -72,14 +72,6 @@ type ConfigConnectorSpec struct {
 }
 
 type CCExperiments struct {
-	// LeaderElection defines the configuration for multi cluster leader election.
-	// +optional
-	LeaderElection *LeaderElectionSpec `json:"leaderElection,omitempty"`
-}
-
-// LeaderElectionSpec defines the configuration for leader election.
-// +optional
-type LeaderElectionSpec struct {
 	// MultiClusterLease defines configuration specific to multi-cluster leader election.
 	// +optional
 	MultiClusterLease *MultiClusterLeaseSpec `json:"multiClusterLease,omitempty"`

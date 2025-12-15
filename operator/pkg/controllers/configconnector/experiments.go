@@ -46,7 +46,7 @@ func (r *Reconciler) applyExperiments(ctx context.Context, cc *corev1beta1.Confi
 		return nil
 	}
 
-	if cc.Spec.Experiments.LeaderElection != nil {
+	if cc.Spec.Experiments.MultiClusterLease != nil {
 		if err := r.applyMultiClusterLeaderElection(ctx, m); err != nil {
 			return err
 		}
