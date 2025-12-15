@@ -1,31 +1,63 @@
-# AI-Assisted Workflow for KCC Resource Development
+# AI-Assisted Resource Development Guide
 
-This guide introduces the Gemini-powered workflow for developing Config Connector resources. This approach accelerates development by automating the implementation details, allowing you to focus on providing the correct inputs and verifying the final results.
+This guide provides unified prompts and workflows for developing Config Connector resources using **Antigravity** (an AI-powered IDE/Agent using **gemini-3-pro** in **Planning** mode).
 
-## Target Audience
+## Scenarios (Critical User Journeys)
 
-This guide is for developers who: 
-*   Have a good understanding of Kubernetes concepts. Here're some basic ideas: 
-    * [Kuberetes Setup](https://kubernetes.io/docs/setup/)
-    * [CRD and Controller](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
-    * [API convention](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md)
-*   Have an in-depth understanding about declarative friendly API. See https://google.aip.dev/news/2020-10.
-*   Have an in-depth understanding about Kubernetes reconciliation mechanism.
-*   Have a clear understanding of [what Config Connector is](https://docs.cloud.google.com/config-connector/docs).
-*   Know the differences between Config Connector, Terraform, and DCL. 
+Select the specific scenario you are working on to see the tailored prompt and workflow:
 
+1.  [**New Resource (Direct)**](scenarios/new-resource.md)
+    *   Adding a brand new resource or migrating from `v1alpha1`.
+2.  [**New Field**](scenarios/new-field.md)
+    *   Adding a missing field to an existing Direct resource.
+3.  [**Promote to Beta**](scenarios/promote-beta.md)
+    *   Promoting an existing Direct resource from `v1alpha1` to `v1beta1`.
 
-## The Philosophy: You Prompt, Gemini Executes, You Verify
+## Support
 
-The core of this workflow is a partnership between you and the Gemini CLI.
--   **Your Role (The Supervisor):** Your primary responsibility is to initiate the process with a clear, scenario-based prompt and then to act as a reviewer. You will verify that the code and the behavior (as captured in the golden test logs) are correct and adhere to Config Connector's standards.
--   **Gemini's Role (The Implementer):** Gemini's job is to perform all the hands-on-keyboard work. It will generate APIs, mappers, fuzzers, controllers, mockgcp and test files, and it will run the necessary commands to record test data.
+*   [**Troubleshooting & Tips**](scenarios/troubleshooting.md)
+    *   Common issues with test environment, specific resources (GKE), and general development tips.
 
-## How to Use This Guide
+---
 
-1.  **Find Your Scenario:** Navigate to the `scenarios` directory and find the document that matches your development task (e.g. adding a new resource, adding a field).
-2.  **Use the Provided Prompt:** Each scenario document now begins with a canonical prompt. Copy this prompt and provide it to the Gemini CLI.
-3.  **Understand the Process:** The scenario document outlines the steps that Gemini will take. Use this to follow along with its progress.
-4.  **Verify the Results:** After Gemini completes the task, use the "How to Verify" section in the scenario document. This section will guide you on which files to review and will link to our `deep-dives` and `api-conventions` documents, which serve as the technical reference for what "good" looks like.
+## 0. Prerequisites & Setup
 
-The most critical part leading to the success of this Gemini-driven workflow is your ability to triage and discover issues when Gemini gets stuck. This requires some in-depth Kubernetes and Config Connector knowledge. 
+Before starting, ensure your environment is configured. This workflow is optimized for **Antigravity**, but can be adapted for other environments.
+
+1.  **GCP Authentication:**
+    *   Install `gcloud`.
+    *   Login: `gcloud auth login` & `gcloud auth application-default login`.
+    *   Set Project: `gcloud config set project <your-project>`.
+
+2.  **GitHub Token:**
+    *   Install `gh` CLI.
+    *   Login: `gh auth login` (Ensure `repo` and `read:org` scopes).
+    *   Fork the repo: `gh repo fork --clone`.
+
+3.  **Test Environment Variables:**
+    *   **Kubebuilder Assets:** Essential for Envtest (local control plane).
+        ```bash
+        # Verify path exists (version may vary)
+        ls -d /usr/local/kubebuilder/bin/k8s/* || ls -d ./bin/k8s/*
+        export KUBEBUILDER_ASSETS=<path-to-k8s-bin>
+        ```
+    *   **Golden Mock Recording:**
+        ```bash
+        export E2E_GCP_TARGET=real
+        export WRITE_GOLDEN_OUTPUT=1
+        ```
+
+---
+
+## Usage Workflow (Best Practice)
+
+To maximize success with Antigravity:
+
+1.  **Step 1: Load Context**
+    > "Read and analyze the `README.md` file (this file) to understand the workflow for Config Connector development."
+
+2.  **Step 2: Choose Scenario**
+    Navigate to the specific [Scenario](#scenarios-critical-user-journeys) file (e.g., `scenarios/new-field.md`) and load it.
+
+3.  **Step 3: Execute (Use Template)**
+    Copy-paste the specific prompt template from the scenario file and fill in your details.
