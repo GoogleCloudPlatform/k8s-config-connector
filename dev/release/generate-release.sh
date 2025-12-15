@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
+set -exu; set -o pipefail
 
 # Step 1: Determine Release Versions
 STALE_VERSION=$(git tag | sort -V | tail -n 1 | sed 's/^v//')
