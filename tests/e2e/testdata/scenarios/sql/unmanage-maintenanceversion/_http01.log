@@ -64,6 +64,7 @@ X-Xss-Protection: 0
       },
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
