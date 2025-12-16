@@ -20,6 +20,10 @@
 
 package v1beta1
 
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
+
 // +kcc:proto=google.cloud.billing.budgets.v1beta1.BudgetAmount
 type BudgetAmount struct {
 	// A specified amount to use as the budget.
@@ -97,7 +101,7 @@ type Value struct {
 
 	// Represents a structured value.
 	// +kcc:proto:field=google.protobuf.Value.struct_value
-	StructValue map[string]string `json:"structValue,omitempty"`
+	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
 
 	// Represents a repeated `Value`.
 	// +kcc:proto:field=google.protobuf.Value.list_value
