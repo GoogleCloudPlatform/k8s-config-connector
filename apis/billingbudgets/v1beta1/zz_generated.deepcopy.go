@@ -172,13 +172,9 @@ func (in *BillingBudgetsBudgetSpec) DeepCopyInto(out *BillingBudgetsBudgetSpec) 
 	}
 	if in.ThresholdRules != nil {
 		in, out := &in.ThresholdRules, &out.ThresholdRules
-		*out = make([]*ThresholdRule, len(*in))
+		*out = make([]ThresholdRule, len(*in))
 		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(ThresholdRule)
-				(*in).DeepCopyInto(*out)
-			}
+			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
 	if in.AllUpdatesRule != nil {
@@ -484,13 +480,7 @@ func (in *Value) DeepCopyInto(out *Value) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.StructValue != nil {
-		in, out := &in.StructValue, &out.StructValue
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
+	in.StructValue.DeepCopyInto(&out.StructValue)
 	if in.ListValue != nil {
 		in, out := &in.ListValue, &out.ListValue
 		*out = new(ListValue)
