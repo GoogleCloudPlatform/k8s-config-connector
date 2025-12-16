@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package kccmanager_test
+package kccmanager
 
 import (
 	"context"
@@ -23,7 +23,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -266,7 +265,7 @@ func newTestManagerWithConfig(t *testing.T, cfg *rest.Config, scheme *runtime.Sc
 		ClusterCandidateIdentity: identity,
 	}
 
-	kccCfg := kccmanager.Config{
+	kccCfg := Config{
 		ManagerOptions: manager.Options{
 			Scheme: scheme,
 			Metrics: metricsserver.Options{
@@ -276,12 +275,15 @@ func newTestManagerWithConfig(t *testing.T, cfg *rest.Config, scheme *runtime.Sc
 			LeaderElection:         false,
 			LeaderElectionID:       identity,
 		},
-		MultiClusterLease:          true,
-		SkipControllerRegistration: true,
-		MultiClusterLeaseConfig:    mclConfig,
+		MultiClusterLease: true,
+		testConfig: testConfig{
+			skipControllerRegistration:   true,
+			multiClusterLeaseConfig:      mclConfig,
+			suppressExitOnLeadershipLoss: true,
+		},
 	}
 
-	mgr, err := kccmanager.New(context.Background(), cfg, kccCfg)
+	mgr, err := New(context.Background(), cfg, kccCfg)
 	if err != nil {
 		t.Fatalf("error creating new manager for %s: %v", identity, err)
 	}
