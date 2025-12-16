@@ -261,9 +261,9 @@ func newTestManagerWithConfig(t *testing.T, cfg *rest.Config, scheme *runtime.Sc
 	t.Helper()
 
 	mclConfig := &operatorv1beta1.MultiClusterLeaseSpec{
-		LeaseName:      testLeaseName,
-		Namespace:      namespace,
-		GlobalLockName: identity,
+		LeaseName:                testLeaseName,
+		Namespace:                namespace,
+		ClusterCandidateIdentity: identity,
 	}
 
 	kccCfg := kccmanager.Config{

@@ -133,9 +133,9 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 			return nil, nil
 		}
 		klog.Infof("found ConfigConnector object")
-		if cc.Spec.Experiments != nil && cc.Spec.Experiments.LeaderElection != nil && cc.Spec.Experiments.LeaderElection.MultiClusterLease != nil {
+		if cc.Spec.Experiments != nil && cc.Spec.Experiments.MultiClusterLease != nil {
 			klog.Infof("multi-cluster leader election is configured")
-			leaseSpec = cc.Spec.Experiments.LeaderElection.MultiClusterLease
+			leaseSpec = cc.Spec.Experiments.MultiClusterLease
 		}
 	}
 
@@ -150,7 +150,7 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 			c,
 			leaseSpec.LeaseName,
 			leaseSpec.Namespace,
-			leaseSpec.GlobalLockName,
+			leaseSpec.ClusterCandidateIdentity,
 			15*time.Second,
 		)
 		return &leaderelection.LeaderElectionConfig{
