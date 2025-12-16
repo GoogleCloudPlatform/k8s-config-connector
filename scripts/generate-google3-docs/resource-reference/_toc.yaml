@@ -63,14 +63,22 @@ toc:
     path: /config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md
 - title: "Backup and DR"
   section:
+  - title: "BackupDRBackupPlan"
+    path: /config-connector/docs/reference/resource-docs/backupdr/backupdrbackupplan.md
   - title: "BackupDRBackupPlanAssociation"
     path: /config-connector/docs/reference/resource-docs/backupdr/backupdrbackupplanassociation.md
+  - title: "BackupDRBackupVault"
+    path: /config-connector/docs/reference/resource-docs/backupdr/backupdrbackupvault.md
 - title: "BigQueryAnalyticsHub"
   section:
   - title: "BigQueryAnalyticsHubDataExchange"
     path: /config-connector/docs/reference/resource-docs/bigqueryanalyticshub/bigqueryanalyticshubdataexchange.md
   - title: "BigQueryAnalyticsHubListing"
     path: /config-connector/docs/reference/resource-docs/bigqueryanalyticshub/bigqueryanalyticshublisting.md
+- title: "BigQuery BigLake"
+  section:
+  - title: "BigLakeTable"
+    path: /config-connector/docs/reference/resource-docs/bigquerybiglake/biglaketable.md
 - title: "BigQuery"
   section:
   - title: "BigqueryConnectionConnection"
@@ -83,6 +91,12 @@ toc:
     path: /config-connector/docs/reference/resource-docs/bigquery/bigquerytable.md
   - title: "BigQueryDataTransferConfig"
     path: /config-connector/docs/reference/resource-docs/bigquerydatatransfer/bigquerydatatransferconfig.md
+- title: "BigQuery Reservation"
+  section:
+  - title: "BigQueryReservationAssignment"
+    path: /config-connector/docs/reference/resource-docs/bigqueryreservation/bigqueryreservationassignment.md
+  - title: "BigQueryReservationReservation"
+    path: /config-connector/docs/reference/resource-docs/bigqueryreservation/bigqueryreservationreservation.md
 - title: "BillingBudgets"
   section:
   - title: "BillingBudgetsBudget"
@@ -103,6 +117,12 @@ toc:
     path: /config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagercertificatemapentry.md
   - title: "CertificateManagerDNSAuthorization"
     path: /config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagerdnsauthorization.md
+- title: "Cloud Asset Inventory"
+  section:
+  - title: "AssetFeed"
+    path: /config-connector/docs/reference/resource-docs/asset/assetfeed.md
+  - title: "AssetSavedQuery"
+    path: /config-connector/docs/reference/resource-docs/asset/assetsavedquery.md
 - title: "Cloud Bigtable"
   section:
   - title: "BigtableAppProfile"
@@ -119,10 +139,20 @@ toc:
     path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildtrigger.md
   - title: "CloudBuildWorkerPool"
     path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildworkerpool.md
+- title: "Cloud Composer"
+  section:
+  - title: "ComposerEnvironment"
+    path: /config-connector/docs/reference/resource-docs/composer/composerenvironment.md
+- title: "Cloud Deploy"
+  section:
+  - title: "CloudDeployDeliveryPipeline"
+    path: /config-connector/docs/reference/resource-docs/clouddeploy/clouddeploydeliverypipeline.md
 - title: "Cloud Quotas"
   section:
   - title: "APIQuotaAdjusterSettings"
     path: /config-connector/docs/reference/resource-docs/cloudquota/apiquotaadjustersettings.md
+  - title: "APIQuotaPreference"
+    path: /config-connector/docs/reference/resource-docs/cloudquota/apiquotapreference.md
 - title: "Cloud Functions"
   section:
   - title: "CloudFunctionsFunction"
@@ -163,16 +193,11 @@ toc:
     path: /config-connector/docs/reference/resource-docs/dns/dnspolicy.md
   - title: "DNSRecordSet"
     path: /config-connector/docs/reference/resource-docs/dns/dnsrecordset.md
-- title: "Cloud Key Management Service"
+- title: "Cloud Key Management Service"  section:  - title: "KMSCryptoKey"    path: /config-connector/docs/reference/resource-docs/kms/kmscryptokey.md  - title: "KMSKeyRing"    path: /config-connector/docs/reference/resource-docs/kms/kmskeyring.md  - title: "KMSAutokeyConfig"    path: /config-connector/docs/reference/resource-docs/kms/kmsautokeyconfig.md  - title: "KMSImportJob"    path: /config-connector/docs/reference/resource-docs/kms/kmsimportjob.md  - title: "KMSKeyHandle"    path: /config-connector/docs/reference/resource-docs/kms/kmskeyhandle.md
+- title: "Essential Contacts"
   section:
-  - title: "KMSCryptoKey"
-    path: /config-connector/docs/reference/resource-docs/kms/kmscryptokey.md
-  - title: "KMSKeyRing"
-    path: /config-connector/docs/reference/resource-docs/kms/kmskeyring.md
-  - title: "KMSAutokeyConfig"
-    path: /config-connector/docs/reference/resource-docs/kms/kmsautokeyconfig.md
-  - title: "KMSKeyHandle"
-    path: /config-connector/docs/reference/resource-docs/kms/kmskeyhandle.md
+  - title: "EssentialContactsContact"
+    path: /config-connector/docs/reference/resource-docs/essentialcontacts/essentialcontactscontact.md
 - title: "Eventarc"
   section:
   - title: "EventarcTrigger"
@@ -261,7 +286,11 @@ toc:
     path: /config-connector/docs/reference/resource-docs/osconfig/osconfigguestpolicy.md
   - title: "OSConfigOSPolicyAssignment"
     path: /config-connector/docs/reference/resource-docs/osconfig/osconfigospolicyassignment.md
-- title: "Cloud Source Repositories"
+- title: "Organization Policy"
+  section:
+  - title: "OrgPolicyCustomConstraint"
+    path: /config-connector/docs/reference/resource-docs/orgpolicy/orgpolicycustomconstraint.md
+- title: "Private CA"
   section:
   - title: "SourceRepoRepository"
     path: /config-connector/docs/reference/resource-docs/sourcerepo/sourcereporepository.md
@@ -447,6 +476,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/dataproc/dataproccluster.md
   - title: "DataprocWorkflowTemplate"
     path: /config-connector/docs/reference/resource-docs/dataproc/dataprocworkflowtemplate.md
+- title: "Dataproc Metastore"
+  section:
+  - title: "MetastoreBackup"
+    path: /config-connector/docs/reference/resource-docs/metastore/metastorebackup.md
 - title: "Filestore"
   section:
   - title: "FilestoreBackup"
@@ -549,6 +582,8 @@ toc:
   section:
   - title: "PubSubSchema"
     path: /config-connector/docs/reference/resource-docs/pubsub/pubsubschema.md
+  - title: "PubSubSnapshot"
+    path: /config-connector/docs/reference/resource-docs/pubsub/pubsubsnapshot.md
   - title: "PubSubSubscription"
     path: /config-connector/docs/reference/resource-docs/pubsub/pubsubsubscription.md
   - title: "PubSubTopic"
@@ -621,6 +656,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/vertexai/vertexaiindex.md
   - title: "VertexAIMetadataStore"
     path: /config-connector/docs/reference/resource-docs/vertexai/vertexaimetadatastore.md
+- title: "VMware Engine"
+  section:
+  - title: "VMwareEngineExternalAddress"
+    path: /config-connector/docs/reference/resource-docs/vmwareengine/vmwareengineexternaladdress.md
 - title: "VPC Access"
   section:
   - title: "VPCAccessConnector"

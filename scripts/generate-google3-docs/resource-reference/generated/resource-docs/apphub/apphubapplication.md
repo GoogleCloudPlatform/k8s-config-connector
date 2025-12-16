@@ -463,7 +463,7 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the AppHubApplication resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the AppHubApplication resource in Google Cloud .{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -139,11 +139,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If true, the notification channel will be deleted regardless
-of its use in alert policies (the policies will be updated
-to remove the channel). If false, channels that are still
-referenced by an existing alerting policy will fail to be
-deleted in a delete operation.{% endverbatim %}</p>
+            <p>{% verbatim %}If true, the notification channel will be deleted regardless of its use in alert policies (the policies will be updated to remove the channel). If false, channels that are still referenced by an existing alerting policy will fail to be deleted in a delete operation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -153,7 +149,7 @@ deleted in a delete operation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Configuration fields that define the channel and its behavior. The permissible and required labels are specified in the NotificationChannelDescriptor.labels of the NotificationChannelDescriptor corresponding to the type field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -163,7 +159,7 @@ deleted in a delete operation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. The service-generated name of theresource. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -404,7 +400,7 @@ verificationStatus: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -453,9 +449,7 @@ verificationStatus: string
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The full REST resource name for this channel. The syntax is:
-projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]
-The [CHANNEL_ID] is automatically assigned by the server on creation.{% endverbatim %}</p>
+            <p>{% verbatim %}The full REST resource name for this channel. The syntax is: projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID] The [CHANNEL_ID] is automatically assigned by the server on creation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
