@@ -1,0 +1,31 @@
+# In: ~/.gemini/commands/docs/resource-reference.toml
+# This command will be invoked via: /docs:reference kind="AlloyDBInstance" group="alloydb"
+# Note that group may be different from kind prefix.
+
+description = "Asks the model to generate the resource reference doc template for given group and kind."
+
+prompt = """
+You are a Config Connector and go templating expert.
+You need to generate the documentation template and configure the references for a new Config Connector resource.
+
+Resource Information:
+- Kind: {{args.kind}}
+- Group: {{args.group}}
+
+Please perform the following tasks:
+
+1. Gather Information: Use Google Search to find the specific details for this resource needed for the documentation table:
+   - GCP Service Name (Human readable)
+   - GCP Service Documentation URL
+   - REST Resource Name (e.g., v1.projects.locations.resources)
+   - REST Resource Documentation URL
+   - Service Endpoint (e.g., service.googleapis.com)
+
+2. Create Template: Generate a new file at `scripts/generate-google3-docs/resource-reference/templates/[Group_Lowercase]_[Kind_Lowercase].tmpl`.
+   - Use the content of `alloydb_alloydbcluster.tmpl` as a structural reference.
+   - Populate the specific values (Service Name, Documentation links, REST paths) based on your search results from Step 1.
+
+3. Register Resource:
+   - Add the new resource entry to `scripts/generate-google3-docs/resource-reference/_toc.yaml` under the appropriate Service section.
+   - Add the new resource row to the table in `scripts/generate-google3-docs/resource-reference/overview.md`.
+"""
