@@ -56,7 +56,7 @@ type BillingBudgetsBudgetSpec struct {
 	//
 	//  Required if using email notifications.
 	// +kcc:proto:field=google.cloud.billing.budgets.v1beta1.Budget.threshold_rules
-	ThresholdRules []*ThresholdRule `json:"thresholdRules,omitempty"`
+	ThresholdRules []ThresholdRule `json:"thresholdRules,omitempty"`
 
 	// Optional. Rules to apply to notifications sent based on budget spend and
 	//  thresholds.
