@@ -150,7 +150,7 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 			c,
 			leaseSpec.LeaseName,
 			leaseSpec.Namespace,
-			leaseSpec.GlobalLockName,
+			leaseSpec.ClusterCandidateIdentity,
 			15*time.Second,
 		)
 		return &leaderelection.LeaderElectionConfig{

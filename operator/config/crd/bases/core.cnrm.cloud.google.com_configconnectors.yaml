@@ -73,11 +73,11 @@ spec:
                     description: MultiClusterLease defines configuration specific
                       to multi-cluster leader election.
                     properties:
-                      globalLockName:
-                        default: kcc-multicluster-leader-lock
+                      clusterCandidateIdentity:
                         description: |-
-                          The unique name of the global lock, which must be shared by all KCC replicas
+                          The identity of the cluster candidate for the KCC components, hared by all KCC replicas
                           and workloads across all clusters that are part of the same election.
+                           This name must be unique across all the clusters that you are configuring the multi cluster set up for.
                         type: string
                       leaseName:
                         description: The name of the MultiClusterLease object that
@@ -88,7 +88,7 @@ spec:
                           will be created.
                         type: string
                     required:
-                    - globalLockName
+                    - clusterCandidateIdentity
                     - leaseName
                     - namespace
                     type: object
