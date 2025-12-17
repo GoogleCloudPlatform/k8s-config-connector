@@ -111,6 +111,11 @@ func (in *TagsLocationTagBindingSpec) DeepCopyInto(out *TagsLocationTagBindingSp
 		*out = new(v1beta1.TagsTagBindingParentRef)
 		**out = **in
 	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
+		**out = **in
+	}
 	if in.TagValueRef != nil {
 		in, out := &in.TagValueRef, &out.TagValueRef
 		*out = new(v1beta1.TagsTagValueRef)
