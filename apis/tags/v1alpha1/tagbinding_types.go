@@ -30,7 +30,7 @@ type TagsLocationTagBindingSpec struct {
 
 	// The location for the resource being tagged.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// +kcc:ref=TagsTagValue
 	TagValueRef *v1beta1.TagsTagValueRef `json:"tagValueRef"`
