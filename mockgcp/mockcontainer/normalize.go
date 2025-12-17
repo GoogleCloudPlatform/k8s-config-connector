@@ -57,7 +57,6 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	event.VisitResponseStringValues(func(path string, value string) {
 		switch path {
 		case ".controlPlaneEndpointsConfig.ipEndpointsConfig.publicEndpoint",
-			".endpoint",
 			".privateClusterConfig.publicEndpoint":
 			if isIPv4Address(value) {
 				replacements.ReplaceStringValue(value, "${publicEndpointIPV4}")
