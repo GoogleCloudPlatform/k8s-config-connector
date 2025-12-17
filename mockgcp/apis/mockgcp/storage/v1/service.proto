@@ -917,6 +917,8 @@ message Buckets {
   optional string kind = 2 [json_name="kind"];
   // The continuation token, used to page through large result sets. Provide this value in a subsequent request to return the next page of results.
   optional string next_page_token = 3 [json_name="nextPageToken"];
+  // The list of bucket resource names that could not be reached during the listing operation.
+  repeated string unreachable = 4 [json_name="unreachable"];
 }
 
 // A bulk restore objects request.
@@ -973,12 +975,14 @@ message ComposeRequestSourceObjects {
 
 // A Compose request.
 message ComposeRequest {
+  // If true, the source objects will be deleted.
+  optional bool delete_source_objects = 1 [json_name="deleteSourceObjects"];
   // Properties of the resulting object.
-  optional Object destination = 1 [json_name="destination"];
+  optional Object destination = 2 [json_name="destination"];
   // The kind of item this is.
-  optional string kind = 2 [json_name="kind"];
+  optional string kind = 3 [json_name="kind"];
   // The list of source objects that will be concatenated into a single object.
-  repeated ComposeRequestSourceObjects source_objects = 3 [json_name="sourceObjects"];
+  repeated ComposeRequestSourceObjects source_objects = 4 [json_name="sourceObjects"];
 }
 
 // Represents an expression text. Example: title: "User account presence" description: "Determines whether the request has a user account" expression: "size(request.user) > 0"
@@ -1526,8 +1530,9 @@ message ListBucketsRequest {
   optional string prefix = 3;
   optional string project = 4;
   optional string projection = 5;
-  optional bool soft_deleted = 6;
-  optional string user_project = 7;
+  optional bool return_partial_success = 6;
+  optional bool soft_deleted = 7;
+  optional string user_project = 8;
 }
 
 message LockRetentionPolicyBucketRequest {
