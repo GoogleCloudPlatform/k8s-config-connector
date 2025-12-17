@@ -539,7 +539,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 
 						// Build a normalizer with the per-service replacements
 						// We should try to get all normalizers into this pattern, over time.
-						serviceReplacements := newObjectWalker()
+						serviceReplacements := newObjectWalker(t)
 						{
 							services := h.RegisteredServices()
 
