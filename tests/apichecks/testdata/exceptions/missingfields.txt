@@ -1465,6 +1465,7 @@
 [missing_field] crd=controllerreconcilers.customize.core.cnrm.cloud.google.com version=v1beta1: field ".spec.rateLimit.qps" is not set in unstructured objects
 [missing_field] crd=controllerresources.customize.core.cnrm.cloud.google.com version=v1beta1: field ".spec.containers[].name" is not set in unstructured objects
 [missing_field] crd=controllerresources.customize.core.cnrm.cloud.google.com version=v1beta1: field ".spec.containers[].resources.limits" is not set in unstructured objects
+[missing_field] crd=controllerresources.customize.core.cnrm.cloud.google.com version=v1beta1: field ".spec.metadataHost" is not set in unstructured objects
 [missing_field] crd=controllerresources.customize.core.cnrm.cloud.google.com version=v1beta1: field ".spec.containers[].resources.requests" is not set in unstructured objects
 [missing_field] crd=controllerresources.customize.core.cnrm.cloud.google.com version=v1beta1: field ".spec.replicas" is not set in unstructured objects
 [missing_field] crd=controllerresources.customize.core.cnrm.cloud.google.com version=v1beta1: field ".spec.verticalPodAutoscalerMode" is not set in unstructured objects
