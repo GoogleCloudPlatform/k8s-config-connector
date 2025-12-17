@@ -100,14 +100,23 @@ type Config struct {
 	// Configure manager to participate in leader election if MultiClusterLease is enabled.
 	MultiClusterLease bool
 
-	// SkipControllerRegistration is true if we should skip registering the default controllers
-	// used for testing purposes to avoid controller name conflicts when creating multiple managers
-	SkipControllerRegistration bool
+	// used for smoke testing only; options not meant to be used in production.
+	testConfig
+}
 
-	// MultiClusterLeaseConfig is the configuration for the multi-cluster lease.
+type testConfig struct {
+	// skipControllerRegistration is true if we should skip registering the default controllers
+	// used for testing purposes to avoid controller name conflicts when creating multiple managers
+	skipControllerRegistration bool
+
+	// multiClusterLeaseConfig is the configuration for the multi-cluster lease.
 	// If specified, this configuration takes precedence over the ConfigConnector object.
 	// This is primarily used for testing to simulate multiple clusters.
-	MultiClusterLeaseConfig *operatorv1beta1.MultiClusterLeaseSpec
+	multiClusterLeaseConfig *operatorv1beta1.MultiClusterLeaseSpec
+
+	// suppressExitOnLeadershipLoss controls whether the process should exit when leadership is lost.
+	// If false (default), the process exits. If true, it logs and continues (for testing).
+	suppressExitOnLeadershipLoss bool
 }
 
 func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme *runtime.Scheme, explicitConfig *operatorv1beta1.MultiClusterLeaseSpec, existOnLeadershipLoss bool) (*leaderelection.LeaderElectionConfig, error) {
@@ -220,7 +229,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 
 	var leConfig *leaderelection.LeaderElectionConfig
 	if cfg.MultiClusterLease {
-		leConfig, err = setUpMultiClusterLease(ctx, restConfig, opts.Scheme, cfg.MultiClusterLeaseConfig, !cfg.SkipControllerRegistration)
+		leConfig, err = setUpMultiClusterLease(ctx, restConfig, opts.Scheme, cfg.multiClusterLeaseConfig, !cfg.suppressExitOnLeadershipLoss)
 		if err != nil {
 			return nil, fmt.Errorf("error setting up multi-cluster leader election: %w", err)
 		}
@@ -247,7 +256,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		UserAgent:                  gcp.KCCUserAgent(),
 		EnableMetricsTransport:     cfg.EnableMetricsTransport,
 	}
-	if !cfg.SkipControllerRegistration {
+	if !cfg.skipControllerRegistration {
 		// Bootstrap the Google Terraform provider
 		tfCfg := tfprovider.NewConfig()
 		tfCfg.UserProjectOverride = cfg.UserProjectOverride
@@ -333,7 +342,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if !cfg.SkipControllerRegistration {
+	if !cfg.skipControllerRegistration {
 		if err := registration.AddDefaultControllers(ctx, mgr, &rd, controllerConfig); err != nil {
 			return nil, fmt.Errorf("error adding registration controller: %w", err)
 		}
