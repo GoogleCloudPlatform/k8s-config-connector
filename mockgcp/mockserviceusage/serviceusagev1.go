@@ -28,6 +28,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"k8s.io/klog/v2"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/serviceusage/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -290,13 +291,17 @@ func (s *ServiceUsageV1) ListServices(ctx context.Context, req *pb.ListServicesR
 	}
 
 	// Implement field filtering
-	// TODO: Can we mame this generic?  Is it used in other APIs?
+	// TODO: Can we make this generic?  Is it used in other APIs?
 	{
 		md, _ := metadata.FromIncomingContext(ctx)
 		query := ""
 		if md != nil {
-			for _, v := range md.Get("query") {
-				query = v
+			values := md.Get(httpmux.MetadataKeyHttpRequestQuery)
+			if len(values) > 0 {
+				if len(values) > 1 {
+					return nil, status.Errorf(codes.InvalidArgument, "multiple http.request.query metadata entries found")
+				}
+				query = values[0]
 			}
 		}
 		fields := ""

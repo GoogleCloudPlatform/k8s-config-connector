@@ -27,6 +27,11 @@ import (
 	"k8s.io/klog/v2"
 )
 
+const (
+	// MetadataKeyHttpRequestQuery is the gRPC metadata key for the HTTP request query string
+	MetadataKeyHttpRequestQuery = "http.request.query"
+)
+
 type Options struct {
 	// If EmitUnpopulated is true, we will send empty proto fields (false / "" / 0 etc)
 	// Some older APIs do this (e.g. cloudbilling)
@@ -136,7 +141,7 @@ func RewriteRequest(r *http.Request, newURL *url.URL) *http.Request {
 func (m *ServeMux) addMetadata(ctx context.Context, r *http.Request) metadata.MD {
 	md := make(map[string]string)
 	md["path"] = r.URL.Path
-	md["query"] = r.URL.RawQuery
+	md[MetadataKeyHttpRequestQuery] = r.URL.RawQuery
 
 	v := r.Context().Value(originalPath)
 	if v != nil {
