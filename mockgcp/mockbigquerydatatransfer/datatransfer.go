@@ -122,6 +122,12 @@ func (s *dataTransferService) CreateTransferConfig(ctx context.Context, req *pb.
 	obj.UserId = int64(123)
 
 	if obj.EncryptionConfiguration != nil && obj.EncryptionConfiguration.KmsKeyName != nil {
+		if obj.Params == nil {
+			obj.Params = &structpb.Struct{}
+		}
+		if obj.Params.Fields == nil {
+			obj.Params.Fields = make(map[string]*structpb.Value)
+		}
 		obj.Params.Fields["destination_table_kms_key"] = structpb.NewStringValue(obj.EncryptionConfiguration.KmsKeyName.Value)
 	}
 
