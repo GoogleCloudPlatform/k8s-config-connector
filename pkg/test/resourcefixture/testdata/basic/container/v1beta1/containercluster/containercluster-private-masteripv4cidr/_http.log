@@ -1964,7 +1964,7 @@ X-Xss-Protection: 0
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
   },
-  "endpoint": "${publicEndpointIPV4}",
+  "endpoint": "${privateEndpointIPV4}",
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
@@ -2164,6 +2164,7 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
+  "privateCluster": true,
   "privateClusterConfig": {
     "enablePrivateEndpoint": true,
     "enablePrivateNodes": true,
@@ -2314,7 +2315,7 @@ X-Xss-Protection: 0
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
   },
-  "endpoint": "${publicEndpointIPV4}",
+  "endpoint": "${privateEndpointIPV4}",
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
@@ -2514,6 +2515,7 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
+  "privateCluster": true,
   "privateClusterConfig": {
     "enablePrivateEndpoint": true,
     "enablePrivateNodes": true,
@@ -2664,7 +2666,7 @@ X-Xss-Protection: 0
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
   },
-  "endpoint": "${publicEndpointIPV4}",
+  "endpoint": "${privateEndpointIPV4}",
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
@@ -2864,6 +2866,7 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
+  "privateCluster": true,
   "privateClusterConfig": {
     "enablePrivateEndpoint": true,
     "enablePrivateNodes": true,
