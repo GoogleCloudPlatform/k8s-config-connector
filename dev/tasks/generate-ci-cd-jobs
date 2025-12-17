@@ -27,9 +27,13 @@ for group in $(rgrep --no-filename '^[ ]*group:' config/crds | sort | uniq | awk
   if [[ "${group}" == "" ]]; then
     continue
   fi
-  
+  if [[ "${group}" != *.cnrm.cloud.google.com ]] ; then
+    echo "Skipping non-CNRM group: ${group}"
+    continue
+  fi
+
   short=$(echo ${group} | sed s@.cnrm.cloud.google.com@@g)
-  
+
 
 cat > ${REPO_ROOT}/dev/ci/periodics/e2e-service-${short} <<EOF
 #!/usr/bin/env bash
