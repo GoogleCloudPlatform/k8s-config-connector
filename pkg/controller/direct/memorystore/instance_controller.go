@@ -26,9 +26,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	gcp "cloud.google.com/go/memorystore/apiv1beta"
+	gcp "cloud.google.com/go/memorystore/apiv1"
 
-	memorystorepb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
+	memorystorepb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 

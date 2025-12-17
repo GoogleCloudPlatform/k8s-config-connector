@@ -88,7 +88,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 
 	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1beta",
+		ApiVersion: "v1",
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "create",
@@ -272,7 +272,7 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	}
 
 	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1beta",
+		ApiVersion: "v1",
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "update",
@@ -318,7 +318,7 @@ func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 	}
 
 	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1beta",
+		ApiVersion: "v1",
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "delete",

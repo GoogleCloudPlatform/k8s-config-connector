@@ -19,7 +19,7 @@
 package memorystore
 
 import (
-	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
+	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
