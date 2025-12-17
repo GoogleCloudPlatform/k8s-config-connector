@@ -14,11 +14,11 @@
 
 // +generated:types
 // krm.group: logging.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.logging.v2
 // resource: LoggingLink:Link
 
-package v1alpha1
+package v1beta1
 
 // +kcc:proto=google.logging.v2.BigQueryDataset
 type BigQueryDataset struct {
