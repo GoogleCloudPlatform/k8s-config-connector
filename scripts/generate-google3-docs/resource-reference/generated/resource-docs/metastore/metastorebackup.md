@@ -2,7 +2,7 @@
 
 {% extends "config-connector/_base.html" %}
 
-{% block page_title %}OrgPolicyCustomConstraint{% endblock %}
+{% block page_title %}MetastoreBackup{% endblock %}
 {% block body %}
 
 
@@ -16,31 +16,31 @@
 <tbody>
 <tr>
 <td>{{gcp_name_short}} Service Name</td>
-<td>Organization Policy</td>
+<td>Dataproc Metastore</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} Service Documentation</td>
-<td><a href="/resource-manager/docs/organization-policy/overview">/resource-manager/docs/organization-policy/overview</a></td>
+<td><a href="/dataproc-metastore/docs/">/dataproc-metastore/docs/</a></td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
-<td>organizations.customConstraints</td>
+<td>projects.locations.services.backups</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/resource-manager/docs/reference/orgpolicy/rest/v2/organizations.customConstraints">/resource-manager/docs/reference/orgpolicy/rest/v2/organizations.customConstraints</a></td>
+<td><a href="/dataproc-metastore/docs/reference/rest/v1/projects.locations.services.backups">/dataproc-metastore/docs/reference/rest/v1/projects.locations.services.backups</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcporgpolicycustomconstraint<br>gcporgpolicycustomconstraints<br>orgpolicycustomconstraint</td>
+<td>gcpmetastorebackup<br>gcpmetastorebackups<br>metastorebackup</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
-<td>orgpolicy.googleapis.com</td>
+<td>metastore.googleapis.com</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Fully Qualified Name</td>
-<td>orgpolicycustomconstraints.orgpolicy.cnrm.cloud.google.com</td>
+<td>metastorebackups.metastore.cnrm.cloud.google.com</td>
 </tr>
 
 <tr>
@@ -63,17 +63,12 @@
 ### Spec
 #### Schema
 ```yaml
-actionType: string
-condition: string
 description: string
-displayName: string
-methodTypes:
-- string
-organizationRef:
-  external: string
 resourceID: string
-resourceTypes:
-- string
+serviceRef:
+  external: string
+  name: string
+  namespace: string
 ```
 
 <table class="properties responsive">
@@ -85,86 +80,12 @@ resourceTypes:
 <tbody>
     <tr>
         <td>
-            <p><code>actionType</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allow or deny type.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>condition</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Org policy condition/expression. For example:
- `resource.instanceName.matches("[production|test]_.*_(\d)+")` or,
- `resource.management.auto_upgrade == true`
-
- The max length of the condition is 1000 characters.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
             <p><code>description</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Detailed information about this custom policy constraint. The max length of the description is 2000 characters.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>displayName</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}One line display name for the UI. The max length of the display_name is 200 characters.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>methodTypes</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}All the operations being applied for this constraint.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>methodTypes[]</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>organizationRef</code></p>
-            <p><i>Required</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The Organization that this resource belongs to.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>organizationRef.external</code></p>
-            <p><i>Required</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The 'name' field of an organization, when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}The description of the backup.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -174,30 +95,47 @@ resourceTypes:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The OrgPolicyCustomConstraint name. If not given, the metadata.name will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}The MetastoreBackup name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>resourceTypes</code></p>
-            <p><i>Optional</i></p>
+            <p><code>serviceRef</code></p>
+            <p><i>Required</i></p>
         </td>
         <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. The resource instance type on which this policy applies. Format
- will be of the form : `<canonical service name>/<type>` Example:
-
-  * `compute.googleapis.com/Instance`.{% endverbatim %}</p>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The MetastoreService that the backup belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>resourceTypes[]</code></p>
+            <p><code>serviceRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed MetastoreService resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serviceRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of a MetastoreService resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serviceRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The namespace of a MetastoreService resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -217,7 +155,12 @@ conditions:
 externalRef: string
 observedGeneration: integer
 observedState:
-  updateTime: string
+  createTime: string
+  endTime: string
+  restoringServices:
+  - string
+  serviceRevision: schemaless
+  state: string
 ```
 
 <table class="properties responsive">
@@ -280,7 +223,7 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the OrgPolicyCustomConstraint resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the MetastoreBackup resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -298,10 +241,45 @@ observedState:
         </td>
     </tr>
     <tr>
-        <td><code>observedState.updateTime</code></td>
+        <td><code>observedState.createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The last time this custom constraint was updated. This represents the last time that the `CreateCustomConstraint` or `UpdateCustomConstraint` RPC was called{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The time when the backup was started.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.endTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The time when the backup finished creating.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.restoringServices</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Output only. Services that are restoring from the backup.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.restoringServices[]</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.serviceRevision</code></td>
+        <td>
+            <p><code class="apitype">schemaless</code></p>
+            <p>{% verbatim %}Output only. The revision of the service at the time of backup.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.state</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The current state of the backup.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

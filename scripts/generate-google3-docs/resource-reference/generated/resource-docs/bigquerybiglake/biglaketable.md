@@ -20,7 +20,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} Service Documentation</td>
-<td><a href="/bigquery/docs/reference/biglake/rest">/bigquery/docs/reference/biglake/rest</a></td>
+<td><a href="/bigquery/docs/biglake-intro">/bigquery/docs/biglake-intro</a></td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>

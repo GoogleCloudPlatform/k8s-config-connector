@@ -166,7 +166,7 @@ toc:
 - title: "Cloud Intrusion Detection System"
   section:
   - title: "CloudIDSEndpoint"
-    path: /config-connector/docs/reference/resource-docs/cloudids/cloudsidsendpoint.md
+    path: /config-connector/docs/reference/resource-docs/cloudids/cloudidsendpoint.md
 - title: "Cloud Scheduler"
   section:
   - title: "CloudSchedulerJob"
@@ -193,17 +193,26 @@ toc:
     path: /config-connector/docs/reference/resource-docs/dns/dnspolicy.md
   - title: "DNSRecordSet"
     path: /config-connector/docs/reference/resource-docs/dns/dnsrecordset.md
-- title: "Cloud Key Management Service"  section:  - title: "KMSCryptoKey"    path: /config-connector/docs/reference/resource-docs/kms/kmscryptokey.md  - title: "KMSKeyRing"    path: /config-connector/docs/reference/resource-docs/kms/kmskeyring.md  - title: "KMSAutokeyConfig"    path: /config-connector/docs/reference/resource-docs/kms/kmsautokeyconfig.md  - title: "KMSImportJob"    path: /config-connector/docs/reference/resource-docs/kms/kmsimportjob.md  - title: "KMSKeyHandle"    path: /config-connector/docs/reference/resource-docs/kms/kmskeyhandle.md
-- title: "Essential Contacts"
+- title: "Cloud Key Management Service"
   section:
-  - title: "EssentialContactsContact"
-    path: /config-connector/docs/reference/resource-docs/essentialcontacts/essentialcontactscontact.md
+  - title: "KMSAutokeyConfig"
+    path: /config-connector/docs/reference/resource-docs/kms/kmsautokeyconfig.md
+  - title: "KMSCryptoKey"
+    path: /config-connector/docs/reference/resource-docs/kms/kmscryptokey.md
+  - title: "KMSImportJob"
+    path: /config-connector/docs/reference/resource-docs/kms/kmsimportjob.md
+  - title: "KMSKeyHandle"
+    path: /config-connector/docs/reference/resource-docs/kms/kmskeyhandle.md
+  - title: "KMSKeyRing"
+    path: /config-connector/docs/reference/resource-docs/kms/kmskeyring.md
 - title: "Eventarc"
   section:
   - title: "EventarcTrigger"
     path: /config-connector/docs/reference/resource-docs/eventarc/eventarctrigger.md
 - title: "Identity and Access Managmement (IAM)"
   section:
+  - title: "IAMAccessBoundaryPolicy"
+    path: /config-connector/docs/reference/resource-docs/iam/iamaccessboundarypolicy.md
   - title: "IAMAuditConfig"
     path: /config-connector/docs/reference/resource-docs/iam/iamauditconfig.md
   - title: "IAMCustomRole"
@@ -290,7 +299,7 @@ toc:
   section:
   - title: "OrgPolicyCustomConstraint"
     path: /config-connector/docs/reference/resource-docs/orgpolicy/orgpolicycustomconstraint.md
-- title: "Private CA"
+- title: "Cloud Source Repositories"
   section:
   - title: "SourceRepoRepository"
     path: /config-connector/docs/reference/resource-docs/sourcerepo/sourcereporepository.md
@@ -510,6 +519,14 @@ toc:
     path: /config-connector/docs/reference/resource-docs/edgenetwork/edgenetworknetwork.md
   - title: "EdgeNetworkSubnet"
     path: /config-connector/docs/reference/resource-docs/edgenetwork/edgenetworksubnet.md
+- title: "Document AI"
+  section:
+  - title: "DocumentAIProcessorVersion"
+    path: /config-connector/docs/reference/resource-docs/documentai/documentaiprocessorversion.md
+- title: "Essential Contacts"
+  section:
+  - title: "EssentialContactsContact"
+    path: /config-connector/docs/reference/resource-docs/essentialcontacts/essentialcontactscontact.md
 - title: "GKE Hub"
   section:
   - title: "GKEHubFeature"

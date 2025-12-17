@@ -20,7 +20,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} Service Documentation</td>
-<td><a href="/backup-dr/docs/">/backup-dr/docs/</a></td>
+<td><a href="/backup-disaster-recovery/docs/">/backup-disaster-recovery/docs/</a></td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
@@ -28,7 +28,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/backup-dr/docs/reference/rest/v1/projects.locations.backupPlans">/backup-dr/docs/reference/rest/v1/projects.locations.backupPlans</a></td>
+<td><a href="/backup-disaster-recovery/docs/reference/rest/v1/projects.locations.backupPlans">/backup-dr/docs/reference/rest/v1/projects.locations.backupPlans</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>

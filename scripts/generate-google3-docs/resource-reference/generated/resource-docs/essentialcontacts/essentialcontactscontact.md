@@ -20,7 +20,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} Service Documentation</td>
-<td><a href="/essential-contacts/docs/">/essential-contacts/docs/</a></td>
+<td><a href="/resource-manager/docs/managing-notification-contacts">/resource-manager/docs/managing-notification-contacts</a></td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
@@ -28,7 +28,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/essential-contacts/docs/reference/rest/v1/projects.contacts">/essential-contacts/docs/reference/rest/v1/projects.contacts</a></td>
+<td><a href="/resource-manager/docs/reference/essentialcontacts/rest/v1/projects.contacts">/resource-manager/docs/reference/essentialcontacts/rest/v1/projects.contacts</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>

@@ -20,7 +20,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} Service Documentation</td>
-<td><a href="/quotas/docs/">/quotas/docs/</a></td>
+<td><a href="/docs/quotas/">/docs/quotas/</a></td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
@@ -28,7 +28,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/quotas/docs/reference/rest/v1/projects.locations.quotaPreferences">/quotas/docs/reference/rest/v1/projects.locations.quotaPreferences</a></td>
+<td><a href="/docs/quotas/reference/rest/v1/projects.locations.quotaPreferences">/docs/quotas/reference/rest/v1/projects.locations.quotaPreferences</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>

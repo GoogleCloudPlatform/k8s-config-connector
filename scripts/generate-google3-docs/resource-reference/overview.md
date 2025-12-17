@@ -66,14 +66,6 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/apigateway/apigatewayapi.md">APIGatewayAPI</a></td>
 </tr>
 <tr>
-  <td><a href="/artifact-registry/docs/">{{ar_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md">ArtifactRegistryRepository</a></td>
-</tr>
-<tr>
-  <td><a href="https://cloud.google.com/app-hub/docs/">{{app_hub_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/apphub/apphubapplication.md">AppHubApplication</a></td>
-</tr>
-<tr>
   <td><a href="/apigee/docs/">{{apigee_x_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/apigee/apigeeendpointattachment.md">ApigeeEndpointAttachment</a></td>
 </tr>
@@ -126,15 +118,15 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/bigqueryconnection/bigqueryconnectionconnection.md">BigqueryConnectionConnection</a></td>
 </tr>
 <tr>
-  <td><a href="/backup-dr/docs/">Backup and DR</a></td>
+  <td><a href="/backup-disaster-recovery/docs/">Backup and DR</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/backupdr/backupdrbackupplan.md">BackupDRBackupPlan</a></td>
 </tr>
 <tr>
-  <td><a href="/backup-dr/docs/">Backup and DR</a></td>
+  <td><a href="/backup-disaster-recovery/docs/">Backup and DR</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/backupdr/backupdrbackupplanassociation.md">BackupDRBackupPlanAssociation</a></td>
 </tr>
 <tr>
-  <td><a href="/backup-dr/docs/">Backup and DR</a></td>
+  <td><a href="/backup-disaster-recovery/docs/">Backup and DR</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/backupdr/backupdrbackupvault.md">BackupDRBackupVault</a></td>
 </tr>
 <tr>
@@ -208,7 +200,9 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/asset/assetsavedquery.md">AssetSavedQuery</a></td>
 </tr>
 <tr>
-  <td><a href="/bigtable/docs/">{{bigtable_name}}</a></td>
+  <td><a href="/composer/docs/">Cloud Composer</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/composer/composerenvironment.md">ComposerEnvironment</a></td>
+</tr>
 <tr>
   <td><a href="/deploy/docs/">Cloud Deploy</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/clouddeploy/clouddeploydeliverypipeline.md">CloudDeployDeliveryPipeline</a></td>
@@ -218,7 +212,7 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/cloudquota/apiquotaadjustersettings.md">APIQuotaAdjusterSettings</a></td>
 </tr>
 <tr>
-  <td><a href="/quotas/docs/">Cloud Quotas</a></td>
+  <td><a href="/docs/quotas/">Cloud Quotas</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/cloudquota/apiquotapreference.md">APIQuotaPreference</a></td>
 </tr>
 <tr>
@@ -575,7 +569,7 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/documentai/documentaiprocessorversion.md">DocumentAIProcessorVersion</a></td>
 </tr>
 <tr>
-  <td><a href="/essential-contacts/docs/">Essential Contacts</a></td>
+  <td><a href="/resource-manager/docs/managing-notification-contacts">Essential Contacts</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/essentialcontacts/essentialcontactscontact.md">EssentialContactsContact</a></td>
 </tr>
 <tr>
@@ -621,6 +615,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/kubernetes-engine/docs/">{{gke_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/container/containernodepool.md">ContainerNodePool</a></td>
+</tr>
+<tr>
+  <td><a href="/iam/docs/">{{iam_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/iam/iamaccessboundarypolicy.md">IAMAccessBoundaryPolicy</a></td>
 </tr>
 <tr>
   <td><a href="/iam/docs/">{{iam_name}}</a></td>
@@ -803,7 +801,7 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/osconfig/osconfigospolicyassignment.md">OSConfigOSPolicyAssignment</a></td>
 </tr>
 <tr>
-  <td><a href="/org-policy/docs/">Organization Policy</a></td>
+  <td><a href="/resource-manager/docs/organization-policy/overview">Organization Policy</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/orgpolicy/orgpolicycustomconstraint.md">OrgPolicyCustomConstraint</a></td>
 </tr>
 <tr>
@@ -980,7 +978,7 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/storage/docs/">{{storage_name}}</a></td>
-  <td><a href="#/config-connector/docs/reference/resource-docs/storage/storagedefaultobjectaccesscontrol.md">StorageDefaultObjectAccessControl</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/storage/storagedefaultobjectaccesscontrol.md">StorageDefaultObjectAccessControl</a></td>
 </tr>
 <tr>
   <td><a href="/storage/docs/">{{storage_name}}</a></td>
