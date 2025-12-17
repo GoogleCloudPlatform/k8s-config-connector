@@ -21,29 +21,31 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
+
 	"gopkg.in/yaml.v2"
 )
 
-type Toc struct {
-	Toc []TocItem `yaml:"toc"`
+type TOC struct {
+	TOC []TOCItem `yaml:"toc"`
 }
 
-type TocItem struct {
+type TOCItem struct {
 	Title   string       `yaml:"title"`
-	Section []TocSection `yaml:"section,omitempty"`
+	Section []TOCSection `yaml:"section,omitempty"`
 	Path    string       `yaml:"path,omitempty"`
 }
 
-type TocSection struct {
+type TOCSection struct {
 	Title string `yaml:"title"`
 	Path  string `yaml:"path"`
 }
 
-func TestDocConsistency(t *testing.T) {
+func TestReferenceDocConsistency(t *testing.T) {
 	rootDir, err := repo.GetRoot()
 	if err != nil {
 		t.Fatalf("error getting repo root: %v", err)
@@ -51,6 +53,7 @@ func TestDocConsistency(t *testing.T) {
 
 	baseDir := filepath.Join(rootDir, "scripts", "generate-google3-docs", "resource-reference")
 	generatedDocsDir := filepath.Join(baseDir, "generated", "resource-docs")
+	templatesDir := filepath.Join(baseDir, "templates")
 	tocPath := filepath.Join(baseDir, "_toc.yaml")
 	overviewPath := filepath.Join(baseDir, "overview.md")
 
@@ -81,13 +84,13 @@ func TestDocConsistency(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error reading _toc.yaml: %v", err)
 	}
-	var toc Toc
+	var toc TOC
 	if err := yaml.Unmarshal(tocData, &toc); err != nil {
 		t.Fatalf("error parsing _toc.yaml: %v", err)
 	}
 
 	tocPaths := make(map[string]bool)
-	for _, item := range toc.Toc {
+	for _, item := range toc.TOC {
 		if item.Path != "" {
 			validatePath(t, item.Path, generatedFiles, tocPaths, "_toc.yaml")
 		}
@@ -124,11 +127,9 @@ func TestDocConsistency(t *testing.T) {
 		}
 	}
 
-	// 5. Validate URLs in generated files (Optional/integration check)
-	// This can be slow, so maybe run it only if a flag is set or parallelize.
-	// For this task, I'll run it but with a timeout and concurrency.
+	// 5. Validate URLs in templates (Optional/integration check)
 	if os.Getenv("VALIDATE_URLS") == "true" {
-		validateURLsInGeneratedFiles(t, generatedDocsDir)
+		validateURLsInTemplates(t, templatesDir)
 	}
 }
 
@@ -143,60 +144,136 @@ func validatePath(t *testing.T, path string, generatedFiles, seenPaths map[strin
 	}
 }
 
-func validateURLsInGeneratedFiles(t *testing.T, generatedDocsDir string) {
-	t.Log("Validating external URLs in generated files...")
-	client := &http.Client{
-		Timeout: 5 * time.Second,
+var (
+	// A list of regex patterns for URLs that should be skipped during validation.
+	skippedURLPatterns = []*regexp.Regexp{
+		regexp.MustCompile(`^https?://example\.com`),
+		regexp.MustCompile(`^https?://test\.com`),
+		regexp.MustCompile(`^http://localhost`),
+		regexp.MustCompile(`^http://metadata/`),
+		regexp.MustCompile(`\$\{.*?\}`),               // Templating variables
+		regexp.MustCompile(`\{\%.*?\%\}|\{\{.*?\}\}`), // Jinja/Go template syntax
+		regexp.MustCompile(`\[.*?\]`),                 // Placeholders
 	}
+)
 
-	sem := make(chan bool, 10) // Limit concurrency
+func shouldSkipURLValidation(url string) bool {
+	for _, pattern := range skippedURLPatterns {
+		if pattern.MatchString(url) {
+			return true
+		}
+	}
+	return false
+}
 
-	err := filepath.Walk(generatedDocsDir, func(path string, info os.FileInfo, err error) error {
+func validateURLsInTemplates(t *testing.T, templatesDir string) {
+	t.Log("Validating external URLs in template files...")
+
+	uniqueURLs := make(map[string][]string)
+	// Regex to capture href attribute value
+	hrefRegex := regexp.MustCompile(`href="([^"]+)"`)
+
+	err := filepath.Walk(templatesDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		if !info.IsDir() && strings.HasSuffix(info.Name(), ".md") {
+		if !info.IsDir() && strings.HasSuffix(info.Name(), ".tmpl") {
 			content, err := ioutil.ReadFile(path)
 			if err != nil {
 				return err
 			}
-			
-			// Find all http/https links
-			// Simple regex, might need refinement
-			urlRegex := regexp.MustCompile(`https?://[^\s'")]+`)
-			urls := urlRegex.FindAllString(string(content), -1)
 
-			for _, url := range urls {
-				// Clean up trailing characters that might be captured
-				url = strings.TrimRight(url, ".,)>]")
-				
-				sem <- true
-				go func(u, fPath string) {
-					defer func() { <-sem }()
-					resp, err := client.Head(u)
-					if err != nil {
-						// Retry with GET if HEAD fails (some servers don't like HEAD)
-						resp, err = client.Get(u)
-						if err != nil {
-							t.Errorf("URL validation failed in %s: %s - %v", fPath, u, err)
-							return
-						}
-						defer resp.Body.Close()
-					}
-					if resp.StatusCode != 200 {
-						t.Errorf("URL invalid in %s: %s returned status %d", fPath, u, resp.StatusCode)
-					}
-				}(url, path)
+			matches := hrefRegex.FindAllStringSubmatch(string(content), -1)
+			for _, match := range matches {
+				url := match[1]
+				if shouldSkipURLValidation(url) {
+					continue
+				}
+
+				// Construct full URL for relative paths
+				if strings.HasPrefix(url, "/") {
+					url = "https://cloud.google.com" + url
+				}
+
+				if strings.HasPrefix(url, "http") {
+					uniqueURLs[url] = append(uniqueURLs[url], path)
+				}
 			}
 		}
 		return nil
 	})
 	if err != nil {
-		t.Errorf("error walking generated docs for URL validation: %v", err)
+		t.Fatalf("error collecting URLs from templates: %v", err)
 	}
 
-	// Wait for all goroutines to finish (simple way)
-	for i := 0; i < cap(sem); i++ {
-		sem <- true
+	t.Logf("Found %d unique URLs to validate in templates.", len(uniqueURLs))
+
+	type result struct {
+		url  string
+		err  error
+		code int
+	}
+
+	jobs := make(chan string, len(uniqueURLs))
+	results := make(chan result, len(uniqueURLs))
+	concurrency := 20
+	var wg sync.WaitGroup
+
+	for i := 0; i < concurrency; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			client := &http.Client{
+				Timeout: 10 * time.Second,
+				Transport: &http.Transport{
+					DisableKeepAlives: true,
+					MaxIdleConns:      5,
+				},
+			}
+
+			for u := range jobs {
+				res := result{url: u}
+				resp, err := client.Head(u)
+				if err != nil || (resp != nil && resp.StatusCode != 200) {
+					if resp != nil {
+						resp.Body.Close()
+					}
+					resp, err = client.Get(u)
+				}
+
+				if err != nil {
+					res.err = err
+				} else {
+					res.code = resp.StatusCode
+					resp.Body.Close()
+				}
+				results <- res
+			}
+		}()
+	}
+
+	for u := range uniqueURLs {
+		jobs <- u
+	}
+	close(jobs)
+
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	failures := 0
+	for res := range results {
+		if res.err != nil {
+			t.Errorf("Failed to fetch %s: %v (referenced in: %v)", res.url, res.err, uniqueURLs[res.url][0])
+			failures++
+		} else if res.code != 200 {
+			t.Errorf("URL %s returned status %d (referenced in: %v)", res.url, res.code, uniqueURLs[res.url][0])
+			failures++
+		}
+	}
+
+	if failures > 0 {
+		t.Errorf("Found %d invalid URLs in templates", failures)
 	}
 }
