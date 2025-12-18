@@ -122,7 +122,7 @@ splitKeys:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days.{% endverbatim %}</p>
+            <p>{% verbatim %}Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days..{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -132,7 +132,7 @@ splitKeys:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A group of columns within a table which share a common configuration. This can be specified multiple times.{% endverbatim %}</p>
+            <p>{% verbatim %}The names of the column families that should be created immediately upon table creation, specified by name. The values that may be set are specified here. At least one column family must be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -162,7 +162,15 @@ splitKeys:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A field to make the table protected against data loss i.e. when set to PROTECTED, deleting the table, the column families in the table, and the instance containing the table would be prohibited. If not provided, currently deletion protection will be set to UNPROTECTED as it is the API default value.{% endverbatim %}</p>
+            <p>{% verbatim %}NOTE: DeletionProtection proto field is changed from string (1.38) to bool (1.40) in cloud.google.com/go/bigtable/admin/apiv2/adminpb
+Set to true to make the table protected against data loss. i.e. deleting
+the following resources through Admin APIs are prohibited:
+
+* The table.
+* The column families in the table.
+* The instance containing the table.
+
+Note one can still delete the data stored in the table through Data APIs.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -172,7 +180,7 @@ splitKeys:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The name of the Bigtable instance.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The instance to create the table in.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -182,7 +190,7 @@ splitKeys:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `BigtableInstance` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed BigtableInstance resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -192,7 +200,7 @@ splitKeys:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a BigtableInstance resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -202,7 +210,7 @@ splitKeys:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a BigtableInstance resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -212,7 +220,7 @@ splitKeys:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The BigtableTable name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -222,7 +230,7 @@ splitKeys:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}A list of predefined keys to split the table on.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -251,6 +259,7 @@ conditions:
   reason: string
   status: string
   type: string
+externalRef: string
 observedGeneration: integer
 ```
 
@@ -265,7 +274,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -308,6 +317,13 @@ observedGeneration: integer
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Type is the type of the condition.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the BigtableTable resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
