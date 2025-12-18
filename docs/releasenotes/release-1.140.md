@@ -6,6 +6,8 @@
 
 *   `CertificateManagerCertificateIssuanceConfig`
     *   Manage [Certificate Manager certificate issuance configurations](https://cloud.google.com/certificate-manager/docs/reference/public-ca/rest/v1/projects.locations.certificateIssuanceConfigs) for automating certificate issuance.
+*   `MemorystoreInstance`
+    *   Manage [Memorystore for Valkey Instances](https://cloud.google.com//memorystore/docs/valkey/reference/rest/v1/projects.locations.instances)   
 
 
 ## New Alpha Resources (Direct Reconciler):
