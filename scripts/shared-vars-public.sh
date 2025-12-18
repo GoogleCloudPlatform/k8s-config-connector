@@ -72,6 +72,7 @@ SUPPORTED_SERVICES=(
   eventarc.googleapis.com
   file.googleapis.com
   firestore.googleapis.com
+  geminicloudassist.googleapis.com
   gkebackup.googleapis.com
   gkeconnect.googleapis.com
   gkehub.googleapis.com
@@ -113,7 +114,6 @@ SUPPORTED_SERVICES=(
   vmwareengine.googleapis.com
   workstations.googleapis.com
   storage.googleapis.com
-  geminicloudassist.googleapis.com
 )
 
 # Regex used to match long running tests cases (10m+ runtime). Any new
