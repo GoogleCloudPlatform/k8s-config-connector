@@ -711,7 +711,6 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
-  "privateCluster": true,
   "privateClusterConfig": {
     "enablePrivateNodes": true
   },
@@ -1048,7 +1047,6 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
-  "privateCluster": true,
   "privateClusterConfig": {
     "enablePrivateNodes": true
   },
@@ -1385,7 +1383,6 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
-  "privateCluster": true,
   "privateClusterConfig": {
     "enablePrivateNodes": true
   },
@@ -1722,7 +1719,6 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
-  "privateCluster": true,
   "privateClusterConfig": {
     "enablePrivateNodes": true
   },
@@ -2095,7 +2091,6 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
-  "privateCluster": true,
   "privateClusterConfig": {
     "enablePrivateNodes": true
   },
@@ -2432,7 +2427,6 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
-  "privateCluster": true,
   "privateClusterConfig": {
     "enablePrivateNodes": true
   },
@@ -2769,7 +2763,6 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
-  "privateCluster": true,
   "privateClusterConfig": {
     "enablePrivateNodes": true
   },

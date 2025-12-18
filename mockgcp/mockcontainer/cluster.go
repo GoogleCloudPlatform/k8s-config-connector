@@ -970,11 +970,15 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	}
 
 	// Endpoint reflects the Control plane config
-	if obj.Endpoint == "" {
+	if getWithDefault(obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().EnablePublicEndpoint, true) {
 		obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().GetPublicEndpoint()
-		if obj.Endpoint == "" {
-			obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetDnsEndpointConfig().GetEndpoint()
-		}
+		obj.PrivateCluster = false
+	} else {
+		obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().GetPrivateEndpoint()
+		obj.PrivateCluster = true
+	}
+	if obj.Endpoint == "" {
+		obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetDnsEndpointConfig().GetEndpoint()
 	}
 
 	return nil
