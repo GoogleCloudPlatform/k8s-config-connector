@@ -178,7 +178,11 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 		obj.DiskSizeGb = 100
 	}
 	if obj.DiskType == "" {
-		obj.DiskType = "pd-balanced"
+		if strings.HasPrefix(obj.MachineType, "n4-") {
+			obj.DiskType = "hyperdisk-balanced"
+		} else {
+			obj.DiskType = "pd-balanced"
+		}
 	}
 
 	if obj.BootDisk == nil {

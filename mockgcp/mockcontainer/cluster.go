@@ -128,6 +128,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 			Name:      "default-pool",
 			Status:    pb.NodePool_RUNNING,
 			Locations: []string{name.Location},
+			Config:    obj.NodeConfig,
 		}
 		obj.NodePools = append(obj.NodePools, defaultNodePool)
 	}
