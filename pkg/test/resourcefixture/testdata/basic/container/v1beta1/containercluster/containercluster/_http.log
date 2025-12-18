@@ -647,6 +647,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "networkConfig": {},
     "networkPolicy": {},
     "nodeConfig": {
+      "advancedMachineFeatures": {
+        "enableNestedVirtualization": true
+      },
       "linuxNodeConfig": {
         "sysctls": {
           "net.core.somaxconn": "4096"
@@ -656,7 +659,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "variantConfig": {
           "variant": "DEFAULT"
         }
-      }
+      },
+      "machineType": "n4-standard-2"
     },
     "notificationConfig": {
       "pubsub": {
@@ -912,12 +916,15 @@ X-Xss-Protection: 0
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   },
   "nodeConfig": {
+    "advancedMachineFeatures": {
+      "enableNestedVirtualization": true
+    },
     "bootDisk": {
-      "diskType": "pd-balanced",
+      "diskType": "hyperdisk-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "pd-balanced",
+    "diskType": "hyperdisk-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -934,7 +941,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "e2-medium",
+    "machineType": "n4-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -975,19 +982,32 @@ X-Xss-Protection: 0
   "nodePools": [
     {
       "config": {
+        "advancedMachineFeatures": {
+          "enableNestedVirtualization": true
+        },
         "bootDisk": {
-          "diskType": "pd-balanced",
+          "diskType": "hyperdisk-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "pd-balanced",
+        "diskType": "hyperdisk-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
-        "machineType": "e2-medium",
+        "linuxNodeConfig": {
+          "sysctls": {
+            "net.core.somaxconn": "4096"
+          }
+        },
+        "loggingConfig": {
+          "variantConfig": {
+            "variant": "DEFAULT"
+          }
+        },
+        "machineType": "n4-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -1275,12 +1295,15 @@ X-Xss-Protection: 0
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   },
   "nodeConfig": {
+    "advancedMachineFeatures": {
+      "enableNestedVirtualization": true
+    },
     "bootDisk": {
-      "diskType": "pd-balanced",
+      "diskType": "hyperdisk-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "pd-balanced",
+    "diskType": "hyperdisk-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -1297,7 +1320,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "e2-medium",
+    "machineType": "n4-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -1338,19 +1361,32 @@ X-Xss-Protection: 0
   "nodePools": [
     {
       "config": {
+        "advancedMachineFeatures": {
+          "enableNestedVirtualization": true
+        },
         "bootDisk": {
-          "diskType": "pd-balanced",
+          "diskType": "hyperdisk-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "pd-balanced",
+        "diskType": "hyperdisk-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
-        "machineType": "e2-medium",
+        "linuxNodeConfig": {
+          "sysctls": {
+            "net.core.somaxconn": "4096"
+          }
+        },
+        "loggingConfig": {
+          "variantConfig": {
+            "variant": "DEFAULT"
+          }
+        },
+        "machineType": "n4-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -1638,12 +1674,15 @@ X-Xss-Protection: 0
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   },
   "nodeConfig": {
+    "advancedMachineFeatures": {
+      "enableNestedVirtualization": true
+    },
     "bootDisk": {
-      "diskType": "pd-balanced",
+      "diskType": "hyperdisk-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "pd-balanced",
+    "diskType": "hyperdisk-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -1660,7 +1699,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "e2-medium",
+    "machineType": "n4-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -1701,19 +1740,32 @@ X-Xss-Protection: 0
   "nodePools": [
     {
       "config": {
+        "advancedMachineFeatures": {
+          "enableNestedVirtualization": true
+        },
         "bootDisk": {
-          "diskType": "pd-balanced",
+          "diskType": "hyperdisk-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "pd-balanced",
+        "diskType": "hyperdisk-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
-        "machineType": "e2-medium",
+        "linuxNodeConfig": {
+          "sysctls": {
+            "net.core.somaxconn": "4096"
+          }
+        },
+        "loggingConfig": {
+          "variantConfig": {
+            "variant": "DEFAULT"
+          }
+        },
+        "machineType": "n4-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -2001,12 +2053,15 @@ X-Xss-Protection: 0
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   },
   "nodeConfig": {
+    "advancedMachineFeatures": {
+      "enableNestedVirtualization": true
+    },
     "bootDisk": {
-      "diskType": "pd-balanced",
+      "diskType": "hyperdisk-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "pd-balanced",
+    "diskType": "hyperdisk-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -2023,7 +2078,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "e2-medium",
+    "machineType": "n4-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -2064,19 +2119,32 @@ X-Xss-Protection: 0
   "nodePools": [
     {
       "config": {
+        "advancedMachineFeatures": {
+          "enableNestedVirtualization": true
+        },
         "bootDisk": {
-          "diskType": "pd-balanced",
+          "diskType": "hyperdisk-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "pd-balanced",
+        "diskType": "hyperdisk-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
-        "machineType": "e2-medium",
+        "linuxNodeConfig": {
+          "sysctls": {
+            "net.core.somaxconn": "4096"
+          }
+        },
+        "loggingConfig": {
+          "variantConfig": {
+            "variant": "DEFAULT"
+          }
+        },
+        "machineType": "n4-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -2455,12 +2523,15 @@ X-Xss-Protection: 0
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   },
   "nodeConfig": {
+    "advancedMachineFeatures": {
+      "enableNestedVirtualization": true
+    },
     "bootDisk": {
-      "diskType": "pd-balanced",
+      "diskType": "hyperdisk-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "pd-balanced",
+    "diskType": "hyperdisk-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -2477,7 +2548,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "e2-medium",
+    "machineType": "n4-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -2518,19 +2589,32 @@ X-Xss-Protection: 0
   "nodePools": [
     {
       "config": {
+        "advancedMachineFeatures": {
+          "enableNestedVirtualization": true
+        },
         "bootDisk": {
-          "diskType": "pd-balanced",
+          "diskType": "hyperdisk-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "pd-balanced",
+        "diskType": "hyperdisk-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
-        "machineType": "e2-medium",
+        "linuxNodeConfig": {
+          "sysctls": {
+            "net.core.somaxconn": "4096"
+          }
+        },
+        "loggingConfig": {
+          "variantConfig": {
+            "variant": "DEFAULT"
+          }
+        },
+        "machineType": "n4-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -2818,12 +2902,15 @@ X-Xss-Protection: 0
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   },
   "nodeConfig": {
+    "advancedMachineFeatures": {
+      "enableNestedVirtualization": true
+    },
     "bootDisk": {
-      "diskType": "pd-balanced",
+      "diskType": "hyperdisk-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "pd-balanced",
+    "diskType": "hyperdisk-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -2840,7 +2927,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "e2-medium",
+    "machineType": "n4-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -2881,19 +2968,32 @@ X-Xss-Protection: 0
   "nodePools": [
     {
       "config": {
+        "advancedMachineFeatures": {
+          "enableNestedVirtualization": true
+        },
         "bootDisk": {
-          "diskType": "pd-balanced",
+          "diskType": "hyperdisk-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "pd-balanced",
+        "diskType": "hyperdisk-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
-        "machineType": "e2-medium",
+        "linuxNodeConfig": {
+          "sysctls": {
+            "net.core.somaxconn": "4096"
+          }
+        },
+        "loggingConfig": {
+          "variantConfig": {
+            "variant": "DEFAULT"
+          }
+        },
+        "machineType": "n4-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -3181,12 +3281,15 @@ X-Xss-Protection: 0
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   },
   "nodeConfig": {
+    "advancedMachineFeatures": {
+      "enableNestedVirtualization": true
+    },
     "bootDisk": {
-      "diskType": "pd-balanced",
+      "diskType": "hyperdisk-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "pd-balanced",
+    "diskType": "hyperdisk-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -3203,7 +3306,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "e2-medium",
+    "machineType": "n4-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -3244,19 +3347,32 @@ X-Xss-Protection: 0
   "nodePools": [
     {
       "config": {
+        "advancedMachineFeatures": {
+          "enableNestedVirtualization": true
+        },
         "bootDisk": {
-          "diskType": "pd-balanced",
+          "diskType": "hyperdisk-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "pd-balanced",
+        "diskType": "hyperdisk-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
-        "machineType": "e2-medium",
+        "linuxNodeConfig": {
+          "sysctls": {
+            "net.core.somaxconn": "4096"
+          }
+        },
+        "loggingConfig": {
+          "variantConfig": {
+            "variant": "DEFAULT"
+          }
+        },
+        "machineType": "n4-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
