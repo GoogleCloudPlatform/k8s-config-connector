@@ -16,8 +16,7 @@
 set -exu; set -o pipefail
 
 # Step 1: Determine Release Versions
-STALE_VERSION=$(git tag | sort -V | tail -n 1 | sed 's/^v//')
-# echo "Stale version is: ${STALE_VERSION}" # Optional: print stale version for clarity, though prompt does it too.
+read -p "Enter the stale version: " STALE_VERSION
 read -p "Enter the new version (stale is ${STALE_VERSION}): " NEW_VERSION
 
 if [ -z "$NEW_VERSION" ]; then
