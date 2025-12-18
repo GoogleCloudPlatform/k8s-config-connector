@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +kcc:proto=google.cloud.memorystore.v1beta
+// +kcc:proto=google.cloud.memorystore.v1
 package v1alpha1
