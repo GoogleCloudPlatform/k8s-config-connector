@@ -1,0 +1,66 @@
+apiVersion: memorystore.cnrm.cloud.google.com/v1alpha1
+kind: MemorystoreInstance
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: memorystore-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  authorizationMode: IAM_AUTH
+  deletionProtectionEnabled: false
+  endpoints:
+  - connections:
+    - pscAutoConnection:
+        networkRef:
+          external: projects/${projectId}/global/networks/${networkID}
+        projectRef:
+          external: ${projectId}
+  engineConfigs:
+    maxclients: "10000"
+    maxmemory-policy: volatile-ttl
+  engineVersion: VALKEY_7_2
+  labels:
+    key1: val1
+    key2: val2
+    keyx: valx
+  location: us-central1
+  mode: CLUSTER
+  nodeType: STANDARD_SMALL
+  persistenceConfig:
+    aofConfig:
+      appendFsync: EVERY_SEC
+    mode: RDB
+    rdbConfig:
+      rdbSnapshotPeriod: ONE_HOUR
+      rdbSnapshotStartTime: "2029-10-02T15:01:23Z"
+  projectRef:
+    external: ${projectId}
+  replicaCount: 1
+  shardCount: 12
+  transitEncryptionMode: SERVER_AUTHENTICATION
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-b
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    endpoints:
+    - connections:
+      - pscAutoConnection: {}
+    nodeConfig:
+      sizeGB: 6.5
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
