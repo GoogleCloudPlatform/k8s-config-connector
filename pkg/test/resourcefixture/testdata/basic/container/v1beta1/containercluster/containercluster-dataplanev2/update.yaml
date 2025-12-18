@@ -20,6 +20,7 @@ metadata:
   name: cluster-sample-${uniqueId}
 spec:
   datapathProvider: ADVANCED_DATAPATH
+  enableCiliumClusterwideNetworkPolicy: false
   location: us-central1-a
   initialNodeCount: 1
   loggingService: none
