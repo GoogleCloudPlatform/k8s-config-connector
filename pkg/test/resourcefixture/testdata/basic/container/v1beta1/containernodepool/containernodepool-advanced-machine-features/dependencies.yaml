@@ -16,35 +16,10 @@ apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
   labels:
-    label-one: "value-two"
+    label-one: "value-one"
   name: cluster-sample-${uniqueId}
 spec:
   location: us-central1-a
   initialNodeCount: 1
-  loggingService: none
-  monitoringService: none
-  networkRef:
-    name: computenetwork-${uniqueId}
-  subnetworkRef:
-    name: computesubnetwork-${uniqueId}
-  ipAllocationPolicy:
-    clusterIpv4CidrBlock: /20
-    servicesIpv4CidrBlock: /20
-  notificationConfig:
-    pubsub:
-      enabled: true
-      topicRef:
-        name: pubsubtopic-${uniqueId}
-  loggingConfig:
-    enableComponents:
-    - "SYSTEM_COMPONENTS"
-    - "WORKLOADS"
-  monitoringConfig:
-    enableComponents:
-    - "SYSTEM_COMPONENTS"
-    - "APISERVER"
-    managedPrometheus:
-      enabled: true
-  nodeConfig:
-    advancedMachineFeatures:
-      enableNestedVirtualization: true
+  loggingService: logging.googleapis.com/kubernetes
+  monitoringService: monitoring.googleapis.com/kubernetes
