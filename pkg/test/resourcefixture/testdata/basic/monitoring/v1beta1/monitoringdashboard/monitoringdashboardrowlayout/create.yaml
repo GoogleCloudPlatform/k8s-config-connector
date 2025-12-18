@@ -1,0 +1,88 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringDashboard
+metadata:
+  name: monitoringdashboard-${uniqueId}
+spec:
+  displayName: "monitoringdashboard-full"
+  rowLayout:
+    rows:
+      - title: "AlertChart Widget"
+        alertChart:
+          alertPolicyRef:
+            name: monitoringalertpolicy-${uniqueId}
+      - title: "PieChart Widget"
+        pieChart:
+          chartType: DONUT
+          showLabels: true
+          dataSets:
+          - sliceNameTemplate: "${resource.labels.zone}"
+            minAlignmentPeriod: 60s
+            # dimensions:
+            # - column: location
+            #   columnType: STRING
+            #   maxBinCount: 5
+            #   sortColumn: location
+            #   sortOrder: SORT_ORDER_ASCENDING
+            # measures:
+            # - column: mymeasure
+            #   aggregationFunction:
+            #     type: count
+            timeSeriesQuery:
+              timeSeriesFilter:
+                filter: "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
+                aggregation:
+                  alignmentPeriod: "60s"
+                  perSeriesAligner: "ALIGN_RATE"
+                secondaryAggregation:
+                  alignmentPeriod: "60s"
+                  perSeriesAligner: "ALIGN_MEAN"
+      - title: "ErrorReporting Widget"
+        errorReportingPanel:
+          projectRefs:
+          - external: projects/project1
+          - external: projects/project2
+          services:
+          - foo
+          - bar
+          versions:
+          - v1
+          - v2
+      - title: "TimeSeriesTable Widget"
+        timeSeriesTable:
+          columnSettings:
+          - column: column1
+            visible: true
+          - column: column2
+            visible: false
+          metricVisualization: NUMBER
+          dataSets:
+          - timeSeriesQuery:
+              timeSeriesFilter:
+                filter: "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
+                aggregation:
+                  alignmentPeriod: "60s"
+                  perSeriesAligner: "ALIGN_RATE"
+      - title: "IncidentList Widget"
+        incidentList:
+          monitoredResources:
+          - type: "gce_instance"
+            labels:
+              project_id: my-project
+              instance_id: "12345678901234"
+              zone: "us-central1-a"
+          policyRefs:
+          - name: monitoringalertpolicy-${uniqueId}
