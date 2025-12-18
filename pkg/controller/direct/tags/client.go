@@ -20,6 +20,7 @@ import (
 
 	api "cloud.google.com/go/resourcemanager/apiv3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 func newTagKeysClient(ctx context.Context, config *config.ControllerConfig) (*api.TagKeysClient, error) {
@@ -54,7 +55,23 @@ func newTagBindingsClient(ctx context.Context, config *config.ControllerConfig) 
 
 	client, err := api.NewTagBindingsRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building tags binidings client: %w", err)
+		return nil, fmt.Errorf("building tags bindings client: %w", err)
+	}
+	return client, err
+}
+
+func newLocationTagBindingsClient(ctx context.Context, config *config.ControllerConfig, location string) (*api.TagBindingsClient, error) {
+	opts, err := config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	endpoint := location + "-cloudresourcemanager.googleapis.com"
+
+	opts = append(opts, option.WithEndpoint(endpoint))
+
+	client, err := api.NewTagBindingsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building tags bindings client for location %q: %w", location, err)
 	}
 	return client, err
 }

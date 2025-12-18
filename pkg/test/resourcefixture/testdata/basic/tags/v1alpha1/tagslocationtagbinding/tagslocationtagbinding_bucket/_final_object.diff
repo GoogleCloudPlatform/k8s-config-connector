@@ -1,0 +1,4 @@
+6d5
+<     cnrm.cloud.google.com/state-into-spec: absent
+28a28
+>   externalRef: tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-${uniqueId}/tagValues/${tagValueID}
