@@ -91,6 +91,21 @@ networkConfig:
   - cidrRange: string
   enableOutboundPublicIp: boolean
   enablePublicIp: boolean
+observabilityConfig:
+  assistiveExperiencesEnabled: boolean
+  enabled: boolean
+  maxQueryStringLength: integer
+  preserveComments: boolean
+  queryPlansPerMinute: integer
+  recordApplicationTags: boolean
+  trackActiveQueries: boolean
+  trackClientAddress: boolean
+  trackWaitEvents: boolean
+queryInsightsConfig:
+  queryPlansPerMinute: integer
+  queryStringLength: integer
+  recordApplicationTags: boolean
+  recordClientAddress: boolean
 readPoolConfig:
   nodeCount: integer
 resourceID: string
@@ -354,6 +369,156 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
     </tr>
     <tr>
         <td>
+            <p><code>observabilityConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.assistiveExperiencesEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether assistive experiences are enabled for this AlloyDB instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.enabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Observability feature status for an instance. This flag is turned "off" by default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.maxQueryStringLength</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Query string length. The default value is 10k.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.preserveComments</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Preserve comments in query string for an instance. This flag is turned "off" by default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.queryPlansPerMinute</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of query execution plans captured by Insights per minute for all queries combined. The default value is 200. Any integer between 0 to 200 is considered valid.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.recordApplicationTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Record application tags for an instance. This flag is turned "off" by default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.trackActiveQueries</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Track actively running queries on the instance. If not set, this flag is "off" by default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.trackClientAddress</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Track client address for an instance. If not set, default value is "off".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>observabilityConfig.trackWaitEvents</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Track wait events during query execution for an instance. This flag is turned "on" by default but tracking is enabled only after observability enabled flag is also turned on.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queryInsightsConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queryInsightsConfig.queryPlansPerMinute</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of query execution plans captured by Insights per minute for all queries combined. The default value is 5. Any integer between 0 and 20 is considered valid.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queryInsightsConfig.queryStringLength</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Query string length. The default value is 1024. Any integer between 256 and 4500 is considered valid.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queryInsightsConfig.recordApplicationTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Record application tags for an instance. This flag is turned "on" by default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>queryInsightsConfig.recordClientAddress</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Record client address for an instance. Client address is PII information. This flag is turned "on" by default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>readPoolConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -401,6 +566,9 @@ externalRef: string
 ipAddress: string
 name: string
 observedGeneration: integer
+observedState:
+  observabilityConfig:
+    trackWaitEventTypes: boolean
 outboundPublicIpAddresses:
 - string
 publicIpAddress: string
@@ -499,6 +667,27 @@ updateTime: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Observability feature status for an instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityConfig.trackWaitEventTypes</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Output only. Track wait event types during query execution for an instance. This flag is turned "on" by default but tracking is enabled only after observability enabled flag is also turned on. This is read-only flag and only modifiable by internal API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
