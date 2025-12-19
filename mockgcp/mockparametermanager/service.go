@@ -45,7 +45,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"parametermanager.googleapis.com"}
+	return []string{"parametermanager.googleapis.com", "parametermanager.us-central1.rep.googleapis.com:443"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
