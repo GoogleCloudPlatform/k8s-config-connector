@@ -45,6 +45,9 @@ type AlloyDBInstanceSpec struct {
 	// Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].
 	AvailabilityType *string `json:"availabilityType,omitempty"`
 
+	// Configuration for Managed Connection Pool (MCP).
+	ConnectionPoolConfig *Instance_ConnectionPoolConfig `json:"connectionPoolConfig,omitempty"`
+
 	// Database flags. Set at instance level. * They are copied
 	// from primary instance on read instance creation. * Read instances
 	// can set new or override existing flags that are relevant for reads,
@@ -116,6 +119,17 @@ type Instance_InstanceNetworkConfig struct {
 	EnableOutboundPublicIP *bool `json:"enableOutboundPublicIp,omitempty"`
 }
 
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig
+type Instance_ConnectionPoolConfig struct {
+	// Optional. Whether to enable Managed Connection Pool (MCP).
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. Connection Pool flags, as a list of "key": "value" pairs.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.flags
+	Flags map[string]string `json:"flags,omitempty"`
+}
+
 // AlloyDBInstanceStatus defines the config connector machine state of AlloyDBInstance
 // +kcc:status:proto=google.cloud.alloydb.v1beta.Instance
 type AlloyDBInstanceStatus struct {
@@ -129,10 +143,8 @@ type AlloyDBInstanceStatus struct {
 	// A unique specifier for the AlloyDBInstance resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* NOTYET
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *AlloyDBInstanceObservedState `json:"observedState,omitempty"`
-	*/
 
 	// Time the Instance was created in UTC.
 	CreateTime *string `json:"createTime,omitempty"`
@@ -170,13 +182,21 @@ type AlloyDBInstanceStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-/* NOTYET
 // AlloyDBInstanceSpec defines the desired state of AlloyDBInstance
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance
 // AlloyDBInstanceObservedState is the state of the AlloyDBInstance resource as most recently observed in GCP.
 type AlloyDBInstanceObservedState struct {
+	// Output for Managed Connection Pool (MCP).
+	ConnectionPoolConfig *Instance_ConnectionPoolConfigObservedState `json:"connectionPoolConfig,omitempty"`
 }
-*/
+
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig
+type Instance_ConnectionPoolConfigObservedState struct {
+
+	// Output only. The number of running poolers per instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.pooler_count
+	PoolerCount *int32 `json:"pooler_count,omitempty"`
+}
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
