@@ -27,7 +27,15 @@ go run . generate-types \
     --resource LoggingLogMetric:LogMetric
 
 go run . generate-mapper \
-    --service google.logging.v2 \
+    --proto-package google.logging.v2 \
+    --proto-message google.api.LabelDescriptor \
+    --proto-message google.api.MetricDescriptor \
+    --proto-message google.api.MetricDescriptor.MetricDescriptorMetadata \
+    --proto-message google.api.Distribution \
+    --proto-message google.api.Distribution.BucketOptions \
+    --proto-message google.api.Distribution.BucketOptions.Explicit \
+    --proto-message google.api.Distribution.BucketOptions.Exponential \
+    --proto-message google.api.Distribution.BucketOptions.Linear \
     --api-version "logging.cnrm.cloud.google.com/v1beta1"
 
 cd ${REPO_ROOT}
