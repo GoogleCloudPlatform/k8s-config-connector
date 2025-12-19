@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"slices"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
@@ -33,7 +34,11 @@ import (
 type GenerateMapperOptions struct {
 	*options.GenerateOptions
 
-	ServiceNames []string
+	// IncludeProtoPackages lists proto packages to generate mappers for.
+	IncludeProtoPackages []string
+
+	// IncludeProtoMessages lists additional fully-qualified proto messages to generate mappers for.
+	IncludeProtoMessages []string
 
 	APIGoPackagePath      string
 	APIDirectory          string
@@ -54,7 +59,10 @@ func (o *GenerateMapperOptions) InitDefaults() error {
 }
 
 func (o *GenerateMapperOptions) BindFlags(cmd *cobra.Command) {
-	cmd.Flags().StringSliceVarP(&o.ServiceNames, "service", "s", o.ServiceNames, "the GCP service name(s); if multiple, must be comma-separated")
+	cmd.Flags().StringSliceVarP(&o.IncludeProtoPackages, "proto-package", "p", o.IncludeProtoPackages, "the proto packages to generate mappers for")
+	cmd.Flags().StringSliceVarP(&o.IncludeProtoPackages, "service", "s", o.IncludeProtoPackages, "the proto services to generate mappers for")
+	cmd.Flags().MarkDeprecated("service", "use --proto-package instead of --service to specify packages to generate mappers for")
+	cmd.Flags().StringSliceVarP(&o.IncludeProtoMessages, "proto-message", "m", o.IncludeProtoMessages, "an additional fully-qualified proto message to generate (used to add messages from additional packages)")
 
 	cmd.Flags().StringVar(&o.APIGoPackagePath, "api-go-package-path", o.APIGoPackagePath, "package path")
 	cmd.Flags().StringVar(&o.APIDirectory, "api-dir", o.APIDirectory, "base directory for reading APIs")
@@ -110,25 +118,33 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 
 	pathForMessage := func(msg protoreflect.MessageDescriptor) (string, bool) {
 		fullName := string(msg.FullName())
-		if strings.HasSuffix(fullName, "Request") {
-			return "", false
+
+		matched := false
+
+		if slices.Contains(o.IncludeProtoMessages, fullName) {
+			matched = true
 		}
-		if strings.HasSuffix(fullName, "Response") {
-			return "", false
-		}
-		if strings.HasSuffix(fullName, "OperationMetadata") {
-			return "", false
-		}
-		if strings.HasSuffix(fullName, "Metadata") {
-			return "", false
-		}
-		matchedService := false
-		for _, serviceName := range o.ServiceNames {
-			if strings.HasPrefix(fullName, serviceName+".") {
-				matchedService = true
+
+		if !matched {
+			if strings.HasSuffix(fullName, "Request") {
+				return "", false
+			}
+			if strings.HasSuffix(fullName, "Response") {
+				return "", false
+			}
+			if strings.HasSuffix(fullName, "OperationMetadata") {
+				return "", false
+			}
+			if strings.HasSuffix(fullName, "Metadata") {
+				return "", false
+			}
+			for _, protoPackage := range o.IncludeProtoPackages {
+				if strings.HasPrefix(fullName, protoPackage+".") {
+					matched = true
+				}
 			}
 		}
-		if !matchedService {
+		if !matched {
 			return "", false
 		}
 
@@ -138,7 +154,7 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	generatedFileAnnotation := &annotations.FileAnnotation{
 		Key: "+generated:mapper",
 		Attributes: map[string][]string{
-			"proto.service": o.ServiceNames,
+			"proto.service": o.IncludeProtoPackages,
 			"krm.group":     {gv.Group},
 			"krm.version":   {gv.Version},
 		},
@@ -147,7 +163,7 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory, generatedFileAnnotation, o.Multiversion)
 
 	// Ensure that our first proto package is always imported with the "pb" alias.
-	firstService, err := api.GetFileDescriptorByPackage(o.ServiceNames[0])
+	firstService, err := api.GetFileDescriptorByPackage(o.IncludeProtoPackages[0])
 	if err != nil {
 		return err
 	}
@@ -194,13 +210,13 @@ func (o *GenerateMapperOptions) loadAndApplyConfig() error {
 		return fmt.Errorf("mapper generation is disabled for this service in config file %s", o.ConfigFilePath)
 	}
 
-	o.ServiceNames = []string{config.Service}
+	o.IncludeProtoPackages = []string{config.Service}
 	o.APIVersion = config.APIVersion
 	return nil
 }
 
 func (o *GenerateMapperOptions) validate() error {
-	if len(o.ServiceNames) == 0 {
+	if len(o.IncludeProtoPackages) == 0 {
 		return fmt.Errorf("ServiceName is required")
 	}
 	if o.GenerateOptions.ProtoSourcePath == "" {
