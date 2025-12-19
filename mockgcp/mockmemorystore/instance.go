@@ -29,7 +29,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/memorystore/v1beta"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/memorystore/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
 )
 
@@ -88,7 +88,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 
 	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1beta",
+		ApiVersion: "v1",
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "create",
@@ -272,7 +272,7 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	}
 
 	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1beta",
+		ApiVersion: "v1",
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "update",
@@ -318,7 +318,7 @@ func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 	}
 
 	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1beta",
+		ApiVersion: "v1",
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "delete",
