@@ -94,6 +94,10 @@ type AlloyDBInstanceSpec struct {
 	// Read pool specific config. If the instance type is READ_POOL,
 	// this configuration must be provided.
 	ReadPoolConfig *Instance_ReadPoolConfig `json:"readPoolConfig,omitempty"`
+
+	QueryInsightsInstanceConfig *Instance_QueryInsightsInstanceConfig `json:"queryInsightsConfig,omitempty"`
+
+	ObservabilityInstanceConfig *Instance_ObservabilityInstanceConfig `json:"observabilityConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig
@@ -129,10 +133,8 @@ type AlloyDBInstanceStatus struct {
 	// A unique specifier for the AlloyDBInstance resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	/* NOTYET
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *AlloyDBInstanceObservedState `json:"observedState,omitempty"`
-	*/
 
 	// Time the Instance was created in UTC.
 	CreateTime *string `json:"createTime,omitempty"`
@@ -170,13 +172,14 @@ type AlloyDBInstanceStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-/* NOTYET
 // AlloyDBInstanceSpec defines the desired state of AlloyDBInstance
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance
 // AlloyDBInstanceObservedState is the state of the AlloyDBInstance resource as most recently observed in GCP.
 type AlloyDBInstanceObservedState struct {
+	// Observability feature status for an instance.
+	// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig
+	ObservabilityInstanceConfig *Instance_ObservabilityInstanceConfigObservedState `json:"observabilityConfig,omitempty"`
 }
-*/
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
