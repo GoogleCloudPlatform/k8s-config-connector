@@ -1,3 +1,4 @@
+[missing_field] crd=testresource.test.cnrm.cloud.google.com version=v1beta1: field ".spec.booRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.combiningFunction" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.conditions[].devicePolicy.allowedDeviceManagementLevels[]" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.conditions[].devicePolicy.allowedEncryptionStatuses[]" is not set in unstructured objects
