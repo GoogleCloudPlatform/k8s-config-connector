@@ -78,13 +78,16 @@ func (v *MapperGenerator) AddGoImportAlias(goPackage string, alias string) strin
 
 type OutputFunc func(msg protoreflect.MessageDescriptor) (goPath string, shouldWrite bool)
 
-func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string) error {
+func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string, packageFilter func(*gocode.Package) bool) error {
 	packages, err := gocode.LoadPackageTree(goPackage, basePath)
 	if err != nil {
 		return fmt.Errorf("inspecting go code: %w", err)
 	}
 
 	for _, pkg := range packages {
+		if !packageFilter(pkg) {
+			continue
+		}
 		// annotation := pkg.GetAnnotation("+kcc:proto")
 		// klog.Infof("got package %v for proto %v", pkg.SourceDir, pkg.Comments)
 		// if annotation != "" {

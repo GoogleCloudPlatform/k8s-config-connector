@@ -23,6 +23,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -39,6 +40,9 @@ type GenerateMapperOptions struct {
 
 	// IncludeProtoMessages lists additional fully-qualified proto messages to generate mappers for.
 	IncludeProtoMessages []string
+
+	// SourceDirs will only generate mappers for go types that appear in the specified source directories.
+	SourceDirs []string
 
 	APIGoPackagePath      string
 	APIDirectory          string
@@ -63,6 +67,8 @@ func (o *GenerateMapperOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringSliceVarP(&o.IncludeProtoPackages, "service", "s", o.IncludeProtoPackages, "the proto services to generate mappers for")
 	cmd.Flags().MarkDeprecated("service", "use --proto-package instead of --service to specify packages to generate mappers for")
 	cmd.Flags().StringSliceVarP(&o.IncludeProtoMessages, "proto-message", "m", o.IncludeProtoMessages, "an additional fully-qualified proto message to generate (used to add messages from additional packages)")
+
+	cmd.Flags().StringSliceVar(&o.SourceDirs, "source-dir", o.SourceDirs, "the go source directories to generate mappers for")
 
 	cmd.Flags().StringVar(&o.APIGoPackagePath, "api-go-package-path", o.APIGoPackagePath, "package path")
 	cmd.Flags().StringVar(&o.APIDirectory, "api-dir", o.APIDirectory, "base directory for reading APIs")
@@ -169,7 +175,20 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	}
 	mapperGenerator.AddGoImportAlias(codegen.GoPackageForProto(firstService[0]), "pb")
 
-	if err := mapperGenerator.VisitGoCode(o.APIGoPackagePath, o.APIDirectory); err != nil {
+	filterGoPackages := func(pkg *gocode.Package) bool {
+		if len(o.SourceDirs) == 0 {
+			return true
+		}
+
+		for _, dir := range o.SourceDirs {
+			if strings.HasPrefix(pkg.SourceDir, dir) {
+				return true
+			}
+		}
+		return false
+	}
+
+	if err := mapperGenerator.VisitGoCode(o.APIGoPackagePath, o.APIDirectory, filterGoPackages); err != nil {
 		return err
 	}
 
