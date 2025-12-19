@@ -48,12 +48,11 @@ func ParseComputeSubnetworkExternal(external string) (*SubnetworkIdentity, error
 	}
 	trimmedExternal := common.FixStaleComputeExternalFormat(external)
 	tokens := strings.Split(trimmedExternal, "/")
-	p, err := parent.ParseComputeParent(strings.Join(tokens[:len(tokens)-2], "/"))
-	if err != nil {
-		return nil, err
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "subnetworks" {
+		return &SubnetworkIdentity{
+			Parent:     &parent.ComputeParent{ProjectID: tokens[1], Location: tokens[3]},
+			ResourceID: tokens[5],
+		}, nil
 	}
-	if tokens[len(tokens)-2] == "subnetworks" {
-		return &SubnetworkIdentity{Parent: p, ResourceID: tokens[len(tokens)-1]}, nil
-	}
-	return nil, fmt.Errorf("format of ComputeSubnetwork external=%q was not known (use https://www.googleapis.com/compute/{{version}}/%s/subnetworks/{{subnetworkId}} or %s/nsubetworks/{{subnetworkId}})", external, p, p)
+	return nil, fmt.Errorf("format of ComputeSubnetwork external=%q was not known (use https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/regions/{{region}}/subnetworks/{{subnetworkId}} or projects/{{projectId}}/regions/{{region}}/subnetworks/{{subnetworkId}})", external)
 }
