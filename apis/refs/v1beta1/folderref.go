@@ -19,13 +19,13 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
 // FolderRef represents the Folder that this resource belongs to.
@@ -46,7 +46,7 @@ type FolderRef struct {
 }
 
 // AsFolderRef converts a generic ResourceRef into a FolderRef.
-func AsFolderRef(in *v1alpha1.ResourceRef) *FolderRef {
+func AsFolderRef(in *deprecatedrefs.ResourceRef) *FolderRef {
 	if in == nil {
 		return nil
 	}
