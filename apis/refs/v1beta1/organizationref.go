@@ -21,8 +21,6 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
 // OrganizationRef represents the Organization that this resource belongs to.
@@ -30,16 +28,6 @@ type OrganizationRef struct {
 	// The 'name' field of an organization, when not managed by Config Connector.
 	// +required
 	External string `json:"external,omitempty"`
-}
-
-// AsOrganizationRef converts a generic ResourceRef into a OrganizationRef.
-func AsOrganizationRef(in *deprecatedrefs.ResourceRef) *OrganizationRef {
-	if in == nil {
-		return nil
-	}
-	return &OrganizationRef{
-		External: in.External,
-	}
 }
 
 type Organization struct {
