@@ -21,7 +21,6 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 	api "google.golang.org/api/logging/v2"
@@ -76,7 +75,7 @@ func convertAPItoKRM_LoggingLogMetric(projectID string, in *api.LogMetric) (*uns
 	lm.Spec.BucketOptions = convertAPItoKRM_BucketOptions(in.BucketOptions)
 	lm.Spec.ValueExtractor = &in.ValueExtractor
 	if in.BucketName != "" {
-		lm.Spec.LoggingLogBucketRef = &v1alpha1.ResourceRef{
+		lm.Spec.LoggingLogBucketRef = &krm.LoggingLogBucketRef{
 			External: in.BucketName,
 		}
 	}
@@ -312,7 +311,7 @@ func convertKCCtoAPI(kccObjSpec *krm.LoggingLogMetricSpec) *api.LogMetric {
 	}
 	logMetric.ValueExtractor = direct.ValueOf(kccObjSpec.ValueExtractor)
 	if kccObjSpec.LoggingLogBucketRef != nil {
-		// assumes kccObjSpec.LoggingLogBucketRef.External is normalized by LogBucketRef_ConvertToExternal
+		// assumes kccObjSpec.LoggingLogBucketRef.External is normalized
 		logMetric.BucketName = kccObjSpec.LoggingLogBucketRef.External
 	}
 
