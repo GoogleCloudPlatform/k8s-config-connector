@@ -79,8 +79,8 @@ cloud.google.com/go/essentialcontacts v1.7.6 h1:ysHZ4gr4plW1CL1Ur/AucUUfh20hDjSF
 cloud.google.com/go/essentialcontacts v1.7.6/go.mod h1:/Ycn2egr4+XfmAfxpLYsJeJlVf9MVnq9V7OMQr9R4lA=
 cloud.google.com/go/eventarc v1.15.5 h1:bZW7ZMM+XXNErg6rOZcgxUzAgz4vpReRDP3ZiGf7/sI=
 cloud.google.com/go/eventarc v1.15.5/go.mod h1:vDCqGqyY7SRiickhEGt1Zhuj81Ya4F/NtwwL3OZNskg=
-cloud.google.com/go/firestore v1.19.0 h1:E3FiRsWfZKwZ6W+Lsp1YqTzZ9H6jP+QsKW40KR21C8I=
-cloud.google.com/go/firestore v1.19.0/go.mod h1:jqu4yKdBmDN5srneWzx3HlKrHFWFdlkgjgQ6BKIOFQo=
+cloud.google.com/go/firestore v1.20.0 h1:JLlT12QP0fM2SJirKVyu2spBCO8leElaW0OOtPm6HEo=
+cloud.google.com/go/firestore v1.20.0/go.mod h1:jqu4yKdBmDN5srneWzx3HlKrHFWFdlkgjgQ6BKIOFQo=
 cloud.google.com/go/gkebackup v1.8.0 h1:eBqOt61yEChvj7I/GDPBbdCCRdUPudD1qrQYfYWV3Ok=
 cloud.google.com/go/gkebackup v1.8.0/go.mod h1:FjsjNldDilC9MWKEHExnK3kKJyTDaSdO1vF0QeWSOPU=
 cloud.google.com/go/gkemulticloud v1.5.3 h1:334aZmOzIt3LVBpguCof8IHaLaftcZlx+L0TGBukYkY=

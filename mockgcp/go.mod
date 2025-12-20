@@ -22,7 +22,7 @@ require (
 	cloud.google.com/go/dataproc/v2 v2.11.2
 	cloud.google.com/go/discoveryengine v1.15.0
 	cloud.google.com/go/edgecontainer v1.4.3
-	cloud.google.com/go/firestore v1.19.0
+	cloud.google.com/go/firestore v1.20.0
 	cloud.google.com/go/iam v1.5.2
 	cloud.google.com/go/iap v1.11.2
 	cloud.google.com/go/logging v1.13.0
