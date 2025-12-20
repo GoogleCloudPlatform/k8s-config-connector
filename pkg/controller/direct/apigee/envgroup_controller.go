@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	api "google.golang.org/api/apigee/v1"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -166,9 +167,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	// Sorts the Hostname lists so that the comparison is deterministic
 	if !reflect.DeepEqual(asSortedCopy(req.Hostnames), asSortedCopy(a.actual.Hostnames)) {
-		log.V(2).Info("change detected: hostnames")
+		report.AddField("hostnames", a.actual.Hostnames, req.Hostnames)
 		updateMask.Paths = append(updateMask.Paths, "hostnames")
 	}
 
@@ -181,6 +184,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	clusterName := a.id.String()
 	op, err := a.envgroupsClient.Patch(clusterName, req).UpdateMask(strings.Join(updateMask.Paths, ",")).Context(ctx).Do()
