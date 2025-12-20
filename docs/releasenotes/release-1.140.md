@@ -5,7 +5,7 @@
 ## New Beta Resources (Direct Reconciler):
 
 *   `CertificateManagerCertificateIssuanceConfig`
-    *   Manage [Certificate Manager certificate issuance configurations](https://cloud.google.com/certificate-manager/docs/reference/public-ca/rest/v1/projects.locations.certificateIssuanceConfigs) for automating certificate issuance.  
+    *   Manage [Certificate Manager certificate issuance configurations](https://cloud.google.com/certificate-manager/docs/reference/public-ca/rest/v1/projects.locations.certificateIssuanceConfigs) for automating certificate issuance.
 
 
 ## New Alpha Resources (Direct Reconciler):
