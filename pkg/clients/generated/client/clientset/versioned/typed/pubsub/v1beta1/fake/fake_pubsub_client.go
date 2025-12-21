@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,6 +33,10 @@ type FakePubsubV1beta1 struct {
 
 func (c *FakePubsubV1beta1) PubSubSchemas(namespace string) v1beta1.PubSubSchemaInterface {
 	return &FakePubSubSchemas{c, namespace}
+}
+
+func (c *FakePubsubV1beta1) PubSubSnapshots(namespace string) v1beta1.PubSubSnapshotInterface {
+	return &FakePubSubSnapshots{c, namespace}
 }
 
 func (c *FakePubsubV1beta1) PubSubSubscriptions(namespace string) v1beta1.PubSubSubscriptionInterface {

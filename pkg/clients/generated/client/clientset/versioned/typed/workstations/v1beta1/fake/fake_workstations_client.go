@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,8 +31,16 @@ type FakeWorkstationsV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeWorkstationsV1beta1) Workstations(namespace string) v1beta1.WorkstationInterface {
+	return &FakeWorkstations{c, namespace}
+}
+
 func (c *FakeWorkstationsV1beta1) WorkstationClusters(namespace string) v1beta1.WorkstationClusterInterface {
 	return &FakeWorkstationClusters{c, namespace}
+}
+
+func (c *FakeWorkstationsV1beta1) WorkstationConfigs(namespace string) v1beta1.WorkstationConfigInterface {
+	return &FakeWorkstationConfigs{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

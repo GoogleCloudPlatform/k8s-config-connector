@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -382,9 +382,7 @@ type ComputeForwardingRuleStatus struct {
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 
-	/* The internal fully qualified service name for this Forwarding Rule.
-
-	This field is only used for INTERNAL load balancing. */
+	/* The internal fully qualified service name for this Forwarding Rule. This field is only used for INTERNAL load balancing. */
 	// +optional
 	ServiceName *string `json:"serviceName,omitempty"`
 }

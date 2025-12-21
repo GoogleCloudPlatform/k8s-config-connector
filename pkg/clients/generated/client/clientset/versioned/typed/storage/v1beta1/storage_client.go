@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import (
 
 type StorageV1beta1Interface interface {
 	RESTClient() rest.Interface
+	StorageAnywhereCachesGetter
 	StorageBucketsGetter
 	StorageBucketAccessControlsGetter
 	StorageDefaultObjectAccessControlsGetter
@@ -40,6 +41,10 @@ type StorageV1beta1Interface interface {
 // StorageV1beta1Client is used to interact with features provided by the storage.cnrm.cloud.google.com group.
 type StorageV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *StorageV1beta1Client) StorageAnywhereCaches(namespace string) StorageAnywhereCacheInterface {
+	return newStorageAnywhereCaches(c, namespace)
 }
 
 func (c *StorageV1beta1Client) StorageBuckets(namespace string) StorageBucketInterface {

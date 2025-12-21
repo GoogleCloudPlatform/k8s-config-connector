@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -115,7 +115,7 @@ type BucketCors struct {
 }
 
 type BucketCustomPlacementConfig struct {
-	/* Immutable. The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions. Note: If any of the data_locations changes, it will recreate the bucket. */
+	/* The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions. */
 	DataLocations []string `json:"dataLocations"`
 }
 
@@ -200,7 +200,7 @@ type StorageBucketSpec struct {
 	// +optional
 	LifecycleRule []BucketLifecycleRule `json:"lifecycleRule,omitempty"`
 
-	/* Immutable. The Google Cloud Storage location. */
+	/* The Google Cloud Storage location. */
 	// +optional
 	Location *string `json:"location,omitempty"`
 

@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import (
 
 type SpannerV1beta1Interface interface {
 	RESTClient() rest.Interface
+	SpannerBackupSchedulesGetter
 	SpannerDatabasesGetter
 	SpannerInstancesGetter
 }
@@ -38,6 +39,10 @@ type SpannerV1beta1Interface interface {
 // SpannerV1beta1Client is used to interact with features provided by the spanner.cnrm.cloud.google.com group.
 type SpannerV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *SpannerV1beta1Client) SpannerBackupSchedules(namespace string) SpannerBackupScheduleInterface {
+	return newSpannerBackupSchedules(c, namespace)
 }
 
 func (c *SpannerV1beta1Client) SpannerDatabases(namespace string) SpannerDatabaseInterface {

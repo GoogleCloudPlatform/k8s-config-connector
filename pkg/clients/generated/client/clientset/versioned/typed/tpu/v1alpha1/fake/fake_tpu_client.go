@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,6 +33,10 @@ type FakeTpuV1alpha1 struct {
 
 func (c *FakeTpuV1alpha1) TPUNodes(namespace string) v1alpha1.TPUNodeInterface {
 	return &FakeTPUNodes{c, namespace}
+}
+
+func (c *FakeTpuV1alpha1) TPUVirtualMachines(namespace string) v1alpha1.TPUVirtualMachineInterface {
+	return &FakeTPUVirtualMachines{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

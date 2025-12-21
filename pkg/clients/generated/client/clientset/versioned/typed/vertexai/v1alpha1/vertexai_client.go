@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ type VertexaiV1alpha1Interface interface {
 	VertexAIFeaturestoreEntityTypesGetter
 	VertexAIFeaturestoreEntityTypeFeaturesGetter
 	VertexAIIndexEndpointsGetter
-	VertexAIMetadataStoresGetter
 	VertexAITensorboardsGetter
 }
 
@@ -58,10 +57,6 @@ func (c *VertexaiV1alpha1Client) VertexAIFeaturestoreEntityTypeFeatures(namespac
 
 func (c *VertexaiV1alpha1Client) VertexAIIndexEndpoints(namespace string) VertexAIIndexEndpointInterface {
 	return newVertexAIIndexEndpoints(c, namespace)
-}
-
-func (c *VertexaiV1alpha1Client) VertexAIMetadataStores(namespace string) VertexAIMetadataStoreInterface {
-	return newVertexAIMetadataStores(c, namespace)
 }
 
 func (c *VertexaiV1alpha1Client) VertexAITensorboards(namespace string) VertexAITensorboardInterface {

@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,6 +60,10 @@ type NodepoolAdditionalPodNetworkConfigs struct {
 }
 
 type NodepoolAdvancedMachineFeatures struct {
+	/* Immutable. Whether or not to enable nested virtualization (defaults to false). */
+	// +optional
+	EnableNestedVirtualization *bool `json:"enableNestedVirtualization,omitempty"`
+
 	/* Immutable. The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed. */
 	ThreadsPerCore int64 `json:"threadsPerCore"`
 }

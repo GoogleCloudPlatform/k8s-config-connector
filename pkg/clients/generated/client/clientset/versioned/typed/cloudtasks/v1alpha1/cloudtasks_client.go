@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import (
 
 type CloudtasksV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	CloudTasksQueuesGetter
+	TasksQueuesGetter
 }
 
 // CloudtasksV1alpha1Client is used to interact with features provided by the cloudtasks.cnrm.cloud.google.com group.
@@ -39,8 +39,8 @@ type CloudtasksV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *CloudtasksV1alpha1Client) CloudTasksQueues(namespace string) CloudTasksQueueInterface {
-	return newCloudTasksQueues(c, namespace)
+func (c *CloudtasksV1alpha1Client) TasksQueues(namespace string) TasksQueueInterface {
+	return newTasksQueues(c, namespace)
 }
 
 // NewForConfig creates a new CloudtasksV1alpha1Client for the given config.

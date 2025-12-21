@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,8 +31,16 @@ type FakeStorageV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeStorageV1alpha1) StorageFolders(namespace string) v1alpha1.StorageFolderInterface {
+	return &FakeStorageFolders{c, namespace}
+}
+
 func (c *FakeStorageV1alpha1) StorageHMACKeys(namespace string) v1alpha1.StorageHMACKeyInterface {
 	return &FakeStorageHMACKeys{c, namespace}
+}
+
+func (c *FakeStorageV1alpha1) StorageManagedFolders(namespace string) v1alpha1.StorageManagedFolderInterface {
+	return &FakeStorageManagedFolders{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

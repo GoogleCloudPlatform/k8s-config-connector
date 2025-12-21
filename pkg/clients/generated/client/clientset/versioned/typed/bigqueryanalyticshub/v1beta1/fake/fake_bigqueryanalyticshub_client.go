@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,6 +33,10 @@ type FakeBigqueryanalyticshubV1beta1 struct {
 
 func (c *FakeBigqueryanalyticshubV1beta1) BigQueryAnalyticsHubDataExchanges(namespace string) v1beta1.BigQueryAnalyticsHubDataExchangeInterface {
 	return &FakeBigQueryAnalyticsHubDataExchanges{c, namespace}
+}
+
+func (c *FakeBigqueryanalyticshubV1beta1) BigQueryAnalyticsHubListings(namespace string) v1beta1.BigQueryAnalyticsHubListingInterface {
+	return &FakeBigQueryAnalyticsHubListings{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

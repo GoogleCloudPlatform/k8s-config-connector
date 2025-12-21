@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,6 +33,14 @@ type FakeDiscoveryengineV1alpha1 struct {
 
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineDataStores(namespace string) v1alpha1.DiscoveryEngineDataStoreInterface {
 	return &FakeDiscoveryEngineDataStores{c, namespace}
+}
+
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineDataStoreTargetSites(namespace string) v1alpha1.DiscoveryEngineDataStoreTargetSiteInterface {
+	return &FakeDiscoveryEngineDataStoreTargetSites{c, namespace}
+}
+
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineEngines(namespace string) v1alpha1.DiscoveryEngineEngineInterface {
+	return &FakeDiscoveryEngineEngines{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
