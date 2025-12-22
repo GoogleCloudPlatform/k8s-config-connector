@@ -22,6 +22,9 @@ import (
 	"sync/atomic"
 	"time"
 
+	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	k8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/types"
@@ -29,6 +32,7 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 // streamingInformer is an informer that streams events from the Kubernetes API server.
@@ -40,8 +44,9 @@ type streamingInformer struct {
 	mutex           sync.Mutex
 
 	eventHandlerRegistrations []*eventHandlerRegistration
-
-	resyncPeriod time.Duration
+	reconcilerOverride        map[string]string
+	overrideDone              bool
+	resyncPeriod              time.Duration
 
 	hasSynced atomic.Bool
 	objects   objects
@@ -84,11 +89,12 @@ func (o *objects) OnWatchAdd(obj Object, eventHandlerRegistrations []*eventHandl
 var _ cache.Informer = &streamingInformer{}
 
 // newStreamingInformer creates a new streaming informer.
-func newStreamingInformer(streamingClient *StreamingClient, typeInfo *typeInfo, namespace string) (*streamingInformer, error) {
+func newStreamingInformer(streamingClient *StreamingClient, typeInfo *typeInfo, namespace string, reconcilerOverride map[string]string) (*streamingInformer, error) {
 	s := &streamingInformer{
-		streamingClient: streamingClient,
-		typeInfo:        typeInfo,
-		namespace:       namespace,
+		streamingClient:    streamingClient,
+		typeInfo:           typeInfo,
+		namespace:          namespace,
+		reconcilerOverride: reconcilerOverride,
 	}
 	s.objects = objects{
 		store: make(map[types.NamespacedName]Object),
@@ -296,6 +302,7 @@ func (i *eventHandlerRegistration) HasSynced() bool {
 // obj must be a struct pointer so that obj can be updated with the response
 // returned by the Server.
 func (i *streamingInformer) Get(ctx context.Context, key client.ObjectKey, obj client.Object, opts ...client.GetOption) error {
+	logger := log.FromContext(ctx)
 	if len(opts) != 0 {
 		return fmt.Errorf("options not implemented: %v", opts)
 	}
@@ -322,6 +329,31 @@ func (i *streamingInformer) Get(ctx context.Context, key client.ObjectKey, obj c
 	}
 	if err := json.Unmarshal(b, obj); err != nil {
 		return fmt.Errorf("error copying %T: %w", obj, err)
+	}
+
+	// TODO: Move this to List
+	if len(i.reconcilerOverride) == 0 || i.overrideDone {
+		return nil
+	}
+
+	if i.typeInfo.gvk.Group == "core.cnrm.cloud.google.com" && i.typeInfo.gvk.Kind == "ConfigConnectorContext" {
+		logger.Info("override reconciler type", "obj", obj)
+		if ccc, ok := obj.(*corev1beta1.ConfigConnectorContext); ok {
+			if ccc.Spec.Experiments == nil {
+				ccc.Spec.Experiments = &corev1beta1.Experiments{}
+			}
+			if ccc.Spec.Experiments.ControllerOverrides == nil {
+				ccc.Spec.Experiments.ControllerOverrides = make(map[string]k8s.ReconcilerType)
+			}
+			for gk, rt := range i.reconcilerOverride {
+				ccc.Spec.Experiments.ControllerOverrides[gk] = k8s.ReconcilerType(rt)
+			}
+			logger.Info("finish override reconciler type", "obj", obj)
+			i.overrideDone = true
+			i.objects.store[key] = ccc
+		} else {
+			return fmt.Errorf("failed to override reconciler type CCC obj: %v", obj)
+		}
 	}
 	return nil
 }
