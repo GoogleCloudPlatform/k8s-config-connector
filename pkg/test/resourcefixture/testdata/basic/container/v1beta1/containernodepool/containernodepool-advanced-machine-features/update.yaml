@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,39 +13,23 @@
 # limitations under the License.
 
 apiVersion: container.cnrm.cloud.google.com/v1beta1
-kind: ContainerCluster
+kind: ContainerNodePool
 metadata:
   labels:
-    label-one: "value-two"
-  name: cluster-sample-${uniqueId}
+    label-one: "value-one"
+  name: nodepool-sample-${uniqueId}
 spec:
   location: us-central1-a
-  initialNodeCount: 1
-  loggingService: none
-  monitoringService: none
-  networkRef:
-    name: computenetwork-${uniqueId}
-  subnetworkRef:
-    name: computesubnetwork-${uniqueId}
-  ipAllocationPolicy:
-    clusterIpv4CidrBlock: /20
-    servicesIpv4CidrBlock: /20
-  notificationConfig:
-    pubsub:
-      enabled: true
-      topicRef:
-        name: pubsubtopic-${uniqueId}
-  loggingConfig:
-    enableComponents:
-    - "SYSTEM_COMPONENTS"
-    - "WORKLOADS"
-  monitoringConfig:
-    enableComponents:
-    - "SYSTEM_COMPONENTS"
-    - "APISERVER"
-    managedPrometheus:
-      enabled: true
+  autoscaling:
+    minNodeCount: 1
+    maxNodeCount: 5
   nodeConfig:
-    machineType: n4-standard-2
     advancedMachineFeatures:
       enableNestedVirtualization: true
+      threadsPerCore: 1
+    taint:
+    - effect: NO_SCHEDULE
+      key: newKey
+      value: newValue
+  clusterRef:
+    name: cluster-sample-${uniqueId}

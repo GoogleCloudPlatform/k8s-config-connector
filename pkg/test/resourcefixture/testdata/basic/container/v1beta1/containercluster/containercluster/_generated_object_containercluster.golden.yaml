@@ -50,10 +50,13 @@ spec:
   networkRef:
     name: ${networkID}
   nodeConfig:
+    advancedMachineFeatures:
+      enableNestedVirtualization: true
     linuxNodeConfig:
       cgroupMode: CGROUP_MODE_UNSPECIFIED
       sysctls:
         net.core.somaxconn: "4096"
+    machineType: n4-standard-2
   notificationConfig:
     pubsub:
       enabled: true
