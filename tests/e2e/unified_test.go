@@ -224,7 +224,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				}
 			}
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
-			t.Run(fixture.Name, func(t *testing.T) {
+			testName := fixture.Name
+			if os.Getenv("USE_FULL_TEST_NAMES") == "true" {
+				testName = "pkg/test/resourcefixture/testdata/" + fixture.TestKey
+			}
+			t.Run(testName, func(t *testing.T) {
 				if skipTestReason != "" {
 					t.Skip(skipTestReason)
 				}
