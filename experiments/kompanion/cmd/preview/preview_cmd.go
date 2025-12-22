@@ -17,6 +17,7 @@ package preview
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/preview"
@@ -53,6 +54,7 @@ type PreviewOptions struct {
 	gcpQPS           float64
 	gcpBurst         int
 	namespace        string
+	reconcilerTypeOverride []string
 }
 
 func BuildPreviewCmd() *cobra.Command {
@@ -74,6 +76,7 @@ func BuildPreviewCmd() *cobra.Command {
 	cmd.Flags().Float64VarP(&opts.gcpQPS, "gcpQPS", "q", 5.0, "Maximum qps for GCP API requests, per service. Default to 5.0. Set gcpQPS to 0 to disable rate limiting.")
 	cmd.Flags().IntVarP(&opts.gcpBurst, "gcpBurst", "b", 5, "Maximum burst for GCP API requests, per service. Default to 5. Set gcpQPS to 0 to disable rate limiting.")
 	cmd.Flags().StringVarP(&opts.namespace, "namespace", "n", "", "Namespace to preview. If not specified, all namespaces will be previewed.")
+	cmd.Flags().StringArrayVarP(&opts.reconcilerTypeOverride, "reconciler-type-override", "r", []string{}, "Reconciler type to override in form Kind.Group:ReconcilerType.")
 	return cmd
 }
 
@@ -103,6 +106,10 @@ func getGCPAuthorization(ctx context.Context, opts *PreviewOptions) (oauth2.Toke
 func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 	log.SetLogger(klogr.New())
 	klog.Info("Starting preview tool.")
+	override, err := generateReconcilerOverride(opts.reconcilerTypeOverride)
+	if err != nil {
+		return fmt.Errorf("failed to generate reconciler config: %w", err)
+	}
 	upstreamRESTConfig, err := getRESTConfig(ctx, opts)
 	if err != nil {
 		return fmt.Errorf("error building kubeconfig: %w", err)
@@ -124,6 +131,7 @@ func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 		UpstreamGCPQPS:           opts.gcpQPS,
 		UpstreamGCPBurst:         opts.gcpBurst,
 		Namespace:                opts.namespace,
+		ReconcilerOverride: 				override,
 	})
 	if err != nil {
 		return fmt.Errorf("building preview instance: %v", err)
@@ -166,4 +174,16 @@ func printCapturedObjects(recorder *preview.Recorder, prefix string, full bool) 
 
 	}
 	return nil
+}
+
+func generateReconcilerOverride(overrides []string) (map[string]string, error) {
+	overrideMap := make(map[string]string)
+	for _, override := range overrides {
+		parts := strings.Split(override, ":")
+		if len(parts) != 2 {
+			return nil, fmt.Errorf("invalid override format: %s (expected Kind.Group:ReconcilerType)", override)
+		}
+		overrideMap[parts[0]] = parts[1]
+	}
+	return overrideMap, nil
 }
