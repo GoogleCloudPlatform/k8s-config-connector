@@ -29,14 +29,14 @@ added_lines=$(git diff --unified=0 $BASE_COMMIT..$COMMIT_HEAD "${MISSING_FIELDS_
 added_reference_lines=$(echo "${added_lines}" | grep "${MISSING_REFERENCE_STRING}" || true)
 
 if [[ -n "${added_reference_lines}" ]]; then
-  echo "ERROR: Additions to ${MISSING_FIELDS_FILE} are not allowed."
-  echo "The following lines were added:"
-  echo "${added_reference_lines}."
+  echo "ERROR: Untested reference fields detected."
+  echo "The following lines were added in ${MISSING_FIELDS_FILE}:"
+  echo "${added_reference_lines}"
   echo "Please ensure the reference field(s) are tested."
   exit 1
 elif [[ -n "${added_lines}" ]]; then
-  echo "WARNING: New lines were added to ${MISSING_FIELDS_FILE}."
-  echo "The following lines were added:"
+  echo "WARNING: Untested fields detected."
+  echo "The following lines were added in ${MISSING_FIELDS_FILE}::"
   echo "${added_lines}"
   echo "Please ensure they are intentional and covered by tests in the future."
   exit 0
