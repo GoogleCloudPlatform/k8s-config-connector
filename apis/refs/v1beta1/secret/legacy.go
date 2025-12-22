@@ -24,7 +24,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
 
 // +kubebuilder:object:generate:=true
@@ -38,22 +38,71 @@ type Legacy struct {
 	ValueFrom *LegacyValueFrom `json:"valueFrom,omitempty"`
 }
 
+// NormalizeSecret normalizes the Legacy secret reference, populating the Value if ValueFrom is set.
+// ReadSecretValue is normally safer to use, as it does not leave the secret value in memory,
+// but this is easier to use with our mapping framework.
+func (r *Legacy) NormalizeSecret(ctx context.Context, fieldPath string, namespace string, reader client.Reader) error {
+	value, err := r.ReadSecretValue(ctx, fieldPath, namespace, reader)
+	if err != nil {
+		return err
+	}
+	r.Value = value
+	r.ValueFrom = nil
+	return nil
+}
+
+// ReadSecretValue returns the secret value, resolving the value if needed.
+func (r *Legacy) ReadSecretValue(ctx context.Context, fieldPath string, namespace string, reader client.Reader) (*string, error) {
+	value := r.Value
+	valueFrom := r.ValueFrom
+	if value != nil && valueFrom != nil {
+		return nil, fmt.Errorf("only one of '%s.value' and '%s.valueFrom' "+
+			"should be configured: both are configured", fieldPath, fieldPath)
+	}
+	if value != nil {
+		return value, nil
+	}
+	if valueFrom != nil {
+		if valueFrom.SecretKeyRef == nil {
+			return nil, fmt.Errorf("'%s.valueFrom.secretRef' "+
+				"should be configured", fieldPath)
+		}
+		secretValue, err := valueFrom.SecretKeyRef.ReadSecretValue(ctx, reader, namespace)
+		if err != nil {
+			return nil, err
+		}
+		value := string(secretValue)
+		return &value, nil
+	}
+	return nil, fmt.Errorf("at least one of '%s.value' and '%s.valueFrom' "+
+		"should be configured: neither is configured", fieldPath, fieldPath)
+}
+
 // +kubebuilder:object:generate:=true
 type LegacyValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *deprecatedrefs.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *LegacyValueFromSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
-func NormalizedLegacySecret(ctx context.Context, r *deprecatedrefs.SecretKeyRef, reader client.Reader, otherNamespace string) ([]byte, error) {
+// +kubebuilder:object:generate:=true
+type LegacyValueFromSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
+func (r *LegacyValueFromSecretKeyRef) ReadSecretValue(ctx context.Context, reader client.Reader, defaultNamespace string) ([]byte, error) {
 	if r == nil {
-		return nil, nil
+		return nil, fmt.Errorf("SecretKeyRef is nil")
 	}
 	if r.Name == "" {
 		return nil, fmt.Errorf("Secret `name` is required ")
 	}
 	nn := types.NamespacedName{
-		Namespace: otherNamespace,
+		Namespace: defaultNamespace,
 		Name:      r.Name,
 	}
 
@@ -65,7 +114,7 @@ func NormalizedLegacySecret(ctx context.Context, r *deprecatedrefs.SecretKeyRef,
 	}
 	if err := reader.Get(ctx, nn, secret); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced Secret %v not found", nn)
+			return nil, k8s.NewSecretNotFoundError(nn)
 		}
 		return nil, fmt.Errorf("error reading referenced Secret %v: %w", nn, err)
 	}
