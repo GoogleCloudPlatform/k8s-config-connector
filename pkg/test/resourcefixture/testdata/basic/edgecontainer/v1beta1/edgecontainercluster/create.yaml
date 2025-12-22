@@ -28,7 +28,7 @@ spec:
     servicesIpv4CidrBlocks: ["10.1.0.0/16"]
   fleet:
     projectRef:
-      name: project-${uniqueId}
+      external: ${projectId}
   authorization:
     adminUsers:
       usernameRef:

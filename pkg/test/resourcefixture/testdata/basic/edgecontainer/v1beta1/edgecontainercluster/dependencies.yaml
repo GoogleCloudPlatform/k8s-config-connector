@@ -29,12 +29,3 @@ spec:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
     external: projects/${projectId}
----
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
-metadata:
-  name: project-${uniqueId}
-spec:
-  organizationRef:
-    external: ${TEST_ORG_ID}
-  name: ${projectId}
