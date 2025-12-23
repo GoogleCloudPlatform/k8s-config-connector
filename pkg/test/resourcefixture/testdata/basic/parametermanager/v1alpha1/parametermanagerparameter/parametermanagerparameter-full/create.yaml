@@ -3,8 +3,9 @@ kind: ParameterManagerParameter
 metadata:
   labels:
     label-one: value-one
-  name: parametermanagerparameter-${uniqueId}
+  name: parametermanagerparameter-full-${uniqueId}
 spec:
+  resourceID: parametermanagerparameter-full-${uniqueId}
   projectRef:
     external: projects/${projectId}
   location: global
