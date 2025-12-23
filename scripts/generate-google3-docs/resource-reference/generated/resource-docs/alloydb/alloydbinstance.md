@@ -857,7 +857,6 @@ spec:
     name: alloydbinstance-dep-read
   instanceTypeRef:
     external: READ_POOL
-  availabilityType: REGIONAL
   databaseFlags:
     google_columnar_engine.enabled: "on"
   machineConfig:
