@@ -4,8 +4,9 @@ metadata:
   labels:
     label-one: value-two
     label-two: value-three
-  name: parametermanagerparameter-${uniqueId}
+  name: parametermanagerparameter-full-${uniqueId}
 spec:
+  resourceID: parametermanagerparameter-full-${uniqueId}
   projectRef:
     external: projects/${projectId}
   location: global
