@@ -148,7 +148,7 @@ type Adapter struct {
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting DataExchange", "name", a.id.FullyQualifiedName())
 
 	req := &bigqueryanalyticshubpb.GetDataExchangeRequest{Name: a.id.FullyQualifiedName()}
@@ -167,7 +167,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating DataExchange", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 
@@ -201,7 +201,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating DataExchange", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 
@@ -279,7 +279,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting DataExchange", "name", a.id.FullyQualifiedName())
 
 	req := &bigqueryanalyticshubpb.DeleteDataExchangeRequest{Name: a.id.FullyQualifiedName()}

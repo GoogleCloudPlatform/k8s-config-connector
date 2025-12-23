@@ -110,7 +110,7 @@ type SpannerInstanceAdapter struct {
 var _ directbase.Adapter = &SpannerInstanceAdapter{}
 
 func (a *SpannerInstanceAdapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting SpannerInstance", "name", a.id)
 
 	req := &spannerpb.GetInstanceRequest{Name: a.id.String()}
@@ -127,7 +127,7 @@ func (a *SpannerInstanceAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -175,7 +175,7 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 }
 
 func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 	if err := a.SpecValidation(); err != nil {
@@ -308,7 +308,7 @@ func (a *SpannerInstanceAdapter) Export(ctx context.Context) (*unstructured.Unst
 
 // Delete implements the Adapter interface.
 func (a *SpannerInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Instance", "name", a.id)
 
 	req := &spannerpb.DeleteInstanceRequest{Name: a.id.String()}

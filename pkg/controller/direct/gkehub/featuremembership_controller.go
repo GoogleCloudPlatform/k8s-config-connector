@@ -236,7 +236,7 @@ func (a *gkeHubAdapter) waitForOp(ctx context.Context, op *featureapi.Operation)
 
 func (a *gkeHubAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating gkehubfeaturemembership", "obj", u)
 
 	_, err := a.patchMembershipSpec(ctx)
@@ -251,7 +251,7 @@ func (a *gkeHubAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 func (a *gkeHubAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating object", "u", u)
 	actual := a.actual.MembershipSpecs[a.membershipID]
 	//  There are no output fields in the api Object, so we can compare the desired and the actaul directly.
