@@ -109,8 +109,8 @@ cloud.google.com/go/networkmanagement v1.19.1 h1:ecukgArkYCVcK5w2h7WDDd+nHgmBAp9
 cloud.google.com/go/networkmanagement v1.19.1/go.mod h1:icgk265dNnilxQzpr6rO9WuAuuCmUOqq9H6WBeM2Af4=
 cloud.google.com/go/networksecurity v0.11.0 h1:+ahtCqEqwHw3a3UIeG21vT817xt9kkDDAO6k9+LCc18=
 cloud.google.com/go/networksecurity v0.11.0/go.mod h1:JLgDsg4tOyJ3eMO8lypjqMftbfd60SJ+P7T+DUmWBsM=
-cloud.google.com/go/networkservices v0.5.0 h1:/yQrBP9Tb69M5V6/1j7yr+p/ByLLYmTkeDvh713lpSA=
-cloud.google.com/go/networkservices v0.5.0/go.mod h1:zzpgL0vdTTZQqFFR4hBOqXoc74TzQy6Ivg2NUcHd1Co=
+cloud.google.com/go/networkservices v0.6.0 h1:aCKiXdS8I4AWg8OoX7paBo5uqHmVEPwJvBZUDePpklE=
+cloud.google.com/go/networkservices v0.6.0/go.mod h1:XsqKTDTiNou1raaZmqmi1I3s/lKarmqWClq6bq23Q5Q=
 cloud.google.com/go/notebooks v1.12.6 h1:nCfZwVihArMPP2atRoxRrXOXJ/aC9rAgpBQGCc2zpYw=
 cloud.google.com/go/notebooks v1.12.6/go.mod h1:3Z4TMEqAKP3pu6DI/U+aEXrNJw9hGZIVbp+l3zw8EuA=
 cloud.google.com/go/orchestration v1.11.9 h1:PnlZ/O4R/eiounpxUkhI9ZXRMWbG7vFqxc6L6sR+31k=
