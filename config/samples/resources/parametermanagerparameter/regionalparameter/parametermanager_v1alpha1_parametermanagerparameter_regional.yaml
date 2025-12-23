@@ -20,7 +20,7 @@ metadata:
   name: parametermanagerparameter-regional-sample
 spec:
   projectRef:
-    external: projects/migrationsource-392805
+    external: projects/${PROJECT_ID?}
   location: us-central1
   format: YAML
   kmsKeyRef:
