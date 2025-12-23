@@ -7,7 +7,7 @@
                 "stdio"
             ],
             "env": {
-		"GITHUB_READ-ONLY": 1
+                "GITHUB_READ-ONLY": "1"
             }
         }
     }
