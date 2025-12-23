@@ -20,7 +20,7 @@ metadata:
   name: parametermanagerparameter-sample
 spec:
   projectRef:
-    external: projects/migrationsource-392805
+    external: projects/${PROJECT_ID?}
   location: global
   format: JSON
   
