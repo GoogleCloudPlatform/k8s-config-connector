@@ -291,9 +291,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -301,6 +302,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-regional-full-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
     "message": "Resource 'projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-regional-full-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
@@ -325,9 +333,10 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -336,6 +345,11 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "format": 3,
   "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-regional-full-${uniqueId}",
   "policyMember": {
     "iamPolicyUidPrincipal": "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
@@ -352,9 +366,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -396,9 +411,10 @@ X-Goog-Request-Params: parameter.name=projects%2F${projectId}%2Flocations%2Fus-c
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -407,6 +423,12 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "format": 3,
   "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "label-two": "value-three",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-regional-full-${uniqueId}",
   "policyMember": {
     "iamPolicyUidPrincipal": "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
@@ -423,9 +445,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -456,9 +479,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
