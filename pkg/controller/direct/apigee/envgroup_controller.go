@@ -35,8 +35,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const ctrlName = "apigee-envgroup-controller"
-
 func init() {
 	registry.RegisterModel(krm.ApigeeEnvgroupGVK, NewApigeeEnvgroupModel)
 }
@@ -104,7 +102,7 @@ var _ directbase.Adapter = &Adapter{}
 // Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting ApigeeEnvgroup", "name", a.id)
 
 	envgroup, err := a.envgroupsClient.Get(a.fullyQualifiedName()).Context(ctx).Do()
@@ -121,7 +119,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ApigeeEnvgroup", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -157,7 +155,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("patching ApigeeEnvgroup", a.fullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 	updateMask := fieldmaskpb.FieldMask{}
@@ -234,7 +232,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting ApigeeEnvgroup", "name", a.id)
 
 	op, err := a.envgroupsClient.Delete(a.fullyQualifiedName()).Context(ctx).Do()
