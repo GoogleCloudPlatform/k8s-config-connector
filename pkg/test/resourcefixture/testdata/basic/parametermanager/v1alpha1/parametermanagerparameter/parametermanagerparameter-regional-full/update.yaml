@@ -1,0 +1,14 @@
+apiVersion: parametermanager.cnrm.cloud.google.com/v1alpha1
+kind: ParameterManagerParameter
+metadata:
+  labels:
+    label-one: value-two
+    label-two: value-three
+  name: parametermanagerparameter-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  format: JSON
+  kmsKeyRef:
+    name: kmscryptokey-2-${uniqueId}
