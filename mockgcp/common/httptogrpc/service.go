@@ -26,8 +26,30 @@ import (
 	"k8s.io/klog/v2"
 )
 
+type ServiceOptions struct {
+	Service protoreflect.ServiceDescriptor
+}
+
+// AddServiceWithOptions adds a gRPC service (with all the methods) to the mux.
+func (m *grpcMux) AddServiceWithOptions(client any, opt ServiceOptions) {
+	if opt.Service == nil {
+		opt.Service = findMatchingService(client)
+	}
+	s, err := newGRPCService(client, opt.Service)
+	if err != nil {
+		klog.Fatalf("adding grpc service: %v", err)
+	}
+
+	m.services = append(m.services, s)
+}
+
 // AddService adds a gRPC service (with all the methods) to the mux.
+// Deprecated: use AddServiceWithOptions instead.
 func (m *grpcMux) AddService(client any) {
+	m.AddServiceWithOptions(client, ServiceOptions{})
+}
+
+func findMatchingService(client any) protoreflect.ServiceDescriptor {
 	var protoMessage proto.Message
 	protoMessageType := reflect.TypeOf(&protoMessage).Elem()
 
@@ -36,12 +58,18 @@ func (m *grpcMux) AddService(client any) {
 	goTypeMethodNames := make(map[string]bool)
 
 	var discoveredProtobufTypes []reflect.Type
-	n := goType.NumMethod()
-	for i := 0; i < n; i++ {
+	for i := range goType.NumMethod() {
 		method := goType.Method(i)
 		goTypeMethodNames[method.Name] = true
 
-		for j := 0; j < method.Type.NumOut(); j++ {
+		for j := range method.Type.NumIn() {
+			inType := method.Type.In(j)
+			if inType.AssignableTo(protoMessageType) {
+				discoveredProtobufTypes = append(discoveredProtobufTypes, inType)
+			}
+		}
+
+		for j := range method.Type.NumOut() {
 			out := method.Type.Out(j)
 			if out.AssignableTo(protoMessageType) {
 				discoveredProtobufTypes = append(discoveredProtobufTypes, out)
@@ -85,18 +113,51 @@ func (m *grpcMux) AddService(client any) {
 	}
 
 	if len(matchingServices) == 0 {
-		klog.Fatalf("cannot match service for %v", goType.Name())
+		for _, protoType := range discoveredProtobufTypes {
+			klog.Infof("trying proto type %v for %T", protoType, client)
+			msg := reflect.New(protoType).Elem().Interface()
+			md := msg.(proto.Message).ProtoReflect().Descriptor()
+			fd := md.ParentFile()
+
+			klog.Infof("file descriptor: %v", fd.FullName())
+			services := fd.Services()
+			if services.Len() == 0 {
+				klog.Warningf("no services found in file descriptor %v for %T", fd.FullName(), client)
+				continue
+			}
+
+			for i := range services.Len() {
+				service := services.Get(i)
+
+				isMatch := true
+				methods := service.Methods()
+				for j := range methods.Len() {
+					method := methods.Get(j)
+					if !goTypeMethodNames[string(method.Name())] {
+						isMatch = false
+						break
+					}
+				}
+
+				// TODO: Is there a better way to match this?
+				if isMatch {
+					matchingServices = append(matchingServices, service)
+				} else {
+					klog.Infof("not a match: %q for %T", service.FullName(), client)
+				}
+			}
+			if len(matchingServices) > 0 {
+				break
+			}
+		}
+
+		klog.Fatalf("cannot match service for %T %v", client, goType.Name())
 	}
 	if len(matchingServices) > 1 {
-		klog.Fatalf("found multiple matching service for %v", goType.Name())
+		klog.Fatalf("found multiple matching service for %T %v", client, goType.Name())
 	}
 
-	s, err := newGRPCService(client, matchingServices[0])
-	if err != nil {
-		klog.Fatalf("adding grpc service: %v", err)
-	}
-
-	m.services = append(m.services, s)
+	return matchingServices[0]
 }
 
 // grpcService holds the state for a gRPC service with its methods.

@@ -68,7 +68,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	grpcMux.AddService(pb.NewNetworkServicesClient(conn))
+	grpcMux.AddServiceWithOptions(pb.NewNetworkServicesClient(conn), httptogrpc.ServiceOptions{
+		Service: pb.NetworkServices_ServiceDesc,
+	})
 
 	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name=**}", conn)
 
