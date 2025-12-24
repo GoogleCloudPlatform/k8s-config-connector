@@ -117,7 +117,7 @@ func (m *modelParameter) AdapterForObject(ctx context.Context, reader client.Rea
 		location = "global"
 	}
 
-	// Get bigquerybiglake GCP client
+	// Get parmetermanager GCP client
 	gcpClient, err := m.client(ctx, location)
 	if err != nil {
 		return nil, err

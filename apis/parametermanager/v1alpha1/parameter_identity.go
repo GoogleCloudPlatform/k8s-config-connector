@@ -27,7 +27,7 @@ import (
 
 var _ identity.Identity = &ParameterIdentity{}
 
-// ParameterIdentity defines the resource reference to BigLakeCatalog, which "External" field
+// ParameterIdentity defines the resource reference to ParameterManagerParameter, which "External" field
 // holds the GCP identifier for the KRM object.
 type ParameterIdentity struct {
 	parent *parent.ProjectAndLocationParent

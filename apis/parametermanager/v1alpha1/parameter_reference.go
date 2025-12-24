@@ -27,14 +27,14 @@ var _ refsv1beta1.Ref = &ParameterRef{}
 
 // ParameterRef is a reference to a ParameterManagerParameter resource.
 type ParameterRef struct {
-	// A reference to an externally managed BigQueryBigLakeCatalog resource.
+	// A reference to an externally managed ParameterManagerParameter resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a BigQueryBigLakeCatalog resource.
+	// The name of a ParameterManagerParameter resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a BigQueryBigLakeCatalog resource.
+	// The namespace of a ParameterManagerParameter resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
