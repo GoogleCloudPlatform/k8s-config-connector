@@ -30,9 +30,9 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/netapp/apiv1/netapppb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/netapp/v1"
 )
 
 func (s *backupVaultsService) GetBackupVault(ctx context.Context, req *pb.GetBackupVaultRequest) (*pb.BackupVault, error) {

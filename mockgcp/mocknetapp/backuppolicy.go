@@ -32,8 +32,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/netapp/v1"
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
+	pb "cloud.google.com/go/netapp/apiv1/netapppb"
+	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 )
 
 func (s *backupVaultsService) GetBackupPolicy(ctx context.Context, req *pb.GetBackupPolicyRequest) (*pb.BackupPolicy, error) {
