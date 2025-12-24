@@ -30,10 +30,11 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"cloud.google.com/go/longrunning/autogen/longrunningpb"
+	pb "cloud.google.com/go/netapp/apiv1/netapppb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "cloud.google.com/go/netapp/apiv1/netapppb"
-	"cloud.google.com/go/longrunning/autogen/longrunningpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
 )
 
 func (s *backupVaultsService) GetBackupPolicy(ctx context.Context, req *pb.GetBackupPolicyRequest) (*pb.BackupPolicy, error) {
@@ -46,6 +47,9 @@ func (s *backupVaultsService) GetBackupPolicy(ctx context.Context, req *pb.GetBa
 
 	obj := &pb.BackupPolicy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%v' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -66,6 +70,9 @@ func (s *backupVaultsService) CreateBackupPolicy(ctx context.Context, req *pb.Cr
 	now := time.Now()
 	obj.CreateTime = timestamppb.New(now)
 	obj.State = pb.BackupPolicy_READY
+	obj.AssignedVolumeCount = mocks.PtrTo[int32](0)
+
+	s.populateDefaultsForBackupPolicy(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -121,6 +128,21 @@ func (s *backupVaultsService) UpdateBackupPolicy(ctx context.Context, req *pb.Up
 	})
 }
 
+func (s *backupVaultsService) populateDefaultsForBackupPolicy(obj *pb.BackupPolicy) {
+	if obj.Description == nil {
+		obj.Description = mocks.PtrTo("")
+	}
+	if obj.Enabled == nil {
+		obj.Enabled = mocks.PtrTo(true)
+	}
+	if obj.MonthlyBackupLimit == nil {
+		obj.MonthlyBackupLimit = mocks.PtrTo(int32(0))
+	}
+	if obj.WeeklyBackupLimit == nil {
+		obj.WeeklyBackupLimit = mocks.PtrTo(int32(0))
+	}
+}
+
 func (s *backupVaultsService) DeleteBackupPolicy(ctx context.Context, req *pb.DeleteBackupPolicyRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseBackupPolicyName(req.Name)
 	if err != nil {
@@ -135,13 +157,16 @@ func (s *backupVaultsService) DeleteBackupPolicy(ctx context.Context, req *pb.De
 	}
 
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	metadata := &pb.OperationMetadata{
+	lroMetadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.Now(),
 		Target:     fqn,
 		Verb:       "delete",
 		ApiVersion: "v1",
 	}
-	return s.operations.DoneLRO(ctx, prefix, metadata, &emptypb.Empty{})
+	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
+		return &emptypb.Empty{}, nil
+	})
 }
 
 type backupPolicyName struct {
