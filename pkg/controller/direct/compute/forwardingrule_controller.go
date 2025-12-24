@@ -146,7 +146,7 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	desired := a.desired.DeepCopy()
 	sanitizedLabels := label.NewGCPLabelsFromK8sLabels(desired.Labels)
 
-	forwardingRule := ComputeForwardingRuleSpec_ToProto(mapCtx, &desired.Spec)
+	forwardingRule := ComputeForwardingRuleSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -249,7 +249,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 
 	desired := a.desired.DeepCopy()
 	sanitizedLabels := label.NewGCPLabelsFromK8sLabels(desired.Labels)
-	forwardingRule := ComputeForwardingRuleSpec_ToProto(mapCtx, &desired.Spec)
+	forwardingRule := ComputeForwardingRuleSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -353,7 +353,7 @@ func (a *forwardingRuleAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	}
 
 	mc := &direct.MapContext{}
-	spec := ComputeForwardingRuleSpec_FromProto(mc, a.actual)
+	spec := ComputeForwardingRuleSpec_v1beta1_FromProto(mc, a.actual)
 	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
 	if err != nil {
 		return nil, fmt.Errorf("error converting forwardingrule spec to unstructured: %w", err)

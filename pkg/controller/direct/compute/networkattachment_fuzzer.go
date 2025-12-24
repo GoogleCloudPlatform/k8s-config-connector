@@ -29,8 +29,8 @@ func init() {
 
 func computeNetworkAttachmentFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.NetworkAttachment{},
-		ComputeNetworkAttachmentSpec_FromProto, ComputeNetworkAttachmentSpec_ToProto,
-		ComputeNetworkAttachmentObservedState_FromProto, ComputeNetworkAttachmentObservedState_ToProto,
+		ComputeNetworkAttachmentSpec_v1alpha1_FromProto, ComputeNetworkAttachmentSpec_v1alpha1_ToProto,
+		ComputeNetworkAttachmentObservedState_v1alpha1_FromProto, ComputeNetworkAttachmentObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".connection_preference")
