@@ -1409,6 +1409,352 @@ func local_request_OrganizationsAnalyticsDatastoresServer_UpdateOrganizationsAna
 
 }
 
+var (
+	filter_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0 = &utilities.DoubleArray{Encoding: map[string]int{"organizations_apim_service_extension": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+)
+
+func request_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsApimServiceExtensionsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateOrganizationsApimServiceExtensionRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsApimServiceExtension); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.CreateOrganizationsApimServiceExtension(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsApimServiceExtensionsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateOrganizationsApimServiceExtensionRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsApimServiceExtension); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.CreateOrganizationsApimServiceExtension(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsApimServiceExtensionsServer_DeleteOrganizationsApimServiceExtension_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsApimServiceExtensionsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteOrganizationsApimServiceExtensionRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.DeleteOrganizationsApimServiceExtension(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsApimServiceExtensionsServer_DeleteOrganizationsApimServiceExtension_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsApimServiceExtensionsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteOrganizationsApimServiceExtensionRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.DeleteOrganizationsApimServiceExtension(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsApimServiceExtensionsServer_GetOrganizationsApimServiceExtension_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsApimServiceExtensionsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetOrganizationsApimServiceExtensionRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetOrganizationsApimServiceExtension(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsApimServiceExtensionsServer_GetOrganizationsApimServiceExtension_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsApimServiceExtensionsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetOrganizationsApimServiceExtensionRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetOrganizationsApimServiceExtension(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsApimServiceExtensionsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListOrganizationsApimServiceExtensionsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ListOrganizationsApimServiceExtensions(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsApimServiceExtensionsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListOrganizationsApimServiceExtensionsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListOrganizationsApimServiceExtensions(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0 = &utilities.DoubleArray{Encoding: map[string]int{"organizations_apim_service_extension": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+)
+
+func request_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsApimServiceExtensionsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PatchOrganizationsApimServiceExtensionRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsApimServiceExtension); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.PatchOrganizationsApimServiceExtension(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsApimServiceExtensionsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PatchOrganizationsApimServiceExtensionRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsApimServiceExtension); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.PatchOrganizationsApimServiceExtension(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_OrganizationsApiproductsServer_AttributesOrganizationsApiproduct_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsApiproductsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq AttributesOrganizationsApiproductRequest
 	var metadata runtime.ServerMetadata
@@ -3907,6 +4253,110 @@ func local_request_OrganizationsAppgroupsServer_GetOrganizationsAppgroup_0(ctx c
 
 }
 
+func request_OrganizationsAppgroupsServer_GetBalanceOrganizationsAppgroup_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsAppgroupsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetBalanceOrganizationsAppgroupRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetBalanceOrganizationsAppgroup(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsAppgroupsServer_GetBalanceOrganizationsAppgroup_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsAppgroupsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetBalanceOrganizationsAppgroupRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetBalanceOrganizationsAppgroup(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsAppgroupsServer_GetMonetizationConfigOrganizationsAppgroup_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsAppgroupsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetMonetizationConfigOrganizationsAppgroupRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetMonetizationConfigOrganizationsAppgroup(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsAppgroupsServer_GetMonetizationConfigOrganizationsAppgroup_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsAppgroupsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetMonetizationConfigOrganizationsAppgroupRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetMonetizationConfigOrganizationsAppgroup(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 var (
 	filter_OrganizationsAppgroupsServer_ListOrganizationsAppgroups_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
@@ -4059,6 +4509,74 @@ func local_request_OrganizationsAppgroupsServer_UpdateOrganizationsAppgroup_0(ct
 	}
 
 	msg, err := server.UpdateOrganizationsAppgroup(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsAppgroupsServer_UpdateMonetizationConfigOrganizationsAppgroup_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsAppgroupsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateMonetizationConfigOrganizationsAppgroupRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsAppgroup); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.UpdateMonetizationConfigOrganizationsAppgroup(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsAppgroupsServer_UpdateMonetizationConfigOrganizationsAppgroup_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsAppgroupsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateMonetizationConfigOrganizationsAppgroupRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsAppgroup); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.UpdateMonetizationConfigOrganizationsAppgroup(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -4749,6 +5267,400 @@ func local_request_OrganizationsAppgroupsAppsKeysApiproductsServer_UpdateAppGrou
 	}
 
 	msg, err := server.UpdateAppGroupAppKeyApiProductOrganizationsAppgroupsAppsKeysApiproduct(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsAppgroupsBalanceServer_AdjustOrganizationsAppgroupsBalance_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsAppgroupsBalanceServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq AdjustOrganizationsAppgroupsBalanceRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsAppgroupsBalance); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.AdjustOrganizationsAppgroupsBalance(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsAppgroupsBalanceServer_AdjustOrganizationsAppgroupsBalance_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsAppgroupsBalanceServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq AdjustOrganizationsAppgroupsBalanceRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsAppgroupsBalance); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.AdjustOrganizationsAppgroupsBalance(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsAppgroupsBalanceServer_CreditOrganizationsAppgroupsBalance_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsAppgroupsBalanceServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreditOrganizationsAppgroupsBalanceRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsAppgroupsBalance); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.CreditOrganizationsAppgroupsBalance(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsAppgroupsBalanceServer_CreditOrganizationsAppgroupsBalance_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsAppgroupsBalanceServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreditOrganizationsAppgroupsBalanceRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsAppgroupsBalance); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.CreditOrganizationsAppgroupsBalance(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsAppgroupsSubscriptionsServer_CreateOrganizationsAppgroupsSubscription_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsAppgroupsSubscriptionsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateOrganizationsAppgroupsSubscriptionRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsAppgroupsSubscription); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	msg, err := client.CreateOrganizationsAppgroupsSubscription(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsAppgroupsSubscriptionsServer_CreateOrganizationsAppgroupsSubscription_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsAppgroupsSubscriptionsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateOrganizationsAppgroupsSubscriptionRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsAppgroupsSubscription); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	msg, err := server.CreateOrganizationsAppgroupsSubscription(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsAppgroupsSubscriptionsServer_ExpireOrganizationsAppgroupsSubscription_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsAppgroupsSubscriptionsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ExpireOrganizationsAppgroupsSubscriptionRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsAppgroupsSubscription); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.ExpireOrganizationsAppgroupsSubscription(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsAppgroupsSubscriptionsServer_ExpireOrganizationsAppgroupsSubscription_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsAppgroupsSubscriptionsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ExpireOrganizationsAppgroupsSubscriptionRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.OrganizationsAppgroupsSubscription); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.ExpireOrganizationsAppgroupsSubscription(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrganizationsAppgroupsSubscriptionsServer_GetOrganizationsAppgroupsSubscription_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsAppgroupsSubscriptionsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetOrganizationsAppgroupsSubscriptionRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetOrganizationsAppgroupsSubscription(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsAppgroupsSubscriptionsServer_GetOrganizationsAppgroupsSubscription_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsAppgroupsSubscriptionsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetOrganizationsAppgroupsSubscriptionRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetOrganizationsAppgroupsSubscription(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0(ctx context.Context, marshaler runtime.Marshaler, client OrganizationsAppgroupsSubscriptionsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListOrganizationsAppgroupsSubscriptionsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ListOrganizationsAppgroupsSubscriptions(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0(ctx context.Context, marshaler runtime.Marshaler, server OrganizationsAppgroupsSubscriptionsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListOrganizationsAppgroupsSubscriptionsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListOrganizationsAppgroupsSubscriptions(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -22916,6 +23828,140 @@ func RegisterOrganizationsAnalyticsDatastoresServerHandlerServer(ctx context.Con
 	return nil
 }
 
+// RegisterOrganizationsApimServiceExtensionsServerHandlerServer registers the http handlers for service OrganizationsApimServiceExtensionsServer to "mux".
+// UnaryRPC     :call OrganizationsApimServiceExtensionsServerServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterOrganizationsApimServiceExtensionsServerHandlerFromEndpoint instead.
+func RegisterOrganizationsApimServiceExtensionsServerHandlerServer(ctx context.Context, mux *runtime.ServeMux, server OrganizationsApimServiceExtensionsServerServer) error {
+
+	mux.Handle("POST", pattern_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/CreateOrganizationsApimServiceExtension", runtime.WithHTTPPathPattern("/v1/{parent=organizations/*}/apimServiceExtensions"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_OrganizationsApimServiceExtensionsServer_DeleteOrganizationsApimServiceExtension_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/DeleteOrganizationsApimServiceExtension", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/apimServiceExtensions/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsApimServiceExtensionsServer_DeleteOrganizationsApimServiceExtension_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApimServiceExtensionsServer_DeleteOrganizationsApimServiceExtension_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsApimServiceExtensionsServer_GetOrganizationsApimServiceExtension_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/GetOrganizationsApimServiceExtension", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/apimServiceExtensions/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsApimServiceExtensionsServer_GetOrganizationsApimServiceExtension_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApimServiceExtensionsServer_GetOrganizationsApimServiceExtension_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/ListOrganizationsApimServiceExtensions", runtime.WithHTTPPathPattern("/v1/{parent=organizations/*}/apimServiceExtensions"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PATCH", pattern_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/PatchOrganizationsApimServiceExtension", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/apimServiceExtensions/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
 // RegisterOrganizationsApiproductsServerHandlerServer registers the http handlers for service OrganizationsApiproductsServer to "mux".
 // UnaryRPC     :call OrganizationsApiproductsServerServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -24012,6 +25058,56 @@ func RegisterOrganizationsAppgroupsServerHandlerServer(ctx context.Context, mux 
 
 	})
 
+	mux.Handle("GET", pattern_OrganizationsAppgroupsServer_GetBalanceOrganizationsAppgroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/GetBalanceOrganizationsAppgroup", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/balance}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsAppgroupsServer_GetBalanceOrganizationsAppgroup_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsServer_GetBalanceOrganizationsAppgroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsAppgroupsServer_GetMonetizationConfigOrganizationsAppgroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/GetMonetizationConfigOrganizationsAppgroup", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/monetizationConfig}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsAppgroupsServer_GetMonetizationConfigOrganizationsAppgroup_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsServer_GetMonetizationConfigOrganizationsAppgroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("GET", pattern_OrganizationsAppgroupsServer_ListOrganizationsAppgroups_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -24059,6 +25155,31 @@ func RegisterOrganizationsAppgroupsServerHandlerServer(ctx context.Context, mux 
 		}
 
 		forward_OrganizationsAppgroupsServer_UpdateOrganizationsAppgroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_OrganizationsAppgroupsServer_UpdateMonetizationConfigOrganizationsAppgroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/UpdateMonetizationConfigOrganizationsAppgroup", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/monetizationConfig}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsAppgroupsServer_UpdateMonetizationConfigOrganizationsAppgroup_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsServer_UpdateMonetizationConfigOrganizationsAppgroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -24361,6 +25482,174 @@ func RegisterOrganizationsAppgroupsAppsKeysApiproductsServerHandlerServer(ctx co
 		}
 
 		forward_OrganizationsAppgroupsAppsKeysApiproductsServer_UpdateAppGroupAppKeyApiProductOrganizationsAppgroupsAppsKeysApiproduct_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+// RegisterOrganizationsAppgroupsBalanceServerHandlerServer registers the http handlers for service OrganizationsAppgroupsBalanceServer to "mux".
+// UnaryRPC     :call OrganizationsAppgroupsBalanceServerServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterOrganizationsAppgroupsBalanceServerHandlerFromEndpoint instead.
+func RegisterOrganizationsAppgroupsBalanceServerHandlerServer(ctx context.Context, mux *runtime.ServeMux, server OrganizationsAppgroupsBalanceServerServer) error {
+
+	mux.Handle("POST", pattern_OrganizationsAppgroupsBalanceServer_AdjustOrganizationsAppgroupsBalance_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsBalanceServer/AdjustOrganizationsAppgroupsBalance", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/balance}:adjust"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsAppgroupsBalanceServer_AdjustOrganizationsAppgroupsBalance_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsBalanceServer_AdjustOrganizationsAppgroupsBalance_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_OrganizationsAppgroupsBalanceServer_CreditOrganizationsAppgroupsBalance_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsBalanceServer/CreditOrganizationsAppgroupsBalance", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/balance}:credit"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsAppgroupsBalanceServer_CreditOrganizationsAppgroupsBalance_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsBalanceServer_CreditOrganizationsAppgroupsBalance_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+// RegisterOrganizationsAppgroupsSubscriptionsServerHandlerServer registers the http handlers for service OrganizationsAppgroupsSubscriptionsServer to "mux".
+// UnaryRPC     :call OrganizationsAppgroupsSubscriptionsServerServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterOrganizationsAppgroupsSubscriptionsServerHandlerFromEndpoint instead.
+func RegisterOrganizationsAppgroupsSubscriptionsServerHandlerServer(ctx context.Context, mux *runtime.ServeMux, server OrganizationsAppgroupsSubscriptionsServerServer) error {
+
+	mux.Handle("POST", pattern_OrganizationsAppgroupsSubscriptionsServer_CreateOrganizationsAppgroupsSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/CreateOrganizationsAppgroupsSubscription", runtime.WithHTTPPathPattern("/v1/{parent=organizations/*/appgroups/*}/subscriptions"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsAppgroupsSubscriptionsServer_CreateOrganizationsAppgroupsSubscription_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsSubscriptionsServer_CreateOrganizationsAppgroupsSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_OrganizationsAppgroupsSubscriptionsServer_ExpireOrganizationsAppgroupsSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/ExpireOrganizationsAppgroupsSubscription", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/subscriptions/*}:expire"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsAppgroupsSubscriptionsServer_ExpireOrganizationsAppgroupsSubscription_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsSubscriptionsServer_ExpireOrganizationsAppgroupsSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsAppgroupsSubscriptionsServer_GetOrganizationsAppgroupsSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/GetOrganizationsAppgroupsSubscription", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/subscriptions/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsAppgroupsSubscriptionsServer_GetOrganizationsAppgroupsSubscription_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsSubscriptionsServer_GetOrganizationsAppgroupsSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/ListOrganizationsAppgroupsSubscriptions", runtime.WithHTTPPathPattern("/v1/{parent=organizations/*/appgroups/*}/subscriptions"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -32538,6 +33827,181 @@ var (
 	forward_OrganizationsAnalyticsDatastoresServer_UpdateOrganizationsAnalyticsDatastore_0 = runtime.ForwardResponseMessage
 )
 
+// RegisterOrganizationsApimServiceExtensionsServerHandlerFromEndpoint is same as RegisterOrganizationsApimServiceExtensionsServerHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterOrganizationsApimServiceExtensionsServerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.Dial(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+
+	return RegisterOrganizationsApimServiceExtensionsServerHandler(ctx, mux, conn)
+}
+
+// RegisterOrganizationsApimServiceExtensionsServerHandler registers the http handlers for service OrganizationsApimServiceExtensionsServer to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterOrganizationsApimServiceExtensionsServerHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterOrganizationsApimServiceExtensionsServerHandlerClient(ctx, mux, NewOrganizationsApimServiceExtensionsServerClient(conn))
+}
+
+// RegisterOrganizationsApimServiceExtensionsServerHandlerClient registers the http handlers for service OrganizationsApimServiceExtensionsServer
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "OrganizationsApimServiceExtensionsServerClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "OrganizationsApimServiceExtensionsServerClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "OrganizationsApimServiceExtensionsServerClient" to call the correct interceptors.
+func RegisterOrganizationsApimServiceExtensionsServerHandlerClient(ctx context.Context, mux *runtime.ServeMux, client OrganizationsApimServiceExtensionsServerClient) error {
+
+	mux.Handle("POST", pattern_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/CreateOrganizationsApimServiceExtension", runtime.WithHTTPPathPattern("/v1/{parent=organizations/*}/apimServiceExtensions"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_OrganizationsApimServiceExtensionsServer_DeleteOrganizationsApimServiceExtension_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/DeleteOrganizationsApimServiceExtension", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/apimServiceExtensions/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsApimServiceExtensionsServer_DeleteOrganizationsApimServiceExtension_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApimServiceExtensionsServer_DeleteOrganizationsApimServiceExtension_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsApimServiceExtensionsServer_GetOrganizationsApimServiceExtension_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/GetOrganizationsApimServiceExtension", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/apimServiceExtensions/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsApimServiceExtensionsServer_GetOrganizationsApimServiceExtension_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApimServiceExtensionsServer_GetOrganizationsApimServiceExtension_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/ListOrganizationsApimServiceExtensions", runtime.WithHTTPPathPattern("/v1/{parent=organizations/*}/apimServiceExtensions"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PATCH", pattern_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/PatchOrganizationsApimServiceExtension", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/apimServiceExtensions/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+var (
+	pattern_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "organizations", "parent", "apimServiceExtensions"}, ""))
+
+	pattern_OrganizationsApimServiceExtensionsServer_DeleteOrganizationsApimServiceExtension_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "organizations", "apimServiceExtensions", "name"}, ""))
+
+	pattern_OrganizationsApimServiceExtensionsServer_GetOrganizationsApimServiceExtension_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "organizations", "apimServiceExtensions", "name"}, ""))
+
+	pattern_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "organizations", "parent", "apimServiceExtensions"}, ""))
+
+	pattern_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "organizations", "apimServiceExtensions", "name"}, ""))
+)
+
+var (
+	forward_OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsApimServiceExtensionsServer_DeleteOrganizationsApimServiceExtension_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsApimServiceExtensionsServer_GetOrganizationsApimServiceExtension_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_0 = runtime.ForwardResponseMessage
+)
+
 // RegisterOrganizationsApiproductsServerHandlerFromEndpoint is same as RegisterOrganizationsApiproductsServerHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
 func RegisterOrganizationsApiproductsServerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
@@ -34054,6 +35518,50 @@ func RegisterOrganizationsAppgroupsServerHandlerClient(ctx context.Context, mux 
 
 	})
 
+	mux.Handle("GET", pattern_OrganizationsAppgroupsServer_GetBalanceOrganizationsAppgroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/GetBalanceOrganizationsAppgroup", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/balance}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsAppgroupsServer_GetBalanceOrganizationsAppgroup_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsServer_GetBalanceOrganizationsAppgroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsAppgroupsServer_GetMonetizationConfigOrganizationsAppgroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/GetMonetizationConfigOrganizationsAppgroup", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/monetizationConfig}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsAppgroupsServer_GetMonetizationConfigOrganizationsAppgroup_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsServer_GetMonetizationConfigOrganizationsAppgroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("GET", pattern_OrganizationsAppgroupsServer_ListOrganizationsAppgroups_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -34098,6 +35606,28 @@ func RegisterOrganizationsAppgroupsServerHandlerClient(ctx context.Context, mux 
 
 	})
 
+	mux.Handle("PUT", pattern_OrganizationsAppgroupsServer_UpdateMonetizationConfigOrganizationsAppgroup_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/UpdateMonetizationConfigOrganizationsAppgroup", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/monetizationConfig}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsAppgroupsServer_UpdateMonetizationConfigOrganizationsAppgroup_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsServer_UpdateMonetizationConfigOrganizationsAppgroup_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -34108,9 +35638,15 @@ var (
 
 	pattern_OrganizationsAppgroupsServer_GetOrganizationsAppgroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "organizations", "appgroups", "name"}, ""))
 
+	pattern_OrganizationsAppgroupsServer_GetBalanceOrganizationsAppgroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 4, 5, 5, 4}, []string{"v1", "organizations", "appgroups", "balance", "name"}, ""))
+
+	pattern_OrganizationsAppgroupsServer_GetMonetizationConfigOrganizationsAppgroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 4, 5, 5, 4}, []string{"v1", "organizations", "appgroups", "monetizationConfig", "name"}, ""))
+
 	pattern_OrganizationsAppgroupsServer_ListOrganizationsAppgroups_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "organizations", "parent", "appgroups"}, ""))
 
 	pattern_OrganizationsAppgroupsServer_UpdateOrganizationsAppgroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "organizations", "appgroups", "name"}, ""))
+
+	pattern_OrganizationsAppgroupsServer_UpdateMonetizationConfigOrganizationsAppgroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 4, 5, 5, 4}, []string{"v1", "organizations", "appgroups", "monetizationConfig", "name"}, ""))
 )
 
 var (
@@ -34120,9 +35656,15 @@ var (
 
 	forward_OrganizationsAppgroupsServer_GetOrganizationsAppgroup_0 = runtime.ForwardResponseMessage
 
+	forward_OrganizationsAppgroupsServer_GetBalanceOrganizationsAppgroup_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsAppgroupsServer_GetMonetizationConfigOrganizationsAppgroup_0 = runtime.ForwardResponseMessage
+
 	forward_OrganizationsAppgroupsServer_ListOrganizationsAppgroups_0 = runtime.ForwardResponseMessage
 
 	forward_OrganizationsAppgroupsServer_UpdateOrganizationsAppgroup_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsAppgroupsServer_UpdateMonetizationConfigOrganizationsAppgroup_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterOrganizationsAppgroupsAppsServerHandlerFromEndpoint is same as RegisterOrganizationsAppgroupsAppsServerHandler but
@@ -34544,6 +36086,252 @@ var (
 	forward_OrganizationsAppgroupsAppsKeysApiproductsServer_DeleteOrganizationsAppgroupsAppsKeysApiproduct_0 = runtime.ForwardResponseMessage
 
 	forward_OrganizationsAppgroupsAppsKeysApiproductsServer_UpdateAppGroupAppKeyApiProductOrganizationsAppgroupsAppsKeysApiproduct_0 = runtime.ForwardResponseMessage
+)
+
+// RegisterOrganizationsAppgroupsBalanceServerHandlerFromEndpoint is same as RegisterOrganizationsAppgroupsBalanceServerHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterOrganizationsAppgroupsBalanceServerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.Dial(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+
+	return RegisterOrganizationsAppgroupsBalanceServerHandler(ctx, mux, conn)
+}
+
+// RegisterOrganizationsAppgroupsBalanceServerHandler registers the http handlers for service OrganizationsAppgroupsBalanceServer to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterOrganizationsAppgroupsBalanceServerHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterOrganizationsAppgroupsBalanceServerHandlerClient(ctx, mux, NewOrganizationsAppgroupsBalanceServerClient(conn))
+}
+
+// RegisterOrganizationsAppgroupsBalanceServerHandlerClient registers the http handlers for service OrganizationsAppgroupsBalanceServer
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "OrganizationsAppgroupsBalanceServerClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "OrganizationsAppgroupsBalanceServerClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "OrganizationsAppgroupsBalanceServerClient" to call the correct interceptors.
+func RegisterOrganizationsAppgroupsBalanceServerHandlerClient(ctx context.Context, mux *runtime.ServeMux, client OrganizationsAppgroupsBalanceServerClient) error {
+
+	mux.Handle("POST", pattern_OrganizationsAppgroupsBalanceServer_AdjustOrganizationsAppgroupsBalance_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsBalanceServer/AdjustOrganizationsAppgroupsBalance", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/balance}:adjust"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsAppgroupsBalanceServer_AdjustOrganizationsAppgroupsBalance_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsBalanceServer_AdjustOrganizationsAppgroupsBalance_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_OrganizationsAppgroupsBalanceServer_CreditOrganizationsAppgroupsBalance_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsBalanceServer/CreditOrganizationsAppgroupsBalance", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/balance}:credit"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsAppgroupsBalanceServer_CreditOrganizationsAppgroupsBalance_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsBalanceServer_CreditOrganizationsAppgroupsBalance_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+var (
+	pattern_OrganizationsAppgroupsBalanceServer_AdjustOrganizationsAppgroupsBalance_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 4, 5, 5, 4}, []string{"v1", "organizations", "appgroups", "balance", "name"}, "adjust"))
+
+	pattern_OrganizationsAppgroupsBalanceServer_CreditOrganizationsAppgroupsBalance_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 4, 5, 5, 4}, []string{"v1", "organizations", "appgroups", "balance", "name"}, "credit"))
+)
+
+var (
+	forward_OrganizationsAppgroupsBalanceServer_AdjustOrganizationsAppgroupsBalance_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsAppgroupsBalanceServer_CreditOrganizationsAppgroupsBalance_0 = runtime.ForwardResponseMessage
+)
+
+// RegisterOrganizationsAppgroupsSubscriptionsServerHandlerFromEndpoint is same as RegisterOrganizationsAppgroupsSubscriptionsServerHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterOrganizationsAppgroupsSubscriptionsServerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.Dial(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+
+	return RegisterOrganizationsAppgroupsSubscriptionsServerHandler(ctx, mux, conn)
+}
+
+// RegisterOrganizationsAppgroupsSubscriptionsServerHandler registers the http handlers for service OrganizationsAppgroupsSubscriptionsServer to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterOrganizationsAppgroupsSubscriptionsServerHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterOrganizationsAppgroupsSubscriptionsServerHandlerClient(ctx, mux, NewOrganizationsAppgroupsSubscriptionsServerClient(conn))
+}
+
+// RegisterOrganizationsAppgroupsSubscriptionsServerHandlerClient registers the http handlers for service OrganizationsAppgroupsSubscriptionsServer
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "OrganizationsAppgroupsSubscriptionsServerClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "OrganizationsAppgroupsSubscriptionsServerClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "OrganizationsAppgroupsSubscriptionsServerClient" to call the correct interceptors.
+func RegisterOrganizationsAppgroupsSubscriptionsServerHandlerClient(ctx context.Context, mux *runtime.ServeMux, client OrganizationsAppgroupsSubscriptionsServerClient) error {
+
+	mux.Handle("POST", pattern_OrganizationsAppgroupsSubscriptionsServer_CreateOrganizationsAppgroupsSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/CreateOrganizationsAppgroupsSubscription", runtime.WithHTTPPathPattern("/v1/{parent=organizations/*/appgroups/*}/subscriptions"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsAppgroupsSubscriptionsServer_CreateOrganizationsAppgroupsSubscription_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsSubscriptionsServer_CreateOrganizationsAppgroupsSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_OrganizationsAppgroupsSubscriptionsServer_ExpireOrganizationsAppgroupsSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/ExpireOrganizationsAppgroupsSubscription", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/subscriptions/*}:expire"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsAppgroupsSubscriptionsServer_ExpireOrganizationsAppgroupsSubscription_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsSubscriptionsServer_ExpireOrganizationsAppgroupsSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsAppgroupsSubscriptionsServer_GetOrganizationsAppgroupsSubscription_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/GetOrganizationsAppgroupsSubscription", runtime.WithHTTPPathPattern("/v1/{name=organizations/*/appgroups/*/subscriptions/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsAppgroupsSubscriptionsServer_GetOrganizationsAppgroupsSubscription_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsSubscriptionsServer_GetOrganizationsAppgroupsSubscription_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/ListOrganizationsAppgroupsSubscriptions", runtime.WithHTTPPathPattern("/v1/{parent=organizations/*/appgroups/*}/subscriptions"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+var (
+	pattern_OrganizationsAppgroupsSubscriptionsServer_CreateOrganizationsAppgroupsSubscription_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "organizations", "appgroups", "parent", "subscriptions"}, ""))
+
+	pattern_OrganizationsAppgroupsSubscriptionsServer_ExpireOrganizationsAppgroupsSubscription_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "organizations", "appgroups", "subscriptions", "name"}, "expire"))
+
+	pattern_OrganizationsAppgroupsSubscriptionsServer_GetOrganizationsAppgroupsSubscription_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "organizations", "appgroups", "subscriptions", "name"}, ""))
+
+	pattern_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "organizations", "appgroups", "parent", "subscriptions"}, ""))
+)
+
+var (
+	forward_OrganizationsAppgroupsSubscriptionsServer_CreateOrganizationsAppgroupsSubscription_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsAppgroupsSubscriptionsServer_ExpireOrganizationsAppgroupsSubscription_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsAppgroupsSubscriptionsServer_GetOrganizationsAppgroupsSubscription_0 = runtime.ForwardResponseMessage
+
+	forward_OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterOrganizationsAppsServerHandlerFromEndpoint is same as RegisterOrganizationsAppsServerHandler but

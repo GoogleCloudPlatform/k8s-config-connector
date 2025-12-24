@@ -183,6 +183,7 @@ func Container_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.Conta
 	out := &krm.Container{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Image = direct.LazyPtr(in.GetImage())
+	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_FromProto)
@@ -204,6 +205,7 @@ func Container_ToProto(mapCtx *direct.MapContext, in *krm.Container) *pb.Contain
 	out := &pb.Container{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Image = direct.ValueOf(in.Image)
+	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
@@ -668,6 +670,44 @@ func SecretVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.SecretVolumeS
 	out.DefaultMode = direct.ValueOf(in.DefaultMode)
 	return out
 }
+func SourceCode_FromProto(mapCtx *direct.MapContext, in *pb.SourceCode) *krm.SourceCode {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SourceCode{}
+	out.CloudStorageSource = SourceCode_CloudStorageSource_FromProto(mapCtx, in.GetCloudStorageSource())
+	return out
+}
+func SourceCode_ToProto(mapCtx *direct.MapContext, in *krm.SourceCode) *pb.SourceCode {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SourceCode{}
+	if oneof := SourceCode_CloudStorageSource_ToProto(mapCtx, in.CloudStorageSource); oneof != nil {
+		out.SourceType = &pb.SourceCode_CloudStorageSource_{CloudStorageSource: oneof}
+	}
+	return out
+}
+func SourceCode_CloudStorageSource_FromProto(mapCtx *direct.MapContext, in *pb.SourceCode_CloudStorageSource) *krm.SourceCode_CloudStorageSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SourceCode_CloudStorageSource{}
+	out.Bucket = direct.LazyPtr(in.GetBucket())
+	out.Object = direct.LazyPtr(in.GetObject())
+	out.Generation = direct.LazyPtr(in.GetGeneration())
+	return out
+}
+func SourceCode_CloudStorageSource_ToProto(mapCtx *direct.MapContext, in *krm.SourceCode_CloudStorageSource) *pb.SourceCode_CloudStorageSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SourceCode_CloudStorageSource{}
+	out.Bucket = direct.ValueOf(in.Bucket)
+	out.Object = direct.ValueOf(in.Object)
+	out.Generation = direct.ValueOf(in.Generation)
+	return out
+}
 func TCPSocketAction_FromProto(mapCtx *direct.MapContext, in *pb.TCPSocketAction) *krm.TCPSocketAction {
 	if in == nil {
 		return nil
@@ -849,6 +889,7 @@ func VolumeMount_FromProto(mapCtx *direct.MapContext, in *pb.VolumeMount) *krm.V
 	out := &krm.VolumeMount{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.MountPath = direct.LazyPtr(in.GetMountPath())
+	out.SubPath = direct.LazyPtr(in.GetSubPath())
 	return out
 }
 func VolumeMount_ToProto(mapCtx *direct.MapContext, in *krm.VolumeMount) *pb.VolumeMount {
@@ -858,5 +899,6 @@ func VolumeMount_ToProto(mapCtx *direct.MapContext, in *krm.VolumeMount) *pb.Vol
 	out := &pb.VolumeMount{}
 	out.Name = direct.ValueOf(in.Name)
 	out.MountPath = direct.ValueOf(in.MountPath)
+	out.SubPath = direct.ValueOf(in.SubPath)
 	return out
 }
