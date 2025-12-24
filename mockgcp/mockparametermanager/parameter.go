@@ -39,7 +39,6 @@ func (s *MockService) parseKey(key string, input string) (string, error) {
 	parts := strings.Split(input, "/")
 	for i, part := range parts {
 		if part == key && i+1 < len(parts) {
-			// Found the locations part, return the next element which should be the location ID
 			return parts[i+1], nil
 		}
 	}
@@ -74,7 +73,7 @@ func (s *ParameterManagerV1) CreateParameter(ctx context.Context, req *pb.Create
 
 	name := parameterName{
 		Project:       project,
-		Location:      location, // Assuming global for now
+		Location:      location,
 		ParameterName: parameterID,
 	}
 	fqn := name.String()
