@@ -273,8 +273,9 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
-                          when not managed by Config Connector.
+                        description: The value of an externally managed ComputeSubnetwork
+                          resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/regions/{{region}}/subnetworks/{{subnetworkId}}"
+                          or "projects/{{projectId}}/regions/{{region}}/subnetworks/{{subnetworkId}}"
                         type: string
                       name:
                         description: The `name` field of a `ComputeSubnetwork` resource.

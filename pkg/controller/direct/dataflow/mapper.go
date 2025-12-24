@@ -288,7 +288,7 @@ func DataflowFlexTemplateJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Fle
 	}
 
 	if in.Subnetwork != "" {
-		out.SubnetworkRef = &refs.ComputeSubnetworkRef{
+		out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{
 			External: in.Subnetwork,
 		}
 	}
