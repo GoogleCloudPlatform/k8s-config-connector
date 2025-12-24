@@ -23,11 +23,68 @@ import (
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
 	"k8s.io/klog/v2"
 )
 
 // AddService adds a gRPC service (with all the methods) to the mux.
-func (m *grpcMux) AddService(client any) {
+func (m *grpcMux) AddService(client any, options ...ServiceOption) {
+	var opt serviceOptions
+	for _, option := range options {
+		option(&opt)
+	}
+	m.addServiceWithOptions(client, opt)
+}
+
+type ServiceOption func(*serviceOptions)
+
+func WithServiceName(name string) ServiceOption {
+	return func(o *serviceOptions) {
+		o.ServiceName = name
+	}
+}
+
+type serviceOptions struct {
+	ServiceName string
+}
+
+// addServiceWithOptions adds a gRPC service (with all the methods) to the mux.
+func (m *grpcMux) addServiceWithOptions(client any, options serviceOptions) {
+	if options.ServiceName == "" {
+		options.ServiceName = findServiceName(client)
+	}
+
+	serviceName := protoreflect.FullName(options.ServiceName)
+
+	var matchingServices []protoreflect.ServiceDescriptor
+	protoregistry.GlobalFiles.RangeFiles(func(fd protoreflect.FileDescriptor) bool {
+		services := fd.Services()
+		for i := range services.Len() {
+			service := services.Get(i)
+			if service.FullName() != serviceName {
+				continue
+			}
+			matchingServices = append(matchingServices, service)
+		}
+		return true
+	})
+
+	if len(matchingServices) == 0 {
+		klog.Fatalf("could not find proto service %q", serviceName)
+	}
+
+	if len(matchingServices) > 1 {
+		klog.Fatalf("found multiple matching services %q", serviceName)
+	}
+
+	s, err := newGRPCService(client, matchingServices[0])
+	if err != nil {
+		klog.Fatalf("adding grpc service: %v", err)
+	}
+	m.services = append(m.services, s)
+}
+
+func findServiceName(client any) string {
 	var protoMessage proto.Message
 	protoMessageType := reflect.TypeOf(&protoMessage).Elem()
 
@@ -36,8 +93,7 @@ func (m *grpcMux) AddService(client any) {
 	goTypeMethodNames := make(map[string]bool)
 
 	var discoveredProtobufTypes []reflect.Type
-	n := goType.NumMethod()
-	for i := 0; i < n; i++ {
+	for i := range goType.NumMethod() {
 		method := goType.Method(i)
 		goTypeMethodNames[method.Name] = true
 
@@ -54,49 +110,67 @@ func (m *grpcMux) AddService(client any) {
 	}
 
 	// Use the protobuf types to find the FileDescriptor, from there we can find the services
-	var matchingServices []protoreflect.ServiceDescriptor
+	matchingServices := make(map[string]protoreflect.ServiceDescriptor)
 	for _, protoType := range discoveredProtobufTypes {
 		msg := reflect.New(protoType).Elem().Interface()
 		md := msg.(proto.Message).ProtoReflect().Descriptor()
-		fd := md.ParentFile()
 
-		services := fd.Services()
-		for i := range services.Len() {
-			service := services.Get(i)
+		protoregistry.GlobalFiles.RangeFilesByPackage(md.ParentFile().FullName(), func(fd protoreflect.FileDescriptor) bool {
+			services := fd.Services()
+			for i := range services.Len() {
+				service := services.Get(i)
 
-			isMatch := true
-			methods := service.Methods()
-			for j := range methods.Len() {
-				method := methods.Get(j)
-				if !goTypeMethodNames[string(method.Name())] {
-					isMatch = false
-					break
+				if matchingServices[string(service.FullName())] != nil {
+					// Already found
+					continue
 				}
-			}
 
-			// TODO: Is there a better way to match this?
-			if isMatch {
-				matchingServices = append(matchingServices, service)
+				// We match by looking at the method names.  There may be a better way to do this, but we haven't found one yet!
+				isMatch := true
+
+				protoMethods := service.Methods()
+				protoMethodNames := make(map[string]bool)
+				for j := range protoMethods.Len() {
+					method := protoMethods.Get(j)
+					if !goTypeMethodNames[string(method.Name())] {
+						isMatch = false
+						break
+					}
+					protoMethodNames[string(method.Name())] = true
+				}
+				if !isMatch {
+					continue
+				}
+
+				for goTypeMethodName := range goTypeMethodNames {
+					if !protoMethodNames[goTypeMethodName] {
+						isMatch = false
+						break
+					}
+				}
+				if !isMatch {
+					continue
+				}
+
+				matchingServices[string(service.FullName())] = service
 			}
-		}
-		if len(matchingServices) > 0 {
-			break
-		}
+			return true
+		})
 	}
 
-	if len(matchingServices) == 0 {
-		klog.Fatalf("cannot match service for %v", goType.Name())
-	}
 	if len(matchingServices) > 1 {
-		klog.Fatalf("found multiple matching service for %v", goType.Name())
+		for k, v := range matchingServices {
+			klog.Infof("matching service: %q %T", k, v)
+		}
+		klog.Fatalf("found multiple matching service for %T", client)
 	}
 
-	s, err := newGRPCService(client, matchingServices[0])
-	if err != nil {
-		klog.Fatalf("adding grpc service: %v", err)
+	for k := range matchingServices {
+		return k
 	}
 
-	m.services = append(m.services, s)
+	klog.Fatalf("cannot match service for %T", client)
+	return ""
 }
 
 // grpcService holds the state for a gRPC service with its methods.
