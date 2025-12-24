@@ -37,9 +37,12 @@ func BigQueryReservationAssignmentFuzzer() fuzztesting.KRMFuzzer {
 
 	f.StatusFields.Insert(".state")
 
-	f.UnimplementedFields.Insert(".name")
+	f.IdentityField(".name")
+
 	f.UnimplementedFields.Insert(".assignee") // Assignee has to be in a specific format, not a random string.
 	f.UnimplementedFields.Insert(".enable_gemini_in_bigquery")
+
+	f.Unimplemented_NotYetTriaged(".scheduling_policy")
 
 	return f
 }

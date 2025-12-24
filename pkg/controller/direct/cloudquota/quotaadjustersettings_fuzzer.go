@@ -38,7 +38,10 @@ func aPIQuotaAdjusterSettingsFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".etag")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.IdentityField(".name")
+
+	f.Unimplemented_NotYetTriaged(".inherited")
+	f.Unimplemented_NotYetTriaged(".inherited_from")
 
 	return f
 }

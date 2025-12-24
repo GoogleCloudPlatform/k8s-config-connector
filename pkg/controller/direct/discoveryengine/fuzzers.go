@@ -46,5 +46,12 @@ func fuzzDataStore() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".billing_estimation")
 
+	f.Unimplemented_NotYetTriaged(".advanced_site_search_config")
+	f.Unimplemented_NotYetTriaged(".cmek_config")
+	f.Unimplemented_NotYetTriaged(".identity_mapping_store")
+	f.Unimplemented_NotYetTriaged(".healthcare_fhir_config")
+	f.Unimplemented_NotYetTriaged(".acl_enabled")
+	f.Unimplemented_NotYetTriaged(".kms_key_name")
+
 	return f
 }

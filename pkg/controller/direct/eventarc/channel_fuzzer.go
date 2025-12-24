@@ -50,5 +50,7 @@ func eventarcChannelFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name")            // special field
 	f.UnimplementedFields.Insert(".crypto_key_name") // Missing in mapper, related to kms_key_name
 
+	f.Unimplemented_LabelsAnnotations(".labels")
+
 	return f
 }

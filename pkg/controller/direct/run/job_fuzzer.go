@@ -53,7 +53,10 @@ func runJobFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".update_time")
 
+	f.IdentityField(".name")
+
 	f.Unimplemented_LabelsAnnotations(".labels")
+
 	f.Unimplemented_NotYetTriaged(".binary_authorization.policy")
 	f.Unimplemented_NotYetTriaged(".binary_authorization.use_default")
 	f.Unimplemented_NotYetTriaged(".conditions")
@@ -71,6 +74,8 @@ func runJobFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".template.template.containers[].startup_probe.http_get")
 	f.Unimplemented_NotYetTriaged(".template.template.containers[].liveness_probe.grpc")
 	f.Unimplemented_NotYetTriaged(".template.template.containers[].liveness_probe.http_get")
+	f.Unimplemented_NotYetTriaged(".template.template.containers[].source_code")
+	f.Unimplemented_NotYetTriaged(".template.template.containers[].volume_mounts[].sub_path")
 	f.Unimplemented_NotYetTriaged(".template.template.gpu_zonal_redundancy_disabled")
 	f.Unimplemented_NotYetTriaged(".template.template.node_selector")
 	f.Unimplemented_NotYetTriaged(".template.template.volumes[].nfs")
@@ -79,8 +84,6 @@ func runJobFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".terminal_condition.execution_reason")
 	f.Unimplemented_NotYetTriaged(".terminal_condition.reason")
 	f.Unimplemented_NotYetTriaged(".terminal_condition.revision_reason")
-
-	f.UnimplementedFields.Insert(".name") // Read-only, special handling
 
 	return f
 }
