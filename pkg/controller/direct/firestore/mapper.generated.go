@@ -462,6 +462,26 @@ func FirestoreIndexStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Fir
 	// MISSING: ShardCount
 	return out
 }
+func Function_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Function) *krmfirestorev1alpha1.Function {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Function{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Args = direct.Slice_FromProto(mapCtx, in.Args, Value_v1alpha1_FromProto)
+	// MISSING: Options
+	return out
+}
+func Function_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Function) *firestorepb.Function {
+	if in == nil {
+		return nil
+	}
+	out := &firestorepb.Function{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Args = direct.Slice_ToProto(mapCtx, in.Args, Value_v1alpha1_ToProto)
+	// MISSING: Options
+	return out
+}
 func Index_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krmfirestorev1alpha1.Index {
 	if in == nil {
 		return nil
@@ -672,6 +692,42 @@ func MapValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alph
 	// MISSING: Fields
 	return out
 }
+func Pipeline_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Pipeline) *krmfirestorev1alpha1.Pipeline {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Pipeline{}
+	out.Stages = direct.Slice_FromProto(mapCtx, in.Stages, Pipeline_Stage_v1alpha1_FromProto)
+	return out
+}
+func Pipeline_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Pipeline) *firestorepb.Pipeline {
+	if in == nil {
+		return nil
+	}
+	out := &firestorepb.Pipeline{}
+	out.Stages = direct.Slice_ToProto(mapCtx, in.Stages, Pipeline_Stage_v1alpha1_ToProto)
+	return out
+}
+func Pipeline_Stage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *firestorepb.Pipeline_Stage) *krmfirestorev1alpha1.Pipeline_Stage {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.Pipeline_Stage{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Args = direct.Slice_FromProto(mapCtx, in.Args, Value_v1alpha1_FromProto)
+	// MISSING: Options
+	return out
+}
+func Pipeline_Stage_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.Pipeline_Stage) *firestorepb.Pipeline_Stage {
+	if in == nil {
+		return nil
+	}
+	out := &firestorepb.Pipeline_Stage{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Args = direct.Slice_ToProto(mapCtx, in.Args, Value_v1alpha1_ToProto)
+	// MISSING: Options
+	return out
+}
 func Value_NullValue_ToProto(mapCtx *direct.MapContext, in *string) *firestorepb.Value_NullValue {
 	if in == nil {
 		return nil
@@ -707,6 +763,12 @@ func Value_ReferenceValue_ToProto(mapCtx *direct.MapContext, in *string) *firest
 		return nil
 	}
 	return &firestorepb.Value_ReferenceValue{ReferenceValue: *in}
+}
+func Value_FieldReferenceValue_ToProto(mapCtx *direct.MapContext, in *string) *firestorepb.Value_FieldReferenceValue {
+	if in == nil {
+		return nil
+	}
+	return &firestorepb.Value_FieldReferenceValue{FieldReferenceValue: *in}
 }
 func WeeklyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyRecurrence) *krmfirestorev1alpha1.WeeklyRecurrence {
 	if in == nil {
