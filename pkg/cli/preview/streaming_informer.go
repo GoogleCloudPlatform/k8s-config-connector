@@ -299,9 +299,6 @@ func (i *streamingInformer) Get(ctx context.Context, key client.ObjectKey, obj c
 	if len(opts) != 0 {
 		return fmt.Errorf("options not implemented: %v", opts)
 	}
-	if !i.WaitForCacheSync(ctx) {
-		return fmt.Errorf("streamingInformer WaitForCacheSync failed")
-	}
 
 	// During preview, each resource is only reconciled once.
 	// If CC or CCC objects are not synced, the reconciler can give out false positives
