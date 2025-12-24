@@ -39,6 +39,10 @@ EOF
 # Update and run code generation
 make
 
-# Add boilerplate, fix formatting
 cd ${REPO_ROOT}
+
+# Generate mappers etc
+dev/tasks/generate-types-and-mappers
+
+# Add boilerplate, fix formatting
 make fmt

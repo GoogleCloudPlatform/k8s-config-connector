@@ -90,3 +90,6 @@ go run ./scripts/generate-cnrm-cluster-roles/main.go
 
 # controller-gen sometimes leaves empty imports in the api files.
 go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w apis
+
+# Run apichecks
+WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... || true
