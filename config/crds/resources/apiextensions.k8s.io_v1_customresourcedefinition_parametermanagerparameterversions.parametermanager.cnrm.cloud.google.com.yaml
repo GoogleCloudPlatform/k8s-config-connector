@@ -89,14 +89,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed BigQueryBigLakeCatalog
+                    description: A reference to an externally managed ParameterManagerParameter
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}}".
                     type: string
                   name:
-                    description: The name of a BigQueryBigLakeCatalog resource.
+                    description: The name of a ParameterManagerParameter resource.
                     type: string
                   namespace:
-                    description: The namespace of a BigQueryBigLakeCatalog resource.
+                    description: The namespace of a ParameterManagerParameter resource.
                     type: string
                 type: object
               payload:
