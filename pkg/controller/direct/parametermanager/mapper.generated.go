@@ -62,3 +62,21 @@ func ParameterManagerParameterSpec_FromProto(mapCtx *direct.MapContext, in *pb.P
 	}
 	return out
 }
+func ParameterManagerParameterVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.ParameterVersion) *krm.ParameterManagerParameterVersionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParameterManagerParameterVersionSpec{}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.Payload = ParameterVersionPayload_FromProto(mapCtx, in.GetPayload())
+	return out
+}
+func ParameterManagerParameterVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.ParameterManagerParameterVersionSpec) *pb.ParameterVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ParameterVersion{}
+	out.Disabled = direct.ValueOf(in.Disabled)
+	out.Payload = ParameterVersionPayload_ToProto(mapCtx, in.Payload)
+	return out
+}
