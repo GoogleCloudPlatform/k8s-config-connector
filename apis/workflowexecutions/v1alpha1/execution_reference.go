@@ -59,8 +59,8 @@ func NewExecutionRef(ctx context.Context, reader client.Reader, obj *WorkflowsEx
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
-	_, workflow, err := workflow.ParseWorkflowsWorkflowExternal(obj.Spec.WorkflowRef.External)
-	if err != nil {
+	workflowIdentity := &workflow.WorkflowsWorkflowIdentity{}
+	if err := workflowIdentity.FromExternal(obj.Spec.WorkflowRef.External); err != nil {
 		return nil, err
 	}
 
@@ -88,7 +88,7 @@ func NewExecutionRef(ctx context.Context, reader client.Reader, obj *WorkflowsEx
 		id.External = externalRef
 		return id, nil
 	}
-	id.External = "projects/" + projectID + "/locations/" + location + "/workflows/" + workflow + "/executions/" + resourceID
+	id.External = workflowIdentity.String() + "/executions/" + resourceID
 	return id, nil
 }
 
