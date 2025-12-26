@@ -62,9 +62,9 @@ spec:
               ParameterManagerParameter
             properties:
               format:
+                default: UNFORMATTED
                 description: Optional. Specifies the format of a Parameter.
                 enum:
-                - PARAMETER_FORMAT_UNSPECIFIED
                 - UNFORMATTED
                 - YAML
                 - JSON
