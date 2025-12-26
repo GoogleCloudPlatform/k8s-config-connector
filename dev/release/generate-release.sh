@@ -24,6 +24,11 @@ if [ -z "$NEW_VERSION" ]; then
   exit 1
 fi
 
+if [[ ! "$NEW_VERSION" =~ ^1\.[0-9]+\.[0-9]+$ ]]; then
+  echo "Error: New version must be in the format 1.xxx.x (e.g., 1.142.0)."
+  exit 1
+fi
+
 if [ "$NEW_VERSION" == "$STALE_VERSION" ]; then
     echo "Error: New version ($NEW_VERSION) is the same as the stale version ($STALE_VERSION)."
     exit 1
@@ -43,20 +48,12 @@ fi
 RELEASE_BRANCH="release-${NEW_VERSION}"
 if git rev-parse --verify "${RELEASE_BRANCH}" >/dev/null 2>&1; then
     echo "Release branch ${RELEASE_BRANCH} already exists."
-    read -p "Do you want to delete the existing branch and recreate it? (y/N): " response
-    if [[ "$response" =~ ^[Yy]$ ]]; then
-        git branch -D "${RELEASE_BRANCH}"
-        echo "Deleted existing branch ${RELEASE_BRANCH}."
-        echo "Creating release branch ${RELEASE_BRANCH}..."
-        git checkout -b "${RELEASE_BRANCH}"
-    else
-        echo "Exiting without creating release branch."
-        exit 1
-    fi
-else
-    echo "Creating release branch ${RELEASE_BRANCH}..."
-    git checkout -b "${RELEASE_BRANCH}"
+    git branch -D "${RELEASE_BRANCH}"
+    echo "Deleted existing branch ${RELEASE_BRANCH}."
 fi
+
+echo "Creating release branch ${RELEASE_BRANCH}..."
+git checkout -b "${RELEASE_BRANCH}"
 
 # Step 3: Propose Tag and Update Manifests
 echo "Proposing tag and updating manifests..."
@@ -72,7 +69,6 @@ git commit -m "Update alpha CRDs for Release ${NEW_VERSION}"
 
 # Step 5: Run Unit Tests
 echo "Running unit tests..."
-cd operator
 # We use an if statement to handle the failure case without exiting due to set -e
 if ! (cd operator && go test ./pkg/controllers/...); then
   echo "Unit tests failed. Updating golden files..."
@@ -97,10 +93,7 @@ VALIDATE_URLS="true" go test ./scripts/generate-google3-docs/...
 
 # Step 6: Format Code
 echo "Formatting code..."
-<<<<<<< HEAD
-=======
 cd "$(git rev-parse --show-toplevel)"
->>>>>>> 3f00e08c2f (Improve release scripts)
 make fmt
 git add .
 # Only commit if there are changes

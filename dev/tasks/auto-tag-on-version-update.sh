@@ -131,7 +131,7 @@ echo "Creating annotated tag v${VERSION} for commit ${COMMIT_HASH}"
 git tag -a "v${VERSION}" -m "Release ${VERSION}" "${COMMIT_HASH}"
 
 # 7. Push the tag to the OSS remote.
-echo "Pushing tag v${VERSION} to origin."
-git push origin "v${VERSION}"
+echo "Pushing tag v${VERSION} to upstream."
+git push upstream "v${VERSION}"
 
 echo "--- Successfully processed release branch ${RELEASE_BRANCH} and tag v${VERSION} ---"
