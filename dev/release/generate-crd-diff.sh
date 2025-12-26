@@ -38,16 +38,19 @@ if [[ "$COMMIT_MSG_1" == "$EXPECTED_MSG_FMT" ]] && \
    [[ "$COMMIT_MSG_4" =~ $RELEASE_COMMIT_REGEX ]]; then
     echo "Found the expected sequence of commits with format and golden file update."
     CRD_COMMIT_HASH=$(git log -3 --pretty=%H | tail -n 1)
+# Case 2: Format update present, Golden file update ABSENT
 elif [[ "$COMMIT_MSG_1" == "$EXPECTED_MSG_FMT" ]] && \
      [[ "$COMMIT_MSG_2" == *"$EXPECTED_MSG_CRD"* ]] && \
      [[ "$COMMIT_MSG_3" =~ $RELEASE_COMMIT_REGEX ]]; then
     echo "Found the expected sequence of commits with format update."
     CRD_COMMIT_HASH=$(git log -2 --pretty=%H | tail -n 1)
+# Case 3: Format update absent, Golden file update PRESENT
 elif [[ "$COMMIT_MSG_1" == "$EXPECTED_MSG_GOLDEN" ]] && \
    [[ "$COMMIT_MSG_2" == *"$EXPECTED_MSG_CRD"* ]] && \
    [[ "$COMMIT_MSG_3" =~ $RELEASE_COMMIT_REGEX ]]; then
     echo "Found the expected sequence of commits with golden file update."
     CRD_COMMIT_HASH=$(git log -2 --pretty=%H | tail -n 1)
+# Case 4: Format update absent, Golden file update ABSENT
 elif [[ "$COMMIT_MSG_1" == *"$EXPECTED_MSG_CRD"* ]] && \
      [[ "$COMMIT_MSG_2" =~ $RELEASE_COMMIT_REGEX ]]; then
     echo "Found the expected sequence of commits without optional updates."

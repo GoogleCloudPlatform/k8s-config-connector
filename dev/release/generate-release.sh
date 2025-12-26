@@ -24,9 +24,39 @@ if [ -z "$NEW_VERSION" ]; then
   exit 1
 fi
 
+if [ "$NEW_VERSION" == "$STALE_VERSION" ]; then
+    echo "Error: New version ($NEW_VERSION) is the same as the stale version ($STALE_VERSION)."
+    exit 1
+fi
+
+# sort -V sorts version numbers. If the first line is the new VERSION, then it is not strictly greater than STALE_VERSION.
+# We expect STALE_VERSION to be smaller, so it should be first in sort -V output.
+SORTED_VERSIONS=$(printf "%s\n%s" "$NEW_VERSION" "$STALE_VERSION" | sort -V)
+SMALLEST_VERSION=$(echo "$SORTED_VERSIONS" | head -n1)
+
+if [ "$SMALLEST_VERSION" == "$NEW_VERSION" ]; then
+     echo "Error: New version ($NEW_VERSION) is not greater than stale version ($STALE_VERSION)."
+     exit 1
+fi
+
 # Step 2: Create Release Branch
-echo "Creating release branch release-${NEW_VERSION}..."
-git checkout -b "release-${NEW_VERSION}"
+RELEASE_BRANCH="release-${NEW_VERSION}"
+if git rev-parse --verify "${RELEASE_BRANCH}" >/dev/null 2>&1; then
+    echo "Release branch ${RELEASE_BRANCH} already exists."
+    read -p "Do you want to delete the existing branch and recreate it? (y/N): " response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+        git branch -D "${RELEASE_BRANCH}"
+        echo "Deleted existing branch ${RELEASE_BRANCH}."
+        echo "Creating release branch ${RELEASE_BRANCH}..."
+        git checkout -b "${RELEASE_BRANCH}"
+    else
+        echo "Exiting without creating release branch."
+        exit 1
+    fi
+else
+    echo "Creating release branch ${RELEASE_BRANCH}..."
+    git checkout -b "${RELEASE_BRANCH}"
+fi
 
 # Step 3: Propose Tag and Update Manifests
 echo "Proposing tag and updating manifests..."
@@ -44,14 +74,18 @@ git commit -m "Update alpha CRDs for Release ${NEW_VERSION}"
 echo "Running unit tests..."
 cd operator
 # We use an if statement to handle the failure case without exiting due to set -e
-if ! (go test ./pkg/controllers/...); then
+if ! (cd operator && go test ./pkg/controllers/...); then
   echo "Unit tests failed. Updating golden files..."
   WRITE_GOLDEN_OUTPUT="true" go test ./pkg/controllers/...
   git add .
   git commit -m "Update golden files for operator controllers"
 
   echo "Retrying unit tests..."
-  go test ./pkg/controllers/...
+  if ! (go test ./pkg/controllers/...); then
+    echo "Unit tests failed even after updating golden files."
+    echo "Please fix the test failures manually and try again."
+    exit 1
+  fi
 fi
 
 echo "Validating resource reference docs..."
@@ -63,6 +97,10 @@ VALIDATE_URLS="true" go test ./scripts/generate-google3-docs/...
 
 # Step 6: Format Code
 echo "Formatting code..."
+<<<<<<< HEAD
+=======
+cd "$(git rev-parse --show-toplevel)"
+>>>>>>> 3f00e08c2f (Improve release scripts)
 make fmt
 git add .
 # Only commit if there are changes
