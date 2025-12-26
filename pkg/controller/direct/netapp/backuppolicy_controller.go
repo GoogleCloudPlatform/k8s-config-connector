@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/netapp/apiv1"
 	netapppb "cloud.google.com/go/netapp/apiv1/netapppb"
@@ -182,6 +183,13 @@ func (a *BackupPolicyAdapter) Update(ctx context.Context, updateOp *directbase.U
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
+
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
 	}
