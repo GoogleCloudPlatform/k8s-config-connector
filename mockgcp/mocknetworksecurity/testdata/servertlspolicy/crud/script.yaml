@@ -1,0 +1,3 @@
+- exec: gcloud beta network-security server-tls-policies import test-server-tls-policy-${uniqueId} --source=server-tls-policy.yaml --location=global --project=${projectId}
+- exec: gcloud beta network-security server-tls-policies describe test-server-tls-policy-${uniqueId} --location=global --project=${projectId}
+- exec: gcloud beta network-security server-tls-policies delete test-server-tls-policy-${uniqueId} --location=global --project=${projectId} --quiet
