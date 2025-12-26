@@ -305,10 +305,9 @@ oneOf:
 				ruleYAML = refRuleWithKind
 			}
 		} else if signature == "external,kind,name,namespace" {
-			ruleYAML = refRuleWithKind
-			// kind is optional for projectRef (and maybe in future other well-known ref types)
-			// fieldPath is the best mechanism we have today (?)
-			if isProjectPath(fieldPath) {
+			if sets.New(props.Required...).Has("kind") {
+				ruleYAML = refRuleWithKind
+			} else {
 				ruleYAML = refRuleWithOptionalKind
 			}
 		} else if signature == "external,name,namespace" {
