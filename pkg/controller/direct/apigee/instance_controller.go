@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	api "google.golang.org/api/apigee/v1"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -173,18 +174,20 @@ func (a *ApigeeInstanceAdapter) Update(ctx context.Context, updateOp *directbase
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	if resource.AccessLoggingConfig != nil {
 		if resource.AccessLoggingConfig.Enabled != a.actual.AccessLoggingConfig.Enabled {
-			log.V(2).Info("change detected: accessLoggingConfig.enabled")
+			report.AddField("access_logging_config.enabled", a.actual.AccessLoggingConfig.Enabled, resource.AccessLoggingConfig.Enabled)
 			updateMask.Paths = append(updateMask.Paths, "access_logging_config.enabled")
 		}
 		if resource.AccessLoggingConfig.Filter != a.actual.AccessLoggingConfig.Filter {
-			log.V(2).Info("change detected: accessLoggingConfig.filter")
+			report.AddField("access_logging_config.filter", a.actual.AccessLoggingConfig.Filter, resource.AccessLoggingConfig.Filter)
 			updateMask.Paths = append(updateMask.Paths, "access_logging_config.filter")
 		}
 	}
 	if resource.ConsumerAcceptList != nil && !reflect.DeepEqual(asSortedCopy(resource.ConsumerAcceptList), asSortedCopy(a.actual.ConsumerAcceptList)) {
-		log.V(2).Info("change detected: consumerAcceptList")
+		report.AddField("consumer_accept_list", a.actual.ConsumerAcceptList, resource.ConsumerAcceptList)
 		updateMask.Paths = append(updateMask.Paths, "consumer_accept_list")
 	}
 
@@ -197,6 +200,8 @@ func (a *ApigeeInstanceAdapter) Update(ctx context.Context, updateOp *directbase
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	op, err := a.instancesClient.Patch(a.id.String(), resource).UpdateMask(strings.Join(updateMask.Paths, ",")).Context(ctx).Do()
 	if err != nil {
