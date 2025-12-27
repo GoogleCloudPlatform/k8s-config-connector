@@ -26,32 +26,32 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &CustomTargetTypeRef{}
+var _ refsv1beta1.ExternalNormalizer = &TargetRef{}
 
-// CustomTargetTypeRef defines the resource reference to CloudDeployCustomTargetType, which "External" field
+// TargetRef defines the resource reference to CloudDeployTarget, which "External" field
 // holds the GCP identifier for the KRM object.
-type CustomTargetTypeRef struct {
-	// A reference to an externally managed CloudDeployCustomTargetType resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/customtargettypes/{{customtargettypeID}}".
+type TargetRef struct {
+	// A reference to an externally managed CloudDeployTarget resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/targets/{{targetID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a CloudDeployCustomTargetType resource.
+	// The name of a CloudDeployTarget resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a CloudDeployCustomTargetType resource.
+	// The namespace of a CloudDeployTarget resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on CloudDeployCustomTargetType.
-// If the "External" is given in the other resource's spec.CloudDeployCustomTargetTypeRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual CloudDeployCustomTargetType object from the cluster.
-func (r *CustomTargetTypeRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+// NormalizedExternal provision the "External" value for other resource that depends on CloudDeployTarget.
+// If the "External" is given in the other resource's spec.CloudDeployTargetRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual CloudDeployTarget object from the cluster.
+func (r *TargetRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", CustomTargetTypeGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", CloudDeployTargetGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseCustomTargetTypeExternal(r.External); err != nil {
+		if _, _, err := ParseTargetExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -63,12 +63,12 @@ func (r *CustomTargetTypeRef) NormalizedExternal(ctx context.Context, reader cli
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(CustomTargetTypeGVK)
+	u.SetGroupVersionKind(CloudDeployTargetGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", CustomTargetTypeGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", CloudDeployTargetGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
