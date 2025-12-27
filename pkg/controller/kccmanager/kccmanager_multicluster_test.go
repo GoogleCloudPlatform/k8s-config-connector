@@ -17,6 +17,7 @@ package kccmanager
 import (
 	"context"
 	"fmt"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -30,6 +31,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/leaderelection/resourcelock"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -294,4 +296,187 @@ func newTestManagerWithConfig(t *testing.T, cfg *rest.Config, scheme *runtime.Sc
 	}
 
 	return mgr, signal
+}
+
+// MockLock implements resourcelock.Interface
+type MockLock struct {
+	identity string
+}
+
+func (m *MockLock) Get(ctx context.Context) (*resourcelock.LeaderElectionRecord, []byte, error) {
+	// Always say we are the leader
+	return &resourcelock.LeaderElectionRecord{
+		HolderIdentity:       m.identity,
+		LeaseDurationSeconds: 15,
+		AcquireTime:          metav1.Now(),
+		RenewTime:            metav1.Now(),
+	}, nil, nil
+}
+
+func (m *MockLock) Create(ctx context.Context, ler resourcelock.LeaderElectionRecord) error {
+	return nil
+}
+
+func (m *MockLock) Update(ctx context.Context, ler resourcelock.LeaderElectionRecord) error {
+	return nil
+}
+
+func (m *MockLock) RecordEvent(string) {}
+
+func (m *MockLock) Identity() string {
+	return m.identity
+}
+
+func (m *MockLock) Describe() string {
+	return "MockLock"
+}
+
+// TestSplitBrainProtection verifies that the manager crashes/halts if it believes it is the leader
+// but the global MultiClusterLease status indicates a different leader.
+func TestSplitBrainProtection(t *testing.T) {
+	// specific environment variable to detect if we are in the subprocess
+	if os.Getenv("TEST_SPLIT_BRAIN_CRASH") == "1" {
+		t.Logf("Running split brain protection test in subprocess")
+		testSplitBrainProtectionBody(t)
+		return
+	}
+
+	// Re-run the test in a subprocess
+	cmd := exec.Command(os.Args[0], "-test.run=TestSplitBrainProtection", "-test.v")
+	cmd.Env = append(os.Environ(), "TEST_SPLIT_BRAIN_CRASH=1")
+	output, err := cmd.CombinedOutput()
+
+	// We expect the process to fail
+	if err == nil {
+		t.Logf("Output:\n%s", output)
+		t.Fatal("Expected process to crash/fail, but it succeeded")
+	}
+
+	// Check output for the expected log message
+	if !strings.Contains(string(output), "inconsistent state: started leading but MultiClusterLease status.globalHolderIdentity is") {
+		t.Logf("Output:\n%s", output)
+		t.Errorf("Process failed as expected, but did not contain expected log message")
+	}
+
+	t.Log("Successfully detected split-brain protection panic/exit")
+}
+
+func testSplitBrainProtectionBody(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	mclModPath, err := getModulePath("github.com/gke-labs/multicluster-leader-election")
+	if err != nil {
+		t.Fatalf("error getting module path: %v", err)
+	}
+
+	testEnv := &envtest.Environment{
+		CRDDirectoryPaths: []string{
+			filepath.Join(repo.GetRootOrTestFatal(t), "operator/config/crd/bases"),
+			filepath.Join(mclModPath, "config/crd/bases"),
+		},
+		ErrorIfCRDPathMissing: true,
+	}
+
+	cfg, err := testEnv.Start()
+	if err != nil {
+		t.Fatalf("error starting envtest: %v", err)
+	}
+	// No defer Stop() because os.Exit will kill us anyway.
+
+	scheme := runtime.NewScheme()
+	if err := mclv1alpha1.AddToScheme(scheme); err != nil {
+		t.Fatalf("error adding mcl to scheme: %v", err)
+	}
+	if err := operatorv1beta1.AddToScheme(scheme); err != nil {
+		t.Fatalf("error adding operator to scheme: %v", err)
+	}
+	if err := corev1.AddToScheme(scheme); err != nil {
+		t.Fatalf("error adding corev1 to scheme: %v", err)
+	}
+
+	k8sClient, err := client.New(cfg, client.Options{Scheme: scheme})
+	if err != nil {
+		t.Fatalf("error creating client: %v", err)
+	}
+
+	ns := "test-ns-splitbrain"
+	leaseName := "test-lease"
+	imposterIdentity := "imposter-manager"
+	localIdentity := "my-manager"
+
+	// Create namespace to be safe
+	namespaceObj := &corev1.Namespace{
+		ObjectMeta: metav1.ObjectMeta{Name: ns},
+	}
+	if err := k8sClient.Create(ctx, namespaceObj); err != nil {
+		t.Fatalf("error creating namespace: %v", err)
+	}
+
+	leaseDuration := int32(15)
+	renewTime := metav1.MicroTime{Time: time.Now()}
+	// 1. Create the MultiClusterLease with a DIFFERENT global holder
+	mcl := &mclv1alpha1.MultiClusterLease{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      leaseName,
+			Namespace: ns,
+		},
+		Spec: mclv1alpha1.MultiClusterLeaseSpec{
+			HolderIdentity:       &imposterIdentity,
+			LeaseDurationSeconds: &leaseDuration,
+			RenewTime:            &renewTime,
+		},
+	}
+	if err := k8sClient.Create(ctx, mcl); err != nil {
+		t.Fatalf("failed to create MCL: %v", err)
+	}
+
+	// 2. Update Status to reflect the imposter holds the lock
+	mcl.Status.GlobalHolderIdentity = &imposterIdentity
+	if err := k8sClient.Status().Update(ctx, mcl); err != nil {
+		t.Fatalf("failed to update MCL status: %v", err)
+	}
+
+	// 3. Create the Manager
+	kccCfg := Config{
+		ManagerOptions: manager.Options{
+			Scheme: scheme,
+			Metrics: metricsserver.Options{
+				BindAddress: "0",
+			},
+			LeaderElection:   false,
+			LeaderElectionID: localIdentity,
+		},
+		MultiClusterLease: true,
+		testConfig: testConfig{
+			skipControllerRegistration: true,
+			multiClusterLeaseConfig: &operatorv1beta1.MultiClusterLeaseSpec{
+				LeaseName:                leaseName,
+				Namespace:                ns,
+				ClusterCandidateIdentity: localIdentity,
+			},
+			suppressExitOnLeadershipLoss: true,
+		},
+	}
+
+	mgr, err := New(ctx, cfg, kccCfg)
+	if err != nil {
+		t.Fatalf("error creating manager: %v", err)
+	}
+
+	// 4. Hack: Swap the Lock with our MockLock
+	// We need to type assert to the internal struct
+	lem, ok := mgr.(*leaderElectionManager)
+	if !ok {
+		t.Fatalf("manager is not *leaderElectionManager, it is %T", mgr)
+	}
+
+	lem.leConfig.Lock = &MockLock{identity: localIdentity}
+
+	// 5. Start the manager
+	// This should trigger OnStartedLeading -> fetch MCL -> see "imposter" -> klog.Fatal
+	t.Log("Starting manager... expecting crash due to split-brain protection")
+	if err := lem.Start(ctx); err != nil {
+		t.Logf("Manager returned error: %v", err)
+	}
 }
