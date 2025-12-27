@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:fuzz-gen
-// proto.message: google.cloud.memorystore.v1beta.Instance
+// proto.message: google.cloud.memorystore.v1.Instance
 // api.group: memorystore.cnrm.cloud.google.com
 
 package memorystore
