@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/cloudtasks/apiv2"
 	cloudtaskspb "cloud.google.com/go/cloudtasks/apiv2/cloudtaskspb"
@@ -178,6 +179,12 @@ func (a *QueueAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	// remove output only fields
 	paths = paths.Delete("name")
 	paths = paths.Delete("state")
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
