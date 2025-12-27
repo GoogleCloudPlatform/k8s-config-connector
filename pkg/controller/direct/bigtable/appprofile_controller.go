@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigtable"
 	bigtablepb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
@@ -229,17 +230,22 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 		fieldsToUpdate.IgnoreWarnings = true
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	if desired.Spec.Description != nil && !cmp.Equal(resource.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, resource.Description)
 		fieldsToUpdate.Description = resource.Description
 		hasChanges = true
 	}
 	if desired.Spec.MultiClusterRoutingUseAny != nil && !cmp.Equal(resource.GetMultiClusterRoutingUseAny(), a.actual.GetMultiClusterRoutingUseAny(), cmpopts.IgnoreUnexported(bigtablepb.AppProfile_MultiClusterRoutingUseAny{})) {
+		report.AddField("multi_cluster_routing_use_any", a.actual.GetMultiClusterRoutingUseAny(), resource.GetMultiClusterRoutingUseAny())
 		fieldsToUpdate.RoutingConfig = &gcp.MultiClusterRoutingUseAnyConfig{
 			ClusterIDs: resource.GetMultiClusterRoutingUseAny().ClusterIds,
 		}
 		hasChanges = true
 	}
 	if desired.Spec.SingleClusterRouting != nil && !cmp.Equal(resource.GetSingleClusterRouting(), a.actual.GetSingleClusterRouting(), cmpopts.IgnoreUnexported(bigtablepb.AppProfile_SingleClusterRouting{})) {
+		report.AddField("single_cluster_routing", a.actual.GetSingleClusterRouting(), resource.GetSingleClusterRouting())
 		fieldsToUpdate.RoutingConfig = &gcp.SingleClusterRoutingConfig{
 			ClusterID:                resource.GetSingleClusterRouting().GetClusterId(),
 			AllowTransactionalWrites: resource.GetSingleClusterRouting().AllowTransactionalWrites,
@@ -247,12 +253,14 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 		hasChanges = true
 	}
 	if desired.Spec.StandardIsolation != nil && !cmp.Equal(resource.GetStandardIsolation(), a.actual.GetStandardIsolation(), cmpopts.IgnoreUnexported(bigtablepb.AppProfile_StandardIsolation{})) {
+		report.AddField("standard_isolation", a.actual.GetStandardIsolation(), resource.GetStandardIsolation())
 		fieldsToUpdate.Isolation = &gcp.StandardIsolation{
 			Priority: gcp.AppProfilePriority(resource.GetStandardIsolation().Priority),
 		}
 		hasChanges = true
 	}
 	if desired.Spec.DataBoostIsolationReadOnly != nil && !cmp.Equal(resource.GetDataBoostIsolationReadOnly(), a.actual.GetDataBoostIsolationReadOnly(), cmpopts.IgnoreUnexported(bigtablepb.AppProfile_DataBoostIsolationReadOnly{})) {
+		report.AddField("data_boost_isolation_read_only", a.actual.GetDataBoostIsolationReadOnly(), resource.GetDataBoostIsolationReadOnly())
 		fieldsToUpdate.Isolation = &gcp.DataBoostIsolationReadOnly{
 			ComputeBillingOwner: gcp.IsolationComputeBillingOwner(resource.GetDataBoostIsolationReadOnly().GetComputeBillingOwner()),
 		}
@@ -262,6 +270,7 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 	if !hasChanges {
 		log.V(2).Info("no changes to update", "name", a.id)
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		err := a.gcpClient.UpdateAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID(), fieldsToUpdate)
 		if err != nil {
 			return fmt.Errorf("updating BigtableAppProfile %s: %w", a.id, err)
