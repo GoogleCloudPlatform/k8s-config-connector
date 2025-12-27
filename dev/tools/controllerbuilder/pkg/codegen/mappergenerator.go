@@ -226,7 +226,7 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 	return nil
 }
 func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string, pair *typePair) {
-	klog.V(2).InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
+	klog.InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
 	msg := pair.Proto
 	pbTypeName := protoNameForType(msg)
 	pbTypeGoImport := v.goPackageForProto(msg.ParentFile())
@@ -448,9 +448,13 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				if useSliceFromProtoFunction != "" {
+					klog.Infof("Slice_FromProto krmFieldName %v, protoFieldName %v",
+						krmFieldName,
+						protoFieldName,
+					)
 					fmt.Fprintf(out, "\tout.%s = direct.Slice_FromProto(mapCtx, in.%s, %s)\n",
 						krmFieldName,
-						krmFieldName,
+						protoFieldName,
 						useSliceFromProtoFunction,
 					)
 				} else if useCustomMethod != "" {
