@@ -34,7 +34,7 @@ import (
 // Mux is the primary interface for mapping HTTP requests to gRPC method calls.
 type Mux interface {
 	http.Handler
-	AddService(client any)
+	AddService(client any, opt ...ServiceOption)
 }
 
 // grpcMux implements Mux.
