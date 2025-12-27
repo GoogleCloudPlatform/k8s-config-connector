@@ -26,10 +26,10 @@ spec:
   controlPlaneEndpointsConfig:
     dnsEndpointConfig:
       allowExternalTraffic: true
+      enableK8sTokensViaDns: true
   privateClusterConfig:
     enablePrivateNodes: false
 #    masterIpv4CidrBlock: 172.16.2.32/28
     # Error: When masterIpv4Cidr is set, privateEndpointSubnetwork must be unset.
     # privateEndpointSubnetworkRef:
     #   name: computesubnetwork-${uniqueId}
-

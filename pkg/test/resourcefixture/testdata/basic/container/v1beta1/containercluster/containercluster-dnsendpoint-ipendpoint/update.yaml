@@ -26,6 +26,7 @@ spec:
   controlPlaneEndpointsConfig:
     dnsEndpointConfig:
       allowExternalTraffic: true
+      enableK8sTokensViaDns: false
   privateClusterConfig:
     enablePrivateNodes: true
     # masterIpv4CidrBlock: 172.16.2.32/28

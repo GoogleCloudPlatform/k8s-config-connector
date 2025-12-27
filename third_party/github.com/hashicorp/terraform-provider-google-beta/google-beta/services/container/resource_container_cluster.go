@@ -1593,6 +1593,12 @@ func ResourceContainerCluster() *schema.Resource {
 										Optional:    true,
 										Description: `Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false.`,
 									},
+									"enable_k8s_tokens_via_dns": {
+										Type:        schema.TypeBool,
+										Optional:    true,
+										Computed:    true,
+										Description: `Controls whether the Kubernetes Certificates API is enabled.`,
+									},
 								},
 							},
 						},
@@ -4983,6 +4989,11 @@ func expandControlPlaneEndpointsConfig(d *schema.ResourceData) *container.Contro
 		dns.ForceSendFields = []string{"AllowExternalTraffic"}
 	}
 
+	if v := d.Get("control_plane_endpoints_config.0.dns_endpoint_config.0.enable_k8s_tokens_via_dns"); v != nil {
+		dns.EnableK8sTokensViaDns = v.(bool)
+		dns.ForceSendFields = append(dns.ForceSendFields, "EnableK8sTokensViaDns")
+	}
+
 	ip := &container.IPEndpointsConfig{
 		// There isn't yet a config field to disable IP endpoints, so this is hardcoded to be enabled for the time being.
 		Enabled:         true,
@@ -5578,8 +5589,9 @@ func flattenDnsEndpointConfig(dns *container.DNSEndpointConfig) []map[string]int
 	}
 	return []map[string]interface{}{
 		{
-			"endpoint":               dns.Endpoint,
-			"allow_external_traffic": dns.AllowExternalTraffic,
+			"endpoint":                  dns.Endpoint,
+			"allow_external_traffic":    dns.AllowExternalTraffic,
+			"enable_k8s_tokens_via_dns": dns.EnableK8sTokensViaDns,
 		},
 	}
 }
