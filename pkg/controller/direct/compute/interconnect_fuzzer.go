@@ -70,5 +70,9 @@ func computeInterconnectFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".aai_enabled")
 	f.Unimplemented_NotYetTriaged(".application_aware_interconnect")
 
+	f.Unimplemented_NotYetTriaged(".params")
+	f.Unimplemented_NotYetTriaged(".wire_groups")
+	f.Unimplemented_NotYetTriaged(".subzone")
+
 	return f
 }
