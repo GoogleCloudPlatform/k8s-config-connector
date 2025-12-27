@@ -523,6 +523,11 @@ spec:
                                     description: Required. This must match the Name
                                       of a Volume.
                                     type: string
+                                  subPath:
+                                    description: Optional. Path within the volume
+                                      from which the container's volume should be
+                                      mounted. Defaults to "" (volume's root).
+                                    type: string
                                 type: object
                               type: array
                             workingDir:

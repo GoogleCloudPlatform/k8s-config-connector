@@ -165,6 +165,28 @@ type NodeSelector struct {
 	Accelerator *string `json:"accelerator,omitempty"`
 }
 
+// +kcc:proto=google.cloud.run.v2.SourceCode
+type SourceCode struct {
+	// The source is a Cloud Storage bucket.
+	// +kcc:proto:field=google.cloud.run.v2.SourceCode.cloud_storage_source
+	CloudStorageSource *SourceCode_CloudStorageSource `json:"cloudStorageSource,omitempty"`
+}
+
+// +kcc:proto=google.cloud.run.v2.SourceCode.CloudStorageSource
+type SourceCode_CloudStorageSource struct {
+	// Required. The Cloud Storage bucket name.
+	// +kcc:proto:field=google.cloud.run.v2.SourceCode.CloudStorageSource.bucket
+	Bucket *string `json:"bucket,omitempty"`
+
+	// Required. The Cloud Storage object name.
+	// +kcc:proto:field=google.cloud.run.v2.SourceCode.CloudStorageSource.object
+	Object *string `json:"object,omitempty"`
+
+	// Optional. The Cloud Storage object generation.
+	// +kcc:proto:field=google.cloud.run.v2.SourceCode.CloudStorageSource.generation
+	Generation *int64 `json:"generation,omitempty"`
+}
+
 // +kcc:proto=google.cloud.run.v2.TCPSocketAction
 type TCPSocketAction struct {
 	// Optional. Port number to access on the container. Must be in the range 1 to
@@ -187,6 +209,11 @@ type VolumeMount struct {
 	//  volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run
 	// +kcc:proto:field=google.cloud.run.v2.VolumeMount.mount_path
 	MountPath *string `json:"mountPath,omitempty"`
+
+	// Optional. Path within the volume from which the container's volume should
+	//  be mounted. Defaults to "" (volume's root).
+	// +kcc:proto:field=google.cloud.run.v2.VolumeMount.sub_path
+	SubPath *string `json:"subPath,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.run.v2.BuildInfo

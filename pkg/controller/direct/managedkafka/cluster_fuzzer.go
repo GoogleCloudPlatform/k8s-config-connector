@@ -33,9 +33,7 @@ func managedKafkaClusterFuzzer() fuzztesting.KRMFuzzer {
 		ManagedKafkaClusterObservedState_FromProto, ManagedKafkaClusterObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")          // special field
-	f.UnimplementedFields.Insert(".satisfies_pzi") // NOTYET
-	f.UnimplementedFields.Insert(".satisfies_pzs") // NOTYET
+	f.IdentityField(".name")
 
 	f.SpecFields.Insert(".gcp_config")
 	f.SpecFields.Insert(".labels")
@@ -45,6 +43,11 @@ func managedKafkaClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".state")
+
+	f.UnimplementedFields.Insert(".satisfies_pzi") // NOTYET
+	f.UnimplementedFields.Insert(".satisfies_pzs") // NOTYET
+
+	f.Unimplemented_NotYetTriaged(".tls_config")
 
 	return f
 }

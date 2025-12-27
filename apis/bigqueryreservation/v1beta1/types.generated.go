@@ -25,6 +25,25 @@ package v1beta1
 type Reservation_ReplicationStatus struct {
 }
 
+// +kcc:proto=google.cloud.bigquery.reservation.v1.SchedulingPolicy
+type SchedulingPolicy struct {
+	// Optional. If present and > 0, the reservation will attempt to limit the
+	//  concurrency of jobs running for any particular project within it to the
+	//  given value.
+	//
+	//  This feature is not yet generally available.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.SchedulingPolicy.concurrency
+	Concurrency *int64 `json:"concurrency,omitempty"`
+
+	// Optional. If present and > 0, the reservation will attempt to limit the
+	//  slot consumption of queries running for any particular project within it to
+	//  the given value.
+	//
+	//  This feature is not yet generally available.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.SchedulingPolicy.max_slots
+	MaxSlots *int64 `json:"maxSlots,omitempty"`
+}
+
 // +kcc:proto=google.protobuf.Any
 type Any struct {
 	// A URL/resource name that uniquely identifies the type of the serialized
@@ -100,4 +119,12 @@ type Reservation_ReplicationStatusObservedState struct {
 	//  that was successfully replicated to the secondary.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus.last_replication_time
 	LastReplicationTime *string `json:"lastReplicationTime,omitempty"`
+
+	// Output only. The time at which a soft failover for the reservation and
+	//  its associated datasets was initiated. After this field is set, all
+	//  subsequent changes to the reservation will be rejected unless a hard
+	//  failover overrides this operation. This field will be cleared once the
+	//  failover is complete.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus.soft_failover_start_time
+	SoftFailoverStartTime *string `json:"softFailoverStartTime,omitempty"`
 }
