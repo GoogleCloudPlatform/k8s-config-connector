@@ -919,6 +919,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - storagecontrol.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - storagetransfer.cnrm.cloud.google.com
   resources:
   - '*'
