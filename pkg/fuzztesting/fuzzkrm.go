@@ -15,7 +15,9 @@
 package fuzztesting
 
 import (
+	"fmt"
 	"math/rand"
+	"os"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -229,7 +231,28 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Logf("p2 = %v", prototext.Format(p2))
 		t.Errorf("roundtrip failed for KRM %T; diff:\n%s", krm, diff)
+		diffPaths := diffFieldPaths(p1, p2)
+		for _, diffPath := range diffPaths {
+			hint := fmt.Sprintf("Add `f.Unimplemented_NotYetTriaged(%q)` to the fuzzer for the proto type %v to mark this field as not yet triaged.", diffPath, f.ProtoType.ProtoReflect().Descriptor().FullName())
+			fmt.Fprintf(os.Stderr, "<hint_for_agent>%s</hint_for_agent>", hint)
+			break
+		}
 	}
+}
+
+// diffFieldPaths returns the field paths that differ between two proto messages.
+func diffFieldPaths(m1, m2 proto.Message) []string {
+	paths1 := sets.New[string]()
+	VisitValues(m1, func(path string, fd protoreflect.FieldDescriptor, v protoreflect.Value) protoreflect.Value {
+		paths1.Insert(path)
+		return v
+	})
+	paths2 := sets.New[string]()
+	VisitValues(m2, func(path string, fd protoreflect.FieldDescriptor, v protoreflect.Value) protoreflect.Value {
+		paths2.Insert(path)
+		return v
+	})
+	return paths1.Difference(paths2).UnsortedList()
 }
 
 // VisitValues is a helper function that visits all values in a proto message,
