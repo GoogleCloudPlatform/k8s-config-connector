@@ -1148,6 +1148,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - parametermanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - privateca.cnrm.cloud.google.com
   resources:
   - '*'
