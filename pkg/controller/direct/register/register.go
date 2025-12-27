@@ -72,6 +72,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networkservices"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/notebooks"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/orgpolicy"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/parametermanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/privateca"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/privilegedaccessmanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/pubsub"

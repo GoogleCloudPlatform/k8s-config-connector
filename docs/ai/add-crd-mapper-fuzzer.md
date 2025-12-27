@@ -168,6 +168,8 @@ func myNewResourceFuzzer() fuzztesting.KRMFuzzer {
 
 ## 7. Verify with Fuzzer Tests
 
+You will also need to make sure the package is imported in `pkg/controller/direct/register/register.go`; that ensures that the fuzz testers will pick it up.
+
 Run the fuzzer round-tripper presubmit check to validate your changes. This test can take over 10 minutes, so run it only when you believe your mapper is complete.
 
 ```bash
