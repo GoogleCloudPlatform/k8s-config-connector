@@ -76,6 +76,7 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/appengine/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/bigtable/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/bigquery/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/*/*/*.proto \

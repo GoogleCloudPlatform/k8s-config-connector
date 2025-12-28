@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: AppEngineFirewallRule
+    listKind: AppEngineFirewallRuleList
     plural: appenginefirewallrules
     shortNames:
     - gcpappenginefirewallrule
@@ -43,49 +44,62 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: AppEngineFirewallRule is the Schema for the AppEngineFirewallRule
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: AppEngineFirewallRuleSpec defines the desired state of AppEngineFirewallRule
             properties:
               action:
-                description: 'The action to take if this rule matches. Possible values:
-                  ["UNSPECIFIED_ACTION", "ALLOW", "DENY"].'
+                description: The action to take on matched requests.
                 type: string
               description:
-                description: An optional string description of this rule.
+                description: An optional string description of this rule. This field
+                  has a maximum length of 100 characters.
                 type: string
               project:
-                description: Immutable.
+                description: The project that this resource belongs to.
                 type: string
               resourceID:
-                description: Immutable. Optional. The priority of the resource. Used
-                  for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The AppEngineFirewallRule name. If not given, the metadata.name
+                  will be used.
                 type: string
               sourceRange:
-                description: IP address or range, defined using CIDR notation, of
-                  requests that this rule applies to.
+                description: |-
+                  IP address or range, defined using CIDR notation, of requests that this
+                   rule applies to. You can use the wildcard character "*" to match all IPs
+                   equivalent to "0/0" and "::/0" together.
+                   Examples: `192.168.1.1` or `192.168.0.0/16` or `2001:db8::/32`
+                             or `2001:0db8:0000:0042:0000:8a2e:0370:7334`.
+
+                   <p>Truncation will be silently performed on addresses which are not
+                   properly truncated. For example, `1.2.3.4/24` is accepted as the same
+                   address as `1.2.3.0/24`. Similarly, for IPv6, `2001:db8::1/32` is accepted
+                   as the same address as `2001:db8::/32`.
                 type: string
             required:
             - action
             - sourceRange
             type: object
           status:
+            description: AppEngineFirewallRuleStatus defines the config connector
+              machine state of AppEngineFirewallRule
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -109,12 +123,17 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the AppEngineFirewallRule resource
+                  in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
         required:
@@ -124,9 +143,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

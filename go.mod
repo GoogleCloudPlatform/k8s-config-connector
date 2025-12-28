@@ -13,6 +13,7 @@ require (
 	cloud.google.com/go/analytics v0.30.0
 	cloud.google.com/go/apigateway v1.7.7
 	cloud.google.com/go/apikeys v1.1.12
+	cloud.google.com/go/appengine v1.9.7
 	cloud.google.com/go/apphub v0.2.4
 	cloud.google.com/go/asset v1.21.1
 	cloud.google.com/go/assuredworkloads v1.13.0
@@ -60,6 +61,7 @@ require (
 	cloud.google.com/go/privilegedaccessmanager v0.2.5
 	cloud.google.com/go/profiler v0.4.1
 	cloud.google.com/go/pubsub/v2 v2.0.0
+	cloud.google.com/go/pubsublite v1.8.2
 	cloud.google.com/go/recaptchaenterprise/v2 v2.20.4
 	cloud.google.com/go/redis v1.18.2
 	cloud.google.com/go/resourcemanager v1.10.6
