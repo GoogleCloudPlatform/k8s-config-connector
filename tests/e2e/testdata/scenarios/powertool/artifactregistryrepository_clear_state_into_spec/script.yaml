@@ -1,0 +1,64 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# 00: Create an ArtifactRegistryRepository
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: artifactregistryrepository-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+spec:
+  description: "Original Description"
+  format: DOCKER
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceID: artifactregistryrepository-${uniqueId}
+---
+# 01: Set state-into-spec annotation to track external changes
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: artifactregistryrepository-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: merge
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+spec:
+  description: "Original Description"
+  format: DOCKER
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceID: artifactregistryrepository-${uniqueId}
+---
+# 02: Use powertool to clear state-into-spec
+kind: RunCLI
+args: [ "powertools", "clear-state-into-spec", "--namespace=${projectId}", "--kind=ArtifactRegistryRepository", "--name=artifactregistryrepository-${uniqueId}" ]
+---
+# 03: Read the object to verify state-into-spec is cleared
+TEST: READ-OBJECT
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: artifactregistryrepository-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+spec:
+  description: "Original Description" 
+  format: DOCKER
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceID: artifactregistryrepository-${uniqueId}
