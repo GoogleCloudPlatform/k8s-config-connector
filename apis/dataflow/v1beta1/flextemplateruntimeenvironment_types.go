@@ -1,10 +1,10 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+//    http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,23 +14,5 @@
 
 package v1beta1
 
-type google_protobuf_Struct struct {
-}
-
-type google_protobuf_Any struct {
-}
-
-type google_protobuf_Value struct {
-}
-
-type TemplateMetadata struct {
-}
-
-type PubsubSnapshotMetadata struct {
-}
-
-type FlexTemplateRuntimeEnvironment struct {
-}
-
-type JobMetadata struct {
-}
+// FlexTemplateRuntimeEnvironment actually maps to DataflowFlexTemplateJob
+// We need this placeholder file to stop generate.sh from regenerating it incorrectly.
