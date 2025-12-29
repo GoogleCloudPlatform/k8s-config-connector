@@ -201,7 +201,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating object", "u", u)
 
 	desired := a.desired.DeepCopy()

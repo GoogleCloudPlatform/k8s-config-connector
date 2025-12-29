@@ -107,7 +107,7 @@ type Adapter struct {
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting KeyHandle", "name", a.id.String())
 
 	// Check whether Config Connector knows the resource identity.
@@ -131,7 +131,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating KeyHandle")
 	mapCtx := &direct.MapContext{}
 

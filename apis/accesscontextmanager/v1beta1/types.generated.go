@@ -17,5 +17,6 @@
 // krm.version: v1beta1
 // proto.service: google.identity.accesscontextmanager.v1
 // resource: AccessContextManagerAccessPolicy:AccessPolicy
+// resource: AccessContextManagerAccessLevel:AccessLevel
 
 package v1beta1

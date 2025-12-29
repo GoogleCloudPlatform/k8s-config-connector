@@ -20,6 +20,7 @@ metadata:
     label-one: "value-one"
     label-two: "value-two"
 spec:
+  defaultMaxPodsPerNode: 200
   projectRef:
     external: ${projectId}
   location: us-central1
@@ -27,9 +28,9 @@ spec:
     clusterIpv4CidrBlocks: ["10.0.0.0/16"]
     servicesIpv4CidrBlocks: ["10.1.0.0/16"]
   fleet:
-    projectRef: 
-      name: project-${uniqueId}
+    projectRef:
+      external: ${projectId}
   authorization:
     adminUsers:
       usernameRef:
-        name: gsa-${uniqueId}  
+        name: gsa-${uniqueId}

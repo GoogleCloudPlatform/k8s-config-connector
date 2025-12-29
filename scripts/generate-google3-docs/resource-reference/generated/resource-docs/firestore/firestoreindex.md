@@ -96,7 +96,7 @@ queryScope: string
     <tr>
         <td>
             <p><code>collection</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -116,22 +116,17 @@ queryScope: string
     <tr>
         <td>
             <p><code>fields</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. The fields supported by this index. The last field entry is always for
-the field path '__name__'. If, on creation, '__name__' was not
-specified as the last field, it will be added automatically with the
-same direction as that of the last field defined. If the final field
-in a composite index is not directional, the '__name__' will be
-ordered '"ASCENDING"' (unless explicitly specified otherwise).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The fields supported by this index. The last field entry is always for the field path '__name__'. If, on creation, '__name__' was not specified as the last field, it will be added automatically with the same direction as that of the last field defined. If the final field in a composite index is not directional, the '__name__' will be ordered '"ASCENDING"' (unless explicitly specified otherwise).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>fields[]</code></p>
-            <p><i>Required</i></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -145,8 +140,7 @@ ordered '"ASCENDING"' (unless explicitly specified otherwise).{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can
-be specified. Possible values: ["CONTAINS"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["CONTAINS"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -166,8 +160,7 @@ be specified. Possible values: ["CONTAINS"].{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Indicates that this field supports ordering by the specified order or comparing using =, <, <=, >, >=.
-Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Indicates that this field supports ordering by the specified order or comparing using =, <, <=, >, >=. Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -183,6 +176,8 @@ Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCEN
 </tbody>
 </table>
 
+
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status
@@ -209,7 +204,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -258,8 +253,7 @@ observedGeneration: integer
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A server defined name for this index. Format:
-'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}'.{% endverbatim %}</p>
+            <p>{% verbatim %}A server defined name for this index. Format: 'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

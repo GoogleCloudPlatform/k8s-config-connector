@@ -26,6 +26,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -96,6 +97,28 @@ func NewCreateOperation(lifecycleHandler lifecyclehandler.LifecycleHandler, clie
 func (o *CreateOperation) RecordUpdatingEvent() {
 	r := o.lifecycleHandler.Recorder
 	r.Event(o.object, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
+}
+
+// SetSpecResourceID sets the spec.resourceID field of the resource after creation.
+// This was the previous behaviour for resources where the resource ID is server-generated.
+// We now consider status.externalRef the canonical source of truth for resource identity, but we keep this
+// function for backwards compatibility for server-generated-id resources that were previously managed by Terraform/DCL.
+// More info in docs/ai/server-generated-id.md
+func (o *CreateOperation) SetSpecResourceID(ctx context.Context, resourceID string) error {
+	log := klog.FromContext(ctx)
+
+	u := o.GetUnstructured()
+	log.Info("setting resourceID after creation", "resourceID", resourceID)
+
+	if err := unstructured.SetNestedField(u.Object, resourceID, "spec", "resourceID"); err != nil {
+		return fmt.Errorf("setting spec.resourceID in unstructured: %w", err)
+	}
+
+	if err := o.client.Update(ctx, u); err != nil {
+		return fmt.Errorf("updating object to set spec.resourceID: %w", err)
+	}
+
+	return nil
 }
 
 type DeleteOperation struct {

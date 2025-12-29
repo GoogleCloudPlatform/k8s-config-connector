@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,3 +53,42 @@ spec:
       widget:
         text:
           content: "CollapsibleGroup content"
+    - xPos: 0
+      yPos: 3
+      width: 12
+      height: 1
+      widget:
+        title: "AlertChart Widget"
+        alertChart:
+          alertPolicyRef:
+            name: monitoringalertpolicy-${uniqueId}
+    - xPos: 0
+      yPos: 4
+      width: 12
+      height: 1
+      widget:
+        title: "ErrorReporting Widget"
+        errorReportingPanel:
+          projectRefs:
+            - external: projects/project1
+            - external: projects/project2
+          services:
+            - foo
+            - bar
+          versions:
+            - v1
+    - xPos: 0
+      yPos: 5
+      width: 12
+      height: 1
+      widget:
+        title: "IncidentList Widget"
+        incidentList:
+          monitoredResources:
+            - type: "gce_instance"
+              labels:
+                project_id: my-project
+                instance_id: "12345678901234"
+                zone: "us-central1-a"
+          policyRefs:
+            - name: monitoringalertpolicy-${uniqueId}

@@ -864,6 +864,7 @@ X-Xss-Protection: 0
       }
     ],
     "observabilityConfig": {
+      "assistiveExperiencesEnabled": false,
       "enabled": false,
       "maxQueryStringLength": 10240,
       "preserveComments": false,
@@ -1265,6 +1266,7 @@ X-Xss-Protection: 0
       }
     ],
     "observabilityConfig": {
+      "assistiveExperiencesEnabled": false,
       "enabled": false,
       "maxQueryStringLength": 10240,
       "preserveComments": false,
@@ -1278,8 +1280,8 @@ X-Xss-Protection: 0
     "queryInsightsConfig": {
       "queryPlansPerMinute": 5,
       "queryStringLength": 1024,
-      "recordApplicationTags": true,
-      "recordClientAddress": true
+      "recordApplicationTags": false,
+      "recordClientAddress": false
     },
     "reconciling": false,
     "state": "READY",
@@ -1333,6 +1335,7 @@ X-Xss-Protection: 0
     }
   ],
   "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
     "enabled": false,
     "maxQueryStringLength": 10240,
     "preserveComments": false,
@@ -1346,8 +1349,8 @@ X-Xss-Protection: 0
   "queryInsightsConfig": {
     "queryPlansPerMinute": 5,
     "queryStringLength": 1024,
-    "recordApplicationTags": true,
-    "recordClientAddress": true
+    "recordApplicationTags": false,
+    "recordClientAddress": false
   },
   "reconciling": false,
   "state": 1,
@@ -1463,6 +1466,7 @@ X-Xss-Protection: 0
       }
     ],
     "observabilityConfig": {
+      "assistiveExperiencesEnabled": false,
       "enabled": false,
       "maxQueryStringLength": 10240,
       "preserveComments": false,
@@ -1476,8 +1480,8 @@ X-Xss-Protection: 0
     "queryInsightsConfig": {
       "queryPlansPerMinute": 5,
       "queryStringLength": 1024,
-      "recordApplicationTags": true,
-      "recordClientAddress": true
+      "recordApplicationTags": false,
+      "recordClientAddress": false
     },
     "reconciling": false,
     "state": "READY",
@@ -1534,6 +1538,7 @@ X-Xss-Protection: 0
     }
   ],
   "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
     "enabled": false,
     "maxQueryStringLength": 10240,
     "preserveComments": false,
@@ -1547,8 +1552,8 @@ X-Xss-Protection: 0
   "queryInsightsConfig": {
     "queryPlansPerMinute": 5,
     "queryStringLength": 1024,
-    "recordApplicationTags": true,
-    "recordClientAddress": true
+    "recordApplicationTags": false,
+    "recordClientAddress": false
   },
   "reconciling": false,
   "state": 1,
@@ -1749,6 +1754,7 @@ X-Xss-Protection: 0
     }
   ],
   "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
     "enabled": false,
     "maxQueryStringLength": 10240,
     "preserveComments": false,

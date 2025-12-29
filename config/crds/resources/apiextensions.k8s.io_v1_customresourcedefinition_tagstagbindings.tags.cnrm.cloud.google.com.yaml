@@ -111,14 +111,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `tagValues/{{value}}`,
-                      where {{value}} is the `name` field of a `TagsTagValue` resource.'
+                    description: A reference to an externally managed TagsTagValue
+                      resource. Should be in the format "tagValues/{{tagValueID}}".
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a TagsTagValue resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a TagsTagValue resource.
                     type: string
                 type: object
             required:

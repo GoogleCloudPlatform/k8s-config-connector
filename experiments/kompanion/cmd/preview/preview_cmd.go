@@ -50,6 +50,9 @@ type PreviewOptions struct {
 	timeout          int
 	reportNamePrefix string
 	fullReport       bool
+	gcpQPS           float64
+	gcpBurst         int
+	namespace        string
 }
 
 func BuildPreviewCmd() *cobra.Command {
@@ -68,7 +71,9 @@ func BuildPreviewCmd() *cobra.Command {
 	cmd.Flags().IntVarP(&opts.timeout, timeoutFlag, "", 15, "timeout in minutes. Default to 15 minutes.")
 	cmd.Flags().StringVarP(&opts.reportNamePrefix, reportNamePrefixFlag, "", "preview-report", "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
 	cmd.Flags().BoolVarP(&opts.fullReport, "full-report", "f", false, "Enable verbose logging.")
-
+	cmd.Flags().Float64VarP(&opts.gcpQPS, "gcpQPS", "q", 5.0, "Maximum qps for GCP API requests, per service. Default to 5.0. Set gcpQPS to 0 to disable rate limiting.")
+	cmd.Flags().IntVarP(&opts.gcpBurst, "gcpBurst", "b", 5, "Maximum burst for GCP API requests, per service. Default to 5. Set gcpQPS to 0 to disable rate limiting.")
+	cmd.Flags().StringVarP(&opts.namespace, "namespace", "n", "", "Namespace to preview. If not specified, all namespaces will be previewed.")
 	return cmd
 }
 
@@ -104,7 +109,7 @@ func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 	}
 	recorder := preview.NewRecorder()
 	klog.Info("Preloading the list of resources to reconcile")
-	if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig); err != nil {
+	if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig, opts.namespace); err != nil {
 		return fmt.Errorf("error preload the list of resources to reconcile: %w", err)
 	}
 	klog.Info("Successfully preload the list of resources to reconcile.")
@@ -116,6 +121,9 @@ func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 		UpstreamRESTConfig:       upstreamRESTConfig,
 		UpstreamGCPAuthorization: authorization,
 		UpstreamGCPHTTPClient:    nil,
+		UpstreamGCPQPS:           opts.gcpQPS,
+		UpstreamGCPBurst:         opts.gcpBurst,
+		Namespace:                opts.namespace,
 	})
 	if err != nil {
 		return fmt.Errorf("building preview instance: %v", err)
@@ -151,7 +159,7 @@ func printCapturedObjects(recorder *preview.Recorder, prefix string, full bool) 
 	}
 
 	if full {
-		outputFile := fmt.Sprintf("%s-full-%s", prefix, timestamp)
+		outputFile := fmt.Sprintf("%s-%s-full", prefix, timestamp)
 		if err := recorder.ExportDetailObjectsEvent(outputFile); err != nil {
 			return fmt.Errorf("error writing events: %w", err)
 		}

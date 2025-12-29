@@ -1,0 +1,35 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringDashboard
+metadata:
+  name: ${dashboardID}
+spec:
+  displayName: monitoringdashboard-gridlayout
+  gridLayout:
+    widgets:
+    - alertChart:
+        alertPolicyRef:
+          external: projects/${projectId}/alertPolicies/${alertPolicyID}
+      title: AlertChart Widget
+    - errorReportingPanel:
+        projectRefs:
+        - external: projects/project1
+        - external: projects/project2
+        services:
+        - foo
+        - bar
+        versions:
+        - v1
+        - v2
+      title: ErrorReporting Widget
+    - incidentList:
+        monitoredResources:
+        - labels:
+            instance_id: "12345678901234"
+            project_id: my-project
+            zone: us-central1-a
+          type: gce_instance
+        policyRefs:
+        - external: alertPolicies/${alertPolicyID}
+      title: IncidentList Widget
+  projectRef:
+    external: ${projectId}

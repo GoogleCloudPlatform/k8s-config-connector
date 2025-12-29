@@ -93,6 +93,7 @@ launchStage: string
 location: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -106,6 +107,8 @@ template:
     - args:
       - string
       command:
+      - string
+      dependsOn:
       - string
       env:
       - name: string
@@ -128,6 +131,7 @@ template:
           - name: string
             value: string
           path: string
+          port: integer
         initialDelaySeconds: integer
         periodSeconds: integer
         tcpSocket:
@@ -147,6 +151,7 @@ template:
           - name: string
             value: string
           path: string
+          port: integer
         initialDelaySeconds: integer
         periodSeconds: integer
         tcpSocket:
@@ -223,12 +228,7 @@ template:
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.
-
-Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected on new resources.
-All system annotations in v1 now have a corresponding field in v2 Job.
-
-This field follows Kubernetes annotations' namespacing, limits, and rules.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. User-provided annotations, which are stored in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -238,7 +238,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Settings for the Binary Authorization feature.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Settings for Binary Authorization feature.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -248,7 +248,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}If present, indicates to use Breakglass using this justification. If useDefault is False, then it must be empty. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If present, indicates to use Breakglass using this justification. If use_default is False, then it must be empty. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -258,7 +258,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If True, indicates to use the default project's binary authorization policy. If False, binary authorization will be disabled.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If True, indicates to use the default project's binary authorization policy. If False, binary authorization will be disabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -268,7 +268,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Arbitrary identifier for the API client.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Arbitrary identifier for the API client.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -278,7 +278,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Arbitrary version identifier for the API client.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Arbitrary version identifier for the API client.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -288,26 +288,23 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The launch stage as defined by [Google Cloud Platform Launch Stages](https://cloud.google.com/products#product-launch-stages). Cloud Run supports ALPHA, BETA, and GA.
-If no value is specified, GA is assumed. Set the launch stage to a preview stage on input to allow use of preview features in that stage. On read (or output), describes whether the resource uses preview features.
-
-For example, if ALPHA is provided as input, but only BETA and GA-level features are used, this field will be BETA on output. Possible values: ["UNIMPLEMENTED", "PRELAUNCH", "EARLY_ACCESS", "ALPHA", "BETA", "GA", "DEPRECATED"].{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The launch stage of the job. Possible values are `LAUNCH_STAGE_UNSPECIFIED`, `UNIMPLEMENTED`, `PRELAUNCH`, `EARLY_ACCESS`, `ALPHA`, `BETA`, `GA`, `DEPRECATED`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>location</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The location of the cloud run job.{% endverbatim %}</p>
+            <p>{% verbatim %}The location of the cloud run job{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>projectRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -321,7 +318,17 @@ For example, if ALPHA is provided as input, but only BETA and GA-level features 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -331,7 +338,7 @@ For example, if ALPHA is provided as input, but only BETA and GA-level features 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -341,7 +348,7 @@ For example, if ALPHA is provided as input, but only BETA and GA-level features 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -351,7 +358,7 @@ For example, if ALPHA is provided as input, but only BETA and GA-level features 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The RunJob name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -361,7 +368,7 @@ For example, if ALPHA is provided as input, but only BETA and GA-level features 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The template used to create executions for this Job.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The template used to create executions for this Job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -371,12 +378,17 @@ For example, if ALPHA is provided as input, but only BETA and GA-level features 
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.
+            <p>{% verbatim %}Unstructured key value map that may be set by external tools to store and
+ arbitrary metadata. They are not queryable and should be preserved
+ when modifying objects.
 
-Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected.
-All system annotations in v1 now have a corresponding field in v2 ExecutionTemplate.
+ <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
+ `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
+ namespaces, and they will be rejected. All system annotations in v1 now
+ have a corresponding field in v2 ExecutionTemplate.
 
-This field follows Kubernetes annotations' namespacing, limits, and rules.{% endverbatim %}</p>
+ <p>This field follows Kubernetes annotations' namespacing, limits, and
+ rules.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -386,7 +398,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Specifies the maximum desired number of tasks the execution should run at given time. Must be <= taskCount. When the job is run, if this field is 0 or unset, the maximum possible value will be used for that execution. The actual number of tasks running in steady state will be less than this number when there are fewer tasks waiting to be completed remaining, i.e. when the work left to do is less than max parallelism.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Specifies the maximum desired number of tasks the execution should run at given time. When the job is run, if this field is 0 or unset, the maximum possible value will be used for that execution. The actual number of tasks running in steady state will be less than this number when there are fewer tasks waiting to be completed remaining, i.e. when the work left to do is less than max parallelism.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -396,17 +408,17 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Specifies the desired number of tasks the execution should run. Setting to 1 means that parallelism is limited to 1 and the success of that task signals the success of the execution. More info: https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the desired number of tasks the execution should run. Setting to 1 means that parallelism is limited to 1 and the success of that task signals the success of the execution. Defaults to 1.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>template.template</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Describes the task(s) that will be created when executing an execution.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Describes the task(s) that will be created when executing an execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -436,7 +448,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Arguments to the entrypoint. The docker image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell.{% endverbatim %}</p>
+            <p>{% verbatim %}Arguments to the entrypoint. The docker image's CMD is used if this is not provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -456,12 +468,32 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell.{% endverbatim %}</p>
+            <p>{% verbatim %}Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>template.template.containers[].command[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.template.containers[].dependsOn</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Names of the containers that must start before this container.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.template.containers[].dependsOn[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -492,11 +524,11 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
     <tr>
         <td>
             <p><code>template.template.containers[].env[].name</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the environment variable. Must be a C_IDENTIFIER, and mnay not exceed 32768 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Name of the environment variable. Must not exceed 32768 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -506,7 +538,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Variable references $(VAR_NAME) are expanded using the previous defined environment variables in the container and any route environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "", and the maximum length is 32768 bytes.{% endverbatim %}</p>
+            <p>{% verbatim %}Literal value of the environment variable. Defaults to "", and the maximum length is 32768 bytes. Variable references are not supported in Cloud Run.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -532,11 +564,11 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
     <tr>
         <td>
             <p><code>template.template.containers[].env[].valueSource.secretKeyRef.secretRef</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The name of the secret in Cloud Secret Manager. Format: {secretName} if the secret is in the same project. projects/{project}/secrets/{secretName} if the secret is in a different project.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The name of the secret in Cloud Secret  Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -546,7 +578,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `SecretManagerSecret` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SecretManagerSecret resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -556,7 +588,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a SecretManagerSecret resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -566,17 +598,17 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a SecretManagerSecret resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>template.template.containers[].env[].valueSource.secretKeyRef.versionRef</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version.{% endverbatim %}</p>
+            <p>{% verbatim %}The Cloud Secret Manager secret version. Can be 'latest' for the latest version, an integer for a specific version, or a version alias.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -586,7 +618,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `version` field of a `SecretManagerSecretVersion` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secretversions/{{secretversionID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -596,7 +628,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a SecretManagerSecretVersion resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -606,17 +638,17 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a SecretManagerSecretVersion resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>template.template.containers[].image</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}URL of the Container image in Google Container Registry or Google Artifact Registry. More info: https://kubernetes.io/docs/concepts/containers/images.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Name of the container image in Dockerhub, Google Artifact Registry, or Google Container Registry. If the host is not provided, Dockerhub is assumed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -626,8 +658,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}DEPRECATED. `liveness_probe` is deprecated. This field is not supported by the Cloud Run API. Periodic probe of container liveness. Container will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
+            <p>{% verbatim %}Periodic probe of container liveness. Container will be restarted if the probe fails.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -637,7 +668,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -647,7 +678,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}HTTPGet specifies the http request to perform. Exactly one of HTTPGet or TCPSocket must be specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HTTPGet specifies the http request to perform. Exactly one of httpGet, tcpSocket, or grpc must be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -657,7 +688,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Custom headers to set in the request. HTTP allows repeated headers.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Custom headers to set in the request. HTTP allows repeated headers.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -673,11 +704,11 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>template.template.containers[].livenessProbe.httpGet.httpHeaders[].name</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The header field name.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The header field name{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -687,7 +718,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The header field value.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The header field value{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -697,7 +728,17 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Path to access on the HTTP server. Defaults to '/'.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Path to access on the HTTP server. Defaults to '/'.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.template.containers[].livenessProbe.httpGet.port</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to the exposed port of the container, which is the value of container.ports[0].containerPort.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -707,7 +748,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -717,7 +758,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeoutSeconds.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeout_seconds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -727,7 +768,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}TCPSocket specifies an action involving a TCP port. Exactly one of HTTPGet or TCPSocket must be specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. TCPSocket specifies an action involving a TCP port. Exactly one of httpGet, tcpSocket, or grpc must be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -737,7 +778,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to 8080.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to the exposed port of the container, which is the value of container.ports[0].containerPort.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -747,7 +788,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than periodSeconds. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than period_seconds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -757,7 +798,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the container specified as a DNS_LABEL.{% endverbatim %}</p>
+            <p>{% verbatim %}Name of the container specified as a DNS_LABEL (RFC 1123).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -767,9 +808,12 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}List of ports to expose from the container. Only a single port can be specified. The specified ports must be listening on all interfaces (0.0.0.0) within the container to be accessible.
+            <p>{% verbatim %}List of ports to expose from the container. Only a single port can be
+ specified. The specified ports must be listening on all interfaces
+ (0.0.0.0) within the container to be accessible.
 
-If omitted, a port number will be chosen and passed to the container through the PORT environment variable for the container to listen on.{% endverbatim %}</p>
+ If omitted, a port number will be chosen and passed to the container
+ through the PORT environment variable for the container to listen on.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -789,7 +833,7 @@ If omitted, a port number will be chosen and passed to the container through the
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Port number the container listens on. This must be a valid TCP port number, 0 < containerPort < 65536.{% endverbatim %}</p>
+            <p>{% verbatim %}Port number the container listens on. This must be a valid TCP port number, 0 < container_port < 65536.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -809,7 +853,7 @@ If omitted, a port number will be chosen and passed to the container through the
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Compute Resource requirements by this container. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources.{% endverbatim %}</p>
+            <p>{% verbatim %}Compute Resource requirements by this container.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -819,7 +863,14 @@ If omitted, a port number will be chosen and passed to the container through the
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Only memory and CPU are supported. Note: The only supported values for CPU are '1', '2', '4', and '8'. Setting 4 CPU requires at least 2Gi of memory. The values of the map is string form of the 'quantity' k8s type: https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go.{% endverbatim %}</p>
+            <p>{% verbatim %}Only `memory` and `cpu` keys in the map are supported.
+
+ <p>Notes:
+  * The only supported values for CPU are '1', '2', '4', and '8'. Setting 4
+ CPU requires at least 2Gi of memory. For more information, go to
+ https://cloud.google.com/run/docs/configuring/cpu.
+   * For supported 'memory' values and syntax, go to
+  https://cloud.google.com/run/docs/configuring/memory-limits{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -829,8 +880,7 @@ If omitted, a port number will be chosen and passed to the container through the
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}DEPRECATED. `startup_probe` is deprecated. This field is not supported by the Cloud Run API. Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
+            <p>{% verbatim %}Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -840,7 +890,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -850,7 +900,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}HTTPGet specifies the http request to perform. Exactly one of HTTPGet or TCPSocket must be specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HTTPGet specifies the http request to perform. Exactly one of httpGet, tcpSocket, or grpc must be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -860,7 +910,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Custom headers to set in the request. HTTP allows repeated headers.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Custom headers to set in the request. HTTP allows repeated headers.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -876,11 +926,11 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>template.template.containers[].startupProbe.httpGet.httpHeaders[].name</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The header field name.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The header field name{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -890,7 +940,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The header field value.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The header field value{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -900,7 +950,17 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Path to access on the HTTP server. Defaults to '/'.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Path to access on the HTTP server. Defaults to '/'.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.template.containers[].startupProbe.httpGet.port</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to the exposed port of the container, which is the value of container.ports[0].containerPort.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -910,7 +970,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -920,7 +980,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeoutSeconds.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeout_seconds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -930,7 +990,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}TCPSocket specifies an action involving a TCP port. Exactly one of HTTPGet or TCPSocket must be specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. TCPSocket specifies an action involving a TCP port. Exactly one of httpGet, tcpSocket, or grpc must be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -940,7 +1000,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to 8080.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to the exposed port of the container, which is the value of container.ports[0].containerPort.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -950,7 +1010,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than periodSeconds. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than period_seconds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -976,21 +1036,21 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>template.template.containers[].volumeMounts[].mountPath</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Path within the container at which the volume should be mounted. Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must otherwise be /cloudsql. All instances defined in the Volume will be available as /cloudsql/[instance]. For more information on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Path within the container at which the volume should be mounted. Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must otherwise be `/cloudsql`. All instances defined in the Volume will be available as `/cloudsql/[instance]`. For more information on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>template.template.containers[].volumeMounts[].name</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}This must match the Name of a Volume.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. This must match the Name of a Volume.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1020,7 +1080,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1030,7 +1090,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1040,7 +1100,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1050,7 +1110,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The execution environment being used to host this Task. Possible values: ["EXECUTION_ENVIRONMENT_GEN1", "EXECUTION_ENVIRONMENT_GEN2"].{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The execution environment being used to host this Task.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1060,7 +1120,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Number of retries allowed per Task, before marking this Task failed.{% endverbatim %}</p>
+            <p>{% verbatim %}Number of retries allowed per Task, before marking this Task failed. Defaults to 3.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1070,7 +1130,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Email address of the IAM service account associated with the Task of a Job. The service account represents the identity of the running task, and determines what permissions the task has. If not provided, the task will use the project's default service account.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1080,7 +1140,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1110,9 +1170,7 @@ This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers. This applies per attempt of a task, meaning each retry can run for the full timeout.
-
-A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers. This applies per attempt of a task, meaning each retry can run for the full timeout. Defaults to 600 seconds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1122,7 +1180,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A list of Volumes to make available to containers.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A list of Volumes to make available to containers.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1152,7 +1210,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1162,7 +1220,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance}{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1172,7 +1230,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `connectionName` field of a `SQLInstance` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The SQLInstance selfLink, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1182,7 +1240,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `SQLInstance` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1192,7 +1250,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `SQLInstance` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1212,7 +1270,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The different types of medium supported for EmptyDir. Default value: "MEMORY" Possible values: ["MEMORY"].{% endverbatim %}</p>
+            <p>{% verbatim %}The medium on which the data is stored. Acceptable values today is only MEMORY or none. When none, the default will currently be backed by memory but could change over time. +optional{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1222,17 +1280,17 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Limit on the storage usable by this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. This field's values are of the 'Quantity' k8s type: https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir.{% endverbatim %}</p>
+            <p>{% verbatim %}Limit on the storage usable by this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers. The default is nil which means that the limit is undefined. More info: https://cloud.google.com/run/docs/configuring/in-memory-volumes#configure-volume. Info in Kubernetes: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>template.template.volumes[].name</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Volume's name.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Volume's name.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1242,7 +1300,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Secret represents a secret that should populate this volume. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret.{% endverbatim %}</p>
+            <p>{% verbatim %}Secret represents a secret that should populate this volume.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1252,7 +1310,23 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Integer representation of mode bits to use on created files by default. Must be a value between 0000 and 0777 (octal), defaulting to 0444. Directories within the path are not affected by this setting.{% endverbatim %}</p>
+            <p>{% verbatim %}Integer representation of mode bits to use on created files by default.
+ Must be a value between 0000 and 0777 (octal), defaulting to 0444.
+ Directories within the path are not affected by  this setting.
+
+ Notes
+
+ * Internally, a umask of 0222 will be applied to any non-zero value.
+ * This is an integer representation of the mode bits. So, the octal
+ integer value should look exactly as the chmod numeric notation with a
+ leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
+ or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
+ 493 (base-10).
+ * This might be in conflict with other options that affect the
+ file mode, like fsGroup, and the result can be other mode bits set.
+
+ This might be in conflict with other options that affect the
+ file mode, like fsGroup, and as a result, other mode bits could be set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1282,27 +1356,40 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Integer octal mode bits to use on this file, must be a value between 01 and 0777 (octal). If 0 or not set, the Volume's default mode will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Integer octal mode bits to use on this file, must be a value between
+ 01 and 0777 (octal). If 0 or not set, the Volume's default mode will be
+ used.
+
+ Notes
+
+ * Internally, a umask of 0222 will be applied to any non-zero value.
+ * This is an integer representation of the mode bits. So, the octal
+ integer value should look exactly as the chmod numeric notation with a
+ leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
+ or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
+ 493 (base-10).
+ * This might be in conflict with other options that affect the
+ file mode, like fsGroup, and the result can be other mode bits set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>template.template.volumes[].secret.items[].path</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The relative path of the secret in the container.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The relative path of the secret in the container.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>template.template.volumes[].secret.items[].versionRef</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version{% endverbatim %}</p>
+            <p>{% verbatim %}The Cloud Secret Manager secret version. Can be 'latest' for the latest value, or an integer or a secret alias for a specific version.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1312,7 +1399,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `version` field of a `SecretManagerSecretVersion` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secretversions/{{secretversionID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1322,7 +1409,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a SecretManagerSecretVersion resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1332,17 +1419,17 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a SecretManagerSecretVersion resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>template.template.volumes[].secret.secretRef</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1352,7 +1439,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `SecretManagerSecret` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SecretManagerSecret resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1362,7 +1449,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a SecretManagerSecret resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1372,7 +1459,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a SecretManagerSecret resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1382,7 +1469,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}VPC Access configuration to use for this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. VPC Access configuration to use for this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1392,7 +1479,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}, where {project} can be project id or number.{% endverbatim %}</p>
+            <p>{% verbatim %}VPC Access connector name. Format: `projects/{project}/locations/{location}/connectors/{connector}`, where `{project}` can be project id or number. For more information on sending traffic to a VPC network via a connector, visit https://cloud.google.com/run/docs/configuring/vpc-connectors.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1402,7 +1489,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `VPCAccessConnector` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed VPCAccessConnector resource. Should be in the format `projects/{project_id}/locations/{location}/connectors/{connector_id}`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1412,7 +1499,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a VPCAccessConnector resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1422,7 +1509,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a VPCAccessConnector resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1432,7 +1519,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Traffic VPC egress settings. Possible values: ["ALL_TRAFFIC", "PRIVATE_RANGES_ONLY"].{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Traffic VPC egress settings. If not provided, it defaults to PRIVATE_RANGES_ONLY.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1442,7 +1529,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Direct VPC egress settings. Currently only single network interface is supported.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Direct VPC egress settings. Currently only single network interface is supported.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1462,9 +1549,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The VPC network that the Cloud Run resource will be able to send traffic to. At least one of network or subnetwork must be specified. If both
-network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be
-looked up from the subnetwork.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The VPC network that the Cloud Run resource will be able to send traffic to. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be looked up from the subnetwork.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1474,7 +1559,7 @@ looked up from the subnetwork.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1484,7 +1569,7 @@ looked up from the subnetwork.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a ComputeNetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1494,7 +1579,7 @@ looked up from the subnetwork.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a ComputeNetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1504,9 +1589,7 @@ looked up from the subnetwork.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both
-network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the
-subnetwork with the same name with the network will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the subnetwork with the same name with the network will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1516,7 +1599,7 @@ subnetwork with the same name with the network will be used.{% endverbatim %}</p
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1526,7 +1609,7 @@ subnetwork with the same name with the network will be used.{% endverbatim %}</p
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1536,7 +1619,7 @@ subnetwork with the same name with the network will be used.{% endverbatim %}</p
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1546,7 +1629,7 @@ subnetwork with the same name with the network will be used.{% endverbatim %}</p
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Network tags applied to this Cloud Run job.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Network tags applied to this Cloud Run resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1562,8 +1645,6 @@ subnetwork with the same name with the network will be used.{% endverbatim %}</p
 </tbody>
 </table>
 
-
-<p>* Field is required when parent field is specified</p>
 
 
 ### Status
@@ -1581,10 +1662,14 @@ deleteTime: string
 etag: string
 executionCount: integer
 expireTime: string
+externalRef: string
+lastModifiedCookie: string
 lastModifier: string
 latestCreatedExecution:
-- completionTime: string
+- completionStatus: string
+  completionTime: string
   createTime: string
+  deleteTime: string
   name: string
 observedGeneration: integer
 reconciling: boolean
@@ -1612,7 +1697,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1661,56 +1746,70 @@ updateTime: string
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The creation time.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The creation time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>creator</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Email address of the authenticated creator.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Email address of the authenticated creator.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>deleteTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The deletion time.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The deletion time. It is only populated as a response to a Delete request.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>etag</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A system-generated fingerprint for this version of the resource. May be used to detect modification conflict during updates.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. A system-generated fingerprint for this version of the resource. May be used to detect modification conflict during updates.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>executionCount</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Number of executions created for this job.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Number of executions created for this job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>expireTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}For a deleted resource, the time after which it will be permamently deleted.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. For a deleted resource, the time after which it will be permanently deleted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the RunJob resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>lastModifiedCookie</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}LastModifiedCookie contains hashes of the last applied spec and the last observed GCP state. The format is "<spec-hash>/<gcp-hash>". This is used by the controller to detect if the user's desired state has changed or if the GCP resource has drifted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>lastModifier</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Email address of the last authenticated modifier.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Email address of the last authenticated modifier.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>latestCreatedExecution</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Name of the last created execution.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Name of the last created execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1721,21 +1820,31 @@ updateTime: string
         </td>
     </tr>
     <tr>
+        <td><code>latestCreatedExecution[].completionStatus</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Status for the execution completion.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>latestCreatedExecution[].completionTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Completion timestamp of the execution.
-
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverbatim %}</p>
+            <p>{% verbatim %}Creation timestamp of the execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>latestCreatedExecution[].createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Creation timestamp of the execution.
-
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverbatim %}</p>
+            <p>{% verbatim %}Creation timestamp of the execution.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>latestCreatedExecution[].deleteTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The deletion time of the execution. It is only populated as a response to a Delete request.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1756,20 +1865,34 @@ A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to n
         <td><code>reconciling</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Returns true if the Job is currently being acted upon by the system to bring it into the desired state.
+            <p>{% verbatim %}Output only. Returns true if the Job is currently being acted upon by the
+system to bring it into the desired state.
 
-When a new Job is created, or an existing one is updated, Cloud Run will asynchronously perform all necessary steps to bring the Job to the desired state. This process is called reconciliation. While reconciliation is in process, observedGeneration and latest_succeeded_execution, will have transient values that might mismatch the intended state: Once reconciliation is over (and this field is false), there are two possible outcomes: reconciliation succeeded and the state matches the Job, or there was an error, and reconciliation failed. This state can be found in terminalCondition.state.
+When a new Job is created, or an existing one is updated, Cloud Run
+will asynchronously perform all necessary steps to bring the Job to the
+desired state. This process is called reconciliation.
+While reconciliation is in process, `observed_generation` and
+`latest_succeeded_execution`, will have transient values that might
+mismatch the intended state: Once reconciliation is over (and this field is
+false), there are two possible outcomes: reconciliation succeeded and the
+state matches the Job, or there was an error,  and reconciliation failed.
+This state can be found in `terminal_condition.state`.
 
-If reconciliation succeeded, the following fields will match: observedGeneration and generation, latest_succeeded_execution and latestCreatedExecution.
+If reconciliation succeeded, the following fields will match:
+`observed_generation` and `generation`, `latest_succeeded_execution` and
+`latest_created_execution`.
 
-If reconciliation failed, observedGeneration and latest_succeeded_execution will have the state of the last succeeded execution or empty for newly created Job. Additional information on the failure can be found in terminalCondition and conditions.{% endverbatim %}</p>
+If reconciliation failed, `observed_generation` and
+`latest_succeeded_execution` will have the state of the last succeeded
+execution or empty for newly created Job. Additional information on the
+failure can be found in `terminal_condition` and `conditions`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>terminalCondition</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The Condition of this Job, containing its readiness status, and detailed error information in case it did not reach the desired state.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The Condition of this Job, containing its readiness status, and detailed error information in case it did not reach the desired state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1790,9 +1913,7 @@ If reconciliation failed, observedGeneration and latest_succeeded_execution will
         <td><code>terminalCondition[].lastTransitionTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Last time the condition transitioned from one status to another.
-
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverbatim %}</p>
+            <p>{% verbatim %}Last time the condition transitioned from one status to another.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1820,7 +1941,7 @@ A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to n
         <td><code>terminalCondition[].severity</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}How to interpret failures of this condition, one of Error, Warning, Info.{% endverbatim %}</p>
+            <p>{% verbatim %}How to interpret failures of this condition, one of Error, Warning, Info{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1841,14 +1962,14 @@ A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to n
         <td><code>uid</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Server assigned unique identifier for the Execution. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Server assigned unique identifier for the Execution. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The last-modified time.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The last-modified time.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

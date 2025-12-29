@@ -139,7 +139,7 @@ spec:
 	upstreamRESTConfig := harness.GetRESTConfig()
 
 	recorder := NewRecorder()
-	if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig); err != nil {
+	if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig, ""); err != nil {
 		t.Fatalf("PreloadGKNN: %v", err)
 	}
 

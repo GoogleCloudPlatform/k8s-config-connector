@@ -20,6 +20,8 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
+export GOMEMLIMIT=2GiB # Avoid OOMs, particularly in github actions
+
 go test -v ./pkg/fuzztesting/fuzztests/ -fuzz=FuzzAllMappers -fuzztime 600s # fuzz for 10 minutes because we are fuzzing all the registered mappers
 
 # Please do not add more fuzzers here; register them so they are run with FuzzAllMappers (or a similar approach)

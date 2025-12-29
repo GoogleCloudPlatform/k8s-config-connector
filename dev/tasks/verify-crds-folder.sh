@@ -61,9 +61,9 @@ for filepath in ${TEMP_DIR}/*.yaml; do
 
     long_filename="apiextensions.k8s.io_v1_customresourcedefinition_${plural_from_file}.${group_name}.cnrm.cloud.google.com.yaml"
     original_filepath=${REPO_ROOT}/config/crds/resources/${long_filename}
-    
+
     if [ -f "${original_filepath}" ]; then
-      commit_year=$(git log --reverse -n 1 --format=%ad --date=format:%Y -- "${original_filepath}")
+      commit_year=$(git log --reverse --max-count 1 --format=%ad --date=format:%Y -- "${original_filepath}")
       if [[ -z "${commit_year}" ]]; then
         echo "Error: Could not determine commit year for '${original_filepath}'. Aborting."
         exit 1

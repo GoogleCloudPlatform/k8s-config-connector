@@ -623,7 +623,7 @@ message ContextRule {
 
 // Selects and configures the service controller used by the service. Example: control: environment: servicecontrol.googleapis.com
 message Control {
-  // The service controller environment to use. If empty, no control plane feature (like quota and billing) will be enabled. The recommended value for most services is servicecontrol.googleapis.com
+  // The service controller environment to use. If empty, no control plane features (like quota and billing) will be enabled. The recommended value for most services is servicecontrol.googleapis.com.
   string environment = 1 [json_name="environment"];
   // Defines policies applying to the API methods of the service.
   repeated MethodPolicy method_policies = 2 [json_name="methodPolicies"];
@@ -985,6 +985,8 @@ message ListOperationsResponse {
   string next_page_token = 1 [json_name="nextPageToken"];
   // A list of operations that matches the specified filter in the request.
   repeated .google.longrunning.Operation operations = 2 [json_name="operations"];
+  // Unordered list. Unreachable resources. Populated when the request sets `ListOperationsRequest.return_partial_success` and reads across collections. For example, when attempting to list all resources across all supported locations.
+  repeated string unreachable = 3 [json_name="unreachable"];
 }
 
 // Response to list peered DNS domains for a given connection.

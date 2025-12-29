@@ -71,22 +71,26 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
+    "gettable": true,
+    "ready": true
   },
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "A monitored project",
-    "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectNumber}",
-    "parent": "folders/${folderID}",
+    "lifecycleState": "ACTIVE",
+    "name": "A monitored project",
+    "parent": {
+      "id": "${folderID}",
+      "type": "folder"
+    },
     "projectId": "other${uniqueId}",
-    "state": "ACTIVE"
+    "projectNumber": "${projectNumber}"
   }
 }
 

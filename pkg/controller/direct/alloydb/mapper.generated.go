@@ -695,12 +695,12 @@ func Instance_ObservabilityInstanceConfig_FromProto(mapCtx *direct.MapContext, i
 	out.Enabled = in.Enabled
 	out.PreserveComments = in.PreserveComments
 	out.TrackWaitEvents = in.TrackWaitEvents
-	// MISSING: TrackWaitEventTypes
 	out.MaxQueryStringLength = in.MaxQueryStringLength
 	out.RecordApplicationTags = in.RecordApplicationTags
 	out.QueryPlansPerMinute = in.QueryPlansPerMinute
 	out.TrackActiveQueries = in.TrackActiveQueries
 	out.TrackClientAddress = in.TrackClientAddress
+	out.AssistiveExperiencesEnabled = in.AssistiveExperiencesEnabled
 	return out
 }
 func Instance_ObservabilityInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_ObservabilityInstanceConfig) *pb.Instance_ObservabilityInstanceConfig {
@@ -711,12 +711,12 @@ func Instance_ObservabilityInstanceConfig_ToProto(mapCtx *direct.MapContext, in 
 	out.Enabled = in.Enabled
 	out.PreserveComments = in.PreserveComments
 	out.TrackWaitEvents = in.TrackWaitEvents
-	// MISSING: TrackWaitEventTypes
 	out.MaxQueryStringLength = in.MaxQueryStringLength
 	out.RecordApplicationTags = in.RecordApplicationTags
 	out.QueryPlansPerMinute = in.QueryPlansPerMinute
 	out.TrackActiveQueries = in.TrackActiveQueries
 	out.TrackClientAddress = in.TrackClientAddress
+	out.AssistiveExperiencesEnabled = in.AssistiveExperiencesEnabled
 	return out
 }
 func Instance_ObservabilityInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ObservabilityInstanceConfig) *krmv1beta1.Instance_ObservabilityInstanceConfigObservedState {

@@ -304,10 +304,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
   "name": "operations/${operationID}"
 }
 
@@ -362,9 +358,7 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
     }
   ]
 }
@@ -388,10 +382,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
   "name": "operations/${operationID}"
 }
 
@@ -446,14 +436,10 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
     },
     {
-      "name": "projects/${projectNumber}/services/multiclusterservicediscovery.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/multiclusterservicediscovery.googleapis.com"
     }
   ]
 }
@@ -655,14 +641,10 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
     },
     {
-      "name": "projects/${projectNumber}/services/multiclusterservicediscovery.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/multiclusterservicediscovery.googleapis.com"
     }
   ]
 }
