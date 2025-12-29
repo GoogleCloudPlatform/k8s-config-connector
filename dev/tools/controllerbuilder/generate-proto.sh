@@ -23,7 +23,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # We share the version with mockgcp, which is maybe a boundary violation, but is convenient.
 # (It would be confusing if these were out of sync!)
-DEFAULT_GOOGLE_API_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/mockgcp/git.versions | awk '{print $2}')
+DEFAULT_GOOGLE_API_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/apis/git.versions | awk '{print $2}')
 
 # Take googleapi version as parameter, default to version from git.versions.
 # Use "HEAD" to get the latest from remote.
