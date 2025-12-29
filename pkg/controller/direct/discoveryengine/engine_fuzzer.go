@@ -50,5 +50,9 @@ func engineFuzzer() fuzztesting.KRMFuzzer {
 	// f.StatusFields.Insert(".create_time")
 	// f.StatusFields.Insert(".update_time")
 
+	f.Unimplemented_NotYetTriaged(".media_recommendation_engine_config")
+
+	f.Unimplemented_NotYetTriaged(".chat_engine_config.allow_cross_region")
+
 	return f
 }
