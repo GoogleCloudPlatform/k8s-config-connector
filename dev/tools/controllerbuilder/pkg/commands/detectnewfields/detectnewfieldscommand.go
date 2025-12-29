@@ -70,7 +70,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		Use:   "detect-new-fields",
 		Short: "Detect new fields between pinned and HEAD versions of proto definitions",
 		Long: `Detect new fields by comparing the pinned version of proto definitions with the current HEAD version.
-The pinned version is determined by the version specified in mockgcp/git.versions.`,
+The pinned version is determined by the version specified in apis/git.versions.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
 			if err := runNewFieldDetector(ctx, opt); err != nil {
