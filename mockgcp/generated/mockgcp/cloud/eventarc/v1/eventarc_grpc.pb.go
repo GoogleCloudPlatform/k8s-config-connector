@@ -55,7 +55,9 @@ type EventarcClient interface {
 	CreateChannelConnection(ctx context.Context, in *CreateChannelConnectionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Delete a single ChannelConnection.
 	DeleteChannelConnection(ctx context.Context, in *DeleteChannelConnectionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
-	// Get a GoogleChannelConfig
+	// Get a GoogleChannelConfig.
+	// The name of the GoogleChannelConfig in the response is ALWAYS coded with
+	// projectID.
 	GetGoogleChannelConfig(ctx context.Context, in *GetGoogleChannelConfigRequest, opts ...grpc.CallOption) (*GoogleChannelConfig, error)
 	// Update a single GoogleChannelConfig
 	UpdateGoogleChannelConfig(ctx context.Context, in *UpdateGoogleChannelConfigRequest, opts ...grpc.CallOption) (*GoogleChannelConfig, error)
@@ -498,7 +500,9 @@ type EventarcServer interface {
 	CreateChannelConnection(context.Context, *CreateChannelConnectionRequest) (*longrunningpb.Operation, error)
 	// Delete a single ChannelConnection.
 	DeleteChannelConnection(context.Context, *DeleteChannelConnectionRequest) (*longrunningpb.Operation, error)
-	// Get a GoogleChannelConfig
+	// Get a GoogleChannelConfig.
+	// The name of the GoogleChannelConfig in the response is ALWAYS coded with
+	// projectID.
 	GetGoogleChannelConfig(context.Context, *GetGoogleChannelConfigRequest) (*GoogleChannelConfig, error)
 	// Update a single GoogleChannelConfig
 	UpdateGoogleChannelConfig(context.Context, *UpdateGoogleChannelConfigRequest) (*GoogleChannelConfig, error)
