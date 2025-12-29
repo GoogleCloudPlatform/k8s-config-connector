@@ -95,3 +95,43 @@ func (r *MonitoringAlertPolicyRef) NormalizedExternal(ctx context.Context, reade
 	r.External = name
 	return r.External, nil
 }
+
+var _ refsv1beta1.RefinerWithProjectID = &MonitoringAlertPolicyRef{}
+
+func (r *MonitoringAlertPolicyRef) RefineWithProjectID(projectID, path string) error {
+	tokens := strings.Split(r.External, "/")
+
+	// AlertChart has a specific format requirement:
+	// "The format is: projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]"
+	if strings.HasSuffix(path, ".AlertChart.AlertPolicyRef") {
+		// alertPolicies/{{alertPolicyId}}
+		if len(tokens) == 2 && tokens[0] == "alertPolicies" {
+			r.External = fmt.Sprintf("projects/%s/%s", projectID, r.External)
+			return nil
+		}
+		// projects/{{projectId}}/alertPolicies/{{alertPolicyId}}
+		if tokens[1] != projectID {
+			return fmt.Errorf("resolve alertPolicy (%q) in AlertChat was not in same project", r.External)
+		}
+		return nil
+	}
+
+	// IncidentList has a specific format requirement:
+	// "Don't include the project ID prefix in the policy name. For example, use `alertPolicies/utilization`."
+	if strings.HasSuffix(path, ".IncidentList.AlertPolicyRef") {
+		// alertPolicies/{{alertPolicyId}}
+		if len(tokens) == 2 && tokens[0] == "alertPolicies" {
+			return nil
+		} else {
+			// projects/{{projectId}}/alertPolicies/{{alertPolicyId}}
+			if tokens[1] != projectID {
+				return fmt.Errorf("resolve alertPolicy (%q) in incidentList was not in same project", r.External)
+			}
+		}
+		prefix := fmt.Sprintf("projects/%s/", projectID)
+		r.External = strings.TrimPrefix(r.External, prefix)
+		return nil
+	}
+
+	return nil
+}
