@@ -67,6 +67,10 @@ type TagBindingsServer struct {
 	pb_v3.UnimplementedTagBindingsServer
 }
 
+func NewProjectStore(storage storage.Storage) projects.ProjectStore {
+	return &ProjectsInternal{storage: storage}
+}
+
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
@@ -74,7 +78,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.projectsInternal = &ProjectsInternal{MockService: s}
+	s.projectsInternal = env.Projects.(*ProjectsInternal)
 	s.projectsV1 = &ProjectsV1{MockService: s}
 	s.projectsV3 = &ProjectsV3{MockService: s}
 	s.tagKeys = &TagKeys{MockService: s}

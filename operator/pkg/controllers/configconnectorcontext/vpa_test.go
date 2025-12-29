@@ -17,6 +17,7 @@ package configconnectorcontext
 import (
 	"context"
 	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -191,11 +192,28 @@ func TestVPAIntegration(t *testing.T) {
 		t.Fatalf("unexpected error applying customizations: %v", err)
 	}
 
-	// Verify VPA object is created in the test namespace
-	vpaKey := client.ObjectKey{
-		Namespace: testNamespace,
-		Name:      "cnrm-controller-manager",
+	// Find the transformed StatefulSet name from the manifest
+	var stsName string
+	var stsNamespace string
+	for _, obj := range m.Items {
+		if obj.GroupKind() == appsv1.SchemeGroupVersion.WithKind("StatefulSet").GroupKind() &&
+			strings.HasPrefix(obj.GetName(), "cnrm-controller-manager") {
+			stsName = obj.GetName()
+			stsNamespace = obj.GetNamespace()
+			break
+		}
 	}
+	if stsName == "" {
+		t.Fatalf("StatefulSet cnrm-controller-manager not found in transformed manifest")
+	}
+
+	// Verify VPA object is created in the same namespace as the StatefulSet with the correct name
+	vpaKey := client.ObjectKey{
+		Namespace: stsNamespace,
+		Name:      stsName,
+	}
+	vpa.SetName(stsName) // Update vpa object name for subsequent updates
+	vpa.SetNamespace(stsNamespace)
 
 	if err := wait.PollUntilContextTimeout(ctx, 100*time.Millisecond, 10*time.Second, true, func(ctx context.Context) (bool, error) {
 		err := c.Get(ctx, vpaKey, vpa)
@@ -203,12 +221,12 @@ func TestVPAIntegration(t *testing.T) {
 			return true, nil
 		}
 		if apierrors.IsNotFound(err) {
-			t.Logf("VPA not found yet, retrying...")
+			t.Logf("VPA %s/%s not found yet, retrying...", stsNamespace, stsName)
 			return false, nil
 		}
 		return false, err
 	}); err != nil {
-		t.Fatalf("expected VPA to be created, but got error after retries: %v", err)
+		t.Fatalf("expected VPA %s/%s to be created, but got error after retries: %v", stsNamespace, stsName, err)
 	}
 
 	// Update VPA status with recommendations

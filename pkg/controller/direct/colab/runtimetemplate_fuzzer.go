@@ -62,6 +62,7 @@ func colabRuntimeTemplateFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".euc_config")
 
 	f.Unimplemented_NotYetTriaged(".machine_spec.gpu_partition_size")
+	f.Unimplemented_NotYetTriaged(".machine_spec.min_gpu_driver_version")
 
 	return f
 }

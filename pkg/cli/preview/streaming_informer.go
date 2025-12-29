@@ -23,6 +23,7 @@ import (
 	"time"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/types"
 	toolscache "k8s.io/client-go/tools/cache"
 	"k8s.io/klog/v2"
@@ -35,6 +36,7 @@ import (
 type streamingInformer struct {
 	streamingClient *StreamingClient
 	typeInfo        *typeInfo
+	namespace       string
 	mutex           sync.Mutex
 
 	eventHandlerRegistrations []*eventHandlerRegistration
@@ -82,10 +84,11 @@ func (o *objects) OnWatchAdd(obj Object, eventHandlerRegistrations []*eventHandl
 var _ cache.Informer = &streamingInformer{}
 
 // newStreamingInformer creates a new streaming informer.
-func newStreamingInformer(streamingClient *StreamingClient, typeInfo *typeInfo) (*streamingInformer, error) {
+func newStreamingInformer(streamingClient *StreamingClient, typeInfo *typeInfo, namespace string) (*streamingInformer, error) {
 	s := &streamingInformer{
 		streamingClient: streamingClient,
 		typeInfo:        typeInfo,
+		namespace:       namespace,
 	}
 	s.objects = objects{
 		store: make(map[types.NamespacedName]Object),
@@ -136,7 +139,11 @@ func (i *streamingInformer) runOnce(ctx context.Context) error {
 		ResourceVersion:     listMetadata.ResourceVersion,
 		AllowWatchBookmarks: true,
 	}
-	if err := i.streamingClient.Watch(ctx, i.typeInfo, watchOptions, watchListener); err != nil {
+	namespace := ""
+	if i.typeInfo.Scope == meta.RESTScopeNamespace {
+		namespace = i.namespace
+	}
+	if err := i.streamingClient.Watch(ctx, i.typeInfo, namespace, watchOptions, watchListener); err != nil {
 		return err
 	}
 
@@ -150,7 +157,11 @@ func (i *streamingInformer) doList(ctx context.Context) (*ListMetadata, error) {
 
 	isInInitialList := !i.hasSynced.Load()
 	listListener := &listListener{objects: &i.objects, isInInitialList: isInInitialList, eventHandlerRegistrations: i.eventHandlerRegistrations}
-	if err := i.streamingClient.List(ctx, i.typeInfo, listListener); err != nil {
+	namespace := ""
+	if i.typeInfo.Scope == meta.RESTScopeNamespace {
+		namespace = i.namespace
+	}
+	if err := i.streamingClient.List(ctx, i.typeInfo, namespace, listListener); err != nil {
 		return nil, err
 	}
 	return &listListener.metadata, nil
@@ -287,6 +298,13 @@ func (i *eventHandlerRegistration) HasSynced() bool {
 func (i *streamingInformer) Get(ctx context.Context, key client.ObjectKey, obj client.Object, opts ...client.GetOption) error {
 	if len(opts) != 0 {
 		return fmt.Errorf("options not implemented: %v", opts)
+	}
+
+	// During preview, each resource is only reconciled once.
+	// If CC or CCC objects are not synced, the reconciler can give out false positives
+	// (successfully reconcile without actually invoking the actual reconciler).
+	if !i.WaitForCacheSync(ctx) {
+		return fmt.Errorf("streamingInformer WaitForCacheSync failed")
 	}
 
 	i.objects.mutex.Lock()

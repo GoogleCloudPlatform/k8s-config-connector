@@ -19,10 +19,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
 // OrganizationRef represents the Organization that this resource belongs to.
@@ -33,7 +33,7 @@ type OrganizationRef struct {
 }
 
 // AsOrganizationRef converts a generic ResourceRef into a OrganizationRef.
-func AsOrganizationRef(in *v1alpha1.ResourceRef) *OrganizationRef {
+func AsOrganizationRef(in *deprecatedrefs.ResourceRef) *OrganizationRef {
 	if in == nil {
 		return nil
 	}

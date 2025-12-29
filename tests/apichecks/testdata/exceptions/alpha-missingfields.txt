@@ -2064,9 +2064,6 @@
 [missing_field] crd=storagetransferagentpools.storagetransfer.cnrm.cloud.google.com version=v1alpha1: field ".spec.bandwidthLimit.limitMbps" is not set in unstructured objects
 [missing_field] crd=storagetransferagentpools.storagetransfer.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=storagetransferagentpools.storagetransfer.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=tagslocationtagbindings.tags.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=tagslocationtagbindings.tags.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=tagslocationtagbindings.tags.cnrm.cloud.google.com version=v1alpha1: field ".spec.tagValueRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=tasksqueues.cloudtasks.cnrm.cloud.google.com version=v1alpha1: field ".spec.appEngineRoutingOverride.host" is not set in unstructured objects
 [missing_field] crd=tasksqueues.cloudtasks.cnrm.cloud.google.com version=v1alpha1: field ".spec.appEngineRoutingOverride.instance" is not set in unstructured objects
 [missing_field] crd=tasksqueues.cloudtasks.cnrm.cloud.google.com version=v1alpha1: field ".spec.appEngineRoutingOverride.service" is not set in unstructured objects

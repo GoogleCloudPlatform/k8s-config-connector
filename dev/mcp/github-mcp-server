@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+VERSION="v0.26.3"
+
+BINDIR="${REPO_ROOT}/.build/mcp/bin/github/${VERSION}"
+mkdir -p "${BINDIR}"
+
+MCP_SERVER_PATH="${BINDIR}/github-mcp-server"
+
+if [[ ! -f "${MCP_SERVER_PATH}" ]]; then
+    mkdir -p .build/mcp/src
+    cd .build/mcp/src
+
+    # Check out specific version of github-mcp-server
+    if [ -d "github-mcp-server" ]; then
+    cd github-mcp-server
+    git fetch origin ${VERSION} > /dev/null 2>&1
+    git checkout ${VERSION} > /dev/null 2>&1
+    cd ..
+    else
+    git clone --branch ${VERSION} --single-branch --depth 1 https://github.com/github/github-mcp-server.git > /dev/null 2>&1
+    fi
+
+    cd github-mcp-server
+
+    # Build the github-mcp-server binary
+    GOWORK=off go build -o ${MCP_SERVER_PATH} ./cmd/github-mcp-server > /dev/null 2>&1
+fi
+
+# Ensure GITHUB_PERSONAL_ACCESS_TOKEN is set, using gh CLI
+if [[ -z "${GITHUB_PERSONAL_ACCESS_TOKEN:-}" ]]; then
+    GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token)
+    export GITHUB_PERSONAL_ACCESS_TOKEN
+fi
+
+exec ${MCP_SERVER_PATH} $@

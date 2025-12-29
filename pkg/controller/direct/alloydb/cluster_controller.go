@@ -294,9 +294,10 @@ func (a *ClusterAdapter) resolveInitialUserPasswordField(ctx context.Context) er
 	}
 
 	// Resolve sensitive field 'spec.initialUser.password' when it is set.
-	if err := direct.ResolveSensitiveField(ctx, obj.Spec.InitialUser.Password, "spec.initialUser.password", obj.Namespace, a.reader); err != nil {
+	if err := obj.Spec.InitialUser.Password.NormalizeSecret(ctx, "spec.initialUser.password", obj.Namespace, a.reader); err != nil {
 		return err
 	}
+
 	return nil
 }
 

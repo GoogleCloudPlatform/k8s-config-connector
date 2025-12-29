@@ -33,7 +33,8 @@ func secureSourceManagerInstanceFuzzer() fuzztesting.KRMFuzzer {
 		SecureSourceManagerInstanceObservedState_FromProto, SecureSourceManagerInstanceObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")        // Identifier
+	f.IdentityField(".name")
+
 	f.UnimplementedFields.Insert(".create_time") // Output only
 	f.UnimplementedFields.Insert(".update_time") // Output only
 	f.UnimplementedFields.Insert(".labels")      // NOTYET
@@ -46,6 +47,9 @@ func secureSourceManagerInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".state_note")
 	f.StatusFields.Insert(".host_config")
+
+	f.Unimplemented_NotYetTriaged(".private_config.psc_allowed_projects")
+	f.Unimplemented_NotYetTriaged(".workforce_identity_federation_config")
 
 	return f
 }

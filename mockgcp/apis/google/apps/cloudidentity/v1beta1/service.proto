@@ -158,7 +158,7 @@ service DevicesDeviceUsersServer {
     };
   };
 
-  // Looks up resource names of the DeviceUsers associated with the caller's credentials, as well as the properties provided in the request. This method must be called with end-user credentials with the scope: https://www.googleapis.com/auth/cloud-identity.devices.lookup If multiple properties are provided, only DeviceUsers having all of these properties are considered as matches - i.e. the query behaves like an AND. Different platforms require different amounts of information from the caller to ensure that the DeviceUser is uniquely identified. - iOS: No properties need to be passed, the caller's credentials are sufficient to identify the corresponding DeviceUser. - Android: Specifying the 'android_id' field is required. - Desktop: Specifying the 'raw_resource_id' field is required.
+  // Looks up resource names of the DeviceUsers associated with the caller's credentials, as well as the properties provided in the request. This method must be called with end-user credentials with the scope: https://www.googleapis.com/auth/cloud-identity.devices.lookup If multiple properties are provided, only DeviceUsers having all of these properties are considered as matches - i.e. the query behaves like an AND. Different platforms require different amounts of information from the caller to ensure that the DeviceUser is uniquely identified. - iOS: Specifying the 'partner' and 'ios_device_id' fields is required. - Android: Specifying the 'android_id' field is required. - Desktop: Specifying the 'raw_resource_id' field is required.
   rpc LookupDevicesDeviceUser(LookupDevicesDeviceUserRequest) returns (LookupSelfDeviceUsersResponse) {
     option (google.api.http) = {
       get: "/v1beta1/{parent=devices/*/deviceUsers}:lookup"
@@ -518,17 +518,40 @@ service OrgUnitsMembershipsServer {
 
 service PoliciesServer {
 
-  // Get a Policy
+  // Create a policy.
+  rpc CreatePolicy(CreatePolicyRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/policies"
+      body: "policy"
+    };
+  };
+
+  // Delete a policy.
+  rpc DeletePolicy(DeletePolicyRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=policies/*}"
+    };
+  };
+
+  // Get a policy.
   rpc GetPolicy(GetPolicyRequest) returns (Policy) {
     option (google.api.http) = {
       get: "/v1beta1/{name=policies/*}"
     };
   };
 
-  // List Policies
+  // List policies.
   rpc ListPolicies(ListPoliciesRequest) returns (ListPoliciesResponse) {
     option (google.api.http) = {
       get: "/v1beta1/policies"
+    };
+  };
+
+  // Update a policy.
+  rpc PatchPolicy(PatchPolicyRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=policies/*}"
+      body: "policy"
     };
   };
 }
@@ -1933,11 +1956,13 @@ message ListDevicesDeviceUsersRequest {
 
 message LookupDevicesDeviceUserRequest {
   optional string android_id = 1;
-  optional int32 page_size = 2;
-  optional string page_token = 3;
-  optional string parent = 4;
-  optional string raw_resource_id = 5;
-  optional string user_id = 6;
+  optional string ios_device_id = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+  optional string parent = 5;
+  optional string partner = 6;
+  optional string raw_resource_id = 7;
+  optional string user_id = 8;
 }
 
 message WipeDevicesDeviceUserRequest {
@@ -2173,6 +2198,14 @@ message MoveOrgUnitsMembershipRequest {
   optional MoveOrgMembershipRequest org_units_membership = 2;
 }
 
+message CreatePolicyRequest {
+  optional Policy policy = 1;
+}
+
+message DeletePolicyRequest {
+  optional string name = 1;
+}
+
 message GetPolicyRequest {
   optional string name = 1;
 }
@@ -2181,4 +2214,9 @@ message ListPoliciesRequest {
   optional string filter = 1;
   optional int32 page_size = 2;
   optional string page_token = 3;
+}
+
+message PatchPolicyRequest {
+  optional string name = 1;
+  optional Policy policy = 2;
 }

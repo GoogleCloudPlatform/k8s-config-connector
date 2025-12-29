@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# DEPRECATED: This file is deprecated and will be removed in the future.
+# Please use ci-presubmit.yaml instead.
+# Ideally all scripts would be in dev/ci/presubmits.
+
 name: Presubmit
 
 on:
@@ -73,17 +77,7 @@ jobs:
           name: unittest_result
           path: unittest_result.json
           retention-days: 5
-  pause-tests:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 90
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run pause tests"
-        run: |
-          ./scripts/github-actions/ga-pause-test.sh
+
 
   tests-e2e-fixtures-vcr:
     runs-on: ubuntu-22.04

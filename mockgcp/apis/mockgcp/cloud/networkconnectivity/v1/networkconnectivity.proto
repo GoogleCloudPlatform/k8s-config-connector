@@ -17,6 +17,7 @@ package mockgcp.cloud.networkconnectivity.v1;
 import "google/api/annotations.proto";
 import "google/longrunning/operations.proto";
 import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 option go_package = "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb;networkconnectivitypb";
 
@@ -24,6 +25,14 @@ service ProjectsServer {
 }
 
 service ProjectsLocationsServer {
+
+  // CheckConsumerConfig validates the consumer network and project for potential PSC connection creation. This method performs several checks, including: - Validating the existence and permissions of the service class. - Ensuring the consumer network exists and is accessible. - Verifying XPN relationships if applicable. - Checking for compatible IP versions between the consumer network and the requested version. This method performs a dynamic IAM check for the `networkconnectivity.serviceClasses.use` permission on the service class resource in the Prepare phase.
+  rpc CheckConsumerConfigProjectsLocation(CheckConsumerConfigProjectsLocationRequest) returns (CheckConsumerConfigResponse) {
+    option (google.api.http) = {
+      post: "/v1/{location=projects/*/locations/*}:checkConsumerConfig"
+      body: "projects_location"
+    };
+  };
 
   // Gets information about a location.
   rpc GetProjectsLocation(GetProjectsLocationRequest) returns (Location) {
@@ -262,7 +271,7 @@ service ProjectsLocationsInternalRangesServer {
 
 service ProjectsLocationsMulticloudDataTransferConfigsServer {
 
-  // Creates a MulticloudDataTransferConfig in a given project and location.
+  // Creates a `MulticloudDataTransferConfig` resource in a specified project and location.
   rpc CreateProjectsLocationsMulticloudDataTransferConfig(CreateProjectsLocationsMulticloudDataTransferConfigRequest) returns (.google.longrunning.Operation) {
     option (google.api.http) = {
       post: "/v1/{parent=projects/*/locations/*}/multicloudDataTransferConfigs"
@@ -270,28 +279,28 @@ service ProjectsLocationsMulticloudDataTransferConfigsServer {
     };
   };
 
-  // Deletes a single MulticloudDataTransferConfig.
+  // Deletes a `MulticloudDataTransferConfig` resource.
   rpc DeleteProjectsLocationsMulticloudDataTransferConfig(DeleteProjectsLocationsMulticloudDataTransferConfigRequest) returns (.google.longrunning.Operation) {
     option (google.api.http) = {
       delete: "/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*}"
     };
   };
 
-  // Gets details of a single MulticloudDataTransferConfig.
+  // Gets the details of a `MulticloudDataTransferConfig` resource.
   rpc GetProjectsLocationsMulticloudDataTransferConfig(GetProjectsLocationsMulticloudDataTransferConfigRequest) returns (MulticloudDataTransferConfig) {
     option (google.api.http) = {
       get: "/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*}"
     };
   };
 
-  // Lists MulticloudDataTransferConfigs in a given project and location.
+  // Lists the `MulticloudDataTransferConfig` resources in a specified project and location.
   rpc ListProjectsLocationsMulticloudDataTransferConfigs(ListProjectsLocationsMulticloudDataTransferConfigsRequest) returns (ListMulticloudDataTransferConfigsResponse) {
     option (google.api.http) = {
       get: "/v1/{parent=projects/*/locations/*}/multicloudDataTransferConfigs"
     };
   };
 
-  // Updates a MulticloudDataTransferConfig in a given project and location.
+  // Updates a `MulticloudDataTransferConfig` resource in a specified project and location.
   rpc PatchProjectsLocationsMulticloudDataTransferConfig(PatchProjectsLocationsMulticloudDataTransferConfigRequest) returns (.google.longrunning.Operation) {
     option (google.api.http) = {
       patch: "/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*}"
@@ -302,7 +311,7 @@ service ProjectsLocationsMulticloudDataTransferConfigsServer {
 
 service ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer {
 
-  // Creates a Destination in a given project and location.
+  // Creates a `Destination` resource in a specified project and location.
   rpc CreateProjectsLocationsMulticloudDataTransferConfigsDestination(CreateProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) returns (.google.longrunning.Operation) {
     option (google.api.http) = {
       post: "/v1/{parent=projects/*/locations/*/multicloudDataTransferConfigs/*}/destinations"
@@ -310,28 +319,28 @@ service ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer {
     };
   };
 
-  // Deletes a single Destination.
+  // Deletes a `Destination` resource.
   rpc DeleteProjectsLocationsMulticloudDataTransferConfigsDestination(DeleteProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) returns (.google.longrunning.Operation) {
     option (google.api.http) = {
       delete: "/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*/destinations/*}"
     };
   };
 
-  // Gets details of a single Destination.
+  // Gets the details of a `Destination` resource.
   rpc GetProjectsLocationsMulticloudDataTransferConfigsDestination(GetProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) returns (Destination) {
     option (google.api.http) = {
       get: "/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*/destinations/*}"
     };
   };
 
-  // Lists Destinations in a given project and location.
+  // Lists the `Destination` resources in a specified project and location.
   rpc ListProjectsLocationsMulticloudDataTransferConfigsDestinations(ListProjectsLocationsMulticloudDataTransferConfigsDestinationsRequest) returns (ListDestinationsResponse) {
     option (google.api.http) = {
       get: "/v1/{parent=projects/*/locations/*/multicloudDataTransferConfigs/*}/destinations"
     };
   };
 
-  // Updates a Destination in a given project and location.
+  // Updates a `Destination` resource in a specified project and location.
   rpc PatchProjectsLocationsMulticloudDataTransferConfigsDestination(PatchProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) returns (.google.longrunning.Operation) {
     option (google.api.http) = {
       patch: "/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*/destinations/*}"
@@ -342,14 +351,14 @@ service ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer {
 
 service ProjectsLocationsMulticloudDataTransferSupportedServicesServer {
 
-  // Gets details of a single MulticloudDataTransferSupportedServices.
+  // Gets the details of a service that is supported for Data Transfer Essentials.
   rpc GetProjectsLocationsMulticloudDataTransferSupportedService(GetProjectsLocationsMulticloudDataTransferSupportedServiceRequest) returns (MulticloudDataTransferSupportedService) {
     option (google.api.http) = {
       get: "/v1/{name=projects/*/locations/*/multicloudDataTransferSupportedServices/*}"
     };
   };
 
-  // Lists the supported services for Multicloud Data Transfer. This is a passthrough method.
+  // Lists the services in the project for a region that are supported for Data Transfer Essentials.
   rpc ListProjectsLocationsMulticloudDataTransferSupportedServices(ListProjectsLocationsMulticloudDataTransferSupportedServicesRequest) returns (ListMulticloudDataTransferSupportedServicesResponse) {
     option (google.api.http) = {
       get: "/v1/{parent=projects/*/locations/*}/multicloudDataTransferSupportedServices"
@@ -627,6 +636,28 @@ message AutoAccept {
   repeated string auto_accept_projects = 1 [json_name="autoAcceptProjects"];
 }
 
+// Information for the automatically created subnetwork and its associated IR.
+message AutoCreatedSubnetworkInfo {
+  // Output only. URI of the automatically created Internal Range. Only set if the subnetwork mode is AUTO_CREATED during creation.
+  string internal_range = 1 [json_name="internalRange"];
+  // Output only. URI of the automatically created Internal Range reference. Only set if the subnetwork mode is AUTO_CREATED during creation.
+  string internal_range_ref = 2 [json_name="internalRangeRef"];
+  // Output only. URI of the automatically created subnetwork. Only set if the subnetwork mode is AUTO_CREATED during creation.
+  string subnetwork = 3 [json_name="subnetwork"];
+  // Output only. URI of the automatically created subnetwork reference. Only set if the subnetwork mode is AUTO_CREATED during creation.
+  string subnetwork_ref = 4 [json_name="subnetworkRef"];
+}
+
+// The specification for automatically creating a DNS record.
+message AutomatedDnsCreationSpec {
+  // Required. The DNS suffix to use for the DNS record. Must end with a dot. This should be a valid DNS domain name as per RFC 1035. Each label (between dots) can contain letters, digits, and hyphens, and must not start or end with a hyphen. Example: "my-service.example.com.", "internal."
+  string dns_suffix = 1 [json_name="dnsSuffix"];
+  // Required. The hostname (the first label of the FQDN) to use for the DNS record. This should be a valid DNS label as per RFC 1035. Generally, this means the hostname can contain letters, digits, and hyphens, and must not start or end with a hyphen. Example: "my-instance", "db-1"
+  string hostname = 2 [json_name="hostname"];
+  // Optional. The Time To Live for the DNS record, in seconds. If not provided, a default of 30 seconds will be used.
+  .google.protobuf.Duration ttl = 3 [json_name="ttl"];
+}
+
 // Associates `members`, or principals, with a `role`.
 message Binding {
   // The condition that is associated with this binding. If the condition evaluates to `true`, then this binding applies to the current request. If the condition evaluates to `false`, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the principals in this binding. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
@@ -635,6 +666,24 @@ message Binding {
   repeated string members = 2 [json_name="members"];
   // Role that is assigned to the list of `members`, or principals. For example, `roles/viewer`, `roles/editor`, or `roles/owner`. For an overview of the IAM roles and permissions, see the [IAM documentation](https://cloud.google.com/iam/docs/roles-overview). For a list of the available pre-defined roles, see [here](https://cloud.google.com/iam/docs/understanding-roles).
   string role = 3 [json_name="role"];
+}
+
+// Request for CheckConsumerConfig.
+message CheckConsumerConfigRequest {
+  // Required. Full resource name of the consumer network. Example: - projects/{project}/global/networks/{network}.
+  string consumer_network = 1 [json_name="consumerNetwork"];
+  // The project number or ID where the PSC endpoint is to be created.
+  string endpoint_project = 2 [json_name="endpointProject"];
+  // The requested IP Version
+  string requested_ip_version = 3 [json_name="requestedIpVersion"];
+  // Required. The service class identifier of the producer.
+  string service_class = 4 [json_name="serviceClass"];
+}
+
+// Response for CheckConsumerConfig.
+message CheckConsumerConfigResponse {
+  // List of validation errors. If the list is empty, the consumer config is valid.
+  repeated string errors = 1 [json_name="errors"];
 }
 
 // Allow the producer to specify which consumers can connect to it.
@@ -661,72 +710,84 @@ message ConsumerPscConfig {
 
 // PSC connection details on consumer side.
 message ConsumerPscConnection {
+  // Output only. The status of DNS automation for this PSC connection.
+  DnsAutomationStatus dns_automation_status = 1 [json_name="dnsAutomationStatus"];
   // The most recent error during operating this connection.
-  GoogleRpcStatus error = 1 [json_name="error"];
+  GoogleRpcStatus error = 2 [json_name="error"];
   // Output only. The error info for the latest error during operating this connection.
-  GoogleRpcErrorInfo error_info = 2 [json_name="errorInfo"];
+  GoogleRpcErrorInfo error_info = 3 [json_name="errorInfo"];
   // The error type indicates whether the error is consumer facing, producer facing or system internal.
-  string error_type = 3 [json_name="errorType"];
+  string error_type = 4 [json_name="errorType"];
   // The URI of the consumer forwarding rule created. Example: projects/{projectNumOrId}/regions/us-east1/networks/{resourceId}.
-  string forwarding_rule = 4 [json_name="forwardingRule"];
+  string forwarding_rule = 5 [json_name="forwardingRule"];
   // The last Compute Engine operation to setup PSC connection.
-  string gce_operation = 5 [json_name="gceOperation"];
+  string gce_operation = 6 [json_name="gceOperation"];
   // The IP literal allocated on the consumer network for the PSC forwarding rule that is created to connect to the producer service attachment in this service connection map.
-  string ip = 6 [json_name="ip"];
+  string ip = 7 [json_name="ip"];
   // The requested IP version for the PSC connection.
-  string ip_version = 7 [json_name="ipVersion"];
+  string ip_version = 8 [json_name="ipVersion"];
   // The consumer network whose PSC forwarding rule is connected to the service attachments in this service connection map. Note that the network could be on a different project (shared VPC).
-  string network = 8 [json_name="network"];
+  string network = 9 [json_name="network"];
   // Immutable. Deprecated. Use producer_instance_metadata instead. An immutable identifier for the producer instance.
-  string producer_instance_id = 9 [json_name="producerInstanceId"];
+  string producer_instance_id = 10 [json_name="producerInstanceId"];
   // Immutable. An immutable map for the producer instance metadata.
-  map<string, string> producer_instance_metadata = 10 [json_name="producerInstanceMetadata"];
+  map<string, string> producer_instance_metadata = 11 [json_name="producerInstanceMetadata"];
   // The consumer project whose PSC forwarding rule is connected to the service attachments in this service connection map.
-  string project = 11 [json_name="project"];
+  string project = 12 [json_name="project"];
   // The PSC connection id of the PSC forwarding rule connected to the service attachments in this service connection map.
-  string psc_connection_id = 12 [json_name="pscConnectionId"];
+  string psc_connection_id = 13 [json_name="pscConnectionId"];
   // Output only. The URI of the selected subnetwork selected to allocate IP address for this connection.
-  string selected_subnetwork = 13 [json_name="selectedSubnetwork"];
+  string selected_subnetwork = 14 [json_name="selectedSubnetwork"];
   // The URI of a service attachment which is the target of the PSC connection.
-  string service_attachment_uri = 14 [json_name="serviceAttachmentUri"];
+  string service_attachment_uri = 15 [json_name="serviceAttachmentUri"];
   // The state of the PSC connection.
-  string state = 15 [json_name="state"];
+  string state = 16 [json_name="state"];
 }
 
-// The Destination resource.
+// The `Destination` resource. It specifies the IP prefix and the associated autonomous system numbers (ASN) that you want to include in a `MulticloudDataTransferConfig` resource.
 message Destination {
-  // Output only. Time when the Destination was created.
+  // Output only. Time when the `Destination` resource was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
-  // Optional. An optional field to provide a description of this resource.
+  // Optional. A description of this resource.
   string description = 2 [json_name="description"];
-  // Required. Unordered list. The list of Endpoints configured for the IP Prefix.
+  // Required. Unordered list. The list of `DestinationEndpoint` resources configured for the IP prefix.
   repeated DestinationEndpoint endpoints = 3 [json_name="endpoints"];
-  // The etag is computed by the server, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding.
+  // The etag is computed by the server, and might be sent with update and delete requests so that the client has an up-to-date value before proceeding.
   string etag = 4 [json_name="etag"];
-  // Required. Immutable. Remote IP Prefix in the remote CSP, where the customer's workload is located
+  // Required. Immutable. The IP prefix that represents your workload on another CSP.
   string ip_prefix = 5 [json_name="ipPrefix"];
   // Optional. User-defined labels.
   map<string, string> labels = 6 [json_name="labels"];
-  // Identifier. The name of the Destination resource. Format: `projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}/destinations/{destination}`.
+  // Identifier. The name of the `Destination` resource. Format: `projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}/destinations/{destination}`.
   string name = 7 [json_name="name"];
-  // Output only. The timeline of the expected Destination states or the current rest state. If a state change is expected, the value will be the list of ADDING, DELETING or SUSPENDING statesdepending on the actions taken. Example: "state_timeline": { "states": [ { "state": "ADDING", // The time when the Destination will be activated. "effective_time": "2024-12-01T08:00:00Z" }, { "state": "SUSPENDING", // The time when the Destination will be suspended. "effective_time": "2024-12-01T20:00:00Z" } ] }
+  // Output only. The timeline of the expected `Destination` states or the current rest state. If a state change is expected, the value is `ADDING`, `DELETING` or `SUSPENDING`, depending on the action specified. Example: "state_timeline": { "states": [ { // The time when the `Destination` resource will be activated. "effectiveTime": "2024-12-01T08:00:00Z", "state": "ADDING" }, { // The time when the `Destination` resource will be suspended. "effectiveTime": "2024-12-01T20:00:00Z", "state": "SUSPENDING" } ] }
   StateTimeline state_timeline = 8 [json_name="stateTimeline"];
-  // Output only. The Google-generated UUID for the destination. This value is unique across all destination resources. If a destination is deleted and another with the same name is created, the new destination is assigned a different uid.
+  // Output only. The Google-generated unique ID for the `Destination` resource. This value is unique across all `Destination` resources. If a resource is deleted and another with the same name is created, the new resource is assigned a different and unique ID.
   string uid = 9 [json_name="uid"];
-  // Output only. Time when the Destination was updated.
+  // Output only. Time when the `Destination` resource was updated.
   .google.protobuf.Timestamp update_time = 10 [json_name="updateTime"];
 }
 
-// The metadata for a DestinationEndpoint.
+// The metadata for a `DestinationEndpoint` resource.
 message DestinationEndpoint {
-  // Required. The ASN of the remote IP Prefix.
+  // Required. The ASN of the remote IP prefix.
   int64 asn = 1 [json_name="asn"];
-  // Required. The name of the CSP of the remote IP Prefix.
+  // Required. The CSP of the remote IP prefix.
   string csp = 2 [json_name="csp"];
-  // Output only. The state of the Endpoint.
+  // Output only. The state of the `DestinationEndpoint` resource.
   string state = 3 [json_name="state"];
-  // Output only. Time when the DestinationEndpoint was updated.
+  // Output only. Time when the `DestinationEndpoint` resource was updated.
   .google.protobuf.Timestamp update_time = 4 [json_name="updateTime"];
+}
+
+// The status of DNS automation for a PSC connection.
+message DnsAutomationStatus {
+  // Output only. The error details if the state is CREATE_FAILED or DELETE_FAILED.
+  GoogleRpcStatus error = 1 [json_name="error"];
+  // Output only. The fully qualified domain name of the DNS record.
+  string fqdn = 2 [json_name="fqdn"];
+  // Output only. The current state of DNS automation.
+  string state = 3 [json_name="state"];
 }
 
 // A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); }
@@ -767,6 +828,8 @@ message GoogleLongrunningListOperationsResponse {
   string next_page_token = 1 [json_name="nextPageToken"];
   // A list of operations that matches the specified filter in the request.
   repeated .google.longrunning.Operation operations = 2 [json_name="operations"];
+  // Unordered list. Unreachable resources. Populated when the request sets `ListOperationsRequest.return_partial_success` and reads across collections. For example, when attempting to list all resources across all supported locations.
+  repeated string unreachable = 3 [json_name="unreachable"];
 }
 
 // Describes the cause of the error with structured details. Example of an error when contacting the "pubsub.googleapis.com" API when it is not enabled: { "reason": "API_DISABLED" "domain": "googleapis.com" "metadata": { "resource": "projects/123", "service": "pubsub.googleapis.com" } } This response indicates that the pubsub.googleapis.com API is not enabled. Example of an error that is returned when attempting to create a Spanner instance in a region that is out of stock: { "reason": "STOCKOUT" "domain": "spanner.googleapis.com", "metadata": { "availableRegions": "us-central1,us-east2" } }
@@ -966,9 +1029,9 @@ message LinkedVpnTunnels {
   string vpc_network = 4 [json_name="vpcNetwork"];
 }
 
-// Response message for ListDestinations.
+// Response message to list `Destination` resources.
 message ListDestinationsResponse {
-  // Destinations to be returned.
+  // The list of `Destination` resources to be listed.
   repeated Destination destinations = 1 [json_name="destinations"];
   // The next page token.
   string next_page_token = 2 [json_name="nextPageToken"];
@@ -1024,9 +1087,9 @@ message ListLocationsResponse {
   string next_page_token = 2 [json_name="nextPageToken"];
 }
 
-// Response message for ListMulticloudDataTransferConfigs.
+// Response message to list `MulticloudDataTransferConfig` resources.
 message ListMulticloudDataTransferConfigsResponse {
-  // MulticloudDataTransferConfigs to be returned.
+  // The list of `MulticloudDataTransferConfig` resources to be listed.
   repeated MulticloudDataTransferConfig multicloud_data_transfer_configs = 1 [json_name="multicloudDataTransferConfigs"];
   // The next page token.
   string next_page_token = 2 [json_name="nextPageToken"];
@@ -1034,7 +1097,7 @@ message ListMulticloudDataTransferConfigsResponse {
   repeated string unreachable = 3 [json_name="unreachable"];
 }
 
-// Response message for ListMulticloudDataTransferSupportedServices.
+// Response message to list the services in your project in regions that are eligible for Data Transfer Essentials configuration.
 message ListMulticloudDataTransferSupportedServicesResponse {
   // The list of supported services.
   repeated MulticloudDataTransferSupportedService multicloud_data_transfer_supported_services = 1 [json_name="multicloudDataTransferSupportedServices"];
@@ -1160,35 +1223,35 @@ message Migration {
   string target = 2 [json_name="target"];
 }
 
-// The MulticloudDataTransferConfig resource. This lists the services for which customer is opting in for Multicloud Data Transfer.
+// The `MulticloudDataTransferConfig` resource. It lists the services that you configure for Data Transfer Essentials billing and metering.
 message MulticloudDataTransferConfig {
-  // Output only. Time when the MulticloudDataTransferConfig was created.
+  // Output only. Time when the `MulticloudDataTransferConfig` resource was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
-  // Optional. An optional field to provide a description of this resource.
+  // Optional. A description of this resource.
   string description = 2 [json_name="description"];
-  // Output only. The number of Destinations in use under the MulticloudDataTransferConfig resource.
+  // Output only. The number of `Destination` resources in use with the `MulticloudDataTransferConfig` resource.
   int32 destinations_active_count = 3 [json_name="destinationsActiveCount"];
-  // Output only. The number of Destinations configured under the MulticloudDataTransferConfig resource.
+  // Output only. The number of `Destination` resources configured for the `MulticloudDataTransferConfig` resource.
   int32 destinations_count = 4 [json_name="destinationsCount"];
-  // The etag is computed by the server, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding.
+  // The etag is computed by the server, and might be sent with update and delete requests so that the client has an up-to-date value before proceeding.
   string etag = 5 [json_name="etag"];
   // Optional. User-defined labels.
   map<string, string> labels = 6 [json_name="labels"];
-  // Identifier. The name of the MulticloudDataTransferConfig resource. Format: `projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}`.
+  // Identifier. The name of the `MulticloudDataTransferConfig` resource. Format: `projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}`.
   string name = 7 [json_name="name"];
-  // Optional. This map services to either their current or planned states. Service names are keys, and the associated values describe the service's state. If a state change is expected, the value will be the list of ADDING or DELETING states depending on the actions taken. Example: "services": { "big-query": { "states": [ { "state": "ADDING", "effective_time": "2024-12-12T08:00:00Z" }, ] }, "cloud-storage": { "states": [ { "state": "ACTIVE", } ] } }
+  // Optional. Maps services to their current or planned states. Service names are keys, and the associated values describe the state of the service. If a state change is expected, the value is either `ADDING` or `DELETING`, depending on the actions taken. Sample output: "services": { "big-query": { "states": [ { "effectiveTime": "2024-12-12T08:00:00Z" "state": "ADDING", }, ] }, "cloud-storage": { "states": [ { "state": "ACTIVE", } ] } }
   map<string, StateTimeline> services = 8 [json_name="services"];
-  // Output only. The Google-generated UUID for the MulticloudDataTransferConfig. This value is unique across all MulticloudDataTransferConfig resources. If a MulticloudDataTransferConfig is deleted and another with the same name is created, the new MulticloudDataTransferConfig is assigned a different uid.
+  // Output only. The Google-generated unique ID for the `MulticloudDataTransferConfig` resource. This value is unique across all `MulticloudDataTransferConfig` resources. If a resource is deleted and another with the same name is created, the new resource is assigned a different and unique ID.
   string uid = 9 [json_name="uid"];
-  // Output only. Time when the MulticloudDataTransferConfig was updated.
+  // Output only. Time when the `MulticloudDataTransferConfig` resource was updated.
   .google.protobuf.Timestamp update_time = 10 [json_name="updateTime"];
 }
 
-// The supported service for Multicloud Data Transfer.
+// A service in your project in a region that is eligible for Data Transfer Essentials configuration.
 message MulticloudDataTransferSupportedService {
   // Identifier. The name of the service.
   string name = 1 [json_name="name"];
-  // Output only. The network service tiers supported for the service.
+  // Output only. The network service tier or regional endpoint supported for the service.
   repeated ServiceConfig service_configs = 2 [json_name="serviceConfigs"];
 }
 
@@ -1279,7 +1342,7 @@ message PolicyBasedRoute {
   string kind = 5 [json_name="kind"];
   // User-defined labels.
   map<string, string> labels = 6 [json_name="labels"];
-  // Immutable. A unique name of the resource in the form of `projects/{project_number}/locations/global/PolicyBasedRoutes/{policy_based_route_id}`
+  // Immutable. Identifier. A unique name of the resource in the form of `projects/{project_number}/locations/global/PolicyBasedRoutes/{policy_based_route_id}`
   string name = 7 [json_name="name"];
   // Required. Fully-qualified URL of the network that this route applies to, for example: projects/my-project/global/networks/my-network.
   string network = 8 [json_name="network"];
@@ -1301,8 +1364,10 @@ message PolicyBasedRoute {
 
 // The PSC configurations on producer side.
 message ProducerPscConfig {
+  // Optional. The specification for automatically creating a DNS record for this PSC connection.
+  AutomatedDnsCreationSpec automated_dns_creation_spec = 1 [json_name="automatedDnsCreationSpec"];
   // The resource path of a service attachment. Example: projects/{projectNumOrId}/regions/{region}/serviceAttachments/{resourceId}.
-  string service_attachment_uri = 1 [json_name="serviceAttachmentUri"];
+  string service_attachment_uri = 2 [json_name="serviceAttachmentUri"];
 }
 
 // Configuration used for Private Service Connect connections. Used when Infrastructure is PSC.
@@ -1391,11 +1456,11 @@ message RegionalEndpoint {
   map<string, string> labels = 6 [json_name="labels"];
   // Output only. The name of a RegionalEndpoint. Pattern: `projects/{project}/locations/{location}/regionalEndpoints/^[-a-z0-9](?:[-a-z0-9]{0,44})[a-z0-9]$`.
   string name = 7 [json_name="name"];
-  // The name of the VPC network for this private regional endpoint. Format: `projects/{project}/global/networks/{network}`
+  // Optional. The name of the VPC network for this private regional endpoint. Format: `projects/{project}/global/networks/{network}`
   string network = 8 [json_name="network"];
   // Output only. The resource reference of the PSC Forwarding Rule created on behalf of the customer. Format: `//compute.googleapis.com/projects/{project}/regions/{region}/forwardingRules/{forwarding_rule_name}`
   string psc_forwarding_rule = 9 [json_name="pscForwardingRule"];
-  // The name of the subnetwork from which the IP address will be allocated. Format: `projects/{project}/regions/{region}/subnetworks/{subnetwork}`
+  // Optional. The name of the subnetwork from which the IP address will be allocated. Format: `projects/{project}/regions/{region}/subnetworks/{subnetwork}`
   string subnetwork = 10 [json_name="subnetwork"];
   // Required. The service endpoint this private regional endpoint connects to. Format: `{apiname}.{region}.p.rep.googleapis.com` Example: "cloudkms.us-central1.p.rep.googleapis.com".
   string target_google_api = 11 [json_name="targetGoogleApi"];
@@ -1520,11 +1585,11 @@ message ServiceClass {
   .google.protobuf.Timestamp update_time = 7 [json_name="updateTime"];
 }
 
-// Specifies the Multicloud Data Transfer supported services configuration. This includes either the network tier or the request endpoint. If end of support for multicloud data transfer is planned for a service's network tier or request endpoint, the end time will be provided.
+// Specifies eligibility information for the service.
 message ServiceConfig {
-  // Output only. The eligibility criteria for the service. The user has to meet the eligibility criteria specified here for the service to qualify for multicloud data transfer.
+  // Output only. The eligibility criteria for the service.
   string eligibility_criteria = 1 [json_name="eligibilityCriteria"];
-  // Output only. The eligibility criteria support end time. If the end time is not specified, no planned end time is available.
+  // Output only. The end time for eligibility criteria support. If not specified, no planned end time is set.
   .google.protobuf.Timestamp support_end_time = 2 [json_name="supportEndTime"];
 }
 
@@ -1548,7 +1613,7 @@ message ServiceConnectionMap {
   string name = 8 [json_name="name"];
   // The PSC configurations on producer side.
   repeated ProducerPscConfig producer_psc_configs = 9 [json_name="producerPscConfigs"];
-  // The service class identifier this ServiceConnectionMap is for. The user of ServiceConnectionMap create API needs to have networkconnecitivty.serviceclasses.use iam permission for the service class.
+  // The service class identifier this ServiceConnectionMap is for. The user of ServiceConnectionMap create API needs to have networkconnectivity.serviceClasses.use IAM permission for the service class.
   string service_class = 10 [json_name="serviceClass"];
   // Output only. The service class uri this ServiceConnectionMap is for.
   string service_class_uri = 11 [json_name="serviceClassUri"];
@@ -1560,28 +1625,30 @@ message ServiceConnectionMap {
 
 // The ServiceConnectionPolicy resource.
 message ServiceConnectionPolicy {
+  // Output only. Information for the automatically created subnetwork and its associated IR.
+  AutoCreatedSubnetworkInfo auto_created_subnet_info = 1 [json_name="autoCreatedSubnetInfo"];
   // Output only. Time when the ServiceConnectionPolicy was created.
-  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
   // A description of this resource.
-  string description = 2 [json_name="description"];
+  string description = 3 [json_name="description"];
   // Optional. The etag is computed by the server, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding.
-  string etag = 3 [json_name="etag"];
+  string etag = 4 [json_name="etag"];
   // Output only. The type of underlying resources used to create the connection.
-  string infrastructure = 4 [json_name="infrastructure"];
+  string infrastructure = 5 [json_name="infrastructure"];
   // User-defined labels.
-  map<string, string> labels = 5 [json_name="labels"];
+  map<string, string> labels = 6 [json_name="labels"];
   // Immutable. The name of a ServiceConnectionPolicy. Format: projects/{project}/locations/{location}/serviceConnectionPolicies/{service_connection_policy} See: https://google.aip.dev/122#fields-representing-resource-names
-  string name = 6 [json_name="name"];
+  string name = 7 [json_name="name"];
   // The resource path of the consumer network. Example: - projects/{projectNumOrId}/global/networks/{resourceId}.
-  string network = 7 [json_name="network"];
+  string network = 8 [json_name="network"];
   // Configuration used for Private Service Connect connections. Used when Infrastructure is PSC.
-  PscConfig psc_config = 8 [json_name="pscConfig"];
+  PscConfig psc_config = 9 [json_name="pscConfig"];
   // Output only. [Output only] Information about each Private Service Connect connection.
-  repeated PscConnection psc_connections = 9 [json_name="pscConnections"];
+  repeated PscConnection psc_connections = 10 [json_name="pscConnections"];
   // The service class identifier for which this ServiceConnectionPolicy is for. The service class identifier is a unique, symbolic representation of a ServiceClass. It is provided by the Service Producer. Google services have a prefix of gcp or google-cloud. For example, gcp-memorystore-redis or google-cloud-sql. 3rd party services do not. For example, test-service-a3dfcx.
-  string service_class = 10 [json_name="serviceClass"];
+  string service_class = 11 [json_name="serviceClass"];
   // Output only. Time when the ServiceConnectionPolicy was updated.
-  .google.protobuf.Timestamp update_time = 11 [json_name="updateTime"];
+  .google.protobuf.Timestamp update_time = 12 [json_name="updateTime"];
 }
 
 // The ServiceConnectionToken resource.
@@ -1690,7 +1757,7 @@ message SpokeTypeCount {
 
 // The state and activation time details of the resource state.
 message StateMetadata {
-  // Output only. This field will be accompanied only with transient states (PENDING_ADD, PENDING_DELETE, PENDING_SUSPENSION) and denotes the time when the transient state of the resource will be effective. For instance, if the state is "ADDING," this field will show the time the resource transitions to "ACTIVE." Similarly, if the state is "PENDING_DELETE," it will show the deletion time.
+  // Output only. Accompanies only the transient states, which include `ADDING`, `DELETING`, and `SUSPENDING`, to denote the time until which the transient state of the resource will be effective. For instance, if the state is `ADDING`, this field shows the time when the resource state transitions to `ACTIVE`.
   .google.protobuf.Timestamp effective_time = 1 [json_name="effectiveTime"];
   // Output only. The state of the resource.
   string state = 2 [json_name="state"];
@@ -1706,7 +1773,7 @@ message StateReason {
   string user_details = 3 [json_name="userDetails"];
 }
 
-// The timeline of pending states for a resource.
+// The timeline of the pending states for a resource.
 message StateTimeline {
   // Output only. The state and activation time details of the resource state.
   repeated StateMetadata states = 1 [json_name="states"];
@@ -1738,6 +1805,11 @@ message Warnings {
   map<string, string> data = 2 [json_name="data"];
   // Output only. A human-readable description of the warning code.
   string warning_message = 3 [json_name="warningMessage"];
+}
+
+message CheckConsumerConfigProjectsLocationRequest {
+  string location = 1;
+  CheckConsumerConfigRequest projects_location = 2;
 }
 
 message GetProjectsLocationRequest {
@@ -2078,10 +2150,14 @@ message PatchProjectsLocationsServiceConnectionMapRequest {
 }
 
 message CreateProjectsLocationsServiceConnectionPolicyRequest {
-  string parent = 1;
-  string request_id = 2;
-  string service_connection_policy_id = 3;
-  ServiceConnectionPolicy projects_locations_service_connection_policy = 4;
+  string auto_subnetwork_config_alloc_range_space = 1;
+  string auto_subnetwork_config_ip_stack = 2;
+  int32 auto_subnetwork_config_prefix_length = 3;
+  string parent = 4;
+  string request_id = 5;
+  string service_connection_policy_id = 6;
+  string subnetwork_mode = 7;
+  ServiceConnectionPolicy projects_locations_service_connection_policy = 8;
 }
 
 message DeleteProjectsLocationsServiceConnectionPolicyRequest {

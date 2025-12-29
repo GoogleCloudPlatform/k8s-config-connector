@@ -23,6 +23,7 @@ import (
 	"golang.org/x/oauth2"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/contexts"
@@ -42,6 +43,10 @@ type PreviewInstance struct {
 	hookGCP  *interceptingGCPClient
 	hookKube *interceptingKubeClient
 	recorder *Recorder
+
+	// Namespace is the namespace of the cluster to preview
+	// If empty, all namespaces are previewed
+	Namespace string
 }
 
 // PreviewInstanceOptions are the options for creating a PreviewInstance.
@@ -57,6 +62,18 @@ type PreviewInstanceOptions struct {
 	// UpstreamGCPHTTPClient is the http client to use when talking to upstream (real) GCP
 	// (Upstream GCP may be mocked in tests)
 	UpstreamGCPHTTPClient *http.Client
+
+	// UpstreamGCPQPS is the QPS to use when talking to upstream (real) GCP
+	// This limit is per API.
+	UpstreamGCPQPS float64
+
+	// UpstreamGCPBurst is the burst to use when talking to upstream (real) GCP
+	// This limit is per API.
+	UpstreamGCPBurst int
+
+	// Namespace is the namespace of the cluster to preview
+	// If empty, all namespaces are previewed
+	Namespace string
 }
 
 // NewPreviewInstance creates a new PreviewInstance.
@@ -73,12 +90,13 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 		return nil, err
 	}
 
-	hookGCP := newInterceptingGCPClient(upstreamGCPHTTPClient, authorization)
+	hookGCP := newInterceptingGCPClient(upstreamGCPHTTPClient, authorization, options.UpstreamGCPQPS, options.UpstreamGCPBurst)
 
 	i := &PreviewInstance{}
 	i.hookGCP = hookGCP
 	i.hookKube = hookKube
 	i.recorder = recorder
+	i.Namespace = options.Namespace
 
 	return i, nil
 }
@@ -120,6 +138,11 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 	}
 
 	kccConfig := kccmanager.Config{}
+	if i.Namespace != "" {
+		kccConfig.ManagerOptions.Cache.DefaultNamespaces = map[string]cache.Config{
+			i.Namespace: {},
+		}
+	}
 	// Prevent manager from binding to a port to serve prometheus metrics
 	// since creating multiple managers for tests will fail if more than
 	// one manager tries to bind to the same port.
@@ -132,14 +155,11 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 	// Hook kube
 	kccConfig.ManagerOptions.NewCache = i.hookKube.NewCache
 	kccConfig.ManagerOptions.NewClient = i.hookKube.NewClient
-	kccConfig.ManagerOptions.BaseContext = func() context.Context {
-		return ctx
-	}
+
 	kccConfig.ManagerOptions.MapperProvider = i.hookKube.MapperProvider
 
 	// turn off caching (otherwise we get partial object metadata)
 	nocache.OnlyCacheCCAndCCC(&kccConfig.ManagerOptions)
-
 	// Use an empty restConfig as a failsafe against requests "leaking" to real kube-apiserver
 	restConfig := &rest.Config{}
 

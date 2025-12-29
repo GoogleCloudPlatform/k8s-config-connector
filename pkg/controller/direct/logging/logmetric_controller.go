@@ -180,7 +180,7 @@ func (a *logMetricAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 func (a *logMetricAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating object", "u", u)
 
 	projectID := a.projectID

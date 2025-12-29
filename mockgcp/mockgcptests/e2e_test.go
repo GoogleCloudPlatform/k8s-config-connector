@@ -17,6 +17,7 @@ package mockgcptests
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"io/fs"
 	"os"
@@ -39,6 +40,7 @@ type Placeholders struct {
 	OrganizationID   string
 	UniqueID         string
 	BillingAccountID string
+	FolderID         string
 }
 
 func TestScripts(t *testing.T) {
@@ -70,6 +72,9 @@ func TestScripts(t *testing.T) {
 			h.Init()
 
 			project := h.Project
+			folderID := h.FolderID()
+			organizationID := testgcp.TestOrgID.Get()
+
 			testDir := filepath.Join(baseDir, scriptPath)
 			placeholders := Placeholders{
 				ProjectID:        project.ProjectID,
@@ -77,6 +82,7 @@ func TestScripts(t *testing.T) {
 				OrganizationID:   project.OrganizationID,
 				UniqueID:         uniqueID,
 				BillingAccountID: testgcp.TestBillingAccountID.Get(),
+				FolderID:         folderID,
 			}
 			script := loadScript(t, testDir, placeholders)
 
@@ -129,11 +135,30 @@ func TestScripts(t *testing.T) {
 					cmd.Dir = testDir
 
 					t.Logf("executing step type: %s  cmd: %q", stepType, stepCmd)
+					exitCode := 0
+
 					if err := cmd.Run(); err != nil {
+						var exitError *exec.ExitError
+						if errors.As(err, &exitError) {
+							exitCode = exitError.ExitCode()
+						}
+
+						if exitCode == step.ExpectExitCode {
+							t.Logf("command exited with expected exit code %d", exitCode)
+						} else {
+							t.Logf("stdout: %v", stdout.String())
+							t.Logf("stderr: %v", stderr.String())
+							t.Logf("exitCode: %v", exitCode)
+
+							t.Errorf("error running step type: %s  cmd: %q: %v", stepType, stepCmd, err)
+						}
+					}
+
+					if exitCode != step.ExpectExitCode {
 						t.Logf("stdout: %v", stdout.String())
 						t.Logf("stderr: %v", stderr.String())
 
-						t.Errorf("error running step type: %s  cmd: %q: %v", stepType, stepCmd, err)
+						t.Errorf("unexpected exit code  %v running step type: %s  cmd: %q", exitCode, stepType, stepCmd)
 					}
 
 					if step.SetEnv != "" {
@@ -191,9 +216,6 @@ func TestScripts(t *testing.T) {
 					httpEvent.Response.RemoveHeader("Content-Length")
 				}
 
-				folderID := ""
-				organizationID := h.Project.OrganizationID
-
 				e2e.NormalizeHTTPLog(t, httpEvents, h.RegisteredServices(), testgcp.GCPProject{ProjectID: h.Project.ProjectID, ProjectNumber: h.Project.ProjectNumber}, uniqueID, folderID, organizationID)
 
 				x := e2e.NewNormalizer(uniqueID, testgcp.GCPProject{ProjectID: h.Project.ProjectID, ProjectNumber: h.Project.ProjectNumber})
@@ -240,6 +262,9 @@ type Step struct {
 	Pre    string `json:"pre"`
 	Post   string `json:"post"`
 	SetEnv string `json:"setEnv"`
+
+	// ExpectExitCode is the expected exit code for the command. Defaults to 0 if not specified.
+	ExpectExitCode int `json:"expectExitCode,omitempty"`
 }
 
 func loadScript(t *testing.T, dir string, placeholders Placeholders) *Script {
@@ -269,5 +294,6 @@ func ReplaceTestVars(t *testing.T, b []byte, placeholders Placeholders) []byte {
 	s = strings.Replace(s, "${projectNumber}", strconv.FormatInt(placeholders.ProjectNumber, 10), -1)
 	s = strings.Replace(s, "${organizationId}", placeholders.OrganizationID, -1)
 	s = strings.Replace(s, "${BILLING_ACCOUNT_ID}", placeholders.BillingAccountID, -1)
+	s = strings.Replace(s, "${folderId}", placeholders.FolderID, -1)
 	return []byte(s)
 }

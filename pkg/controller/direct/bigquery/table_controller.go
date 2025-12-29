@@ -125,7 +125,7 @@ type Adapter struct {
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting BigQueryTable", "name", a.id.String())
 	parent := a.id.Parent()
 	getCall := a.gcpService.Get(parent.ProjectID, parent.DatasetID, a.id.ID())
@@ -141,7 +141,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Table", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
@@ -203,7 +203,7 @@ func (a *Adapter) UpdateStatusForCreate(ctx context.Context, createOp *directbas
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Table", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
@@ -346,7 +346,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Table", "name", a.id.String())
 	parent := a.id.Parent()
 	if err := a.gcpService.Delete(parent.ProjectID, parent.DatasetID, a.id.ID()).Do(); err != nil {

@@ -12,61 +12,59 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-run:
-  timeout: 10m
-issues:
-  exclude-dirs:
-    - third_party
-    - pkg/clients/generated
-    - temp-vendor
-    - dev/tools/proto-to-mapper
+version: "2"
 linters:
-  disable-all: true
+  default: none
   enable:
     - depguard
     - errcheck
     - errorlint
-    # - forcetypeassert
-    # - gci
-    # - gocritic
-    # - goconst
-    # - godot
-    # - gofmt
-    # - gofumpt
-    # - goimports
-    # - gosec
-    # - gosimple
     - govet
-    # - importas
-    # - ineffassign
     - misspell
-    - revive # replacement for golint
-    # - staticcheck
-    # - typecheck
-    # - unconvert
-    # - unused
-    # - whitespace
-linters-settings:
-  revive:
-    rules:
-      - name: unused-parameter
-        severity: warning
-        disabled: true
-  govet:
-    enable-all: true
-    disable:
-      - fieldalignment
-      - nilness
-      - shadow
-      - testinggoroutine
-      - unusedwrite
-  depguard:
-    rules:
-      main:
-        deny:
-          - pkg: "github.com/ghodss/yaml"
-            desc: Use "sigs.k8s.io/yaml"
-          - pkg: "yaml/v2"
-            desc: Use "sigs.k8s.io/yaml"
-          - pkg: "yaml/v3"
-            desc: Use "sigs.k8s.io/yaml"
+    - revive
+  settings:
+    depguard:
+      rules:
+        main:
+          deny:
+            - pkg: github.com/ghodss/yaml
+              desc: Use "sigs.k8s.io/yaml"
+            - pkg: yaml/v2
+              desc: Use "sigs.k8s.io/yaml"
+            - pkg: yaml/v3
+              desc: Use "sigs.k8s.io/yaml"
+    govet:
+      disable:
+        - fieldalignment
+        - nilness
+        - shadow
+        - testinggoroutine
+        - unusedwrite
+      enable-all: true
+    revive:
+      rules:
+        - name: unused-parameter
+          severity: warning
+          disabled: true
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party
+      - pkg/clients/generated
+      - temp-vendor
+      - dev/tools/proto-to-mapper
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

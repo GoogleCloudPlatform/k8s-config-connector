@@ -36,6 +36,9 @@ func AlloyDBInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *
 	out.MachineConfig = Instance_MachineConfig_FromProto(mapCtx, in.GetMachineConfig())
 	out.NetworkConfig = Instance_InstanceNetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
 	out.ReadPoolConfig = Instance_ReadPoolConfig_FromProto(mapCtx, in.GetReadPoolConfig())
+	out.QueryInsightsInstanceConfig = Instance_QueryInsightsInstanceConfig_FromProto(mapCtx, in.GetQueryInsightsConfig())
+	out.ObservabilityInstanceConfig = Instance_ObservabilityInstanceConfig_FromProto(mapCtx, in.GetObservabilityConfig())
+
 	return out
 }
 
@@ -53,6 +56,8 @@ func AlloyDBInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBInsta
 	out.MachineConfig = Instance_MachineConfig_ToProto(mapCtx, in.MachineConfig)
 	out.NetworkConfig = Instance_InstanceNetworkConfig_ToProto(mapCtx, in.NetworkConfig)
 	out.ReadPoolConfig = Instance_ReadPoolConfig_ToProto(mapCtx, in.ReadPoolConfig)
+	out.QueryInsightsConfig = Instance_QueryInsightsInstanceConfig_ToProto(mapCtx, in.QueryInsightsInstanceConfig)
+	out.ObservabilityConfig = Instance_ObservabilityInstanceConfig_ToProto(mapCtx, in.ObservabilityInstanceConfig)
 	return out
 }
 
@@ -71,6 +76,11 @@ func AlloyDBInstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 	out.Uid = direct.LazyPtr(in.Uid)
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 
+	if in.GetObservabilityConfig() != nil && in.GetObservabilityConfig().GetEnabled() {
+		out.ObservedState = &krm.AlloyDBInstanceObservedState{}
+		out.ObservedState.ObservabilityInstanceConfig = Instance_ObservabilityInstanceConfigObservedState_FromProto(mapCtx, in.GetObservabilityConfig())
+	}
+
 	return out
 }
 
@@ -88,6 +98,9 @@ func AlloyDBInstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBIns
 	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
 	out.Uid = direct.ValueOf(in.Uid)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	if in.ObservedState != nil {
+		out.ObservabilityConfig = Instance_ObservabilityInstanceConfigObservedState_ToProto(mapCtx, in.ObservedState.ObservabilityInstanceConfig)
+	}
 
 	return out
 }

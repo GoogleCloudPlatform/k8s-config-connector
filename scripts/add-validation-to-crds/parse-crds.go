@@ -308,7 +308,7 @@ oneOf:
 			ruleYAML = refRuleWithKind
 			// kind is optional for projectRef (and maybe in future other well-known ref types)
 			// fieldPath is the best mechanism we have today (?)
-			if isProjectPath(fieldPath) {
+			if isProjectPath(fieldPath) || strings.HasSuffix(fieldPath, ".requiredAccessLevels[]") {
 				ruleYAML = refRuleWithOptionalKind
 			}
 		} else if signature == "external,name,namespace" {
