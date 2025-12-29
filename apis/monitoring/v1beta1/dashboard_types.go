@@ -18,8 +18,6 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
 var MonitoringDashboardGVK = GroupVersion.WithKind("MonitoringDashboard")
@@ -642,7 +640,7 @@ type LogsPanel struct {
 	Filter *string `json:"filter,omitempty"`
 
 	// The names of logging resources to collect logs for.
-	ResourceNames []deprecatedrefs.ResourceRef `json:"resourceNames,omitempty"`
+	ResourceNames []LogsPanelResourceRef `json:"resourceNames,omitempty"`
 }
 
 // +kcc:spec:proto=google.monitoring.dashboard.v1.Dashboard
