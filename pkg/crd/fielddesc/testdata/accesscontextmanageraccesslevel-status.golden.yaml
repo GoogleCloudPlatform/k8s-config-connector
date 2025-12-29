@@ -91,16 +91,6 @@ children:
   additionalproperties: []
 - fullname:
   - status
-  - createTime
-  shortname: createTime
-  description: Output only. Time the `AccessLevel` was created in UTC.
-  type: string
-  format: ""
-  requirementlevel: Optional
-  children: []
-  additionalproperties: []
-- fullname:
-  - status
   - externalRef
   shortname: externalRef
   description: A unique specifier for the AccessContextManagerAccessLevel resource
@@ -130,16 +120,6 @@ children:
   description: ObservedState is the state of the resource as most recently observed
     in GCP.
   type: object
-  format: ""
-  requirementlevel: Optional
-  children: []
-  additionalproperties: []
-- fullname:
-  - status
-  - updateTime
-  shortname: updateTime
-  description: Output only. Time the `AccessLevel` was updated in UTC.
-  type: string
   format: ""
   requirementlevel: Optional
   children: []
