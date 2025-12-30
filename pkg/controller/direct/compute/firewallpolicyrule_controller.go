@@ -221,6 +221,10 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 		// See API doc: https://cloud.google.com/compute/docs/reference/rest/v1/firewallPolicies/patchRule#query-parameters
 		firewallPolicyRule.Priority = nil
 
+		// Cleanup previously assigned values to output-only fields.
+		firewallPolicyRule.Kind = nil
+		firewallPolicyRule.RuleTupleCount = nil
+
 		updateReq := &computepb.PatchRuleFirewallPolicyRequest{
 			FirewallPolicyRuleResource: firewallPolicyRule,
 			FirewallPolicy:             a.id.Parent().FirewallPolicy,

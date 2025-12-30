@@ -42,7 +42,6 @@ X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 {
   "action": "allow",
   "direction": "INGRESS",
-  "kind": "compute#firewallPolicyRule",
   "match": {
     "layer4Configs": [
       {
@@ -52,8 +51,7 @@ X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
     "srcIpRanges": [
       "10.100.0.1/32"
     ]
-  },
-  "ruleTupleCount": 2
+  }
 }
 
 200 OK
