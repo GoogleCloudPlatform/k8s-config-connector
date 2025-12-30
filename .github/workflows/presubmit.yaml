@@ -54,6 +54,23 @@ jobs:
           COMMIT_HEAD: ${{ github.event.pull_request.head.sha }}
           COMMIT_CNT: ${{ github.event.pull_request.commits }}
           BASE_COMMIT: ${{ github.event.pull_request.base.sha }}
+  validate-untested-references-beta:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # This is to get all the commits in order to validate them
+          fetch-depth: 0
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/validate-untested-references-beta"
+        run: |
+          ./scripts/github-actions/validate-untested-references-beta.sh
+        env:
+          COMMIT_HEAD: ${{ github.event.pull_request.head.sha }}
+          BASE_COMMIT: ${{ github.event.pull_request.base.sha }}
   unit-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 60
