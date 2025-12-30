@@ -192,9 +192,11 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	// The field priority should be removed from the patch request body and included as a query parameter.
-	// See API doc: https://cloud.google.com/compute/docs/reference/rest/v1/firewallPolicies/patchRule#query-parameters
-	firewallPolicyRule.Priority = nil
+
+	// Assign API output-only values
+	// todo: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4455
+	firewallPolicyRule.Kind = a.actual.Kind
+	firewallPolicyRule.RuleTupleCount = a.actual.RuleTupleCount
 
 	paths, err := common.CompareProtoMessage(firewallPolicyRule, a.actual, common.BasicDiff)
 	if err != nil {
@@ -214,6 +216,10 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 		if err != nil {
 			return fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id, err)
 		}
+
+		// The field priority should be removed from the patch request body and included as a query parameter.
+		// See API doc: https://cloud.google.com/compute/docs/reference/rest/v1/firewallPolicies/patchRule#query-parameters
+		firewallPolicyRule.Priority = nil
 
 		updateReq := &computepb.PatchRuleFirewallPolicyRequest{
 			FirewallPolicyRuleResource: firewallPolicyRule,

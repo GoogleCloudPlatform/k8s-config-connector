@@ -803,6 +803,7 @@ X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 {
   "action": "allow",
   "direction": "EGRESS",
+  "kind": "compute#firewallPolicyRule",
   "match": {
     "destAddressGroups": [
       "organizations/${organizationID}/locations/global/addressGroups/testnetworksecurityaddressgroup-2"
@@ -832,6 +833,7 @@ X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
       "10.100.0.2/32"
     ]
   },
+  "ruleTupleCount": 4,
   "targetResources": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
   ],

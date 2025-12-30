@@ -803,6 +803,7 @@ X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
 {
   "action": "allow",
   "direction": "INGRESS",
+  "kind": "compute#firewallPolicyRule",
   "match": {
     "destIpRanges": [
       "10.100.0.2/32"
@@ -832,6 +833,7 @@ X-Goog-Request-Params: firewall_policy=${firewallPolicyID}
       "iplist-tor-exit-nodes"
     ]
   },
+  "ruleTupleCount": 4,
   "targetResources": [
     "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
   ],
