@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
@@ -169,23 +170,30 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("updating BackupVault", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	paths := []string{}
 	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, a.desired.Description)
 		paths = append(paths, "description")
 	}
 	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, a.desired.Labels)
 		paths = append(paths, "labels")
 	}
 	if !reflect.DeepEqual(a.desired.BackupMinimumEnforcedRetentionDuration, a.actual.BackupMinimumEnforcedRetentionDuration) {
+		report.AddField("backup_minimum_enforced_retention_duration", a.actual.BackupMinimumEnforcedRetentionDuration, a.desired.BackupMinimumEnforcedRetentionDuration)
 		paths = append(paths, "backup_minimum_enforced_retention_duration")
 	}
 	if !reflect.DeepEqual(a.desired.EffectiveTime, a.actual.EffectiveTime) {
+		report.AddField("effective_time", a.actual.EffectiveTime, a.desired.EffectiveTime)
 		paths = append(paths, "effective_time")
 	}
 	if !reflect.DeepEqual(a.desired.Annotations, a.actual.Annotations) {
+		report.AddField("annotations", a.actual.Annotations, a.desired.Annotations)
 		paths = append(paths, "annotations")
 	}
 	if !reflect.DeepEqual(a.desired.AccessRestriction, a.actual.AccessRestriction) {
+		report.AddField("access_restriction", a.actual.AccessRestriction, a.desired.AccessRestriction)
 		paths = append(paths, "access_restriction")
 	}
 
@@ -195,6 +203,7 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		a.desired.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		a.desired.Etag = a.actual.Etag // Etag is always updated, even if it is not changed.
 		req := &pb.UpdateBackupVaultRequest{
