@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/spanner/admin/instance/apiv1"
 
@@ -190,27 +191,33 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, desired.Spec.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	// If node count is unset, the field become unmanaged.
 	// If autoscaling is set, this field become output-only.
 	if a.desired.Spec.AutoscalingConfig == nil && a.desired.Spec.NumNodes != nil && !reflect.DeepEqual(resource.NodeCount, a.actual.NodeCount) {
+		report.AddField("node_count", a.actual.NodeCount, desired.Spec.NumNodes)
 		updateMask.Paths = append(updateMask.Paths, "node_count")
 	}
 	// If processing unit is unset, the field become unmanaged.
 	// If autoscaling is set, this field become output-only.
 	if a.desired.Spec.AutoscalingConfig == nil && a.desired.Spec.ProcessingUnits != nil && !reflect.DeepEqual(resource.ProcessingUnits, a.actual.ProcessingUnits) {
+		report.AddField("processing_units", a.actual.ProcessingUnits, desired.Spec.ProcessingUnits)
 		updateMask.Paths = append(updateMask.Paths, "processing_units")
 	}
 	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, desired.Spec.Labels)
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
 	// if defaultBackupScheduleType is not set in spec, the field become unmanaged.
 	if a.desired.Spec.DefaultBackupScheduleType != nil && !reflect.DeepEqual(resource.DefaultBackupScheduleType, a.actual.DefaultBackupScheduleType) {
+		report.AddField("default_backup_schedule_type", a.actual.DefaultBackupScheduleType, desired.Spec.DefaultBackupScheduleType)
 		updateMask.Paths = append(updateMask.Paths, "default_backup_schedule_type")
 	}
 
@@ -219,12 +226,14 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 		return err
 	}
 	if len(autoscaling_path) > 0 {
+		report.AddField("autoscaling_config", a.actual.AutoscalingConfig, desired.Spec.AutoscalingConfig)
 		updateMask.Paths = append(updateMask.Paths, "autoscaling_config")
 	}
 
 	var editionDowngrade = false
 	// If edition field is specified, the field become unmanaged.
 	if desired.Spec.Edition != nil && !reflect.DeepEqual(resource.Edition, a.actual.Edition) {
+		report.AddField("edition", a.actual.Edition, desired.Spec.Edition)
 		// Upgrading Edition to higher tier can be done along with other fields.
 		if resource.Edition > a.actual.Edition {
 			updateMask.Paths = append(updateMask.Paths, "edition")
@@ -237,6 +246,8 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	var updated *spannerpb.Instance
 	if len(updateMask.Paths) > 0 {
