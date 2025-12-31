@@ -16,9 +16,32 @@
 // krm.group: networkmanagement.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.networkmanagement.v1
-// resource: NetworkManagement:ConnectivityTest
+// resource: NetworkManagementConnectivityTestSpec:ConnectivityTest
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo
+type DirectVPCEgressConnectionInfo struct {
+	// URI of direct access network.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo.network_uri
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	// URI of direct access subnetwork.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo.subnetwork_uri
+	SubnetworkURI *string `json:"subnetworkURI,omitempty"`
+
+	// Selected IP range.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo.selected_ip_range
+	SelectedIPRange *string `json:"selectedIPRange,omitempty"`
+
+	// Selected starting IP address, from the selected IP range.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo.selected_ip_address
+	SelectedIPAddress *string `json:"selectedIPAddress,omitempty"`
+
+	// Region in which the Direct VPC egress is deployed.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.DirectVpcEgressConnectionInfo.region
+	Region *string `json:"region,omitempty"`
+}
 
 // +kcc:proto=google.cloud.networkmanagement.v1.Endpoint.AppEngineVersionEndpoint
 type Endpoint_AppEngineVersionEndpoint struct {
@@ -34,4 +57,11 @@ type Endpoint_CloudFunctionEndpoint struct {
 	// A [Cloud Function](https://cloud.google.com/functions) name.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.CloudFunctionEndpoint.uri
 	URI *string `json:"uri,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkmanagement.v1.ServerlessExternalConnectionInfo
+type ServerlessExternalConnectionInfo struct {
+	// Selected starting IP address, from the Google dynamic address pool.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ServerlessExternalConnectionInfo.selected_ip_address
+	SelectedIPAddress *string `json:"selectedIPAddress,omitempty"`
 }
