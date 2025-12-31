@@ -478,6 +478,10 @@ spec:
                           this endpoint. Note that GCP-managed services may still
                           use the endpoint even if this is false.
                         type: boolean
+                      enableK8sTokensViaDns:
+                        description: Controls whether the Kubernetes Certificates
+                          API is enabled.
+                        type: boolean
                     type: object
                   ipEndpointsConfig:
                     description: IP endpoint configuration.
