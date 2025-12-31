@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/spanner/admin/database/apiv1"
 	spannerbackupschedulespb "cloud.google.com/go/spanner/admin/database/apiv1/databasepb"
@@ -188,6 +189,11 @@ func (a *BackupScheduleAdapter) Update(ctx context.Context, updateOp *directbase
 	if desiredPb.EncryptionConfig == nil {
 		paths = paths.Delete(defaultOnEmptyFields...)
 	}
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
