@@ -148,6 +148,7 @@ securesourcemanagerinstancebasic|\
 securesourcemanagerinstancecmek|\
 securesourcemanagerrepositorybasic|\
 securesourcemanagerrepositoryfull|\
+sparkconnectionfull|\
 sqlinstanceencryptionkey|\
 storageanywherecache-base|\
 storageanywherecache-full|\
