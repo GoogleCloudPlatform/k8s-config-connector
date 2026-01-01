@@ -21,29 +21,42 @@ package datacatalog
 
 import (
 	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataCatalogTaxonomySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Taxonomy) *krm.DataCatalogTaxonomySpec {
+func DataCatalogTagSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krm.DataCatalogTagSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataCatalogTaxonomySpec{}
+	out := &krm.DataCatalogTagSpec{}
 	// MISSING: Name
-	out.DisplayName = in.GetDisplayName()
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.ActivatedPolicyTypes = direct.EnumSlice_FromProto(mapCtx, in.ActivatedPolicyTypes)
+	if in.GetTemplate() != "" {
+		out.TemplateRef = &krm.TagTemplateRef{External: in.GetTemplate()}
+	}
+	out.Column = direct.LazyPtr(in.GetColumn())
+	out.Fields = make(map[string]krm.TagField)
+	for k, v := range in.GetFields() {
+		out.Fields[k] = *TagField_v1alpha1_FromProto(mapCtx, v)
+	}
 	return out
 }
-func DataCatalogTaxonomySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalogTaxonomySpec) *pb.Taxonomy {
+
+func DataCatalogTagSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalogTagSpec) *pb.Tag {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Taxonomy{}
+	out := &pb.Tag{}
 	// MISSING: Name
-	out.DisplayName = in.DisplayName
-	out.Description = direct.ValueOf(in.Description)
-	out.ActivatedPolicyTypes = direct.EnumSlice_ToProto[pb.Taxonomy_PolicyType](mapCtx, in.ActivatedPolicyTypes)
+	if in.TemplateRef != nil {
+		out.Template = in.TemplateRef.External
+	}
+	if oneof := DataCatalogTagSpec_Column_ToProto(mapCtx, in.Column); oneof != nil {
+		out.Scope = oneof
+	}
+	out.Fields = make(map[string]*pb.TagField)
+	for k, v := range in.Fields {
+		out.Fields[k] = TagField_v1alpha1_ToProto(mapCtx, &v)
+	}
 	return out
 }
