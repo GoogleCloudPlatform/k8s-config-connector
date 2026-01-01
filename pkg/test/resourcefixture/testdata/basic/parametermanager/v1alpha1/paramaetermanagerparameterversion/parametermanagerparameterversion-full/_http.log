@@ -5,9 +5,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -15,6 +16,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
     "message": "Resource 'projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
@@ -38,9 +46,10 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -48,6 +57,11 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "format": 2,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}",
   "policyMember": {
     "iamPolicyUidPrincipal": "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
@@ -64,9 +78,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -74,7 +89,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}' was not found",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}' was not found.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}' was not found.",
     "status": "NOT_FOUND"
   }
 }
@@ -94,9 +116,10 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -119,9 +142,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -152,9 +176,10 @@ X-Goog-Request-Params: parameter_version.name=projects%2F${projectId}%2Flocation
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -175,9 +200,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -198,9 +224,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -216,9 +243,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -247,9 +275,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0

@@ -16,6 +16,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/global/parameters/parametermanagerparameter-basic-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
     "message": "Resource 'projects/${projectId}/locations/global/parameters/parametermanagerparameter-basic-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
@@ -50,6 +57,11 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "format": 3,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/global/parameters/parametermanagerparameter-basic-${uniqueId}",
   "policyMember": {
     "iamPolicyUidPrincipal": "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
@@ -77,7 +89,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/parameters/parametermanagerparameter-basic-${uniqueId}/versions/parametermanagerparameterversion-basic-${uniqueId}' was not found",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/global/parameters/parametermanagerparameter-basic-${uniqueId}/versions/parametermanagerparameterversion-basic-${uniqueId}' was not found.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/global/parameters/parametermanagerparameter-basic-${uniqueId}/versions/parametermanagerparameterversion-basic-${uniqueId}' was not found.",
     "status": "NOT_FOUND"
   }
 }

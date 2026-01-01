@@ -55,6 +55,9 @@ func (s *ParameterManagerV1) CreateParameterVersion(ctx context.Context, req *pb
 		return nil, err
 	}
 
+	if obj.GetDisabled() {
+		obj.Payload = nil
+	}
 	return obj, nil
 }
 
@@ -74,6 +77,9 @@ func (s *ParameterManagerV1) GetParameterVersion(ctx context.Context, req *pb.Ge
 		return nil, err
 	}
 
+	if parameter.GetDisabled() {
+		parameter.Payload = nil
+	}
 	return &parameter, nil
 }
 
@@ -126,6 +132,10 @@ func (s *ParameterManagerV1) UpdateParameterVersion(ctx context.Context, req *pb
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
+	}
+
+	if updated.GetDisabled() {
+		updated.Payload = nil
 	}
 	return updated, nil
 }
