@@ -1,0 +1,353 @@
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "description": "Test Network Firewall Policy",
+  "name": "${firewallPolicyID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkFirewallPolicy.insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}/wait?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkFirewallPolicy.insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Network Firewall Policy",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#firewallPolicy",
+  "name": "${firewallPolicyID}",
+  "ruleTupleCount": 8,
+  "rules": [
+    {
+      "action": "goto_next",
+      "description": "default egress rule",
+      "direction": "EGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "destIpRanges": [
+          "::/0"
+        ],
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ]
+      },
+      "priority": 2147483644,
+      "ruleTupleCount": 2
+    },
+    {
+      "action": "goto_next",
+      "description": "default ingress rule",
+      "direction": "INGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ],
+        "srcIpRanges": [
+          "::/0"
+        ]
+      },
+      "priority": 2147483645,
+      "ruleTupleCount": 2
+    },
+    {
+      "action": "goto_next",
+      "description": "default egress rule",
+      "direction": "EGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "destIpRanges": [
+          "0.0.0.0/0"
+        ],
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ]
+      },
+      "priority": 2147483646,
+      "ruleTupleCount": 2
+    },
+    {
+      "action": "goto_next",
+      "description": "default ingress rule",
+      "direction": "INGRESS",
+      "enableLogging": false,
+      "kind": "compute#firewallPolicyRule",
+      "match": {
+        "layer4Configs": [
+          {
+            "ipProtocol": "all"
+          }
+        ],
+        "srcIpRanges": [
+          "0.0.0.0/0"
+        ]
+      },
+      "priority": 2147483647,
+      "ruleTupleCount": 2
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies?alt=json&maxResults=500
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "items": [
+    {
+      "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+      "description": "Test Network Firewall Policy",
+      "fingerprint": "abcdef0123A=",
+      "id": "${firewallPolicyID}",
+      "kind": "compute#firewallPolicy",
+      "name": "${firewallPolicyID}",
+      "ruleTupleCount": 8,
+      "rules": [
+        {
+          "action": "goto_next",
+          "description": "default egress rule",
+          "direction": "EGRESS",
+          "enableLogging": false,
+          "kind": "compute#firewallPolicyRule",
+          "match": {
+            "destIpRanges": [
+              "::/0"
+            ],
+            "layer4Configs": [
+              {
+                "ipProtocol": "all"
+              }
+            ]
+          },
+          "priority": 2147483644,
+          "ruleTupleCount": 2
+        },
+        {
+          "action": "goto_next",
+          "description": "default ingress rule",
+          "direction": "INGRESS",
+          "enableLogging": false,
+          "kind": "compute#firewallPolicyRule",
+          "match": {
+            "layer4Configs": [
+              {
+                "ipProtocol": "all"
+              }
+            ],
+            "srcIpRanges": [
+              "::/0"
+            ]
+          },
+          "priority": 2147483645,
+          "ruleTupleCount": 2
+        },
+        {
+          "action": "goto_next",
+          "description": "default egress rule",
+          "direction": "EGRESS",
+          "enableLogging": false,
+          "kind": "compute#firewallPolicyRule",
+          "match": {
+            "destIpRanges": [
+              "0.0.0.0/0"
+            ],
+            "layer4Configs": [
+              {
+                "ipProtocol": "all"
+              }
+            ]
+          },
+          "priority": 2147483646,
+          "ruleTupleCount": 2
+        },
+        {
+          "action": "goto_next",
+          "description": "default ingress rule",
+          "direction": "INGRESS",
+          "enableLogging": false,
+          "kind": "compute#firewallPolicyRule",
+          "match": {
+            "layer4Configs": [
+              {
+                "ipProtocol": "all"
+              }
+            ],
+            "srcIpRanges": [
+              "0.0.0.0/0"
+            ]
+          },
+          "priority": 2147483647,
+          "ruleTupleCount": 2
+        }
+      ],
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+      "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}"
+    }
+  ],
+  "kind": "compute#firewallPolicyList"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkFirewallPolicy.delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "user": "user@example.com"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}/wait?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkFirewallPolicy.delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${firewallPolicyID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/firewallPolicies/${firewallPolicyID}",
+  "user": "user@example.com"
+}
