@@ -1,5 +1,54 @@
-A `BackupDRBackupPlanAssociation` resource is an association between a backup plan and a resource.
-This allows you to apply a backup plan to a resource, which will then be backed up according to the schedule defined in the backup plan.
+{{template "headercomment.tmpl" .}}
 
-For more information, see the [official documentation](https://cloud.google.com/backup-disaster-recovery/docs/managing-backup-plans).
-<pre>{% verbatim %}{% endverbatim %}</pre>
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Backup and DR</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/backup-disaster-recovery/docs/">/backup-disaster-recovery/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v1.projects.locations.backupPlanAssociations</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/backup-disaster-recovery/docs/reference/rest/v1/projects.locations.backupPlanAssociations">/backup-disaster-recovery/docs/reference/rest/v1/projects.locations.backupPlanAssociations</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>backupdr.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+<tr>
+<td>{{"{{product_name_short}}"}} Default Average Reconcile Interval In Seconds</td>
+<td>{{ .DefaultReconcileInterval}}</td>
+</tr>
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{{template "endnote.tmpl" .}}
+{% endblock %}

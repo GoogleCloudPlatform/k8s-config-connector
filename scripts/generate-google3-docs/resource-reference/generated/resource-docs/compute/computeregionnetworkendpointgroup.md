@@ -528,10 +528,7 @@ spec:
     # Replace ${PROJECT_ID?} with your project ID
     external: "projects/${PROJECT_ID?}"
   region: us-west1
-  # This field needs to be updated to a supported 1st gen version per the service team
-  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
-  # Deprecated runtime version will cause googleapis error
-  runtime: "nodejs20"
+  runtime: "nodejs10"
   sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
   entryPoint: "helloGET"
   httpsTrigger:

@@ -37,13 +37,63 @@ if [ "$(git tag -l "v${VERSION}")" ]; then
 fi
 echo "Tag v$VERSION does not exist. Proceeding."
 
-# 3. Find the commit that last modified the VERSION file. This is the commit we will tag.
-COMMIT_HASH=$(git log -1 --pretty=format:%H "${VERSION_FILE}")
-if [ -z "$COMMIT_HASH" ]; then
-  echo "ERROR: Could not find a commit for ${VERSION_FILE}."
+# 3. Use the current commit (HEAD) as the tag target.
+# We tag the end of the release PR (which includes 3 commits), not just the first commit that bumped the version.
+# We assume this script runs on the tip of the release branch/PR.
+COMMIT_HASH=$(git rev-parse HEAD)
+if [ -z "${COMMIT_HASH}" ]; then
+  echo "ERROR: Could not determine commit hash."
   exit 1
 fi
-echo "Found commit to tag: ${COMMIT_HASH}"
+echo "Using HEAD as commit to tag: ${COMMIT_HASH}"
+
+# 4. Verify the commit messages match the release pattern.
+# We expect the sequence (oldest to newest):
+# 1. Release <VERSION>
+# 2. Update alpha CRDs for Release <VERSION>
+# 3. (Optional) Update golden files for operator controllers
+
+# We start checking from HEAD and work backwards.
+CURRENT_REF="HEAD"
+
+MSG=$(git log --format=%s -n 1 "${CURRENT_REF}")
+
+# Check for Optional commit 0: Merge commit
+if [[ "${MSG}" == "Merge pull request"* ]]; then
+  echo "Found merge commit at ${CURRENT_REF} ('${MSG}'). Verifying content from the merged branch (HEAD^2)."
+  CURRENT_REF="${CURRENT_REF}^2"
+  MSG=$(git log --format=%s -n 1 "${CURRENT_REF}")
+fi
+
+# Check for Optional commit 3: Golden files
+EXPECTED_GOLDEN="Update golden files for operator controllers"
+if [ "${MSG}" = "${EXPECTED_GOLDEN}" ]; then
+  echo "Found golden files update commit at ${CURRENT_REF}."
+  CURRENT_REF="${CURRENT_REF}~1"
+  MSG=$(git log --format=%s -n 1 "${CURRENT_REF}")
+fi
+
+# Check for Required commit 2: Alpha CRDs
+EXPECTED_CRDS="Update alpha CRDs for Release ${VERSION}"
+if [ "${MSG}" = "${EXPECTED_CRDS}" ]; then
+  echo "Found alpha CRDs update commit at ${CURRENT_REF}."
+  CURRENT_REF="${CURRENT_REF}~1"
+  MSG=$(git log --format=%s -n 1 "${CURRENT_REF}")
+else
+  echo "ERROR: Expected commit message '${EXPECTED_CRDS}' at ${CURRENT_REF}, but found '${MSG}'"
+  echo "The release PR must include an '${EXPECTED_CRDS}' commit."
+  exit 1
+fi
+
+# Check for Required commit 1: Release version
+EXPECTED_RELEASE="Release ${VERSION}"
+if [ "${MSG}" != "${EXPECTED_RELEASE}" ]; then
+  echo "ERROR: Expected commit message '${EXPECTED_RELEASE}' at ${CURRENT_REF} (derived from HEAD), but found '${MSG}'"
+  echo "The release PR must typically start with a 'Release ${VERSION}' commit, optionally followed by CRD updates and/or golden file updates."
+  exit 1
+fi
+
+echo "Verified commit messages match release pattern."
 
 # 4. Verify the version in the file at the target commit matches the version from HEAD.
 # This ensures we're tagging the right commit.

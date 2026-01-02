@@ -118,7 +118,7 @@ type IAMPartialPolicyAdapter struct {
 var _ directbase.Adapter = &IAMPartialPolicyAdapter{}
 
 func getLogger(ctx context.Context) logr.Logger {
-	return klog.FromContext(ctx).WithName(iamPartialPolicyControllerName).WithValues("controllerType", "direct")
+	return klog.FromContext(ctx).WithValues("controllerType", "direct")
 }
 
 func (a *IAMPartialPolicyAdapter) Find(ctx context.Context) (bool, error) {

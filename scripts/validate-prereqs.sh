@@ -24,6 +24,7 @@ if [[ "${changed_file_count}" != "0" ]]; then
     echo "Full diff:"
     git diff
     echo "ERROR: Files not formatted correctly. Please run 'make fmt' and update your PR."
+    echo "<hint_for_agent>Run 'make fmt' to fix formatting issues.</hint_for_agent>"
     echo "Affected files:"
     git diff --name-only
     exit 1
@@ -34,6 +35,7 @@ if [[ "${changed_file_count}" != "0" ]]; then
     echo "Full diff:"
     git diff
     echo "ERROR: Generated code out-of-date. Please run 'make generate' and update your PR."
+    echo "<hint_for_agent>Run 'make generate' to update generated code.</hint_for_agent>"
     echo "Affected files:"
     git diff --name-only
     exit 1
@@ -45,6 +47,7 @@ if [[ "${changed_file_count}" != "0" ]] || [[ "${added_config_file_count}" != "0
     echo "Full diff:"
     git diff
     echo "ERROR: Manifests must be regenerated. Please run 'make ready-pr' or 'make manifests' and update your PR."
+    echo "<hint_for_agent>Run 'make manifests' to regenerate manifests.</hint_for_agent>"
     echo "Affected files:"
     git diff --name-only
     git ls-files --others --exclude-standard config/
@@ -77,6 +80,7 @@ if [[ "${changed_file_count}" != "0" ]]; then
     echo "Full diff:"
     git diff
     echo "ERROR: Vendored code does not match go.mod (+ override patches). Please run 'make ensure' and update your PR."
+    echo "<hint_for_agent>Run 'make ensure' to update vendored code.</hint_for_agent>"
     echo "Affected files:"
     git diff --name-only
     exit 1

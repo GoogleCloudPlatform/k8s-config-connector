@@ -234,6 +234,61 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
         },
         "width": 12,
         "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "alertChart": {
+            "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+          },
+          "title": "AlertChart Widget"
+        },
+        "width": 12,
+        "yPos": 3
+      },
+      {
+        "height": 1,
+        "widget": {
+          "errorReportingPanel": {
+            "projectNames": [
+              "projects/project1",
+              "projects/project2"
+            ],
+            "services": [
+              "foo",
+              "bar"
+            ],
+            "versions": [
+              "v1"
+            ]
+          },
+          "title": "ErrorReporting Widget"
+        },
+        "width": 12,
+        "yPos": 4
+      },
+      {
+        "height": 1,
+        "widget": {
+          "incidentList": {
+            "monitoredResources": [
+              {
+                "labels": {
+                  "instance_id": "12345678901234",
+                  "project_id": "my-project",
+                  "zone": "us-central1-a"
+                },
+                "type": "gce_instance"
+              }
+            ],
+            "policyNames": [
+              "alertPolicies/${alertPolicyID}"
+            ]
+          },
+          "title": "IncidentList Widget"
+        },
+        "width": 12,
+        "yPos": 5
       }
     ]
   },
@@ -299,6 +354,61 @@ X-Xss-Protection: 0
         },
         "width": 12,
         "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "alertChart": {
+            "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+          },
+          "title": "AlertChart Widget"
+        },
+        "width": 12,
+        "yPos": 3
+      },
+      {
+        "height": 1,
+        "widget": {
+          "errorReportingPanel": {
+            "projectNames": [
+              "projects/project1",
+              "projects/project2"
+            ],
+            "services": [
+              "foo",
+              "bar"
+            ],
+            "versions": [
+              "v1"
+            ]
+          },
+          "title": "ErrorReporting Widget"
+        },
+        "width": 12,
+        "yPos": 4
+      },
+      {
+        "height": 1,
+        "widget": {
+          "incidentList": {
+            "monitoredResources": [
+              {
+                "labels": {
+                  "instance_id": "12345678901234",
+                  "project_id": "my-project",
+                  "zone": "us-central1-a"
+                },
+                "type": "gce_instance"
+              }
+            ],
+            "policyNames": [
+              "alertPolicies/${alertPolicyID}"
+            ]
+          },
+          "title": "IncidentList Widget"
+        },
+        "width": 12,
+        "yPos": 5
       }
     ]
   },
@@ -371,6 +481,61 @@ X-Xss-Protection: 0
         },
         "width": 12,
         "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "alertChart": {
+            "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+          },
+          "title": "AlertChart Widget"
+        },
+        "width": 12,
+        "yPos": 3
+      },
+      {
+        "height": 1,
+        "widget": {
+          "errorReportingPanel": {
+            "projectNames": [
+              "projects/project1",
+              "projects/project2"
+            ],
+            "services": [
+              "foo",
+              "bar"
+            ],
+            "versions": [
+              "v1"
+            ]
+          },
+          "title": "ErrorReporting Widget"
+        },
+        "width": 12,
+        "yPos": 4
+      },
+      {
+        "height": 1,
+        "widget": {
+          "incidentList": {
+            "monitoredResources": [
+              {
+                "labels": {
+                  "instance_id": "12345678901234",
+                  "project_id": "my-project",
+                  "zone": "us-central1-a"
+                },
+                "type": "gce_instance"
+              }
+            ],
+            "policyNames": [
+              "alertPolicies/${alertPolicyID}"
+            ]
+          },
+          "title": "IncidentList Widget"
+        },
+        "width": 12,
+        "yPos": 5
       }
     ]
   },
@@ -431,6 +596,61 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
         },
         "width": 12,
         "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "alertChart": {
+            "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+          },
+          "title": "AlertChart Widget"
+        },
+        "width": 12,
+        "yPos": 3
+      },
+      {
+        "height": 1,
+        "widget": {
+          "errorReportingPanel": {
+            "projectNames": [
+              "projects/project1",
+              "projects/project2"
+            ],
+            "services": [
+              "foo",
+              "bar"
+            ],
+            "versions": [
+              "v1"
+            ]
+          },
+          "title": "ErrorReporting Widget"
+        },
+        "width": 12,
+        "yPos": 4
+      },
+      {
+        "height": 1,
+        "widget": {
+          "incidentList": {
+            "monitoredResources": [
+              {
+                "labels": {
+                  "instance_id": "12345678901234",
+                  "project_id": "my-project",
+                  "zone": "us-central1-a"
+                },
+                "type": "gce_instance"
+              }
+            ],
+            "policyNames": [
+              "alertPolicies/${alertPolicyID}"
+            ]
+          },
+          "title": "IncidentList Widget"
+        },
+        "width": 12,
+        "yPos": 5
       }
     ]
   },
@@ -496,6 +716,61 @@ X-Xss-Protection: 0
         },
         "width": 12,
         "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "alertChart": {
+            "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+          },
+          "title": "AlertChart Widget"
+        },
+        "width": 12,
+        "yPos": 3
+      },
+      {
+        "height": 1,
+        "widget": {
+          "errorReportingPanel": {
+            "projectNames": [
+              "projects/project1",
+              "projects/project2"
+            ],
+            "services": [
+              "foo",
+              "bar"
+            ],
+            "versions": [
+              "v1"
+            ]
+          },
+          "title": "ErrorReporting Widget"
+        },
+        "width": 12,
+        "yPos": 4
+      },
+      {
+        "height": 1,
+        "widget": {
+          "incidentList": {
+            "monitoredResources": [
+              {
+                "labels": {
+                  "instance_id": "12345678901234",
+                  "project_id": "my-project",
+                  "zone": "us-central1-a"
+                },
+                "type": "gce_instance"
+              }
+            ],
+            "policyNames": [
+              "alertPolicies/${alertPolicyID}"
+            ]
+          },
+          "title": "IncidentList Widget"
+        },
+        "width": 12,
+        "yPos": 5
       }
     ]
   },
@@ -568,6 +843,61 @@ X-Xss-Protection: 0
         },
         "width": 12,
         "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "alertChart": {
+            "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+          },
+          "title": "AlertChart Widget"
+        },
+        "width": 12,
+        "yPos": 3
+      },
+      {
+        "height": 1,
+        "widget": {
+          "errorReportingPanel": {
+            "projectNames": [
+              "projects/project1",
+              "projects/project2"
+            ],
+            "services": [
+              "foo",
+              "bar"
+            ],
+            "versions": [
+              "v1"
+            ]
+          },
+          "title": "ErrorReporting Widget"
+        },
+        "width": 12,
+        "yPos": 4
+      },
+      {
+        "height": 1,
+        "widget": {
+          "incidentList": {
+            "monitoredResources": [
+              {
+                "labels": {
+                  "instance_id": "12345678901234",
+                  "project_id": "my-project",
+                  "zone": "us-central1-a"
+                },
+                "type": "gce_instance"
+              }
+            ],
+            "policyNames": [
+              "alertPolicies/${alertPolicyID}"
+            ]
+          },
+          "title": "IncidentList Widget"
+        },
+        "width": 12,
+        "yPos": 5
       }
     ]
   },

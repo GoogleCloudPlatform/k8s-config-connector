@@ -315,8 +315,6 @@ func (a *TagsTagKeyAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 }
 
 func (a *TagsTagKeyAdapter) changedFields(ctx context.Context) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	log := klog.FromContext(ctx)
-
 	// Compute the actual with only the spec fields populated.
 	var actualMasked protoreflect.Message
 	{
@@ -333,21 +331,5 @@ func (a *TagsTagKeyAdapter) changedFields(ctx context.Context) (*structuredrepor
 		actualMasked = specProto.ProtoReflect()
 	}
 
-	diff := &structuredreporting.Diff{}
-
-	var paths []string
-	fields := actualMasked.Type().Descriptor().Fields()
-	for i := 0; i < fields.Len(); i++ {
-		path := string(fields.Get(i).Name())
-		fieldDiff, err := fieldHasChanged(path, a.desired.ProtoReflect(), actualMasked)
-		if err != nil {
-			log.Error(err, "error determining if field has changed", "field", path)
-			// If we can't determine if the field has changed, include it in the update.
-		} else if fieldDiff == nil {
-			continue
-		}
-		diff.AddField(fieldDiff.FieldPath, fieldDiff.ActualValue, fieldDiff.DesiredValue)
-		paths = append(paths, fieldDiff.FieldPath)
-	}
-	return diff, &fieldmaskpb.FieldMask{Paths: paths}, nil
+	return buildDiff(ctx, a.desired.ProtoReflect(), actualMasked)
 }

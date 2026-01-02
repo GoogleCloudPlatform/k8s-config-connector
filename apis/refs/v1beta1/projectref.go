@@ -20,13 +20,20 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
+
+var ProjectGVK = schema.GroupVersionKind{
+	Group:   "resourcemanager.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "Project",
+}
 
 // The Project that this resource belongs to.
 type ProjectRef struct {
@@ -41,8 +48,27 @@ type ProjectRef struct {
 	Kind string `json:"kind,omitempty"`
 }
 
+func (r *ProjectRef) GetGVK() schema.GroupVersionKind {
+	return ProjectGVK
+}
+
+func (r *ProjectRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ProjectRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ProjectRef) SetExternal(ref string) {
+	r.External = ref
+}
+
 // AsProjectRef converts a generic ResourceRef into a ProjectRef
-func AsProjectRef(in *v1alpha1.ResourceRef) *ProjectRef {
+func AsProjectRef(in *deprecatedrefs.ResourceRef) *ProjectRef {
 	if in == nil {
 		return nil
 	}
@@ -104,7 +130,9 @@ func ResolveProject(ctx context.Context, reader client.Reader, otherNamespace st
 			return nil, fmt.Errorf("cannot specify both name and external on project reference")
 		}
 
-		tokens := strings.Split(ref.External, "/")
+		external := ref.External
+		external = strings.TrimPrefix(external, "//cloudresourcemanager.googleapis.com/")
+		tokens := strings.Split(external, "/")
 		if len(tokens) == 1 {
 			return &Project{ProjectID: tokens[0]}, nil
 		}
@@ -199,5 +227,14 @@ func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaul
 	}
 
 	r.External = "projects/" + project.ProjectID
+	return nil
+}
+
+// ValidateExternal validates that the provided external reference is valid.
+func (r *ProjectRef) ValidateExternal(ref string) error {
+	id := &Project{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
 	return nil
 }

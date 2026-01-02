@@ -27,10 +27,15 @@ if [[ $1 =~ TestE2EScript.* ]]; then
 elif [[ $1 =~ TestAllInSeries.* ]]; then
   # Prefix looks good
   RUN_TESTS=$1
+elif [[ $1 =~ pkg.* ]]; then
+  # Prefix looks good, but we need to add TestAllInSeries/ and opt-in to full paths
+  export USE_FULL_TEST_NAMES=true
+  RUN_TESTS=TestAllInSeries/fixtures/${1}$
 else
   RUN_TESTS=TestAllInSeries/$1
 fi
 export RUN_TESTS
+echo "RUN_TESTS=${RUN_TESTS}"
 
 # Clear existing artifacts
 rm -rf $(pwd)/artifactz/mock

@@ -72,14 +72,6 @@ type ConfigConnectorSpec struct {
 }
 
 type CCExperiments struct {
-	// LeaderElection defines the configuration for multi cluster leader election.
-	// +optional
-	LeaderElection *LeaderElectionSpec `json:"leaderElection,omitempty"`
-}
-
-// LeaderElectionSpec defines the configuration for leader election.
-// +optional
-type LeaderElectionSpec struct {
 	// MultiClusterLease defines configuration specific to multi-cluster leader election.
 	// +optional
 	MultiClusterLease *MultiClusterLeaseSpec `json:"multiClusterLease,omitempty"`
@@ -91,10 +83,11 @@ type MultiClusterLeaseSpec struct {
 	LeaseName string `json:"leaseName"`
 	// The namespace where the MultiClusterLease object will be created.
 	Namespace string `json:"namespace"`
-	// The unique name of the global lock, which must be shared by all KCC replicas
+	// The identity of the cluster candidate for the KCC components, hared by all KCC replicas
 	// and workloads across all clusters that are part of the same election.
-	// +kubebuilder:default="kcc-multicluster-leader-lock"
-	GlobalLockName string `json:"globalLockName"`
+	//  This name must be unique across all the clusters that you are configuring the multi cluster set up for.
+	// +required
+	ClusterCandidateIdentity string `json:"clusterCandidateIdentity"`
 }
 
 // ConfigConnectorStatus defines the observed state of ConfigConnector

@@ -21,10 +21,57 @@ package tags
 
 import (
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	krmtagsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func TagsLocationTagBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krmtagsv1alpha1.TagsLocationTagBindingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmtagsv1alpha1.TagsLocationTagBindingObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: TagValueNamespacedName
+	return out
+}
+func TagsLocationTagBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krmtagsv1alpha1.TagsLocationTagBindingObservedState) *pb.TagBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagBinding{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: TagValueNamespacedName
+	return out
+}
+func TagsLocationTagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krmtagsv1alpha1.TagsLocationTagBindingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmtagsv1alpha1.TagsLocationTagBindingSpec{}
+	if in.GetParent() != "" {
+		out.ParentRef = &krm.TagsTagBindingParentRef{External: in.GetParent()}
+	}
+	if in.GetTagValue() != "" {
+		out.TagValueRef = &krm.TagsTagValueRef{External: in.GetTagValue()}
+	}
+	// MISSING: TagValueNamespacedName
+	return out
+}
+func TagsLocationTagBindingSpec_ToProto(mapCtx *direct.MapContext, in *krmtagsv1alpha1.TagsLocationTagBindingSpec) *pb.TagBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagBinding{}
+	if in.ParentRef != nil {
+		out.Parent = in.ParentRef.External
+	}
+	if in.TagValueRef != nil {
+		out.TagValue = in.TagValueRef.External
+	}
+	// MISSING: TagValueNamespacedName
+	return out
+}
 func TagsTagBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krm.TagsTagBindingObservedState {
 	if in == nil {
 		return nil
@@ -49,7 +96,7 @@ func TagsTagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) 
 	}
 	out := &krm.TagsTagBindingSpec{}
 	if in.GetParent() != "" {
-		out.ParentRef = &krm.ParentRef{External: in.GetParent()}
+		out.ParentRef = &krm.TagsTagBindingParentRef{External: in.GetParent()}
 	}
 	if in.GetTagValue() != "" {
 		out.TagValueRef = &krm.TagsTagValueRef{External: in.GetTagValue()}

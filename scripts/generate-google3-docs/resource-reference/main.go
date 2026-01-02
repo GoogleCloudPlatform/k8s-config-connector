@@ -181,10 +181,6 @@ func main() {
 			continue
 		}
 		// TODO: Add resource docs for all the v1beta1 resources and remove exceptions.
-		if gvk.Kind == "KMSImportJob" || gvk.Kind == "MetastoreBackup" {
-			klog.Errorf("doc template missing for GVK %v", gvk)
-			continue
-		}
 		if err := docGenerator.generateDocForGVK(gvk); err != nil {
 			log.Fatal(fmt.Errorf("error generating doc for GVK %v: %w", gvk, err))
 		}

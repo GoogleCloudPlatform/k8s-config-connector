@@ -25,7 +25,7 @@ var TagsTagBindingGVK = GroupVersion.WithKind("TagsTagBinding")
 // +kcc:spec:proto=google.cloud.resourcemanager.v3.TagBinding
 type TagsTagBindingSpec struct {
 	// +kcc:ref=Project
-	ParentRef *ParentRef `json:"parentRef"`
+	ParentRef *TagsTagBindingParentRef `json:"parentRef"`
 
 	// +kcc:ref=TagsTagValue
 	TagValueRef *TagsTagValueRef `json:"tagValueRef"`
@@ -33,20 +33,6 @@ type TagsTagBindingSpec struct {
 	// The service-generated name of the resource. Used for acquisition only. Leave unset to create a new
 	// resource.
 	ResourceID *string `json:"resourceID,omitempty"`
-}
-
-// ParentRef is a reference to a parent resource.
-// +kcc:ref=Project
-type ParentRef struct {
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-
-	// Allowed value: string of the format `//cloudresourcemanager.googleapis.com/projects/{{value}}`,
-	// where {{value}} is the `number` field of a `Project` resource.
-	External string `json:"external,omitempty"`
 }
 
 // TagsTagBindingStatus defines the config connector machine state of TagsTagBinding

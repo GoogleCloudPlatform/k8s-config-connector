@@ -15,12 +15,12 @@
 // +generated:mapper
 // krm.group: memorystore.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.memorystore.v1beta
+// proto.service: google.cloud.memorystore.v1
 
 package memorystore
 
 import (
-	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
+	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"

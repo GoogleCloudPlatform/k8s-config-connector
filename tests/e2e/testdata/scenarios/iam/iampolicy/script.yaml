@@ -52,3 +52,20 @@ spec:
   resourceRef:
     kind: Project
     name: iampartialpolicy-dep-project
+---
+TEST: TOUCH
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: iampolicy-sample-project
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+spec:
+  bindings:
+    - role: roles/storage.admin
+      members:
+      - serviceAccount:iampartialpolicy-dep-project-b@iampartialpolicy-dep-project.iam.gserviceaccount.com
+      - serviceAccount:iampartialpolicy-dep-project-a@iampartialpolicy-dep-project.iam.gserviceaccount.com
+  resourceRef:
+    kind: Project
+    name: iampartialpolicy-dep-project

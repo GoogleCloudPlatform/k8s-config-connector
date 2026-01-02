@@ -99,48 +99,84 @@ type Config struct {
 
 	// Configure manager to participate in leader election if MultiClusterLease is enabled.
 	MultiClusterLease bool
+
+	// used for smoke testing only; options not meant to be used in production.
+	testConfig
 }
 
-func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme *runtime.Scheme) (*leaderelection.LeaderElectionConfig, error) {
-	// Create a temporary client to read the ConfigConnector object for leader election config.
-	c, err := crclient.New(restConfig, crclient.Options{Scheme: scheme})
-	if err != nil {
-		return nil, fmt.Errorf("error creating temporary client: %w", err)
+type testConfig struct {
+	// skipControllerRegistration is true if we should skip registering the default controllers
+	// used for testing purposes to avoid controller name conflicts when creating multiple managers
+	skipControllerRegistration bool
+
+	// multiClusterLeaseConfig is the configuration for the multi-cluster lease.
+	// If specified, this configuration takes precedence over the ConfigConnector object.
+	// This is primarily used for testing to simulate multiple clusters.
+	multiClusterLeaseConfig *operatorv1beta1.MultiClusterLeaseSpec
+
+	// suppressExitOnLeadershipLoss controls whether the process should exit when leadership is lost.
+	// If false (default), the process exits. If true, it logs and continues (for testing).
+	suppressExitOnLeadershipLoss bool
+}
+
+func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme *runtime.Scheme, explicitConfig *operatorv1beta1.MultiClusterLeaseSpec, existOnLeadershipLoss bool) (*leaderelection.LeaderElectionConfig, error) {
+	var leaseSpec *operatorv1beta1.MultiClusterLeaseSpec
+
+	if explicitConfig != nil {
+		klog.Infof("using explicit multi-cluster lease config")
+		leaseSpec = explicitConfig
+	} else {
+		// Create a temporary client to read the ConfigConnector object for leader election config.
+		c, err := crclient.New(restConfig, crclient.Options{Scheme: scheme})
+		if err != nil {
+			return nil, fmt.Errorf("error creating temporary client: %w", err)
+		}
+
+		// Get the ConfigConnector object.
+		cc := &operatorv1beta1.ConfigConnector{}
+		ccName := types.NamespacedName{Name: "configconnector.core.cnrm.cloud.google.com"}
+		klog.Infof("checking for ConfigConnector object")
+		if err := c.Get(ctx, ccName, cc); err != nil {
+			// If the ConfigConnector object is not found, proceed with default leader election.
+			klog.Infof("ConfigConnector object not found, using default in-cluster leader election")
+			return nil, nil
+		}
+		klog.Infof("found ConfigConnector object")
+		if cc.Spec.Experiments != nil && cc.Spec.Experiments.MultiClusterLease != nil {
+			klog.Infof("multi-cluster leader election is configured")
+			leaseSpec = cc.Spec.Experiments.MultiClusterLease
+		}
 	}
 
-	// Get the ConfigConnector object.
-	cc := &operatorv1beta1.ConfigConnector{}
-	ccName := types.NamespacedName{Name: "configconnector.core.cnrm.cloud.google.com"}
-	klog.Infof("checking for ConfigConnector object")
-	if err := c.Get(ctx, ccName, cc); err != nil {
-		// If the ConfigConnector object is not found, proceed with default leader election.
-		klog.Infof("ConfigConnector object not found, using default in-cluster leader election")
-	} else {
-		klog.Infof("found ConfigConnector object")
-		if cc.Spec.Experiments != nil && cc.Spec.Experiments.LeaderElection != nil && cc.Spec.Experiments.LeaderElection.MultiClusterLease != nil {
-			klog.Infof("multi-cluster leader election is configured")
-			leaseSpec := cc.Spec.Experiments.LeaderElection.MultiClusterLease
-			lock := mcleclient.New(
-				c,
-				leaseSpec.LeaseName,
-				leaseSpec.Namespace,
-				leaseSpec.GlobalLockName,
-				15*time.Second,
-			)
-			return &leaderelection.LeaderElectionConfig{
-				Lock:          lock,
-				LeaseDuration: 15 * time.Second,
-				RenewDeadline: 10 * time.Second,
-				RetryPeriod:   2 * time.Second,
-				Name:          leaseSpec.LeaseName,
-				Callbacks: leaderelection.LeaderCallbacks{
-					OnStoppedLeading: func() {
-						klog.ErrorS(nil, "leaderelection lost")
-						klog.FlushAndExit(klog.ExitFlushTimeout, 1)
-					},
-				},
-			}, nil
+	if leaseSpec != nil {
+		// Create a new client for the lock to ensure it uses the correct configuration
+		c, err := crclient.New(restConfig, crclient.Options{Scheme: scheme})
+		if err != nil {
+			return nil, fmt.Errorf("error creating client for lock: %w", err)
 		}
+
+		lock := mcleclient.New(
+			c,
+			leaseSpec.LeaseName,
+			leaseSpec.Namespace,
+			leaseSpec.ClusterCandidateIdentity,
+			15*time.Second,
+		)
+		return &leaderelection.LeaderElectionConfig{
+			Lock:          lock,
+			LeaseDuration: 15 * time.Second,
+			RenewDeadline: 10 * time.Second,
+			RetryPeriod:   2 * time.Second,
+			Name:          leaseSpec.LeaseName,
+			Callbacks: leaderelection.LeaderCallbacks{
+				OnStoppedLeading: func() {
+					klog.Info("leaderelection lost")
+					if existOnLeadershipLoss {
+						klog.FlushAndExit(klog.ExitFlushTimeout, 1)
+					}
+				},
+			},
+		}, nil
 	}
 
 	return nil, nil
@@ -153,7 +189,7 @@ type leaderElectionManager struct {
 
 func (m *leaderElectionManager) Start(ctx context.Context) error {
 	m.leConfig.Callbacks.OnStartedLeading = func(ctx context.Context) {
-		klog.Infof("started leading")
+		klog.Infof("started leading; identity: %s", m.leConfig.Lock.Identity())
 		if err := m.Manager.Start(ctx); err != nil {
 			klog.Fatalf("error running manager: %v", err)
 		}
@@ -193,7 +229,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 
 	var leConfig *leaderelection.LeaderElectionConfig
 	if cfg.MultiClusterLease {
-		leConfig, err = setUpMultiClusterLease(ctx, restConfig, opts.Scheme)
+		leConfig, err = setUpMultiClusterLease(ctx, restConfig, opts.Scheme, cfg.multiClusterLeaseConfig, !cfg.suppressExitOnLeadershipLoss)
 		if err != nil {
 			return nil, fmt.Errorf("error setting up multi-cluster leader election: %w", err)
 		}
@@ -211,43 +247,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	if err != nil {
 		return nil, fmt.Errorf("error creating new manager: %w", err)
 	}
-	// Bootstrap the Google Terraform provider
-	tfCfg := tfprovider.NewConfig()
-	tfCfg.UserProjectOverride = cfg.UserProjectOverride
-	tfCfg.BillingProject = cfg.BillingProject
-	tfCfg.GCPAccessToken = cfg.GCPAccessToken
-	tfCfg.EnableMetricsTransport = cfg.EnableMetricsTransport
-
-	provider, err := tfprovider.New(ctx, tfCfg)
-	if err != nil {
-		return nil, fmt.Errorf("error creating TF provider: %w", err)
-	}
-	smLoader, err := servicemappingloader.New()
-	if err != nil {
-		return nil, fmt.Errorf("error loading service mappings: %w", err)
-	}
-	// Bootstrap the DCL SDK
-	dclSchemaLoader, err := dclschemaloader.New()
-	if err != nil {
-		return nil, fmt.Errorf("error creating a DCL schema loader: %w", err)
-	}
-	serviceMetadataLoader := dclmetadata.New()
-	dclConverter := dclconversion.New(dclSchemaLoader, serviceMetadataLoader)
-
-	dclOptions := clientconfig.Options{}
-	dclOptions.UserProjectOverride = cfg.UserProjectOverride
-	dclOptions.BillingProject = cfg.BillingProject
-	dclOptions.HTTPClient = cfg.HTTPClient
-	dclOptions.UserAgent = gcp.KCCUserAgent()
-	dclOptions.EnableMetricsTransport = cfg.EnableMetricsTransport
-
-	dclConfig, err := clientconfig.New(ctx, dclOptions)
-	if err != nil {
-		return nil, fmt.Errorf("error creating a DCL client config: %w", err)
-	}
-
-	stateIntoSpecDefaulter := stateintospec.NewStateIntoSpecDefaulter(mgr.GetClient())
-
+	var rd controller.Deps
 	controllerConfig := &config.ControllerConfig{
 		UserProjectOverride:        cfg.UserProjectOverride,
 		BillingProject:             cfg.BillingProject,
@@ -256,56 +256,96 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		UserAgent:                  gcp.KCCUserAgent(),
 		EnableMetricsTransport:     cfg.EnableMetricsTransport,
 	}
+	if !cfg.skipControllerRegistration {
+		// Bootstrap the Google Terraform provider
+		tfCfg := tfprovider.NewConfig()
+		tfCfg.UserProjectOverride = cfg.UserProjectOverride
+		tfCfg.BillingProject = cfg.BillingProject
+		tfCfg.GCPAccessToken = cfg.GCPAccessToken
+		tfCfg.EnableMetricsTransport = cfg.EnableMetricsTransport
 
-	if cfg.GCPAccessToken != "" {
-		controllerConfig.GCPTokenSource = oauth2.StaticTokenSource(&oauth2.Token{AccessToken: cfg.GCPAccessToken})
-	}
-
-	if err := controllerConfig.Init(ctx); err != nil {
-		return nil, err
-	}
-
-	// Initialize direct controllers
-	if err := registry.Init(ctx, controllerConfig); err != nil {
-		return nil, err
-	}
-
-	rd := controller.Deps{
-		TFProvider:   provider,
-		TFLoader:     smLoader,
-		DCLConfig:    dclConfig,
-		DCLConverter: dclConverter,
-		Defaulters: []k8s.Defaulter{
-			stateIntoSpecDefaulter,
-		},
-	}
-
-	fetcher, err := gcpwatch.NewIAMFetcher(ctx, controllerConfig)
-	if err != nil {
-		return nil, fmt.Errorf("creating resource fetcher: %w", err)
-	}
-	rd.DependencyTracker = gcpwatch.NewDependencyTracker(fetcher)
-
-	pollInterval := gcpwatch.DefaultPollInterval
-	if interval := os.Getenv("TEST_DEPENDENCY_TRACKER_POLL_INTERVAL"); interval != "" {
-		intInterval, err := strconv.Atoi(interval)
+		provider, err := tfprovider.New(ctx, tfCfg)
 		if err != nil {
-			return nil, fmt.Errorf("parsing TEST_DEPENDENCY_TRACKER_POLL_INTERVAL: %w", err)
+			return nil, fmt.Errorf("error creating TF provider: %w", err)
 		}
-		pollInterval = time.Duration(intInterval) * time.Second
+		smLoader, err := servicemappingloader.New()
+		if err != nil {
+			return nil, fmt.Errorf("error loading service mappings: %w", err)
+		}
+		// Bootstrap the DCL SDK
+		dclSchemaLoader, err := dclschemaloader.New()
+		if err != nil {
+			return nil, fmt.Errorf("error creating a DCL schema loader: %w", err)
+		}
+		serviceMetadataLoader := dclmetadata.New()
+		dclConverter := dclconversion.New(dclSchemaLoader, serviceMetadataLoader)
+
+		dclOptions := clientconfig.Options{}
+		dclOptions.UserProjectOverride = cfg.UserProjectOverride
+		dclOptions.BillingProject = cfg.BillingProject
+		dclOptions.HTTPClient = cfg.HTTPClient
+		dclOptions.UserAgent = gcp.KCCUserAgent()
+		dclOptions.EnableMetricsTransport = cfg.EnableMetricsTransport
+
+		dclConfig, err := clientconfig.New(ctx, dclOptions)
+		if err != nil {
+			return nil, fmt.Errorf("error creating a DCL client config: %w", err)
+		}
+
+		stateIntoSpecDefaulter := stateintospec.NewStateIntoSpecDefaulter(mgr.GetClient())
+
+		if cfg.GCPAccessToken != "" {
+			controllerConfig.GCPTokenSource = oauth2.StaticTokenSource(&oauth2.Token{AccessToken: cfg.GCPAccessToken})
+		}
+
+		if err := controllerConfig.Init(ctx); err != nil {
+			return nil, err
+		}
+
+		// Initialize direct controllers
+		if err := registry.Init(ctx, controllerConfig); err != nil {
+			return nil, err
+		}
+
+		rd = controller.Deps{
+			TFProvider:   provider,
+			TFLoader:     smLoader,
+			DCLConfig:    dclConfig,
+			DCLConverter: dclConverter,
+			Defaulters: []k8s.Defaulter{
+				stateIntoSpecDefaulter,
+			},
+		}
+
+		fetcher, err := gcpwatch.NewIAMFetcher(ctx, controllerConfig)
+		if err != nil {
+			return nil, fmt.Errorf("creating resource fetcher: %w", err)
+		}
+		rd.DependencyTracker = gcpwatch.NewDependencyTracker(fetcher)
+
+		pollInterval := gcpwatch.DefaultPollInterval
+		if interval := os.Getenv("TEST_DEPENDENCY_TRACKER_POLL_INTERVAL"); interval != "" {
+			intInterval, err := strconv.Atoi(interval)
+			if err != nil {
+				return nil, fmt.Errorf("parsing TEST_DEPENDENCY_TRACKER_POLL_INTERVAL: %w", err)
+			}
+			pollInterval = time.Duration(intInterval) * time.Second
+		}
+		go func() {
+			rd.DependencyTracker.PollForever(ctx, &gcpwatch.PollConfig{
+				InitialDelay: gcpwatch.DefaultInitialDelay,
+				MinInterval:  gcpwatch.DefaultMinInterval,
+				PollInterval: pollInterval,
+			})
+		}()
 	}
-	go func() {
-		rd.DependencyTracker.PollForever(ctx, &gcpwatch.PollConfig{
-			InitialDelay: gcpwatch.DefaultInitialDelay,
-			MinInterval:  gcpwatch.DefaultMinInterval,
-			PollInterval: pollInterval,
-		})
-	}()
 
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if err := registration.AddDefaultControllers(ctx, mgr, &rd, controllerConfig); err != nil {
-		return nil, fmt.Errorf("error adding registration controller: %w", err)
+	if !cfg.skipControllerRegistration {
+		if err := registration.AddDefaultControllers(ctx, mgr, &rd, controllerConfig); err != nil {
+			return nil, fmt.Errorf("error adding registration controller: %w", err)
+		}
 	}
 
 	if leConfig != nil {

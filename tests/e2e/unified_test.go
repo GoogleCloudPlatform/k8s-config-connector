@@ -224,7 +224,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				}
 			}
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
-			t.Run(fixture.Name, func(t *testing.T) {
+			testName := fixture.Name
+			if os.Getenv("USE_FULL_TEST_NAMES") == "true" {
+				testName = "pkg/test/resourcefixture/testdata/" + fixture.TestKey
+			}
+			t.Run(testName, func(t *testing.T) {
 				if skipTestReason != "" {
 					t.Skip(skipTestReason)
 				}
@@ -245,6 +249,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					}
 
 					opt.Create = append(opt.Create, primaryResource)
+					opt.PrimaryResource = primaryResource
 
 					if fixture.Update != nil {
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
@@ -275,11 +280,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					return primaryResource, opt
 				}
 
-				// Start gradually, only running for apikeyskey and tagstagkey fixtures initially
+				// Start gradually, only running for apikeyskey and tags* fixtures initially
 				forceDirect := false
 				if strings.Contains(fixture.TestKey, "/apikeyskey/") {
 					forceDirect = true
-				} else if strings.Contains(fixture.TestKey, "/tagstagkey/") {
+				} else if strings.Contains(fixture.TestKey, "/tag") {
 					forceDirect = true
 				}
 
@@ -417,7 +422,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 
 					// If this test wants us to fallback to the old controller, make sure that there is an old controller
 					if options.FallbackToOldController {
-						primaryGK := opt.Create[0].GroupVersionKind().GroupKind()
+						primaryGK := opt.PrimaryResource.GroupVersionKind().GroupKind()
 						config := resourceconfig.LoadConfig()[primaryGK]
 						if len(config.SupportedControllers) <= 1 {
 							t.Skipf("test is falling back to old controller, but there is no old controller for %v", primaryGK)
@@ -538,7 +543,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 
 						// Build a normalizer with the per-service replacements
 						// We should try to get all normalizers into this pattern, over time.
-						serviceReplacements := newObjectWalker()
+						serviceReplacements := newObjectWalker(t)
 						{
 							services := h.RegisteredServices()
 
@@ -1102,6 +1107,7 @@ func TestIAM_AllInSeries(t *testing.T) {
 					}
 
 					opt.Create = append(opt.Create, primaryResource)
+					opt.PrimaryResource = primaryResource
 
 					if fixture.Update != nil {
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
@@ -1126,7 +1132,7 @@ func TestIAM_AllInSeries(t *testing.T) {
 func buildControllerOverrides(t *testing.T, scenario create.CreateDeleteTestOptions, options ScenarioOptions) map[string]k8scontrollertype.ReconcilerType {
 	controllerOverrides := make(map[string]k8scontrollertype.ReconcilerType)
 
-	primaryResource := scenario.Create[0]
+	primaryResource := scenario.PrimaryResource
 	primaryGK := primaryResource.GroupVersionKind().GroupKind()
 
 	if options.FallbackToOldController {

@@ -131,7 +131,7 @@ type ListingAdapter struct {
 var _ directbase.Adapter = &ListingAdapter{}
 
 func (a *ListingAdapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(listingCtrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Listing", "name", a.id.External)
 
 	req := &bigqueryanalyticshubpb.GetListingRequest{Name: a.id.External}
@@ -148,7 +148,7 @@ func (a *ListingAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *ListingAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName(listingCtrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Listing", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
 
@@ -185,7 +185,7 @@ func (a *ListingAdapter) Create(ctx context.Context, createOp *directbase.Create
 }
 
 func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx).WithName(listingCtrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Listing", "name", a.id.External)
 	mapCtx := &direct.MapContext{}
 
@@ -310,7 +310,7 @@ func (a *ListingAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 
 // Delete implements the Adapter interface.
 func (a *ListingAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(listingCtrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Listing", "name", a.id.External)
 
 	req := &bigqueryanalyticshubpb.DeleteListingRequest{Name: a.id.External}

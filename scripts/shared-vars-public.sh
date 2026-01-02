@@ -72,6 +72,7 @@ SUPPORTED_SERVICES=(
   eventarc.googleapis.com
   file.googleapis.com
   firestore.googleapis.com
+  geminicloudassist.googleapis.com
   gkebackup.googleapis.com
   gkeconnect.googleapis.com
   gkehub.googleapis.com
