@@ -1,0 +1,58 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+    cnrm.cloud.google.com/unmanaged: spec.maintenanceVersion,spec.settings.edition
+  name: postgres-replication-${uniqueId}
+spec:
+  databaseVersion: POSTGRES_16
+  instanceType: CLOUD_SQL_INSTANCE
+  region: europe-west1
+  resourceID: postgres-replication-${uniqueId}
+  settings:
+    activationPolicy: ALWAYS
+    availabilityType: REGIONAL
+    backupConfiguration:
+      backupRetentionSettings:
+        retainedBackups: 7
+        retentionUnit: COUNT
+      enabled: true
+      pointInTimeRecoveryEnabled: true
+      startTime: '23:59'
+      transactionLogRetentionDays: 7
+    connectorEnforcement: NOT_REQUIRED
+    databaseFlags:
+      - name: autovacuum
+        value: 'on'
+      - name: max_connections
+        value: '10000'
+      - name: max_standby_archive_delay
+        value: '180000'
+      - name: max_standby_streaming_delay
+        value: '180000'
+    deletionProtectionEnabled: true
+    diskAutoresize: true
+    diskAutoresizeLimit: 0
+    diskSize: 180
+    diskType: PD_SSD
+    edition: ENTERPRISE
+    insightsConfig:
+      queryInsightsEnabled: true
+      queryStringLength: 2048
+    ipConfiguration:
+      enablePrivatePathForGoogleCloudServices: true
+      ipv4Enabled: false
+      privateNetworkRef:
+        name: network-${uniqueId}
+      requireSsl: true
+    locationPreference:
+      secondaryZone: europe-west1-b
+      zone: europe-west1-d
+    maintenanceWindow:
+      day: 7
+      hour: 23
+      updateTrack: stable
+    pricingPlan: PER_USE
+    replicationType: SYNCHRONOUS
+    tier: db-custom-4-15360
