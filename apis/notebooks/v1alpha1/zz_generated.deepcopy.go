@@ -588,7 +588,7 @@ func (in *NotebookInstanceSpec) DeepCopyInto(out *NotebookInstanceSpec) {
 	}
 	if in.SubnetRef != nil {
 		in, out := &in.SubnetRef, &out.SubnetRef
-		*out = new(v1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.Labels != nil {

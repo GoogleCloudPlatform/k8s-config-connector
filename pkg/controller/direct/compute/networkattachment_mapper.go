@@ -21,6 +21,7 @@ package compute
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -144,20 +145,20 @@ func ProjectList_ToProto(mapCtx *direct.MapContext, in []*refs.ProjectRef) []str
 	return out
 }
 
-func SubnetworkList_FromProto(mapCtx *direct.MapContext, in []string) []*refs.ComputeSubnetworkRef {
+func SubnetworkList_FromProto(mapCtx *direct.MapContext, in []string) []*computev1beta1.ComputeSubnetworkRef {
 	if in == nil {
 		return nil
 	}
-	var out []*refs.ComputeSubnetworkRef
+	var out []*computev1beta1.ComputeSubnetworkRef
 	for _, i := range in {
-		out = append(out, &refs.ComputeSubnetworkRef{
+		out = append(out, &computev1beta1.ComputeSubnetworkRef{
 			External: i,
 		})
 	}
 	return out
 }
 
-func SubnetworkList_ToProto(mapCtx *direct.MapContext, in []*refs.ComputeSubnetworkRef) []string {
+func SubnetworkList_ToProto(mapCtx *direct.MapContext, in []*computev1beta1.ComputeSubnetworkRef) []string {
 	if in == nil {
 		return nil
 	}

@@ -1579,7 +1579,7 @@ func (in *PscConfig) DeepCopyInto(out *PscConfig) {
 	}
 	if in.Subnetworks != nil {
 		in, out := &in.Subnetworks, &out.Subnetworks
-		*out = make([]v1beta1.ComputeSubnetworkRef, len(*in))
+		*out = make([]computev1beta1.ComputeSubnetworkRef, len(*in))
 		copy(*out, *in)
 	}
 }

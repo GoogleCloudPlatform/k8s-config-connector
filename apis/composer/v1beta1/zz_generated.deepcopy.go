@@ -656,7 +656,7 @@ func (in *NodeConfig) DeepCopyInto(out *NodeConfig) {
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(refsv1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.DiskSizeGB != nil {
@@ -816,7 +816,7 @@ func (in *PrivateEnvironmentConfig) DeepCopyInto(out *PrivateEnvironmentConfig) 
 	}
 	if in.CloudComposerConnectionSubnetworkRef != nil {
 		in, out := &in.CloudComposerConnectionSubnetworkRef, &out.CloudComposerConnectionSubnetworkRef
-		*out = new(refsv1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.NetworkingConfig != nil {

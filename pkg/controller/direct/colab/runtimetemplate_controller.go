@@ -157,11 +157,9 @@ func (a *runtimeTemplateAdapter) normalizeReferences(ctx context.Context) error 
 			}
 		}
 		if obj.Spec.NetworkSpec.SubnetworkRef != nil {
-			subnetworkRef, err := refs.ResolveComputeSubnetwork(ctx, a.reader, obj, obj.Spec.NetworkSpec.SubnetworkRef)
-			if err != nil {
+			if err := obj.Spec.NetworkSpec.SubnetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
 				return err
 			}
-			obj.Spec.NetworkSpec.SubnetworkRef = subnetworkRef
 		}
 	}
 	if obj.Spec.ServiceAccountRef != nil {

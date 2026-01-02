@@ -310,7 +310,7 @@ func (in *AllocationPolicy_NetworkInterface) DeepCopyInto(out *AllocationPolicy_
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.NoExternalIPAddress != nil {
