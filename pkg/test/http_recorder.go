@@ -58,6 +58,30 @@ func (e *LogEntry) VisitRequestStringValues(callback func(path, value string)) {
 	visitStringValues(obj, "", callback)
 }
 
+// GetResponseStringValue gets a string value from the response body
+func (e *LogEntry) GetResponseStringValue(path string) (string, bool) {
+	body := e.Response.Body
+	if body == "" {
+		return "", false
+	}
+
+	obj := make(map[string]any)
+	if err := json.Unmarshal([]byte(body), &obj); err != nil {
+		klog.Errorf("error from json.Unmarshal for %v (%q): %v", e.URL(), body, err)
+		return "", false
+	}
+	var result string
+	var found bool
+	callback := func(p, v string) {
+		if p == path {
+			result = v
+			found = true
+		}
+	}
+	visitStringValues(obj, "", callback)
+	return result, found
+}
+
 // VisitResponseStringValues calls callback for any string values in the response body
 func (e *LogEntry) VisitResponseStringValues(callback func(path, value string)) {
 	body := e.Response.Body

@@ -79,4 +79,7 @@ type Event interface {
 
 	// VisitResponseStringValues calls the callback for each string-typed value found in the response object (if any)
 	VisitResponseStringValues(callback func(path string, value string))
+
+	// GetResponseStringValue gets a string value from the response body
+	GetResponseStringValue(path string) (string, bool)
 }
