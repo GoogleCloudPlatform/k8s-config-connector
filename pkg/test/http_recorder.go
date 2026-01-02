@@ -67,7 +67,7 @@ func (e *LogEntry) VisitResponseStringValues(callback func(path, value string)) 
 
 	obj := make(map[string]any)
 	if err := json.Unmarshal([]byte(body), &obj); err != nil {
-		klog.Fatalf("error from json.Unmarshal(%q): %v", body, err)
+		klog.Errorf("error from json.Unmarshal(%q): %v", body, err)
 		return
 	}
 	visitStringValues(obj, "", callback)
