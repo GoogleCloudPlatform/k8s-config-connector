@@ -41,7 +41,6 @@ spec:
       queryInsightsEnabled: true
       queryStringLength: 2048
     ipConfiguration:
-      enablePrivatePathForGoogleCloudServices: false
       ipv4Enabled: false
       privateNetworkRef:
         name: network-${uniqueId}
