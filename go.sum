@@ -119,6 +119,8 @@ cloud.google.com/go/orgpolicy v1.15.1 h1:0hq12wxNwcfUMojr5j3EjWECSInIuyYDhkAWXTo
 cloud.google.com/go/orgpolicy v1.15.1/go.mod h1:bpvi9YIyU7wCW9WiXL/ZKT7pd2Ovegyr2xENIeRX5q0=
 cloud.google.com/go/osconfig v1.15.1 h1:QQzK5njfsfO2rdOWYVDyLQktqSq9gKf2ohRYeKUuA10=
 cloud.google.com/go/osconfig v1.15.1/go.mod h1:NegylQQl0+5m+I+4Ey/g3HGeQxKkncQ1q+Il4DZ8PME=
+cloud.google.com/go/parametermanager v0.3.1 h1:hmT52JUztk7pTLbTdAlXavZaiR6FfArH4CPTtmy635g=
+cloud.google.com/go/parametermanager v0.3.1/go.mod h1:uVdpZMPcSzEWaup+Bt0usxRYxyLzIbZffKXyQduX/2E=
 cloud.google.com/go/privilegedaccessmanager v0.3.1 h1:gnsf+cXnxF3BLsIFbfeVNxQsvcF0EkeezuB3ZOT2ggA=
 cloud.google.com/go/privilegedaccessmanager v0.3.1/go.mod h1:liYHa55U6nlwfca5OvJ6f31fcgC6UYU0Np+Sc9yIiB4=
 cloud.google.com/go/profiler v0.4.3 h1:IY3QNKlr8VbXwGWHcZbJQsMA/83ZTH6uAHf8jYyj7OI=
