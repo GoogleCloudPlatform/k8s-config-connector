@@ -82,4 +82,7 @@ type Event interface {
 
 	// ParseResponseInto attempts to parse the response into the provided dest value
 	ParseResponseInto(dest any) bool
+
+	// GetResponseStringValue gets a string value from the response body
+	GetResponseStringValue(path string) (string, bool)
 }
