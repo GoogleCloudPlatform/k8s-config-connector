@@ -216,7 +216,6 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 
 	// Specific to Sql
-	addSetStringReplacement(".ipAddresses[].ipAddress", "10.1.2.3")
 	addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
 	addReplacement("serverCaCert.commonName", "common-name")
 	addReplacement("serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")
