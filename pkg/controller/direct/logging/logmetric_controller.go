@@ -190,7 +190,7 @@ func (a *logMetricAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	if a.resourceID == "" {
 		return fmt.Errorf("resourceID is empty")
 	}
-	filter := a.desired.Spec.Filter
+	filter := direct.ValueOf(a.desired.Spec.Filter)
 	if filter == "" {
 		return fmt.Errorf("filter is empty")
 	}
@@ -257,10 +257,10 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		if direct.ValueOf(a.desired.Spec.Disabled) != a.actual.Disabled {
 			update.Disabled = direct.ValueOf(a.desired.Spec.Disabled)
 		}
-		if a.desired.Spec.Filter != a.actual.Filter {
+		if direct.ValueOf(a.desired.Spec.Filter) != a.actual.Filter {
 			// todo acpana: revisit UX, err out if filter of desired is empty
-			if a.desired.Spec.Filter != "" {
-				update.Filter = a.desired.Spec.Filter
+			if direct.ValueOf(a.desired.Spec.Filter) != "" {
+				update.Filter = direct.ValueOf(a.desired.Spec.Filter)
 			} else {
 				// filter is a REQUIRED field
 				update.Filter = a.actual.Filter
