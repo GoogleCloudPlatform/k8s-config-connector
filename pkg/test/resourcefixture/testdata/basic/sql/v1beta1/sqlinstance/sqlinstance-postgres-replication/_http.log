@@ -1,468 +1,3 @@
-POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/sqladmin.googleapis.com:generateServiceIdentity?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
-    "email": "service-${projectNumber}@gcp-sa-cloud-sql.iam.gserviceaccount.com",
-    "uniqueId": "12345678"
-  }
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "policy": {
-    "bindings": [
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-cloud-sql.iam.gserviceaccount.com"
-        ],
-        "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-      }
-    ],
-    "etag": "abcdef0123A=",
-    "version": 3
-  },
-  "updateMask": "bindings,etag,auditConfigs"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-sql.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-sql.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-sql.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-sql.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-sql.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "KeyRing projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId} not found.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
-}
-
----
-
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
-}
-
----
-
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "CryptoKey projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId} not found.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "purpose": "ENCRYPT_DECRYPT"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyScheduledDuration": "2592000s",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
-  "primary": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-    "protectionLevel": "SOFTWARE",
-    "state": "ENABLED"
-  },
-  "purpose": "ENCRYPT_DECRYPT",
-  "versionTemplate": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "protectionLevel": "SOFTWARE"
-  }
-}
-
----
-
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyScheduledDuration": "2592000s",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
-  "primary": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-    "protectionLevel": "SOFTWARE",
-    "state": "ENABLED"
-  },
-  "purpose": "ENCRYPT_DECRYPT",
-  "versionTemplate": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "protectionLevel": "SOFTWARE"
-  }
-}
-
----
-
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -499,7 +34,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "autoCreateSubnetworks": false,
-  "description": "Test network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
 }
@@ -579,7 +113,6 @@ X-Xss-Protection: 0
 {
   "autoCreateSubnetworks": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Test network",
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
@@ -964,7 +497,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -998,49 +531,55 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "databaseVersion": "POSTGRES_15",
-  "diskEncryptionConfiguration": {
-    "kind": "sql#diskEncryptionConfiguration",
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
+  "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
-  "name": "sqlinstance-encryptionkey-direct-${uniqueId}",
-  "region": "us-central1",
+  "name": "postgres-replication-${uniqueId}",
+  "region": "europe-west1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "REGIONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 5,
+        "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
       "enabled": true,
       "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": true,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 5
+      "transactionLogRetentionDays": 7
     },
     "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "100",
+    "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
       {
-        "name": "cloudsql.iam_authentication",
+        "name": "autovacuum",
         "value": "on"
+      },
+      {
+        "name": "max_connections",
+        "value": "10000"
+      },
+      {
+        "name": "max_standby_archive_delay",
+        "value": "180000"
+      },
+      {
+        "name": "max_standby_streaming_delay",
+        "value": "180000"
       }
     ],
-    "deletionProtectionEnabled": false,
+    "deletionProtectionEnabled": true,
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
-      "queryPlansPerMinute": 20,
-      "queryStringLength": 4500,
-      "recordApplicationTags": true,
-      "recordClientAddress": true
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 2048
     },
     "ipConfiguration": {
-      "enablePrivatePathForGoogleCloudServices": false,
+      "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,
@@ -1049,21 +588,22 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-b"
+      "secondaryZone": "europe-west1-b",
+      "zone": "europe-west1-d"
     },
     "maintenanceWindow": {
-      "day": 6,
-      "hour": 2,
+      "day": 7,
+      "hour": 23,
       "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
-    "tier": "db-custom-8-30720",
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-4-15360",
     "userLabels": {
       "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     }
   }
@@ -1086,8 +626,8 @@ X-Xss-Protection: 0
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlinstance-encryptionkey-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}",
+  "targetId": "postgres-replication-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -1116,15 +656,15 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "sqlinstance-encryptionkey-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}",
+  "targetId": "postgres-replication-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1139,14 +679,10 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-encryptionkey-direct-${uniqueId}",
+  "connectionName": "${projectId}:europe-west1:postgres-replication-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_15_7",
-  "databaseVersion": "POSTGRES_15",
-  "diskEncryptionConfiguration": {
-    "kind": "sql#diskEncryptionConfiguration",
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
@@ -1164,18 +700,19 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
-  "name": "sqlinstance-encryptionkey-direct-${uniqueId}",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "postgres-replication-${uniqueId}",
   "project": "${projectId}",
-  "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}",
+  "region": "europe-west1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-encryptionkey-direct-${uniqueId}",
+    "instance": "postgres-replication-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -1186,7 +723,7 @@ X-Xss-Protection: 0
     "availabilityType": "REGIONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 5,
+        "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
       "enabled": true,
@@ -1194,30 +731,40 @@ X-Xss-Protection: 0
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 5,
+      "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "100",
+    "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
       {
-        "name": "cloudsql.iam_authentication",
+        "name": "autovacuum",
         "value": "on"
+      },
+      {
+        "name": "max_connections",
+        "value": "10000"
+      },
+      {
+        "name": "max_standby_archive_delay",
+        "value": "180000"
+      },
+      {
+        "name": "max_standby_streaming_delay",
+        "value": "180000"
       }
     ],
-    "deletionProtectionEnabled": false,
+    "deletionProtectionEnabled": true,
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
-      "queryPlansPerMinute": 20,
-      "queryStringLength": 4500,
-      "recordApplicationTags": true,
-      "recordClientAddress": true
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 2048
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
-      "enablePrivatePathForGoogleCloudServices": false,
+      "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,
@@ -1226,11 +773,12 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-b"
+      "secondaryZone": "europe-west1-b",
+      "zone": "europe-west1-d"
     },
     "maintenanceWindow": {
-      "day": 6,
-      "hour": 2,
+      "day": 7,
+      "hour": 23,
       "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
@@ -1239,27 +787,19 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-8-30720",
+    "tier": "db-custom-4-15360",
     "userLabels": {
       "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE",
-  "upgradableDatabaseVersions": [
-    {
-      "displayName": "PostgreSQL 16",
-      "majorVersion": "POSTGRES_16",
-      "name": "POSTGRES_16"
-    }
-  ]
+  "state": "RUNNABLE"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}/users?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}/users?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1277,7 +817,8 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "instance": "sqlinstance-encryptionkey-direct-${uniqueId}",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
+      "instance": "postgres-replication-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
       "passwordPolicy": {
@@ -1291,7 +832,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1306,14 +847,10 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-encryptionkey-direct-${uniqueId}",
+  "connectionName": "${projectId}:europe-west1:postgres-replication-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_15_7",
-  "databaseVersion": "POSTGRES_15",
-  "diskEncryptionConfiguration": {
-    "kind": "sql#diskEncryptionConfiguration",
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
@@ -1331,18 +868,19 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
-  "name": "sqlinstance-encryptionkey-direct-${uniqueId}",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "postgres-replication-${uniqueId}",
   "project": "${projectId}",
-  "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}",
+  "region": "europe-west1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-encryptionkey-direct-${uniqueId}",
+    "instance": "postgres-replication-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -1353,7 +891,7 @@ X-Xss-Protection: 0
     "availabilityType": "REGIONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 5,
+        "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
       "enabled": true,
@@ -1361,30 +899,40 @@ X-Xss-Protection: 0
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 5,
+      "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "100",
+    "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
       {
-        "name": "cloudsql.iam_authentication",
+        "name": "autovacuum",
         "value": "on"
+      },
+      {
+        "name": "max_connections",
+        "value": "10000"
+      },
+      {
+        "name": "max_standby_archive_delay",
+        "value": "180000"
+      },
+      {
+        "name": "max_standby_streaming_delay",
+        "value": "180000"
       }
     ],
-    "deletionProtectionEnabled": false,
+    "deletionProtectionEnabled": true,
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
-      "queryPlansPerMinute": 20,
-      "queryStringLength": 4500,
-      "recordApplicationTags": true,
-      "recordClientAddress": true
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 2048
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
-      "enablePrivatePathForGoogleCloudServices": false,
+      "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,
@@ -1393,11 +941,12 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-b"
+      "secondaryZone": "europe-west1-b",
+      "zone": "europe-west1-d"
     },
     "maintenanceWindow": {
-      "day": 6,
-      "hour": 2,
+      "day": 7,
+      "hour": 23,
       "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
@@ -1406,72 +955,70 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-8-30720",
+    "tier": "db-custom-4-15360",
     "userLabels": {
       "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE",
-  "upgradableDatabaseVersions": [
-    {
-      "displayName": "PostgreSQL 16",
-      "majorVersion": "POSTGRES_16",
-      "name": "POSTGRES_16"
-    }
-  ]
+  "state": "RUNNABLE"
 }
 
 ---
 
-PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}?alt=json&prettyPrint=false
+PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "databaseVersion": "POSTGRES_15",
-  "diskEncryptionConfiguration": {
-    "kind": "sql#diskEncryptionConfiguration",
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
+  "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
-  "name": "sqlinstance-encryptionkey-direct-${uniqueId}",
-  "region": "us-central1",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "postgres-replication-${uniqueId}",
+  "region": "europe-west1",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "REGIONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 5,
+        "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
       "enabled": true,
       "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": true,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 5
+      "transactionLogRetentionDays": 7
     },
     "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "100",
+    "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
       {
-        "name": "cloudsql.iam_authentication",
+        "name": "autovacuum",
         "value": "on"
+      },
+      {
+        "name": "max_connections",
+        "value": "10000"
+      },
+      {
+        "name": "max_standby_archive_delay",
+        "value": "180000"
+      },
+      {
+        "name": "max_standby_streaming_delay",
+        "value": "180000"
       }
     ],
-    "deletionProtectionEnabled": false,
+    "deletionProtectionEnabled": true,
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
-      "queryPlansPerMinute": 40,
-      "queryStringLength": 4500,
-      "recordApplicationTags": true,
-      "recordClientAddress": true
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 2048
     },
     "ipConfiguration": {
       "enablePrivatePathForGoogleCloudServices": false,
@@ -1483,11 +1030,12 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-b"
+      "secondaryZone": "europe-west1-b",
+      "zone": "europe-west1-d"
     },
     "maintenanceWindow": {
-      "day": 6,
-      "hour": 2,
+      "day": 7,
+      "hour": 23,
       "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
@@ -1495,10 +1043,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
-    "tier": "db-custom-8-30720",
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-4-15360",
     "userLabels": {
       "cnrm-test": "true",
-      "label-one": "new-value",
       "managed-by-cnrm": "true"
     }
   }
@@ -1521,8 +1069,8 @@ X-Xss-Protection: 0
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlinstance-encryptionkey-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}",
+  "targetId": "postgres-replication-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -1551,15 +1099,15 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "sqlinstance-encryptionkey-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}",
+  "targetId": "postgres-replication-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1574,14 +1122,10 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-encryptionkey-direct-${uniqueId}",
+  "connectionName": "${projectId}:europe-west1:postgres-replication-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_15_7",
-  "databaseVersion": "POSTGRES_15",
-  "diskEncryptionConfiguration": {
-    "kind": "sql#diskEncryptionConfiguration",
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
+  "databaseInstalledVersion": "POSTGRES_16_3",
+  "databaseVersion": "POSTGRES_16",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
@@ -1599,18 +1143,19 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
-  "name": "sqlinstance-encryptionkey-direct-${uniqueId}",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "name": "postgres-replication-${uniqueId}",
   "project": "${projectId}",
-  "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}",
+  "region": "europe-west1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-encryptionkey-direct-${uniqueId}",
+    "instance": "postgres-replication-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -1621,7 +1166,7 @@ X-Xss-Protection: 0
     "availabilityType": "REGIONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 5,
+        "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
       "enabled": true,
@@ -1629,26 +1174,36 @@ X-Xss-Protection: 0
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 5,
+      "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "100",
+    "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
       {
-        "name": "cloudsql.iam_authentication",
+        "name": "autovacuum",
         "value": "on"
+      },
+      {
+        "name": "max_connections",
+        "value": "10000"
+      },
+      {
+        "name": "max_standby_archive_delay",
+        "value": "180000"
+      },
+      {
+        "name": "max_standby_streaming_delay",
+        "value": "180000"
       }
     ],
-    "deletionProtectionEnabled": false,
+    "deletionProtectionEnabled": true,
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
-      "queryPlansPerMinute": 40,
-      "queryStringLength": 4500,
-      "recordApplicationTags": true,
-      "recordClientAddress": true
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 2048
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
@@ -1661,11 +1216,12 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-b"
+      "secondaryZone": "europe-west1-b",
+      "zone": "europe-west1-d"
     },
     "maintenanceWindow": {
-      "day": 6,
-      "hour": 2,
+      "day": 7,
+      "hour": 23,
       "kind": "sql#maintenanceWindow",
       "updateTrack": "stable"
     },
@@ -1674,80 +1230,14 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-8-30720",
+    "tier": "db-custom-4-15360",
     "userLabels": {
       "cnrm-test": "true",
-      "label-one": "new-value",
       "managed-by-cnrm": "true"
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE",
-  "upgradableDatabaseVersions": [
-    {
-      "displayName": "PostgreSQL 16",
-      "majorVersion": "POSTGRES_16",
-      "name": "POSTGRES_16"
-    }
-  ]
-}
-
----
-
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "DELETE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "status": "PENDING",
-  "targetId": "sqlinstance-encryptionkey-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "DELETE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "sqlinstance-encryptionkey-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
+  "state": "RUNNABLE"
 }
 
 ---
@@ -1995,7 +1485,6 @@ X-Xss-Protection: 0
 {
   "autoCreateSubnetworks": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Test network",
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
@@ -2064,328 +1553,4 @@ X-Xss-Protection: 0
   "targetId": "${networkID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
-}
-
----
-
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyScheduledDuration": "2592000s",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
-  "primary": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-    "protectionLevel": "SOFTWARE",
-    "state": "ENABLED"
-  },
-  "purpose": "ENCRYPT_DECRYPT",
-  "versionTemplate": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "protectionLevel": "SOFTWARE"
-  }
-}
-
----
-
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "cryptoKeyVersions": [
-    {
-      "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "generateTime": "2024-04-01T12:34:56.123456Z",
-      "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-      "protectionLevel": "SOFTWARE",
-      "state": "ENABLED"
-    }
-  ],
-  "totalSize": 1
-}
-
----
-
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyTime": "2024-04-01T12:34:56.123456Z",
-  "generateTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-  "protectionLevel": "SOFTWARE",
-  "state": "DESTROY_SCHEDULED"
-}
-
----
-
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-sql.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-sql.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "policy": {
-    "etag": "abcdef0123A=",
-    "version": 1
-  },
-  "updateMask": "bindings,etag,auditConfigs"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 3
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
 }

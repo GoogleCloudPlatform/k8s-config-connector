@@ -44,6 +44,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "ipConfiguration": {
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
       "requireSsl": true,
       "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
@@ -197,6 +198,7 @@ X-Xss-Protection: 0
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
       "requireSsl": true,
       "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
@@ -333,6 +335,7 @@ X-Xss-Protection: 0
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
       "requireSsl": true,
       "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
@@ -388,6 +391,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "ipConfiguration": {
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
       "requireSsl": false,
       "sslMode": "ENCRYPTED_ONLY"
@@ -543,6 +547,7 @@ X-Xss-Protection: 0
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
       "requireSsl": false,
       "sslMode": "ENCRYPTED_ONLY"
