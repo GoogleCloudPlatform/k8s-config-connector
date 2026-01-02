@@ -287,7 +287,7 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -468,7 +468,7 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -695,7 +695,7 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],

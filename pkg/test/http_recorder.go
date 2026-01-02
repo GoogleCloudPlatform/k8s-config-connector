@@ -58,6 +58,20 @@ func (e *LogEntry) VisitRequestStringValues(callback func(path, value string)) {
 	visitStringValues(obj, "", callback)
 }
 
+// ParseResponseInto attempts to parse the response into the provided dest value
+func (e *LogEntry) ParseResponseInto(dest any) bool {
+	body := e.Response.Body
+	if body == "" {
+		return false
+	}
+
+	if err := json.Unmarshal([]byte(body), dest); err != nil {
+		klog.Errorf("error from json.Unmarshal for %v into %T (%q): %v", e.URL(), dest, body, err)
+		return false
+	}
+	return true
+}
+
 // VisitResponseStringValues calls callback for any string values in the response body
 func (e *LogEntry) VisitResponseStringValues(callback func(path, value string)) {
 	body := e.Response.Body
