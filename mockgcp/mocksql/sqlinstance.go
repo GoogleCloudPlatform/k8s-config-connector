@@ -318,7 +318,8 @@ func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, e
 		return "POSTGRES_15_7.R20240514.00_12", nil
 
 	case pb.SqlDatabaseVersion_POSTGRES_16:
-		return "POSTGRES_16_3.R20240527.01_10", nil
+		return "POSTGRES_16_11.R20251004.01_26", nil
+
 	default:
 		return "", fmt.Errorf("database version %s not yet supported by mock", databaseVersion)
 	}
@@ -518,7 +519,18 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 
 	case pb.SqlDatabaseVersion_POSTGRES_16:
 		obj.DatabaseInstalledVersion = "POSTGRES_16_3"
-		obj.UpgradableDatabaseVersions = nil
+		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
+			{
+				MajorVersion: asRef("POSTGRES_17"),
+				Name:         asRef("POSTGRES_17"),
+				DisplayName:  asRef("PostgreSQL 17"),
+			},
+			{
+				MajorVersion: asRef("POSTGRES_18"),
+				Name:         asRef("POSTGRES_18"),
+				DisplayName:  asRef("PostgreSQL 18"),
+			},
+		}
 
 	default:
 		return fmt.Errorf("database version %s not yet supported by mock", obj.DatabaseVersion)
