@@ -18,6 +18,22 @@ done
 # Older client libraries
 dev/tasks/update-dependency google.golang.org/api
 
+# Find latest git SHAs
+GOOGLEAPIS_SHA=$(git ls-remote --exit-code https://github.com/googleapis/googleapis refs/heads/master | awk '{print $1}' )
+
+# Update git version markers
+cat > git.versions <<EOF
+# This file is generated - DO NOT EDIT
+#
+# This file holds the pinned SHAs for our APIs
+# It is generated using dev/tasks/update-gcp-dependencies
+#
+https://github.com/googleapis/googleapis ${GOOGLEAPIS_SHA}
+EOF
+
+dev/tasks/generate-types-and-mappers
+
+
 # Ensure everything in go.work is synced up
 cd ${REPO_ROOT}
 go work sync
