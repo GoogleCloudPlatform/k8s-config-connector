@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -27,7 +27,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &LoggingLogBucketRef{}
 var LoggingLogBucketGVK = GroupVersion.WithKind("LoggingLogBucket")
 
 // LoggingLogBucketRef defines the resource reference to LoggingLogBucket, which "External" field
@@ -42,7 +41,14 @@ type LoggingLogBucketRef struct {
 
 	// The namespace of a LoggingLogBucket resource.
 	Namespace string `json:"namespace,omitempty"`
+
+	// Kind specifies the kind of the referenced resource.
+	// Optional; if provided, must be "LoggingLogBucket".
+	// +optional
+	Kind string `json:"kind,omitempty"`
 }
+
+var _ refs.Ref = &LoggingLogBucketRef{}
 
 func (r *LoggingLogBucketRef) GetGVK() schema.GroupVersionKind {
 	return LoggingLogBucketGVK
@@ -72,6 +78,10 @@ func (r *LoggingLogBucketRef) ValidateExternal(ref string) error {
 }
 
 func (r *LoggingLogBucketRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.Kind != "" && r.Kind != "LoggingLogBucket" {
+		return fmt.Errorf("invalid kind %q for LoggingLogBucketRef, must be empty or 'LoggingLogBucket'", r.Kind)
+	}
+
 	if r.GetExternal() != "" {
 		return r.ValidateExternal(r.GetExternal())
 	}
@@ -105,17 +115,17 @@ func (r *LoggingLogBucketRef) Normalize(ctx context.Context, reader client.Reade
 }
 
 func legacyExternalRef(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (string, error) {
-	resourceID, err := refsv1beta1.GetResourceID(u)
+	resourceID, err := refs.GetResourceID(u)
 	if err != nil {
 		return "", err
 	}
 
-	location, err := refsv1beta1.GetLocation(u)
+	location, err := refs.GetLocation(u)
 	if err != nil {
 		return "", err
 	}
 
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+	projectID, err := refs.ResolveProjectID(ctx, reader, u)
 	if err != nil {
 		return "", err
 	}
