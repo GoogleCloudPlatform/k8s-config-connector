@@ -243,13 +243,28 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 	if field.IsMap() {
 		entryMsg := field.Message()
 		keyKind := entryMsg.Fields().ByName("key").Kind()
-		valueKind := entryMsg.Fields().ByName("value").Kind()
-		if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
+		valueField := entryMsg.Fields().ByName("value")
+		valueKind := valueField.Kind()
+
+		if keyKind != protoreflect.StringKind {
+			return "", fmt.Errorf("unsupported map type with key %v (only string key is supported) and value %v", keyKind, valueKind)
+		}
+
+		if valueKind == protoreflect.StringKind {
 			return "map[string]string", nil
-		} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
+		} else if valueKind == protoreflect.Int64Kind {
 			return "map[string]int64", nil
+		} else if valueKind == protoreflect.MessageKind {
+			var valueGoType string
+			if isTransitiveOutput {
+				valueGoType = goNameForOutputProtoMessage(valueField.Message())
+			} else {
+				valueGoType = GoNameForProtoMessage(valueField.Message())
+			}
+
+			return fmt.Sprintf("map[string]*%s", valueGoType), nil
 		} else {
-			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyKind, valueKind)
+			return "", fmt.Errorf("unsupported map type with key string and value %v", valueKind)
 		}
 	}
 
