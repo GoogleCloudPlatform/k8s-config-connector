@@ -32,3 +32,10 @@ spec:
     locationPreference:
       zone: us-central1-a
     tier: db-custom-1-3840
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-${uniqueId}
+data:
+  password: MTIzNCFAIyRhc2Rm
