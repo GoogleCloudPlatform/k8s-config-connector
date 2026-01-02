@@ -70,7 +70,7 @@ func convertAPItoKRM_LoggingLogMetric(projectID string, in *api.LogMetric) (*uns
 
 	lm.Spec.Description = &in.Description
 	lm.Spec.Disabled = &in.Disabled
-	lm.Spec.Filter = in.Filter
+	lm.Spec.Filter = &in.Filter
 	lm.Spec.MetricDescriptor = convertAPItoKRM_MetricDescriptor(in.MetricDescriptor)
 	lm.Spec.LabelExtractors = in.LabelExtractors
 	lm.Spec.BucketOptions = convertAPItoKRM_BucketOptions(in.BucketOptions)
@@ -93,28 +93,30 @@ func convertAPItoKRM_LoggingLogMetric(projectID string, in *api.LogMetric) (*uns
 	return u, nil
 }
 
-func convertAPItoKRM_BucketOptions(in *api.BucketOptions) *krm.LogmetricBucketOptions {
+func convertAPItoKRM_BucketOptions(in *api.BucketOptions) *krm.Distribution_BucketOptions {
 	if in == nil {
 		return nil
 	}
 
-	options := &krm.LogmetricBucketOptions{}
+	options := &krm.Distribution_BucketOptions{}
 
 	if in.ExplicitBuckets != nil {
-		options.ExplicitBuckets = &krm.LogmetricExplicitBuckets{
+		options.ExplicitBuckets = &krm.Distribution_BucketOptions_Explicit{
 			Bounds: in.ExplicitBuckets.Bounds,
 		}
 	}
 	if in.ExponentialBuckets != nil {
-		options.ExponentialBuckets = &krm.LogmetricExponentialBuckets{
+		numFiniteBuckets := int32(in.ExponentialBuckets.NumFiniteBuckets) // int32 in proto, int64 in gapic
+		options.ExponentialBuckets = &krm.Distribution_BucketOptions_Exponential{
 			GrowthFactor:     &in.ExponentialBuckets.GrowthFactor,
-			NumFiniteBuckets: &in.ExponentialBuckets.NumFiniteBuckets,
+			NumFiniteBuckets: &numFiniteBuckets,
 			Scale:            &in.ExponentialBuckets.Scale,
 		}
 	}
 	if in.LinearBuckets != nil {
-		options.LinearBuckets = &krm.LogmetricLinearBuckets{
-			NumFiniteBuckets: &in.LinearBuckets.NumFiniteBuckets,
+		numFiniteBuckets := int32(in.LinearBuckets.NumFiniteBuckets) // int32 in proto, int64 in gapic
+		options.LinearBuckets = &krm.Distribution_BucketOptions_Linear{
+			NumFiniteBuckets: &numFiniteBuckets,
 			Offset:           &in.LinearBuckets.Offset,
 			Width:            &in.LinearBuckets.Width,
 		}
@@ -142,12 +144,12 @@ func convertAPItoKRM_MetricDescriptorStatus(apiObj *api.MetricDescriptor) *krm.L
 	return ret
 }
 
-func convertAPItoKRM_MetricDescriptor(apiObj *api.MetricDescriptor) *krm.LogmetricMetricDescriptor {
+func convertAPItoKRM_MetricDescriptor(apiObj *api.MetricDescriptor) *krm.MetricDescriptor {
 	if apiObj == nil {
 		return nil
 	}
 
-	return &krm.LogmetricMetricDescriptor{
+	return &krm.MetricDescriptor{
 		DisplayName: &apiObj.DisplayName,
 		Labels:      convertAPItoKRM_LogMetricLabels(apiObj.Labels),
 		LaunchStage: &apiObj.LaunchStage,
@@ -158,13 +160,13 @@ func convertAPItoKRM_MetricDescriptor(apiObj *api.MetricDescriptor) *krm.Logmetr
 	}
 }
 
-func convertAPItoKRM_LogMetricLabels(apiLabels []*api.LabelDescriptor) []krm.LogmetricLabels {
+func convertAPItoKRM_LogMetricLabels(apiLabels []*api.LabelDescriptor) []krm.LabelDescriptor {
 	if len(apiLabels) == 0 {
 		return nil
 	}
-	kccLabels := make([]krm.LogmetricLabels, len(apiLabels))
+	kccLabels := make([]krm.LabelDescriptor, len(apiLabels))
 	for i, apiLabel := range apiLabels {
-		kccLabels[i] = krm.LogmetricLabels{
+		kccLabels[i] = krm.LabelDescriptor{
 			Description: &apiLabel.Description, // immutable
 			Key:         &apiLabel.Key,         // immutable
 			ValueType:   &apiLabel.ValueType,   // immutable
@@ -183,18 +185,18 @@ func convertAPItoKRM_LogMetricLabels(apiLabels []*api.LabelDescriptor) []krm.Log
 	return kccLabels
 }
 
-func convertAPItoKRM_LogMetricMetadata(apiMetadata *api.MetricDescriptorMetadata) *krm.LogmetricMetadata {
+func convertAPItoKRM_LogMetricMetadata(apiMetadata *api.MetricDescriptorMetadata) *krm.MetricDescriptor_MetricDescriptorMetadata {
 	if apiMetadata == nil {
 		return nil
 	}
-	return &krm.LogmetricMetadata{
+	return &krm.MetricDescriptor_MetricDescriptorMetadata{
 		IngestDelay:  &apiMetadata.IngestDelay,
 		SamplePeriod: &apiMetadata.SamplePeriod,
 	}
 }
 
 // compareBucketOptions return true if the bucket options are the same, false otherwise.
-func compareBucketOptions(kccObj *krm.LogmetricBucketOptions, apiObj *api.BucketOptions) bool {
+func compareBucketOptions(kccObj *krm.Distribution_BucketOptions, apiObj *api.BucketOptions) bool {
 	if kccObj == nil && apiObj == nil {
 		return true
 	}
@@ -215,7 +217,7 @@ func compareBucketOptions(kccObj *krm.LogmetricBucketOptions, apiObj *api.Bucket
 	return true
 }
 
-func compareExplicitBuckets(kccObj *krm.LogmetricExplicitBuckets, apiObj *api.Explicit) bool {
+func compareExplicitBuckets(kccObj *krm.Distribution_BucketOptions_Explicit, apiObj *api.Explicit) bool {
 	if kccObj == nil && apiObj == nil {
 		return true
 	} else if kccObj == nil || apiObj == nil {
@@ -225,7 +227,7 @@ func compareExplicitBuckets(kccObj *krm.LogmetricExplicitBuckets, apiObj *api.Ex
 	return reflect.DeepEqual(kccObj.Bounds, apiObj.Bounds)
 }
 
-func compareExponentialBuckets(kccObj *krm.LogmetricExponentialBuckets, apiObj *api.Exponential) bool {
+func compareExponentialBuckets(kccObj *krm.Distribution_BucketOptions_Exponential, apiObj *api.Exponential) bool {
 	if kccObj == nil && apiObj == nil {
 		return true
 	} else if kccObj == nil || apiObj == nil {
@@ -245,7 +247,7 @@ func compareExponentialBuckets(kccObj *krm.LogmetricExponentialBuckets, apiObj *
 	return reflect.DeepEqual(kccObj, apiExponentialBuckets)
 }
 
-func compareLinearBuckets(kccObj *krm.LogmetricLinearBuckets, apiObj *api.Linear) bool {
+func compareLinearBuckets(kccObj *krm.Distribution_BucketOptions_Linear, apiObj *api.Linear) bool {
 	if kccObj == nil && apiObj == nil {
 		return true
 	} else if kccObj == nil || apiObj == nil {
@@ -264,7 +266,7 @@ func compareLinearBuckets(kccObj *krm.LogmetricLinearBuckets, apiObj *api.Linear
 	return reflect.DeepEqual(kccObj, apiLinearBuckets)
 }
 
-func convertKCCtoAPIForBucketOptions(kccObj *krm.LogmetricBucketOptions) *api.BucketOptions {
+func convertKCCtoAPIForBucketOptions(kccObj *krm.Distribution_BucketOptions) *api.BucketOptions {
 	if kccObj == nil {
 		return nil
 	}
@@ -276,13 +278,15 @@ func convertKCCtoAPIForBucketOptions(kccObj *krm.LogmetricBucketOptions) *api.Bu
 	}
 	if kccObj.ExponentialBuckets != nil {
 		apiObj.ExponentialBuckets = &api.Exponential{}
-		apiObj.ExponentialBuckets.NumFiniteBuckets = direct.ValueOf(kccObj.ExponentialBuckets.NumFiniteBuckets)
+		numFiniteBuckets := direct.ValueOf(kccObj.ExponentialBuckets.NumFiniteBuckets) // int32 in proto, int64 in gapic
+		apiObj.ExponentialBuckets.NumFiniteBuckets = int64(numFiniteBuckets)
 		apiObj.ExponentialBuckets.GrowthFactor = direct.ValueOf(kccObj.ExponentialBuckets.GrowthFactor)
 		apiObj.ExponentialBuckets.Scale = direct.ValueOf(kccObj.ExponentialBuckets.Scale)
 	}
 	if kccObj.LinearBuckets != nil {
 		apiObj.LinearBuckets = &api.Linear{}
-		apiObj.LinearBuckets.NumFiniteBuckets = direct.ValueOf(kccObj.LinearBuckets.NumFiniteBuckets)
+		numFiniteBuckets := direct.ValueOf(kccObj.LinearBuckets.NumFiniteBuckets) // int32 in proto, int64 in gapic
+		apiObj.LinearBuckets.NumFiniteBuckets = int64(numFiniteBuckets)
 		apiObj.LinearBuckets.Offset = direct.ValueOf(kccObj.LinearBuckets.Offset)
 		apiObj.LinearBuckets.Width = direct.ValueOf(kccObj.LinearBuckets.Width)
 	}
@@ -301,7 +305,7 @@ func convertKCCtoAPI(kccObjSpec *krm.LoggingLogMetricSpec) *api.LogMetric {
 	}
 	logMetric.Description = direct.ValueOf(kccObjSpec.Description)
 	logMetric.Disabled = direct.ValueOf(kccObjSpec.Disabled)
-	logMetric.Filter = kccObjSpec.Filter
+	logMetric.Filter = direct.ValueOf(kccObjSpec.Filter)
 	logMetric.LabelExtractors = kccObjSpec.LabelExtractors
 	if kccObjSpec.MetricDescriptor != nil {
 		logMetric.MetricDescriptor = convertKCCtoAPIForMetricDescriptor(kccObjSpec.MetricDescriptor)
@@ -316,7 +320,7 @@ func convertKCCtoAPI(kccObjSpec *krm.LoggingLogMetricSpec) *api.LogMetric {
 
 }
 
-func convertKCCtoAPIForMetricDescriptor(kccObj *krm.LogmetricMetricDescriptor) *api.MetricDescriptor {
+func convertKCCtoAPIForMetricDescriptor(kccObj *krm.MetricDescriptor) *api.MetricDescriptor {
 	if kccObj == nil {
 		return nil
 	}
@@ -346,7 +350,7 @@ func convertKCCtoAPIForMetricDescriptor(kccObj *krm.LogmetricMetricDescriptor) *
 	return metricDescriptor
 }
 
-func convertKCCtoAPIForLogMetricLabels(kccLabels []krm.LogmetricLabels) []*api.LabelDescriptor {
+func convertKCCtoAPIForLogMetricLabels(kccLabels []krm.LabelDescriptor) []*api.LabelDescriptor {
 	if len(kccLabels) == 0 {
 		return nil
 	}
@@ -362,7 +366,7 @@ func convertKCCtoAPIForLogMetricLabels(kccLabels []krm.LogmetricLabels) []*api.L
 	return apiLabels
 }
 
-func convertKCCtoAPIForLogMetricMetadata(kccMetadata *krm.LogmetricMetadata) *api.MetricDescriptorMetadata {
+func convertKCCtoAPIForLogMetricMetadata(kccMetadata *krm.MetricDescriptor_MetricDescriptorMetadata) *api.MetricDescriptorMetadata {
 	if kccMetadata == nil {
 		return nil
 	}
