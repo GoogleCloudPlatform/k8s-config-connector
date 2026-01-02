@@ -79,4 +79,7 @@ type Event interface {
 
 	// VisitResponseStringValues calls the callback for each string-typed value found in the response object (if any)
 	VisitResponseStringValues(callback func(path string, value string))
+
+	// ParseResponseInto attempts to parse the response into the provided dest value
+	ParseResponseInto(dest any) bool
 }
