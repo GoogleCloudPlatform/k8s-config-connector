@@ -1,6 +1,6 @@
 # This file is generated - DO NOT EDIT
 #
-# This file holds the pinned SHAs for mockgcp
-# It is generated using dev/tasks/update-mockgcp
+# This file holds the pinned SHAs for our APIs
+# It is generated using dev/tasks/update-gcp-dependencies
 #
 https://github.com/googleapis/googleapis 731d7f2ab6e4e2ea15030c95039e2cb66174d4fb
