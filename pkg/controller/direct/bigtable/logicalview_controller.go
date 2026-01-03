@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	// TODO: This gcp should not be used, it takes a different proto definition than the one defined in kcc apis.
 	gcp "cloud.google.com/go/bigtable"
@@ -206,12 +207,16 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	spec := a.desired.Spec
 
 	updateMask := &fieldmaskpb.FieldMask{}
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	// Only set query in update mask if it's set.
 	if (spec.Query != nil) && (*spec.Query != a.actual.Query) {
+		report.AddField("query", a.actual.Query, spec.Query)
 		updateMask.Paths = append(updateMask.Paths, "query")
 	}
 	// Deletion protection can either be unset (which is in itself a possible resource state), false, or true.
 	if !reflect.DeepEqual(spec.DeletionProtection, a.actual.DeletionProtection) {
+		report.AddField("deletion_protection", a.actual.DeletionProtection, spec.DeletionProtection)
 		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
 	}
 
@@ -219,6 +224,7 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
+		structuredreporting.ReportDiff(ctx, report)
 
 		mapCtx := &direct.MapContext{}
 
