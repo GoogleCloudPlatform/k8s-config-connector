@@ -41,11 +41,12 @@ type interceptingKubeClient struct {
 	upstreamClient     *StreamingClient
 	upstreamRestMapper meta.RESTMapper
 
-	recorder *Recorder
+	reconcilerOverride map[string]string
+	recorder           *Recorder
 }
 
 // newInterceptingKubeClient creates a new interceptingKubeClient.
-func newInterceptingKubeClient(recorder *Recorder, upstreamRestConfig *rest.Config) (*interceptingKubeClient, error) {
+func newInterceptingKubeClient(recorder *Recorder, upstreamRestConfig *rest.Config, reconcilerOverride map[string]string) (*interceptingKubeClient, error) {
 	httpClient, err := rest.HTTPClientFor(upstreamRestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("building http client: %w", err)
@@ -72,6 +73,7 @@ func newInterceptingKubeClient(recorder *Recorder, upstreamRestConfig *rest.Conf
 		upstreamClient:     upstreamClient,
 		upstreamRestMapper: upstreamRestMapper,
 		recorder:           recorder,
+		reconcilerOverride: reconcilerOverride,
 	}, nil
 }
 
@@ -118,7 +120,7 @@ func (c *interceptingKubeClient) NewCache(restConfig *rest.Config, opts cache.Op
 		break
 	}
 
-	return newInterceptingControllerRuntimeCache(c.upstreamClient, typeStore, namespace)
+	return newInterceptingControllerRuntimeCache(c.upstreamClient, typeStore, namespace, c.reconcilerOverride)
 }
 
 // interceptingControllerRuntimeClient is a controller-runtime client that intercepts Kubernetes API calls.
@@ -294,16 +296,18 @@ type interceptingControllerRuntimeCache struct {
 
 	started atomic.Bool
 
-	informers map[schema.GroupVersionKind]*streamingInformer
+	informers          map[schema.GroupVersionKind]*streamingInformer
+	reconcilerOverride map[string]string
 }
 
 // newInterceptingControllerRuntimeCache creates a new interceptingControllerRuntimeCache.
-func newInterceptingControllerRuntimeCache(streamingClient *StreamingClient, typeStore *typeStore, namespace string) (*interceptingControllerRuntimeCache, error) {
+func newInterceptingControllerRuntimeCache(streamingClient *StreamingClient, typeStore *typeStore, namespace string, reconcilerOverride map[string]string) (*interceptingControllerRuntimeCache, error) {
 	return &interceptingControllerRuntimeCache{
-		streamingClient: streamingClient,
-		informers:       make(map[schema.GroupVersionKind]*streamingInformer),
-		typeStore:       typeStore,
-		namespace:       namespace,
+		streamingClient:    streamingClient,
+		informers:          make(map[schema.GroupVersionKind]*streamingInformer),
+		typeStore:          typeStore,
+		namespace:          namespace,
+		reconcilerOverride: reconcilerOverride,
 	}, nil
 }
 
@@ -322,7 +326,7 @@ func (c *interceptingControllerRuntimeCache) Get(ctx context.Context, key client
 	if err != nil {
 		return err
 	}
-	informer, err := c.getOrCreateInformer(ctx, typeInfo)
+	informer, err := c.getOrCreateInformer(ctx, typeInfo, c.reconcilerOverride)
 	if err != nil {
 		return err
 	}
@@ -349,10 +353,10 @@ func (c *interceptingControllerRuntimeCache) GetInformer(ctx context.Context, ob
 		return nil, err
 	}
 
-	return c.getOrCreateInformer(ctx, typeInfo)
+	return c.getOrCreateInformer(ctx, typeInfo, c.reconcilerOverride)
 }
 
-func (c *interceptingControllerRuntimeCache) getOrCreateInformer(ctx context.Context, typeInfo *typeInfo) (*streamingInformer, error) {
+func (c *interceptingControllerRuntimeCache) getOrCreateInformer(ctx context.Context, typeInfo *typeInfo, reconcilerOverride map[string]string) (*streamingInformer, error) {
 	gvk := typeInfo.gvk
 
 	c.mutex.Lock()
@@ -363,7 +367,7 @@ func (c *interceptingControllerRuntimeCache) getOrCreateInformer(ctx context.Con
 		return existing, nil
 	}
 
-	informer, err := newStreamingInformer(c.streamingClient, typeInfo, c.namespace)
+	informer, err := newStreamingInformer(c.streamingClient, typeInfo, c.namespace, reconcilerOverride)
 	if err != nil {
 		return nil, err
 	}
@@ -391,7 +395,7 @@ func (c *interceptingControllerRuntimeCache) GetInformerForKind(ctx context.Cont
 		return nil, err
 	}
 
-	return c.getOrCreateInformer(ctx, typeInfo)
+	return c.getOrCreateInformer(ctx, typeInfo, c.reconcilerOverride)
 }
 
 // RemoveInformer removes an informer entry and stops it if it was running.
