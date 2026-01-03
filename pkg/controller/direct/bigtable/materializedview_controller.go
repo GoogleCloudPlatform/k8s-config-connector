@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigtable"
 	bigtablepb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
@@ -157,7 +158,10 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 
 	spec := a.desired.Spec
 	updateMask := &fieldmaskpb.FieldMask{}
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	if (spec.DeletionProtection != nil) && (*spec.DeletionProtection != a.actual.DeletionProtection) {
+		report.AddField("deletion_protection", a.actual.DeletionProtection, spec.DeletionProtection)
 		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
 	}
 
@@ -165,6 +169,7 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
+		structuredreporting.ReportDiff(ctx, report)
 
 		spec := a.desired.Spec
 		spec.Query = &a.actual.Query // immutable
