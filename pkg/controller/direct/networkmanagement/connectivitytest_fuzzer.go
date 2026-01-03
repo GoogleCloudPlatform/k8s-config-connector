@@ -95,6 +95,9 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].drop.source_geolocation_code")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].drop.source_geolocation_code")
 
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].deliver.google_service_type")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].deliver.google_service_type")
+
 	f.Unimplemented_NotYetTriaged(".probing_details.edge_responses")
 	f.Unimplemented_NotYetTriaged(".destination.cloud_run_revision.service_uri")
 	f.Unimplemented_NotYetTriaged(".source.cloud_run_revision.service_uri")

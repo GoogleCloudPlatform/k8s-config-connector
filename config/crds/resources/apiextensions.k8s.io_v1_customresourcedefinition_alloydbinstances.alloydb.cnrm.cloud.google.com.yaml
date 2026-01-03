@@ -216,7 +216,7 @@ spec:
                 properties:
                   assistiveExperiencesEnabled:
                     description: Whether assistive experiences are enabled for this
-                      AlloyDB instance.
+                      AlloyDB instance. DEPRECATED - This field is no longer in use.
                     type: boolean
                   enabled:
                     description: Observability feature status for an instance. This
@@ -246,7 +246,8 @@ spec:
                     type: boolean
                   trackClientAddress:
                     description: Track client address for an instance. If not set,
-                      default value is "off".
+                      default value is "off". DEPRECATED - This field is no longer
+                      in use.
                     type: boolean
                   trackWaitEvents:
                     description: Track wait events during query execution for an instance.
@@ -588,7 +589,7 @@ spec:
                 properties:
                   assistiveExperiencesEnabled:
                     description: Whether assistive experiences are enabled for this
-                      AlloyDB instance.
+                      AlloyDB instance. DEPRECATED - This field is no longer in use.
                     type: boolean
                   enabled:
                     description: Observability feature status for an instance. This
@@ -618,7 +619,8 @@ spec:
                     type: boolean
                   trackClientAddress:
                     description: Track client address for an instance. If not set,
-                      default value is "off".
+                      default value is "off". DEPRECATED - This field is no longer
+                      in use.
                     type: boolean
                   trackWaitEvents:
                     description: Track wait events during query execution for an instance.
