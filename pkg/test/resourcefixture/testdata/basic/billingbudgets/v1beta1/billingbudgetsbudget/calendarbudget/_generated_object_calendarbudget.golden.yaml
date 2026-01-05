@@ -1,0 +1,59 @@
+apiVersion: billingbudgets.cnrm.cloud.google.com/v1beta1
+kind: BillingBudgetsBudget
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: billingbudgetsbudget-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  allUpdatesRule:
+    disableDefaultIamRecipients: true
+    monitoringNotificationChannels:
+    - name: monitoringnotificationchannel-2-${uniqueId}
+    pubsubTopicRef:
+      name: pubsubtopic-2-${uniqueId}
+    schemaVersion: "1.0"
+  amount:
+    specifiedAmount:
+      currencyCode: USD
+      nanos: 1
+      units: 0
+  billingAccountRef:
+    external: ${billingAccountId}
+  budgetFilter:
+    calendarPeriod: YEAR
+    creditTypes: []
+    creditTypesTreatment: EXCLUDE_ALL_CREDITS
+    labels:
+      label-one:
+        values:
+        - value-one
+      label-two:
+        values:
+        - value-two
+    projects:
+    - name: project-2-${uniqueId}
+    services:
+    - services/0245-C3C9-3864
+    subaccounts: []
+  displayName: updated-sample-budget
+  resourceID: billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}
+  thresholdRules:
+  - spendBasis: FORECASTED_SPEND
+    thresholdPercent: 0.6
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  etag: abcdef123456
+  observedGeneration: 3

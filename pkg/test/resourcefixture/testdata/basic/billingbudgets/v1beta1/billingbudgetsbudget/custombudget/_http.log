@@ -1,0 +1,279 @@
+POST https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "budget": {
+    "amount": {
+      "specifiedAmount": {
+        "currencyCode": "USD",
+        "nanos": 0,
+        "units": 9000000
+      }
+    },
+    "budgetFilter": {
+      "creditTypes": [
+        "DISCOUNT"
+      ],
+      "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+      "customPeriod": {
+        "endDate": {
+          "day": 14,
+          "month": 3,
+          "year": 2312
+        },
+        "startDate": {
+          "day": 1,
+          "month": 1,
+          "year": 2140
+        }
+      }
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "9000000"
+    }
+  },
+  "budgetFilter": {
+    "creditTypes": [
+      "DISCOUNT"
+    ],
+    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+    "customPeriod": {
+      "endDate": {
+        "day": 14,
+        "month": 3,
+        "year": 2312
+      },
+      "startDate": {
+        "day": 1,
+        "month": 1,
+        "year": 2140
+      }
+    }
+  },
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}"
+}
+
+---
+
+GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "9000000"
+    }
+  },
+  "budgetFilter": {
+    "creditTypes": [
+      "DISCOUNT"
+    ],
+    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+    "customPeriod": {
+      "endDate": {
+        "day": 14,
+        "month": 3,
+        "year": 2312
+      },
+      "startDate": {
+        "day": 1,
+        "month": 1,
+        "year": 2140
+      }
+    }
+  },
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}"
+}
+
+---
+
+PATCH https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json&updateMask=budgetFilter.creditTypes%2CbudgetFilter.customPeriod
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "budget": {
+    "amount": {
+      "specifiedAmount": {
+        "currencyCode": "USD",
+        "units": 9000000
+      }
+    },
+    "budgetFilter": {
+      "creditTypes": [
+        "FREE_TIER"
+      ],
+      "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+      "customPeriod": {
+        "endDate": {
+          "day": 15,
+          "month": 4,
+          "year": 2313
+        },
+        "startDate": {
+          "day": 2,
+          "month": 2,
+          "year": 2141
+        }
+      }
+    },
+    "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "9000000"
+    }
+  },
+  "budgetFilter": {
+    "creditTypes": [
+      "FREE_TIER"
+    ],
+    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+    "customPeriod": {
+      "endDate": {
+        "day": 15,
+        "month": 4,
+        "year": 2313
+      },
+      "startDate": {
+        "day": 2,
+        "month": 2,
+        "year": 2141
+      }
+    }
+  },
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}"
+}
+
+---
+
+GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "9000000"
+    }
+  },
+  "budgetFilter": {
+    "creditTypes": [
+      "FREE_TIER"
+    ],
+    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+    "customPeriod": {
+      "endDate": {
+        "day": 15,
+        "month": 4,
+        "year": 2313
+      },
+      "startDate": {
+        "day": 2,
+        "month": 2,
+        "year": 2141
+      }
+    }
+  },
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}"
+}
+
+---
+
+DELETE https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "budget \"billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
