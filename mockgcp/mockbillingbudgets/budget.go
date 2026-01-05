@@ -32,6 +32,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	pb "cloud.google.com/go/billing/budgets/apiv1beta1/budgetspb"
+	moneypb "google.golang.org/genproto/googleapis/type/money"
 )
 
 func (s *BudgetServiceServer) CreateBudget(ctx context.Context, req *pb.CreateBudgetRequest) (*pb.Budget, error) {
@@ -118,6 +119,10 @@ func (s *BudgetServiceServer) ListBudgets(ctx context.Context, req *pb.ListBudge
 }
 
 func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBudgetRequest) (*pb.Budget, error) {
+	if req.Budget == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "budget is required")
+	}
+
 	name, err := s.parseBudgetName(req.Budget.Name)
 	if err != nil {
 		return nil, err
@@ -130,10 +135,95 @@ func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBu
 		return nil, err
 	}
 
+	if len(req.GetUpdateMask().GetPaths()) == 0 {
+		return nil, fmt.Errorf("empty update mask in mockgcp UpdateBudget")
+	}
+
 	for _, path := range req.GetUpdateMask().GetPaths() {
 		switch path {
+		case "budgetFilter.creditTypes":
+			if obj.BudgetFilter == nil {
+				obj.BudgetFilter = &pb.Filter{}
+			}
+			obj.BudgetFilter.CreditTypes = req.Budget.GetBudgetFilter().GetCreditTypes()
+		case "budgetFilter.customPeriod":
+			if obj.BudgetFilter == nil {
+				obj.BudgetFilter = &pb.Filter{}
+			}
+			if customPeriod := req.Budget.GetBudgetFilter().GetCustomPeriod(); customPeriod != nil {
+				obj.BudgetFilter.UsagePeriod = &pb.Filter_CustomPeriod{
+					CustomPeriod: customPeriod,
+				}
+			} else {
+				obj.BudgetFilter.UsagePeriod = nil
+			}
+
+		case "budgetFilter.calendarPeriod":
+			if obj.BudgetFilter == nil {
+				obj.BudgetFilter = &pb.Filter{}
+			}
+			calendarPeriod := req.Budget.GetBudgetFilter().GetCalendarPeriod()
+			obj.BudgetFilter.UsagePeriod = &pb.Filter_CalendarPeriod{
+				CalendarPeriod: calendarPeriod,
+			}
+
+		case "budgetFilter.creditTypesTreatment":
+			if obj.BudgetFilter == nil {
+				obj.BudgetFilter = &pb.Filter{}
+			}
+			obj.BudgetFilter.CreditTypesTreatment = req.Budget.GetBudgetFilter().GetCreditTypesTreatment()
+		case "budgetFilter.labels":
+			if obj.BudgetFilter == nil {
+				obj.BudgetFilter = &pb.Filter{}
+			}
+			obj.BudgetFilter.Labels = req.Budget.GetBudgetFilter().GetLabels()
+		case "budgetFilter.projects":
+			if obj.BudgetFilter == nil {
+				obj.BudgetFilter = &pb.Filter{}
+			}
+			obj.BudgetFilter.Projects = req.Budget.GetBudgetFilter().GetProjects()
+
+		case "allUpdatesRule.disableDefaultIamRecipients":
+			if obj.AllUpdatesRule == nil {
+				obj.AllUpdatesRule = &pb.AllUpdatesRule{}
+			}
+			obj.AllUpdatesRule.DisableDefaultIamRecipients = req.Budget.GetAllUpdatesRule().GetDisableDefaultIamRecipients()
+		case "allUpdatesRule.monitoringNotificationChannels":
+			if obj.AllUpdatesRule == nil {
+				obj.AllUpdatesRule = &pb.AllUpdatesRule{}
+			}
+			obj.AllUpdatesRule.MonitoringNotificationChannels = req.Budget.GetAllUpdatesRule().GetMonitoringNotificationChannels()
+		case "allUpdatesRule.pubsubTopic":
+			if obj.AllUpdatesRule == nil {
+				obj.AllUpdatesRule = &pb.AllUpdatesRule{}
+			}
+			obj.AllUpdatesRule.PubsubTopic = req.Budget.GetAllUpdatesRule().GetPubsubTopic()
+		case "amount.specifiedAmount.nanos":
+			if obj.Amount == nil {
+				obj.Amount = &pb.BudgetAmount{}
+			}
+			if obj.Amount.GetSpecifiedAmount() == nil {
+				obj.Amount.BudgetAmount = &pb.BudgetAmount_SpecifiedAmount{
+					SpecifiedAmount: &moneypb.Money{},
+				}
+			}
+			obj.Amount.GetSpecifiedAmount().Nanos = req.Budget.GetAmount().GetSpecifiedAmount().GetNanos()
+		case "amount.specifiedAmount.units":
+			if obj.Amount == nil {
+				obj.Amount = &pb.BudgetAmount{}
+			}
+			if obj.Amount.GetSpecifiedAmount() == nil {
+				obj.Amount.BudgetAmount = &pb.BudgetAmount_SpecifiedAmount{
+					SpecifiedAmount: &moneypb.Money{},
+				}
+			}
+			obj.Amount.GetSpecifiedAmount().Units = req.Budget.GetAmount().GetSpecifiedAmount().GetUnits()
+		case "displayName":
+			obj.DisplayName = req.Budget.GetDisplayName()
+		case "thresholdRules":
+			obj.ThresholdRules = req.Budget.GetThresholdRules()
 		default:
-			return nil, fmt.Errorf("unhandled path in mockgcp UpdateBudget: %w", err)
+			return nil, fmt.Errorf("unhandled path %q in mockgcp UpdateBudget", path)
 		}
 	}
 
