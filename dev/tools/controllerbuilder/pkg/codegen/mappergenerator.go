@@ -136,7 +136,7 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 	}
 	goTypes := v.findKRMStructsForProto(msg)
 	if len(goTypes) == 0 {
-		klog.Infof("no go types found for proto %v", msg.FullName())
+		klog.V(2).Infof("no go types found for proto %v", msg.FullName())
 		return
 	}
 	parentFile := msg.ParentFile()
