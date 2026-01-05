@@ -32,9 +32,6 @@ spec:
     creditTypes: []
     creditTypesTreatment: EXCLUDE_ALL_CREDITS
     labels:
-      label-one:
-        values:
-        - value-one
       label-two:
         values:
         - value-two
