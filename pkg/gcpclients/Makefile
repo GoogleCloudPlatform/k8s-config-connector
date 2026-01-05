@@ -1,4 +1,4 @@
-GOOGLEAPI_VERSION?=$(shell grep https://github.com/googleapis/googleapis ../../mockgcp/git.versions | awk '{print $$2}' )
+GOOGLEAPI_VERSION?=$(shell grep https://github.com/googleapis/googleapis ../../apis/git.versions | awk '{print $$2}' )
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos: tools
@@ -24,4 +24,3 @@ tools:
 	GOBIN=`pwd`/.build/bin/ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 	wget -N -O .build/bin/protoc.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.12.4/protoc-3.12.4-linux-x86_64.zip
 	cd .build/bin; rm -rf protoc; mkdir protoc; cd protoc; unzip ../protoc.zip
-
