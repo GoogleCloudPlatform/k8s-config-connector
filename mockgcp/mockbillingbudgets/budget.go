@@ -24,6 +24,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc/codes"
@@ -219,7 +220,7 @@ func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBu
 			}
 			obj.Amount.GetSpecifiedAmount().Units = req.Budget.GetAmount().GetSpecifiedAmount().GetUnits()
 		case "displayName":
-			obj.DisplayName = req.Budget.GetDisplayName()
+			common.MustCopyField(req.Budget, obj, path)
 		case "thresholdRules":
 			obj.ThresholdRules = req.Budget.GetThresholdRules()
 		default:
