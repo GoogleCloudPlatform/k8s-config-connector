@@ -22,6 +22,7 @@ spec:
     projects:
     - name: project-1-${uniqueId}
     - name: project-2-${uniqueId}
+    - name: project-3-${uniqueId}
   resourceID: billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}
 status:
   conditions:
