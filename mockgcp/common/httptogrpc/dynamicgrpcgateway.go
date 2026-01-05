@@ -20,6 +20,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
@@ -329,6 +330,28 @@ func setProtoField(protoMessage protoreflect.ProtoMessage, k string, values []st
 			}
 			v := values[0]
 			curr.Set(fd, protoreflect.ValueOfString(v))
+
+		case protoreflect.Int32Kind:
+			if len(values) != 1 {
+				return fmt.Errorf("expected one value for %q, got %v", k, values)
+			}
+			v := values[0]
+			vInt, err := strconv.ParseInt(v, 10, 32)
+			if err != nil {
+				return fmt.Errorf("expected int32 value for %q, got %v", k, v)
+			}
+			curr.Set(fd, protoreflect.ValueOfInt32(int32(vInt)))
+
+		case protoreflect.Int64Kind:
+			if len(values) != 1 {
+				return fmt.Errorf("expected one value for %q, got %v", k, values)
+			}
+			v := values[0]
+			vInt, err := strconv.ParseInt(v, 10, 64)
+			if err != nil {
+				return fmt.Errorf("expected int64 value for %q, got %v", k, v)
+			}
+			curr.Set(fd, protoreflect.ValueOfInt64(vInt))
 
 		case protoreflect.BoolKind:
 			if len(values) != 1 {
