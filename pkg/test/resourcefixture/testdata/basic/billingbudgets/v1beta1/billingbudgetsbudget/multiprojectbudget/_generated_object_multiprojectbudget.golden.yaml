@@ -1,0 +1,35 @@
+apiVersion: billingbudgets.cnrm.cloud.google.com/v1beta1
+kind: BillingBudgetsBudget
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: billingbudgetsbudget-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  amount:
+    lastPeriodAmount: {}
+  billingAccountRef:
+    external: ${billingAccountId}
+  budgetFilter:
+    calendarPeriod: MONTH
+    projects:
+    - name: project-1-${uniqueId}
+    - name: project-2-${uniqueId}
+    - name: project-3-${uniqueId}
+  resourceID: billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  etag: abcdef123456
+  observedGeneration: 3

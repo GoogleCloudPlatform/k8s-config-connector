@@ -16,14 +16,16 @@ package mockbilling
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"google.golang.org/grpc"
+	"k8s.io/klog/v2"
 
+	pb "cloud.google.com/go/billing/apiv1/billingpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/billing/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -32,14 +34,12 @@ func init() {
 	mockgcpregistry.Register(New)
 }
 
-// MockService represents a mocked certificatemanager service.
+// MockService represents a mocked billing service.
 type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
 
 	operations *operations.Operations
-
-	v1 *BillingV1
 }
 
 // New creates a MockService.
@@ -49,7 +49,6 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &BillingV1{MockService: s}
 	return s
 }
 
@@ -58,14 +57,35 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterCloudBillingServer(grpcServer, s.v1)
+	pb.RegisterCloudBillingServer(grpcServer, &BillingV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	options := httpmux.Options{
-		// This API sends e.g. billingEnabled: false, billingAccountName: ""
-		EmitUnpopulated: true,
+	// options := httpmux.Options{
+	// 		// This API sends e.g. billingEnabled: false, billingAccountName: ""
+	// 		EmitUnpopulated: true,
+	// 	}
+
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
+	if err != nil {
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
-	return httpmux.NewServeMux(ctx, conn, options,
-		pb.RegisterCloudBillingHandler)
+
+	grpcMux.AddService(pb.NewCloudBillingClient(conn))
+
+	return grpcMux, nil
+}
+
+// Functionality for use by mocks
+func (s *MockService) MockCreateBillingAccount(billingAccount *pb.BillingAccount) (*pb.BillingAccount, error) {
+	name, err := s.parseBillingAccountName(billingAccount.Name)
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+	if err := s.storage.Create(context.Background(), fqn, billingAccount); err != nil {
+		return nil, err
+	}
+	klog.Infof("created billing account %s", fqn)
+	return billingAccount, nil
 }

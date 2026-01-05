@@ -27,6 +27,7 @@ import (
 	"testing"
 	"time"
 
+	"cloud.google.com/go/billing/apiv1/billingpb"
 	"github.com/go-logr/logr"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"golang.org/x/oauth2"
@@ -54,6 +55,7 @@ import (
 	"sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
@@ -522,6 +524,22 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			ProjectID:     found.ProjectId,
 			ProjectNumber: found.ProjectNumber,
 		}
+
+		// Create billing budgets
+		budgets := sets.New(testgcp.TestBillingAccountID.Get(), testgcp.TestBillingAccountIDForBillingResources.Get())
+		cloudBilling := h.MockGCP.MockForService("cloudbilling.googleapis.com").(*mockbilling.MockService)
+		for ba := range budgets {
+			account := &billingpb.BillingAccount{
+				Name:        fmt.Sprintf("billingAccounts/%s", ba),
+				DisplayName: fmt.Sprintf("Billing Account %s", ba),
+				Open:        true,
+			}
+			_, err := cloudBilling.MockCreateBillingAccount(account)
+			if err != nil {
+				t.Fatalf("creating mock billing account %v: %v", account, err)
+			}
+		}
+
 		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
 		testgcp.TestKCCAttachedClusterPlatformVersion.Set("1.30.0-gke.1")
 		h.Project = project
@@ -906,6 +924,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableMaterializedView"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableGCPolicy"}:
 
+			case schema.GroupKind{Group: "billingbudgets.cnrm.cloud.google.com", Kind: "BillingBudgetsBudget"}:
+
 			case schema.GroupKind{Group: "cloudfunctions.cnrm.cloud.google.com", Kind: "CloudFunctionsFunction"}:
 			case schema.GroupKind{Group: "cloudids.cnrm.cloud.google.com", Kind: "CloudIDSEndpoint"}:
 
@@ -1158,7 +1178,6 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 		case "artifactregistryrepository":
 		case "bigqueryconnectionconnection":
 		case "bigqueryjob":
-		case "custombudget":
 		case "certificatemanagercertificatemapentry":
 		case "httpsfunction":
 		case "cloudschedulerjob":

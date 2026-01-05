@@ -21,9 +21,11 @@ package mockbillingbudgets
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc/codes"
@@ -32,6 +34,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	pb "cloud.google.com/go/billing/budgets/apiv1beta1/budgetspb"
+	moneypb "google.golang.org/genproto/googleapis/type/money"
 )
 
 func (s *BudgetServiceServer) CreateBudget(ctx context.Context, req *pb.CreateBudgetRequest) (*pb.Budget, error) {
@@ -48,6 +51,10 @@ func (s *BudgetServiceServer) CreateBudget(ctx context.Context, req *pb.CreateBu
 	obj.Name = fqn
 
 	s.populateDefaultsForBudget(obj)
+
+	// We randomize the order of projects to simulate non-determinism
+	// since the order is not guaranteed by the API.
+	reorderSlice(obj.GetBudgetFilter().GetProjects())
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -118,6 +125,10 @@ func (s *BudgetServiceServer) ListBudgets(ctx context.Context, req *pb.ListBudge
 }
 
 func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBudgetRequest) (*pb.Budget, error) {
+	if req.Budget == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "budget is required")
+	}
+
 	name, err := s.parseBudgetName(req.Budget.Name)
 	if err != nil {
 		return nil, err
@@ -130,12 +141,103 @@ func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBu
 		return nil, err
 	}
 
+	if len(req.GetUpdateMask().GetPaths()) == 0 {
+		return nil, fmt.Errorf("empty update mask in mockgcp UpdateBudget")
+	}
+
 	for _, path := range req.GetUpdateMask().GetPaths() {
 		switch path {
+		case "budgetFilter.creditTypes":
+			if obj.BudgetFilter == nil {
+				obj.BudgetFilter = &pb.Filter{}
+			}
+			obj.BudgetFilter.CreditTypes = req.Budget.GetBudgetFilter().GetCreditTypes()
+		case "budgetFilter.customPeriod":
+			if obj.BudgetFilter == nil {
+				obj.BudgetFilter = &pb.Filter{}
+			}
+			if customPeriod := req.Budget.GetBudgetFilter().GetCustomPeriod(); customPeriod != nil {
+				obj.BudgetFilter.UsagePeriod = &pb.Filter_CustomPeriod{
+					CustomPeriod: customPeriod,
+				}
+			} else {
+				obj.BudgetFilter.UsagePeriod = nil
+			}
+
+		case "budgetFilter.calendarPeriod":
+			if obj.BudgetFilter == nil {
+				obj.BudgetFilter = &pb.Filter{}
+			}
+			calendarPeriod := req.Budget.GetBudgetFilter().GetCalendarPeriod()
+			obj.BudgetFilter.UsagePeriod = &pb.Filter_CalendarPeriod{
+				CalendarPeriod: calendarPeriod,
+			}
+
+		case "budgetFilter.creditTypesTreatment":
+			if obj.BudgetFilter == nil {
+				obj.BudgetFilter = &pb.Filter{}
+			}
+			obj.BudgetFilter.CreditTypesTreatment = req.Budget.GetBudgetFilter().GetCreditTypesTreatment()
+		case "budgetFilter.labels":
+			if obj.BudgetFilter == nil {
+				obj.BudgetFilter = &pb.Filter{}
+			}
+			obj.BudgetFilter.Labels = req.Budget.GetBudgetFilter().GetLabels()
+		case "budgetFilter.projects":
+			if obj.BudgetFilter == nil {
+				obj.BudgetFilter = &pb.Filter{}
+			}
+			obj.BudgetFilter.Projects = req.Budget.GetBudgetFilter().GetProjects()
+
+		case "allUpdatesRule.disableDefaultIamRecipients":
+			if obj.AllUpdatesRule == nil {
+				obj.AllUpdatesRule = &pb.AllUpdatesRule{}
+			}
+			obj.AllUpdatesRule.DisableDefaultIamRecipients = req.Budget.GetAllUpdatesRule().GetDisableDefaultIamRecipients()
+		case "allUpdatesRule.monitoringNotificationChannels":
+			if obj.AllUpdatesRule == nil {
+				obj.AllUpdatesRule = &pb.AllUpdatesRule{}
+			}
+			obj.AllUpdatesRule.MonitoringNotificationChannels = req.Budget.GetAllUpdatesRule().GetMonitoringNotificationChannels()
+		case "allUpdatesRule.pubsubTopic":
+			if obj.AllUpdatesRule == nil {
+				obj.AllUpdatesRule = &pb.AllUpdatesRule{}
+			}
+			obj.AllUpdatesRule.PubsubTopic = req.Budget.GetAllUpdatesRule().GetPubsubTopic()
+		case "amount.specifiedAmount.nanos":
+			if obj.Amount == nil {
+				obj.Amount = &pb.BudgetAmount{}
+			}
+			if obj.Amount.GetSpecifiedAmount() == nil {
+				obj.Amount.BudgetAmount = &pb.BudgetAmount_SpecifiedAmount{
+					SpecifiedAmount: &moneypb.Money{},
+				}
+			}
+			obj.Amount.GetSpecifiedAmount().Nanos = req.Budget.GetAmount().GetSpecifiedAmount().GetNanos()
+		case "amount.specifiedAmount.units":
+			if obj.Amount == nil {
+				obj.Amount = &pb.BudgetAmount{}
+			}
+			if obj.Amount.GetSpecifiedAmount() == nil {
+				obj.Amount.BudgetAmount = &pb.BudgetAmount_SpecifiedAmount{
+					SpecifiedAmount: &moneypb.Money{},
+				}
+			}
+			obj.Amount.GetSpecifiedAmount().Units = req.Budget.GetAmount().GetSpecifiedAmount().GetUnits()
+		case "displayName":
+			common.MustCopyField(req.Budget, obj, path)
+		case "thresholdRules":
+			obj.ThresholdRules = req.Budget.GetThresholdRules()
 		default:
-			return nil, fmt.Errorf("unhandled path in mockgcp UpdateBudget: %w", err)
+			return nil, fmt.Errorf("unhandled path %q in mockgcp UpdateBudget", path)
 		}
 	}
+
+	// We randomize the order of projects to simulate non-determinism
+	// since the order is not guaranteed by the API.
+	reorderSlice(obj.GetBudgetFilter().GetProjects())
+
+	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -181,4 +283,21 @@ func (s *MockService) parseBudgetName(name string) (*budgetName, error) {
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+// reorderSlice predictably reorders the given slice in place.
+// So that our tests produce consistent output,
+// we want the same input slice to always produce the same output output.
+// But the output order does not always match the input order, so we test
+// controllers against assumptions that the order is preserved.
+func reorderSlice[T any](slice []T) {
+	// We order using a pseudo-random shuffle with a seed derived from the length of the slice.
+	// It's an unusual choice, but it gives us a deterministic yet non-trivial reordering.
+	// We don't want to depend on the values, because the values often include ${uniqueID} which changes between test runs.
+	n := len(slice)
+	seed := int64(n * 2654435761) // Knuth's multiplicative hash
+	random := rand.New(rand.NewSource(seed))
+	random.Shuffle(n, func(i, j int) {
+		slice[i], slice[j] = slice[j], slice[i]
+	})
 }

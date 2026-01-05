@@ -35,6 +35,12 @@ type pathMatcher struct {
 func newPathMatcher(httpPath string) (*pathMatcher, error) {
 	matcher := &pathMatcher{httpPath: httpPath}
 
+	suffix := ""
+	if idx := strings.Index(httpPath, ":"); idx != -1 {
+		suffix = httpPath[idx:]
+		httpPath = httpPath[:idx]
+	}
+
 	var components []componentMatcher
 	httpPath = strings.TrimPrefix(httpPath, "/")
 	for httpPath != "" {
@@ -56,6 +62,10 @@ func newPathMatcher(httpPath string) (*pathMatcher, error) {
 			httpPath = httpPath[nextSlash:]
 		}
 		httpPath = strings.TrimPrefix(httpPath, "/")
+	}
+
+	if suffix != "" {
+		components = append(components, newMatchLiteralComponent(suffix))
 	}
 
 	variableLengthCount := 0

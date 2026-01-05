@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"reflect"
 	"strings"
 
@@ -74,6 +75,20 @@ func (m *grpcMethod) Name() string {
 	return string(m.method.FullName())
 }
 
+func tokenizeURLPath(url *url.URL) []string {
+	p := url.Path
+	suffix := ""
+	if idx := strings.Index(p, ":"); idx != -1 {
+		suffix = p[idx:]
+		p = p[:idx]
+	}
+	tokens := strings.Split(strings.TrimPrefix(p, "/"), "/")
+	if suffix != "" {
+		tokens = append(tokens, suffix)
+	}
+	return tokens
+}
+
 // ServeHTTP implements http.Handler.
 // This is the primary entrypoint for HTTP requests,
 // they are decoded and mapped to GRPC method calls.
@@ -81,8 +96,7 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := klog.FromContext(ctx)
 
-	url := r.URL.Path
-	tokens := strings.Split(strings.TrimPrefix(url, "/"), "/")
+	tokens := tokenizeURLPath(r.URL)
 
 	// Check for any custom handlers first
 	for _, customHandler := range m.customHandlers {
@@ -111,7 +125,7 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	log.Info("http request not matched", "method", r.Method, "url", r.URL.String())
 
 	// For debugging it can be useful to dump all the possible paths
-	dumpPaths := false
+	dumpPaths := true
 	if dumpPaths {
 		for _, service := range m.services {
 			for _, method := range service.methods {
@@ -231,6 +245,12 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 					responseOptions.Alt = values
 					continue
 				}
+				if k == "prettyPrint" || k == "pretty_print" {
+					// Pretty-print not implemented
+					// responseOptions.PrettyPrint = values
+					continue
+				}
+
 				// Convert camelCase to snake_case
 				var protoKey []rune
 				for _, c := range k {
