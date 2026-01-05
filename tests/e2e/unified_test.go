@@ -23,7 +23,6 @@ import (
 	"hash/fnv"
 	"io"
 	"io/ioutil"
-	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -62,8 +61,6 @@ import (
 )
 
 func TestAllInSeries(t *testing.T) {
-	rand.Seed(time.Now().UnixNano())
-
 	if os.Getenv("RUN_E2E") == "" {
 		t.Skip("RUN_E2E not set; skipping")
 	}
