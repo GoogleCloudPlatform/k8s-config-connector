@@ -21,6 +21,7 @@ package mockbillingbudgets
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"strings"
 	"time"
 
@@ -50,6 +51,12 @@ func (s *BudgetServiceServer) CreateBudget(ctx context.Context, req *pb.CreateBu
 	obj.Name = fqn
 
 	s.populateDefaultsForBudget(obj)
+
+	// We randomize the order of projects to simulate non-determinism
+	// since the order is not guaranteed by the API.
+	if obj.BudgetFilter != nil && len(obj.BudgetFilter.Projects) > 0 {
+		randomizeOrder(obj.BudgetFilter.Projects)
+	}
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -228,6 +235,14 @@ func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBu
 		}
 	}
 
+	// We randomize the order of projects to simulate non-determinism
+	// since the order is not guaranteed by the API.
+	if obj.BudgetFilter != nil && len(obj.BudgetFilter.Projects) > 0 {
+		randomizeOrder(obj.BudgetFilter.Projects)
+	}
+
+	obj.Etag = fields.ComputeWeakEtag(obj)
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -272,4 +287,21 @@ func (s *MockService) parseBudgetName(name string) (*budgetName, error) {
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+// reorderSlice predictably reorders the given slice in place.
+// So that our tests produce consistent output,
+// we want the same input slice to always produce the same output output.
+// But the output order does not always match the input order, so we test
+// controllers against assumptions that the order is preserved.
+func reorderSlice[T any](slice []T) {
+	// We order using a pseudo-random shuffle with a seed derived from the length of the slice.
+	// It's an unusual choice, but it gives us a deterministic yet non-trivial reordering.
+	// We don't want to depend on the values, because the values often include ${uniqueID} which changes between test runs.
+	n := len(slice)
+	seed := int64(n * 2654435761) // Knuth's multiplicative hash
+	random := rand.New(rand.NewSource(seed))
+	random.Shuffle(n, func(i, j int) {
+		slice[i], slice[j] = slice[j], slice[i]
+	})
 }
