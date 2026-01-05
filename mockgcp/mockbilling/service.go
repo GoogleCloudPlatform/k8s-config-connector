@@ -16,14 +16,15 @@ package mockbilling
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/billing/apiv1/billingpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/billing/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -62,10 +63,17 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	options := httpmux.Options{
-		// This API sends e.g. billingEnabled: false, billingAccountName: ""
-		EmitUnpopulated: true,
+	// options := httpmux.Options{
+	// 		// This API sends e.g. billingEnabled: false, billingAccountName: ""
+	// 		EmitUnpopulated: true,
+	// 	}
+
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
+	if err != nil {
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
-	return httpmux.NewServeMux(ctx, conn, options,
-		pb.RegisterCloudBillingHandler)
+
+	grpcMux.AddService(pb.NewCloudBillingClient(conn))
+
+	return grpcMux, nil
 }
