@@ -245,6 +245,12 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 					responseOptions.Alt = values
 					continue
 				}
+				if k == "prettyPrint" || k == "pretty_print" {
+					// Pretty-print not implemented; ignore, for now
+					// responseOptions.PrettyPrint = values
+					continue
+				}
+
 				// Convert camelCase to snake_case
 				var protoKey []rune
 				for _, c := range k {
@@ -300,9 +306,9 @@ func setProtoField(protoMessage protoreflect.ProtoMessage, k string, values []st
 	curr := protoMessage.ProtoReflect()
 	for i := 0; i < len(tokens)-1; i++ {
 		token := tokens[i]
-		fd := protoMessage.ProtoReflect().Descriptor().Fields().ByTextName(token)
+		fd := curr.Descriptor().Fields().ByTextName(token)
 		if fd == nil {
-			return fmt.Errorf("value field %q not found", k)
+			return fmt.Errorf("value field %q not found in %v", k, curr.Descriptor().FullName())
 		}
 		curr = curr.Mutable(fd).Message()
 	}
