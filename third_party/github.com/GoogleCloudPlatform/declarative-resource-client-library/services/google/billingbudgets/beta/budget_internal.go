@@ -1,11 +1,11 @@
 // Copyright 2024 Google LLC. All Rights Reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
+//	http://www.apache.org/licenses/LICENSE-2.0
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"sort"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -577,6 +578,7 @@ func canonicalizeBudgetBudgetFilter(des, initial *BudgetBudgetFilter, opts ...dc
 	} else {
 		cDes.Projects = des.Projects
 	}
+
 	if dcl.StringArrayCanonicalize(des.CreditTypes, initial.CreditTypes) {
 		cDes.CreditTypes = initial.CreditTypes
 	} else {
@@ -1838,6 +1840,13 @@ func canonicalizeNewBudgetAllUpdatesRuleSlice(c *Client, des, nw []BudgetAllUpda
 	return items
 }
 
+func sortedCopy(s []string) []string {
+	cp := make([]string, len(s))
+	copy(cp, s)
+	sort.Strings(cp)
+	return cp
+}
+
 // The differ returns a list of diffs, along with a list of operations that should be taken
 // to remedy them. Right now, it does not attempt to consolidate operations - if several
 // fields can be fixed with a patch update, it will perform the patch several times.
@@ -1937,7 +1946,7 @@ func compareBudgetBudgetFilterNewStyle(d, a interface{}, fn dcl.FieldName) ([]*d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Projects, actual.Projects, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Projects")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(sortedCopy(desired.Projects), sortedCopy(actual.Projects), dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("Projects")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
