@@ -28,6 +28,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// Budget
 	replacements.ReplacePath(".etag", EtagPlaceholder)
 	replacements.ReplacePath(".budgets[].etag", EtagPlaceholder)
+
+	// // We randomize the order of projects in the budget filter, so we need to sort them for normalization.
+	// // Note this affects http.log, not what the client sees.
+	// replacements.SortSlice(".budgetFilter.projects")
 }
 
 // matchLink will match the link to the pattern, and add any replacements if the link matches the pattern.

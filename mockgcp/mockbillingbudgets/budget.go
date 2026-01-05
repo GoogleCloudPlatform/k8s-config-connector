@@ -54,9 +54,7 @@ func (s *BudgetServiceServer) CreateBudget(ctx context.Context, req *pb.CreateBu
 
 	// We randomize the order of projects to simulate non-determinism
 	// since the order is not guaranteed by the API.
-	if obj.BudgetFilter != nil && len(obj.BudgetFilter.Projects) > 0 {
-		randomizeOrder(obj.BudgetFilter.Projects)
-	}
+	reorderSlice(obj.GetBudgetFilter().GetProjects())
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -237,9 +235,7 @@ func (s *BudgetServiceServer) UpdateBudget(ctx context.Context, req *pb.UpdateBu
 
 	// We randomize the order of projects to simulate non-determinism
 	// since the order is not guaranteed by the API.
-	if obj.BudgetFilter != nil && len(obj.BudgetFilter.Projects) > 0 {
-		randomizeOrder(obj.BudgetFilter.Projects)
-	}
+	reorderSlice(obj.GetBudgetFilter().GetProjects())
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
