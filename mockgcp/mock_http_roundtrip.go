@@ -95,6 +95,9 @@ type Interface interface {
 
 	// We can dispatch test commands
 	SupportsTestCommands
+
+	// We can poke into the various mock services
+	MockForService(host string) mockgcpregistry.MockService
 }
 
 func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage storage.Storage) (Interface, error) {

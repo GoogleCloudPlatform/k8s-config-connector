@@ -122,6 +122,18 @@ func (m *mockRoundTripper) RunTestCommand(ctx context.Context, serviceName strin
 	return fmt.Errorf("service %q not known", serviceName)
 }
 
+func (m *mockRoundTripper) MockForService(serviceName string) mockgcpregistry.MockService {
+	for _, service := range m.services {
+		if _, match := service.MatchesHost(serviceName); !match {
+			continue
+		}
+
+		return service.impl
+	}
+	klog.Fatalf("service %q not known", serviceName)
+	return nil
+}
+
 func (m *mockRoundTripper) NewGRPCConnection(ctx context.Context) *grpc.ClientConn {
 	endpoint := m.grpcListener.Addr().String()
 

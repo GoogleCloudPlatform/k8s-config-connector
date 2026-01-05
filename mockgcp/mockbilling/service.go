@@ -20,6 +20,7 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
+	"k8s.io/klog/v2"
 
 	pb "cloud.google.com/go/billing/apiv1/billingpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -33,14 +34,12 @@ func init() {
 	mockgcpregistry.Register(New)
 }
 
-// MockService represents a mocked certificatemanager service.
+// MockService represents a mocked billing service.
 type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
 
 	operations *operations.Operations
-
-	v1 *BillingV1
 }
 
 // New creates a MockService.
@@ -50,7 +49,6 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &BillingV1{MockService: s}
 	return s
 }
 
@@ -59,7 +57,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterCloudBillingServer(grpcServer, s.v1)
+	pb.RegisterCloudBillingServer(grpcServer, &BillingV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -76,4 +74,18 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	grpcMux.AddService(pb.NewCloudBillingClient(conn))
 
 	return grpcMux, nil
+}
+
+// Functionality for use by mocks
+func (s *MockService) MockCreateBillingAccount(billingAccount *pb.BillingAccount) (*pb.BillingAccount, error) {
+	name, err := s.parseBillingAccountName(billingAccount.Name)
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+	if err := s.storage.Create(context.Background(), fqn, billingAccount); err != nil {
+		return nil, err
+	}
+	klog.Infof("created billing account %s", fqn)
+	return billingAccount, nil
 }
