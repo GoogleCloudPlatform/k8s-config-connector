@@ -245,6 +245,12 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 					responseOptions.Alt = values
 					continue
 				}
+				if k == "prettyPrint" || k == "pretty_print" {
+					// Pretty-print not implemented
+					// responseOptions.PrettyPrint = values
+					continue
+				}
+
 				// Convert camelCase to snake_case
 				var protoKey []rune
 				for _, c := range k {
