@@ -18,6 +18,7 @@
 // proto.service: google.cloud.alloydb.v1beta
 // resource: AlloyDBCluster:Cluster
 // resource: AlloyDBInstance:Instance
+// resource: AlloyDBBackup:Backup
 
 package v1beta1
 
@@ -79,6 +80,10 @@ type AutomatedBackupPolicy_TimeBasedRetention struct {
 	// The retention period.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.AutomatedBackupPolicy.TimeBasedRetention.retention_period
 	RetentionPeriod *string `json:"retentionPeriod,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry
+type Backup_QuantityBasedExpiry struct {
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.CloudSQLBackupRunSource
@@ -175,6 +180,17 @@ type Instance_ClientConnectionConfig struct {
 	SSLConfig *SSLConfig `json:"sslConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig
+type Instance_ConnectionPoolConfig struct {
+	// Optional. Whether to enable Managed Connection Pool (MCP).
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. Connection Pool flags, as a list of "key": "value" pairs.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.flags
+	Flags map[string]string `json:"flags,omitempty"`
+}
+
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
 type Instance_InstanceNetworkConfig_AuthorizedNetwork struct {
 	// CIDR range for one authorzied network of the instance.
@@ -197,54 +213,6 @@ type Instance_MachineConfig struct {
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.Node
 type Instance_Node struct {
-}
-
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig
-type Instance_ObservabilityInstanceConfig struct {
-	// Observability feature status for an instance.
-	//  This flag is turned "off" by default.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.enabled
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// Preserve comments in query string for an instance.
-	//  This flag is turned "off" by default.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.preserve_comments
-	PreserveComments *bool `json:"preserveComments,omitempty"`
-
-	// Track wait events during query execution for an instance.
-	//  This flag is turned "on" by default but tracking is enabled only after
-	//  observability enabled flag is also turned on.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_wait_events
-	TrackWaitEvents *bool `json:"trackWaitEvents,omitempty"`
-
-	// Query string length. The default value is 10k.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.max_query_string_length
-	MaxQueryStringLength *int32 `json:"maxQueryStringLength,omitempty"`
-
-	// Record application tags for an instance.
-	//  This flag is turned "off" by default.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.record_application_tags
-	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
-
-	// Number of query execution plans captured by Insights per minute
-	//  for all queries combined. The default value is 200.
-	//  Any integer between 0 to 200 is considered valid.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.query_plans_per_minute
-	QueryPlansPerMinute *int32 `json:"queryPlansPerMinute,omitempty"`
-
-	// Track actively running queries on the instance.
-	//  If not set, this flag is "off" by default.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_active_queries
-	TrackActiveQueries *bool `json:"trackActiveQueries,omitempty"`
-
-	// Track client address for an instance.
-	//  If not set, default value is "off".
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_client_address
-	TrackClientAddress *bool `json:"trackClientAddress,omitempty"`
-
-	// Whether assistive experiences are enabled for this AlloyDB instance.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.assistive_experiences_enabled
-	AssistiveExperiencesEnabled *bool `json:"assistiveExperiencesEnabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig
@@ -334,11 +302,28 @@ type Instance_UpdatePolicy struct {
 type MaintenanceSchedule struct {
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy
-type MaintenanceUpdatePolicy struct {
-	// Preferred windows to perform maintenance. Currently limited to 1.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.maintenance_windows
-	MaintenanceWindows []MaintenanceUpdatePolicy_MaintenanceWindow `json:"maintenanceWindows,omitempty"`
+// +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.DenyMaintenancePeriod
+type MaintenanceUpdatePolicy_DenyMaintenancePeriod struct {
+	// Deny period start date.
+	//  This can be:
+	//  * A full date, with non-zero year, month and day values OR
+	//  * A month and day value, with a zero year for recurring
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.DenyMaintenancePeriod.start_date
+	StartDate *Date `json:"startDate,omitempty"`
+
+	// Deny period end date.
+	//  This can be:
+	//  * A full date, with non-zero year, month and day values OR
+	//  * A month and day value, with a zero year for recurring
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.DenyMaintenancePeriod.end_date
+	EndDate *Date `json:"endDate,omitempty"`
+
+	// Time in UTC when the deny period starts on start_date and ends on
+	//  end_date. This can be:
+	//  * Full time OR
+	//  * All zeros for 00:00:00 UTC
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.DenyMaintenancePeriod.time
+	Time *TimeOfDay `json:"time,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.SslConfig
@@ -351,6 +336,39 @@ type SSLConfig struct {
 	//  supported currently, and is the default value.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.SslConfig.ca_source
 	CASource *string `json:"caSource,omitempty"`
+}
+
+// +kcc:proto=google.type.Date
+type Date struct {
+	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+	//  a year.
+	// +kcc:proto:field=google.type.Date.year
+	Year *int32 `json:"year,omitempty"`
+
+	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+	//  month and day.
+	// +kcc:proto:field=google.type.Date.month
+	Month *int32 `json:"month,omitempty"`
+
+	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+	//  to specify a year by itself or a year and month where the day isn't
+	//  significant.
+	// +kcc:proto:field=google.type.Date.day
+	Day *int32 `json:"day,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry
+type Backup_QuantityBasedExpiryObservedState struct {
+	// Output only. The backup's position among its backups with the same source
+	//  cluster and type, by descending chronological order create time(i.e.
+	//  newest first).
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry.retention_count
+	RetentionCount *int32 `json:"retentionCount,omitempty"`
+
+	// Output only. The length of the quantity-based queue, specified by the
+	//  backup's retention policy.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry.total_retention_count
+	TotalRetentionCount *int32 `json:"totalRetentionCount,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
@@ -427,16 +445,6 @@ type Instance_NodeObservedState struct {
 	State *string `json:"state,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig
-type Instance_ObservabilityInstanceConfigObservedState struct {
-	// Output only. Track wait event types during query execution for an
-	//  instance. This flag is turned "on" by default but tracking is enabled
-	//  only after observability enabled flag is also turned on. This is
-	//  read-only flag and only modifiable by internal API.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_wait_event_types
-	TrackWaitEventTypes *bool `json:"trackWaitEventTypes,omitempty"`
-}
-
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig
 type Instance_PSCAutoConnectionConfigObservedState struct {
 	// Output only. The IP address of the PSC service automation endpoint.
@@ -444,10 +452,34 @@ type Instance_PSCAutoConnectionConfigObservedState struct {
 	IPAddress *string `json:"ipAddress,omitempty"`
 
 	// Output only. The status of the PSC service automation connection.
+	//  Possible values:
+	//    "STATE_UNSPECIFIED" - An invalid state as the default case.
+	//    "ACTIVE" - The connection has been created successfully.
+	//    "FAILED" - The connection is not functional since some resources on the
+	//  connection fail to be created.
+	//    "CREATING" - The connection is being created.
+	//    "DELETING" - The connection is being deleted.
+	//    "CREATE_REPAIRING" - The connection is being repaired to complete
+	//  creation.
+	//    "DELETE_REPAIRING" - The connection is being repaired to complete
+	//  deletion.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.status
 	Status *string `json:"status,omitempty"`
 
 	// Output only. The status of the service connection policy.
+	//  Possible values:
+	//    "STATE_UNSPECIFIED" - Default state, when Connection Map is created
+	//  initially.
+	//    "VALID" - Set when policy and map configuration is valid, and their
+	//  matching can lead to allowing creation of PSC Connections subject to
+	//  other constraints like connections limit.
+	//    "CONNECTION_POLICY_MISSING" - No Service Connection Policy found for
+	//  this network and Service Class
+	//    "POLICY_LIMIT_REACHED" - Service Connection Policy limit reached for
+	//    this network and Service Class
+	//    "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED" - The consumer instance
+	//  project is not in AllowedGoogleProducersResourceHierarchyLevels of the
+	//  matching ServiceConnectionPolicy.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.consumer_network_status
 	ConsumerNetworkStatus *string `json:"consumerNetworkStatus,omitempty"`
 }

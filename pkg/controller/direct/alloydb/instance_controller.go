@@ -473,6 +473,7 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		if path, changed := boolPtrChanged(actualObs.TrackActiveQueries, desiredObs.TrackActiveQueries, "observability_config.track_active_queries", log); changed {
 			updatePaths = append(updatePaths, path)
 		}
+		// TrackClientAcddress is in v1beta but is not in v1
 		if path, changed := boolPtrChanged(actualObs.TrackClientAddress, desiredObs.TrackClientAddress, "observability_config.track_client_address", log); changed {
 			updatePaths = append(updatePaths, path)
 		}
