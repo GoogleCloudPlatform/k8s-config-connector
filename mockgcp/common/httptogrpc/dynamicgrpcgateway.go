@@ -58,6 +58,8 @@ func NewGRPCMux(conn *grpc.ClientConn) (*grpcMux, error) {
 
 // grpcMethods holds state for a single gRPC method.
 type grpcMethod struct {
+	parentService *grpcService
+
 	method       protoreflect.MethodDescriptor
 	goMethod     reflect.Value
 	goMethodType reflect.Method
@@ -152,9 +154,10 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 	log := klog.FromContext(ctx)
 
 	call := &httpMethodCall{
-		parent: m,
-		r:      r,
-		w:      w,
+		parent:     m,
+		grpcMethod: method,
+		r:          r,
+		w:          w,
 	}
 
 	var body []byte

@@ -63,17 +63,12 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	// options := httpmux.Options{
-	// 		// This API sends e.g. billingEnabled: false, billingAccountName: ""
-	// 		EmitUnpopulated: true,
-	// 	}
-
 	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	grpcMux.AddService(pb.NewCloudBillingClient(conn))
+	grpcMux.AddService(pb.NewCloudBillingClient(conn), httptogrpc.EmitUnpopulated())
 
 	return grpcMux, nil
 }
