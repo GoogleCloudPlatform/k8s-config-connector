@@ -192,6 +192,7 @@ dnsConfig:
   clusterDnsScope: string
 enableAutopilot: boolean
 enableBinaryAuthorization: boolean
+enableCiliumClusterwideNetworkPolicy: boolean
 enableFqdnNetworkPolicy: boolean
 enableIntranodeVisibility: boolean
 enableK8sBetaApis:
@@ -278,6 +279,7 @@ networkRef:
 networkingMode: string
 nodeConfig:
   advancedMachineFeatures:
+    enableNestedVirtualization: boolean
     threadsPerCore: integer
   bootDiskKMSCryptoKeyRef:
     external: string
@@ -1457,6 +1459,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>enableCiliumClusterwideNetworkPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether Cilium cluster-wide network policy is enabled on this cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>enableFqdnNetworkPolicy</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2347,8 +2359,18 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.advancedMachineFeatures.enableNestedVirtualization</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Whether or not to enable nested virtualization (defaults to false).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.advancedMachineFeatures.threadsPerCore</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>

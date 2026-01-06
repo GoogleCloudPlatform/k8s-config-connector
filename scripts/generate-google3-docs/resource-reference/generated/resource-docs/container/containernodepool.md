@@ -119,6 +119,7 @@ networkConfig:
   podRange: string
 nodeConfig:
   advancedMachineFeatures:
+    enableNestedVirtualization: boolean
     threadsPerCore: integer
   bootDiskKMSCryptoKeyRef:
     external: string
@@ -681,8 +682,18 @@ version: string
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.advancedMachineFeatures.enableNestedVirtualization</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Whether or not to enable nested virtualization (defaults to false).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.advancedMachineFeatures.threadsPerCore</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
