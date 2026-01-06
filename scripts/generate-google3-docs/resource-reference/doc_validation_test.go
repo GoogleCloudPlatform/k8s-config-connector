@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -29,6 +29,10 @@ import (
 
 	"gopkg.in/yaml.v2"
 )
+
+// The path to Config Connector resource reference docs starts with
+// "/config-connector/docs/reference/resource-docs/".
+var docPathPrefix = "/config-connector/docs/reference/resource-docs/"
 
 type TOC struct {
 	TOC []TOCItem `yaml:"toc"`
@@ -69,8 +73,7 @@ func TestReferenceDocConsistency(t *testing.T) {
 				return err
 			}
 			// Normalize to the format used in _toc.yaml and overview.md
-			// They use /config-connector/docs/reference/resource-docs/...
-			webPath := "/config-connector/docs/reference/resource-docs/" + relPath
+			webPath := fmt.Sprintf("%s%s", docPathPrefix, relPath)
 			generatedFiles[webPath] = true
 		}
 		return nil
@@ -80,7 +83,7 @@ func TestReferenceDocConsistency(t *testing.T) {
 	}
 
 	// 2. Validate _toc.yaml
-	tocData, err := ioutil.ReadFile(tocPath)
+	tocData, err := os.ReadFile(tocPath)
 	if err != nil {
 		t.Fatalf("error reading _toc.yaml: %v", err)
 	}
@@ -100,7 +103,7 @@ func TestReferenceDocConsistency(t *testing.T) {
 	}
 
 	// 3. Validate overview.md
-	overviewData, err := ioutil.ReadFile(overviewPath)
+	overviewData, err := os.ReadFile(overviewPath)
 	if err != nil {
 		t.Fatalf("error reading overview.md: %v", err)
 	}
@@ -128,7 +131,9 @@ func TestReferenceDocConsistency(t *testing.T) {
 	}
 
 	// 5. Validate URLs in templates (Optional/integration check)
-	if os.Getenv("VALIDATE_URLS") == "true" {
+	if os.Getenv("VALIDATE_URLS") != "true" {
+		t.Log("Skipping URL validation: VALIDATE_URLS not set to true")
+	} else {
 		validateURLsInTemplates(t, templatesDir)
 	}
 }
@@ -144,28 +149,6 @@ func validatePath(t *testing.T, path string, generatedFiles, seenPaths map[strin
 	}
 }
 
-var (
-	// A list of regex patterns for URLs that should be skipped during validation.
-	skippedURLPatterns = []*regexp.Regexp{
-		regexp.MustCompile(`^https?://example\.com`),
-		regexp.MustCompile(`^https?://test\.com`),
-		regexp.MustCompile(`^http://localhost`),
-		regexp.MustCompile(`^http://metadata/`),
-		regexp.MustCompile(`\$\{.*?\}`),               // Templating variables
-		regexp.MustCompile(`\{\%.*?\%\}|\{\{.*?\}\}`), // Jinja/Go template syntax
-		regexp.MustCompile(`\[.*?\]`),                 // Placeholders
-	}
-)
-
-func shouldSkipURLValidation(url string) bool {
-	for _, pattern := range skippedURLPatterns {
-		if pattern.MatchString(url) {
-			return true
-		}
-	}
-	return false
-}
-
 func validateURLsInTemplates(t *testing.T, templatesDir string) {
 	t.Log("Validating external URLs in template files...")
 
@@ -178,7 +161,7 @@ func validateURLsInTemplates(t *testing.T, templatesDir string) {
 			return err
 		}
 		if !info.IsDir() && strings.HasSuffix(info.Name(), ".tmpl") {
-			content, err := ioutil.ReadFile(path)
+			content, err := os.ReadFile(path)
 			if err != nil {
 				return err
 			}
@@ -186,9 +169,6 @@ func validateURLsInTemplates(t *testing.T, templatesDir string) {
 			matches := hrefRegex.FindAllStringSubmatch(string(content), -1)
 			for _, match := range matches {
 				url := match[1]
-				if shouldSkipURLValidation(url) {
-					continue
-				}
 
 				// Construct full URL for relative paths
 				if strings.HasPrefix(url, "/") {
@@ -219,17 +199,18 @@ func validateURLsInTemplates(t *testing.T, templatesDir string) {
 	concurrency := 20
 	var wg sync.WaitGroup
 
+	client := &http.Client{
+		Timeout: 10 * time.Second,
+		Transport: &http.Transport{
+			MaxIdleConns:        concurrency,
+			MaxIdleConnsPerHost: concurrency,
+		},
+	}
+
 	for i := 0; i < concurrency; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			client := &http.Client{
-				Timeout: 10 * time.Second,
-				Transport: &http.Transport{
-					DisableKeepAlives: true,
-					MaxIdleConns:      5,
-				},
-			}
 
 			for u := range jobs {
 				res := result{url: u}
