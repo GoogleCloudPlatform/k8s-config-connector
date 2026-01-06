@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -98,10 +99,7 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	// resolve LoggingLogBucketRef
-	// todo: LoggingLogBucketRef is *v1alpha1.ResourceRef, ideally should use *loggingv1beta1.LoggingLogBucketRef instead
-	// *v1alpha1.ResourceRef has required `kind` field, this migration could introduce breaking changes to Beta CRD
-	if err := LogBucketRef_ConvertToExternal(ctx, reader, obj, &obj.Spec.LoggingLogBucketRef); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef); err != nil {
 		return nil, err
 	}
 
@@ -190,7 +188,7 @@ func (a *logMetricAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	if a.resourceID == "" {
 		return fmt.Errorf("resourceID is empty")
 	}
-	filter := a.desired.Spec.Filter
+	filter := direct.ValueOf(a.desired.Spec.Filter)
 	if filter == "" {
 		return fmt.Errorf("filter is empty")
 	}
@@ -257,10 +255,10 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		if direct.ValueOf(a.desired.Spec.Disabled) != a.actual.Disabled {
 			update.Disabled = direct.ValueOf(a.desired.Spec.Disabled)
 		}
-		if a.desired.Spec.Filter != a.actual.Filter {
+		if direct.ValueOf(a.desired.Spec.Filter) != a.actual.Filter {
 			// todo acpana: revisit UX, err out if filter of desired is empty
-			if a.desired.Spec.Filter != "" {
-				update.Filter = a.desired.Spec.Filter
+			if direct.ValueOf(a.desired.Spec.Filter) != "" {
+				update.Filter = direct.ValueOf(a.desired.Spec.Filter)
 			} else {
 				// filter is a REQUIRED field
 				update.Filter = a.actual.Filter
