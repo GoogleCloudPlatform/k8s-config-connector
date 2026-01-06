@@ -88,15 +88,15 @@ func TestE2EScript(t *testing.T) {
 					create.MaybeSkip(t, dummy.Name, dummy.Objects)
 				}
 
-				h := create.NewHarness(ctx, t)
+				h := NewHarness(ctx, t)
 				project := h.Project
 				script := loadScript(t, filepath.Join(scenarioDir, scenarioPath), uniqueID, project)
 
-				create.SetupNamespacesAndApplyDefaults(h, script.Objects, project)
+				create.SetupNamespacesAndApplyDefaults(h.Harness, script.Objects, project)
 
 				var objectsToDelete []*unstructured.Unstructured
 				t.Cleanup(func() {
-					create.DeleteResources(h, create.CreateDeleteTestOptions{Create: objectsToDelete})
+					h.DeleteResources(objectsToDelete)
 				})
 
 				var eventsByStep []*SkippableLogEntries
@@ -199,12 +199,12 @@ func TestE2EScript(t *testing.T) {
 					var targetStepForReadAndCompare int
 					switch testCommand {
 					case "APPLY":
-						applyObject(h, obj)
-						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
+						h.ApplyObject(removeTestFields(obj))
+						h.WaitForReady(create.DefaultWaitForReadyTimeout, obj)
 						appliedObjects = append(appliedObjects, obj)
 
 					case "APPLY-10-SEC":
-						applyObject(h, obj)
+						h.ApplyObject(removeTestFields(obj))
 						time.Sleep(10 * time.Second)
 
 					case "READ-OBJECT":
@@ -222,14 +222,14 @@ func TestE2EScript(t *testing.T) {
 						appliedObjects = append(appliedObjects, obj)
 
 					case "APPLY-NO-WAIT":
-						applyObject(h, obj)
+						h.ApplyObject(removeTestFields(obj))
 						appliedObjects = append(appliedObjects, obj)
 						exportResource = nil
 						shouldGetKubeObject = false
 
 					case "PATCH-EXTERNALLY-MANAGED-FIELDS":
 						patchObjectWithExternallyManagedFields(h, obj)
-						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
+						h.WaitForReady(create.DefaultWaitForReadyTimeout, obj)
 
 					case "TOUCH":
 						// Force re-reconciliation with an annotation
@@ -239,7 +239,7 @@ func TestE2EScript(t *testing.T) {
 						time.Sleep(2 * time.Second)
 
 					case "DELETE":
-						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
+						h.DeleteResources([]*unstructured.Unstructured{obj})
 						exportResource = nil
 						shouldGetKubeObject = false
 
@@ -251,7 +251,7 @@ func TestE2EScript(t *testing.T) {
 						shouldGetKubeObject = false
 
 					case "DELETE-NO-WAIT":
-						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}, SkipWaitForDelete: true})
+						create.DeleteResources(h.Harness, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}, SkipWaitForDelete: true})
 
 						// Allow some time for reconcile
 						// Maybe we should instead wait for observedState
@@ -261,7 +261,7 @@ func TestE2EScript(t *testing.T) {
 						// why we're using DELETE-NO-WAIT), so export the
 						// resource and the kube object.
 					case "WAIT-FOR-HTTP-REQUEST":
-						applyObject(h, obj)
+						h.ApplyObject(removeTestFields(obj))
 
 						val, ok := obj.Object["VALUE_PRESENT"]
 						if !ok {
@@ -297,7 +297,7 @@ func TestE2EScript(t *testing.T) {
 						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
 						waitForReconciliationAfterPatch(h, obj, prePatchRV)
 
-						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
+						h.DeleteResources([]*unstructured.Unstructured{obj})
 						// continue to export the resource
 						shouldGetKubeObject = false
 
@@ -309,12 +309,12 @@ func TestE2EScript(t *testing.T) {
 						}
 						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
 						deleteObj := obj.DeepCopy()
-						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{deleteObj}})
+						h.DeleteResources([]*unstructured.Unstructured{deleteObj})
 						if err := unstructured.SetNestedField(obj.Object, resourceID, "spec", "resourceID"); err != nil {
 							h.Fatalf("error setting spec.resourceID: %v", err)
 						}
-						applyObject(h, obj)
-						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
+						h.ApplyObject(removeTestFields(obj))
+						h.WaitForReady(create.DefaultWaitForReadyTimeout, obj)
 						appliedObjects = append(appliedObjects, obj)
 
 					case "ABANDON-AND-REACQUIRE-WITH-GENERATED-ID":
@@ -337,7 +337,7 @@ func TestE2EScript(t *testing.T) {
 						deleteObj.SetName(existing.GetName())
 						deleteObj.SetAnnotations(existing.GetAnnotations())
 						setAnnotation(h, deleteObj, "cnrm.cloud.google.com/deletion-policy", "abandon")
-						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{deleteObj}})
+						h.DeleteResources([]*unstructured.Unstructured{deleteObj})
 
 						// Replace placeholder in configuration yaml with the server generated id
 						configuredID, _, _ := unstructured.NestedString(obj.Object, "spec", "resourceID")
@@ -348,8 +348,8 @@ func TestE2EScript(t *testing.T) {
 						if err != nil {
 							h.Fatalf("error setting spec.resourceID: %v", err)
 						}
-						applyObject(h, obj)
-						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
+						h.ApplyObject(obj)
+						h.WaitForReady(create.DefaultWaitForReadyTimeout, obj)
 						appliedObjects = append(appliedObjects, obj)
 
 					default:
@@ -358,7 +358,7 @@ func TestE2EScript(t *testing.T) {
 					}
 
 					if exportResource != nil {
-						u := exportResourceAsUnstructured(h, exportResource)
+						u := exportResourceAsUnstructured(h.Harness, exportResource)
 						if u == nil {
 							t.Logf("ignoring failure to export resource of gvk %v", exportResource.GroupVersionKind())
 							// t.Errorf("failed to export resource of gvk %v", exportResource.GroupVersionKind())
@@ -468,19 +468,13 @@ func TestE2EScript(t *testing.T) {
 						objectsToDelete = append(objectsToDelete, obj)
 						seen[k] = true
 					}
-					create.DeleteResources(h, create.CreateDeleteTestOptions{Create: objectsToDelete})
+					h.DeleteResources(objectsToDelete)
 				}
 
 				h.NoExtraGoldenFiles(filepath.Join(script.SourceDir, "_*.yaml"))
 			})
 		}
 	})
-}
-
-func applyObject(h *create.Harness, obj *unstructured.Unstructured) {
-	if err := h.GetClient().Patch(h.Ctx, removeTestFields(obj), client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
-		h.Fatalf("error applying resource: %v", err)
-	}
 }
 
 // removes fields like "TEST" from a copy of the provided unstructured.
@@ -495,7 +489,7 @@ func removeTestFields(obj *unstructured.Unstructured) *unstructured.Unstructured
 	return o
 }
 
-func patchObjectWithExternallyManagedFields(h *create.Harness, obj *unstructured.Unstructured) {
+func patchObjectWithExternallyManagedFields(h *Harness, obj *unstructured.Unstructured) {
 	if err := h.GetClient().Patch(h.Ctx, removeTestFields(obj), client.Apply, client.FieldOwner(k8s.ControllerManagedFieldManager)); err != nil {
 		h.Fatalf("error updating resource with externally managed fields: %v", err)
 	}
@@ -522,7 +516,7 @@ func getGeneration(h *create.Harness, obj *unstructured.Unstructured) int64 {
 }
 
 // touchObject sets a new annotation that forces a re-reconciliation
-func touchObject(h *create.Harness, obj *unstructured.Unstructured) {
+func touchObject(h HarnessInterface, obj *unstructured.Unstructured) {
 	existing := &unstructured.Unstructured{}
 	{
 		existing.SetGroupVersionKind(obj.GroupVersionKind())
@@ -533,7 +527,7 @@ func touchObject(h *create.Harness, obj *unstructured.Unstructured) {
 			Namespace: obj.GetNamespace(),
 			Name:      obj.GetName(),
 		}
-		if err := h.GetClient().Get(h.Ctx, key, existing); err != nil {
+		if err := h.GetClient().Get(h.Context(), key, existing); err != nil {
 			h.Fatalf("error getting object %v: %v", key, err)
 		}
 	}
@@ -560,12 +554,12 @@ func touchObject(h *create.Harness, obj *unstructured.Unstructured) {
 
 	}
 
-	if err := h.GetClient().Patch(h.Ctx, u, client.Apply, client.FieldOwner("kcc-test-touch")); err != nil {
+	if err := h.GetClient().Patch(h.Context(), u, client.Apply, client.FieldOwner("kcc-test-touch")); err != nil {
 		h.Fatalf("error doing object touch (setting annotation): %v", err)
 	}
 }
 
-func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v string) {
+func setAnnotation(h *Harness, obj *unstructured.Unstructured, k, v string) {
 	patch := &unstructured.Unstructured{}
 	patch.Object = obj.Object
 	patch.SetGroupVersionKind(obj.GroupVersionKind())
@@ -584,7 +578,7 @@ func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v strin
 	}
 }
 
-func readObject(h *create.Harness, gvk schema.GroupVersionKind, namespace, name string) *unstructured.Unstructured {
+func readObject(h *Harness, gvk schema.GroupVersionKind, namespace, name string) *unstructured.Unstructured {
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(gvk)
 	key := types.NamespacedName{Namespace: namespace, Name: name}
@@ -598,7 +592,7 @@ func readObject(h *create.Harness, gvk schema.GroupVersionKind, namespace, name 
 // waitForReconciliationAfterPatch waits for a reconciliation to complete after an object has been patched.
 // It does this by waiting for the resourceVersion to change twice: once from the user's patch,
 // and a second time from the controller's status update during reconciliation.
-func waitForReconciliationAfterPatch(h *create.Harness, obj *unstructured.Unstructured, prePatchRV string) {
+func waitForReconciliationAfterPatch(h *Harness, obj *unstructured.Unstructured, prePatchRV string) {
 	key := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
 
 	// First, wait for the resourceVersion to change, indicating our patch has landed.
@@ -752,7 +746,7 @@ func createKubeconfigFromRestConfig(restConfig *rest.Config) ([]byte, error) {
 }
 
 // runCLI runs the config-connector CLI tool with the specified arguments
-func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath string) {
+func runCLI(h *Harness, args []string, uniqueID string, baseOutputPath string) {
 	project := h.Project
 	t := h.T
 
