@@ -340,7 +340,9 @@ X-Goog-User-Project: ${projectId}
     },
     "network": {
       "networkInterfaces": [
-        {}
+        {
+          "network": "projects/${projectId}/global/networks/${networkID}"
+        }
       ]
     }
   },
