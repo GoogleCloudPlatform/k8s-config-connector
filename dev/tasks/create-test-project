@@ -53,6 +53,7 @@ echo "Setting default project to ${GCP_PROJECT_ID}"
 gcloud config set project "${GCP_PROJECT_ID}"
 
 gcloud services enable \
+  analyticshub.googleapis.com \
   apigee.googleapis.com \
   bigquery.googleapis.com \
   cloudbuild.googleapis.com \
