@@ -154,7 +154,7 @@ type Instance_ConnectionDetail struct {
 
 	// Detailed information of a PSC connection that is created by the user.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_connection
-	PscConnection *PscConnection `json:"pscConnection,omitempty"`
+	// PscConnection *PscConnection `json:"pscConnection,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.InstanceEndpoint

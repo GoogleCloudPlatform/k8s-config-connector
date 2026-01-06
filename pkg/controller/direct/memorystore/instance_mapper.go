@@ -55,7 +55,7 @@ func Instance_ConnectionDetailObservedState_FromProto(mapCtx *direct.MapContext,
 	}
 	out := &krmv1beta1.Instance_ConnectionDetailObservedState{}
 	out.PscAutoConnection = PscAutoConnectionObservedState_FromProto(mapCtx, in.GetPscAutoConnection())
-	out.PscConnection = PscConnectionObservedState_FromProto(mapCtx, in.GetPscConnection())
+	// out.PscConnection = PscConnectionObservedState_FromProto(mapCtx, in.GetPscConnection())
 	return out
 }
 func Instance_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_ConnectionDetailObservedState) *pb.Instance_ConnectionDetail {
@@ -66,9 +66,9 @@ func Instance_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, i
 	if oneof := PscAutoConnectionObservedState_ToProto(mapCtx, in.PscAutoConnection); oneof != nil {
 		out.Connection = &pb.Instance_ConnectionDetail_PscAutoConnection{PscAutoConnection: oneof}
 	}
-	if oneof := PscConnectionObservedState_ToProto(mapCtx, in.PscConnection); oneof != nil {
-		out.Connection = &pb.Instance_ConnectionDetail_PscConnection{PscConnection: oneof}
-	}
+	// if oneof := PscConnectionObservedState_ToProto(mapCtx, in.PscConnection); oneof != nil {
+	// 	out.Connection = &pb.Instance_ConnectionDetail_PscConnection{PscConnection: oneof}
+	// }
 	return out
 }
 func Instance_InstanceEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krmv1beta1.Instance_InstanceEndpoint {
