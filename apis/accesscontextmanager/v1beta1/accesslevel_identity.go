@@ -22,6 +22,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	util "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/identity"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -53,7 +54,7 @@ func (i *AccessLevelIdentity) FromExternal(ref string) error {
 	// But that format is //cloudresourcemanager.googleapis.com/accessPolicieis/ACCESS_POLICY_ID/accessLevels/ACCESS_LEVEL
 	// which is not the format used by the service.
 
-	err, identityMap := parseIdentityMap(ref, 2)
+	err, identityMap := util.ParseIdentityMap(ref, parser, 2)
 	if err != nil {
 		return fmt.Errorf("format of AccessLevel external=%q was not known (use %s): %w", ref, AccessLevelIdentityURL, err)
 	}
@@ -62,23 +63,6 @@ func (i *AccessLevelIdentity) FromExternal(ref string) error {
 	i.AccessLevel = identityMap["accessLevels"]
 
 	return nil
-}
-
-func parseIdentityMap(ref string, cnt int) (error, map[string]string) {
-	raw := parser.FindStringSubmatch(ref)
-	if raw == nil {
-		return fmt.Errorf("reference %s did not match expected format", ref), nil
-	}
-	result := make(map[string]string, cnt)
-	for i, name := range parser.SubexpNames() {
-		if i != 0 && name != "" {
-			result[name] = raw[i]
-		}
-	}
-	if len(result) != cnt {
-		return fmt.Errorf("reference %s failed to parse %d values", ref, cnt), nil
-	}
-	return nil, result
 }
 
 func (obj *AccessContextManagerAccessLevel) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

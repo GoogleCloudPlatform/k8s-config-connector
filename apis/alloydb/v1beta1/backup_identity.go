@@ -22,6 +22,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	util "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/identity"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -35,7 +36,7 @@ const (
 var _ identity.Identity = &BackupIdentity{}
 var _ identity.Resource = &AlloyDBBackup{}
 
-var parser = regexp.MustCompile(`((//)?alloydb.googleapis.com)?/?projects/(?P<projects>[[:alpha:]]+)/locations/(?P<locations>[[:alpha:]]+)/backups/(?P<backups>[[:alpha:]]+)`)
+var parser = regexp.MustCompile(`((//)?alloydb.googleapis.com)?/?projects/(?P<projects>" + util.ProjectIDRegexp + ")/locations/(?P<locations>[[:alpha:]]+)/backups/(?P<backups>[[:alpha:]]+)`)
 
 // BackupIdentity represents the identity of an alloydb backup.
 // +k8s:deepcopy-gen=false
@@ -54,7 +55,7 @@ func (i *BackupIdentity) FromExternal(ref string) error {
 	// But that format is //alloydb.googleapis.com/projects/PROJECT_ID/locations/LOCATION/backups/BACKUP
 	// which is not the format used by the service.
 
-	err, identityMap := parseIdentityMap(ref, 3)
+	err, identityMap := util.ParseIdentityMap(ref, parser, 3)
 	if err != nil {
 		return fmt.Errorf("format of backup external=%q was not known (use %s): %w", ref, BackupIdentityURL, err)
 	}
@@ -64,23 +65,6 @@ func (i *BackupIdentity) FromExternal(ref string) error {
 	i.Backup = identityMap["backups"]
 
 	return nil
-}
-
-func parseIdentityMap(ref string, cnt int) (error, map[string]string) {
-	raw := parser.FindStringSubmatch(ref)
-	if raw == nil {
-		return fmt.Errorf("reference %s did not match expected format", ref), nil
-	}
-	result := make(map[string]string, cnt)
-	for i, name := range parser.SubexpNames() {
-		if i != 0 && name != "" {
-			result[name] = raw[i]
-		}
-	}
-	if len(result) != cnt {
-		return fmt.Errorf("reference %s failed to parse %d values", ref, cnt), nil
-	}
-	return nil, result
 }
 
 func (obj *AlloyDBBackup) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
