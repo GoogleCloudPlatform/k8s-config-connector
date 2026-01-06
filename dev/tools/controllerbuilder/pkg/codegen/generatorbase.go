@@ -142,7 +142,7 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool) error {
 		return fmt.Errorf("running goimports on %q: %w", p, err)
 	}
 
-	klog.Infof("writing file %v", p)
+	klog.V(2).Infof("writing file %v", p)
 	if err := os.WriteFile(p, formatted, 0644); err != nil {
 		return fmt.Errorf("writing %q: %w", p, err)
 	}

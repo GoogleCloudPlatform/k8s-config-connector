@@ -226,7 +226,7 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 	return nil
 }
 func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string, pair *typePair) {
-	klog.InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
+	klog.V(2).InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
 	msg := pair.Proto
 	pbTypeName := protoNameForType(msg)
 	pbTypeGoImport := v.goPackageForProto(msg.ParentFile())
@@ -291,7 +291,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					tokens := strings.SplitN(qualifiedTypeName, ".", 2)
 					if len(tokens) > 1 {
 						alias := v.getGoImportAlias(krmFieldRefs.GoPackage)
-						klog.Infof("getGetImportAlias(%q) => %q", krmFieldRefs.GoPackage, alias)
+						klog.V(2).Infof("getGoImportAlias(%q) => %q", krmFieldRefs.GoPackage, alias)
 						qualifiedTypeName = alias + "." + tokens[1]
 					} else if len(tokens) == 1 {
 						// In same package
@@ -448,7 +448,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				if useSliceFromProtoFunction != "" {
-					klog.Infof("Slice_FromProto krmFieldName %v, protoFieldName %v",
+					klog.V(2).Infof("Slice_FromProto krmFieldName %v, protoFieldName %v",
 						krmFieldName,
 						protoFieldName,
 					)
@@ -534,7 +534,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\treturn out\n")
 		fmt.Fprintf(out, "}\n")
 	} else {
-		klog.Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_FromProto")
+		klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_FromProto")
 	}
 
 	if v.findFuncDeclaration(goTypeName+versionSpecifier+"_ToProto", srcDir, true) == nil {
@@ -885,7 +885,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\treturn out\n")
 		fmt.Fprintf(out, "}\n")
 	} else {
-		klog.Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_ToProto")
+		klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_ToProto")
 	}
 
 	// Generate ToProto helpers for oneof fields that are not messages
