@@ -159,6 +159,7 @@ var _ directbase.Adapter = &instanceAdapter{}
 func (a *instanceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting instance", "name", a.id)
+	log.V(2).Info("triggering presubmit tests...")
 
 	req := &alloydbpb.GetInstanceRequest{Name: a.id.String()}
 	instancepb, err := a.gcpClient.GetInstance(ctx, req)
