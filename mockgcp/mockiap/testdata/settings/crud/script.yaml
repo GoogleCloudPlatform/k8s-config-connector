@@ -1,0 +1,2 @@
+- exec: gcloud iap settings set iap_settings.yaml --project=${projectId} --resource-type=iap_web
+- exec: gcloud iap settings get --project=${projectId} --resource-type=iap_web

@@ -924,7 +924,7 @@ func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEn
 
 	obj := make(map[string]any)
 	if err := json.Unmarshal([]byte(s), &obj); err != nil {
-		t.Fatalf("error from json.Unmarshal(%q): %v", s, err)
+		t.Errorf("error from json.Unmarshal(%q): %v", s, err)
 		return
 	}
 
