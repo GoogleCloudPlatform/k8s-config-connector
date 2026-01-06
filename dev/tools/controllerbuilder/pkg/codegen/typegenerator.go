@@ -145,7 +145,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			return fmt.Errorf("looking up go type: %w", err)
 		}
 		if goType != nil {
-			klog.Infof("found existing non-generated go type %q, won't generate", goTypeName)
+			klog.V(1).Infof("found existing non-generated go type %q, won't generate", goTypeName)
 			continue
 		}
 
@@ -154,7 +154,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			return fmt.Errorf("looking up go type by proto tag: %w", err)
 		}
 		if goType != nil {
-			klog.Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
+			klog.V(1).Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
 			continue
 		}
 
@@ -186,7 +186,7 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			return fmt.Errorf("looking up go type: %w", err)
 		}
 		if goType != nil {
-			klog.Infof("found existing non-generated go type %q, won't generate", goTypeName)
+			klog.V(1).Infof("found existing non-generated go type %q, won't generate", goTypeName)
 			continue
 		}
 
@@ -195,7 +195,7 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			return fmt.Errorf("looking up go type by proto tag: %w", err)
 		}
 		if goType != nil {
-			klog.Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
+			klog.V(1).Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
 			continue
 		}
 
