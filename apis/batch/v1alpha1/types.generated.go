@@ -106,61 +106,6 @@ type AllocationPolicy_InstancePolicy struct {
 	Reservation *string `json:"reservation,omitempty"`
 }
 
-// +kcc:proto=google.cloud.batch.v1.AllocationPolicy.InstancePolicyOrTemplate
-type AllocationPolicy_InstancePolicyOrTemplate struct {
-	// InstancePolicy.
-	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.InstancePolicyOrTemplate.policy
-	Policy *AllocationPolicy_InstancePolicy `json:"policy,omitempty"`
-
-	// Name of an instance template used to create VMs.
-	//  Named the field as 'instance_template' instead of 'template' to avoid
-	//  C++ keyword conflict.
-	//
-	//  Batch only supports global instance templates from the same project as
-	//  the job.
-	//  You can specify the global instance template as a full or partial URL.
-	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.InstancePolicyOrTemplate.instance_template
-	InstanceTemplate *string `json:"instanceTemplate,omitempty"`
-
-	// Set this field true if you want Batch to help fetch drivers from a third
-	//  party location and install them for GPUs specified in
-	//  `policy.accelerators` or `instance_template` on your behalf. Default is
-	//  false.
-	//
-	//  For Container-Optimized Image cases, Batch will install the
-	//  accelerator driver following milestones of
-	//  https://cloud.google.com/container-optimized-os/docs/release-notes. For
-	//  non Container-Optimized Image cases, following
-	//  https://github.com/GoogleCloudPlatform/compute-gpu-installation/blob/main/linux/install_gpu_driver.py.
-	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.InstancePolicyOrTemplate.install_gpu_drivers
-	InstallGpuDrivers *bool `json:"installGpuDrivers,omitempty"`
-
-	// Optional. Set this field true if you want Batch to install Ops Agent on
-	//  your behalf. Default is false.
-	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.InstancePolicyOrTemplate.install_ops_agent
-	InstallOpsAgent *bool `json:"installOpsAgent,omitempty"`
-
-	// Optional. Set this field to `true` if you want Batch to block
-	//  project-level SSH keys from accessing this job's VMs.  Alternatively, you
-	//  can configure the job to specify a VM instance template that blocks
-	//  project-level SSH keys. In either case, Batch blocks project-level SSH
-	//  keys while creating the VMs for this job.
-	//
-	//  Batch allows project-level SSH keys for a job's VMs only if all
-	//  the following are true:
-	//
-	//  + This field is undefined or set to `false`.
-	//  + The job's VM instance template (if any) doesn't block project-level
-	//    SSH keys.
-	//
-	//  Notably, you can override this behavior by manually updating a VM to
-	//  block or allow project-level SSH keys. For more information about
-	//  blocking project-level SSH keys, see the Compute Engine documentation:
-	//  https://cloud.google.com/compute/docs/connect/restrict-ssh-keys#block-keys
-	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.InstancePolicyOrTemplate.block_project_ssh_keys
-	BlockProjectSSHKeys *bool `json:"blockProjectSSHKeys,omitempty"`
-}
-
 // +kcc:proto=google.cloud.batch.v1.AllocationPolicy.LocationPolicy
 type AllocationPolicy_LocationPolicy struct {
 	// A list of allowed location names represented by internal URLs.

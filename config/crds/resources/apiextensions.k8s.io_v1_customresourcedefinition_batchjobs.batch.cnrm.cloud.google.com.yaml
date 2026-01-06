@@ -103,7 +103,7 @@ spec:
                           description: Optional. Set this field true if you want Batch
                             to install Ops Agent on your behalf. Default is false.
                           type: boolean
-                        instanceTemplate:
+                        instanceTemplateRef:
                           description: |-
                             Name of an instance template used to create VMs.
                              Named the field as 'instance_template' instead of 'template' to avoid
@@ -112,7 +112,34 @@ spec:
                              Batch only supports global instance templates from the same project as
                              the job.
                              You can specify the global instance template as a full or partial URL.
-                          type: string
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: The value of an externally managed ComputeInstanceTemplate
+                                resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/instanceTemplates/{{name}}"
+                                or "projects/{{projectId}}/global/instanceTemplates/{{name}}"
+                              type: string
+                            name:
+                              description: The name of a ComputeInstanceTemplate resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a ComputeInstanceTemplate
+                                resource.
+                              type: string
+                          type: object
                         policy:
                           description: InstancePolicy.
                           properties:

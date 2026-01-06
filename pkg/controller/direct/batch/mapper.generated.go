@@ -120,33 +120,13 @@ func AllocationPolicy_InstancePolicyOrTemplate_FromProto(mapCtx *direct.MapConte
 	}
 	out := &krm.AllocationPolicy_InstancePolicyOrTemplate{}
 	out.Policy = AllocationPolicy_InstancePolicy_FromProto(mapCtx, in.GetPolicy())
-	out.InstanceTemplate = direct.LazyPtr(in.GetInstanceTemplate())
+	if in.GetInstanceTemplate() != "" {
+		out.InstanceTemplateRef = &krmcomputev1beta1.ComputeInstanceTemplateRef{External: in.GetInstanceTemplate()}
+	}
 	out.InstallGpuDrivers = direct.LazyPtr(in.GetInstallGpuDrivers())
 	out.InstallOpsAgent = direct.LazyPtr(in.GetInstallOpsAgent())
 	out.BlockProjectSSHKeys = direct.LazyPtr(in.GetBlockProjectSshKeys())
 	return out
-}
-func AllocationPolicy_InstancePolicyOrTemplate_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_InstancePolicyOrTemplate) *pb.AllocationPolicy_InstancePolicyOrTemplate {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationPolicy_InstancePolicyOrTemplate{}
-	if oneof := AllocationPolicy_InstancePolicy_ToProto(mapCtx, in.Policy); oneof != nil {
-		out.PolicyTemplate = &pb.AllocationPolicy_InstancePolicyOrTemplate_Policy{Policy: oneof}
-	}
-	if oneof := AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate_ToProto(mapCtx, in.InstanceTemplate); oneof != nil {
-		out.PolicyTemplate = oneof
-	}
-	out.InstallGpuDrivers = direct.ValueOf(in.InstallGpuDrivers)
-	out.InstallOpsAgent = direct.ValueOf(in.InstallOpsAgent)
-	out.BlockProjectSshKeys = direct.ValueOf(in.BlockProjectSSHKeys)
-	return out
-}
-func AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate {
-	if in == nil {
-		return nil
-	}
-	return &pb.AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate{InstanceTemplate: *in}
 }
 func AllocationPolicy_LocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_LocationPolicy) *krm.AllocationPolicy_LocationPolicy {
 	if in == nil {

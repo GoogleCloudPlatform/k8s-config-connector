@@ -248,9 +248,9 @@ func (in *AllocationPolicy_InstancePolicyOrTemplate) DeepCopyInto(out *Allocatio
 		*out = new(AllocationPolicy_InstancePolicy)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.InstanceTemplate != nil {
-		in, out := &in.InstanceTemplate, &out.InstanceTemplate
-		*out = new(string)
+	if in.InstanceTemplateRef != nil {
+		in, out := &in.InstanceTemplateRef, &out.InstanceTemplateRef
+		*out = new(computev1beta1.ComputeInstanceTemplateRef)
 		**out = **in
 	}
 	if in.InstallGpuDrivers != nil {
