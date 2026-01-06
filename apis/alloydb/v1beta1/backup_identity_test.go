@@ -17,6 +17,8 @@ package v1beta1
 import (
 	"maps"
 	"testing"
+
+	util "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/identity"
 )
 
 func TestBackupParse(t *testing.T) {
@@ -77,7 +79,7 @@ func TestBackupParse(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		err, result := parseIdentityMap(tc.input, 2)
+		err, result := util.ParseIdentityMap(tc.input, parser, 2)
 		if tc.hasError {
 			if err == nil {
 				t.Fatalf("Test %s expected error but did not get one", tc.name)
