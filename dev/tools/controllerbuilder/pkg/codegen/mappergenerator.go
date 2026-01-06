@@ -27,6 +27,7 @@ import (
 
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
@@ -35,6 +36,9 @@ type MapperGenerator struct {
 	goPathForMessage OutputFunc
 
 	goPackages []*gocode.Package
+
+	// visitedMessages keeps track of visited proto messages to avoid processing the same message multiple times.
+	visitedMessages sets.Set[string]
 
 	typePairs           []typePair
 	precomputedMappings map[protoreflect.FullName][]*gocode.GoStruct
@@ -53,6 +57,7 @@ type importedPackage struct {
 
 func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, generatedFileAnnotation *annotations.FileAnnotation, multiversion bool) *MapperGenerator {
 	g := &MapperGenerator{
+		visitedMessages:         sets.New[string](),
 		goPathForMessage:        goPathForMessage,
 		precomputedMappings:     make(map[protoreflect.FullName][]*gocode.GoStruct),
 		generatedFileAnnotation: generatedFileAnnotation,
@@ -118,6 +123,11 @@ func (v *MapperGenerator) VisitProto(api *protoapi.Proto) error {
 func (g *MapperGenerator) visitFile(f protoreflect.FileDescriptor) {
 	for _, msg := range sortIntoMessageSlice(f.Messages()) {
 		g.visitMessage(msg)
+		childMessages := msg.Messages()
+		for i := range childMessages.Len() {
+			childMessage := childMessages.Get(i)
+			g.visitMessage(childMessage)
+		}
 	}
 }
 
@@ -131,6 +141,12 @@ func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescrip
 }
 
 func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
+	// Avoid visiting messages twice
+	if v.visitedMessages.Has(string(msg.FullName())) {
+		return
+	}
+	v.visitedMessages.Insert(string(msg.FullName()))
+
 	if _, visit := v.goPathForMessage(msg); !visit {
 		return
 	}
