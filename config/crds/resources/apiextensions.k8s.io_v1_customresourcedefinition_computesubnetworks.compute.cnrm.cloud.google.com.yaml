@@ -6,7 +6,9 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
   name: computesubnetworks.compute.cnrm.cloud.google.com
 spec:
   group: compute.cnrm.cloud.google.com
@@ -158,38 +160,6 @@ spec:
                 description: The private IPv6 google access type for the VMs in this
                   subnet.
                 type: string
-              projectRef:
-                description: The Project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               purpose:
                 description: Immutable. The purpose of the resource. This field can
                   be either 'PRIVATE_RFC_1918', 'REGIONAL_MANAGED_PROXY', 'GLOBAL_MANAGED_PROXY',
@@ -289,10 +259,6 @@ spec:
                 description: The range of external IPv6 addresses that are owned by
                   this subnetwork.
                 type: string
-              externalRef:
-                description: A unique specifier for the ComputeSubnetwork resource
-                  in GCP.
-                type: string
               fingerprint:
                 description: DEPRECATED. This field is not useful for users, and has
                   been removed as an output. Fingerprint of this resource. This field
@@ -318,10 +284,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                type: object
               selfLink:
                 description: Server-defined URL for the resource.
                 type: string

@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -101,9 +100,6 @@ type ComputeSubnetworkSpec struct {
 	// If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].
 	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.stack_type
 	StackType *string `json:"stackType,omitempty"`
-
-	// The Project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 // ComputeSubnetworkStatus defines the config connector machine state of ComputeSubnetwork
@@ -115,9 +111,6 @@ type ComputeSubnetworkStatus struct {
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	// A unique specifier for the ComputeSubnetwork resource in GCP.
-	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// Creation timestamp in RFC3339 text format.
 	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.creation_timestamp
@@ -152,21 +145,13 @@ type ComputeSubnetworkStatus struct {
 	// Server-defined URL for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.Subnetwork.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ComputeSubnetworkObservedState `json:"observedState,omitempty"`
-}
-
-// ComputeSubnetworkObservedState is the state of the ComputeSubnetwork resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.compute.v1.Subnetwork
-type ComputeSubnetworkObservedState struct {
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputesubnetwork;gcpcomputesubnetworks
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
