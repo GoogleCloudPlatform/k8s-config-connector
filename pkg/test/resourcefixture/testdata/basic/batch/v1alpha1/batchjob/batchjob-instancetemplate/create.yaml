@@ -1,0 +1,23 @@
+---
+apiVersion: batch.cnrm.cloud.google.com/v1alpha1
+kind: BatchJob
+metadata:
+  name: batchjob-${uniqueId}
+spec:
+  location: us-central1
+  allocationPolicy:
+    instances:
+    - instanceTemplateRef:
+        name: batchjob-instancetemplate-${uniqueId}
+  taskGroups:
+    - taskCount: 1
+      taskSpec:
+        runnables:
+          - script:
+              text: "echo hello"
+  logsPolicy:
+<<<<<<< Updated upstream
+    destination: CLOUD_LOGGING
+=======
+    destination: CLOUD_LOGGING
+>>>>>>> Stashed changes
