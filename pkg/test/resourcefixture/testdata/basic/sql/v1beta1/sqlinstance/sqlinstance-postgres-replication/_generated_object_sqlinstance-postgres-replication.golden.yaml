@@ -2,21 +2,24 @@ apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
   annotations:
-    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/deletion-policy: abandon
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/unmanaged: spec.maintenanceVersion,spec.settings.edition
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
   generation: 2
   labels:
     cnrm-test: "true"
-  name: sqlinstance-postgres-direct-${uniqueId}
+  name: postgres-replication-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  databaseVersion: POSTGRES_9_6
-  maintenanceVersion: POSTGRES_9_6_24.R20250302.00_19
-  region: us-central1
+  databaseVersion: POSTGRES_16
+  instanceType: CLOUD_SQL_INSTANCE
+  region: europe-west1
+  resourceID: postgres-replication-${uniqueId}
   settings:
+    activationPolicy: ALWAYS
     availabilityType: REGIONAL
     backupConfiguration:
       backupRetentionSettings:
@@ -24,34 +27,43 @@ spec:
         retentionUnit: COUNT
       enabled: true
       pointInTimeRecoveryEnabled: true
-      startTime: "05:00"
-      transactionLogRetentionDays: 3
+      startTime: "23:59"
+      transactionLogRetentionDays: 7
+    connectorEnforcement: NOT_REQUIRED
     databaseFlags:
-    - name: cloudsql.iam_authentication
+    - name: autovacuum
       value: "on"
     - name: max_connections
-      value: "1000"
-    - name: max_worker_processes
-      value: "8"
-    deletionProtectionEnabled: false
-    diskAutoresize: false
+      value: "10000"
+    - name: max_standby_archive_delay
+      value: "180000"
+    - name: max_standby_streaming_delay
+      value: "180000"
+    deletionProtectionEnabled: true
+    diskAutoresize: true
     diskAutoresizeLimit: 0
-    diskSize: 100
+    diskSize: 180
     diskType: PD_SSD
+    edition: ENTERPRISE
     insightsConfig:
       queryInsightsEnabled: true
-      queryStringLength: 1024
-      recordApplicationTags: true
-      recordClientAddress: true
+      queryStringLength: 2048
     ipConfiguration:
+      enablePrivatePathForGoogleCloudServices: false
       ipv4Enabled: false
       privateNetworkRef:
         name: ${networkID}
-      requireSsl: false
-      sslMode: ENCRYPTED_ONLY
+      requireSsl: true
     locationPreference:
-      zone: us-central1-b
-    tier: db-custom-1-3840
+      secondaryZone: europe-west1-b
+      zone: europe-west1-d
+    maintenanceWindow:
+      day: 7
+      hour: 23
+      updateTrack: stable
+    pricingPlan: PER_USE
+    replicationType: SYNCHRONOUS
+    tier: db-custom-4-15360
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -59,13 +71,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  connectionName: ${projectId}:us-central1:sqlinstance-postgres-direct-${uniqueId}
+  connectionName: ${projectId}:europe-west1:postgres-replication-${uniqueId}
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 2
   privateIpAddress: 10.1.2.3
-  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}
   serverCaCert:
     cert: |
       -----BEGIN CERTIFICATE-----

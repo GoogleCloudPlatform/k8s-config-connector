@@ -157,16 +157,16 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     },
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.11",
       "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_16_11.R20251004.01_26",
   "name": "sqlinstance-authorizednetworks-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -225,7 +225,19 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
+    }
+  ]
 }
 
 ---
@@ -293,16 +305,16 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     },
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.11",
       "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_16_11.R20251004.01_26",
   "name": "sqlinstance-authorizednetworks-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -361,7 +373,19 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
+    }
+  ]
 }
 
 ---
@@ -374,7 +398,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_16_11.R20251004.01_26",
   "name": "sqlinstance-authorizednetworks-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -515,16 +539,16 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     },
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.11",
       "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_16_11.R20251004.01_26",
   "name": "sqlinstance-authorizednetworks-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -584,7 +608,19 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
+    }
+  ]
 }
 
 ---
