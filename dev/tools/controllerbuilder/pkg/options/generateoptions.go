@@ -15,8 +15,7 @@
 package options
 
 import (
-	"os/exec"
-	"strings"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -43,11 +42,5 @@ func (o *GenerateOptions) BindPersistentFlags(cmd *cobra.Command) {
 }
 
 func RepoRoot() (string, error) {
-	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
-	output, err := cmd.Output()
-	if err != nil {
-		return "", err
-	}
-	repoRoot := strings.TrimSpace(string(output))
-	return repoRoot, nil
+	return os.Getwd()
 }
