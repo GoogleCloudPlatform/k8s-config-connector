@@ -28,6 +28,8 @@ go run . generate-types \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeTargetTcpProxy:TargetTcpProxy
 
+go run . generate-mapper --service google.cloud.compute.v1 --api-version compute.cnrm.cloud.google.com/v1beta1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
