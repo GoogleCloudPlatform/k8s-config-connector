@@ -251,6 +251,8 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "bigqueryDataset": {
     "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "effectiveReplicas": [],
+    "replicaLocations": [],
     "restrictedExportPolicy": {
       "enabled": true,
       "restrictDirectTableAccess": true,
@@ -280,7 +282,8 @@ Grpc-Metadata-Content-Type: application/grpc
   "requestAccess": "someone@something.com",
   "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
   "restrictedExportConfig": null,
-  "state": "STATE_UNSPECIFIED"
+  "state": "STATE_UNSPECIFIED",
+  "storedProcedureConfig": null
 }
 
 ---
@@ -297,6 +300,8 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "bigqueryDataset": {
     "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "effectiveReplicas": [],
+    "replicaLocations": [],
     "restrictedExportPolicy": {
       "enabled": true,
       "restrictDirectTableAccess": true,
@@ -326,7 +331,8 @@ Grpc-Metadata-Content-Type: application/grpc
   "requestAccess": "someone@something.com",
   "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
   "restrictedExportConfig": null,
-  "state": "STATE_UNSPECIFIED"
+  "state": "STATE_UNSPECIFIED",
+  "storedProcedureConfig": null
 }
 
 ---
@@ -373,6 +379,8 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "bigqueryDataset": {
     "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "effectiveReplicas": [],
+    "replicaLocations": [],
     "restrictedExportPolicy": {
       "enabled": true,
       "restrictDirectTableAccess": true,
@@ -402,7 +410,8 @@ Grpc-Metadata-Content-Type: application/grpc
   "requestAccess": "someone@something.com",
   "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
   "restrictedExportConfig": null,
-  "state": "STATE_UNSPECIFIED"
+  "state": "STATE_UNSPECIFIED",
+  "storedProcedureConfig": null
 }
 
 ---
@@ -419,6 +428,8 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "bigqueryDataset": {
     "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "effectiveReplicas": [],
+    "replicaLocations": [],
     "restrictedExportPolicy": {
       "enabled": true,
       "restrictDirectTableAccess": true,
@@ -448,7 +459,8 @@ Grpc-Metadata-Content-Type: application/grpc
   "requestAccess": "someone@something.com",
   "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
   "restrictedExportConfig": null,
-  "state": "STATE_UNSPECIFIED"
+  "state": "STATE_UNSPECIFIED",
+  "storedProcedureConfig": null
 }
 
 ---
