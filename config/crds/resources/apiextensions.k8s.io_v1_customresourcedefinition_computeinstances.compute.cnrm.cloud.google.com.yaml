@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: ComputeInstance
+    listKind: ComputeInstanceList
     plural: computeinstances
     shortNames:
     - gcpcomputeinstance
@@ -43,99 +44,131 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: ComputeInstance is the Schema for the ComputeInstance API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
-            anyOf:
-            - required:
-              - bootDisk
-              - machineType
-              - networkInterface
-              - zone
-            - required:
-              - instanceTemplateRef
-              - zone
+            description: ComputeInstanceSpec defines the desired state of ComputeInstance
             properties:
               advancedMachineFeatures:
                 description: Controls for advanced machine-related behavior features.
                 properties:
                   enableNestedVirtualization:
-                    description: Whether to enable nested virtualization or not.
+                    description: Whether to enable nested virtualization or not (default
+                      is false).
                     type: boolean
+                  enableUefiNetworking:
+                    description: Whether to enable UEFI networking for instance creation.
+                    type: boolean
+                  performanceMonitoringUnit:
+                    description: Type of Performance Monitoring Unit requested on
+                      instance. Check the PerformanceMonitoringUnit enum for the list
+                      of possible values.
+                    type: string
                   threadsPerCore:
                     description: The number of threads per physical core. To disable
                       simultaneous multithreading (SMT) set this to 1. If unset, the
                       maximum number of threads supported per core by the underlying
                       processor is assumed.
+                    format: int32
                     type: integer
+                  turboMode:
+                    description: 'Turbo frequency mode to use for the instance. Supported
+                      modes include: * ALL_CORE_MAX Using empty string or not setting
+                      this field will use the platform-specific default turbo mode.'
+                    type: string
                   visibleCoreCount:
                     description: The number of physical cores to expose to an instance.
                       Multiply by the number of threads per core to compute the total
                       number of virtual CPUs to expose to the instance. If unset,
-                      the number of cores is inferred from the instance\'s nominal
-                      CPU count and the underlying platform\'s SMT width.
+                      the number of cores is inferred from the instance's nominal
+                      CPU count and the underlying platform's SMT width.
+                    format: int32
                     type: integer
                 type: object
               attachedDisk:
                 description: List of disks attached to the instance.
                 items:
                   properties:
+                    architecture:
+                      description: '[Output Only] The architecture of the attached
+                        disk. Valid values are ARM64 or X86_64. Check the Architecture
+                        enum for the list of possible values.'
+                      type: string
+                    autoDelete:
+                      description: Specifies whether the disk will be auto-deleted
+                        when the instance is deleted (but not when the disk is detached
+                        from the instance).
+                      type: boolean
                     deviceName:
-                      description: Name with which the attached disk is accessible
-                        under /dev/disk/by-id/.
+                      description: Specifies a unique device name of your choice that
+                        is reflected into the /dev/disk/by-id/google-* tree of a Linux
+                        operating system running within the instance. This name can
+                        be used to reference the device for mounting, resizing, and
+                        so on, from within the instance. If not specified, the server
+                        chooses a default device name to apply to this disk, in the
+                        form persistent-disk-x, where x is a number assigned by Google
+                        Compute Engine. This field is only applicable for persistent
+                        disks.
                       type: string
                     diskEncryptionKeyRaw:
-                      description: A 256-bit customer-supplied encryption key, encoded
-                        in RFC 4648 base64 to encrypt this disk. Only one of kms_key_self_link
-                        and disk_encryption_key_raw may be set.
-                      oneOf:
-                      - not:
-                          required:
-                          - valueFrom
-                        required:
-                        - value
-                      - not:
-                          required:
-                          - value
-                        required:
-                        - valueFrom
+                      description: 'Encrypts or decrypts a disk using a customer-supplied
+                        encryption key. If you are creating a new disk, this field
+                        encrypts the new disk using an encryption key that you provide.
+                        If you are attaching an existing disk that is already encrypted,
+                        this field decrypts the disk using the customer-supplied encryption
+                        key. If you encrypt a disk using a customer-supplied key,
+                        you must provide the same key again when you attempt to use
+                        this resource at a later time. For example, you must provide
+                        the key when you create a snapshot or an image from the disk
+                        or when you attach the disk to a virtual machine instance.
+                        If you do not provide an encryption key, then the disk will
+                        be encrypted using an automatically generated key and you
+                        do not need to provide a key to use the disk later. Note:
+                        Instance templates do not store customer-supplied encryption
+                        keys, so you cannot use your own keys to encrypt disks in
+                        a managed instance group. You cannot create VMs that have
+                        disks with customer-supplied keys using the bulk insert method.'
                       properties:
                         value:
-                          description: Value of the field. Cannot be used if 'valueFrom'
-                            is specified.
                           type: string
                         valueFrom:
-                          description: Source for the field's value. Cannot be used
-                            if 'value' is specified.
+                          description: 'Specifies a 256-bit customer-supplied encryption
+                            key, encoded in RFC 4648 base64 to either encrypt or decrypt
+                            this resource. You can provide either the rawKey or the
+                            rsaEncryptedKey. For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="'
                           properties:
-                            secretKeyRef:
-                              description: Reference to a value with the given key
-                                in the given Secret in the resource's namespace.
-                              properties:
-                                key:
-                                  description: Key that identifies the value to be
-                                    extracted.
-                                  type: string
-                                name:
-                                  description: Name of the Secret to extract a value
-                                    from.
-                                  type: string
-                              required:
-                              - name
-                              - key
-                              type: object
+                            key:
+                              description: The key of the secret to select from.  Must
+                                be a valid secret key.
+                              type: string
+                            name:
+                              default: ""
+                              description: 'Name of the referent. This field is effectively
+                                required, but due to backwards compatibility is allowed
+                                to be empty. Instances of this type with an empty
+                                value here are almost certainly wrong. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            optional:
+                              description: Specify whether the Secret or its key must
+                                be defined
+                              type: boolean
+                          required:
+                          - key
                           type: object
+                          x-kubernetes-map-type: atomic
                       type: object
                     diskEncryptionKeySha256:
                       description: The RFC 4648 base64 encoded SHA-256 hash of the
@@ -158,21 +191,31 @@ spec:
                         - external
                       properties:
                         external:
-                          description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
-                            resource.'
+                          description: A reference to an externally managed KMSCryptoKey.
+                            Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
                           type: string
                         name:
-                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          description: The `name` of a `KMSCryptoKey` resource.
                           type: string
                         namespace:
-                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          description: The `namespace` of a `KMSCryptoKey` resource.
                           type: string
                       type: object
                     mode:
-                      description: Read/write mode for the disk. One of "READ_ONLY"
-                        or "READ_WRITE".
+                      description: The mode in which to attach this disk, either READ_WRITE
+                        or READ_ONLY. If not specified, the default is to attach the
+                        disk in READ_WRITE mode. Check the Mode enum for the list
+                        of possible values.
                       type: string
                     sourceDiskRef:
+                      description: Specifies a valid partial or full URL to an existing
+                        Persistent Disk resource. When creating a new instance boot
+                        disk, one of initializeParams.sourceImage or initializeParams.sourceSnapshot
+                        or disks.source is required. If desired, you can also attach
+                        existing non-root persistent disks using this property. This
+                        field is only applicable for persistent disks. Note that for
+                        InstanceTemplate, specify the disk name for zonal disk, and
+                        the URL for regional disk.
                       oneOf:
                       - not:
                           required:
@@ -189,99 +232,147 @@ spec:
                         - external
                       properties:
                         external:
-                          description: 'Allowed value: The `selfLink` field of a `ComputeDisk`
-                            resource.'
+                          description: The ComputeDisk selflink in the form "projects/{{project}}/zones/{{zone}}/disks/{{name}}"
+                            when not managed by Config Connector.
                           type: string
                         name:
-                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          description: The `name` field of a `ComputeDisk` resource.
                           type: string
                         namespace:
-                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          description: The `namespace` field of a `ComputeDisk` resource.
                           type: string
                       type: object
-                  required:
-                  - sourceDiskRef
                   type: object
                 type: array
               bootDisk:
                 description: Immutable. The boot disk for the instance.
                 properties:
                   autoDelete:
-                    description: Immutable. Whether the disk will be auto-deleted
-                      when the instance is deleted.
+                    description: Specifies whether the disk will be auto-deleted when
+                      the instance is deleted (but not when the disk is detached from
+                      the instance).
                     type: boolean
                   deviceName:
-                    description: Immutable. Name with which attached disk will be
-                      accessible under /dev/disk/by-id/.
+                    description: Specifies a unique device name of your choice that
+                      is reflected into the /dev/disk/by-id/google-* tree of a Linux
+                      operating system running within the instance. This name can
+                      be used to reference the device for mounting, resizing, and
+                      so on, from within the instance. If not specified, the server
+                      chooses a default device name to apply to this disk, in the
+                      form persistent-disk-x, where x is a number assigned by Google
+                      Compute Engine. This field is only applicable for persistent
+                      disks.
                     type: string
                   diskEncryptionKeyRaw:
-                    description: Immutable. A 256-bit customer-supplied encryption
-                      key, encoded in RFC 4648 base64 to encrypt this disk. Only one
-                      of kms_key_self_link and disk_encryption_key_raw may be set.
-                    oneOf:
-                    - not:
-                        required:
-                        - valueFrom
-                      required:
-                      - value
-                    - not:
-                        required:
-                        - value
-                      required:
-                      - valueFrom
+                    description: 'Encrypts or decrypts a disk using a customer-supplied
+                      encryption key. If you are creating a new disk, this field encrypts
+                      the new disk using an encryption key that you provide. If you
+                      are attaching an existing disk that is already encrypted, this
+                      field decrypts the disk using the customer-supplied encryption
+                      key. If you encrypt a disk using a customer-supplied key, you
+                      must provide the same key again when you attempt to use this
+                      resource at a later time. For example, you must provide the
+                      key when you create a snapshot or an image from the disk or
+                      when you attach the disk to a virtual machine instance. If you
+                      do not provide an encryption key, then the disk will be encrypted
+                      using an automatically generated key and you do not need to
+                      provide a key to use the disk later. Note: Instance templates
+                      do not store customer-supplied encryption keys, so you cannot
+                      use your own keys to encrypt disks in a managed instance group.
+                      You cannot create VMs that have disks with customer-supplied
+                      keys using the bulk insert method.'
                     properties:
                       value:
-                        description: Value of the field. Cannot be used if 'valueFrom'
-                          is specified.
                         type: string
                       valueFrom:
-                        description: Source for the field's value. Cannot be used
-                          if 'value' is specified.
+                        description: 'Specifies a 256-bit customer-supplied encryption
+                          key, encoded in RFC 4648 base64 to either encrypt or decrypt
+                          this resource. You can provide either the rawKey or the
+                          rsaEncryptedKey. For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="'
                         properties:
-                          secretKeyRef:
-                            description: Reference to a value with the given key in
-                              the given Secret in the resource's namespace.
-                            properties:
-                              key:
-                                description: Key that identifies the value to be extracted.
-                                type: string
-                              name:
-                                description: Name of the Secret to extract a value
-                                  from.
-                                type: string
-                            required:
-                            - name
-                            - key
-                            type: object
+                          key:
+                            description: The key of the secret to select from.  Must
+                              be a valid secret key.
+                            type: string
+                          name:
+                            default: ""
+                            description: 'Name of the referent. This field is effectively
+                              required, but due to backwards compatibility is allowed
+                              to be empty. Instances of this type with an empty value
+                              here are almost certainly wrong. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            type: string
+                          optional:
+                            description: Specify whether the Secret or its key must
+                              be defined
+                            type: boolean
+                        required:
+                        - key
                         type: object
+                        x-kubernetes-map-type: atomic
                     type: object
                   diskEncryptionKeySha256:
                     description: The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
                       encryption key that protects this resource.
                     type: string
                   initializeParams:
-                    description: Immutable. Parameters with which a disk was created
-                      alongside the instance.
+                    description: '[Input Only] Specifies the parameters for a new
+                      disk that will be created alongside the new instance. Use initialization
+                      parameters to create boot disks or local SSDs attached to the
+                      new instance. This property is mutually exclusive with the source
+                      property; you can only define one or the other, but not both.'
                     properties:
+                      description:
+                        description: An optional description. Provide this property
+                          when creating the disk.
+                        type: string
+                      diskName:
+                        description: Specifies the disk name. If not specified, the
+                          default is to use the name of the instance. If a disk with
+                          the same name already exists in the given region, the existing
+                          disk is attached to the new instance and the new disk is
+                          not created.
+                        type: string
                       labels:
-                        description: Immutable. A set of key/value label pairs assigned
-                          to the disk.
+                        additionalProperties:
+                          type: string
+                        description: Labels to apply to this disk. These can be later
+                          modified by the disks.setLabels method. This field is only
+                          applicable for persistent disks.
                         type: object
-                        x-kubernetes-preserve-unknown-fields: true
                       resourceManagerTags:
-                        description: Immutable. A map of resource manager tags. Resource
-                          manager tag keys and values have the same definition as
-                          resource manager tags. Keys must be in the format tagKeys/{tag_key_id},
-                          and values are in the format tagValues/456. The field is
-                          ignored (both PUT & PATCH) when empty.
+                        additionalProperties:
+                          type: string
+                        description: Resource manager tags to be bound to the disk.
+                          Tag keys and values have the same definition as resource
+                          manager tags. Keys must be in the format `tagKeys/{tag_key_id}`,
+                          and values are in the format `tagValues/456`. The field
+                          is ignored (both PUT & PATCH) when empty.
                         type: object
-                        x-kubernetes-preserve-unknown-fields: true
                       size:
-                        description: Immutable. The size of the image in gigabytes.
+                        description: Specifies the size of the disk in base-2 GB.
+                          The size must be at least 10 GB. If you specify a sourceImage,
+                          which is required for boot disks, the default size is the
+                          size of the sourceImage. If you do not specify a sourceImage,
+                          the default disk size is 500 GB.
+                        format: int64
                         type: integer
                       sourceImageRef:
-                        description: Immutable. The image from which to initialize
-                          this disk.
+                        description: 'The source image to create this disk. When creating
+                          a new instance boot disk, one of initializeParams.sourceImage
+                          or initializeParams.sourceSnapshot or disks.source is required.
+                          To create a disk with one of the public operating system
+                          images, specify the image by its family name. For example,
+                          specify family/debian-9 to use the latest Debian 9 image:
+                          projects/debian-cloud/global/images/family/debian-9 Alternatively,
+                          use a specific version of a public operating system image:
+                          projects/debian-cloud/global/images/debian-9-stretch-vYYYYMMDD
+                          To create a disk with a custom image that you created, specify
+                          the image name in the following format: global/images/my-custom-image
+                          You can also specify a custom image by its image family,
+                          which returns the latest version of the image in that family.
+                          Replace the image name with family/family-name: global/images/family/my-image-family
+                          If the source image is deleted later, this field will not
+                          be set.'
                         oneOf:
                         - not:
                             required:
@@ -298,19 +389,67 @@ spec:
                           - external
                         properties:
                           external:
-                            description: 'Allowed value: The `selfLink` field of a
-                              `ComputeImage` resource.'
+                            description: A reference to an externally managed ComputeImage
+                              resource. Should be in the format "projects/{{project}}/global/images/{{name}}".
                             type: string
                           name:
-                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            description: The name of a ComputeImage resource.
                             type: string
                           namespace:
-                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            description: The namespace of a ComputeImage resource.
+                            type: string
+                        type: object
+                      sourceSnapshotRef:
+                        description: 'The source snapshot to create this disk. When
+                          creating a new instance boot disk, one of initializeParams.sourceSnapshot
+                          or initializeParams.sourceImage or disks.source is required.
+                          To create a disk with a snapshot that you created, specify
+                          the snapshot name in the following format: global/snapshots/my-backup
+                          If the source snapshot is deleted later, this field will
+                          not be set. Note: You cannot create VMs in bulk using a
+                          snapshot as the source. Use an image instead when you create
+                          VMs using the bulk insert method.'
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The ComputeSnapshot selflink in the form
+                              "projects/{{project}}/global/snapshots/{{name}}" when
+                              not managed by Config Connector.
+                            type: string
+                          name:
+                            description: The `name` field of a `ComputeSnapshot` resource.
+                            type: string
+                          namespace:
+                            description: The `namespace` field of a `ComputeSnapshot`
+                              resource.
                             type: string
                         type: object
                       type:
-                        description: Immutable. The Google Compute Engine disk type.
-                          Such as pd-standard, pd-ssd or pd-balanced.
+                        description: 'Specifies the disk type to use to create the
+                          instance. If not specified, the default is pd-standard,
+                          specified using the full URL. For example: https://www.googleapis.com/compute/v1/projects/project/zones/zone
+                          /diskTypes/pd-standard For a full list of acceptable values,
+                          see Persistent disk types. If you specify this field when
+                          creating a VM, you can provide either the full or partial
+                          URL. For example, the following values are valid: - https://www.googleapis.com/compute/v1/projects/project/zones/zone
+                          /diskTypes/diskType - projects/project/zones/zone/diskTypes/diskType
+                          - zones/zone/diskTypes/diskType If you specify this field
+                          when creating or updating an instance template or all-instances
+                          configuration, specify the type of the disk, not the URL.
+                          For example: pd-standard.'
                         type: string
                     type: object
                   kmsKeyRef:
@@ -330,22 +469,31 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
-                          resource.'
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `name` of a `KMSCryptoKey` resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `namespace` of a `KMSCryptoKey` resource.
                         type: string
                     type: object
                   mode:
-                    description: Immutable. Read/write mode for the disk. One of "READ_ONLY"
-                      or "READ_WRITE".
+                    description: The mode in which to attach this disk, either READ_WRITE
+                      or READ_ONLY. If not specified, the default is to attach the
+                      disk in READ_WRITE mode. Check the Mode enum for the list of
+                      possible values.
                     type: string
                   sourceDiskRef:
-                    description: Immutable. The source disk used to create this disk.
+                    description: Specifies a valid partial or full URL to an existing
+                      Persistent Disk resource. When creating a new instance boot
+                      disk, one of initializeParams.sourceImage or initializeParams.sourceSnapshot
+                      or disks.source is required. If desired, you can also attach
+                      existing non-root persistent disks using this property. This
+                      field is only applicable for persistent disks. Note that for
+                      InstanceTemplate, specify the disk name for zonal disk, and
+                      the URL for regional disk.
                     oneOf:
                     - not:
                         required:
@@ -362,70 +510,69 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `selfLink` field of a `ComputeDisk`
-                          resource.'
+                        description: The ComputeDisk selflink in the form "projects/{{project}}/zones/{{zone}}/disks/{{name}}"
+                          when not managed by Config Connector.
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The `name` field of a `ComputeDisk` resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The `namespace` field of a `ComputeDisk` resource.
                         type: string
                     type: object
                 type: object
               canIpForward:
-                description: Whether sending and receiving of packets with non-matching
-                  source or destination IPs is allowed.
+                description: Allows this instance to send and receive packets with
+                  non-matching destination or source IPs. This is required if you
+                  plan to use this instance to forward routes. For more information,
+                  see Enabling IP Forwarding .
                 type: boolean
               confidentialInstanceConfig:
-                description: Immutable. The Confidential VM config being used by the
-                  instance.  on_host_maintenance has to be set to TERMINATE or this
-                  will fail to create.
                 properties:
+                  confidentialInstanceType:
+                    description: Defines the type of technology used by the confidential
+                      instance. Check the ConfidentialInstanceType enum for the list
+                      of possible values.
+                    type: string
                   enableConfidentialCompute:
                     description: Defines whether the instance should have confidential
                       compute enabled.
                     type: boolean
-                required:
-                - enableConfidentialCompute
                 type: object
               deletionProtection:
-                description: Whether deletion protection is enabled on this instance.
+                description: Whether the resource should be protected against deletion.
                 type: boolean
               description:
-                description: Immutable. A brief description of the resource.
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
                 type: string
               desiredStatus:
-                description: Desired status of the instance. Either "RUNNING" or "TERMINATED".
                 type: string
               enableDisplay:
-                description: Whether the instance has virtual displays enabled.
+                description: Enables display device for the instance. DisplayDevice
+                  *DisplayDevice `json:"displayDevice,omitempty"` KRM has enableDisplay
+                  boolean instead of DisplayDevice struct.
                 type: boolean
               guestAccelerator:
-                description: Immutable. List of the type and count of accelerator
-                  cards attached to the instance.
+                description: A list of the type and count of accelerator cards attached
+                  to the instance. GuestAccelerators []AcceleratorConfig `json:"guestAccelerators,omitempty"`
+                  KRM has guestAccelerator (singular) and structure is different (count,
+                  type) vs (accelerator_count, accelerator_type)
                 items:
                   properties:
                     count:
-                      description: Immutable. The number of the guest accelerator
-                        cards exposed to this instance.
+                      format: int32
                       type: integer
                     type:
-                      description: Immutable. The accelerator type resource exposed
-                        to this instance. E.g. nvidia-tesla-t4.
                       type: string
-                  required:
-                  - count
-                  - type
                   type: object
                 type: array
               hostname:
-                description: Immutable. A custom hostname for the instance. Must be
-                  a fully qualified DNS name and RFC-1035-valid. Valid format is a
-                  series of labels 1-63 characters long matching the regular expression
-                  [a-z]([-a-z0-9]*[a-z0-9]), concatenated with periods. The entire
-                  hostname must not exceed 253 characters. Changing this forces a
-                  new resource to be created.
+                description: Specifies the hostname of the instance. The specified
+                  hostname must be RFC1035 compliant. If hostname is not specified,
+                  the default hostname is [INSTANCE_NAME].c.[PROJECT_ID].internal
+                  when using the global DNS, and [INSTANCE_NAME].[ZONE].c.[PROJECT_ID].internal
+                  when using zonal DNS.
                 type: string
               instanceTemplateRef:
                 oneOf:
@@ -444,52 +591,99 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `selfLink` field of a `ComputeInstanceTemplate`
-                      resource.'
+                    description: The ComputeInstanceTemplate selflink in the form
+                      "projects/{{project}}/global/instanceTemplates/{{name}}" when
+                      not managed by Config Connector.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `ComputeInstanceTemplate` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `ComputeInstanceTemplate`
+                      resource.
                     type: string
                 type: object
+              location:
+                type: string
               machineType:
-                description: The machine type to create.
+                description: 'Full or partial URL of the machine type resource to
+                  use for this instance, in the format: zones/zone/machineTypes/machine-type.
+                  This is provided by the client when the instance is created. For
+                  example, the following is a valid partial url to a predefined machine
+                  type: zones/us-central1-f/machineTypes/n1-standard-1 To create a
+                  custom machine type, provide a URL to a machine type in the following
+                  format, where CPUS is 1 or an even number up to 32 (2, 4, 6, ...
+                  24, etc), and MEMORY is the total memory for this instance. Memory
+                  must be a multiple of 256 MB and must be supplied in MB (e.g. 5
+                  GB of memory is 5120 MB): zones/zone/machineTypes/custom-CPUS-MEMORY
+                  For example: zones/us-central1-f/machineTypes/custom-4-5120 For
+                  a full list of restrictions, read the Specifications for custom
+                  machine types.'
                 type: string
               metadata:
+                description: The metadata key/value pairs assigned to this instance.
+                  This includes metadata keys that were explicitly defined for the
+                  instance. Metadata *Metadata `json:"metadata,omitempty"` KRM has
+                  metadata as list of key/value items.
                 items:
                   properties:
                     key:
                       type: string
                     value:
                       type: string
-                  required:
-                  - key
-                  - value
                   type: object
                 type: array
               metadataStartupScript:
-                description: Immutable. Metadata startup scripts made available within
-                  the instance.
                 type: string
               minCpuPlatform:
-                description: The minimum CPU platform specified for the VM instance.
+                description: 'Specifies a minimum CPU platform for the VM instance.
+                  Applicable values are the friendly names of CPU platforms, such
+                  as minCpuPlatform: "Intel Haswell" or minCpuPlatform: "Intel Sandy
+                  Bridge".'
                 type: string
               networkInterface:
-                description: Immutable. The networks attached to the instance.
+                description: An array of network configurations for this instance.
+                  These specify how interfaces are configured to interact with other
+                  network services, such as connecting to the internet. Multiple interfaces
+                  are supported per instance.
                 items:
-                  not:
-                    required:
-                    - networkIp
-                    - networkIpRef
                   properties:
                     accessConfig:
-                      description: Access configurations, i.e. IPs via which this
-                        instance can be accessed via the Internet.
+                      description: An array of configurations for this interface.
+                        Currently, only one access config, ONE_TO_ONE_NAT, is supported.
+                        If there are no accessConfigs specified, then this instance
+                        will have no external internet access.
                       items:
                         properties:
+                          externalIpv6:
+                            description: Applies to ipv6AccessConfigs only. The first
+                              IPv6 address of the external IPv6 range associated with
+                              this instance, prefix length is stored in externalIpv6PrefixLength
+                              in ipv6AccessConfig. To use a static external IP address,
+                              it must be unused and in the same region as the instance's
+                              zone. If not specified, Google Cloud will automatically
+                              assign an external IPv6 address from the instance's
+                              subnetwork.
+                            type: string
+                          externalIpv6PrefixLength:
+                            description: Applies to ipv6AccessConfigs only. The prefix
+                              length of the external IPv6 range.
+                            type: string
+                          name:
+                            description: The name of this access configuration. In
+                              accessConfigs (IPv4), the default and recommended name
+                              is External NAT, but you can use any arbitrary string,
+                              such as My external IP or Network Access. In ipv6AccessConfigs,
+                              the recommend name is External IPv6.
+                            type: string
                           natIpRef:
+                            description: Applies to accessConfigs (IPv4) only. An
+                              external IP address associated with this instance. Specify
+                              an unused static external IP address available to the
+                              project or leave this field undefined to use an IP from
+                              a shared ephemeral IP address pool. If you specify a
+                              static external IP address, it must live in the same
+                              region as the zone of the instance.
                             oneOf:
                             - not:
                                 required:
@@ -506,46 +700,66 @@ spec:
                               - external
                             properties:
                               external:
-                                description: 'Allowed value: The `address` field of
-                                  a `ComputeAddress` resource.'
+                                description: The ComputeAddress selflink in the form
+                                  "projects/{{project}}/regions/{{region}}/addresses/{{name}}"
+                                  when not managed by Config Connector.
                                 type: string
                               name:
-                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                description: The `name` field of a `ComputeAddress`
+                                  resource.
                                 type: string
                               namespace:
-                                description: 'Namespace of the referent. More info:
-                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                description: The `namespace` field of a `ComputeAddress`
+                                  resource.
                                 type: string
                             type: object
                           networkTier:
-                            description: The networking tier used for configuring
-                              this instance. One of PREMIUM or STANDARD.
+                            description: 'This signifies the networking tier used
+                              for configuring this access configuration and can only
+                              take the following values: PREMIUM, STANDARD. If an
+                              AccessConfig is specified without a valid external IP
+                              address, an ephemeral IP will be created with this networkTier.
+                              If an AccessConfig with a valid external IP address
+                              is specified, it must match that of the networkTier
+                              associated with the Address resource owning that IP.
+                              Check the NetworkTier enum for the list of possible
+                              values.'
                             type: string
                           publicPtrDomainName:
                             description: The DNS domain name for the public PTR record.
+                              You can set this field only if the `setPublicPtr` field
+                              is enabled in accessConfig. If this field is unspecified
+                              in ipv6AccessConfig, a default PTR record will be created
+                              for first IP in associated external IPv6 range.
                             type: string
                         type: object
                       type: array
                     aliasIpRange:
                       description: An array of alias IP ranges for this network interface.
+                        You can only specify this field for network interfaces in
+                        VPC networks.
                       items:
                         properties:
-                          ipCidrRange:
-                            description: The IP CIDR range represented by this alias
-                              IP range.
+                          ipCIDRRange:
+                            description: The IP alias ranges to allocate for this
+                              interface. This IP CIDR range must belong to the specified
+                              subnetwork and cannot contain IP addresses reserved
+                              by system or used by other network interfaces. This
+                              range may be a single IP address (such as 10.2.3.4),
+                              a netmask (such as /24) or a CIDR-formatted string (such
+                              as 10.1.2.0/24).
                             type: string
                           subnetworkRangeName:
-                            description: The subnetwork secondary range name specifying
-                              the secondary range from which to allocate the IP CIDR
-                              range for this alias IP range.
+                            description: The name of a subnetwork secondary IP range
+                              from which to allocate an IP alias range. If not specified,
+                              the primary range of the subnetwork is used.
                             type: string
-                        required:
-                        - ipCidrRange
                         type: object
                       type: array
                     internalIpv6PrefixLength:
                       description: The prefix length of the primary internal IPv6
                         range.
+                      format: int32
                       type: integer
                     ipv6AccessConfig:
                       description: An array of IPv6 access configurations for this
@@ -555,88 +769,146 @@ spec:
                       items:
                         properties:
                           externalIpv6:
-                            description: Immutable. The first IPv6 address of the
-                              external IPv6 range associated with this instance, prefix
-                              length is stored in externalIpv6PrefixLength in ipv6AccessConfig.
-                              To use a static external IP address, it must be unused
-                              and in the same region as the instance's zone. If not
-                              specified, Google Cloud will automatically assign an
-                              external IPv6 address from the instance's subnetwork.
+                            description: Applies to ipv6AccessConfigs only. The first
+                              IPv6 address of the external IPv6 range associated with
+                              this instance, prefix length is stored in externalIpv6PrefixLength
+                              in ipv6AccessConfig. To use a static external IP address,
+                              it must be unused and in the same region as the instance's
+                              zone. If not specified, Google Cloud will automatically
+                              assign an external IPv6 address from the instance's
+                              subnetwork.
                             type: string
                           externalIpv6PrefixLength:
-                            description: Immutable. The prefix length of the external
-                              IPv6 range.
+                            description: Applies to ipv6AccessConfigs only. The prefix
+                              length of the external IPv6 range.
                             type: string
                           name:
-                            description: Immutable. The name of this access configuration.
-                              In ipv6AccessConfigs, the recommended name is External
-                              IPv6.
+                            description: The name of this access configuration. In
+                              accessConfigs (IPv4), the default and recommended name
+                              is External NAT, but you can use any arbitrary string,
+                              such as My external IP or Network Access. In ipv6AccessConfigs,
+                              the recommend name is External IPv6.
                             type: string
+                          natIpRef:
+                            description: Applies to accessConfigs (IPv4) only. An
+                              external IP address associated with this instance. Specify
+                              an unused static external IP address available to the
+                              project or leave this field undefined to use an IP from
+                              a shared ephemeral IP address pool. If you specify a
+                              static external IP address, it must live in the same
+                              region as the zone of the instance.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: The ComputeAddress selflink in the form
+                                  "projects/{{project}}/regions/{{region}}/addresses/{{name}}"
+                                  when not managed by Config Connector.
+                                type: string
+                              name:
+                                description: The `name` field of a `ComputeAddress`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `namespace` field of a `ComputeAddress`
+                                  resource.
+                                type: string
+                            type: object
                           networkTier:
-                            description: The service-level to be provided for IPv6
-                              traffic when the subnet has an external subnet. Only
-                              PREMIUM tier is valid for IPv6.
+                            description: 'This signifies the networking tier used
+                              for configuring this access configuration and can only
+                              take the following values: PREMIUM, STANDARD. If an
+                              AccessConfig is specified without a valid external IP
+                              address, an ephemeral IP will be created with this networkTier.
+                              If an AccessConfig with a valid external IP address
+                              is specified, it must match that of the networkTier
+                              associated with the Address resource owning that IP.
+                              Check the NetworkTier enum for the list of possible
+                              values.'
                             type: string
                           publicPtrDomainName:
-                            description: The domain name to be used when creating
-                              DNSv6 records for the external IPv6 ranges.
+                            description: The DNS domain name for the public PTR record.
+                              You can set this field only if the `setPublicPtr` field
+                              is enabled in accessConfig. If this field is unspecified
+                              in ipv6AccessConfig, a default PTR record will be created
+                              for first IP in associated external IPv6 range.
                             type: string
-                        required:
-                        - networkTier
                         type: object
                       type: array
                     ipv6AccessType:
-                      description: One of EXTERNAL, INTERNAL to indicate whether the
-                        IP can be accessed from the Internet. This field is always
-                        inherited from its subnetwork.
+                      description: '[Output Only] One of EXTERNAL, INTERNAL to indicate
+                        whether the IP can be accessed from the Internet. This field
+                        is always inherited from its subnetwork. Valid only if stackType
+                        is IPV4_IPV6. Check the Ipv6AccessType enum for the list of
+                        possible values.'
                       type: string
                     ipv6Address:
                       description: An IPv6 internal network address for this network
-                        interface. If not specified, Google Cloud will automatically
-                        assign an internal IPv6 address from the instance's subnetwork.
+                        interface. To use a static internal IP address, it must be
+                        unused and in the same region as the instance's zone. If not
+                        specified, Google Cloud will automatically assign an internal
+                        IPv6 address from the instance's subnetwork.
                       type: string
                     name:
-                      description: The name of the interface.
-                      type: string
-                    networkIp:
-                      description: DEPRECATED. Although this field is still available,
-                        there is limited support. We recommend that you use `spec.networkInterface.networkIpRef`
-                        instead.
+                      description: '[Output Only] The name of the network interface,
+                        which is generated by the server. For a VM, the network interface
+                        uses the nicN naming format. Where N is a value between 0
+                        and 7. The default interface value is nic0.'
                       type: string
                     networkIpRef:
+                      description: An IPv4 internal IP address to assign to the instance
+                        for this network interface. If not specified by the user,
+                        an unused internal IP is assigned by the system.
                       oneOf:
                       - not:
                           required:
                           - external
                         required:
                         - name
-                        - kind
                       - not:
                           anyOf:
                           - required:
                             - name
                           - required:
                             - namespace
-                          - required:
-                            - kind
                         required:
                         - external
                       properties:
                         external:
-                          description: 'Allowed value: The `address` field of a `ComputeAddress`
-                            resource.'
-                          type: string
-                        kind:
-                          description: 'Kind of the referent. Allowed values: ComputeAddress'
+                          description: The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}"
+                            when not managed by Config Connector.
                           type: string
                         name:
-                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          description: The `name` field of a `ComputeAddress` resource.
                           type: string
                         namespace:
-                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          description: The `namespace` field of a `ComputeAddress`
+                            resource.
                           type: string
                       type: object
                     networkRef:
+                      description: 'URL of the VPC network resource for this instance.
+                        When creating an instance, if neither the network nor the
+                        subnetwork is specified, the default network global/networks/default
+                        is used. If the selected project doesn''t have the default
+                        network, you must specify a network or subnet. If the network
+                        is not specified but the subnetwork is specified, the network
+                        is inferred. If you specify this property, you can specify
+                        the network as a full or partial URL. For example, the following
+                        are all valid URLs: - https://www.googleapis.com/compute/v1/projects/project/global/networks/
+                        network - projects/project/global/networks/network - global/networks/default'
                       oneOf:
                       - not:
                           required:
@@ -653,34 +925,48 @@ spec:
                         - external
                       properties:
                         external:
-                          description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
-                            resource.'
+                          description: The value of an externally managed ComputeNetwork
+                            resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
+                            or "projects/{{projectId}}/global/networks/{{networkId}}"
                           type: string
                         name:
-                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          description: The name of a ComputeNetwork resource.
                           type: string
                         namespace:
-                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          description: The namespace of a ComputeNetwork resource.
                           type: string
                       type: object
                     nicType:
-                      description: Immutable. The type of vNIC to be used on this
-                        interface. Possible values:GVNIC, VIRTIO_NET.
+                      description: The type of vNIC to be used on this interface.
+                        This may be gVNIC or VirtioNet. Check the NicType enum for
+                        the list of possible values.
                       type: string
                     queueCount:
-                      description: Immutable. The networking queue count that's specified
-                        by users for the network interface. Both Rx and Tx queues
-                        will be set to this number. It will be empty if not specified.
+                      description: The networking queue count that's specified by
+                        users for the network interface. Both Rx and Tx queues will
+                        be set to this number. It'll be empty if not specified by
+                        the users.
+                      format: int32
                       type: integer
                     stackType:
-                      description: The stack type for this network interface to identify
-                        whether the IPv6 feature is enabled or not. If not specified,
-                        IPV4_ONLY will be used.
+                      description: The stack type for this network interface. To assign
+                        only IPv4 addresses, use IPV4_ONLY. To assign both IPv4 and
+                        IPv6 addresses, use IPV4_IPV6. If not specified, IPV4_ONLY
+                        is used. This field can be both set at instance creation and
+                        update network interface operations. Check the StackType enum
+                        for the list of possible values.
                       type: string
                     subnetworkProject:
-                      description: The project in which the subnetwork belongs.
                       type: string
                     subnetworkRef:
+                      description: 'The URL of the Subnetwork resource for this instance.
+                        If the network resource is in legacy mode, do not specify
+                        this field. If the network is in auto subnet mode, specifying
+                        the subnetwork is optional. If the network is in custom subnet
+                        mode, specifying the subnetwork is required. If you specify
+                        this field, you can specify the subnetwork as a full or partial
+                        URL. For example, the following are all valid URLs: - https://www.googleapis.com/compute/v1/projects/project/regions/region
+                        /subnetworks/subnetwork - regions/region/subnetworks/subnetwork'
                       oneOf:
                       - not:
                           required:
@@ -697,81 +983,89 @@ spec:
                         - external
                       properties:
                         external:
-                          description: 'Allowed value: The `selfLink` field of a `ComputeSubnetwork`
-                            resource.'
+                          description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
+                            when not managed by Config Connector.
                           type: string
                         name:
-                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          description: The `name` field of a `ComputeSubnetwork` resource.
                           type: string
                         namespace:
-                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          description: The `namespace` field of a `ComputeSubnetwork`
+                            resource.
                           type: string
                       type: object
                   type: object
                 type: array
               networkPerformanceConfig:
-                description: Immutable. Configures network performance settings for
-                  the instance. If not specified, the instance will be created with
-                  its default network performance configuration.
                 properties:
                   totalEgressBandwidthTier:
-                    description: Immutable. The egress bandwidth tier to enable. Possible
-                      values:TIER_1, DEFAULT.
+                    description: Check the TotalEgressBandwidthTier enum for the list
+                      of possible values.
                     type: string
-                required:
-                - totalEgressBandwidthTier
                 type: object
               params:
-                description: Immutable. Stores additional params passed with the request,
-                  but not persisted as part of resource payload.
+                description: Input only. [Input Only] Additional params passed with
+                  the request, but not persisted as part of resource payload.
                 properties:
                   resourceManagerTags:
-                    description: Immutable. A map of resource manager tags. Resource
-                      manager tag keys and values have the same definition as resource
-                      manager tags. Keys must be in the format tagKeys/{tag_key_id},
-                      and values are in the format tagValues/456. The field is ignored
-                      (both PUT & PATCH) when empty.
+                    additionalProperties:
+                      type: string
                     type: object
-                    x-kubernetes-preserve-unknown-fields: true
+                type: object
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
                 type: object
               reservationAffinity:
-                description: Immutable. Specifies the reservations that this instance
-                  can consume from.
+                description: Specifies the reservations that this instance can consume
+                  from.
                 properties:
                   specificReservation:
-                    description: Immutable. Specifies the label selector for the reservation
-                      to use.
                     properties:
                       key:
-                        description: Immutable. Corresponds to the label key of a
-                          reservation resource. To target a SPECIFIC_RESERVATION by
-                          name, specify compute.googleapis.com/reservation-name as
-                          the key and specify the name of your reservation as the
-                          only value.
                         type: string
                       values:
-                        description: Immutable. Corresponds to the label values of
-                          a reservation resource.
                         items:
                           type: string
                         type: array
-                    required:
-                    - key
-                    - values
                     type: object
                   type:
-                    description: Immutable. The type of reservation from which this
-                      instance can consume resources.
                     type: string
-                required:
-                - type
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The ComputeInstance name. If not given, the metadata.name
+                  will be used.
                 type: string
               resourcePolicies:
+                description: Resource policies applied to this instance.
                 items:
                   oneOf:
                   - not:
@@ -789,116 +1083,174 @@ spec:
                     - external
                   properties:
                     external:
-                      description: 'Allowed value: The `selfLink` field of a `ComputeResourcePolicy`
-                        resource.'
+                      description: The ComputeResourcePolicy selflink in the form
+                        "projects/{{project}}/regions/{{region}}/resourcePolicies/{{name}}"
+                        when not managed by Config Connector.
                       type: string
                     name:
-                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      description: The `name` field of a `ComputeResourcePolicy` resource.
                       type: string
                     namespace:
-                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      description: The `namespace` field of a `ComputeResourcePolicy`
+                        resource.
                       type: string
                   type: object
                 type: array
               scheduling:
-                description: The scheduling strategy being used by the instance.
+                description: Sets the scheduling options for this instance.
                 properties:
                   automaticRestart:
-                    description: Specifies if the instance should be restarted if
-                      it was terminated by Compute Engine (not a user).
+                    description: Specifies whether the instance should be automatically
+                      restarted if it is terminated by Compute Engine (not terminated
+                      by a user). You can only set the automatic restart option for
+                      standard instances. Preemptible instances cannot be automatically
+                      restarted. By default, this is set to true so an instance is
+                      automatically restarted if it is terminated by Compute Engine.
                     type: boolean
+                  availabilityDomain:
+                    description: Specifies the availability domain to place the instance
+                      in. The value must be a number between 1 and the number of availability
+                      domains specified in the spread placement policy attached to
+                      the instance.
+                    format: int32
+                    type: integer
+                  hostErrorTimeoutSeconds:
+                    description: Specify the time in seconds for host error detection,
+                      the value must be within the range of [90, 330] with the increment
+                      of 30, if unset, the default behavior of host error recovery
+                      will be used.
+                    format: int32
+                    type: integer
                   instanceTerminationAction:
-                    description: Specifies the action GCE should take when SPOT VM
-                      is preempted.
+                    description: Specifies the termination action for the instance.
+                      Check the InstanceTerminationAction enum for the list of possible
+                      values.
                     type: string
                   localSsdRecoveryTimeout:
-                    description: |-
-                      Immutable. Specifies the maximum amount of time a Local Ssd Vm should wait while
-                        recovery of the Local Ssd state is attempted. Its value should be in
-                        between 0 and 168 hours with hour granularity and the default value being 1
-                        hour.
+                    description: Specifies the maximum amount of time a Local Ssd
+                      Vm should wait while recovery of the Local Ssd state is attempted.
+                      Its value should be in between 0 and 168 hours with hour granularity
+                      and the default value being 1 hour.
                     properties:
                       nanos:
-                        description: |-
-                          Immutable. Span of time that's a fraction of a second at nanosecond
-                          resolution. Durations less than one second are represented
-                          with a 0 seconds field and a positive nanos field. Must
-                          be from 0 to 999,999,999 inclusive.
+                        description: Span of time that's a fraction of a second at
+                          nanosecond resolution. Durations less than one second are
+                          represented with a 0 `seconds` field and a positive `nanos`
+                          field. Must be from 0 to 999,999,999 inclusive.
+                        format: int32
                         type: integer
                       seconds:
-                        description: |-
-                          Immutable. Span of time at a resolution of a second.
-                          Must be from 0 to 315,576,000,000 inclusive.
+                        description: 'Span of time at a resolution of a second. Must
+                          be from 0 to 315,576,000,000 inclusive. Note: these bounds
+                          are computed from: 60 sec/min * 60 min/hr * 24 hr/day *
+                          365.25 days/year * 10000 years'
+                        format: int64
                         type: integer
-                    required:
-                    - seconds
                     type: object
-                  maintenanceInterval:
-                    description: 'Specifies the frequency of planned maintenance events.
-                      The accepted values are: PERIODIC.'
+                  locationHint:
+                    description: An opaque location hint used to place the instance
+                      close to other resources. This field is for use by internal
+                      tools that use the public API.
                     type: string
                   maxRunDuration:
-                    description: Immutable. The timeout for new network connections
-                      to hosts.
+                    description: Specifies the max run duration for the given instance.
+                      If specified, the instance termination action will be performed
+                      at the end of the run duration.
                     properties:
                       nanos:
-                        description: |-
-                          Immutable. Span of time that's a fraction of a second at nanosecond
-                          resolution. Durations less than one second are represented
-                          with a 0 seconds field and a positive nanos field. Must
-                          be from 0 to 999,999,999 inclusive.
+                        description: Span of time that's a fraction of a second at
+                          nanosecond resolution. Durations less than one second are
+                          represented with a 0 `seconds` field and a positive `nanos`
+                          field. Must be from 0 to 999,999,999 inclusive.
+                        format: int32
                         type: integer
                       seconds:
-                        description: |-
-                          Immutable. Span of time at a resolution of a second.
-                          Must be from 0 to 315,576,000,000 inclusive.
+                        description: 'Span of time at a resolution of a second. Must
+                          be from 0 to 315,576,000,000 inclusive. Note: these bounds
+                          are computed from: 60 sec/min * 60 min/hr * 24 hr/day *
+                          365.25 days/year * 10000 years'
+                        format: int64
                         type: integer
-                    required:
-                    - seconds
                     type: object
                   minNodeCpus:
+                    description: The minimum number of virtual CPUs this instance
+                      will consume when running on a sole-tenant node.
+                    format: int32
                     type: integer
                   nodeAffinities:
+                    description: A set of node affinity and anti-affinity configurations.
+                      Refer to Configuring node affinity for more information. Overrides
+                      reservationAffinity.
                     items:
                       properties:
-                        value:
-                          type: object
-                          x-kubernetes-preserve-unknown-fields: true
+                        key:
+                          description: Corresponds to the label key of Node resource.
+                          type: string
+                        operator:
+                          description: Defines the operation of node selection. Valid
+                            operators are IN for affinity and NOT_IN for anti-affinity.
+                            Check the Operator enum for the list of possible values.
+                          type: string
+                        values:
+                          description: Corresponds to the label values of Node resource.
+                          items:
+                            type: string
+                          type: array
                       type: object
                     type: array
                   onHostMaintenance:
-                    description: Describes maintenance behavior for the instance.
-                      One of MIGRATE or TERMINATE,.
+                    description: Defines the maintenance behavior for this instance.
+                      For standard instances, the default behavior is MIGRATE. For
+                      preemptible instances, the default and only possible behavior
+                      is TERMINATE. For more information, see Set VM host maintenance
+                      policy. Check the OnHostMaintenance enum for the list of possible
+                      values.
                     type: string
+                  onInstanceStopAction:
+                    properties:
+                      discardLocalSsd:
+                        description: If true, the contents of any attached Local SSD
+                          disks will be discarded else, the Local SSD data will be
+                          preserved when the instance is stopped at the end of the
+                          run duration/termination time.
+                        type: boolean
+                    type: object
                   preemptible:
-                    description: Immutable. Whether the instance is preemptible.
+                    description: Defines whether the instance is preemptible. This
+                      can only be set during instance creation or while the instance
+                      is stopped and therefore, in a `TERMINATED` state. See Instance
+                      Life Cycle for more information on the possible instance states.
                     type: boolean
                   provisioningModel:
-                    description: Immutable. Whether the instance is spot. If this
-                      is set as SPOT.
+                    description: Specifies the provisioning model of the instance.
+                      Check the ProvisioningModel enum for the list of possible values.
+                    type: string
+                  terminationTime:
+                    description: Specifies the timestamp, when the instance will be
+                      terminated, in RFC3339 text format. If specified, the instance
+                      termination action will be performed at the termination time.
                     type: string
                 type: object
               scratchDisk:
-                description: Immutable. The scratch disks attached to the instance.
                 items:
                   properties:
                     interface:
-                      description: The disk interface used for attaching this disk.
-                        One of SCSI or NVME.
                       type: string
                     size:
-                      description: Immutable. The size of the disk in gigabytes. One
-                        of 375 or 3000.
+                      format: int64
                       type: integer
-                  required:
-                  - interface
                   type: object
                 type: array
               serviceAccount:
-                description: The service account to attach to the instance.
+                description: A list of service accounts, with their specified scopes,
+                  authorized for this instance. Only one service account per VM instance
+                  is supported. Service accounts generate access tokens that can be
+                  accessed through the metadata server and used to authenticate applications
+                  on the instance. See Service Accounts for more information. ServiceAccounts
+                  []ServiceAccount `json:"serviceAccounts,omitempty"` KRM has serviceAccount
+                  (singular)
                 properties:
                   scopes:
-                    description: A list of service scopes.
                     items:
                       type: string
                     type: array
@@ -919,8 +1271,7 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `email` field of an `IAMServiceAccount`
-                          resource.'
+                        description: The `email` field of an `IAMServiceAccount` resource.
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -929,38 +1280,42 @@ spec:
                         description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
-                required:
-                - scopes
                 type: object
               shieldedInstanceConfig:
-                description: The shielded vm config being used by the instance.
                 properties:
                   enableIntegrityMonitoring:
-                    description: Whether integrity monitoring is enabled for the instance.
                     type: boolean
                   enableSecureBoot:
-                    description: Whether secure boot is enabled for the instance.
                     type: boolean
                   enableVtpm:
-                    description: Whether the instance uses vTPM.
                     type: boolean
                 type: object
               tags:
-                description: The list of tags attached to the instance.
+                description: Tags to apply to this instance. Tags are used to identify
+                  valid sources or targets for network firewalls and are specified
+                  by the client during instance creation. The tags can be later modified
+                  by the setTags method. Each tag within the list must comply with
+                  RFC1035. Multiple tags can be specified via the 'tags.items' field.
+                  Tags *Tags `json:"tags,omitempty"` KRM has tags as list of strings
                 items:
                   type: string
                 type: array
               zone:
-                description: Immutable. The zone of the instance. If self_link is
-                  provided, this value is ignored. If neither self_link nor zone are
-                  provided, the provider zone is used.
+                description: '[Output Only] URL of the zone where the instance resides.
+                  You must specify this field as part of the HTTP request URL. It
+                  is not settable as a field in the request body.'
                 type: string
+            required:
+            - location
+            - projectRef
             type: object
           status:
+            description: ComputeInstanceStatus defines the config connector machine
+              state of ComputeInstance
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -985,23 +1340,20 @@ spec:
                   type: object
                 type: array
               cpuPlatform:
-                description: The CPU platform used by this instance.
                 type: string
               currentStatus:
-                description: "\n\t\t\t\t\tCurrent status of the instance.\n\t\t\t\t\tThis
-                  could be one of the following values: PROVISIONING, STAGING, RUNNING,
-                  STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED.\n\t\t\t\t\tFor
-                  more information about the status of the instance, see [Instance
-                  life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle)."
+                description: '[Output Only] An optional, human-readable explanation
+                  of the status.'
+                type: string
+              externalRef:
+                description: A unique specifier for the ComputeInstance resource in
+                  GCP.
                 type: string
               instanceId:
-                description: The server-assigned unique identifier of this instance.
                 type: string
               labelFingerprint:
-                description: The unique fingerprint of the labels.
                 type: string
               metadataFingerprint:
-                description: The unique fingerprint of the metadata.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -1009,12 +1361,15 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
               selfLink:
-                description: The URI of the created resource.
                 type: string
               tagsFingerprint:
-                description: The unique fingerprint of the tags.
                 type: string
             type: object
         required:
@@ -1024,9 +1379,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

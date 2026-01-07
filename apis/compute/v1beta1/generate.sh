@@ -27,7 +27,8 @@ go run . generate-types \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeSubnetwork:Subnetwork \
-  --resource ComputeTargetTcpProxy:TargetTcpProxy
+  --resource ComputeTargetTcpProxy:TargetTcpProxy \
+  --resource ComputeInstance:Instance
 
 go run . generate-mapper --service google.cloud.compute.v1 --api-version compute.cnrm.cloud.google.com/v1beta1
 
