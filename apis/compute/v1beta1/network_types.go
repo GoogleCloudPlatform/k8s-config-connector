@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -25,10 +24,6 @@ var ComputeNetworkGVK = GroupVersion.WithKind("ComputeNetwork")
 // ComputeNetworkSpec defines the desired state of ComputeNetwork
 // +kcc:spec:proto=google.cloud.compute.v1.Network
 type ComputeNetworkSpec struct {
-	// The Project that this resource belongs to.
-	// +optional
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
-
 	// Immutable. When set to 'true', the network is created in "auto subnet mode" and
 	// it will create a subnet for each region automatically across the
 	// '10.128.0.0/9' address range.
@@ -106,16 +101,8 @@ type ComputeNetworkStatus struct {
 	// A unique specifier for the ComputeNetwork resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ComputeNetworkObservedState `json:"observedState,omitempty"`
-
 	// +kcc:proto:field=google.cloud.compute.v1.Network.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
-}
-
-// ComputeNetworkObservedState is the state of the ComputeNetwork resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.compute.v1.Network
-type ComputeNetworkObservedState struct {
 }
 
 // +genclient

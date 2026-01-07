@@ -106,38 +106,6 @@ spec:
                   are evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible
                   values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"].'
                 type: string
-              projectRef:
-                description: The Project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`
@@ -197,10 +165,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                type: object
               selfLink:
                 type: string
             type: object
