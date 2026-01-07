@@ -215,6 +215,54 @@ type Instance_MachineConfig struct {
 type Instance_Node struct {
 }
 
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig
+type Instance_ObservabilityInstanceConfig struct {
+	// Observability feature status for an instance.
+	//  This flag is turned "off" by default.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Preserve comments in query string for an instance.
+	//  This flag is turned "off" by default.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.preserve_comments
+	PreserveComments *bool `json:"preserveComments,omitempty"`
+
+	// Track wait events during query execution for an instance.
+	//  This flag is turned "on" by default but tracking is enabled only after
+	//  observability enabled flag is also turned on.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_wait_events
+	TrackWaitEvents *bool `json:"trackWaitEvents,omitempty"`
+
+	// Query string length. The default value is 10k.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.max_query_string_length
+	MaxQueryStringLength *int32 `json:"maxQueryStringLength,omitempty"`
+
+	// Record application tags for an instance.
+	//  This flag is turned "off" by default.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.record_application_tags
+	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
+
+	// Number of query execution plans captured by Insights per minute
+	//  for all queries combined. The default value is 200.
+	//  Any integer between 0 to 200 is considered valid.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.query_plans_per_minute
+	QueryPlansPerMinute *int32 `json:"queryPlansPerMinute,omitempty"`
+
+	// Track actively running queries on the instance.
+	//  If not set, this flag is "off" by default.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_active_queries
+	TrackActiveQueries *bool `json:"trackActiveQueries,omitempty"`
+
+	// Track client address for an instance.
+	//  If not set, default value is "off".
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_client_address
+	TrackClientAddress *bool `json:"trackClientAddress,omitempty"`
+
+	// Whether assistive experiences are enabled for this AlloyDB instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.assistive_experiences_enabled
+	AssistiveExperiencesEnabled *bool `json:"assistiveExperiencesEnabled,omitempty"`
+}
+
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig
 type Instance_PSCAutoConnectionConfig struct {
 	// The consumer project to which the PSC service automation endpoint will
@@ -443,6 +491,16 @@ type Instance_NodeObservedState struct {
 	//  postgres-service health can have values: HEALTHY and UNHEALTHY.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.Node.state
 	State *string `json:"state,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig
+type Instance_ObservabilityInstanceConfigObservedState struct {
+	// Output only. Track wait event types during query execution for an
+	//  instance. This flag is turned "on" by default but tracking is enabled
+	//  only after observability enabled flag is also turned on. This is
+	//  read-only flag and only modifiable by internal API.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_wait_event_types
+	TrackWaitEventTypes *bool `json:"trackWaitEventTypes,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig
