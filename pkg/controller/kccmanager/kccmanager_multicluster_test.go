@@ -17,9 +17,9 @@ package kccmanager
 import (
 	"context"
 	"fmt"
-	"os"
 	"os/exec"
 	"path/filepath"
+	stdruntime "runtime"
 	"strings"
 	"testing"
 	"time"
@@ -334,34 +334,6 @@ func (m *MockLock) Describe() string {
 // TestSplitBrainProtection verifies that the manager crashes/halts if it believes it is the leader
 // but the global MultiClusterLease status indicates a different leader.
 func TestSplitBrainProtection(t *testing.T) {
-	// specific environment variable to detect if we are in the subprocess
-	if os.Getenv("TEST_SPLIT_BRAIN_CRASH") == "1" {
-		t.Logf("Running split brain protection test in subprocess")
-		testSplitBrainProtectionBody(t)
-		return
-	}
-
-	// Re-run the test in a subprocess
-	cmd := exec.Command(os.Args[0], "-test.run=TestSplitBrainProtection", "-test.v")
-	cmd.Env = append(os.Environ(), "TEST_SPLIT_BRAIN_CRASH=1")
-	output, err := cmd.CombinedOutput()
-
-	// We expect the process to fail
-	if err == nil {
-		t.Logf("Output:\n%s", output)
-		t.Fatal("Expected process to crash/fail, but it succeeded")
-	}
-
-	// Check output for the expected log message
-	if !strings.Contains(string(output), "inconsistent state: started leading but MultiClusterLease status.globalHolderIdentity is") {
-		t.Logf("Output:\n%s", output)
-		t.Errorf("Process failed as expected, but did not contain expected log message")
-	}
-
-	t.Log("Successfully detected split-brain protection panic/exit")
-}
-
-func testSplitBrainProtectionBody(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -382,7 +354,11 @@ func testSplitBrainProtectionBody(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error starting envtest: %v", err)
 	}
-	// No defer Stop() because os.Exit will kill us anyway.
+	defer func() {
+		if err := testEnv.Stop(); err != nil {
+			t.Logf("error stopping envtest: %v", err)
+		}
+	}()
 
 	scheme := runtime.NewScheme()
 	if err := mclv1alpha1.AddToScheme(scheme); err != nil {
@@ -473,10 +449,37 @@ func testSplitBrainProtectionBody(t *testing.T) {
 
 	lem.leConfig.Lock = &MockLock{identity: localIdentity}
 
-	// 5. Start the manager
-	// This should trigger OnStartedLeading -> fetch MCL -> see "imposter" -> klog.Fatal
-	t.Log("Starting manager... expecting crash due to split-brain protection")
-	if err := lem.Start(ctx); err != nil {
-		t.Logf("Manager returned error: %v", err)
+	// 5. Intercept Fatal exit
+	fatalC := make(chan string, 1)
+	lem.onFatal = func(format string, args ...interface{}) {
+		msg := fmt.Sprintf(format, args...)
+		fatalC <- msg
+		// Stop this goroutine (the leader election loop)
+		// We use Goexit to terminate the goroutine without crashing the whole process
+		stdruntime.Goexit()
+	}
+
+	// 6. Start the manager in a background goroutine
+	// This should trigger OnStartedLeading -> fetch MCL -> see "imposter" -> lem.fatal
+	go func() {
+		// Start blocks until context is cancelled or leader election stops
+		if err := lem.Start(ctx); err != nil {
+			// In the split-brain case, we expect onFatal to be called, which calls Goexit.
+			// So this line might not be reached if onFatal is called on this same goroutine.
+			// If OnStartedLeading is called on a different goroutine (spawned by RunOrDie),
+			// then RunOrDie might return or block.
+			t.Logf("Manager.Start returned: %v", err)
+		}
+	}()
+
+	// 7. Verify we received the fatal error
+	select {
+	case msg := <-fatalC:
+		t.Logf("Caught expected fatal error: %s", msg)
+		if !strings.Contains(msg, "inconsistent state: started leading but MultiClusterLease status.globalHolderIdentity is") {
+			t.Errorf("Unexpected fatal message: %s", msg)
+		}
+	case <-time.After(5 * time.Second):
+		t.Fatal("Timed out waiting for split-brain protection to trigger")
 	}
 }

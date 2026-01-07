@@ -187,6 +187,18 @@ type leaderElectionManager struct {
 	manager.Manager
 	leConfig  *leaderelection.LeaderElectionConfig
 	mclConfig *operatorv1beta1.MultiClusterLeaseSpec
+
+	// onFatal is a callback that is called when the manager encounters a fatal error.
+	// If nil, klog.Fatalf is called.
+	onFatal func(format string, args ...interface{})
+}
+
+func (m *leaderElectionManager) fatal(format string, args ...interface{}) {
+	if m.onFatal != nil {
+		m.onFatal(format, args...)
+		return
+	}
+	klog.Fatalf(format, args...)
 }
 
 func (m *leaderElectionManager) Start(ctx context.Context) error {
@@ -197,7 +209,7 @@ func (m *leaderElectionManager) Start(ctx context.Context) error {
 		lease := &mclv1alpha1.MultiClusterLease{}
 		leaseName := types.NamespacedName{Namespace: m.mclConfig.Namespace, Name: m.mclConfig.LeaseName}
 		if err := m.Manager.GetAPIReader().Get(ctx, leaseName, lease); err != nil {
-			klog.Fatalf("error fetching MultiClusterLease %s: %v", leaseName, err)
+			m.fatal("error fetching MultiClusterLease %s: %v", leaseName, err)
 		}
 
 		if lease.Status.GlobalHolderIdentity == nil || *lease.Status.GlobalHolderIdentity != m.leConfig.Lock.Identity() {
@@ -205,11 +217,11 @@ func (m *leaderElectionManager) Start(ctx context.Context) error {
 			if lease.Status.GlobalHolderIdentity != nil {
 				globalHolderIdentity = *lease.Status.GlobalHolderIdentity
 			}
-			klog.Fatalf("inconsistent state: started leading but MultiClusterLease status.globalHolderIdentity is %q (expected %q)", globalHolderIdentity, m.leConfig.Lock.Identity())
+			m.fatal("inconsistent state: started leading but MultiClusterLease status.globalHolderIdentity is %q (expected %q)", globalHolderIdentity, m.leConfig.Lock.Identity())
 		}
 
 		if err := m.Manager.Start(ctx); err != nil {
-			klog.Fatalf("error running manager: %v", err)
+			m.fatal("error running manager: %v", err)
 		}
 	}
 	leaderelection.RunOrDie(ctx, *m.leConfig)
