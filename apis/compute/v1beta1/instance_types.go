@@ -18,21 +18,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // +kcc:proto=google.cloud.compute.v1.AttachedDisk
 type ComputeInstanceAttachedDisk struct {
-	// [Output Only] The architecture of the attached disk. Valid values are ARM64 or X86_64.
-	//  Check the Architecture enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.architecture
-	Architecture *string `json:"architecture,omitempty"`
-
-	// Specifies whether the disk will be auto-deleted when the instance is deleted (but not when the disk is detached from the instance).
-	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.auto_delete
-	AutoDelete *bool `json:"autoDelete,omitempty"`
-
 	// Specifies a unique device name of your choice that is reflected into the /dev/disk/by-id/google-* tree of a Linux operating system running within the instance. This name can be used to reference the device for mounting, resizing, and so on, from within the instance. If not specified, the server chooses a default device name to apply to this disk, in the form persistent-disk-x, where x is a number assigned by Google Compute Engine. This field is only applicable for persistent disks.
 	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.device_name
 	DeviceName *string `json:"deviceName,omitempty"`
@@ -59,10 +49,6 @@ type ComputeInstanceAttachedDisk struct {
 
 // +kcc:proto=google.cloud.compute.v1.AttachedDisk
 type ComputeInstanceBootDisk struct {
-	// Specifies whether the disk will be auto-deleted when the instance is deleted (but not when the disk is detached from the instance).
-	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.auto_delete
-	AutoDelete *bool `json:"autoDelete,omitempty"`
-
 	// Specifies a unique device name of your choice that is reflected into the /dev/disk/by-id/google-* tree of a Linux operating system running within the instance. This name can be used to reference the device for mounting, resizing, and so on, from within the instance. If not specified, the server chooses a default device name to apply to this disk, in the form persistent-disk-x, where x is a number assigned by Google Compute Engine. This field is only applicable for persistent disks.
 	// +kcc:proto:field=google.cloud.compute.v1.AttachedDisk.device_name
 	DeviceName *string `json:"deviceName,omitempty"`
@@ -93,11 +79,38 @@ type ComputeInstanceBootDisk struct {
 
 // +kcc:proto=google.cloud.compute.v1.CustomerEncryptionKey
 type ComputeInstanceDiskEncryptionKey struct {
-	// Specifies a 256-bit customer-supplied encryption key, encoded in RFC 4648 base64 to either encrypt or decrypt this resource. You can provide either the rawKey or the rsaEncryptedKey. For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
-	// +kcc:proto:field=google.cloud.compute.v1.CustomerEncryptionKey.raw_key
-	RawKey *corev1.SecretKeySelector `json:"valueFrom,omitempty"`
-
+	// Value of the field. Cannot be used if 'valueFrom' is specified.
 	Value *string `json:"value,omitempty"`
+
+	// Source for the field's value. Cannot be used if 'value' is specified.
+	ValueFrom *ComputeInstanceDiskEncryptionKeyValueFrom `json:"valueFrom,omitempty"`
+}
+
+type ComputeInstanceDiskEncryptionKeyValueFrom struct {
+	// Reference to a value with the given key in the given Secret in the resource's namespace.
+	SecretKeyRef *SecretKeySelector `json:"secretKeyRef,omitempty"`
+}
+
+type SecretKeySelector struct {
+	// Key that identifies the value to be extracted.
+	Key string `json:"key"`
+	// Name of the Secret to extract a value from.
+	Name string `json:"name"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.AdvancedMachineFeatures
+type AdvancedMachineFeatures struct {
+	// Whether to enable nested virtualization or not (default is false).
+	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.enable_nested_virtualization
+	EnableNestedVirtualization *bool `json:"enableNestedVirtualization,omitempty"`
+
+	// The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed.
+	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.threads_per_core
+	ThreadsPerCore *int32 `json:"threadsPerCore,omitempty"`
+
+	// The number of physical cores to expose to an instance. Multiply by the number of threads per core to compute the total number of virtual CPUs to expose to the instance. If unset, the number of cores is inferred from the instance's nominal CPU count and the underlying platform's SMT width.
+	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.visible_core_count
+	VisibleCoreCount *int32 `json:"visibleCoreCount,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.AttachedDiskInitializeParams

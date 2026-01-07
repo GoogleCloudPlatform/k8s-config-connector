@@ -51,10 +51,10 @@ func AdvancedMachineFeatures_FromProto(mapCtx *direct.MapContext, in *pb.Advance
 	}
 	out := &krm.AdvancedMachineFeatures{}
 	out.EnableNestedVirtualization = in.EnableNestedVirtualization
-	out.EnableUefiNetworking = in.EnableUefiNetworking
-	out.PerformanceMonitoringUnit = in.PerformanceMonitoringUnit
+	// MISSING: EnableUefiNetworking
+	// MISSING: PerformanceMonitoringUnit
 	out.ThreadsPerCore = in.ThreadsPerCore
-	out.TurboMode = in.TurboMode
+	// MISSING: TurboMode
 	out.VisibleCoreCount = in.VisibleCoreCount
 	return out
 }
@@ -64,10 +64,10 @@ func AdvancedMachineFeatures_ToProto(mapCtx *direct.MapContext, in *krm.Advanced
 	}
 	out := &pb.AdvancedMachineFeatures{}
 	out.EnableNestedVirtualization = in.EnableNestedVirtualization
-	out.EnableUefiNetworking = in.EnableUefiNetworking
-	out.PerformanceMonitoringUnit = in.PerformanceMonitoringUnit
+	// MISSING: EnableUefiNetworking
+	// MISSING: PerformanceMonitoringUnit
 	out.ThreadsPerCore = in.ThreadsPerCore
-	out.TurboMode = in.TurboMode
+	// MISSING: TurboMode
 	out.VisibleCoreCount = in.VisibleCoreCount
 	return out
 }
@@ -128,8 +128,8 @@ func ComputeInstanceAttachedDisk_FromProto(mapCtx *direct.MapContext, in *pb.Att
 		return nil
 	}
 	out := &krm.ComputeInstanceAttachedDisk{}
-	out.Architecture = in.Architecture
-	out.AutoDelete = in.AutoDelete
+	// MISSING: Architecture
+	// MISSING: AutoDelete
 	// MISSING: Boot
 	out.DeviceName = in.DeviceName
 	out.DiskEncryptionKey = ComputeInstanceDiskEncryptionKey_FromProto(mapCtx, in.GetDiskEncryptionKey())
@@ -153,8 +153,8 @@ func ComputeInstanceAttachedDisk_ToProto(mapCtx *direct.MapContext, in *krm.Comp
 		return nil
 	}
 	out := &pb.AttachedDisk{}
-	out.Architecture = in.Architecture
-	out.AutoDelete = in.AutoDelete
+	// MISSING: Architecture
+	// MISSING: AutoDelete
 	// MISSING: Boot
 	out.DeviceName = in.DeviceName
 	out.DiskEncryptionKey = ComputeInstanceDiskEncryptionKey_ToProto(mapCtx, in.DiskEncryptionKey)
@@ -239,7 +239,7 @@ func ComputeInstanceBootDisk_FromProto(mapCtx *direct.MapContext, in *pb.Attache
 	}
 	out := &krm.ComputeInstanceBootDisk{}
 	// MISSING: Architecture
-	out.AutoDelete = in.AutoDelete
+	// MISSING: AutoDelete
 	// MISSING: Boot
 	out.DeviceName = in.DeviceName
 	out.DiskEncryptionKey = ComputeInstanceDiskEncryptionKey_FromProto(mapCtx, in.GetDiskEncryptionKey())
@@ -264,7 +264,7 @@ func ComputeInstanceBootDisk_ToProto(mapCtx *direct.MapContext, in *krm.ComputeI
 	}
 	out := &pb.AttachedDisk{}
 	// MISSING: Architecture
-	out.AutoDelete = in.AutoDelete
+	// MISSING: AutoDelete
 	// MISSING: Boot
 	out.DeviceName = in.DeviceName
 	out.DiskEncryptionKey = ComputeInstanceDiskEncryptionKey_ToProto(mapCtx, in.DiskEncryptionKey)
@@ -281,30 +281,6 @@ func ComputeInstanceBootDisk_ToProto(mapCtx *direct.MapContext, in *krm.ComputeI
 	// MISSING: ShieldedInstanceInitialState
 	// MISSING: Source
 	// MISSING: Type
-	return out
-}
-func ComputeInstanceDiskEncryptionKey_FromProto(mapCtx *direct.MapContext, in *pb.CustomerEncryptionKey) *krm.ComputeInstanceDiskEncryptionKey {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ComputeInstanceDiskEncryptionKey{}
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyServiceAccount
-	out.RawKey = in.RawKey
-	// MISSING: RsaEncryptedKey
-	// MISSING: Sha256
-	return out
-}
-func ComputeInstanceDiskEncryptionKey_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInstanceDiskEncryptionKey) *pb.CustomerEncryptionKey {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomerEncryptionKey{}
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyServiceAccount
-	out.RawKey = in.RawKey
-	// MISSING: RsaEncryptedKey
-	// MISSING: Sha256
 	return out
 }
 func ComputeInstanceNetworkInterface_FromProto(mapCtx *direct.MapContext, in *pb.NetworkInterface) *krm.ComputeInstanceNetworkInterface {

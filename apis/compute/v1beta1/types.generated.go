@@ -35,34 +35,6 @@ type AcceleratorConfig struct {
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
 }
 
-// +kcc:proto=google.cloud.compute.v1.AdvancedMachineFeatures
-type AdvancedMachineFeatures struct {
-	// Whether to enable nested virtualization or not (default is false).
-	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.enable_nested_virtualization
-	EnableNestedVirtualization *bool `json:"enableNestedVirtualization,omitempty"`
-
-	// Whether to enable UEFI networking for instance creation.
-	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.enable_uefi_networking
-	EnableUefiNetworking *bool `json:"enableUefiNetworking,omitempty"`
-
-	// Type of Performance Monitoring Unit requested on instance.
-	//  Check the PerformanceMonitoringUnit enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.performance_monitoring_unit
-	PerformanceMonitoringUnit *string `json:"performanceMonitoringUnit,omitempty"`
-
-	// The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed.
-	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.threads_per_core
-	ThreadsPerCore *int32 `json:"threadsPerCore,omitempty"`
-
-	// Turbo frequency mode to use for the instance. Supported modes include: * ALL_CORE_MAX Using empty string or not setting this field will use the platform-specific default turbo mode.
-	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.turbo_mode
-	TurboMode *string `json:"turboMode,omitempty"`
-
-	// The number of physical cores to expose to an instance. Multiply by the number of threads per core to compute the total number of virtual CPUs to expose to the instance. If unset, the number of cores is inferred from the instance's nominal CPU count and the underlying platform's SMT width.
-	// +kcc:proto:field=google.cloud.compute.v1.AdvancedMachineFeatures.visible_core_count
-	VisibleCoreCount *int32 `json:"visibleCoreCount,omitempty"`
-}
-
 // +kcc:proto=google.cloud.compute.v1.AliasIpRange
 type AliasIPRange struct {
 	// The IP alias ranges to allocate for this interface. This IP CIDR range must belong to the specified subnetwork and cannot contain IP addresses reserved by system or used by other network interfaces. This range may be a single IP address (such as 10.2.3.4), a netmask (such as /24) or a CIDR-formatted string (such as 10.1.2.0/24).

@@ -68,14 +68,6 @@ spec:
                     description: Whether to enable nested virtualization or not (default
                       is false).
                     type: boolean
-                  enableUefiNetworking:
-                    description: Whether to enable UEFI networking for instance creation.
-                    type: boolean
-                  performanceMonitoringUnit:
-                    description: Type of Performance Monitoring Unit requested on
-                      instance. Check the PerformanceMonitoringUnit enum for the list
-                      of possible values.
-                    type: string
                   threadsPerCore:
                     description: The number of threads per physical core. To disable
                       simultaneous multithreading (SMT) set this to 1. If unset, the
@@ -83,11 +75,6 @@ spec:
                       processor is assumed.
                     format: int32
                     type: integer
-                  turboMode:
-                    description: 'Turbo frequency mode to use for the instance. Supported
-                      modes include: * ALL_CORE_MAX Using empty string or not setting
-                      this field will use the platform-specific default turbo mode.'
-                    type: string
                   visibleCoreCount:
                     description: The number of physical cores to expose to an instance.
                       Multiply by the number of threads per core to compute the total
@@ -101,16 +88,6 @@ spec:
                 description: List of disks attached to the instance.
                 items:
                   properties:
-                    architecture:
-                      description: '[Output Only] The architecture of the attached
-                        disk. Valid values are ARM64 or X86_64. Check the Architecture
-                        enum for the list of possible values.'
-                      type: string
-                    autoDelete:
-                      description: Specifies whether the disk will be auto-deleted
-                        when the instance is deleted (but not when the disk is detached
-                        from the instance).
-                      type: boolean
                     deviceName:
                       description: Specifies a unique device name of your choice that
                         is reflected into the /dev/disk/by-id/google-* tree of a Linux
@@ -142,33 +119,30 @@ spec:
                         disks with customer-supplied keys using the bulk insert method.'
                       properties:
                         value:
+                          description: Value of the field. Cannot be used if 'valueFrom'
+                            is specified.
                           type: string
                         valueFrom:
-                          description: 'Specifies a 256-bit customer-supplied encryption
-                            key, encoded in RFC 4648 base64 to either encrypt or decrypt
-                            this resource. You can provide either the rawKey or the
-                            rsaEncryptedKey. For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="'
+                          description: Source for the field's value. Cannot be used
+                            if 'value' is specified.
                           properties:
-                            key:
-                              description: The key of the secret to select from.  Must
-                                be a valid secret key.
-                              type: string
-                            name:
-                              default: ""
-                              description: 'Name of the referent. This field is effectively
-                                required, but due to backwards compatibility is allowed
-                                to be empty. Instances of this type with an empty
-                                value here are almost certainly wrong. More info:
-                                https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                              type: string
-                            optional:
-                              description: Specify whether the Secret or its key must
-                                be defined
-                              type: boolean
-                          required:
-                          - key
+                            secretKeyRef:
+                              description: Reference to a value with the given key
+                                in the given Secret in the resource's namespace.
+                              properties:
+                                key:
+                                  description: Key that identifies the value to be
+                                    extracted.
+                                  type: string
+                                name:
+                                  description: Name of the Secret to extract a value
+                                    from.
+                                  type: string
+                              required:
+                              - key
+                              - name
+                              type: object
                           type: object
-                          x-kubernetes-map-type: atomic
                       type: object
                     diskEncryptionKeySha256:
                       description: The RFC 4648 base64 encoded SHA-256 hash of the
@@ -247,11 +221,6 @@ spec:
               bootDisk:
                 description: Immutable. The boot disk for the instance.
                 properties:
-                  autoDelete:
-                    description: Specifies whether the disk will be auto-deleted when
-                      the instance is deleted (but not when the disk is detached from
-                      the instance).
-                    type: boolean
                   deviceName:
                     description: Specifies a unique device name of your choice that
                       is reflected into the /dev/disk/by-id/google-* tree of a Linux
@@ -283,32 +252,29 @@ spec:
                       keys using the bulk insert method.'
                     properties:
                       value:
+                        description: Value of the field. Cannot be used if 'valueFrom'
+                          is specified.
                         type: string
                       valueFrom:
-                        description: 'Specifies a 256-bit customer-supplied encryption
-                          key, encoded in RFC 4648 base64 to either encrypt or decrypt
-                          this resource. You can provide either the rawKey or the
-                          rsaEncryptedKey. For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="'
+                        description: Source for the field's value. Cannot be used
+                          if 'value' is specified.
                         properties:
-                          key:
-                            description: The key of the secret to select from.  Must
-                              be a valid secret key.
-                            type: string
-                          name:
-                            default: ""
-                            description: 'Name of the referent. This field is effectively
-                              required, but due to backwards compatibility is allowed
-                              to be empty. Instances of this type with an empty value
-                              here are almost certainly wrong. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                            type: string
-                          optional:
-                            description: Specify whether the Secret or its key must
-                              be defined
-                            type: boolean
-                        required:
-                        - key
+                          secretKeyRef:
+                            description: Reference to a value with the given key in
+                              the given Secret in the resource's namespace.
+                            properties:
+                              key:
+                                description: Key that identifies the value to be extracted.
+                                type: string
+                              name:
+                                description: Name of the Secret to extract a value
+                                  from.
+                                type: string
+                            required:
+                            - key
+                            - name
+                            type: object
                         type: object
-                        x-kubernetes-map-type: atomic
                     type: object
                   diskEncryptionKeySha256:
                     description: The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
