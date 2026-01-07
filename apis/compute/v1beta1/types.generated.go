@@ -18,6 +18,7 @@
 // proto.service: google.cloud.compute.v1
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
 // resource: ComputeForwardingRule:ForwardingRule
+// resource: ComputeNetwork:Network
 // resource: ComputeSubnetwork:Subnetwork
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
 
@@ -33,6 +34,243 @@ type FirewallPolicyRuleSecureTag struct {
 	//  Check the State enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleSecureTag.state
 	State *string `json:"state,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.Network
+type Network struct {
+	// Deprecated in favor of subnet mode networks. The range of internal addresses that are legal on this network. This range is a CIDR specification, for example: 192.168.0.0/16. Provided by the client when the network is created.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.I_pv4_range
+	IPv4Range *string `json:"IPv4Range,omitempty"`
+
+	// Must be set to create a VPC network. If not set, a legacy network is created. When set to true, the VPC network is created in auto mode. When set to false, the VPC network is created in custom mode. An auto mode VPC network starts with one subnet per region. Each subnet has a predetermined range as described in Auto mode VPC network IP ranges. For custom mode VPC networks, you can add subnets using the subnetworks insert method.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.auto_create_subnetworks
+	AutoCreateSubnetworks *bool `json:"autoCreateSubnetworks,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this field when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.description
+	Description *string `json:"description,omitempty"`
+
+	// Enable ULA internal ipv6 on this network. Enabling this feature will assign a /48 from google defined ULA prefix fd20::/20. .
+	// +kcc:proto:field=google.cloud.compute.v1.Network.enable_ula_internal_ipv6
+	EnableUlaInternalIPV6 *bool `json:"enableUlaInternalIPV6,omitempty"`
+
+	// [Output Only] URL of the firewall policy the network is associated with.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.firewall_policy
+	FirewallPolicy *string `json:"firewallPolicy,omitempty"`
+
+	// [Output Only] The gateway address for default routing out of the network, selected by Google Cloud.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.gateway_i_pv4
+	GatewayIPv4 *string `json:"gatewayIPv4,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// When enabling ula internal ipv6, caller optionally can specify the /48 range they want from the google defined ULA prefix fd20::/20. The input must be a valid /48 ULA IPv6 address and must be within the fd20::/20. Operation will fail if the speficied /48 is already in used by another resource. If the field is not speficied, then a /48 range will be randomly allocated from fd20::/20 and returned via this field. .
+	// +kcc:proto:field=google.cloud.compute.v1.Network.internal_ipv6_range
+	InternalIPV6Range *string `json:"internalIPV6Range,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#network for networks.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Maximum Transmission Unit in bytes. The minimum value for this field is 1300 and the maximum value is 8896. The suggested value is 1500, which is the default MTU used on the Internet, or 8896 if you want to use Jumbo frames. If unspecified, the value defaults to 1460.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.mtu
+	Mtu *int32 `json:"mtu,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`. The first character must be a lowercase letter, and all following characters (except for the last character) must be a dash, lowercase letter, or digit. The last character must be a lowercase letter or digit.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.name
+	Name *string `json:"name,omitempty"`
+
+	// The network firewall policy enforcement order. Can be either AFTER_CLASSIC_FIREWALL or BEFORE_CLASSIC_FIREWALL. Defaults to AFTER_CLASSIC_FIREWALL if the field is not specified.
+	//  Check the NetworkFirewallPolicyEnforcementOrder enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.network_firewall_policy_enforcement_order
+	NetworkFirewallPolicyEnforcementOrder *string `json:"networkFirewallPolicyEnforcementOrder,omitempty"`
+
+	// A full or partial URL of the network profile to apply to this network. This field can be set only at resource creation time. For example, the following are valid URLs: - https://www.googleapis.com/compute/{api_version}/projects/{project_id}/global/networkProfiles/{network_profile_name} - projects/{project_id}/global/networkProfiles/{network_profile_name}
+	// +kcc:proto:field=google.cloud.compute.v1.Network.network_profile
+	NetworkProfile *string `json:"networkProfile,omitempty"`
+
+	// Input only. [Input Only] Additional params passed with the request, but not persisted as part of resource payload.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.params
+	Params *NetworkParams `json:"params,omitempty"`
+
+	// [Output Only] A list of network peerings for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.peerings
+	Peerings []NetworkPeering `json:"peerings,omitempty"`
+
+	// The network-level routing configuration for this network. Used by Cloud Router to determine what type of network-wide routing behavior to enforce.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.routing_config
+	RoutingConfig *NetworkRoutingConfig `json:"routingConfig,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] Server-defined URL for this resource with the resource id.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.self_link_with_id
+	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
+
+	// [Output Only] Server-defined fully-qualified URLs for all subnetworks in this VPC network.
+	// +kcc:proto:field=google.cloud.compute.v1.Network.subnetworks
+	Subnetworks []string `json:"subnetworks,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.NetworkParams
+type NetworkParams struct {
+	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkParams.resource_manager_tags
+	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.NetworkPeering
+type NetworkPeering struct {
+	// This field will be deprecated soon. Use the exchange_subnet_routes field instead. Indicates whether full mesh connectivity is created and managed automatically between peered networks. Currently this field should always be true since Google Compute Engine will automatically create and manage subnetwork routes between two networks when peering state is ACTIVE.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.auto_create_routes
+	AutoCreateRoutes *bool `json:"autoCreateRoutes,omitempty"`
+
+	// [Output Only] The effective state of the peering connection as a whole.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.connection_status
+	ConnectionStatus *NetworkPeeringConnectionStatus `json:"connectionStatus,omitempty"`
+
+	// Indicates whether full mesh connectivity is created and managed automatically between peered networks. Currently this field should always be true since Google Compute Engine will automatically create and manage subnetwork routes between two networks when peering state is ACTIVE.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.exchange_subnet_routes
+	ExchangeSubnetRoutes *bool `json:"exchangeSubnetRoutes,omitempty"`
+
+	// Whether to export the custom routes to peer network. The default value is false.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.export_custom_routes
+	ExportCustomRoutes *bool `json:"exportCustomRoutes,omitempty"`
+
+	// Whether subnet routes with public IP range are exported. The default value is true, all subnet routes are exported. IPv4 special-use ranges are always exported to peers and are not controlled by this field.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.export_subnet_routes_with_public_ip
+	ExportSubnetRoutesWithPublicIP *bool `json:"exportSubnetRoutesWithPublicIP,omitempty"`
+
+	// Whether to import the custom routes from peer network. The default value is false.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.import_custom_routes
+	ImportCustomRoutes *bool `json:"importCustomRoutes,omitempty"`
+
+	// Whether subnet routes with public IP range are imported. The default value is false. IPv4 special-use ranges are always imported from peers and are not controlled by this field.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.import_subnet_routes_with_public_ip
+	ImportSubnetRoutesWithPublicIP *bool `json:"importSubnetRoutesWithPublicIP,omitempty"`
+
+	// Name of this peering. Provided by the client when the peering is created. The name must comply with RFC1035. Specifically, the name must be 1-63 characters long and match regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`. The first character must be a lowercase letter, and all the following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.name
+	Name *string `json:"name,omitempty"`
+
+	// The URL of the peer network. It can be either full URL or partial URL. The peer network may belong to a different project. If the partial URL does not contain project, it is assumed that the peer network is in the same project as the current network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.network
+	Network *string `json:"network,omitempty"`
+
+	// [Output Only] Maximum Transmission Unit in bytes of the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.peer_mtu
+	PeerMtu *int32 `json:"peerMtu,omitempty"`
+
+	// Which IP version(s) of traffic and routes are allowed to be imported or exported between peer networks. The default value is IPV4_ONLY.
+	//  Check the StackType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.stack_type
+	StackType *string `json:"stackType,omitempty"`
+
+	// [Output Only] State for the peering, either `ACTIVE` or `INACTIVE`. The peering is `ACTIVE` when there's a matching configuration in the peer network.
+	//  Check the State enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.state
+	State *string `json:"state,omitempty"`
+
+	// [Output Only] Details about the current state of the peering.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.state_details
+	StateDetails *string `json:"stateDetails,omitempty"`
+
+	// The update strategy determines the semantics for updates and deletes to the peering connection configuration.
+	//  Check the UpdateStrategy enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeering.update_strategy
+	UpdateStrategy *string `json:"updateStrategy,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.NetworkPeeringConnectionStatus
+type NetworkPeeringConnectionStatus struct {
+	// The consensus state contains information about the status of update and delete for a consensus peering connection.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatus.consensus_state
+	ConsensusState *NetworkPeeringConnectionStatusConsensusState `json:"consensusState,omitempty"`
+
+	// The active connectivity settings for the peering connection based on the settings of the network peerings.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatus.traffic_configuration
+	TrafficConfiguration *NetworkPeeringConnectionStatusTrafficConfiguration `json:"trafficConfiguration,omitempty"`
+
+	// The update strategy determines the update/delete semantics for this peering connection.
+	//  Check the UpdateStrategy enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatus.update_strategy
+	UpdateStrategy *string `json:"updateStrategy,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.NetworkPeeringConnectionStatusConsensusState
+type NetworkPeeringConnectionStatusConsensusState struct {
+	// The status of the delete request.
+	//  Check the DeleteStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusConsensusState.delete_status
+	DeleteStatus *string `json:"deleteStatus,omitempty"`
+
+	// The status of the update request.
+	//  Check the UpdateStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusConsensusState.update_status
+	UpdateStatus *string `json:"updateStatus,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration
+type NetworkPeeringConnectionStatusTrafficConfiguration struct {
+	// Whether custom routes are being exported to the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.export_custom_routes_to_peer
+	ExportCustomRoutesToPeer *bool `json:"exportCustomRoutesToPeer,omitempty"`
+
+	// Whether subnet routes with public IP ranges are being exported to the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.export_subnet_routes_with_public_ip_to_peer
+	ExportSubnetRoutesWithPublicIPToPeer *bool `json:"exportSubnetRoutesWithPublicIPToPeer,omitempty"`
+
+	// Whether custom routes are being imported from the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.import_custom_routes_from_peer
+	ImportCustomRoutesFromPeer *bool `json:"importCustomRoutesFromPeer,omitempty"`
+
+	// Whether subnet routes with public IP ranges are being imported from the peer network.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.import_subnet_routes_with_public_ip_from_peer
+	ImportSubnetRoutesWithPublicIPFromPeer *bool `json:"importSubnetRoutesWithPublicIPFromPeer,omitempty"`
+
+	// Which IP version(s) of traffic and routes are being imported or exported between peer networks.
+	//  Check the StackType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkPeeringConnectionStatusTrafficConfiguration.stack_type
+	StackType *string `json:"stackType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.NetworkRoutingConfig
+type NetworkRoutingConfig struct {
+	// Enable comparison of Multi-Exit Discriminators (MED) across routes with different neighbor ASNs when using the STANDARD BGP best path selection algorithm.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.bgp_always_compare_med
+	BGPAlwaysCompareMed *bool `json:"bgpAlwaysCompareMed,omitempty"`
+
+	// The BGP best path selection algorithm to be employed within this network for dynamic routes learned by Cloud Routers. Can be LEGACY (default) or STANDARD.
+	//  Check the BgpBestPathSelectionMode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.bgp_best_path_selection_mode
+	BGPBestPathSelectionMode *string `json:"bgpBestPathSelectionMode,omitempty"`
+
+	// Allows to define a preferred approach for handling inter-region cost in the selection process when using the STANDARD BGP best path selection algorithm. Can be DEFAULT or ADD_COST_TO_MED.
+	//  Check the BgpInterRegionCost enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.bgp_inter_region_cost
+	BGPInterRegionCost *string `json:"bgpInterRegionCost,omitempty"`
+
+	// [Output Only] Effective value of the bgp_always_compare_med field.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.effective_bgp_always_compare_med
+	EffectiveBGPAlwaysCompareMed *bool `json:"effectiveBGPAlwaysCompareMed,omitempty"`
+
+	// [Output Only] Effective value of the bgp_inter_region_cost field.
+	//  Check the EffectiveBgpInterRegionCost enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.effective_bgp_inter_region_cost
+	EffectiveBGPInterRegionCost *string `json:"effectiveBGPInterRegionCost,omitempty"`
+
+	// The network-wide routing mode to use. If set to REGIONAL, this network's Cloud Routers will only advertise routes with subnets of this network in the same region as the router. If set to GLOBAL, this network's Cloud Routers will advertise routes with all subnets of this network, across regions.
+	//  Check the RoutingMode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.NetworkRoutingConfig.routing_mode
+	RoutingMode *string `json:"routingMode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.SubnetworkParams
