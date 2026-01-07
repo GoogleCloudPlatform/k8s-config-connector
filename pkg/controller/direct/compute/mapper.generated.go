@@ -26,6 +26,80 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ComputeSubnetworkStatus_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krm.ComputeSubnetworkStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSubnetworkStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: EnableFlowLogs
+	out.ExternalIPV6Prefix = in.ExternalIpv6Prefix
+	out.Fingerprint = in.Fingerprint
+	out.GatewayAddress = in.GatewayAddress
+	// MISSING: ID
+	out.InternalIPV6Prefix = in.InternalIpv6Prefix
+	// MISSING: IPCIDRRange
+	// MISSING: IPCollection
+	// MISSING: IPV6AccessType
+	out.IPV6CIDRRange = in.Ipv6CidrRange
+	// MISSING: IPV6GCEEndpoint
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: Params
+	// MISSING: PrivateIPGoogleAccess
+	// MISSING: PrivateIPV6GoogleAccess
+	// MISSING: Purpose
+	// MISSING: Region
+	// MISSING: ReservedInternalRange
+	// MISSING: Role
+	// MISSING: SecondaryIPRanges
+	out.SelfLink = in.SelfLink
+	// MISSING: StackType
+	// MISSING: State
+	// MISSING: SystemReservedExternalIPV6Ranges
+	// MISSING: SystemReservedInternalIPV6Ranges
+	return out
+}
+func ComputeSubnetworkStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSubnetworkStatus) *pb.Subnetwork {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Subnetwork{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: Description
+	// MISSING: EnableFlowLogs
+	out.ExternalIpv6Prefix = in.ExternalIPV6Prefix
+	out.Fingerprint = in.Fingerprint
+	out.GatewayAddress = in.GatewayAddress
+	// MISSING: ID
+	out.InternalIpv6Prefix = in.InternalIPV6Prefix
+	// MISSING: IPCIDRRange
+	// MISSING: IPCollection
+	// MISSING: IPV6AccessType
+	out.Ipv6CidrRange = in.IPV6CIDRRange
+	// MISSING: IPV6GCEEndpoint
+	// MISSING: Kind
+	// MISSING: LogConfig
+	// MISSING: Name
+	// MISSING: Network
+	// MISSING: Params
+	// MISSING: PrivateIPGoogleAccess
+	// MISSING: PrivateIPV6GoogleAccess
+	// MISSING: Purpose
+	// MISSING: Region
+	// MISSING: ReservedInternalRange
+	// MISSING: Role
+	// MISSING: SecondaryIPRanges
+	out.SelfLink = in.SelfLink
+	// MISSING: StackType
+	// MISSING: State
+	// MISSING: SystemReservedExternalIPV6Ranges
+	// MISSING: SystemReservedInternalIPV6Ranges
+	return out
+}
 func FirewallPolicyRuleMatcher_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
 	if in == nil {
 		return nil
@@ -300,5 +374,67 @@ func NetworkEdgeSecurityService_ToProto(mapCtx *direct.MapContext, in *krmcomput
 	out.SecurityPolicy = in.SecurityPolicy
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
+	return out
+}
+func SubnetworkLogConfig_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkLogConfig) *krm.SubnetworkLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SubnetworkLogConfig{}
+	out.AggregationInterval = in.AggregationInterval
+	// MISSING: Enable
+	out.FilterExpr = in.FilterExpr
+	out.FlowSampling = in.FlowSampling
+	out.Metadata = in.Metadata
+	out.MetadataFields = in.MetadataFields
+	return out
+}
+func SubnetworkLogConfig_ToProto(mapCtx *direct.MapContext, in *krm.SubnetworkLogConfig) *pb.SubnetworkLogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SubnetworkLogConfig{}
+	out.AggregationInterval = in.AggregationInterval
+	// MISSING: Enable
+	out.FilterExpr = in.FilterExpr
+	out.FlowSampling = in.FlowSampling
+	out.Metadata = in.Metadata
+	out.MetadataFields = in.MetadataFields
+	return out
+}
+func SubnetworkParams_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkParams) *krm.SubnetworkParams {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SubnetworkParams{}
+	out.ResourceManagerTags = in.ResourceManagerTags
+	return out
+}
+func SubnetworkParams_ToProto(mapCtx *direct.MapContext, in *krm.SubnetworkParams) *pb.SubnetworkParams {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SubnetworkParams{}
+	out.ResourceManagerTags = in.ResourceManagerTags
+	return out
+}
+func SubnetworkSecondaryRange_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkSecondaryRange) *krm.SubnetworkSecondaryRange {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SubnetworkSecondaryRange{}
+	out.IPCIDRRange = in.IpCidrRange
+	out.RangeName = in.RangeName
+	// MISSING: ReservedInternalRange
+	return out
+}
+func SubnetworkSecondaryRange_ToProto(mapCtx *direct.MapContext, in *krm.SubnetworkSecondaryRange) *pb.SubnetworkSecondaryRange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SubnetworkSecondaryRange{}
+	out.IpCidrRange = in.IPCIDRRange
+	out.RangeName = in.RangeName
+	// MISSING: ReservedInternalRange
 	return out
 }
