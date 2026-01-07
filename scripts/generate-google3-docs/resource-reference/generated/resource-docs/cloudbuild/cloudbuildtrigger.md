@@ -2904,8 +2904,7 @@ spec:
     timeout: 1800s
     step:
       - id: "download_zip"
-        name: gcr.io/cloud-builders/gsutil
-        args: ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
+        name: gcr.io/cloud-builders/gcloud        args: ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
         timeout: 300s
       - id: "build_package"
         name: gcr.io/cloud-builders/go
@@ -2998,8 +2997,7 @@ spec:
     timeout: 1800s
     step:
       - id: "download_zip"
-        name: gcr.io/cloud-builders/gsutil
-        args: ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
+        name: gcr.io/cloud-builders/gcloud        args: ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
         timeout: 300s
       - id: "build_package"
         name: gcr.io/cloud-builders/go
