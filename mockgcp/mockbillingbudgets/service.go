@@ -20,15 +20,14 @@ package mockbillingbudgets
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
 
 	pb "cloud.google.com/go/billing/budgets/apiv1beta1/budgetspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
-	pb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/billing/budgets/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -70,15 +69,16 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb_http.RegisterBudgetServiceHandler)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
-		response.Header().Del("Cache-Control")
-	}
+	grpcMux.AddService(pb.NewBudgetServiceClient(conn))
 
-	return mux, nil
+	// mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
+	// 	response.Header().Del("Cache-Control")
+	// }
+
+	return grpcMux, nil
 }

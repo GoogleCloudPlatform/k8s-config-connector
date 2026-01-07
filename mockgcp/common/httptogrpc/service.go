@@ -44,8 +44,17 @@ func WithServiceName(name string) ServiceOption {
 	}
 }
 
+func EmitUnpopulated() ServiceOption {
+	return func(o *serviceOptions) {
+		o.EmitUnpopulated = true
+	}
+}
+
 type serviceOptions struct {
 	ServiceName string
+
+	// EmitUnpopulated indicates whether to emit unpopulated fields in responses.
+	EmitUnpopulated bool
 }
 
 // addServiceWithOptions adds a gRPC service (with all the methods) to the mux.
@@ -77,7 +86,7 @@ func (m *grpcMux) addServiceWithOptions(client any, options serviceOptions) {
 		klog.Fatalf("found multiple matching services %q", serviceName)
 	}
 
-	s, err := newGRPCService(client, matchingServices[0])
+	s, err := newGRPCService(client, matchingServices[0], options)
 	if err != nil {
 		klog.Fatalf("adding grpc service: %v", err)
 	}
@@ -181,13 +190,16 @@ type grpcService struct {
 	httpDefaultHost string
 
 	methods []*grpcMethod
+
+	options serviceOptions
 }
 
 // newGRPCService creates a new grpcService for the given gRPC client and service descriptor.
-func newGRPCService(grpcClient any, service protoreflect.ServiceDescriptor) (*grpcService, error) {
+func newGRPCService(grpcClient any, service protoreflect.ServiceDescriptor, options serviceOptions) (*grpcService, error) {
 	obj := &grpcService{
 		grpcClient: grpcClient,
 		service:    service,
+		options:    options,
 	}
 
 	var errs []error
@@ -287,12 +299,13 @@ func (s *grpcService) addGRPCMethod(goMethod reflect.Value, goMethodType reflect
 
 	addMethod := func(httpRule *annotations.HttpRule, httpMethod string, httpPath string) {
 		m := &grpcMethod{
-			method:       method,
-			goMethod:     goMethod,
-			goMethodType: goMethodType,
-			httpMethod:   httpMethod,
-			httpPath:     httpPath,
-			httpRule:     httpRule,
+			parentService: s,
+			method:        method,
+			goMethod:      goMethod,
+			goMethodType:  goMethodType,
+			httpMethod:    httpMethod,
+			httpPath:      httpPath,
+			httpRule:      httpRule,
 		}
 		s.methods = append(s.methods, m)
 
