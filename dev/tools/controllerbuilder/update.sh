@@ -20,6 +20,8 @@ set -x
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
+
 # example usage of inserting a field
 go run . update-types insert \
     --parent "google.monitoring.dashboard.v1.Dashboard" \
