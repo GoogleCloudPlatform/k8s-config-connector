@@ -376,110 +376,133 @@ func TestSplitBrainProtection(t *testing.T) {
 		t.Fatalf("error creating client: %v", err)
 	}
 
-	ns := "test-ns-splitbrain"
-	leaseName := "test-lease"
-	imposterIdentity := "imposter-manager"
-	localIdentity := "my-manager"
-
-	// Create namespace to be safe
-	namespaceObj := &corev1.Namespace{
-		ObjectMeta: metav1.ObjectMeta{Name: ns},
-	}
-	if err := k8sClient.Create(ctx, namespaceObj); err != nil {
-		t.Fatalf("error creating namespace: %v", err)
-	}
-
-	leaseDuration := int32(15)
-	renewTime := metav1.MicroTime{Time: time.Now()}
-	// 1. Create the MultiClusterLease with a DIFFERENT global holder
-	mcl := &mclv1alpha1.MultiClusterLease{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      leaseName,
-			Namespace: ns,
+	tests := []struct {
+		name                 string
+		globalHolderIdentity *string
+		expectedErrorSnippet string
+	}{
+		{
+			name:                 "Different global holder",
+			globalHolderIdentity: func() *string { s := "imposter-manager"; return &s }(),
+			expectedErrorSnippet: `inconsistent state: started leading but MultiClusterLease status.globalHolderIdentity is "imposter-manager"`,
 		},
-		Spec: mclv1alpha1.MultiClusterLeaseSpec{
-			HolderIdentity:       &imposterIdentity,
-			LeaseDurationSeconds: &leaseDuration,
-			RenewTime:            &renewTime,
-		},
-	}
-	if err := k8sClient.Create(ctx, mcl); err != nil {
-		t.Fatalf("failed to create MCL: %v", err)
-	}
-
-	// 2. Update Status to reflect the imposter holds the lock
-	mcl.Status.GlobalHolderIdentity = &imposterIdentity
-	if err := k8sClient.Status().Update(ctx, mcl); err != nil {
-		t.Fatalf("failed to update MCL status: %v", err)
-	}
-
-	// 3. Create the Manager
-	kccCfg := Config{
-		ManagerOptions: manager.Options{
-			Scheme: scheme,
-			Metrics: metricsserver.Options{
-				BindAddress: "0",
-			},
-			LeaderElection:   false,
-			LeaderElectionID: localIdentity,
-		},
-		MultiClusterLease: true,
-		testConfig: testConfig{
-			skipControllerRegistration: true,
-			multiClusterLeaseConfig: &operatorv1beta1.MultiClusterLeaseSpec{
-				LeaseName:                leaseName,
-				Namespace:                ns,
-				ClusterCandidateIdentity: localIdentity,
-			},
-			suppressExitOnLeadershipLoss: true,
+		{
+			name:                 "Nil global holder",
+			globalHolderIdentity: nil,
+			expectedErrorSnippet: `inconsistent state: started leading but MultiClusterLease status.globalHolderIdentity is ""`,
 		},
 	}
 
-	mgr, err := New(ctx, cfg, kccCfg)
-	if err != nil {
-		t.Fatalf("error creating manager: %v", err)
-	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			// Use a unique namespace for each test case
+			ns := strings.ReplaceAll(strings.ToLower(tc.name), " ", "-")
+			leaseName := "test-lease"
+			localIdentity := "my-manager"
 
-	// 4. Hack: Swap the Lock with our MockLock
-	// We need to type assert to the internal struct
-	lem, ok := mgr.(*leaderElectionManager)
-	if !ok {
-		t.Fatalf("manager is not *leaderElectionManager, it is %T", mgr)
-	}
+			// Create namespace
+			namespaceObj := &corev1.Namespace{
+				ObjectMeta: metav1.ObjectMeta{Name: ns},
+			}
+			if err := k8sClient.Create(ctx, namespaceObj); err != nil {
+				t.Fatalf("error creating namespace: %v", err)
+			}
 
-	lem.leConfig.Lock = &MockLock{identity: localIdentity}
+			leaseDuration := int32(15)
+			renewTime := metav1.MicroTime{Time: time.Now()}
 
-	// 5. Intercept Fatal exit
-	fatalC := make(chan string, 1)
-	lem.onFatal = func(format string, args ...interface{}) {
-		msg := fmt.Sprintf(format, args...)
-		fatalC <- msg
-		// Stop this goroutine (the leader election loop)
-		// We use Goexit to terminate the goroutine without crashing the whole process
-		stdruntime.Goexit()
-	}
+			// 1. Create the MultiClusterLease
+			mcl := &mclv1alpha1.MultiClusterLease{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      leaseName,
+					Namespace: ns,
+				},
+				Spec: mclv1alpha1.MultiClusterLeaseSpec{
+					// Spec holder is not strictly relevant for this test, but filling it for realism
+					HolderIdentity:       tc.globalHolderIdentity, // Mimicking that the "imposter" tried to take it
+					LeaseDurationSeconds: &leaseDuration,
+					RenewTime:            &renewTime,
+				},
+			}
+			if tc.globalHolderIdentity == nil {
+				// If global holder is nil, maybe spec holder was someone else or empty?
+				// Let's just set spec holder to something random or leave it nil.
+				// For the "Nil global holder" case, it means the status is empty.
+				// Let's set spec holder to "someone-else" to show contention, or nil.
+				// The test is checking Status vs Local.
+				// Let's leave spec holder nil if tc is nil.
+			}
 
-	// 6. Start the manager in a background goroutine
-	// This should trigger OnStartedLeading -> fetch MCL -> see "imposter" -> lem.fatal
-	go func() {
-		// Start blocks until context is cancelled or leader election stops
-		if err := lem.Start(ctx); err != nil {
-			// In the split-brain case, we expect onFatal to be called, which calls Goexit.
-			// So this line might not be reached if onFatal is called on this same goroutine.
-			// If OnStartedLeading is called on a different goroutine (spawned by RunOrDie),
-			// then RunOrDie might return or block.
-			t.Logf("Manager.Start returned: %v", err)
-		}
-	}()
+			if err := k8sClient.Create(ctx, mcl); err != nil {
+				t.Fatalf("failed to create MCL: %v", err)
+			}
 
-	// 7. Verify we received the fatal error
-	select {
-	case msg := <-fatalC:
-		t.Logf("Caught expected fatal error: %s", msg)
-		if !strings.Contains(msg, "inconsistent state: started leading but MultiClusterLease status.globalHolderIdentity is") {
-			t.Errorf("Unexpected fatal message: %s", msg)
-		}
-	case <-time.After(5 * time.Second):
-		t.Fatal("Timed out waiting for split-brain protection to trigger")
+			// 2. Update Status with the test case's global holder
+			mcl.Status.GlobalHolderIdentity = tc.globalHolderIdentity
+			if err := k8sClient.Status().Update(ctx, mcl); err != nil {
+				t.Fatalf("failed to update MCL status: %v", err)
+			}
+
+			// 3. Create the Manager
+			kccCfg := Config{
+				ManagerOptions: manager.Options{
+					Scheme: scheme,
+					Metrics: metricsserver.Options{
+						BindAddress: "0",
+					},
+					LeaderElection:   false,
+					LeaderElectionID: localIdentity,
+				},
+				MultiClusterLease: true,
+				testConfig: testConfig{
+					skipControllerRegistration: true,
+					multiClusterLeaseConfig: &operatorv1beta1.MultiClusterLeaseSpec{
+						LeaseName:                leaseName,
+						Namespace:                ns,
+						ClusterCandidateIdentity: localIdentity,
+					},
+					suppressExitOnLeadershipLoss: true,
+				},
+			}
+
+			mgr, err := New(ctx, cfg, kccCfg)
+			if err != nil {
+				t.Fatalf("error creating manager: %v", err)
+			}
+
+			// 4. Hack: Swap the Lock with our MockLock
+			lem, ok := mgr.(*leaderElectionManager)
+			if !ok {
+				t.Fatalf("manager is not *leaderElectionManager, it is %T", mgr)
+			}
+
+			lem.leConfig.Lock = &MockLock{identity: localIdentity}
+
+			// 5. Intercept Fatal exit
+			fatalC := make(chan string, 1)
+			lem.onFatal = func(format string, args ...interface{}) {
+				msg := fmt.Sprintf(format, args...)
+				fatalC <- msg
+				stdruntime.Goexit()
+			}
+
+			// 6. Start the manager in a background goroutine
+			go func() {
+				if err := lem.Start(ctx); err != nil {
+					t.Logf("Manager.Start returned: %v", err)
+				}
+			}()
+
+			// 7. Verify we received the fatal error
+			select {
+			case msg := <-fatalC:
+				t.Logf("Caught expected fatal error: %s", msg)
+				if !strings.Contains(msg, tc.expectedErrorSnippet) {
+					t.Errorf("Unexpected fatal message: got %q, want substring %q", msg, tc.expectedErrorSnippet)
+				}
+			case <-time.After(5 * time.Second):
+				t.Fatal("Timed out waiting for split-brain protection to trigger")
+			}
+		})
 	}
 }
