@@ -36,7 +36,6 @@ import (
 )
 
 var _ refsv1beta1.Ref = &ComputeNetworkRef{}
-var ComputeNetworkGVK = GroupVersion.WithKind("ComputeNetwork")
 
 type ComputeNetworkRef struct {
 	// The value of an externally managed ComputeNetwork resource.

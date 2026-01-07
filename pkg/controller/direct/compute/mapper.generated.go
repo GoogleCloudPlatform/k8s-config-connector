@@ -820,52 +820,6 @@ found existing non-generated mapping function "ComputeNetworkEdgeSecurityService
 		return out
 	}
 */
-func ComputeNetworkObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.ComputeNetworkObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ComputeNetworkObservedState{}
-	// MISSING: IPv4Range
-	// MISSING: CreationTimestamp
-	// MISSING: EnableUlaInternalIPV6
-	// MISSING: FirewallPolicy
-	// MISSING: GatewayIPv4
-	// MISSING: ID
-	// MISSING: InternalIPV6Range
-	// MISSING: Kind
-	// MISSING: Name
-	// MISSING: NetworkProfile
-	// MISSING: Params
-	// MISSING: Peerings
-	// MISSING: RoutingConfig
-	// MISSING: SelfLink
-	// MISSING: SelfLinkWithID
-	// MISSING: Subnetworks
-	return out
-}
-func ComputeNetworkObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkObservedState) *pb.Network {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Network{}
-	// MISSING: IPv4Range
-	// MISSING: CreationTimestamp
-	// MISSING: EnableUlaInternalIPV6
-	// MISSING: FirewallPolicy
-	// MISSING: GatewayIPv4
-	// MISSING: ID
-	// MISSING: InternalIPV6Range
-	// MISSING: Kind
-	// MISSING: Name
-	// MISSING: NetworkProfile
-	// MISSING: Params
-	// MISSING: Peerings
-	// MISSING: RoutingConfig
-	// MISSING: SelfLink
-	// MISSING: SelfLinkWithID
-	// MISSING: Subnetworks
-	return out
-}
 func ComputeNetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.ComputeNetworkSpec {
 	if in == nil {
 		return nil
