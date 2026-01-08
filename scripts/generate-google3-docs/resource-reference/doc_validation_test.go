@@ -170,12 +170,7 @@ func validateURLsInTemplates(t *testing.T, templatesDir string) {
 			for _, match := range matches {
 				url := match[1]
 
-				// Construct full URL for relative paths
-				if strings.HasPrefix(url, "/") {
-					url = "https://cloud.google.com" + url
-				}
-
-				if strings.HasPrefix(url, "http") {
+				if strings.HasPrefix(url, "/") || strings.HasPrefix(url, "http") {
 					uniqueURLs[url] = append(uniqueURLs[url], path)
 				}
 			}
@@ -188,13 +183,19 @@ func validateURLsInTemplates(t *testing.T, templatesDir string) {
 
 	t.Logf("Found %d unique URLs to validate in templates.", len(uniqueURLs))
 
-	type result struct {
-		url  string
-		err  error
-		code int
+	type job struct {
+		originalURL string
+		candidates  []string
 	}
 
-	jobs := make(chan string, len(uniqueURLs))
+	type result struct {
+		originalURL string
+		candidates  []string
+		err         error
+		code        int
+	}
+
+	jobs := make(chan job, len(uniqueURLs))
 	results := make(chan result, len(uniqueURLs))
 	concurrency := 20
 	var wg sync.WaitGroup
@@ -212,29 +213,59 @@ func validateURLsInTemplates(t *testing.T, templatesDir string) {
 		go func() {
 			defer wg.Done()
 
-			for u := range jobs {
-				res := result{url: u}
-				resp, err := client.Head(u)
-				if err != nil || (resp != nil && resp.StatusCode != 200) {
-					if resp != nil {
-						resp.Body.Close()
+			for j := range jobs {
+				res := result{originalURL: j.originalURL, candidates: j.candidates}
+				var lastErr error
+				var lastCode int
+				success := false
+
+				for _, u := range j.candidates {
+					resp, err := client.Head(u)
+					if err != nil || (resp != nil && resp.StatusCode != 200) {
+						if resp != nil {
+							resp.Body.Close()
+							lastCode = resp.StatusCode
+						}
+						resp, err = client.Get(u)
 					}
-					resp, err = client.Get(u)
+
+					if err != nil {
+						lastErr = err
+					} else {
+						lastCode = resp.StatusCode
+						resp.Body.Close()
+						if lastCode == 200 {
+							success = true
+							res.code = 200
+							break
+						}
+					}
 				}
 
-				if err != nil {
-					res.err = err
+				if !success {
+					res.err = lastErr
+					res.code = lastCode
 				} else {
-					res.code = resp.StatusCode
-					resp.Body.Close()
+					res.err = nil // Clear error if at least one candidate succeeded
 				}
+
 				results <- res
 			}
 		}()
 	}
 
 	for u := range uniqueURLs {
-		jobs <- u
+		var candidates []string
+		if strings.HasPrefix(u, "/") {
+			candidates = []string{
+				// TODO: eventually after the migration is done, this will be removed, and we will use the new domain docs.cloud.google.com
+				"https://cloud.google.com" + u,
+				"https://docs.cloud.google.com" + u,
+			}
+		} else {
+			candidates = []string{u}
+		}
+		jobs <- job{originalURL: u, candidates: candidates}
 	}
 	close(jobs)
 
@@ -246,10 +277,10 @@ func validateURLsInTemplates(t *testing.T, templatesDir string) {
 	failures := 0
 	for res := range results {
 		if res.err != nil {
-			t.Errorf("Failed to fetch %s: %v (referenced in: %v)", res.url, res.err, uniqueURLs[res.url][0])
+			t.Errorf("Failed to fetch %s (candidates: %v): %v (referenced in: %v)", res.originalURL, res.candidates, res.err, uniqueURLs[res.originalURL][0])
 			failures++
 		} else if res.code != 200 {
-			t.Errorf("URL %s returned status %d (referenced in: %v)", res.url, res.code, uniqueURLs[res.url][0])
+			t.Errorf("URL %s (candidates: %v) returned status %d (referenced in: %v)", res.originalURL, res.candidates, res.code, uniqueURLs[res.originalURL][0])
 			failures++
 		}
 	}

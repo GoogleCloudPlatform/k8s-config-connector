@@ -120,8 +120,7 @@ title: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The AccessContextManagerAccessPolicy this
-AccessContextManagerAccessLevel lives in.{% endverbatim %}</p>
+            <p>{% verbatim %}The AccessPolicy that this resource belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -131,7 +130,7 @@ AccessContextManagerAccessLevel lives in.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `accessPolicies/{{value}}`, where {{value}} is the `name` field of an `AccessContextManagerAccessPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed AccessContextManagerAccessPolicy resource. As per https://docs.cloud.google.com/asset-inventory/docs/asset-names Should be in the format "accessPolicies/{{accesspolicyID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -141,7 +140,7 @@ AccessContextManagerAccessLevel lives in.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a AccessContextManagerAccessPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -151,7 +150,7 @@ AccessContextManagerAccessLevel lives in.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a AccessContextManagerAccessPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -161,7 +160,7 @@ AccessContextManagerAccessLevel lives in.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A set of predefined conditions for the access level and a combining function.{% endverbatim %}</p>
+            <p>{% verbatim %}A `BasicLevel` composed of `Conditions`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -171,11 +170,7 @@ AccessContextManagerAccessLevel lives in.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}How the conditions list should be combined to determine if a request
-is granted this AccessLevel. If AND is used, each Condition in
-conditions must be satisfied for the AccessLevel to be applied. If
-OR is used, at least one Condition in conditions must be satisfied
-for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"].{% endverbatim %}</p>
+            <p>{% verbatim %}How the conditions list should be combined to determine if a request is granted this AccessLevel. If AND is used, each Condition in conditions must be satisfied for the AccessLevel to be applied. If OR is used, at least one Condition in conditions must be satisfied for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -205,9 +200,7 @@ for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND",
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Device specific restrictions, all restrictions must hold for
-the Condition to be true. If not specified, all devices are
-allowed.{% endverbatim %}</p>
+            <p>{% verbatim %}Device specific restrictions, all restrictions must hold for the Condition to be true. If not specified, all devices are allowed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -217,8 +210,7 @@ allowed.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}A list of allowed device management levels.
-An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPECIFIED", "NONE", "BASIC", "COMPLETE"].{% endverbatim %}</p>
+            <p>{% verbatim %}A list of allowed device management levels. An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPECIFIED", "NONE", "BASIC", "COMPLETE"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -238,8 +230,7 @@ An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPEC
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}A list of allowed encryptions statuses.
-An empty list allows all statuses. Possible values: ["ENCRYPTION_UNSPECIFIED", "ENCRYPTION_UNSUPPORTED", "UNENCRYPTED", "ENCRYPTED"].{% endverbatim %}</p>
+            <p>{% verbatim %}A list of allowed encryptions statuses. An empty list allows all statuses. Possible values: ["ENCRYPTION_UNSPECIFIED", "ENCRYPTION_UNSUPPORTED", "UNENCRYPTED", "ENCRYPTED"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -259,8 +250,7 @@ An empty list allows all statuses. Possible values: ["ENCRYPTION_UNSPECIFIED", "
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A list of allowed OS versions.
-An empty list allows all types and all versions.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of allowed OS versions. An empty list allows all types and all versions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -280,9 +270,7 @@ An empty list allows all types and all versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The minimum allowed OS version. If not set, any version
-of this OS satisfies the constraint.
-Format: "major.minor.patch" such as "10.5.301", "9.2.1".{% endverbatim %}</p>
+            <p>{% verbatim %}The minimum allowed OS version. If not set, any version of this OS satisfies the constraint. Format: "major.minor.patch" such as "10.5.301", "9.2.1".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -332,8 +320,7 @@ Format: "major.minor.patch" such as "10.5.301", "9.2.1".{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Whether or not screenlock is required for the DevicePolicy
-to be true. Defaults to false.{% endverbatim %}</p>
+            <p>{% verbatim %}Whether or not screenlock is required for the DevicePolicy to be true. Defaults to false.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -343,16 +330,7 @@ to be true. Defaults to false.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}A list of CIDR block IP subnetwork specification. May be IPv4
-or IPv6.
-Note that for a CIDR IP address block, the specified IP address
-portion must be properly truncated (i.e. all the host bits must
-be zero) or the input is considered malformed. For example,
-"192.0.2.0/24" is accepted but "192.0.2.1/24" is not. Similarly,
-for IPv6, "2001:db8::/32" is accepted whereas "2001:db8::1/32"
-is not. The originating IP of a request must be in one of the
-listed subnets in order for this Condition to be true.
-If empty, all IP addresses are allowed.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of CIDR block IP subnetwork specification. May be IPv4 or IPv6. Note that for a CIDR IP address block, the specified IP address portion must be properly truncated (i.e. all the host bits must be zero) or the input is considered malformed. For example, "192.0.2.0/24" is accepted but "192.0.2.1/24" is not. Similarly, for IPv6, "2001:db8::/32" is accepted whereas "2001:db8::1/32" is not. The originating IP of a request must be in one of the listed subnets in order for this Condition to be true. If empty, all IP addresses are allowed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -372,7 +350,7 @@ If empty, all IP addresses are allowed.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The request must be made by one of the provided user or service accounts. Groups are not supported. Syntax: `user:{emailid}` `serviceAccount:{emailid}` If not specified, a request may come from any user.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -382,13 +360,7 @@ If empty, all IP addresses are allowed.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}An allowed list of members (users, service accounts).
-Using groups is not supported.
-
-The signed-in user originating the request must be a part of one
-of the provided members. If not specified, a request may come
-from any user (logged in/not logged in, not present in any
-groups, etc.).{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -408,7 +380,7 @@ groups, etc.).{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `serviceAccount:{{value}}`, where {{value}} is the `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -448,9 +420,7 @@ groups, etc.).{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Whether to negate the Condition. If true, the Condition becomes
-a NAND over its non-empty fields, each field must be false for
-the Condition overall to be satisfied. Defaults to false.{% endverbatim %}</p>
+            <p>{% verbatim %}Whether to negate the Condition. If true, the Condition becomes a NAND over its non-empty fields, each field must be false for the Condition overall to be satisfied. Defaults to false.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -460,9 +430,7 @@ the Condition overall to be satisfied. Defaults to false.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The request must originate from one of the provided
-countries/regions.
-Format: A valid ISO 3166-1 alpha-2 code.{% endverbatim %}</p>
+            <p>{% verbatim %}The request must originate from one of the provided countries/regions. Format: A valid ISO 3166-1 alpha-2 code.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -482,7 +450,7 @@ Format: A valid ISO 3166-1 alpha-2 code.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}A list of other access levels defined in the same `Policy`, referenced by resource name. Referencing an `AccessLevel` which does not exist is an error. All access levels listed must be granted for the Condition to be true. Example: "`accessPolicies/MY_POLICY/accessLevels/LEVEL_NAME"`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -492,10 +460,7 @@ Format: A valid ISO 3166-1 alpha-2 code.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A list of other access levels defined in the same policy.
-Referencing an AccessContextManagerAccessLevel which does not exist
-is an error. All access levels listed must be granted for the
-condition to be true.{% endverbatim %}</p>
+            <p>{% verbatim %}AccessLevelRef is a reference to a AccessLevel resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -505,7 +470,7 @@ condition to be true.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of an `AccessContextManagerAccessLevel` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed AccessLevel resource. Should be in the format "accessPolicies/{{accessPolicyID}}/accessLevels/{{accessLevel}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -515,7 +480,7 @@ condition to be true.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a AccessLevel resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -525,7 +490,7 @@ condition to be true.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a AccessLevel resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -535,8 +500,7 @@ condition to be true.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Custom access level conditions are set using the Cloud Common Expression Language to represent the necessary conditions for the level to apply to a request.
-See CEL spec at: https://github.com/google/cel-spec.{% endverbatim %}</p>
+            <p>{% verbatim %}A `CustomLevel` written in the Common Expression Language.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -546,9 +510,7 @@ See CEL spec at: https://github.com/google/cel-spec.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language.
-This page details the objects and attributes that are used to the build the CEL expressions for
-custom access levels - https://cloud.google.com/access-context-manager/docs/custom-access-level-spec.{% endverbatim %}</p>
+            <p>{% verbatim %}Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. This page details the objects and attributes that are used to the build the CEL expressions for custom access levels - https://cloud.google.com/access-context-manager/docs/custom-access-level-spec.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -598,7 +560,7 @@ custom access levels - https://cloud.google.com/access-context-manager/docs/cust
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Description of the AccessLevel and its use. Does not affect behavior.{% endverbatim %}</p>
+            <p>{% verbatim %}Description of the `AccessLevel` and its use. Does not affect behavior.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -608,13 +570,13 @@ custom access levels - https://cloud.google.com/access-context-manager/docs/cust
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The AccessContextManagerAccessLevel name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>title</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -637,7 +599,9 @@ conditions:
   reason: string
   status: string
   type: string
+externalRef: string
 observedGeneration: integer
+observedState: {}
 ```
 
 <table class="properties responsive">
@@ -651,7 +615,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -697,10 +661,24 @@ observedGeneration: integer
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the AccessContextManagerAccessLevel resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

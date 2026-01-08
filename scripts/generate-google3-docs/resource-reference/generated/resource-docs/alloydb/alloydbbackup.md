@@ -102,7 +102,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of an `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed AlloyDBCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -112,7 +112,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -122,7 +122,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -182,7 +182,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -192,7 +192,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -202,7 +202,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -235,6 +235,7 @@ encryptionInfo:
   kmsKeyVersions:
   - string
 etag: string
+externalRef: string
 name: string
 observedGeneration: integer
 reconciling: boolean
@@ -254,7 +255,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the AlloyDBBackup's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -346,6 +347,13 @@ updateTime: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}A hash of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the AlloyDBBackup resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
