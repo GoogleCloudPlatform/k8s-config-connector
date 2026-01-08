@@ -23,8 +23,10 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"sync"
 
 	"golang.org/x/oauth2"
+	"golang.org/x/time/rate"
 	"google.golang.org/grpc"
 	"k8s.io/klog/v2"
 )
@@ -83,13 +85,24 @@ func ExtractBlockedGCPError(err error) (*BlockedGCPError, bool) {
 type interceptingGCPClient struct {
 	upstreamGCPClient *http.Client
 	authorization     oauth2.TokenSource
+	// qps and burst are the rate limiter settings.
+	qps   float64
+	burst int
+	// rateLimiterMutex is a mutex for rate limiters.
+	rateLimiterMutex *sync.Mutex
+	// rateLimiters is a map of rate limiters, keyed by host.
+	rateLimiters map[string]*rate.Limiter
 }
 
 // newInterceptingGCPClient creates a new interceptingGCPClient.
-func newInterceptingGCPClient(upstreamGCPClient *http.Client, authorization oauth2.TokenSource) *interceptingGCPClient {
+func newInterceptingGCPClient(upstreamGCPClient *http.Client, authorization oauth2.TokenSource, qps float64, burst int) *interceptingGCPClient {
 	return &interceptingGCPClient{
 		upstreamGCPClient: upstreamGCPClient,
 		authorization:     authorization,
+		qps:               qps,
+		burst:             burst,
+		rateLimiterMutex:  &sync.Mutex{},
+		rateLimiters:      make(map[string]*rate.Limiter),
 	}
 }
 
@@ -142,6 +155,15 @@ func (c *interceptingGCPClient) RoundTrip(req *http.Request) (*http.Response, er
 	requestIsAllowed := false
 	if req.Method == "GET" {
 		requestIsAllowed = true
+	}
+	if c.qps > 0 {
+		limiter, err := c.getOrCreateRateLimiter(req.URL)
+		if err != nil {
+			return nil, err
+		}
+		if err := limiter.Wait(req.Context()); err != nil {
+			return nil, err
+		}
 	}
 
 	if requestIsAllowed {

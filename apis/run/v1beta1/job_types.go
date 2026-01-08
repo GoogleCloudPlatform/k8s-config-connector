@@ -362,7 +362,7 @@ type HTTPGetAction struct {
 	//  65535. If not specified, defaults to the exposed port of the container,
 	//  which is the value of container.ports[0].containerPort.
 	// +kcc:proto:field=google.cloud.run.v2.HTTPGetAction.port
-	// Port *int32 `json:"port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 }
 
 // +kcc:proto=google.cloud.run.v2.Probe

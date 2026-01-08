@@ -138,13 +138,13 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -487,13 +487,13 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -1116,6 +1116,7 @@ X-Xss-Protection: 0
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -1124,7 +1125,7 @@ X-Xss-Protection: 0
             },
             "volumeMounts": [
               {
-                "mountPath": "/cloudsql",
+                "mountPath": "/cloudsql-new-path",
                 "name": "cloudsql"
               }
             ]
@@ -1138,7 +1139,8 @@ X-Xss-Protection: 0
           {
             "cloudSqlInstance": {
               "instances": [
-                "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
+                "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
+                "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
               ]
             },
             "name": "cloudsql"
@@ -1195,6 +1197,7 @@ X-Xss-Protection: 0
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -1203,7 +1206,7 @@ X-Xss-Protection: 0
             },
             "volumeMounts": [
               {
-                "mountPath": "/cloudsql",
+                "mountPath": "/cloudsql-new-path",
                 "name": "cloudsql"
               }
             ]
@@ -1217,7 +1220,8 @@ X-Xss-Protection: 0
           {
             "cloudSqlInstance": {
               "instances": [
-                "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
+                "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
+                "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
               ]
             },
             "name": "cloudsql"
@@ -1253,6 +1257,7 @@ X-Xss-Protection: 0
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -1261,7 +1266,7 @@ X-Xss-Protection: 0
             },
             "volumeMounts": [
               {
-                "mountPath": "/cloudsql",
+                "mountPath": "/cloudsql-new-path",
                 "name": "cloudsql"
               }
             ]
@@ -1275,7 +1280,8 @@ X-Xss-Protection: 0
           {
             "cloudSqlInstance": {
               "instances": [
-                "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
+                "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
+                "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
               ]
             },
             "name": "cloudsql"
@@ -1329,6 +1335,7 @@ X-Xss-Protection: 0
       "containers": [
         {
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
+          "name": "container-name",
           "resources": {
             "limits": {
               "cpu": "1000m",
@@ -1337,7 +1344,7 @@ X-Xss-Protection: 0
           },
           "volumeMounts": [
             {
-              "mountPath": "/cloudsql",
+              "mountPath": "/cloudsql-new-path",
               "name": "cloudsql"
             }
           ]
@@ -1351,7 +1358,8 @@ X-Xss-Protection: 0
         {
           "cloudSqlInstance": {
             "instances": [
-              "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
+              "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
+              "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
             ]
           },
           "name": "cloudsql"
@@ -1406,6 +1414,7 @@ X-Xss-Protection: 0
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -1414,7 +1423,7 @@ X-Xss-Protection: 0
             },
             "volumeMounts": [
               {
-                "mountPath": "/cloudsql",
+                "mountPath": "/cloudsql-new-path",
                 "name": "cloudsql"
               }
             ]
@@ -1428,7 +1437,8 @@ X-Xss-Protection: 0
           {
             "cloudSqlInstance": {
               "instances": [
-                "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
+                "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
+                "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
               ]
             },
             "name": "cloudsql"
@@ -1485,6 +1495,7 @@ X-Xss-Protection: 0
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -1493,7 +1504,7 @@ X-Xss-Protection: 0
             },
             "volumeMounts": [
               {
-                "mountPath": "/cloudsql",
+                "mountPath": "/cloudsql-new-path",
                 "name": "cloudsql"
               }
             ]
@@ -1507,7 +1518,8 @@ X-Xss-Protection: 0
           {
             "cloudSqlInstance": {
               "instances": [
-                "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
+                "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
+                "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
               ]
             },
             "name": "cloudsql"
@@ -1543,6 +1555,7 @@ X-Xss-Protection: 0
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -1551,7 +1564,7 @@ X-Xss-Protection: 0
             },
             "volumeMounts": [
               {
-                "mountPath": "/cloudsql",
+                "mountPath": "/cloudsql-new-path",
                 "name": "cloudsql"
               }
             ]
@@ -1565,7 +1578,8 @@ X-Xss-Protection: 0
           {
             "cloudSqlInstance": {
               "instances": [
-                "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
+                "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
+                "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
               ]
             },
             "name": "cloudsql"
@@ -1609,13 +1623,13 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -1838,13 +1852,13 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],

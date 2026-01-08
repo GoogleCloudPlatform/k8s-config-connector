@@ -144,6 +144,7 @@ X-Xss-Protection: 0
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
+    "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
     "parent": "tagKeys/${tagKeyID}",
     "shortName": "valuename",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -171,6 +172,7 @@ X-Xss-Protection: 0
   "description": "For valuename resources.",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
+  "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
   "parent": "tagKeys/${tagKeyID}",
   "shortName": "valuename",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -178,7 +180,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudresourcemanager.googleapis.com/v3/tagBindings?alt=json
+POST https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -203,13 +205,14 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagBinding",
     "name": "tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}",
     "parent": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}",
-    "tagValue": "tagValues/${tagValueID}"
+    "tagValue": "tagValues/${tagValueID}",
+    "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
   }
 }
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagBindings/?alt=json&pageSize=300&parent=%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}
+GET https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -235,9 +238,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}?alt=json
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectNumber}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=tagBindings%2F%252F%252Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectNumber}%2FtagValues%2F${tagValueID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -277,6 +281,7 @@ X-Xss-Protection: 0
   "description": "For valuename resources.",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
+  "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
   "parent": "tagKeys/${tagKeyID}",
   "shortName": "valuename",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -333,6 +338,7 @@ X-Xss-Protection: 0
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
+    "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
     "parent": "tagKeys/${tagKeyID}",
     "shortName": "valuename",
     "updateTime": "2024-04-01T12:34:56.123456Z"

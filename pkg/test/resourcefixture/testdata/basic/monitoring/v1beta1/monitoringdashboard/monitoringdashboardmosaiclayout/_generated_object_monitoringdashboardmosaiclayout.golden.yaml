@@ -46,6 +46,45 @@ spec:
       width: 12
       xPos: 0
       yPos: 2
+    - height: 1
+      widget:
+        alertChart:
+          alertPolicyRef:
+            name: monitoringalertpolicy-${uniqueId}
+        title: AlertChart Widget
+      width: 12
+      xPos: 0
+      yPos: 3
+    - height: 1
+      widget:
+        errorReportingPanel:
+          projectRefs:
+          - external: projects/project1
+          - external: projects/project2
+          services:
+          - foo
+          - bar
+          versions:
+          - v1
+        title: ErrorReporting Widget
+      width: 12
+      xPos: 0
+      yPos: 4
+    - height: 1
+      widget:
+        incidentList:
+          monitoredResources:
+          - labels:
+              instance_id: "12345678901234"
+              project_id: my-project
+              zone: us-central1-a
+            type: gce_instance
+          policyRefs:
+          - name: monitoringalertpolicy-${uniqueId}
+        title: IncidentList Widget
+      width: 12
+      xPos: 0
+      yPos: 5
   projectRef:
     external: ${projectId}
   resourceID: ${dashboardID}

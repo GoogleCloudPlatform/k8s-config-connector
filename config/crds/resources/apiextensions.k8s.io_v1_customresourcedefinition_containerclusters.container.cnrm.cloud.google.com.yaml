@@ -566,6 +566,10 @@ spec:
                   Enable Binary Authorization for this cluster. If enabled, all container
                   images will be validated by Google Binary Authorization.
                 type: boolean
+              enableCiliumClusterwideNetworkPolicy:
+                description: Whether Cilium cluster-wide network policy is enabled
+                  on this cluster.
+                type: boolean
               enableFqdnNetworkPolicy:
                 description: Whether FQDN Network Policy is enabled on this cluster.
                 type: boolean
@@ -1004,14 +1008,16 @@ spec:
                     description: Immutable. Specifies options for controlling advanced
                       machine features.
                     properties:
+                      enableNestedVirtualization:
+                        description: Immutable. Whether or not to enable nested virtualization
+                          (defaults to false).
+                        type: boolean
                       threadsPerCore:
                         description: Immutable. The number of threads per physical
                           core. To disable simultaneous multithreading (SMT) set this
                           to 1. If unset, the maximum number of threads supported
                           per core by the underlying processor is assumed.
                         type: integer
-                    required:
-                    - threadsPerCore
                     type: object
                   bootDiskKMSCryptoKeyRef:
                     oneOf:

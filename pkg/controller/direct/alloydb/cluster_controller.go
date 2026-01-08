@@ -19,9 +19,8 @@ import (
 	"fmt"
 	"strings"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
+	computev1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -273,14 +272,14 @@ func (a *ClusterAdapter) resolveKRMDefaultsForUpdate() {
 	// This is needed for only update because the returned actual state has both
 	// fields set to the same value.
 	if obj.Spec.NetworkRef == nil && obj.Spec.NetworkConfig != nil && obj.Spec.NetworkConfig.NetworkRef != nil {
-		obj.Spec.NetworkRef = &computev1beta1.ComputeNetworkRef{
+		obj.Spec.NetworkRef = &computev1.ComputeNetworkRef{
 			External: obj.Spec.NetworkConfig.NetworkRef.External,
 		}
 	} else if (obj.Spec.NetworkConfig == nil || obj.Spec.NetworkConfig.NetworkRef == nil) && obj.Spec.NetworkRef != nil {
 		if obj.Spec.NetworkConfig == nil {
 			obj.Spec.NetworkConfig = &krm.Cluster_NetworkConfig{}
 		}
-		obj.Spec.NetworkConfig.NetworkRef = &computev1beta1.ComputeNetworkRef{
+		obj.Spec.NetworkConfig.NetworkRef = &computev1.ComputeNetworkRef{
 			External: obj.Spec.NetworkRef.External,
 		}
 	}
@@ -294,9 +293,10 @@ func (a *ClusterAdapter) resolveInitialUserPasswordField(ctx context.Context) er
 	}
 
 	// Resolve sensitive field 'spec.initialUser.password' when it is set.
-	if err := direct.ResolveSensitiveField(ctx, obj.Spec.InitialUser.Password, "spec.initialUser.password", obj.Namespace, a.reader); err != nil {
+	if err := obj.Spec.InitialUser.Password.NormalizeSecret(ctx, "spec.initialUser.password", obj.Namespace, a.reader); err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -498,6 +498,7 @@ func (a *ClusterAdapter) resolveGCPDefaults(desired *alloydbpb.Cluster, actual *
 		desired.ContinuousBackupConfig.RecoveryWindowDays = 14
 	}
 
+	// GeminiConfig deprecated in v1beta and removed in v1
 	if desired.GeminiConfig == nil {
 		desired.GeminiConfig = &alloydbpb.GeminiClusterConfig{}
 	}

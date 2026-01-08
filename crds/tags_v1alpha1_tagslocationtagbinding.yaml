@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.140.0
+    cnrm.cloud.google.com/version: 1.142.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -30,6 +30,7 @@ spec:
     categories:
     - gcp
     kind: TagsLocationTagBinding
+    listKind: TagsLocationTagBindingList
     plural: tagslocationtagbindings
     shortNames:
     - gcptagslocationtagbinding
@@ -56,27 +57,29 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: TagsLocationTagBinding is the Schema for the TagsLocationTagBinding
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: TagsLocationTagBindingSpec defines the desired state of TagsLocationTagBinding
             properties:
               location:
-                description: |-
-                  Immutable. The geographic location where the transfer config should reside.
-                  Examples: US, EU, asia-northeast1. The default value is US.
+                description: The location for the resource being tagged.
                 type: string
               parentRef:
+                description: ParentRef is a reference to a parent resource.
                 oneOf:
                 - not:
                     required:
@@ -104,11 +107,11 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The service-generated name of the
-                  resource. Used for acquisition only. Leave unset to create a new
-                  resource.
+                description: The service-generated name of the resource. Used for
+                  acquisition only. Leave unset to create a new resource.
                 type: string
               tagValueRef:
+                description: TagsTagValueRef is a reference to a TagsTagValue resource.
                 oneOf:
                 - not:
                     required:
@@ -125,14 +128,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `tagValues/{{value}}`,
-                      where {{value}} is the `name` field of a `TagsTagValue` resource.'
+                    description: A reference to an externally managed TagsTagValue
+                      resource. Should be in the format "tagValues/{{tagValueID}}".
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a TagsTagValue resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a TagsTagValue resource.
                     type: string
                 type: object
             required:
@@ -141,10 +144,12 @@ spec:
             - tagValueRef
             type: object
           status:
+            description: TagsLocationTagBindingStatus defines the config connector
+              machine state of TagsLocationTagBinding
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -168,9 +173,13 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the TagsLocationTagBinding resource
+                  in GCP.
+                type: string
               name:
                 description: 'The generated id for the TagBinding. This is a string
-                  of the form: ''tagBindings/{full-resource-name}/{tag-value-name}''.'
+                  of the form: tagBindings/{full-resource-name}/{tag-value-name}.'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -178,6 +187,7 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
         required:
@@ -191,5 +201,5 @@ status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: []
-  storedVersions: []
+  conditions: null
+  storedVersions: null

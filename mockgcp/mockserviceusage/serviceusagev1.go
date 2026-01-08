@@ -17,15 +17,18 @@ package mockserviceusage
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"k8s.io/klog/v2"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/serviceusage/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -89,9 +92,15 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 	if !changed {
 		return s.operations.DoneLRO(ctx, lroPrefix, &emptypb.Empty{}, response)
 	} else {
-		return s.operations.StartLRO(ctx, lroPrefix, &emptypb.Empty{}, func() (proto.Message, error) {
+		lro, err := s.operations.StartLRO(ctx, lroPrefix, &emptypb.Empty{}, func() (proto.Message, error) {
 			return response, nil
 		})
+		if err != nil {
+			return nil, err
+		}
+		// lro only returns the name
+		lro.Metadata = nil
+		return lro, nil
 	}
 }
 
@@ -146,9 +155,17 @@ func (s *ServiceUsageV1) BatchEnableServices(ctx context.Context, req *pb.BatchE
 	}
 
 	prefix := ""
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+	lro, err := s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		return response, nil
 	})
+	if err != nil {
+		return nil, err
+	}
+
+	// We actually only return the lro name from this operation
+	return &longrunning.Operation{
+		Name: lro.Name,
+	}, nil
 }
 
 func (s *ServiceUsageV1) DisableService(ctx context.Context, req *pb.DisableServiceRequest) (*longrunning.Operation, error) {
@@ -271,6 +288,51 @@ func (s *ServiceUsageV1) ListServices(ctx context.Context, req *pb.ListServicesR
 			Parent: fmt.Sprintf("projects/%d", project.Number),
 			State:  state,
 		})
+	}
+
+	// Implement field filtering
+	// TODO: Can we make this generic?  Is it used in other APIs?
+	{
+		md, _ := metadata.FromIncomingContext(ctx)
+		query := ""
+		if md != nil {
+			values := md.Get(httpmux.MetadataKeyHttpRequestQuery)
+			if len(values) > 0 {
+				if len(values) > 1 {
+					return nil, status.Errorf(codes.InvalidArgument, "multiple http.request.query metadata entries found")
+				}
+				query = values[0]
+			}
+		}
+		fields := ""
+		if query != "" {
+			q, err := url.ParseQuery(query)
+			if err != nil {
+				return nil, status.Errorf(codes.InvalidArgument, "unable to parse query %q: %v", query, err)
+			}
+			fields = q.Get("fields")
+		}
+		if fields != "" {
+			include := make(map[string]bool)
+			for _, field := range strings.Split(fields, ",") {
+				include[field] = true
+			}
+
+			for _, service := range response.Services {
+				if !include["services/name"] {
+					service.Name = ""
+				}
+				if !include["services/parent"] {
+					service.Parent = ""
+				}
+				if !include["services/state"] {
+					service.State = pb.State_STATE_UNSPECIFIED
+				}
+			}
+			if !include["nextPageToken"] {
+				response.NextPageToken = ""
+			}
+		}
 	}
 
 	return response, nil

@@ -603,7 +603,7 @@ type DevicesDeviceUsersServerClient interface {
 	GetDevicesDeviceUser(ctx context.Context, in *GetDevicesDeviceUserRequest, opts ...grpc.CallOption) (*DeviceUser, error)
 	// Lists/Searches DeviceUsers.
 	ListDevicesDeviceUsers(ctx context.Context, in *ListDevicesDeviceUsersRequest, opts ...grpc.CallOption) (*ListDeviceUsersResponse, error)
-	// Looks up resource names of the DeviceUsers associated with the caller's credentials, as well as the properties provided in the request. This method must be called with end-user credentials with the scope: https://www.googleapis.com/auth/cloud-identity.devices.lookup If multiple properties are provided, only DeviceUsers having all of these properties are considered as matches - i.e. the query behaves like an AND. Different platforms require different amounts of information from the caller to ensure that the DeviceUser is uniquely identified. - iOS: No properties need to be passed, the caller's credentials are sufficient to identify the corresponding DeviceUser. - Android: Specifying the 'android_id' field is required. - Desktop: Specifying the 'raw_resource_id' field is required.
+	// Looks up resource names of the DeviceUsers associated with the caller's credentials, as well as the properties provided in the request. This method must be called with end-user credentials with the scope: https://www.googleapis.com/auth/cloud-identity.devices.lookup If multiple properties are provided, only DeviceUsers having all of these properties are considered as matches - i.e. the query behaves like an AND. Different platforms require different amounts of information from the caller to ensure that the DeviceUser is uniquely identified. - iOS: Specifying the 'partner' and 'ios_device_id' fields is required. - Android: Specifying the 'android_id' field is required. - Desktop: Specifying the 'raw_resource_id' field is required.
 	LookupDevicesDeviceUser(ctx context.Context, in *LookupDevicesDeviceUserRequest, opts ...grpc.CallOption) (*LookupSelfDeviceUsersResponse, error)
 	// Wipes the user's account on a device.
 	WipeDevicesDeviceUser(ctx context.Context, in *WipeDevicesDeviceUserRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
@@ -705,7 +705,7 @@ type DevicesDeviceUsersServerServer interface {
 	GetDevicesDeviceUser(context.Context, *GetDevicesDeviceUserRequest) (*DeviceUser, error)
 	// Lists/Searches DeviceUsers.
 	ListDevicesDeviceUsers(context.Context, *ListDevicesDeviceUsersRequest) (*ListDeviceUsersResponse, error)
-	// Looks up resource names of the DeviceUsers associated with the caller's credentials, as well as the properties provided in the request. This method must be called with end-user credentials with the scope: https://www.googleapis.com/auth/cloud-identity.devices.lookup If multiple properties are provided, only DeviceUsers having all of these properties are considered as matches - i.e. the query behaves like an AND. Different platforms require different amounts of information from the caller to ensure that the DeviceUser is uniquely identified. - iOS: No properties need to be passed, the caller's credentials are sufficient to identify the corresponding DeviceUser. - Android: Specifying the 'android_id' field is required. - Desktop: Specifying the 'raw_resource_id' field is required.
+	// Looks up resource names of the DeviceUsers associated with the caller's credentials, as well as the properties provided in the request. This method must be called with end-user credentials with the scope: https://www.googleapis.com/auth/cloud-identity.devices.lookup If multiple properties are provided, only DeviceUsers having all of these properties are considered as matches - i.e. the query behaves like an AND. Different platforms require different amounts of information from the caller to ensure that the DeviceUser is uniquely identified. - iOS: Specifying the 'partner' and 'ios_device_id' fields is required. - Android: Specifying the 'android_id' field is required. - Desktop: Specifying the 'raw_resource_id' field is required.
 	LookupDevicesDeviceUser(context.Context, *LookupDevicesDeviceUserRequest) (*LookupSelfDeviceUsersResponse, error)
 	// Wipes the user's account on a device.
 	WipeDevicesDeviceUser(context.Context, *WipeDevicesDeviceUserRequest) (*longrunningpb.Operation, error)
@@ -3036,10 +3036,16 @@ var OrgUnitsMembershipsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PoliciesServerClient interface {
-	// Get a Policy
+	// Create a policy.
+	CreatePolicy(ctx context.Context, in *CreatePolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Delete a policy.
+	DeletePolicy(ctx context.Context, in *DeletePolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Get a policy.
 	GetPolicy(ctx context.Context, in *GetPolicyRequest, opts ...grpc.CallOption) (*Policy, error)
-	// List Policies
+	// List policies.
 	ListPolicies(ctx context.Context, in *ListPoliciesRequest, opts ...grpc.CallOption) (*ListPoliciesResponse, error)
+	// Update a policy.
+	PatchPolicy(ctx context.Context, in *PatchPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type policiesServerClient struct {
@@ -3048,6 +3054,24 @@ type policiesServerClient struct {
 
 func NewPoliciesServerClient(cc grpc.ClientConnInterface) PoliciesServerClient {
 	return &policiesServerClient{cc}
+}
+
+func (c *policiesServerClient) CreatePolicy(ctx context.Context, in *CreatePolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.v1beta1.PoliciesServer/CreatePolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *policiesServerClient) DeletePolicy(ctx context.Context, in *DeletePolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.v1beta1.PoliciesServer/DeletePolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *policiesServerClient) GetPolicy(ctx context.Context, in *GetPolicyRequest, opts ...grpc.CallOption) (*Policy, error) {
@@ -3068,14 +3092,29 @@ func (c *policiesServerClient) ListPolicies(ctx context.Context, in *ListPolicie
 	return out, nil
 }
 
+func (c *policiesServerClient) PatchPolicy(ctx context.Context, in *PatchPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.v1beta1.PoliciesServer/PatchPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PoliciesServerServer is the server API for PoliciesServer service.
 // All implementations must embed UnimplementedPoliciesServerServer
 // for forward compatibility
 type PoliciesServerServer interface {
-	// Get a Policy
+	// Create a policy.
+	CreatePolicy(context.Context, *CreatePolicyRequest) (*longrunningpb.Operation, error)
+	// Delete a policy.
+	DeletePolicy(context.Context, *DeletePolicyRequest) (*longrunningpb.Operation, error)
+	// Get a policy.
 	GetPolicy(context.Context, *GetPolicyRequest) (*Policy, error)
-	// List Policies
+	// List policies.
 	ListPolicies(context.Context, *ListPoliciesRequest) (*ListPoliciesResponse, error)
+	// Update a policy.
+	PatchPolicy(context.Context, *PatchPolicyRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedPoliciesServerServer()
 }
 
@@ -3083,11 +3122,20 @@ type PoliciesServerServer interface {
 type UnimplementedPoliciesServerServer struct {
 }
 
+func (UnimplementedPoliciesServerServer) CreatePolicy(context.Context, *CreatePolicyRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePolicy not implemented")
+}
+func (UnimplementedPoliciesServerServer) DeletePolicy(context.Context, *DeletePolicyRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeletePolicy not implemented")
+}
 func (UnimplementedPoliciesServerServer) GetPolicy(context.Context, *GetPolicyRequest) (*Policy, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPolicy not implemented")
 }
 func (UnimplementedPoliciesServerServer) ListPolicies(context.Context, *ListPoliciesRequest) (*ListPoliciesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListPolicies not implemented")
+}
+func (UnimplementedPoliciesServerServer) PatchPolicy(context.Context, *PatchPolicyRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchPolicy not implemented")
 }
 func (UnimplementedPoliciesServerServer) mustEmbedUnimplementedPoliciesServerServer() {}
 
@@ -3100,6 +3148,42 @@ type UnsafePoliciesServerServer interface {
 
 func RegisterPoliciesServerServer(s grpc.ServiceRegistrar, srv PoliciesServerServer) {
 	s.RegisterService(&PoliciesServer_ServiceDesc, srv)
+}
+
+func _PoliciesServer_CreatePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PoliciesServerServer).CreatePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.apps.cloudidentity.v1beta1.PoliciesServer/CreatePolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PoliciesServerServer).CreatePolicy(ctx, req.(*CreatePolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PoliciesServer_DeletePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeletePolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PoliciesServerServer).DeletePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.apps.cloudidentity.v1beta1.PoliciesServer/DeletePolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PoliciesServerServer).DeletePolicy(ctx, req.(*DeletePolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _PoliciesServer_GetPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -3138,6 +3222,24 @@ func _PoliciesServer_ListPolicies_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PoliciesServer_PatchPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PoliciesServerServer).PatchPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.apps.cloudidentity.v1beta1.PoliciesServer/PatchPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PoliciesServerServer).PatchPolicy(ctx, req.(*PatchPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PoliciesServer_ServiceDesc is the grpc.ServiceDesc for PoliciesServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -3146,12 +3248,24 @@ var PoliciesServer_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*PoliciesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "CreatePolicy",
+			Handler:    _PoliciesServer_CreatePolicy_Handler,
+		},
+		{
+			MethodName: "DeletePolicy",
+			Handler:    _PoliciesServer_DeletePolicy_Handler,
+		},
+		{
 			MethodName: "GetPolicy",
 			Handler:    _PoliciesServer_GetPolicy_Handler,
 		},
 		{
 			MethodName: "ListPolicies",
 			Handler:    _PoliciesServer_ListPolicies_Handler,
+		},
+		{
+			MethodName: "PatchPolicy",
+			Handler:    _PoliciesServer_PatchPolicy_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

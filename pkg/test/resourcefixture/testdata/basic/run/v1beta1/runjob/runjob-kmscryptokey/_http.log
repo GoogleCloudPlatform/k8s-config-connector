@@ -883,7 +883,7 @@ X-Xss-Protection: 0
             }
           }
         ],
-        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
         "executionEnvironment": 2,
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -947,7 +947,7 @@ X-Xss-Protection: 0
             }
           }
         ],
-        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -990,7 +990,7 @@ X-Xss-Protection: 0
             }
           }
         ],
-        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -1051,7 +1051,7 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
+      "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
       "executionEnvironment": 2,
       "maxRetries": 3,
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -1113,7 +1113,7 @@ X-Xss-Protection: 0
             }
           }
         ],
-        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
         "executionEnvironment": 2,
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -1177,7 +1177,7 @@ X-Xss-Protection: 0
             }
           }
         ],
-        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -1220,7 +1220,7 @@ X-Xss-Protection: 0
             }
           }
         ],
-        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",

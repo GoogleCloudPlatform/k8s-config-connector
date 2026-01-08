@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.140.0
+    cnrm.cloud.google.com/version: 1.142.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -137,14 +137,17 @@ spec:
                         type: string
                     type: object
                   schedule:
-                    description: 'Optional. Cron schedule (https://en.wikipedia.org/wiki/Cron)
-                      for running discovery periodically. Successive discovery runs
-                      must be scheduled at least 60 minutes apart. The default value
-                      is to run discovery every 60 minutes. To explicitly set a timezone
-                      to the cron tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}"
-                      or TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be
-                      a valid string from IANA time zone database. For example, `CRON_TZ=America/New_York
-                      1 * * * *`, or `TZ=America/New_York 1 * * * *`.'
+                    description: |-
+                      Optional. Cron schedule (https://en.wikipedia.org/wiki/Cron) for
+                       running discovery periodically. Successive discovery runs must be
+                       scheduled at least 60 minutes apart. The default value is to run
+                       discovery every 60 minutes.
+
+                       To explicitly set a timezone to the cron tab, apply a prefix in the
+                       cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or TZ=${IANA_TIME_ZONE}".
+                       The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
+                       database. For example, `CRON_TZ=America/New_York 1 * * * *`, or
+                       `TZ=America/New_York 1 * * * *`.
                     type: string
                 type: object
               displayName:

@@ -41,6 +41,13 @@ func firestoreFieldFuzzer() fuzztesting.KRMFuzzer {
 						x.ArrayConfig = pb.Index_IndexField_CONTAINS
 					}
 				}
+
+				if x, ok := field.GetValueMode().(*pb.Index_IndexField_Order_); ok {
+					// If we specify an order, it should not be the unspecified value.
+					if x.Order == pb.Index_IndexField_ORDER_UNSPECIFIED {
+						x.Order = pb.Index_IndexField_ASCENDING
+					}
+				}
 			}
 		}
 	}

@@ -18,7 +18,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
@@ -34,7 +36,7 @@ import (
 // Mux is the primary interface for mapping HTTP requests to gRPC method calls.
 type Mux interface {
 	http.Handler
-	AddService(client any)
+	AddService(client any, opt ...ServiceOption)
 }
 
 // grpcMux implements Mux.
@@ -57,6 +59,8 @@ func NewGRPCMux(conn *grpc.ClientConn) (*grpcMux, error) {
 
 // grpcMethods holds state for a single gRPC method.
 type grpcMethod struct {
+	parentService *grpcService
+
 	method       protoreflect.MethodDescriptor
 	goMethod     reflect.Value
 	goMethodType reflect.Method
@@ -74,6 +78,20 @@ func (m *grpcMethod) Name() string {
 	return string(m.method.FullName())
 }
 
+func tokenizeURLPath(url *url.URL) []string {
+	p := url.Path
+	suffix := ""
+	if idx := strings.Index(p, ":"); idx != -1 {
+		suffix = p[idx:]
+		p = p[:idx]
+	}
+	tokens := strings.Split(strings.TrimPrefix(p, "/"), "/")
+	if suffix != "" {
+		tokens = append(tokens, suffix)
+	}
+	return tokens
+}
+
 // ServeHTTP implements http.Handler.
 // This is the primary entrypoint for HTTP requests,
 // they are decoded and mapped to GRPC method calls.
@@ -81,8 +99,7 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := klog.FromContext(ctx)
 
-	url := r.URL.Path
-	tokens := strings.Split(strings.TrimPrefix(url, "/"), "/")
+	tokens := tokenizeURLPath(r.URL)
 
 	// Check for any custom handlers first
 	for _, customHandler := range m.customHandlers {
@@ -111,7 +128,7 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	log.Info("http request not matched", "method", r.Method, "url", r.URL.String())
 
 	// For debugging it can be useful to dump all the possible paths
-	dumpPaths := false
+	dumpPaths := true
 	if dumpPaths {
 		for _, service := range m.services {
 			for _, method := range service.methods {
@@ -138,9 +155,10 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 	log := klog.FromContext(ctx)
 
 	call := &httpMethodCall{
-		parent: m,
-		r:      r,
-		w:      w,
+		parent:     m,
+		grpcMethod: method,
+		r:          r,
+		w:          w,
 	}
 
 	var body []byte
@@ -231,6 +249,12 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 					responseOptions.Alt = values
 					continue
 				}
+				if k == "prettyPrint" || k == "pretty_print" {
+					// Pretty-print not implemented; ignore, for now
+					// responseOptions.PrettyPrint = values
+					continue
+				}
+
 				// Convert camelCase to snake_case
 				var protoKey []rune
 				for _, c := range k {
@@ -286,9 +310,9 @@ func setProtoField(protoMessage protoreflect.ProtoMessage, k string, values []st
 	curr := protoMessage.ProtoReflect()
 	for i := 0; i < len(tokens)-1; i++ {
 		token := tokens[i]
-		fd := protoMessage.ProtoReflect().Descriptor().Fields().ByTextName(token)
+		fd := curr.Descriptor().Fields().ByTextName(token)
 		if fd == nil {
-			return fmt.Errorf("value field %q not found", k)
+			return fmt.Errorf("value field %q not found in %v", k, curr.Descriptor().FullName())
 		}
 		curr = curr.Mutable(fd).Message()
 	}
@@ -306,6 +330,28 @@ func setProtoField(protoMessage protoreflect.ProtoMessage, k string, values []st
 			}
 			v := values[0]
 			curr.Set(fd, protoreflect.ValueOfString(v))
+
+		case protoreflect.Int32Kind:
+			if len(values) != 1 {
+				return fmt.Errorf("expected one value for %q, got %v", k, values)
+			}
+			v := values[0]
+			vInt, err := strconv.ParseInt(v, 10, 32)
+			if err != nil {
+				return fmt.Errorf("expected int32 value for %q, got %v", k, v)
+			}
+			curr.Set(fd, protoreflect.ValueOfInt32(int32(vInt)))
+
+		case protoreflect.Int64Kind:
+			if len(values) != 1 {
+				return fmt.Errorf("expected one value for %q, got %v", k, values)
+			}
+			v := values[0]
+			vInt, err := strconv.ParseInt(v, 10, 64)
+			if err != nil {
+				return fmt.Errorf("expected int64 value for %q, got %v", k, v)
+			}
+			curr.Set(fd, protoreflect.ValueOfInt64(vInt))
 
 		case protoreflect.BoolKind:
 			if len(values) != 1 {

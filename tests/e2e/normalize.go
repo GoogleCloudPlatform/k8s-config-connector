@@ -33,7 +33,6 @@ import (
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/klog/v2"
 )
 
 const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
@@ -67,7 +66,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	}
 	u.SetAnnotations(annotations)
 
-	visitor := newObjectWalker()
+	visitor := newObjectWalker(t)
 
 	// Apply replacements
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -643,6 +642,8 @@ func setStringAtPath(m map[string]any, atPath string, newValue string) error {
 }
 
 type objectWalker struct {
+	t *testing.T
+
 	removePaths              sets.Set[string]
 	sortSlices               sets.Set[string]
 	sortSlicesBy             []sortSliceBy
@@ -677,8 +678,9 @@ type stringReplacement struct {
 	Replace string
 }
 
-func newObjectWalker() *objectWalker {
+func newObjectWalker(t *testing.T) *objectWalker {
 	return &objectWalker{
+		t:                        t,
 		removePaths:              sets.New[string](),
 		sortSlices:               sets.New[string](),
 		sortAndDeduplicateSlices: sets.New[string](),
@@ -688,7 +690,7 @@ func newObjectWalker() *objectWalker {
 
 func (o *objectWalker) ReplacePath(path string, v any) {
 	if v2, found := o.replacePaths[path]; found && !reflect.DeepEqual(v, v2) {
-		klog.Fatalf("objectWalker has duplicate ReplacePath %q", path)
+		o.t.Fatalf("objectWalker has duplicate ReplacePath %q", path)
 	}
 
 	o.replacePaths[path] = v
@@ -702,7 +704,7 @@ func (o *objectWalker) ReplaceStringValue(oldValue string, newValue string) {
 				// Already have this replacement, no point adding it twice
 				return
 			}
-			klog.Fatalf("objectWalker has duplicate ReplaceStringValue %q=%q and %q=%q", oldValue, replacement.Replace, oldValue, newValue)
+			o.t.Fatalf("FAIL: objectWalker has duplicate ReplaceStringValue %q=%q and %q=%q", oldValue, replacement.Replace, oldValue, newValue)
 		}
 	}
 
@@ -1063,7 +1065,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 }
 
 func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer, events test.LogEntries) {
-	visitor := newObjectWalker()
+	visitor := newObjectWalker(t)
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
@@ -1184,7 +1186,6 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Specific to Sql
 	{
-		visitor.ReplacePath(".ipAddresses[].ipAddress", "10.1.2.3")
 		visitor.ReplacePath(".serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
 		visitor.ReplacePath(".serverCaCert.commonName", "common-name")
 		visitor.ReplacePath(".serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")
@@ -1287,7 +1288,7 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Run per-service replaceres
 	{
-		replacements := newObjectWalker()
+		replacements := newObjectWalker(t)
 
 		for _, entry := range events {
 			normalizer.ConfigureVisitor(entry.Request.URL, replacements)

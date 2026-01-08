@@ -23,7 +23,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # We share the version with mockgcp, which is maybe a boundary violation, but is convenient.
 # (It would be confusing if these were out of sync!)
-DEFAULT_GOOGLE_API_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/mockgcp/git.versions | awk '{print $2}')
+DEFAULT_GOOGLE_API_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/apis/git.versions | awk '{print $2}')
 
 # Take googleapi version as parameter, default to version from git.versions.
 # Use "HEAD" to get the latest from remote.
@@ -93,5 +93,5 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/spanner/admin/database/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/storage/control/v2/*.proto \
     ${THIRD_PARTY}/googleapis/google/pubsub/v1/*.proto \
-    ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1beta/*.proto \
+    ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1/*.proto \
     -o ${OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)

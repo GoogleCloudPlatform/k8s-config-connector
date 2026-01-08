@@ -12,11 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:fuzz-gen
+// proto.message: google.monitoring.dashboard.v1.Dashboard
+// krm.group: monitoring.cnrm.cloud.google.com
+// krm.kind: MonitoringDashboard
+
 package monitoring
 
 import (
+	"strings"
+
 	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/known/durationpb"
 )
 
 func init() {
@@ -29,6 +38,32 @@ func dashboardFuzzer() fuzztesting.KRMFuzzer {
 		MonitoringDashboardSpec_FromProto,
 		MonitoringDashboardSpec_ToProto,
 	)
+
+	fuzzer.FilterSpec = func(in *pb.Dashboard) {
+		fuzztesting.VisitValues(in, func(path string, fd protoreflect.FieldDescriptor, v protoreflect.Value) protoreflect.Value {
+			if fd.Kind() == protoreflect.MessageKind && !fd.IsList() && !fd.IsMap() {
+				switch val := v.Message().Interface().(type) {
+				case *durationpb.Duration:
+					if strings.HasSuffix(path, ".min_alignment_period") || strings.HasSuffix(path, ".alignment_period") {
+						val.Nanos = 0
+					}
+
+				case *pb.TimeSeriesFilterRatio:
+					// StatisticalTimeSeriesFilter is deprecated upstream, so don't try to map it.
+					if val.GetStatisticalTimeSeriesFilter() != nil {
+						val.OutputFilter = nil
+					}
+
+				case *pb.TimeSeriesFilter:
+					// StatisticalTimeSeriesFilter is deprecated upstream, so don't try to map it.
+					if val.GetStatisticalTimeSeriesFilter() != nil {
+						val.OutputFilter = nil
+					}
+				}
+			}
+			return v
+		})
+	}
 
 	fuzzer.UnimplementedFields.Insert(".name")
 	fuzzer.UnimplementedFields.Insert(".labels")
@@ -45,10 +80,20 @@ func dashboardFuzzer() fuzztesting.KRMFuzzer {
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.time_series_filter.statistical_time_series_filter")
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.time_series_filter.pick_time_series_filter.interval")
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.time_series_filter_ratio.statistical_time_series_filter")
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
+
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
+
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
 		// Resource names need to be in a special format.
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".logs_panel.resource_names") // the proto 'resource_names' needs to be a special format.

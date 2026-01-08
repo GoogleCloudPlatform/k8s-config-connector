@@ -378,7 +378,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 
 	// Log structuredreporting messages
 	{
-		ctx = structuredreporting.ContextWithListener(ctx, &structuredreporting.LogListener{})
+		ctx = structuredreporting.ContextWithListener(ctx, &structuredreporting.DebugLogListener{})
 		h.Ctx = ctx
 	}
 
@@ -1107,6 +1107,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageManagedFolder"}:
 
+			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsLocationTagBinding"}:
 			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagBinding"}:
 			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
 			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagValue"}:
@@ -1157,7 +1158,6 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 		case "artifactregistryrepository":
 		case "bigqueryconnectionconnection":
 		case "bigqueryjob":
-		case "custombudget":
 		case "certificatemanagercertificatemapentry":
 		case "httpsfunction":
 		case "cloudschedulerjob":

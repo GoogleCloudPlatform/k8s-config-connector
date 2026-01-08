@@ -27,9 +27,10 @@ import (
 
 // httpMethodCall holds state for a single method call over HTTP.
 type httpMethodCall struct {
-	parent *grpcMux
-	r      *http.Request
-	w      http.ResponseWriter
+	parent     *grpcMux
+	grpcMethod *grpcMethod
+	r          *http.Request
+	w          http.ResponseWriter
 }
 
 // SendErrorResponse sends an error response for a GRPC method call over HTTP.
@@ -112,6 +113,12 @@ func (c *httpMethodCall) SendResponse(response proto.Message, responseOptions Re
 
 	marshalOptions := protojson.MarshalOptions{}
 	responseOptions.populateMarshalOptions(&marshalOptions)
+
+	if c.grpcMethod != nil {
+		if c.grpcMethod.parentService.options.EmitUnpopulated {
+			marshalOptions.EmitUnpopulated = true
+		}
+	}
 
 	body, err := marshalOptions.Marshal(response)
 	if err != nil {

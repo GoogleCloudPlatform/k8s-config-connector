@@ -136,7 +136,7 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 	}
 	goTypes := v.findKRMStructsForProto(msg)
 	if len(goTypes) == 0 {
-		klog.Infof("no go types found for proto %v", msg.FullName())
+		klog.V(2).Infof("no go types found for proto %v", msg.FullName())
 		return
 	}
 	parentFile := msg.ParentFile()
@@ -291,7 +291,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					tokens := strings.SplitN(qualifiedTypeName, ".", 2)
 					if len(tokens) > 1 {
 						alias := v.getGoImportAlias(krmFieldRefs.GoPackage)
-						klog.Infof("getGetImportAlias(%q) => %q", krmFieldRefs.GoPackage, alias)
+						klog.V(2).Infof("getGoImportAlias(%q) => %q", krmFieldRefs.GoPackage, alias)
 						qualifiedTypeName = alias + "." + tokens[1]
 					} else if len(tokens) == 1 {
 						// In same package
@@ -448,9 +448,13 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				if useSliceFromProtoFunction != "" {
+					klog.V(2).Infof("Slice_FromProto krmFieldName %v, protoFieldName %v",
+						krmFieldName,
+						protoFieldName,
+					)
 					fmt.Fprintf(out, "\tout.%s = direct.Slice_FromProto(mapCtx, in.%s, %s)\n",
 						krmFieldName,
-						krmFieldName,
+						protoFieldName,
 						useSliceFromProtoFunction,
 					)
 				} else if useCustomMethod != "" {
@@ -530,7 +534,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\treturn out\n")
 		fmt.Fprintf(out, "}\n")
 	} else {
-		klog.Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_FromProto")
+		klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_FromProto")
 	}
 
 	if v.findFuncDeclaration(goTypeName+versionSpecifier+"_ToProto", srcDir, true) == nil {
@@ -550,7 +554,12 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				// Support refs
 				if krmFieldRef := goFields[krmFieldName+"Ref"]; krmFieldRef != nil {
 					fmt.Fprintf(out, "\tif in.%s != nil {\n", krmFieldRef.Name)
-					fmt.Fprintf(out, "\t\tout.%s = in.%s.External\n", protoFieldName, krmFieldRef.Name)
+					// KRM External field in string, but proto might be a pointer if it's optional/proto2
+					if usesPointersInProtoBinding(msg) {
+						fmt.Fprintf(out, "\t\tout.%s = &in.%s.External\n", protoFieldName, krmFieldRef.Name)
+					} else {
+						fmt.Fprintf(out, "\t\tout.%s = in.%s.External\n", protoFieldName, krmFieldRef.Name)
+					}
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
@@ -881,7 +890,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\treturn out\n")
 		fmt.Fprintf(out, "}\n")
 	} else {
-		klog.Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_ToProto")
+		klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_ToProto")
 	}
 
 	// Generate ToProto helpers for oneof fields that are not messages
@@ -1190,4 +1199,15 @@ func (o *MapperGenerator) goPackageForProto(parentFile protoreflect.FileDescript
 func lastComponent(s string) string {
 	ix := strings.LastIndex(s, "/")
 	return s[ix+1:]
+}
+
+// usesPointersInProtoBinding returns true if the given proto message maps to a Go struct that uses pointers for scalar fields.
+func usesPointersInProtoBinding(msg protoreflect.MessageDescriptor) bool {
+	// It's not obvious which messages use pointers in Go, so we hard-code the (few) services that do.
+	switch string(msg.ParentFile().Package()) {
+	case "google.cloud.compute.v1":
+		return true
+	default:
+		return false
+	}
 }

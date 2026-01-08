@@ -130,7 +130,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	resourceAnnotations := make([]string, 0, len(o.Resources))
 	for _, resource := range o.Resources {
 		resourceProtoFullName := resource.ProtoMessageFullName(o.ServiceName)
-		log.Info("visiting proto", "name", resourceProtoFullName)
+		log.V(2).Info("visiting proto", "name", resourceProtoFullName)
 		if err := typeGenerator.VisitProto(resourceProtoFullName); err != nil {
 			return err
 		}
@@ -162,7 +162,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			log.Info("skipping scaffolding type, refs and identity files", "resource", resource.ProtoName)
 		} else {
 			if scaffolder.TypeFileExists(resource) {
-				fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToTypeFile(resource))
+				klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToTypeFile(resource))
 			} else {
 				err := scaffolder.AddTypeFile(resource)
 				if err != nil {

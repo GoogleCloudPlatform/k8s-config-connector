@@ -333,7 +333,7 @@ func (r *Recorder) DoneReconciling() bool {
 }
 
 // TODO: Implement concurrent worker by GVRs.
-func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
+func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config, namespace string) error {
 	klog.Infof("Preloading the list of resources to reconcile")
 	// Make a copy of config to increase QPS and burst.
 	// This would not effect the config for the Manager.
@@ -389,9 +389,17 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
 			if gvr.Group == "core.cnrm.cloud.google.com" {
 				continue
 			}
-			resources, err := dynamicClient.Resource(gvr).List(ctx, metav1.ListOptions{})
-			if err != nil {
-				return fmt.Errorf("fetching gvr %s resources: %w", gvr, err)
+			var resources *unstructured.UnstructuredList
+			if namespace != "" {
+				resources, err = dynamicClient.Resource(gvr).Namespace(namespace).List(ctx, metav1.ListOptions{})
+				if err != nil {
+					return fmt.Errorf("fetching gvr %s resources: %w", gvr, err)
+				}
+			} else {
+				resources, err = dynamicClient.Resource(gvr).List(ctx, metav1.ListOptions{})
+				if err != nil {
+					return fmt.Errorf("fetching gvr %s resources: %w", gvr, err)
+				}
 			}
 			for _, resource := range resources.Items {
 				r.ReconciledResources[GKNN{

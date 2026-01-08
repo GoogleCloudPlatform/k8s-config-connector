@@ -33,6 +33,7 @@ func serviceConnectionPolicyFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	fuzzer.UnimplementedFields.Insert(".name")
+	fuzzer.UnimplementedFields.Insert(".auto_created_subnet_info")
 	fuzzer.UnimplementedFields.Insert(".labels")
 	fuzzer.UnimplementedFields.Insert(".psc_config.allowed_google_producers_resource_hierarchy_level")
 	fuzzer.UnimplementedFields.Insert(".psc_connections[].ip_version")

@@ -514,6 +514,19 @@ type AlloyDBClusterList struct {
 	Items           []AlloyDBCluster `json:"items"`
 }
 
+// v1 objects with fields missing from v1beta1 commented out
+
+// +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy
+type MaintenanceUpdatePolicy struct {
+	// Preferred windows to perform maintenance. Currently limited to 1.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.maintenance_windows
+	MaintenanceWindows []MaintenanceUpdatePolicy_MaintenanceWindow `json:"maintenanceWindows,omitempty"`
+
+	// Periods to deny maintenance. Currently limited to 1.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.deny_maintenance_periods
+	//DenyMaintenancePeriods []MaintenanceUpdatePolicy_DenyMaintenancePeriod `json:"denyMaintenancePeriods,omitempty"`
+}
+
 func init() {
 	SchemeBuilder.Register(&AlloyDBCluster{}, &AlloyDBClusterList{})
 }

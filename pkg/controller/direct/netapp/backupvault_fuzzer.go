@@ -38,8 +38,17 @@ func netAppBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".create_time")
 
-	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".labels")
+	f.IdentityField(".name")
+
+	f.Unimplemented_LabelsAnnotations(".labels")
+
+	f.Unimplemented_NotYetTriaged(".backup_region")
+	f.Unimplemented_NotYetTriaged(".backup_retention_policy")
+	f.Unimplemented_NotYetTriaged(".backup_vault_type")
+	f.Unimplemented_NotYetTriaged(".destination_backup_vault")
+	f.Unimplemented_NotYetTriaged(".encryption_config")
+	f.Unimplemented_NotYetTriaged(".source_backup_vault")
+	f.Unimplemented_NotYetTriaged(".source_region")
 
 	return f
 }

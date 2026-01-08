@@ -434,7 +434,7 @@ func (a *sqlInstanceAdapter) Find(ctx context.Context) (bool, error) {
 
 	a.actual = instance
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("found SQLInstance", "actual", a.actual)
 
 	return true, nil
@@ -443,7 +443,7 @@ func (a *sqlInstanceAdapter) Find(ctx context.Context) (bool, error) {
 func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating SQLInstance", "desired", a.desired)
 
 	if a.projectID == "" {
@@ -610,11 +610,11 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if editionField, ok := a.fieldMeta["spec.settings.edition"]; ok {
 		isEditionUnmanaged = editionField.isUnmanaged
 	}
-	isSettingsUnamanged := false
+	isSettingsUnmanaged := false
 	if settingsField, ok := a.fieldMeta["spec.settings"]; ok {
-		isSettingsUnamanged = settingsField.isUnmanaged
+		isSettingsUnmanaged = settingsField.isUnmanaged
 	}
-	isEditionUnmanaged = isEditionUnmanaged || isSettingsUnamanged
+	isEditionUnmanaged = isEditionUnmanaged || isSettingsUnmanaged
 
 	// Next, handle database edition updates
 	if !isEditionUnmanaged {
@@ -623,7 +623,12 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			desiredEdition = *a.desired.Spec.Settings.Edition
 		}
 
-		if desiredEdition != a.actual.Settings.Edition {
+		actualEdition := "ENTERPRISE" // Default value
+		if a.actual.Settings.Edition != "" {
+			actualEdition = a.actual.Settings.Edition
+		}
+
+		if desiredEdition != actualEdition {
 			newEditionDb := &api.DatabaseInstance{
 				Settings: &api.Settings{
 					Edition: direct.ValueOf(&desiredEdition),
@@ -636,7 +641,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 			{
 				report := &structuredreporting.Diff{}
-				report.AddField(".settings.edition", a.actual.Settings.Edition, desiredEdition)
+				report.AddField(".settings.edition", actualEdition, desiredEdition)
 				structuredreporting.ReportDiff(ctx, report)
 			}
 
@@ -733,7 +738,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 // Delete implements the Adapter interface.
 func (a *sqlInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting SQLInstance", "actual", a.actual)
 
 	op, err := a.sqlInstancesClient.Delete(a.projectID, a.resourceID).Context(ctx).Do()
@@ -779,7 +784,7 @@ func (a *sqlInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 }
 
 func (a *sqlInstanceAdapter) pollForLROCompletion(ctx context.Context, op *api.Operation, verb string) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	var err error
 
 	pollingBackoff := gax.Backoff{

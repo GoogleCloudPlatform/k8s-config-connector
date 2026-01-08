@@ -28,7 +28,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder/kube"
 	opk8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/ready"
@@ -107,7 +106,9 @@ func run(ctx context.Context) error {
 
 	// Expose the registered metrics via HTTP.
 	go func() {
-		http.Handle("/metrics", promhttp.Handler())
+		http.Handle("/metrics", promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{
+			DisableCompression: true, // Disable compression to save memory - flate is surprisingly memory hungry
+		}))
 		logging.Fatal(http.ListenAndServe(prometheusScrapeEndpoint, nil), "error registering the Prometheus HTTP handler")
 	}()
 
@@ -311,33 +312,52 @@ func NewAggregatedResourceStats() *AggregatedResourceStats {
 }
 
 func gatherResourceStats(u *unstructured.Unstructured) ResourceStats {
-	lastCondition, err := getLastCondition(u)
-	if err != nil {
-		logger.Error(err, "error getting last condition for CR", "gvk", u.GroupVersionKind(), "name", u.GetName(), "namespace", u.GetNamespace())
+	objectWithConditions := &ObjectWithConditions{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, objectWithConditions); err != nil {
+		logger.Error(err, "error converting unstructured to object with conditions", "gvk", u.GroupVersionKind(), "name", u.GetName(), "namespace", u.GetNamespace())
+		return ResourceStats{}
 	}
+
+	lastCondition := ""
+	for _, condition := range objectWithConditions.Status.Conditions {
+		if condition.Type == "Ready" {
+			lastCondition = condition.Reason
+			break
+		}
+	}
+
+	if lastCondition == "" {
+		// Use a non-empty not-found value
+		lastCondition = "NoCondition"
+	}
+
 	return ResourceStats{
 		lastCondition: lastCondition,
 	}
 }
 
-// TODO: consolidate the logic with krmtotf.GetReadyCondition
-func getLastCondition(u *unstructured.Unstructured) (string, error) {
-	currConditionsRaw, found, err := unstructured.NestedSlice(u.Object, "status", "conditions")
-	if err != nil {
-		return "", err
-	}
-	if !found || len(currConditionsRaw) == 0 {
-		return "NoCondition", nil
-	}
+type ObjectWithConditions struct {
+	Status struct {
+		Conditions []Condition `json:"conditions,omitempty"`
+	} `json:"status,omitempty"`
+}
 
-	currConditions, err := k8s.MarshalAsConditionsSlice(currConditionsRaw)
-	if err != nil {
-		return "", err
-	}
-	if currConditions[0].Reason == "" {
-		return k8s.NoCondition, nil
-	}
-	return currConditions[0].Reason, nil
+type Condition struct {
+	// // Last time the condition transitioned from one status to another.
+	// LastTransitionTime string `json:"lastTransitionTime,omitempty"`
+
+	// // Human-readable message indicating details about last transition.
+	// Message string `json:"message,omitempty"`
+
+	// Unique, one-word, CamelCase reason for the condition's last
+	// transition.
+	Reason string `json:"reason,omitempty"`
+
+	// // Status is the status of the condition. Can be True, False, Unknown.
+	// Status v1.ConditionStatus `json:"status,omitempty"`
+
+	// Type is the type of the condition.
+	Type string `json:"type,omitempty"`
 }
 
 type CRDInfo struct {

@@ -30,7 +30,7 @@ service FoldersServer {
     };
   };
 
-  // Gets the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  // Gets the KeyAccessJustificationsPolicyConfig for a given organization, folder, or project.
   rpc GetKajPolicyConfigFolder(GetKajPolicyConfigFolderRequest) returns (KeyAccessJustificationsPolicyConfig) {
     option (google.api.http) = {
       get: "/v1/{name=folders/*/kajPolicyConfig}"
@@ -45,7 +45,7 @@ service FoldersServer {
     };
   };
 
-  // Updates the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  // Updates the KeyAccessJustificationsPolicyConfig for a given organization, folder, or project.
   rpc UpdateKajPolicyConfigFolder(UpdateKajPolicyConfigFolderRequest) returns (KeyAccessJustificationsPolicyConfig) {
     option (google.api.http) = {
       patch: "/v1/{name=folders/*/kajPolicyConfig}"
@@ -56,14 +56,14 @@ service FoldersServer {
 
 service OrganizationsServer {
 
-  // Gets the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  // Gets the KeyAccessJustificationsPolicyConfig for a given organization, folder, or project.
   rpc GetKajPolicyConfigOrganization(GetKajPolicyConfigOrganizationRequest) returns (KeyAccessJustificationsPolicyConfig) {
     option (google.api.http) = {
       get: "/v1/{name=organizations/*/kajPolicyConfig}"
     };
   };
 
-  // Updates the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  // Updates the KeyAccessJustificationsPolicyConfig for a given organization, folder, or project.
   rpc UpdateKajPolicyConfigOrganization(UpdateKajPolicyConfigOrganizationRequest) returns (KeyAccessJustificationsPolicyConfig) {
     option (google.api.http) = {
       patch: "/v1/{name=organizations/*/kajPolicyConfig}"
@@ -74,7 +74,7 @@ service OrganizationsServer {
 
 service ProjectsServer {
 
-  // Gets the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  // Gets the KeyAccessJustificationsPolicyConfig for a given organization, folder, or project.
   rpc GetKajPolicyConfigProject(GetKajPolicyConfigProjectRequest) returns (KeyAccessJustificationsPolicyConfig) {
     option (google.api.http) = {
       get: "/v1/{name=projects/*/kajPolicyConfig}"
@@ -102,7 +102,7 @@ service ProjectsServer {
     };
   };
 
-  // Updates the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  // Updates the KeyAccessJustificationsPolicyConfig for a given organization, folder, or project.
   rpc UpdateKajPolicyConfigProject(UpdateKajPolicyConfigProjectRequest) returns (KeyAccessJustificationsPolicyConfig) {
     option (google.api.http) = {
       patch: "/v1/{name=projects/*/kajPolicyConfig}"
@@ -510,13 +510,13 @@ message AuditLogConfig {
   optional string log_type = 2 [json_name="logType"];
 }
 
-// Cloud KMS Autokey configuration for a folder or project.
+// Cloud KMS Autokey configuration for a folder.
 message AutokeyConfig {
   // Optional. A checksum computed by the server based on the value of other fields. This may be sent on update requests to ensure that the client has an up-to-date value before proceeding. The request will be rejected with an ABORTED error on a mismatched etag.
   optional string etag = 1 [json_name="etag"];
   // Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new CryptoKey when a KeyHandle is created. On UpdateAutokeyConfig, the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on this key project. Once configured, for Cloud KMS Autokey to function properly, this key project must have the Cloud KMS API activated and the Cloud KMS Service Agent for this key project must be granted the `cloudkms.admin` role (or pertinent permissions). A request with an empty key project field will clear the configuration.
   optional string key_project = 2 [json_name="keyProject"];
-  // Identifier. Name of the AutokeyConfig resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig` `projects/{PROJECT_NUMBER}/autokeyConfig`.
+  // Identifier. Name of the AutokeyConfig resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`
   optional string name = 3 [json_name="name"];
   // Output only. The state for the AutokeyConfig.
   optional string state = 4 [json_name="state"];
@@ -576,7 +576,7 @@ message ChecksummedData {
 message CryptoKey {
   // Output only. The time at which this CryptoKey was created.
   optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
-  // Immutable. The resource name of the backend environment where the key material for all CryptoKeyVersions associated with this CryptoKey reside and where all related cryptographic operations are performed. Only applicable if CryptoKeyVersions have a ProtectionLevel of EXTERNAL_VPC, with the resource name in the format `projects/*/locations/*/ekmConnections/*`. Note, this list is non-exhaustive and may apply to additional ProtectionLevels in the future.
+  // Immutable. The resource name of the backend environment where the key material for all CryptoKeyVersions associated with this CryptoKey reside and where all related cryptographic operations are performed. Only applicable if CryptoKeyVersions have a ProtectionLevel of EXTERNAL_VPC, with the resource name in the format `projects/*/locations/*/ekmConnections/*`. Only applicable if CryptoKeyVersions have a ProtectionLevel of HSM_SINGLE_TENANT, with the resource name in the format `projects/*/locations/*/singleTenantHsmInstances/*`. Note, this list is non-exhaustive and may apply to additional ProtectionLevels in the future.
   optional string crypto_key_backend = 2 [json_name="cryptoKeyBackend"];
   // Immutable. The period of time that versions of this key spend in the DESTROY_SCHEDULED state before transitioning to DESTROYED. If not specified at creation time, the default duration is 30 days.
   optional .google.protobuf.Duration destroy_scheduled_duration = 3 [json_name="destroyScheduledDuration"];
@@ -812,22 +812,24 @@ message ImportJob {
   optional KeyOperationAttestation attestation = 1 [json_name="attestation"];
   // Output only. The time at which this ImportJob was created.
   optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // Immutable. The resource name of the backend environment where the key material for the wrapping key resides and where all related cryptographic operations are performed. Currently, this field is only populated for keys stored in HSM_SINGLE_TENANT. Note, this list is non-exhaustive and may apply to additional ProtectionLevels in the future.
+  optional string crypto_key_backend = 3 [json_name="cryptoKeyBackend"];
   // Output only. The time this ImportJob expired. Only present if state is EXPIRED.
-  optional .google.protobuf.Timestamp expire_event_time = 3 [json_name="expireEventTime"];
+  optional .google.protobuf.Timestamp expire_event_time = 4 [json_name="expireEventTime"];
   // Output only. The time at which this ImportJob is scheduled for expiration and can no longer be used to import key material.
-  optional .google.protobuf.Timestamp expire_time = 4 [json_name="expireTime"];
+  optional .google.protobuf.Timestamp expire_time = 5 [json_name="expireTime"];
   // Output only. The time this ImportJob's key material was generated.
-  optional .google.protobuf.Timestamp generate_time = 5 [json_name="generateTime"];
+  optional .google.protobuf.Timestamp generate_time = 6 [json_name="generateTime"];
   // Required. Immutable. The wrapping method to be used for incoming key material.
-  optional string import_method = 6 [json_name="importMethod"];
+  optional string import_method = 7 [json_name="importMethod"];
   // Output only. The resource name for this ImportJob in the format `projects/*/locations/*/keyRings/*/importJobs/*`.
-  optional string name = 7 [json_name="name"];
+  optional string name = 8 [json_name="name"];
   // Required. Immutable. The protection level of the ImportJob. This must match the protection_level of the version_template on the CryptoKey you attempt to import into.
-  optional string protection_level = 8 [json_name="protectionLevel"];
+  optional string protection_level = 9 [json_name="protectionLevel"];
   // Output only. The public key with which to wrap key material prior to import. Only returned if state is ACTIVE.
-  optional WrappingPublicKey public_key = 9 [json_name="publicKey"];
+  optional WrappingPublicKey public_key = 10 [json_name="publicKey"];
   // Output only. The current state of the ImportJob, indicating if it can be used.
-  optional string state = 10 [json_name="state"];
+  optional string state = 11 [json_name="state"];
 }
 
 // The configuration of a protection level for a project's Key Access Justifications enrollment.
@@ -966,6 +968,8 @@ message LocationMetadata {
   optional bool ekm_available = 1 [json_name="ekmAvailable"];
   // Indicates whether CryptoKeys with protection_level HSM can be created in this location.
   optional bool hsm_available = 2 [json_name="hsmAvailable"];
+  // Indicates whether CryptoKeys with protection_level HSM_SINGLE_TENANT can be created in this location.
+  optional bool hsm_single_tenant_available = 3 [json_name="hsmSingleTenantAvailable"];
 }
 
 // Request message for KeyManagementService.MacSign.

@@ -104,7 +104,7 @@ type DataflowFlexTemplateJobSpec struct {
 	*/
 
 	// The Cloud KMS key for the job.
-	KmsKeyNameRef *refs.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
+	KMSKeyNameRef *refs.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
 
 	// Configuration for VM IPs.
 	IPConfiguration *string `json:"ipConfiguration,omitempty"`
@@ -144,7 +144,7 @@ type DataflowFlexTemplateJobSpec struct {
 	// Docker registry location of container image to use for the 'worker harness.
 	//  Default is the container for the version of the SDK. Note this field is
 	//  only valid for portable pipelines.
-	SDKContainerImage *string `json:"sdkContainerImage,omitempty"`
+	SdkContainerImage *string `json:"sdkContainerImage,omitempty"`
 
 	/* NOTYET
 	// Worker disk size, in gigabytes.

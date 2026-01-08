@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.140.0
+    cnrm.cloud.google.com/version: 1.142.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -225,6 +225,71 @@ spec:
                       the authorized external networks set on the same instance.
                     type: boolean
                 type: object
+              observabilityConfig:
+                properties:
+                  assistiveExperiencesEnabled:
+                    description: Whether assistive experiences are enabled for this
+                      AlloyDB instance. DEPRECATED - This field is no longer in use.
+                    type: boolean
+                  enabled:
+                    description: Observability feature status for an instance. This
+                      flag is turned "off" by default.
+                    type: boolean
+                  maxQueryStringLength:
+                    description: Query string length. The default value is 10k.
+                    format: int32
+                    type: integer
+                  preserveComments:
+                    description: Preserve comments in query string for an instance.
+                      This flag is turned "off" by default.
+                    type: boolean
+                  queryPlansPerMinute:
+                    description: Number of query execution plans captured by Insights
+                      per minute for all queries combined. The default value is 200.
+                      Any integer between 0 to 200 is considered valid.
+                    format: int32
+                    type: integer
+                  recordApplicationTags:
+                    description: Record application tags for an instance. This flag
+                      is turned "off" by default.
+                    type: boolean
+                  trackActiveQueries:
+                    description: Track actively running queries on the instance. If
+                      not set, this flag is "off" by default.
+                    type: boolean
+                  trackClientAddress:
+                    description: Track client address for an instance. If not set,
+                      default value is "off". DEPRECATED - This field is no longer
+                      in use.
+                    type: boolean
+                  trackWaitEvents:
+                    description: Track wait events during query execution for an instance.
+                      This flag is turned "on" by default but tracking is enabled
+                      only after observability enabled flag is also turned on.
+                    type: boolean
+                type: object
+              queryInsightsConfig:
+                properties:
+                  queryPlansPerMinute:
+                    description: Number of query execution plans captured by Insights
+                      per minute for all queries combined. The default value is 5.
+                      Any integer between 0 and 20 is considered valid.
+                    format: int32
+                    type: integer
+                  queryStringLength:
+                    description: Query string length. The default value is 1024. Any
+                      integer between 256 and 4500 is considered valid.
+                    format: int32
+                    type: integer
+                  recordApplicationTags:
+                    description: Record application tags for an instance. This flag
+                      is turned "on" by default.
+                    type: boolean
+                  recordClientAddress:
+                    description: Record client address for an instance. Client address
+                      is PII information. This flag is turned "on" by default.
+                    type: boolean
+                type: object
               readPoolConfig:
                 description: Read pool specific config. If the instance type is READ_POOL,
                   this configuration must be provided.
@@ -294,6 +359,22 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  observabilityConfig:
+                    description: Observability feature status for an instance.
+                    properties:
+                      trackWaitEventTypes:
+                        description: Output only. Track wait event types during query
+                          execution for an instance. This flag is turned "on" by default
+                          but tracking is enabled only after observability enabled
+                          flag is also turned on. This is read-only flag and only
+                          modifiable by internal API.
+                        type: boolean
+                    type: object
+                type: object
               outboundPublicIpAddresses:
                 description: The outbound public IP addresses for the instance. This
                   is available ONLY when networkConfig.enableOutboundPublicIp is set
@@ -517,6 +598,71 @@ spec:
                       the authorized external networks set on the same instance.
                     type: boolean
                 type: object
+              observabilityConfig:
+                properties:
+                  assistiveExperiencesEnabled:
+                    description: Whether assistive experiences are enabled for this
+                      AlloyDB instance. DEPRECATED - This field is no longer in use.
+                    type: boolean
+                  enabled:
+                    description: Observability feature status for an instance. This
+                      flag is turned "off" by default.
+                    type: boolean
+                  maxQueryStringLength:
+                    description: Query string length. The default value is 10k.
+                    format: int32
+                    type: integer
+                  preserveComments:
+                    description: Preserve comments in query string for an instance.
+                      This flag is turned "off" by default.
+                    type: boolean
+                  queryPlansPerMinute:
+                    description: Number of query execution plans captured by Insights
+                      per minute for all queries combined. The default value is 200.
+                      Any integer between 0 to 200 is considered valid.
+                    format: int32
+                    type: integer
+                  recordApplicationTags:
+                    description: Record application tags for an instance. This flag
+                      is turned "off" by default.
+                    type: boolean
+                  trackActiveQueries:
+                    description: Track actively running queries on the instance. If
+                      not set, this flag is "off" by default.
+                    type: boolean
+                  trackClientAddress:
+                    description: Track client address for an instance. If not set,
+                      default value is "off". DEPRECATED - This field is no longer
+                      in use.
+                    type: boolean
+                  trackWaitEvents:
+                    description: Track wait events during query execution for an instance.
+                      This flag is turned "on" by default but tracking is enabled
+                      only after observability enabled flag is also turned on.
+                    type: boolean
+                type: object
+              queryInsightsConfig:
+                properties:
+                  queryPlansPerMinute:
+                    description: Number of query execution plans captured by Insights
+                      per minute for all queries combined. The default value is 5.
+                      Any integer between 0 and 20 is considered valid.
+                    format: int32
+                    type: integer
+                  queryStringLength:
+                    description: Query string length. The default value is 1024. Any
+                      integer between 256 and 4500 is considered valid.
+                    format: int32
+                    type: integer
+                  recordApplicationTags:
+                    description: Record application tags for an instance. This flag
+                      is turned "on" by default.
+                    type: boolean
+                  recordClientAddress:
+                    description: Record client address for an instance. Client address
+                      is PII information. This flag is turned "on" by default.
+                    type: boolean
+                type: object
               readPoolConfig:
                 description: Read pool specific config. If the instance type is READ_POOL,
                   this configuration must be provided.
@@ -586,6 +732,22 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  observabilityConfig:
+                    description: Observability feature status for an instance.
+                    properties:
+                      trackWaitEventTypes:
+                        description: Output only. Track wait event types during query
+                          execution for an instance. This flag is turned "on" by default
+                          but tracking is enabled only after observability enabled
+                          flag is also turned on. This is read-only flag and only
+                          modifiable by internal API.
+                        type: boolean
+                    type: object
+                type: object
               outboundPublicIpAddresses:
                 description: The outbound public IP addresses for the instance. This
                   is available ONLY when networkConfig.enableOutboundPublicIp is set

@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/netapp/apiv1"
 	netapppb "cloud.google.com/go/netapp/apiv1/netapppb"
@@ -171,9 +172,7 @@ func (a *BackupPolicyAdapter) Update(ctx context.Context, updateOp *directbase.U
 	}
 	desiredPb.Name = a.id.String()
 
-	paths := make(sets.Set[string])
-	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := computeDiffBackupPolicy(mapCtx, a.actual, desiredPb)
 	if err != nil {
 		return err
 	}
@@ -182,8 +181,15 @@ func (a *BackupPolicyAdapter) Update(ctx context.Context, updateOp *directbase.U
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for _, path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
+
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths),
+		Paths: paths,
 	}
 
 	req := &netapppb.UpdateBackupPolicyRequest{
@@ -257,4 +263,24 @@ func (a *BackupPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 		return false, fmt.Errorf("waiting delete BackupPolicy %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func computeDiffBackupPolicy(mapCtx *direct.MapContext, actual, desired *netapppb.BackupPolicy) ([]string, error) {
+	desired = direct.ProtoClone(desired)
+	actual = direct.ProtoClone(actual)
+
+	populateServerSideDefaults := func(o *netapppb.BackupPolicy) {
+		if o.Enabled == nil {
+			o.Enabled = direct.PtrTo(true)
+		}
+	}
+
+	populateServerSideDefaults(desired)
+	populateServerSideDefaults(actual)
+
+	paths, err := common.CompareProtoMessage(desired, actual, common.BasicDiff)
+	if err != nil {
+		return nil, err
+	}
+	return sets.List(paths), nil
 }

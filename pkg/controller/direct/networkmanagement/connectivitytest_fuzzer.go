@@ -13,8 +13,9 @@
 // limitations under the License.
 
 // +tool:fuzz-gen
-// proto.message: google.cloud.kms.v1.ImportJob
-// api.group: kms.cnrm.cloud.google.com
+// proto.message: google.cloud.networkmanagement.v1.ConnectivityTest
+// krm.group: networkmanagement.cnrm.cloud.google.com
+// krm.kind: NetworkManagementConnectivityTest
 
 package networkmanagement
 
@@ -88,6 +89,29 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].serverless_external_connection")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].serverless_external_connection")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].direct_vpc_egress_connection")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].direct_vpc_egress_connection")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].interconnect_attachment")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].interconnect_attachment")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].drop.source_geolocation_code")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].drop.source_geolocation_code")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].drop.destination_geolocation_code")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].drop.destination_geolocation_code")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].deliver.google_service_type")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].deliver.google_service_type")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].vpn_gateway.vpn_tunnel_uri")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].vpn_gateway.vpn_tunnel_uri")
+
+	f.Unimplemented_NotYetTriaged(".probing_details.edge_responses")
+	f.Unimplemented_NotYetTriaged(".destination.cloud_run_revision.service_uri")
+	f.Unimplemented_NotYetTriaged(".source.cloud_run_revision.service_uri")
+	f.Unimplemented_NotYetTriaged(".probing_details.probed_all_devices")
 
 	return f
 }

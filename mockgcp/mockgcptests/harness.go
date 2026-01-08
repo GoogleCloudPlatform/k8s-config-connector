@@ -85,6 +85,10 @@ func NewHarness(t *testing.T) *Harness {
 	return h
 }
 
+func (t *Harness) FolderID() string {
+	return testgcp.TestFolderID.Get()
+}
+
 // cleanup is called when the test cleans up
 func (t *Harness) cleanup() {
 

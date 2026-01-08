@@ -72,6 +72,8 @@ var ProjectsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectsLocationsServerClient interface {
+	// CheckConsumerConfig validates the consumer network and project for potential PSC connection creation. This method performs several checks, including: - Validating the existence and permissions of the service class. - Ensuring the consumer network exists and is accessible. - Verifying XPN relationships if applicable. - Checking for compatible IP versions between the consumer network and the requested version. This method performs a dynamic IAM check for the `networkconnectivity.serviceClasses.use` permission on the service class resource in the Prepare phase.
+	CheckConsumerConfigProjectsLocation(ctx context.Context, in *CheckConsumerConfigProjectsLocationRequest, opts ...grpc.CallOption) (*CheckConsumerConfigResponse, error)
 	// Gets information about a location.
 	GetProjectsLocation(ctx context.Context, in *GetProjectsLocationRequest, opts ...grpc.CallOption) (*Location, error)
 	// Lists information about the supported locations for this service.
@@ -84,6 +86,15 @@ type projectsLocationsServerClient struct {
 
 func NewProjectsLocationsServerClient(cc grpc.ClientConnInterface) ProjectsLocationsServerClient {
 	return &projectsLocationsServerClient{cc}
+}
+
+func (c *projectsLocationsServerClient) CheckConsumerConfigProjectsLocation(ctx context.Context, in *CheckConsumerConfigProjectsLocationRequest, opts ...grpc.CallOption) (*CheckConsumerConfigResponse, error) {
+	out := new(CheckConsumerConfigResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsServer/CheckConsumerConfigProjectsLocation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *projectsLocationsServerClient) GetProjectsLocation(ctx context.Context, in *GetProjectsLocationRequest, opts ...grpc.CallOption) (*Location, error) {
@@ -108,6 +119,8 @@ func (c *projectsLocationsServerClient) ListProjectsLocations(ctx context.Contex
 // All implementations must embed UnimplementedProjectsLocationsServerServer
 // for forward compatibility
 type ProjectsLocationsServerServer interface {
+	// CheckConsumerConfig validates the consumer network and project for potential PSC connection creation. This method performs several checks, including: - Validating the existence and permissions of the service class. - Ensuring the consumer network exists and is accessible. - Verifying XPN relationships if applicable. - Checking for compatible IP versions between the consumer network and the requested version. This method performs a dynamic IAM check for the `networkconnectivity.serviceClasses.use` permission on the service class resource in the Prepare phase.
+	CheckConsumerConfigProjectsLocation(context.Context, *CheckConsumerConfigProjectsLocationRequest) (*CheckConsumerConfigResponse, error)
 	// Gets information about a location.
 	GetProjectsLocation(context.Context, *GetProjectsLocationRequest) (*Location, error)
 	// Lists information about the supported locations for this service.
@@ -119,6 +132,9 @@ type ProjectsLocationsServerServer interface {
 type UnimplementedProjectsLocationsServerServer struct {
 }
 
+func (UnimplementedProjectsLocationsServerServer) CheckConsumerConfigProjectsLocation(context.Context, *CheckConsumerConfigProjectsLocationRequest) (*CheckConsumerConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckConsumerConfigProjectsLocation not implemented")
+}
 func (UnimplementedProjectsLocationsServerServer) GetProjectsLocation(context.Context, *GetProjectsLocationRequest) (*Location, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProjectsLocation not implemented")
 }
@@ -137,6 +153,24 @@ type UnsafeProjectsLocationsServerServer interface {
 
 func RegisterProjectsLocationsServerServer(s grpc.ServiceRegistrar, srv ProjectsLocationsServerServer) {
 	s.RegisterService(&ProjectsLocationsServer_ServiceDesc, srv)
+}
+
+func _ProjectsLocationsServer_CheckConsumerConfigProjectsLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckConsumerConfigProjectsLocationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsServerServer).CheckConsumerConfigProjectsLocation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsServer/CheckConsumerConfigProjectsLocation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsServerServer).CheckConsumerConfigProjectsLocation(ctx, req.(*CheckConsumerConfigProjectsLocationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _ProjectsLocationsServer_GetProjectsLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -182,6 +216,10 @@ var ProjectsLocationsServer_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsServer",
 	HandlerType: (*ProjectsLocationsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CheckConsumerConfigProjectsLocation",
+			Handler:    _ProjectsLocationsServer_CheckConsumerConfigProjectsLocation_Handler,
+		},
 		{
 			MethodName: "GetProjectsLocation",
 			Handler:    _ProjectsLocationsServer_GetProjectsLocation_Handler,
@@ -1581,15 +1619,15 @@ var ProjectsLocationsInternalRangesServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectsLocationsMulticloudDataTransferConfigsServerClient interface {
-	// Creates a MulticloudDataTransferConfig in a given project and location.
+	// Creates a `MulticloudDataTransferConfig` resource in a specified project and location.
 	CreateProjectsLocationsMulticloudDataTransferConfig(ctx context.Context, in *CreateProjectsLocationsMulticloudDataTransferConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
-	// Deletes a single MulticloudDataTransferConfig.
+	// Deletes a `MulticloudDataTransferConfig` resource.
 	DeleteProjectsLocationsMulticloudDataTransferConfig(ctx context.Context, in *DeleteProjectsLocationsMulticloudDataTransferConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
-	// Gets details of a single MulticloudDataTransferConfig.
+	// Gets the details of a `MulticloudDataTransferConfig` resource.
 	GetProjectsLocationsMulticloudDataTransferConfig(ctx context.Context, in *GetProjectsLocationsMulticloudDataTransferConfigRequest, opts ...grpc.CallOption) (*MulticloudDataTransferConfig, error)
-	// Lists MulticloudDataTransferConfigs in a given project and location.
+	// Lists the `MulticloudDataTransferConfig` resources in a specified project and location.
 	ListProjectsLocationsMulticloudDataTransferConfigs(ctx context.Context, in *ListProjectsLocationsMulticloudDataTransferConfigsRequest, opts ...grpc.CallOption) (*ListMulticloudDataTransferConfigsResponse, error)
-	// Updates a MulticloudDataTransferConfig in a given project and location.
+	// Updates a `MulticloudDataTransferConfig` resource in a specified project and location.
 	PatchProjectsLocationsMulticloudDataTransferConfig(ctx context.Context, in *PatchProjectsLocationsMulticloudDataTransferConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
@@ -1650,15 +1688,15 @@ func (c *projectsLocationsMulticloudDataTransferConfigsServerClient) PatchProjec
 // All implementations must embed UnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer
 // for forward compatibility
 type ProjectsLocationsMulticloudDataTransferConfigsServerServer interface {
-	// Creates a MulticloudDataTransferConfig in a given project and location.
+	// Creates a `MulticloudDataTransferConfig` resource in a specified project and location.
 	CreateProjectsLocationsMulticloudDataTransferConfig(context.Context, *CreateProjectsLocationsMulticloudDataTransferConfigRequest) (*longrunningpb.Operation, error)
-	// Deletes a single MulticloudDataTransferConfig.
+	// Deletes a `MulticloudDataTransferConfig` resource.
 	DeleteProjectsLocationsMulticloudDataTransferConfig(context.Context, *DeleteProjectsLocationsMulticloudDataTransferConfigRequest) (*longrunningpb.Operation, error)
-	// Gets details of a single MulticloudDataTransferConfig.
+	// Gets the details of a `MulticloudDataTransferConfig` resource.
 	GetProjectsLocationsMulticloudDataTransferConfig(context.Context, *GetProjectsLocationsMulticloudDataTransferConfigRequest) (*MulticloudDataTransferConfig, error)
-	// Lists MulticloudDataTransferConfigs in a given project and location.
+	// Lists the `MulticloudDataTransferConfig` resources in a specified project and location.
 	ListProjectsLocationsMulticloudDataTransferConfigs(context.Context, *ListProjectsLocationsMulticloudDataTransferConfigsRequest) (*ListMulticloudDataTransferConfigsResponse, error)
-	// Updates a MulticloudDataTransferConfig in a given project and location.
+	// Updates a `MulticloudDataTransferConfig` resource in a specified project and location.
 	PatchProjectsLocationsMulticloudDataTransferConfig(context.Context, *PatchProjectsLocationsMulticloudDataTransferConfigRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer()
 }
@@ -1822,15 +1860,15 @@ var ProjectsLocationsMulticloudDataTransferConfigsServer_ServiceDesc = grpc.Serv
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient interface {
-	// Creates a Destination in a given project and location.
+	// Creates a `Destination` resource in a specified project and location.
 	CreateProjectsLocationsMulticloudDataTransferConfigsDestination(ctx context.Context, in *CreateProjectsLocationsMulticloudDataTransferConfigsDestinationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
-	// Deletes a single Destination.
+	// Deletes a `Destination` resource.
 	DeleteProjectsLocationsMulticloudDataTransferConfigsDestination(ctx context.Context, in *DeleteProjectsLocationsMulticloudDataTransferConfigsDestinationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
-	// Gets details of a single Destination.
+	// Gets the details of a `Destination` resource.
 	GetProjectsLocationsMulticloudDataTransferConfigsDestination(ctx context.Context, in *GetProjectsLocationsMulticloudDataTransferConfigsDestinationRequest, opts ...grpc.CallOption) (*Destination, error)
-	// Lists Destinations in a given project and location.
+	// Lists the `Destination` resources in a specified project and location.
 	ListProjectsLocationsMulticloudDataTransferConfigsDestinations(ctx context.Context, in *ListProjectsLocationsMulticloudDataTransferConfigsDestinationsRequest, opts ...grpc.CallOption) (*ListDestinationsResponse, error)
-	// Updates a Destination in a given project and location.
+	// Updates a `Destination` resource in a specified project and location.
 	PatchProjectsLocationsMulticloudDataTransferConfigsDestination(ctx context.Context, in *PatchProjectsLocationsMulticloudDataTransferConfigsDestinationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
@@ -1891,15 +1929,15 @@ func (c *projectsLocationsMulticloudDataTransferConfigsDestinationsServerClient)
 // All implementations must embed UnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer
 // for forward compatibility
 type ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer interface {
-	// Creates a Destination in a given project and location.
+	// Creates a `Destination` resource in a specified project and location.
 	CreateProjectsLocationsMulticloudDataTransferConfigsDestination(context.Context, *CreateProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) (*longrunningpb.Operation, error)
-	// Deletes a single Destination.
+	// Deletes a `Destination` resource.
 	DeleteProjectsLocationsMulticloudDataTransferConfigsDestination(context.Context, *DeleteProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) (*longrunningpb.Operation, error)
-	// Gets details of a single Destination.
+	// Gets the details of a `Destination` resource.
 	GetProjectsLocationsMulticloudDataTransferConfigsDestination(context.Context, *GetProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) (*Destination, error)
-	// Lists Destinations in a given project and location.
+	// Lists the `Destination` resources in a specified project and location.
 	ListProjectsLocationsMulticloudDataTransferConfigsDestinations(context.Context, *ListProjectsLocationsMulticloudDataTransferConfigsDestinationsRequest) (*ListDestinationsResponse, error)
-	// Updates a Destination in a given project and location.
+	// Updates a `Destination` resource in a specified project and location.
 	PatchProjectsLocationsMulticloudDataTransferConfigsDestination(context.Context, *PatchProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer()
 }
@@ -2063,9 +2101,9 @@ var ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ServiceDesc
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectsLocationsMulticloudDataTransferSupportedServicesServerClient interface {
-	// Gets details of a single MulticloudDataTransferSupportedServices.
+	// Gets the details of a service that is supported for Data Transfer Essentials.
 	GetProjectsLocationsMulticloudDataTransferSupportedService(ctx context.Context, in *GetProjectsLocationsMulticloudDataTransferSupportedServiceRequest, opts ...grpc.CallOption) (*MulticloudDataTransferSupportedService, error)
-	// Lists the supported services for Multicloud Data Transfer. This is a passthrough method.
+	// Lists the services in the project for a region that are supported for Data Transfer Essentials.
 	ListProjectsLocationsMulticloudDataTransferSupportedServices(ctx context.Context, in *ListProjectsLocationsMulticloudDataTransferSupportedServicesRequest, opts ...grpc.CallOption) (*ListMulticloudDataTransferSupportedServicesResponse, error)
 }
 
@@ -2099,9 +2137,9 @@ func (c *projectsLocationsMulticloudDataTransferSupportedServicesServerClient) L
 // All implementations must embed UnimplementedProjectsLocationsMulticloudDataTransferSupportedServicesServerServer
 // for forward compatibility
 type ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer interface {
-	// Gets details of a single MulticloudDataTransferSupportedServices.
+	// Gets the details of a service that is supported for Data Transfer Essentials.
 	GetProjectsLocationsMulticloudDataTransferSupportedService(context.Context, *GetProjectsLocationsMulticloudDataTransferSupportedServiceRequest) (*MulticloudDataTransferSupportedService, error)
-	// Lists the supported services for Multicloud Data Transfer. This is a passthrough method.
+	// Lists the services in the project for a region that are supported for Data Transfer Essentials.
 	ListProjectsLocationsMulticloudDataTransferSupportedServices(context.Context, *ListProjectsLocationsMulticloudDataTransferSupportedServicesRequest) (*ListMulticloudDataTransferSupportedServicesResponse, error)
 	mustEmbedUnimplementedProjectsLocationsMulticloudDataTransferSupportedServicesServerServer()
 }
