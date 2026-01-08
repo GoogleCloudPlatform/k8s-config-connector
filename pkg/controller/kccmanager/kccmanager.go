@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/version"
 	mcleclient "github.com/gke-labs/multicluster-leader-election/pkg/client"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
@@ -99,6 +100,13 @@ type Config struct {
 
 	// Configure manager to participate in leader election if MultiClusterLease is enabled.
 	MultiClusterLease bool
+
+	// Port for the statusz endpoint.
+	StatuszPort int
+
+	// ScopedNamespace is the namespace to watch in namespaced mode.
+	// If empty, the manager runs in cluster mode.
+	ScopedNamespace string
 
 	// used for smoke testing only; options not meant to be used in production.
 	testConfig
@@ -300,6 +308,78 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 
 		if err := controllerConfig.Init(ctx); err != nil {
 			return nil, err
+		}
+
+		// Register /statusz Endpoint
+		if err := mgr.Add(manager.RunnableFunc(func(ctx context.Context) error {
+			mux := http.NewServeMux()
+			mux.HandleFunc("/statusz", func(w http.ResponseWriter, r *http.Request) {
+				w.Header().Set("Content-Type", "text/plain")
+				w.WriteHeader(http.StatusOK)
+				fmt.Fprintf(w, "KCC Manager Status: RUNNING\n")
+				fmt.Fprintf(w, "---------------------------\n")
+				fmt.Fprintf(w, "Version:       %s\n", version.GetVersion())
+				fmt.Fprintf(w, "Billing Project:       %s\n", cfg.BillingProject)
+				fmt.Fprintf(w, "User Project Override: %v\n", cfg.UserProjectOverride)
+				fmt.Fprintf(w, "MultiCluster Lease:    %v\n", cfg.MultiClusterLease)
+
+				// Determine mode
+				mode := "Cluster"
+				if cfg.ScopedNamespace != "" {
+					mode = fmt.Sprintf("Namespaced (Namespace: %s)", cfg.ScopedNamespace)
+				}
+				fmt.Fprintf(w, "Mode:                  %s\n", mode)
+
+				// Fetch Actuation Status
+				client := mgr.GetClient()
+				var actuationStatus string = "Unknown"
+
+				if cfg.ScopedNamespace == "" {
+					// Cluster Mode: Check ConfigConnector
+					cc := &operatorv1beta1.ConfigConnector{}
+					if err := client.Get(ctx, types.NamespacedName{Name: operatorv1beta1.ConfigConnectorAllowedName}, cc); err != nil {
+						actuationStatus = fmt.Sprintf("Error fetching CC: %v", err)
+					} else {
+						actuationStatus = string(cc.Spec.Actuation)
+					}
+				} else {
+					// Namespaced Mode: Check ConfigConnectorContext
+					ccc := &operatorv1beta1.ConfigConnectorContext{}
+					if err := client.Get(ctx, types.NamespacedName{Name: operatorv1beta1.ConfigConnectorContextAllowedName, Namespace: cfg.ScopedNamespace}, ccc); err != nil {
+						actuationStatus = fmt.Sprintf("Error fetching CCC: %v", err)
+					} else {
+						actuationStatus = string(ccc.Spec.Actuation)
+					}
+				}
+				fmt.Fprintf(w, "Actuation Mode:        %s\n", actuationStatus)
+				fmt.Fprintf(w, "Time:                  %s\n", time.Now().Format(time.RFC3339))
+			})
+
+			port := cfg.StatuszPort
+			if port == 0 {
+				port = 8082
+			}
+			server := &http.Server{
+				Addr:    fmt.Sprintf(":%d", port),
+				Handler: mux,
+			}
+
+			go func() {
+				<-ctx.Done()
+				shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+				defer cancel()
+				if err := server.Shutdown(shutdownCtx); err != nil {
+					klog.Errorf("Error shutting down statusz server: %v", err)
+				}
+			}()
+
+			klog.Infof("Starting statusz endpoint on %s/statusz", server.Addr)
+			if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+				return err
+			}
+			return nil
+		})); err != nil {
+			return nil, fmt.Errorf("failed to add statusz runnable: %w", err)
 		}
 
 		// Initialize direct controllers
