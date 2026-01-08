@@ -66,17 +66,6 @@ type AlloyDbSettings_PrimaryInstanceSettings_MachineConfig struct {
 	CPUCount *int32 `json:"cpuCount,omitempty"`
 }
 
-// +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword
-type AlloyDbSettings_UserPassword struct {
-	// The database username.
-	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.user
-	User *string `json:"user,omitempty"`
-
-	// The initial password for the user.
-	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.password
-	Password *string `json:"password,omitempty"`
-}
-
 // +kcc:proto=google.cloud.clouddms.v1.CloudSqlConnectionProfile
 type CloudSQLConnectionProfile struct {
 
@@ -118,29 +107,6 @@ type DatabaseType struct {
 	Engine *string `json:"engine,omitempty"`
 }
 
-// +kcc:proto=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity
-type ForwardSSHTunnelConnectivity struct {
-	// Required. Hostname for the SSH tunnel.
-	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.hostname
-	Hostname *string `json:"hostname,omitempty"`
-
-	// Required. Username for the SSH tunnel.
-	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.username
-	Username *string `json:"username,omitempty"`
-
-	// Port for the SSH tunnel, default value is 22.
-	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.port
-	Port *int32 `json:"port,omitempty"`
-
-	// Input only. SSH password.
-	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.password
-	Password *string `json:"password,omitempty"`
-
-	// Input only. SSH private key.
-	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.private_key
-	PrivateKey *string `json:"privateKey,omitempty"`
-}
-
 // +kcc:proto=google.cloud.clouddms.v1.MigrationJob.DumpFlag
 type MigrationJob_DumpFlag struct {
 	// The name of the flag
@@ -166,53 +132,6 @@ type MigrationJob_PerformanceConfig struct {
 	DumpParallelLevel *string `json:"dumpParallelLevel,omitempty"`
 }
 
-// +kcc:proto=google.cloud.clouddms.v1.OracleConnectionProfile
-type OracleConnectionProfile struct {
-	// Required. The IP or hostname of the source Oracle database.
-	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.host
-	Host *string `json:"host,omitempty"`
-
-	// Required. The network port of the source Oracle database.
-	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.port
-	Port *int32 `json:"port,omitempty"`
-
-	// Required. The username that Database Migration Service will use to connect
-	//  to the database. The value is encrypted when stored in Database Migration
-	//  Service.
-	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.username
-	Username *string `json:"username,omitempty"`
-
-	// Required. Input only. The password for the user that Database Migration
-	//  Service will be using to connect to the database. This field is not
-	//  returned on request, and the value is encrypted when stored in Database
-	//  Migration Service.
-	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.password
-	Password *string `json:"password,omitempty"`
-
-	// Required. Database service for the Oracle connection.
-	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.database_service
-	DatabaseService *string `json:"databaseService,omitempty"`
-
-	// SSL configuration for the connection to the source Oracle database.
-	//
-	//   * Only `SERVER_ONLY` configuration is supported for Oracle SSL.
-	//   * SSL is supported for Oracle versions 12 and above.
-	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.ssl
-	SSL *SSLConfig `json:"ssl,omitempty"`
-
-	// Static Service IP connectivity.
-	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.static_service_ip_connectivity
-	StaticServiceIPConnectivity *StaticServiceIPConnectivity `json:"staticServiceIPConnectivity,omitempty"`
-
-	// Forward SSH tunnel connectivity.
-	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.forward_ssh_connectivity
-	ForwardSSHConnectivity *ForwardSSHTunnelConnectivity `json:"forwardSSHConnectivity,omitempty"`
-
-	// Private connectivity.
-	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.private_connectivity
-	PrivateConnectivity *PrivateConnectivity `json:"privateConnectivity,omitempty"`
-}
-
 // +kcc:proto=google.cloud.clouddms.v1.SqlAclEntry
 type SQLAclEntry struct {
 	// The allowlisted value for the access control list.
@@ -234,28 +153,6 @@ type SQLAclEntry struct {
 	Label *string `json:"label,omitempty"`
 }
 
-// +kcc:proto=google.cloud.clouddms.v1.SslConfig
-type SSLConfig struct {
-
-	// Input only. The unencrypted PKCS#1 or PKCS#8 PEM-encoded private key
-	//  associated with the Client Certificate. If this field is used then the
-	//  'client_certificate' field is mandatory.
-	// +kcc:proto:field=google.cloud.clouddms.v1.SslConfig.client_key
-	ClientKey *string `json:"clientKey,omitempty"`
-
-	// Input only. The x509 PEM-encoded certificate that will be used by the
-	//  replica to authenticate against the source database server.If this field is
-	//  used then the 'client_key' field is mandatory.
-	// +kcc:proto:field=google.cloud.clouddms.v1.SslConfig.client_certificate
-	ClientCertificate *string `json:"clientCertificate,omitempty"`
-
-	// Required. Input only. The x509 PEM-encoded certificate of the CA that
-	//  signed the source database server's certificate. The replica will use this
-	//  certificate to verify it's connecting to the right host.
-	// +kcc:proto:field=google.cloud.clouddms.v1.SslConfig.ca_certificate
-	CACertificate *string `json:"caCertificate,omitempty"`
-}
-
 // +kcc:proto=google.cloud.clouddms.v1.StaticIpConnectivity
 type StaticIPConnectivity struct {
 }
@@ -271,30 +168,12 @@ type AlloyDbConnectionProfileObservedState struct {
 	Settings *AlloyDbSettingsObservedState `json:"settings,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbSettings
-type AlloyDbSettingsObservedState struct {
-	// Required. Input only. Initial user to setup during cluster creation.
-	//  Required.
-	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.initial_user
-	InitialUser *AlloyDbSettings_UserPasswordObservedState `json:"initialUser,omitempty"`
-
-	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.primary_instance_settings
-	PrimaryInstanceSettings *AlloyDbSettings_PrimaryInstanceSettingsObservedState `json:"primaryInstanceSettings,omitempty"`
-}
-
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings
 type AlloyDbSettings_PrimaryInstanceSettingsObservedState struct {
 	// Output only. The private IP address for the Instance.
 	//  This is the connection endpoint for an end-user application.
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.private_ip
 	PrivateIP *string `json:"privateIP,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword
-type AlloyDbSettings_UserPasswordObservedState struct {
-	// Output only. Indicates if the initial_user.password field has been set.
-	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.password_set
-	PasswordSet *bool `json:"passwordSet,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.CloudSqlConnectionProfile
@@ -328,19 +207,4 @@ type CloudSQLSettingsObservedState struct {
 	// Output only. Indicates If this connection profile root password is stored.
 	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.root_password_set
 	RootPasswordSet *bool `json:"rootPasswordSet,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.clouddms.v1.OracleConnectionProfile
-type OracleConnectionProfileObservedState struct {
-	// Output only. Indicates whether a new password is included in the request.
-	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.password_set
-	PasswordSet *bool `json:"passwordSet,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.clouddms.v1.SslConfig
-type SSLConfigObservedState struct {
-	// Output only. The ssl config type according to 'client_key',
-	//  'client_certificate' and 'ca_certificate'.
-	// +kcc:proto:field=google.cloud.clouddms.v1.SslConfig.type
-	Type *string `json:"type,omitempty"`
 }

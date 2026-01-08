@@ -18,6 +18,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
+	secretrefv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -144,6 +146,15 @@ type PrivateConnectivity struct {
 	PrivateConnectionRef *PrivateConnectionRef `json:"privateConnectionRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword
+type AlloyDbSettings_UserPassword struct {
+	// The Kubernetes Secret in type "kubernetes.io/basic-auth".
+	// * .data.username is the AlloyDB settings user.
+	// * .data.password is the AlloyDB settings password.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.user
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.password
+	SecretRef *secretrefv1beta1.BasicAuthSecretRef `json:"secretRef,omitempty"`
+}
 type AlloyDbSettings struct {
 	// Required. Input only. Initial user to setup during cluster creation.
 	//  Required.
@@ -272,7 +283,7 @@ type CloudSQLSettings struct {
 
 	// Input only. Initial root password.
 	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.root_password
-	RootPassword *string `json:"rootPassword,omitempty"`
+	RootPasswordSecret *secretrefv1beta1.Legacy `json:"rootPasswordSecret,omitempty"`
 
 	// The Cloud SQL default instance level collation.
 	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.collation
@@ -306,18 +317,15 @@ type MySQLConnectionProfile struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.port
 	Port *int32 `json:"port,omitempty"`
 
-	// Required. The username that Database Migration Service will use to connect
-	//  to the database. The value is encrypted when stored in Database Migration
-	//  Service.
+	// The Kubernetes Secret in type "kubernetes.io/basic-auth".
+	// * .data.username is the  username that Database Migration Service will use to connect
+	//    to the database. The value is encrypted when stored in Database Migration Service.
+	// * .data.password is the password for the user that Database Migration
+	// 	  Service will be using to connect to the database. This field is not returned on request,
+	//    and the value is encrypted when stored in Database Migration Service.
 	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.username
-	Username *string `json:"username,omitempty"`
-
-	// Required. Input only. The password for the user that Database Migration
-	//  Service will be using to connect to the database. This field is not
-	//  returned on request, and the value is encrypted when stored in Database
-	//  Migration Service.
 	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.password
-	Password *string `json:"password,omitempty"`
+	SecretRef *secretrefv1beta1.BasicAuthSecretRef `json:"secretRef,omitempty"`
 
 	// SSL configuration for the destination to connect to the source database.
 	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.ssl
@@ -340,18 +348,15 @@ type PostgreSQLConnectionProfile struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.port
 	Port *int32 `json:"port,omitempty"`
 
-	// Required. The username that Database Migration Service will use to connect
-	//  to the database. The value is encrypted when stored in Database Migration
-	//  Service.
+	// The Kubernetes Secret in type "kubernetes.io/basic-auth".
+	// * .data.username is the  username that Database Migration Service will use to connect
+	//    to the database. The value is encrypted when stored in Database Migration Service.
+	// * .data.password is the password for the user that Database Migration
+	// 	  Service will be using to connect to the database. This field is not returned on request,
+	//    and the value is encrypted when stored in Database Migration Service.
 	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.username
-	Username *string `json:"username,omitempty"`
-
-	// Required. Input only. The password for the user that Database Migration
-	//  Service will be using to connect to the database. This field is not
-	//  returned on request, and the value is encrypted when stored in Database
-	//  Migration Service.
 	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.password
-	Password *string `json:"password,omitempty"`
+	SecretRef *secretrefv1beta1.BasicAuthSecretRef `json:"secretRef,omitempty"`
 
 	// SSL configuration for the destination to connect to the source database.
 	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.ssl
@@ -415,4 +420,102 @@ type SQLIPConfig struct {
 	//  'slash' notation (e.g. `192.168.100.0/24`).
 	// +kcc:proto:field=google.cloud.clouddms.v1.SqlIpConfig.authorized_networks
 	AuthorizedNetworks []SQLAclEntry `json:"authorizedNetworks,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.OracleConnectionProfile
+type OracleConnectionProfile struct {
+	// Required. The IP or hostname of the source Oracle database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.host
+	Host *string `json:"host,omitempty"`
+
+	// Required. The network port of the source Oracle database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.port
+	Port *int32 `json:"port,omitempty"`
+
+	// The Kubernetes Secret in type "kubernetes.io/basic-auth".
+	// * .data.username is the  username that Database Migration Service will use to connect
+	//    to the database. The value is encrypted when stored in Database Migration Service.
+	// * .data.password is the password for the user that Database Migration
+	// 	  Service will be using to connect to the database. This field is not returned on request,
+	//    and the value is encrypted when stored in Database Migration Service.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.username
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.password
+	SecretRef *secretrefv1beta1.BasicAuthSecretRef `json:"secretRef,omitempty"`
+
+	// Required. Database service for the Oracle connection.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.database_service
+	DatabaseService *string `json:"databaseService,omitempty"`
+
+	// SSL configuration for the connection to the source Oracle database.
+	//
+	//   * Only `SERVER_ONLY` configuration is supported for Oracle SSL.
+	//   * SSL is supported for Oracle versions 12 and above.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.ssl
+	SSL *SSLConfig `json:"ssl,omitempty"`
+
+	// Static Service IP connectivity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.static_service_ip_connectivity
+	StaticServiceIPConnectivity *StaticServiceIPConnectivity `json:"staticServiceIPConnectivity,omitempty"`
+
+	// Forward SSH tunnel connectivity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.forward_ssh_connectivity
+	ForwardSSHConnectivity *ForwardSSHTunnelConnectivity `json:"forwardSSHConnectivity,omitempty"`
+
+	// Private connectivity.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.private_connectivity
+	PrivateConnectivity *PrivateConnectivity `json:"privateConnectivity,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity
+type ForwardSSHTunnelConnectivity struct {
+	// Required. Hostname for the SSH tunnel.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.hostname
+	Hostname *string `json:"hostname,omitempty"`
+
+	// Port for the SSH tunnel, default value is 22.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.port
+	Port *int32 `json:"port,omitempty"`
+
+	// The Kubernetes Secret in type "kubernetes.io/basic-auth".
+	// * .data.username is the Username for the SSH tunnel.
+	// * .data.password is the SSH password.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.username
+	// +kcc:proto:field=google.cloud.clouddms.v1.ForwardSshTunnelConnectivity.password
+	SecretRef *secretrefv1beta1.BasicAuthSecretRef `json:"secretRef,omitempty"`
+
+	// Input only. SSH private key.
+	PrivateKeySecretRef *secretrefv1beta1.Legacy `json:"privateKeySecretRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.SslConfig
+type SSLConfig struct {
+
+	// Input only. The unencrypted PKCS#1 or PKCS#8 PEM-encoded private key
+	//  associated with the Client Certificate. If this field is used then the
+	//  'client_certificate' field is mandatory.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SslConfig.client_key
+	ClientKey *secretrefv1beta1.Legacy `json:"clientKeySecretRef,omitempty"`
+
+	// Input only. The x509 PEM-encoded certificate that will be used by the
+	//  replica to authenticate against the source database server.If this field is
+	//  used then the 'client_key' field is mandatory.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SslConfig.client_certificate
+	ClientCertificate *secretrefv1beta1.Legacy `json:"clientCertificateSecretRef,omitempty"`
+
+	// Required. Input only. The x509 PEM-encoded certificate of the CA that
+	//  signed the source database server's certificate. The replica will use this
+	//  certificate to verify it's connecting to the right host.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SslConfig.ca_certificate
+	CACertificate *secretrefv1beta1.Legacy `json:"caCertificateSecretRef,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbSettings
+type AlloyDbSettingsObservedState struct {
+	// Required. Input only. Initial user to setup during cluster creation.
+	//  Required.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.initial_user
+	// InitialUser *AlloyDbSettings_UserPasswordObservedState `json:"initialUser,omitempty"`
+
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.primary_instance_settings
+	PrimaryInstanceSettings *AlloyDbSettings_PrimaryInstanceSettingsObservedState `json:"primaryInstanceSettings,omitempty"`
 }
