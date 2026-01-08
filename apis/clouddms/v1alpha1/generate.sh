@@ -26,7 +26,8 @@ go run . generate-types \
     --api-version "clouddms.cnrm.cloud.google.com/v1alpha1" \
     --resource CloudDMSConversionWorkspace:ConversionWorkspace \
     --resource CloudDMSPrivateConnection:PrivateConnection \
-    --resource CloudDMSMigrationJob:MigrationJob
+    --resource CloudDMSMigrationJob:MigrationJob \
+    --resource CloudDMSConnectionProfile:ConnectionProfile
 
 go run . generate-mapper \
     --service google.cloud.clouddms.v1 \
