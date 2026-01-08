@@ -183,7 +183,7 @@ func (a *BackupPolicyAdapter) Update(ctx context.Context, updateOp *directbase.U
 	}
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	for path := range paths {
+	for _, path := range paths {
 		report.AddField(path, nil, nil)
 	}
 	structuredreporting.ReportDiff(ctx, report)
