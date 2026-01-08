@@ -33,9 +33,9 @@ import (
 
 // BlockedGCPError is an error that occurs when a GCP API call is blocked.
 type BlockedGCPError struct {
-	Method string
-	URL    string
-	Body   string
+	Method     string
+	URL        string
+	Body       string
 	UpdateMask []string
 }
 
