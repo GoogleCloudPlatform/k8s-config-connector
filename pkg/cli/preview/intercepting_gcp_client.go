@@ -36,6 +36,7 @@ type BlockedGCPError struct {
 	Method string
 	URL    string
 	Body   string
+	UpdateMask []string
 }
 
 var _ error = &BlockedGCPError{}
@@ -139,11 +140,19 @@ func (c *interceptingGCPClient) blockedHTTPMethod(req *http.Request) (*http.Resp
 		body = formattedBody.Bytes()
 	}
 
+	// url.Parse automatically handles URL decoding (e.g., %2C -> ,)
+	rawUpdateMask := req.URL.Query().Get("updateMask")
+	updateMask := []string{}
+	if rawUpdateMask != "" {
+		updateMask = strings.Split(rawUpdateMask, ",")
+	}
+
 	log.Info("blockedHTTPMethod", "req.method", req.Method, "req.url", req.URL.String())
 	return nil, BlockedGCPError{
-		Method: req.Method,
-		URL:    req.URL.String(),
-		Body:   string(body),
+		Method:     req.Method,
+		URL:        req.URL.String(),
+		Body:       string(body),
+		UpdateMask: updateMask,
 	}
 }
 

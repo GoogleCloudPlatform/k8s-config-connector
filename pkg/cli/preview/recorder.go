@@ -79,6 +79,8 @@ type event struct {
 	gcpAction *gcpAction
 	// object is the object that was reconciled
 	object *unstructured.Unstructured
+	// the type of reconciler that the manager is using
+	reconcilerType k8s.ReconcilerType
 }
 
 type EventType string
@@ -109,10 +111,11 @@ const (
 
 // gcpAction holds a GCP action that was recorded
 type gcpAction struct {
-	method string
-	url    string
-	body   string
-	action Action
+	method     string
+	url        string
+	body       string
+	action     Action
+	updateMask []string
 }
 
 // NewStructuredReportingListener creates a new StructuredReportingListener.
@@ -193,6 +196,7 @@ func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Uns
 	info.events = append(info.events, event{
 		eventType: EventTypeReconcileStart,
 		object:    u.DeepCopy(),
+		reconcilerType: t,
 	})
 }
 
@@ -208,6 +212,7 @@ func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstr
 	info.events = append(info.events, event{
 		eventType: EventTypeReconcileEnd,
 		object:    u.DeepCopy(),
+		reconcilerType: t,
 	})
 	r.reconcileTrackerMutex.Lock()
 	defer r.reconcileTrackerMutex.Unlock()
@@ -280,10 +285,11 @@ func (r *Recorder) recordGCPAction(ctx context.Context, err *BlockedGCPError, ar
 	var gknn GKNN
 
 	gcpAction := &gcpAction{
-		method: err.Method,
-		body:   err.Body,
-		url:    err.URL,
-		action: action,
+		method:     err.Method,
+		body:       err.Body,
+		url:        err.URL,
+		action:     action,
+		updateMask: err.UpdateMask,
 	}
 
 	for _, arg := range args {
