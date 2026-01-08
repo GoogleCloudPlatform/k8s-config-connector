@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:fuzz-gen
+// proto.message: google.monitoring.dashboard.v1.Dashboard
+// krm.group: monitoring.cnrm.cloud.google.com
+// krm.kind: MonitoringDashboard
+
 package monitoring
 
 import (
@@ -85,10 +90,10 @@ func dashboardFuzzer() fuzztesting.KRMFuzzer {
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.time_series_query.time_series_filter.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.time_series_query.time_series_filter.pick_time_series_filter.interval")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.time_series_query.time_series_filter_ratio.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
 		// Resource names need to be in a special format.
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".logs_panel.resource_names") // the proto 'resource_names' needs to be a special format.
