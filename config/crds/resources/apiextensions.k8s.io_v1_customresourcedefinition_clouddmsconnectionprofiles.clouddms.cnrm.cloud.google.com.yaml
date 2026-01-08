@@ -1,0 +1,636 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com
+spec:
+  group: clouddms.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: CloudDMSConnectionProfile
+    listKind: CloudDMSConnectionProfileList
+    plural: clouddmsconnectionprofiles
+    shortNames:
+    - gcpclouddmsconnectionprofile
+    - gcpclouddmsconnectionprofiles
+    singular: clouddmsconnectionprofile
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: CloudDMSConnectionProfile is the Schema for the CloudDMSConnectionProfile
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: CloudDMSConnectionProfileSpec defines the desired state of
+              CloudDMSConnectionProfile
+            properties:
+              alloydb:
+                description: An AlloyDB cluster connection profile.
+                properties:
+                  clusterID:
+                    description: Required. The AlloyDB cluster ID that this connection
+                      profile is associated with.
+                    type: string
+                  settings:
+                    description: Immutable. Metadata used to create the destination
+                      AlloyDB cluster.
+                    properties:
+                      encryptionConfig:
+                        description: Optional. The encryption config can be specified
+                          to encrypt the data disks and other persistent data resources
+                          of a cluster with a customer-managed encryption key (CMEK).
+                          When this field is not specified, the cluster will then
+                          use default encryption scheme to protect the user data.
+                        properties:
+                          kmsKeyName:
+                            description: 'The fully-qualified resource name of the
+                              KMS key. Each Cloud KMS key is regionalized and has
+                              the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
+                            type: string
+                        type: object
+                      initialUser:
+                        description: Required. Input only. Initial user to setup during
+                          cluster creation. Required.
+                        properties:
+                          password:
+                            description: The initial password for the user.
+                            type: string
+                          user:
+                            description: The database username.
+                            type: string
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels for the AlloyDB cluster created by DMS.
+                          An object containing a list of 'key', 'value' pairs.
+                        type: object
+                      primaryInstanceSettings:
+                        properties:
+                          databaseFlags:
+                            additionalProperties:
+                              type: string
+                            description: Database flags to pass to AlloyDB when DMS
+                              is creating the AlloyDB cluster and instances. See the
+                              AlloyDB documentation for how these can be used.
+                            type: object
+                          id:
+                            description: Required. The ID of the AlloyDB primary instance.
+                              The ID must satisfy the regex expression "[a-z0-9-]+".
+                            type: string
+                          labels:
+                            additionalProperties:
+                              type: string
+                            description: Labels for the AlloyDB primary instance created
+                              by DMS. An object containing a list of 'key', 'value'
+                              pairs.
+                            type: object
+                          machineConfig:
+                            description: Configuration for the machines that host
+                              the underlying database engine.
+                            properties:
+                              cpuCount:
+                                description: The number of CPU's in the VM instance.
+                                format: int32
+                                type: integer
+                            type: object
+                        type: object
+                      vpcNetwork:
+                        description: 'Required. The resource link for the VPC network
+                          in which cluster resources are created and from which they
+                          are accessible via Private IP. The network must belong to
+                          the same project as the cluster. It is specified in the
+                          form: "projects/{project_number}/global/networks/{network_id}".
+                          This is required to create a cluster.'
+                        type: string
+                    type: object
+                type: object
+              cloudsql:
+                description: A CloudSQL database connection profile.
+                properties:
+                  settings:
+                    description: Immutable. Metadata used to create the destination
+                      Cloud SQL database.
+                    properties:
+                      activationPolicy:
+                        description: |-
+                          The activation policy specifies when the instance is activated; it is
+                           applicable only when the instance state is 'RUNNABLE'. Valid values:
+
+                           'ALWAYS': The instance is on, and remains so even in
+                           the absence of connection requests.
+
+                           `NEVER`: The instance is off; it is not activated, even if a
+                           connection request arrives.
+                        type: string
+                      autoStorageIncrease:
+                        description: '[default: ON] If you enable this setting, Cloud
+                          SQL checks your available storage every 30 seconds. If the
+                          available storage falls below a threshold size, Cloud SQL
+                          automatically adds additional storage capacity. If the available
+                          storage repeatedly falls below the threshold size, Cloud
+                          SQL continues to add storage until it reaches the maximum
+                          of 30 TB.'
+                        type: boolean
+                      availabilityType:
+                        description: 'Optional. Availability type. Potential values:
+                          *  `ZONAL`: The instance serves data from only one zone.
+                          Outages in that zone affect data availability. *  `REGIONAL`:
+                          The instance can serve data from more than one zone in a
+                          region (it is highly available).'
+                        type: string
+                      cmekKeyName:
+                        description: The KMS key name used for the csql instance.
+                        type: string
+                      collation:
+                        description: The Cloud SQL default instance level collation.
+                        type: string
+                      dataDiskSizeGB:
+                        description: The storage capacity available to the database,
+                          in GB. The minimum (and default) size is 10GB.
+                        format: int64
+                        type: integer
+                      dataDiskType:
+                        description: 'The type of storage: `PD_SSD` (default) or `PD_HDD`.'
+                        type: string
+                      databaseFlags:
+                        additionalProperties:
+                          type: string
+                        description: 'The database flags passed to the Cloud SQL instance
+                          at startup. An object containing a list of "key": value
+                          pairs. Example: { "name": "wrench", "mass": "1.3kg", "count":
+                          "3" }.'
+                        type: object
+                      databaseVersion:
+                        description: The database engine type and version.
+                        type: string
+                      edition:
+                        description: Optional. The edition of the given Cloud SQL
+                          instance.
+                        type: string
+                      ipConfig:
+                        description: The settings for IP Management. This allows to
+                          enable or disable the instance IP and manage which external
+                          networks can connect to the instance. The IPv4 address cannot
+                          be disabled.
+                        properties:
+                          allocatedIPRange:
+                            description: Optional. The name of the allocated IP address
+                              range for the private IP Cloud SQL instance. This name
+                              refers to an already allocated IP range address. If
+                              set, the instance IP address will be created in the
+                              allocated range. Note that this IP address range can't
+                              be modified after the instance is created. If you change
+                              the VPC when configuring connectivity settings for the
+                              migration job, this field is not relevant.
+                            type: string
+                          authorizedNetworks:
+                            description: The list of external networks that are allowed
+                              to connect to the instance using the IP. See https://en.wikipedia.org/wiki/CIDR_notation#CIDR_notation,
+                              also known as 'slash' notation (e.g. `192.168.100.0/24`).
+                            items:
+                              properties:
+                                expireTime:
+                                  description: 'The time when this access control
+                                    entry expires in [RFC 3339](https://tools.ietf.org/html/rfc3339)
+                                    format, for example: `2012-11-15T16:19:00.094Z`.'
+                                  type: string
+                                label:
+                                  description: A label to identify this entry.
+                                  type: string
+                                ttl:
+                                  description: Input only. The time-to-leave of this
+                                    access control entry.
+                                  type: string
+                                value:
+                                  description: The allowlisted value for the access
+                                    control list.
+                                  type: string
+                              type: object
+                            type: array
+                          enableIPV4:
+                            description: Whether the instance should be assigned an
+                              IPv4 address or not.
+                            type: boolean
+                          privateNetwork:
+                            description: The resource link for the VPC network from
+                              which the Cloud SQL instance is accessible for private
+                              IP. For example, `projects/myProject/global/networks/default`.
+                              This setting can be updated, but it cannot be removed
+                              after it is set.
+                            type: string
+                          requireSSL:
+                            description: Whether SSL connections over IP should be
+                              enforced or not.
+                            type: boolean
+                        type: object
+                      rootPassword:
+                        description: Input only. Initial root password.
+                        type: string
+                      secondaryZone:
+                        description: Optional. The Google Cloud Platform zone where
+                          the failover Cloud SQL database instance is located. Used
+                          when the Cloud SQL database availability type is REGIONAL
+                          (i.e. multiple zones / highly available).
+                        type: string
+                      sourceID:
+                        description: 'The Database Migration Service source connection
+                          profile ID, in the format: `projects/my_project_name/locations/us-central1/connectionProfiles/connection_profile_ID`'
+                        type: string
+                      storageAutoResizeLimit:
+                        description: The maximum size to which storage capacity can
+                          be automatically increased. The default value is 0, which
+                          specifies that there is no limit.
+                        format: int64
+                        type: integer
+                      tier:
+                        description: 'The tier (or machine type) for this instance,
+                          for example: `db-n1-standard-1` (MySQL instances) or `db-custom-1-3840`
+                          (PostgreSQL instances). For more information, see [Cloud
+                          SQL Instance Settings](https://cloud.google.com/sql/docs/mysql/instance-settings).'
+                        type: string
+                      userLabels:
+                        additionalProperties:
+                          type: string
+                        description: |-
+                          The resource labels for a Cloud SQL instance to use to annotate any related
+                           underlying resources such as Compute Engine VMs.
+                           An object containing a list of "key": "value" pairs.
+
+                           Example: `{ "name": "wrench", "mass": "18kg", "count": "3" }`.
+                        type: object
+                      zone:
+                        description: The Google Cloud Platform zone where your Cloud
+                          SQL database instance is located.
+                        type: string
+                    type: object
+                type: object
+              displayName:
+                description: The connection profile display name.
+                type: string
+              location:
+                type: string
+              mysql:
+                description: A MySQL database connection profile.
+                properties:
+                  cloudSQLID:
+                    description: If the source is a Cloud SQL database, use this field
+                      to provide the Cloud SQL instance ID of the source.
+                    type: string
+                  host:
+                    description: Required. The IP or hostname of the source MySQL
+                      database.
+                    type: string
+                  password:
+                    description: Required. Input only. The password for the user that
+                      Database Migration Service will be using to connect to the database.
+                      This field is not returned on request, and the value is encrypted
+                      when stored in Database Migration Service.
+                    type: string
+                  port:
+                    description: Required. The network port of the source MySQL database.
+                    format: int32
+                    type: integer
+                  ssl:
+                    description: SSL configuration for the destination to connect
+                      to the source database.
+                    properties:
+                      caCertificate:
+                        description: Required. Input only. The x509 PEM-encoded certificate
+                          of the CA that signed the source database server's certificate.
+                          The replica will use this certificate to verify it's connecting
+                          to the right host.
+                        type: string
+                      clientCertificate:
+                        description: Input only. The x509 PEM-encoded certificate
+                          that will be used by the replica to authenticate against
+                          the source database server.If this field is used then the
+                          'client_key' field is mandatory.
+                        type: string
+                      clientKey:
+                        description: Input only. The unencrypted PKCS#1 or PKCS#8
+                          PEM-encoded private key associated with the Client Certificate.
+                          If this field is used then the 'client_certificate' field
+                          is mandatory.
+                        type: string
+                    type: object
+                  username:
+                    description: Required. The username that Database Migration Service
+                      will use to connect to the database. The value is encrypted
+                      when stored in Database Migration Service.
+                    type: string
+                type: object
+              oracle:
+                description: An Oracle database connection profile.
+                properties:
+                  databaseService:
+                    description: Required. Database service for the Oracle connection.
+                    type: string
+                  forwardSSHConnectivity:
+                    description: Forward SSH tunnel connectivity.
+                    properties:
+                      hostname:
+                        description: Required. Hostname for the SSH tunnel.
+                        type: string
+                      password:
+                        description: Input only. SSH password.
+                        type: string
+                      port:
+                        description: Port for the SSH tunnel, default value is 22.
+                        format: int32
+                        type: integer
+                      privateKey:
+                        description: Input only. SSH private key.
+                        type: string
+                      username:
+                        description: Required. Username for the SSH tunnel.
+                        type: string
+                    type: object
+                  host:
+                    description: Required. The IP or hostname of the source Oracle
+                      database.
+                    type: string
+                  password:
+                    description: Required. Input only. The password for the user that
+                      Database Migration Service will be using to connect to the database.
+                      This field is not returned on request, and the value is encrypted
+                      when stored in Database Migration Service.
+                    type: string
+                  port:
+                    description: Required. The network port of the source Oracle database.
+                    format: int32
+                    type: integer
+                  privateConnectivity:
+                    description: Private connectivity.
+                    properties:
+                      privateConnection:
+                        description: Required. The resource name (URI) of the private
+                          connection.
+                        type: string
+                    type: object
+                  ssl:
+                    description: |-
+                      SSL configuration for the connection to the source Oracle database.
+
+                        * Only `SERVER_ONLY` configuration is supported for Oracle SSL.
+                        * SSL is supported for Oracle versions 12 and above.
+                    properties:
+                      caCertificate:
+                        description: Required. Input only. The x509 PEM-encoded certificate
+                          of the CA that signed the source database server's certificate.
+                          The replica will use this certificate to verify it's connecting
+                          to the right host.
+                        type: string
+                      clientCertificate:
+                        description: Input only. The x509 PEM-encoded certificate
+                          that will be used by the replica to authenticate against
+                          the source database server.If this field is used then the
+                          'client_key' field is mandatory.
+                        type: string
+                      clientKey:
+                        description: Input only. The unencrypted PKCS#1 or PKCS#8
+                          PEM-encoded private key associated with the Client Certificate.
+                          If this field is used then the 'client_certificate' field
+                          is mandatory.
+                        type: string
+                    type: object
+                  staticServiceIPConnectivity:
+                    description: Static Service IP connectivity.
+                    type: object
+                  username:
+                    description: Required. The username that Database Migration Service
+                      will use to connect to the database. The value is encrypted
+                      when stored in Database Migration Service.
+                    type: string
+                type: object
+              postgresql:
+                description: A PostgreSQL database connection profile.
+                properties:
+                  cloudSQLID:
+                    description: If the source is a Cloud SQL database, use this field
+                      to provide the Cloud SQL instance ID of the source.
+                    type: string
+                  host:
+                    description: Required. The IP or hostname of the source PostgreSQL
+                      database.
+                    type: string
+                  password:
+                    description: Required. Input only. The password for the user that
+                      Database Migration Service will be using to connect to the database.
+                      This field is not returned on request, and the value is encrypted
+                      when stored in Database Migration Service.
+                    type: string
+                  port:
+                    description: Required. The network port of the source PostgreSQL
+                      database.
+                    format: int32
+                    type: integer
+                  privateServiceConnectConnectivity:
+                    description: Private service connect connectivity.
+                    properties:
+                      serviceAttachment:
+                        description: 'Required. A service attachment that exposes
+                          a database, and has the following format: projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}'
+                        type: string
+                    type: object
+                  ssl:
+                    description: SSL configuration for the destination to connect
+                      to the source database.
+                    properties:
+                      caCertificate:
+                        description: Required. Input only. The x509 PEM-encoded certificate
+                          of the CA that signed the source database server's certificate.
+                          The replica will use this certificate to verify it's connecting
+                          to the right host.
+                        type: string
+                      clientCertificate:
+                        description: Input only. The x509 PEM-encoded certificate
+                          that will be used by the replica to authenticate against
+                          the source database server.If this field is used then the
+                          'client_key' field is mandatory.
+                        type: string
+                      clientKey:
+                        description: Input only. The unencrypted PKCS#1 or PKCS#8
+                          PEM-encoded private key associated with the Client Certificate.
+                          If this field is used then the 'client_certificate' field
+                          is mandatory.
+                        type: string
+                    type: object
+                  staticIPConnectivity:
+                    description: Static ip connectivity data (default, no additional
+                      details needed).
+                    type: object
+                  username:
+                    description: Required. The username that Database Migration Service
+                      will use to connect to the database. The value is encrypted
+                      when stored in Database Migration Service.
+                    type: string
+                type: object
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              provider:
+                description: The database provider.
+                type: string
+              resourceID:
+                description: The CloudDMSConnectionProfile name. If not given, the
+                  metadata.name will be used.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: CloudDMSConnectionProfileStatus defines the config connector
+              machine state of CloudDMSConnectionProfile
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the CloudDMSConnectionProfile
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: 'Output only. The timestamp when the resource was
+                      created. A timestamp in RFC3339 UTC "Zulu" format, accurate
+                      to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".'
+                    type: string
+                  error:
+                    description: Output only. The error details in case of state FAILED.
+                    properties:
+                      code:
+                        description: The status code, which should be an enum value
+                          of [google.rpc.Code][google.rpc.Code].
+                        format: int32
+                        type: integer
+                      message:
+                        description: A developer-facing error message, which should
+                          be in English. Any user-facing error message should be localized
+                          and sent in the [google.rpc.Status.details][google.rpc.Status.details]
+                          field, or localized by the client.
+                        type: string
+                    type: object
+                  name:
+                    description: The name of this connection profile resource in the
+                      form of projects/{project}/locations/{location}/connectionProfiles/{connectionProfile}.
+                    type: string
+                  state:
+                    description: The current connection profile state (e.g. DRAFT,
+                      READY, or FAILED).
+                    type: string
+                  updateTime:
+                    description: 'Output only. The timestamp when the resource was
+                      last updated. A timestamp in RFC3339 UTC "Zulu" format, accurate
+                      to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".'
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
