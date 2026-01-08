@@ -241,7 +241,7 @@ func validateURLsInTemplates(t *testing.T, templatesDir string) {
 						}
 					}
 				}
-				
+
 				if !success {
 					res.err = lastErr
 					res.code = lastCode
@@ -258,6 +258,7 @@ func validateURLsInTemplates(t *testing.T, templatesDir string) {
 		var candidates []string
 		if strings.HasPrefix(u, "/") {
 			candidates = []string{
+				// TODO: eventually after the migration is done, this will be removed, and we will use the new domain docs.cloud.google.com
 				"https://cloud.google.com" + u,
 				"https://docs.cloud.google.com" + u,
 			}

@@ -384,7 +384,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Whether assistive experiences are enabled for this AlloyDB instance. DEPRECATED - This field is no longer in use.{% endverbatim %}</p>
+            <p>{% verbatim %}Whether assistive experiences are enabled for this AlloyDB instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -454,7 +454,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Track client address for an instance. If not set, default value is "off". DEPRECATED - This field is no longer in use.{% endverbatim %}</p>
+            <p>{% verbatim %}Track client address for an instance. If not set, default value is "off".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
