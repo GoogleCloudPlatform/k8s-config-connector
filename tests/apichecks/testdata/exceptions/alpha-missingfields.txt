@@ -78,9 +78,6 @@
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.versionAliases[]" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.versionDescription" is not set in unstructured objects
-[missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.redirectURI" is not set in unstructured objects
-[missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.regionCode" is not set in unstructured objects
 [missing_field] crd=apigatewayapiconfigs.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".spec.api" is not set in unstructured objects
 [missing_field] crd=apigatewayapiconfigs.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiConfigIdPrefix" is not set in unstructured objects
 [missing_field] crd=apigatewayapiconfigs.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
