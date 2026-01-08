@@ -18,7 +18,6 @@ import (
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 )
 
 func BigQueryReservationReservationSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationReservationSpec) *pb.Reservation {
@@ -80,17 +79,6 @@ func FailoverSpec_ToProto(mapCtx *direct.MapContext, in *krm.FailoverSpec) strin
 	return direct.ValueOf(in.SecondaryLocation)
 }
 
-func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status {
-	if in == nil {
-		return nil
-	}
-	out := &statuspb.Status{}
-	out.Code = direct.ValueOf(in.Code)
-	out.Message = direct.ValueOf(in.Message)
-	// NOTYET
-	// out.Details
-	return out
-}
 func FailoverObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.FailoverObservedState {
 	if in == nil {
 		return nil
@@ -138,18 +126,6 @@ func AutoscaleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservat
 	if out.CurrentSlots = direct.LazyPtr(in.GetCurrentSlots()); out.CurrentSlots == nil {
 		return nil
 	}
-	return out
-}
-
-func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Status {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Status{}
-	out.Code = direct.LazyPtr(in.GetCode())
-	out.Message = direct.LazyPtr(in.GetMessage())
-	// NOTYET
-	// out.Details
 	return out
 }
 

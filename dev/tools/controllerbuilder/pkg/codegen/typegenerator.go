@@ -133,6 +133,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
+		out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
 
 		out.goPackage = lastGoComponent(g.goPackage)
 
@@ -169,12 +170,13 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		if msg.IsMapEntry() {
 			continue
 		}
-
 		k := generatedFileKey{
 			GoPackage: g.goPackage,
 			FileName:  "types.generated.go",
 		}
+
 		out := g.getOutputFile(k)
+		out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
 		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation

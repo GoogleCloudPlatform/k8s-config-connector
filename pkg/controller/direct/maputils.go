@@ -23,6 +23,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/googleapis/gax-go/v2/apierror"
 	grpcCode "google.golang.org/grpc/codes"
 	grpcStatus "google.golang.org/grpc/status"
@@ -33,6 +34,8 @@ import (
 	"google.golang.org/protobuf/types/known/wrapperspb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/klog/v2"
+
+	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 )
 
 type MapContext struct {
@@ -578,4 +581,28 @@ func Struct_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Stru
 		return nil
 	}
 	return s
+}
+
+func Status_FromProto(mapCtx *MapContext, in *statuspb.Status) *common.Status {
+	if in == nil {
+		return nil
+	}
+	out := &common.Status{}
+	out.Code = LazyPtr(in.GetCode())
+	out.Message = LazyPtr(in.GetMessage())
+	// MISSING: Details
+	// details is *[]anypb.Any.
+	return out
+}
+
+func Status_ToProto(mapCtx *MapContext, in *common.Status) *statuspb.Status {
+	if in == nil {
+		return nil
+	}
+	out := &statuspb.Status{}
+	out.Code = ValueOf(in.Code)
+	out.Message = ValueOf(in.Message)
+	// MISSING: Details
+	// details is *[]anypb.Any.
+	return out
 }
