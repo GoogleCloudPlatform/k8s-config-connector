@@ -23,10 +23,11 @@ import (
 	"testing"
 	"time"
 
+	"k8s.io/apimachinery/pkg/runtime"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
@@ -156,8 +157,8 @@ func TestMultiClusterLeaderElection_TwoManagers(t *testing.T) {
 	leaseController := &mockLeaseController{client: kubeClient}
 
 	// Create two managers with different configs (simulating two clusters)
-	mgr1, signal1 := newTestManagerWithConfig(t, cfg, scheme, "mgr1", testNamespace1)
-	mgr2, signal2 := newTestManagerWithConfig(t, cfg, scheme, "mgr2", testNamespace2)
+	mgr1, signal1 := newTestManagerWithConfig(t, cfg, "mgr1", testNamespace1)
+	mgr2, signal2 := newTestManagerWithConfig(t, cfg, "mgr2", testNamespace2)
 
 	// Start managers in goroutines
 	go func() {
@@ -256,7 +257,7 @@ func waitForObject(ctx context.Context, c client.Client, nn types.NamespacedName
 	})
 }
 
-func newTestManagerWithConfig(t *testing.T, cfg *rest.Config, scheme *runtime.Scheme, identity string, namespace string) (manager.Manager, *startSignal) {
+func newTestManagerWithConfig(t *testing.T, cfg *rest.Config, identity string, namespace string) (manager.Manager, *startSignal) {
 	t.Helper()
 
 	mclConfig := &operatorv1beta1.MultiClusterLeaseSpec{
@@ -267,7 +268,7 @@ func newTestManagerWithConfig(t *testing.T, cfg *rest.Config, scheme *runtime.Sc
 
 	kccCfg := Config{
 		ManagerOptions: manager.Options{
-			Scheme: scheme,
+			// Scheme: scheme, // Do not provide scheme, let New() build it using addSchemes()
 			Metrics: metricsserver.Options{
 				BindAddress: "0",
 			},
