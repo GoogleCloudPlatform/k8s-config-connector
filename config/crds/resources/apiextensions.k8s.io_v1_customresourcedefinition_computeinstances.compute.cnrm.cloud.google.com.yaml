@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: ComputeInstance
+    listKind: ComputeInstanceList
     plural: computeinstances
     shortNames:
     - gcpcomputeinstance
@@ -43,29 +44,22 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: ComputeInstance is the Schema for the ComputeInstance API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
-            anyOf:
-            - required:
-              - bootDisk
-              - machineType
-              - networkInterface
-              - zone
-            - required:
-              - instanceTemplateRef
-              - zone
+            description: ComputeInstanceSpec defines the desired state of ComputeInstance
             properties:
               advancedMachineFeatures:
                 description: Controls for advanced machine-related behavior features.
@@ -78,13 +72,15 @@ spec:
                       simultaneous multithreading (SMT) set this to 1. If unset, the
                       maximum number of threads supported per core by the underlying
                       processor is assumed.
+                    format: int32
                     type: integer
                   visibleCoreCount:
                     description: The number of physical cores to expose to an instance.
                       Multiply by the number of threads per core to compute the total
                       number of virtual CPUs to expose to the instance. If unset,
-                      the number of cores is inferred from the instance\'s nominal
-                      CPU count and the underlying platform\'s SMT width.
+                      the number of cores is inferred from the instance's nominal
+                      CPU count and the underlying platform's SMT width.
+                    format: int32
                     type: integer
                 type: object
               attachedDisk:
@@ -99,17 +95,6 @@ spec:
                       description: A 256-bit customer-supplied encryption key, encoded
                         in RFC 4648 base64 to encrypt this disk. Only one of kms_key_self_link
                         and disk_encryption_key_raw may be set.
-                      oneOf:
-                      - not:
-                          required:
-                          - valueFrom
-                        required:
-                        - value
-                      - not:
-                          required:
-                          - value
-                        required:
-                        - valueFrom
                       properties:
                         value:
                           description: Value of the field. Cannot be used if 'valueFrom'
@@ -124,17 +109,25 @@ spec:
                                 in the given Secret in the resource's namespace.
                               properties:
                                 key:
-                                  description: Key that identifies the value to be
-                                    extracted.
+                                  description: The key of the secret to select from.  Must
+                                    be a valid secret key.
                                   type: string
                                 name:
-                                  description: Name of the Secret to extract a value
-                                    from.
+                                  default: ""
+                                  description: 'Name of the referent. This field is
+                                    effectively required, but due to backwards compatibility
+                                    is allowed to be empty. Instances of this type
+                                    with an empty value here are almost certainly
+                                    wrong. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                   type: string
+                                optional:
+                                  description: Specify whether the Secret or its key
+                                    must be defined
+                                  type: boolean
                               required:
-                              - name
                               - key
                               type: object
+                              x-kubernetes-map-type: atomic
                           type: object
                       type: object
                     diskEncryptionKeySha256:
@@ -142,6 +135,7 @@ spec:
                         customer-supplied encryption key that protects this resource.
                       type: string
                     kmsKeyRef:
+                      description: The KMS key to use for the disk.
                       oneOf:
                       - not:
                           required:
@@ -173,6 +167,7 @@ spec:
                         or "READ_WRITE".
                       type: string
                     sourceDiskRef:
+                      description: The source disk.
                       oneOf:
                       - not:
                           required:
@@ -218,17 +213,6 @@ spec:
                     description: Immutable. A 256-bit customer-supplied encryption
                       key, encoded in RFC 4648 base64 to encrypt this disk. Only one
                       of kms_key_self_link and disk_encryption_key_raw may be set.
-                    oneOf:
-                    - not:
-                        required:
-                        - valueFrom
-                      required:
-                      - value
-                    - not:
-                        required:
-                        - value
-                      required:
-                      - valueFrom
                     properties:
                       value:
                         description: Value of the field. Cannot be used if 'valueFrom'
@@ -243,16 +227,25 @@ spec:
                               the given Secret in the resource's namespace.
                             properties:
                               key:
-                                description: Key that identifies the value to be extracted.
+                                description: The key of the secret to select from.  Must
+                                  be a valid secret key.
                                 type: string
                               name:
-                                description: Name of the Secret to extract a value
-                                  from.
+                                default: ""
+                                description: 'Name of the referent. This field is
+                                  effectively required, but due to backwards compatibility
+                                  is allowed to be empty. Instances of this type with
+                                  an empty value here are almost certainly wrong.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                                 type: string
+                              optional:
+                                description: Specify whether the Secret or its key
+                                  must be defined
+                                type: boolean
                             required:
-                            - name
                             - key
                             type: object
+                            x-kubernetes-map-type: atomic
                         type: object
                     type: object
                   diskEncryptionKeySha256:
@@ -264,20 +257,23 @@ spec:
                       alongside the instance.
                     properties:
                       labels:
+                        additionalProperties:
+                          type: string
                         description: Immutable. A set of key/value label pairs assigned
                           to the disk.
                         type: object
-                        x-kubernetes-preserve-unknown-fields: true
                       resourceManagerTags:
+                        additionalProperties:
+                          type: string
                         description: Immutable. A map of resource manager tags. Resource
                           manager tag keys and values have the same definition as
                           resource manager tags. Keys must be in the format tagKeys/{tag_key_id},
                           and values are in the format tagValues/456. The field is
                           ignored (both PUT & PATCH) when empty.
                         type: object
-                        x-kubernetes-preserve-unknown-fields: true
                       size:
                         description: Immutable. The size of the image in gigabytes.
+                        format: int64
                         type: integer
                       sourceImageRef:
                         description: Immutable. The image from which to initialize
@@ -314,6 +310,7 @@ spec:
                         type: string
                     type: object
                   kmsKeyRef:
+                    description: The KMS key to use for the disk.
                     oneOf:
                     - not:
                         required:
@@ -386,8 +383,6 @@ spec:
                     description: Defines whether the instance should have confidential
                       compute enabled.
                     type: boolean
-                required:
-                - enableConfidentialCompute
                 type: object
               deletionProtection:
                 description: Whether deletion protection is enabled on this instance.
@@ -409,14 +404,12 @@ spec:
                     count:
                       description: Immutable. The number of the guest accelerator
                         cards exposed to this instance.
+                      format: int32
                       type: integer
                     type:
                       description: Immutable. The accelerator type resource exposed
                         to this instance. E.g. nvidia-tesla-t4.
                       type: string
-                  required:
-                  - count
-                  - type
                   type: object
                 type: array
               hostname:
@@ -458,6 +451,8 @@ spec:
                 description: The machine type to create.
                 type: string
               metadata:
+                description: Metadata key/value pairs to make available from within
+                  the instance.
                 items:
                   properties:
                     key:
@@ -479,10 +474,6 @@ spec:
               networkInterface:
                 description: Immutable. The networks attached to the instance.
                 items:
-                  not:
-                    required:
-                    - networkIp
-                    - networkIpRef
                   properties:
                     accessConfig:
                       description: Access configurations, i.e. IPs via which this
@@ -546,6 +537,7 @@ spec:
                     internalIpv6PrefixLength:
                       description: The prefix length of the primary internal IPv6
                         range.
+                      format: int32
                       type: integer
                     ipv6AccessConfig:
                       description: An array of IPv6 access configurations for this
@@ -671,6 +663,7 @@ spec:
                       description: Immutable. The networking queue count that's specified
                         by users for the network interface. Both Rx and Tx queues
                         will be set to this number. It will be empty if not specified.
+                      format: int32
                       type: integer
                     stackType:
                       description: The stack type for this network interface to identify
@@ -715,63 +708,56 @@ spec:
                   its default network performance configuration.
                 properties:
                   totalEgressBandwidthTier:
-                    description: Immutable. The egress bandwidth tier to enable. Possible
-                      values:TIER_1, DEFAULT.
+                    description: Check the TotalEgressBandwidthTier enum for the list
+                      of possible values.
                     type: string
-                required:
-                - totalEgressBandwidthTier
                 type: object
               params:
                 description: Immutable. Stores additional params passed with the request,
                   but not persisted as part of resource payload.
                 properties:
                   resourceManagerTags:
-                    description: Immutable. A map of resource manager tags. Resource
-                      manager tag keys and values have the same definition as resource
-                      manager tags. Keys must be in the format tagKeys/{tag_key_id},
-                      and values are in the format tagValues/456. The field is ignored
+                    additionalProperties:
+                      type: string
+                    description: Resource manager tags to be bound to the instance.
+                      Tag keys and values have the same definition as resource manager
+                      tags. Keys must be in the format `tagKeys/{tag_key_id}`, and
+                      values are in the format `tagValues/456`. The field is ignored
                       (both PUT & PATCH) when empty.
                     type: object
-                    x-kubernetes-preserve-unknown-fields: true
                 type: object
               reservationAffinity:
                 description: Immutable. Specifies the reservations that this instance
                   can consume from.
                 properties:
-                  specificReservation:
-                    description: Immutable. Specifies the label selector for the reservation
-                      to use.
-                    properties:
-                      key:
-                        description: Immutable. Corresponds to the label key of a
-                          reservation resource. To target a SPECIFIC_RESERVATION by
-                          name, specify compute.googleapis.com/reservation-name as
-                          the key and specify the name of your reservation as the
-                          only value.
-                        type: string
-                      values:
-                        description: Immutable. Corresponds to the label values of
-                          a reservation resource.
-                        items:
-                          type: string
-                        type: array
-                    required:
-                    - key
-                    - values
-                    type: object
-                  type:
-                    description: Immutable. The type of reservation from which this
-                      instance can consume resources.
+                  consumeReservationType:
+                    description: 'Specifies the type of reservation from which this
+                      instance can consume resources: ANY_RESERVATION (default), SPECIFIC_RESERVATION,
+                      or NO_RESERVATION. See Consuming reserved instances for examples.
+                      Check the ConsumeReservationType enum for the list of possible
+                      values.'
                     type: string
-                required:
-                - type
+                  key:
+                    description: Corresponds to the label key of a reservation resource.
+                      To target a SPECIFIC_RESERVATION by name, specify googleapis.com/reservation-name
+                      as the key and specify the name of your reservation as its value.
+                    type: string
+                  values:
+                    description: Corresponds to the label values of a reservation
+                      resource. This can be either a name to a reservation in the
+                      same project or "projects/different-project/reservations/some-reservation-name"
+                      to target a shared reservation in the same zone but in a different
+                      project.
+                    items:
+                      type: string
+                    type: array
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The ComputeInstance name. If not given, the metadata.name
+                  will be used.
                 type: string
               resourcePolicies:
+                description: Resource policies applied to this instance.
                 items:
                   oneOf:
                   - not:
@@ -804,78 +790,135 @@ spec:
                 description: The scheduling strategy being used by the instance.
                 properties:
                   automaticRestart:
-                    description: Specifies if the instance should be restarted if
-                      it was terminated by Compute Engine (not a user).
+                    description: Specifies whether the instance should be automatically
+                      restarted if it is terminated by Compute Engine (not terminated
+                      by a user). You can only set the automatic restart option for
+                      standard instances. Preemptible instances cannot be automatically
+                      restarted. By default, this is set to true so an instance is
+                      automatically restarted if it is terminated by Compute Engine.
                     type: boolean
+                  availabilityDomain:
+                    description: Specifies the availability domain to place the instance
+                      in. The value must be a number between 1 and the number of availability
+                      domains specified in the spread placement policy attached to
+                      the instance.
+                    format: int32
+                    type: integer
+                  hostErrorTimeoutSeconds:
+                    description: Specify the time in seconds for host error detection,
+                      the value must be within the range of [90, 330] with the increment
+                      of 30, if unset, the default behavior of host error recovery
+                      will be used.
+                    format: int32
+                    type: integer
                   instanceTerminationAction:
-                    description: Specifies the action GCE should take when SPOT VM
-                      is preempted.
+                    description: Specifies the termination action for the instance.
+                      Check the InstanceTerminationAction enum for the list of possible
+                      values.
                     type: string
                   localSsdRecoveryTimeout:
-                    description: |-
-                      Immutable. Specifies the maximum amount of time a Local Ssd Vm should wait while
-                        recovery of the Local Ssd state is attempted. Its value should be in
-                        between 0 and 168 hours with hour granularity and the default value being 1
-                        hour.
+                    description: Specifies the maximum amount of time a Local Ssd
+                      Vm should wait while recovery of the Local Ssd state is attempted.
+                      Its value should be in between 0 and 168 hours with hour granularity
+                      and the default value being 1 hour.
                     properties:
                       nanos:
-                        description: |-
-                          Immutable. Span of time that's a fraction of a second at nanosecond
-                          resolution. Durations less than one second are represented
-                          with a 0 seconds field and a positive nanos field. Must
-                          be from 0 to 999,999,999 inclusive.
+                        description: Span of time that's a fraction of a second at
+                          nanosecond resolution. Durations less than one second are
+                          represented with a 0 `seconds` field and a positive `nanos`
+                          field. Must be from 0 to 999,999,999 inclusive.
+                        format: int32
                         type: integer
                       seconds:
-                        description: |-
-                          Immutable. Span of time at a resolution of a second.
-                          Must be from 0 to 315,576,000,000 inclusive.
+                        description: 'Span of time at a resolution of a second. Must
+                          be from 0 to 315,576,000,000 inclusive. Note: these bounds
+                          are computed from: 60 sec/min * 60 min/hr * 24 hr/day *
+                          365.25 days/year * 10000 years'
+                        format: int64
                         type: integer
-                    required:
-                    - seconds
                     type: object
-                  maintenanceInterval:
-                    description: 'Specifies the frequency of planned maintenance events.
-                      The accepted values are: PERIODIC.'
+                  locationHint:
+                    description: An opaque location hint used to place the instance
+                      close to other resources. This field is for use by internal
+                      tools that use the public API.
                     type: string
                   maxRunDuration:
-                    description: Immutable. The timeout for new network connections
-                      to hosts.
+                    description: Specifies the max run duration for the given instance.
+                      If specified, the instance termination action will be performed
+                      at the end of the run duration.
                     properties:
                       nanos:
-                        description: |-
-                          Immutable. Span of time that's a fraction of a second at nanosecond
-                          resolution. Durations less than one second are represented
-                          with a 0 seconds field and a positive nanos field. Must
-                          be from 0 to 999,999,999 inclusive.
+                        description: Span of time that's a fraction of a second at
+                          nanosecond resolution. Durations less than one second are
+                          represented with a 0 `seconds` field and a positive `nanos`
+                          field. Must be from 0 to 999,999,999 inclusive.
+                        format: int32
                         type: integer
                       seconds:
-                        description: |-
-                          Immutable. Span of time at a resolution of a second.
-                          Must be from 0 to 315,576,000,000 inclusive.
+                        description: 'Span of time at a resolution of a second. Must
+                          be from 0 to 315,576,000,000 inclusive. Note: these bounds
+                          are computed from: 60 sec/min * 60 min/hr * 24 hr/day *
+                          365.25 days/year * 10000 years'
+                        format: int64
                         type: integer
-                    required:
-                    - seconds
                     type: object
                   minNodeCpus:
+                    description: The minimum number of virtual CPUs this instance
+                      will consume when running on a sole-tenant node.
+                    format: int32
                     type: integer
                   nodeAffinities:
+                    description: A set of node affinity and anti-affinity configurations.
+                      Refer to Configuring node affinity for more information. Overrides
+                      reservationAffinity.
                     items:
                       properties:
-                        value:
-                          type: object
-                          x-kubernetes-preserve-unknown-fields: true
+                        key:
+                          description: Corresponds to the label key of Node resource.
+                          type: string
+                        operator:
+                          description: Defines the operation of node selection. Valid
+                            operators are IN for affinity and NOT_IN for anti-affinity.
+                            Check the Operator enum for the list of possible values.
+                          type: string
+                        values:
+                          description: Corresponds to the label values of Node resource.
+                          items:
+                            type: string
+                          type: array
                       type: object
                     type: array
                   onHostMaintenance:
-                    description: Describes maintenance behavior for the instance.
-                      One of MIGRATE or TERMINATE,.
+                    description: Defines the maintenance behavior for this instance.
+                      For standard instances, the default behavior is MIGRATE. For
+                      preemptible instances, the default and only possible behavior
+                      is TERMINATE. For more information, see Set VM host maintenance
+                      policy. Check the OnHostMaintenance enum for the list of possible
+                      values.
                     type: string
+                  onInstanceStopAction:
+                    properties:
+                      discardLocalSsd:
+                        description: If true, the contents of any attached Local SSD
+                          disks will be discarded else, the Local SSD data will be
+                          preserved when the instance is stopped at the end of the
+                          run duration/termination time.
+                        type: boolean
+                    type: object
                   preemptible:
-                    description: Immutable. Whether the instance is preemptible.
+                    description: Defines whether the instance is preemptible. This
+                      can only be set during instance creation or while the instance
+                      is stopped and therefore, in a `TERMINATED` state. See Instance
+                      Life Cycle for more information on the possible instance states.
                     type: boolean
                   provisioningModel:
-                    description: Immutable. Whether the instance is spot. If this
-                      is set as SPOT.
+                    description: Specifies the provisioning model of the instance.
+                      Check the ProvisioningModel enum for the list of possible values.
+                    type: string
+                  terminationTime:
+                    description: Specifies the timestamp, when the instance will be
+                      terminated, in RFC3339 text format. If specified, the instance
+                      termination action will be performed at the termination time.
                     type: string
                 type: object
               scratchDisk:
@@ -889,6 +932,7 @@ spec:
                     size:
                       description: Immutable. The size of the disk in gigabytes. One
                         of 375 or 3000.
+                      format: int32
                       type: integer
                   required:
                   - interface
@@ -957,10 +1001,12 @@ spec:
                 type: string
             type: object
           status:
+            description: ComputeInstanceStatus defines the config connector machine
+              state of ComputeInstance
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -988,11 +1034,14 @@ spec:
                 description: The CPU platform used by this instance.
                 type: string
               currentStatus:
-                description: "\n\t\t\t\t\tCurrent status of the instance.\n\t\t\t\t\tThis
-                  could be one of the following values: PROVISIONING, STAGING, RUNNING,
-                  STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED.\n\t\t\t\t\tFor
-                  more information about the status of the instance, see [Instance
-                  life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle)."
+                description: 'Current status of the instance. This could be one of
+                  the following values: PROVISIONING, STAGING, RUNNING, STOPPING,
+                  SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED. For more information
+                  about the status of the instance, see [Instance life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle).'
+                type: string
+              externalRef:
+                description: A unique specifier for the ComputeInstance resource in
+                  GCP.
                 type: string
               instanceId:
                 description: The server-assigned unique identifier of this instance.
@@ -1009,7 +1058,12 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
               selfLink:
                 description: The URI of the created resource.
                 type: string
@@ -1024,9 +1078,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
