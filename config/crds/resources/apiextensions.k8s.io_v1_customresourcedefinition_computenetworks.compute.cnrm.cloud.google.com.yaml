@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: ComputeNetwork
+    listKind: ComputeNetworkList
     plural: computenetworks
     shortNames:
     - gcpcomputenetwork
@@ -43,20 +44,22 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: ComputeNetwork is the Schema for the ComputeNetwork API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: ComputeNetworkSpec defines the desired state of ComputeNetwork
             properties:
               autoCreateSubnetworks:
                 description: |-
@@ -68,35 +71,35 @@ spec:
                   the user can explicitly connect subnetwork resources.
                 type: boolean
               deleteDefaultRoutesOnCreate:
-                description: |-
-                  If set to 'true', default routes ('0.0.0.0/0') will be deleted
-                  immediately after network creation. Defaults to 'false'.
+                description: If set to 'true', default routes ('0.0.0.0/0') will be
+                  deleted immediately after network creation. Defaults to 'false'.
                 type: boolean
               description:
-                description: |-
-                  Immutable. An optional description of this resource. The resource must be
-                  recreated to modify this field.
+                description: Immutable. An optional description of this resource.
+                  The resource must be recreated to modify this field.
                 type: string
               enableUlaInternalIpv6:
-                description: |-
-                  Enable ULA internal ipv6 on this network. Enabling this feature will assign
-                  a /48 from google defined ULA prefix fd20::/20.
+                description: Enable ULA internal ipv6 on this network. Enabling this
+                  feature will assign a /48 from google defined ULA prefix fd20::/20.
                 type: boolean
               internalIpv6Range:
-                description: |-
-                  Immutable. When enabling ula internal ipv6, caller optionally can specify the /48 range
-                  they want from the google defined ULA prefix fd20::/20. The input must be a
-                  valid /48 ULA IPv6 address and must be within the fd20::/20. Operation will
-                  fail if the speficied /48 is already in used by another resource.
-                  If the field is not speficied, then a /48 range will be randomly allocated from fd20::/20 and returned via this field.
+                description: Immutable. When enabling ula internal ipv6, caller optionally
+                  can specify the /48 range they want from the google defined ULA
+                  prefix fd20::/20. The input must be a valid /48 ULA IPv6 address
+                  and must be within the fd20::/20. Operation will fail if the speficied
+                  /48 is already in used by another resource. If the field is not
+                  speficied, then a /48 range will be randomly allocated from fd20::/20
+                  and returned via this field.
                 type: string
               mtu:
-                description: |-
-                  Immutable. Maximum Transmission Unit in bytes. The default value is 1460 bytes.
-                  The minimum value for this field is 1300 and the maximum value is 8896 bytes (jumbo frames).
-                  Note that packets larger than 1500 bytes (standard Ethernet) can be subject to TCP-MSS clamping or dropped
-                  with an ICMP 'Fragmentation-Needed' message if the packets are routed to the Internet or other VPCs
-                  with varying MTUs.
+                description: Immutable. Maximum Transmission Unit in bytes. The default
+                  value is 1460 bytes. The minimum value for this field is 1300 and
+                  the maximum value is 8896 bytes (jumbo frames). Note that packets
+                  larger than 1500 bytes (standard Ethernet) can be subject to TCP-MSS
+                  clamping or dropped with an ICMP 'Fragmentation-Needed' message
+                  if the packets are routed to the Internet or other VPCs with varying
+                  MTUs.
+                format: int32
                 type: integer
               networkFirewallPolicyEnforcementOrder:
                 description: 'Set the order that Firewall Rules and Firewall Policies
@@ -109,19 +112,20 @@ spec:
                   is used as the default.
                 type: string
               routingMode:
-                description: |-
-                  The network-wide routing mode to use. If set to 'REGIONAL', this
-                  network's cloud routers will only advertise routes with subnetworks
-                  of this network in the same region as the router. If set to 'GLOBAL',
-                  this network's cloud routers will advertise routes with all
-                  subnetworks of this network, across regions. Possible values: ["REGIONAL", "GLOBAL"].
+                description: 'The network-wide routing mode to use. If set to ''REGIONAL'',
+                  this network''s cloud routers will only advertise routes with subnetworks
+                  of this network in the same region as the router. If set to ''GLOBAL'',
+                  this network''s cloud routers will advertise routes with all subnetworks
+                  of this network, across regions. Possible values: ["REGIONAL", "GLOBAL"].'
                 type: string
             type: object
           status:
+            description: ComputeNetworkStatus defines the config connector machine
+              state of ComputeNetwork
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -145,10 +149,13 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the ComputeNetwork resource in
+                  GCP.
+                type: string
               gatewayIpv4:
-                description: |-
-                  The gateway address for default routing out of the network. This value
-                  is selected by GCP.
+                description: The gateway address for default routing out of the network.
+                  This value is selected by GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -156,18 +163,15 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               selfLink:
                 type: string
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

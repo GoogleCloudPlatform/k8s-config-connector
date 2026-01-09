@@ -26,6 +26,120 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ComputeNetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.ComputeNetworkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNetworkSpec{}
+	// MISSING: IPv4Range
+	out.AutoCreateSubnetworks = in.AutoCreateSubnetworks
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: EnableUlaInternalIPV6
+	// (near miss): "EnableUlaInternalIPV6" vs "EnableUlaInternalIpv6"
+	// MISSING: FirewallPolicy
+	// MISSING: GatewayIPv4
+	// MISSING: ID
+	// MISSING: InternalIPV6Range
+	// (near miss): "InternalIPV6Range" vs "InternalIpv6Range"
+	// MISSING: Kind
+	out.Mtu = in.Mtu
+	// MISSING: Name
+	out.NetworkFirewallPolicyEnforcementOrder = in.NetworkFirewallPolicyEnforcementOrder
+	// MISSING: NetworkProfile
+	// MISSING: Params
+	// MISSING: Peerings
+	// MISSING: RoutingConfig
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: Subnetworks
+	return out
+}
+func ComputeNetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkSpec) *pb.Network {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Network{}
+	// MISSING: IPv4Range
+	out.AutoCreateSubnetworks = in.AutoCreateSubnetworks
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: EnableUlaInternalIPV6
+	// (near miss): "EnableUlaInternalIPV6" vs "EnableUlaInternalIpv6"
+	// MISSING: FirewallPolicy
+	// MISSING: GatewayIPv4
+	// MISSING: ID
+	// MISSING: InternalIPV6Range
+	// (near miss): "InternalIPV6Range" vs "InternalIpv6Range"
+	// MISSING: Kind
+	out.Mtu = in.Mtu
+	// MISSING: Name
+	out.NetworkFirewallPolicyEnforcementOrder = in.NetworkFirewallPolicyEnforcementOrder
+	// MISSING: NetworkProfile
+	// MISSING: Params
+	// MISSING: Peerings
+	// MISSING: RoutingConfig
+	// MISSING: SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: Subnetworks
+	return out
+}
+func ComputeNetworkStatus_FromProto(mapCtx *direct.MapContext, in *pb.Network) *krm.ComputeNetworkStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeNetworkStatus{}
+	// MISSING: IPv4Range
+	// MISSING: AutoCreateSubnetworks
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: EnableUlaInternalIPV6
+	// MISSING: FirewallPolicy
+	// MISSING: GatewayIPv4
+	// (near miss): "GatewayIPv4" vs "GatewayIpv4"
+	// MISSING: ID
+	// MISSING: InternalIPV6Range
+	// MISSING: Kind
+	// MISSING: Mtu
+	// MISSING: Name
+	// MISSING: NetworkFirewallPolicyEnforcementOrder
+	// MISSING: NetworkProfile
+	// MISSING: Params
+	// MISSING: Peerings
+	// MISSING: RoutingConfig
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: Subnetworks
+	return out
+}
+func ComputeNetworkStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkStatus) *pb.Network {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Network{}
+	// MISSING: IPv4Range
+	// MISSING: AutoCreateSubnetworks
+	// MISSING: CreationTimestamp
+	// MISSING: Description
+	// MISSING: EnableUlaInternalIPV6
+	// MISSING: FirewallPolicy
+	// MISSING: GatewayIPv4
+	// (near miss): "GatewayIPv4" vs "GatewayIpv4"
+	// MISSING: ID
+	// MISSING: InternalIPV6Range
+	// MISSING: Kind
+	// MISSING: Mtu
+	// MISSING: Name
+	// MISSING: NetworkFirewallPolicyEnforcementOrder
+	// MISSING: NetworkProfile
+	// MISSING: Params
+	// MISSING: Peerings
+	// MISSING: RoutingConfig
+	out.SelfLink = in.SelfLink
+	// MISSING: SelfLinkWithID
+	// MISSING: Subnetworks
+	return out
+}
 func ComputeSubnetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krm.ComputeSubnetworkSpec {
 	if in == nil {
 		return nil
@@ -452,6 +566,152 @@ func NetworkEdgeSecurityService_ToProto(mapCtx *direct.MapContext, in *krmcomput
 	out.SecurityPolicy = in.SecurityPolicy
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
+	return out
+}
+func NetworkParams_FromProto(mapCtx *direct.MapContext, in *pb.NetworkParams) *krm.NetworkParams {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkParams{}
+	out.ResourceManagerTags = in.ResourceManagerTags
+	return out
+}
+func NetworkParams_ToProto(mapCtx *direct.MapContext, in *krm.NetworkParams) *pb.NetworkParams {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkParams{}
+	out.ResourceManagerTags = in.ResourceManagerTags
+	return out
+}
+func NetworkPeering_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeering) *krm.NetworkPeering {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkPeering{}
+	out.AutoCreateRoutes = in.AutoCreateRoutes
+	out.ConnectionStatus = NetworkPeeringConnectionStatus_FromProto(mapCtx, in.GetConnectionStatus())
+	out.ExchangeSubnetRoutes = in.ExchangeSubnetRoutes
+	out.ExportCustomRoutes = in.ExportCustomRoutes
+	out.ExportSubnetRoutesWithPublicIP = in.ExportSubnetRoutesWithPublicIp
+	out.ImportCustomRoutes = in.ImportCustomRoutes
+	out.ImportSubnetRoutesWithPublicIP = in.ImportSubnetRoutesWithPublicIp
+	out.Name = in.Name
+	out.Network = in.Network
+	out.PeerMtu = in.PeerMtu
+	out.StackType = in.StackType
+	out.State = in.State
+	out.StateDetails = in.StateDetails
+	out.UpdateStrategy = in.UpdateStrategy
+	return out
+}
+func NetworkPeering_ToProto(mapCtx *direct.MapContext, in *krm.NetworkPeering) *pb.NetworkPeering {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPeering{}
+	out.AutoCreateRoutes = in.AutoCreateRoutes
+	out.ConnectionStatus = NetworkPeeringConnectionStatus_ToProto(mapCtx, in.ConnectionStatus)
+	out.ExchangeSubnetRoutes = in.ExchangeSubnetRoutes
+	out.ExportCustomRoutes = in.ExportCustomRoutes
+	out.ExportSubnetRoutesWithPublicIp = in.ExportSubnetRoutesWithPublicIP
+	out.ImportCustomRoutes = in.ImportCustomRoutes
+	out.ImportSubnetRoutesWithPublicIp = in.ImportSubnetRoutesWithPublicIP
+	out.Name = in.Name
+	out.Network = in.Network
+	out.PeerMtu = in.PeerMtu
+	out.StackType = in.StackType
+	out.State = in.State
+	out.StateDetails = in.StateDetails
+	out.UpdateStrategy = in.UpdateStrategy
+	return out
+}
+func NetworkPeeringConnectionStatus_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeeringConnectionStatus) *krm.NetworkPeeringConnectionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkPeeringConnectionStatus{}
+	out.ConsensusState = NetworkPeeringConnectionStatusConsensusState_FromProto(mapCtx, in.GetConsensusState())
+	out.TrafficConfiguration = NetworkPeeringConnectionStatusTrafficConfiguration_FromProto(mapCtx, in.GetTrafficConfiguration())
+	out.UpdateStrategy = in.UpdateStrategy
+	return out
+}
+func NetworkPeeringConnectionStatus_ToProto(mapCtx *direct.MapContext, in *krm.NetworkPeeringConnectionStatus) *pb.NetworkPeeringConnectionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPeeringConnectionStatus{}
+	out.ConsensusState = NetworkPeeringConnectionStatusConsensusState_ToProto(mapCtx, in.ConsensusState)
+	out.TrafficConfiguration = NetworkPeeringConnectionStatusTrafficConfiguration_ToProto(mapCtx, in.TrafficConfiguration)
+	out.UpdateStrategy = in.UpdateStrategy
+	return out
+}
+func NetworkPeeringConnectionStatusConsensusState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeeringConnectionStatusConsensusState) *krm.NetworkPeeringConnectionStatusConsensusState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkPeeringConnectionStatusConsensusState{}
+	out.DeleteStatus = in.DeleteStatus
+	out.UpdateStatus = in.UpdateStatus
+	return out
+}
+func NetworkPeeringConnectionStatusConsensusState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkPeeringConnectionStatusConsensusState) *pb.NetworkPeeringConnectionStatusConsensusState {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPeeringConnectionStatusConsensusState{}
+	out.DeleteStatus = in.DeleteStatus
+	out.UpdateStatus = in.UpdateStatus
+	return out
+}
+func NetworkPeeringConnectionStatusTrafficConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeeringConnectionStatusTrafficConfiguration) *krm.NetworkPeeringConnectionStatusTrafficConfiguration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkPeeringConnectionStatusTrafficConfiguration{}
+	out.ExportCustomRoutesToPeer = in.ExportCustomRoutesToPeer
+	out.ExportSubnetRoutesWithPublicIPToPeer = in.ExportSubnetRoutesWithPublicIpToPeer
+	out.ImportCustomRoutesFromPeer = in.ImportCustomRoutesFromPeer
+	out.ImportSubnetRoutesWithPublicIPFromPeer = in.ImportSubnetRoutesWithPublicIpFromPeer
+	out.StackType = in.StackType
+	return out
+}
+func NetworkPeeringConnectionStatusTrafficConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.NetworkPeeringConnectionStatusTrafficConfiguration) *pb.NetworkPeeringConnectionStatusTrafficConfiguration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPeeringConnectionStatusTrafficConfiguration{}
+	out.ExportCustomRoutesToPeer = in.ExportCustomRoutesToPeer
+	out.ExportSubnetRoutesWithPublicIpToPeer = in.ExportSubnetRoutesWithPublicIPToPeer
+	out.ImportCustomRoutesFromPeer = in.ImportCustomRoutesFromPeer
+	out.ImportSubnetRoutesWithPublicIpFromPeer = in.ImportSubnetRoutesWithPublicIPFromPeer
+	out.StackType = in.StackType
+	return out
+}
+func NetworkRoutingConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkRoutingConfig) *krm.NetworkRoutingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkRoutingConfig{}
+	out.BGPAlwaysCompareMed = in.BgpAlwaysCompareMed
+	out.BGPBestPathSelectionMode = in.BgpBestPathSelectionMode
+	out.BGPInterRegionCost = in.BgpInterRegionCost
+	out.EffectiveBGPAlwaysCompareMed = in.EffectiveBgpAlwaysCompareMed
+	out.EffectiveBGPInterRegionCost = in.EffectiveBgpInterRegionCost
+	out.RoutingMode = in.RoutingMode
+	return out
+}
+func NetworkRoutingConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkRoutingConfig) *pb.NetworkRoutingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkRoutingConfig{}
+	out.BgpAlwaysCompareMed = in.BGPAlwaysCompareMed
+	out.BgpBestPathSelectionMode = in.BGPBestPathSelectionMode
+	out.BgpInterRegionCost = in.BGPInterRegionCost
+	out.EffectiveBgpAlwaysCompareMed = in.EffectiveBGPAlwaysCompareMed
+	out.EffectiveBgpInterRegionCost = in.EffectiveBGPInterRegionCost
+	out.RoutingMode = in.RoutingMode
 	return out
 }
 func SubnetworkLogConfig_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkLogConfig) *krm.SubnetworkLogConfig {
