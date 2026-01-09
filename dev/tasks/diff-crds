@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# This tool shows diffs between the simple schema of all CRD files that have changed in the current branch compared to upstream/master.
+# Example usage: dev/tasks/diff-crds
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+for CRD_FILE in $(git diff --name-only upstream/master -- config/crds); do
+  echo "************************************************************************"
+  echo "Diffs for CRD: ${CRD_FILE}"
+
+  git show upstream/master:${CRD_FILE} | go run ./dev/tools/crd-to-simple-schema --diff-crd-file="${CRD_FILE}" --flatten --ignore-integer-type-differences
+done
