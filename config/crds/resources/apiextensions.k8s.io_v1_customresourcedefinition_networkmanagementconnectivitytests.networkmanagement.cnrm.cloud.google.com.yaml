@@ -865,6 +865,7 @@ spec:
                                 value:
                                   description: Must be a valid serialized protocol
                                     buffer of the above specified type.
+                                  format: byte
                                   type: string
                               type: object
                             type: array
@@ -967,6 +968,7 @@ spec:
                                 value:
                                   description: Must be a valid serialized protocol
                                     buffer of the above specified type.
+                                  format: byte
                                   type: string
                               type: object
                             type: array
@@ -1994,6 +1996,7 @@ spec:
                                 value:
                                   description: Must be a valid serialized protocol
                                     buffer of the above specified type.
+                                  format: byte
                                   type: string
                               type: object
                             type: array

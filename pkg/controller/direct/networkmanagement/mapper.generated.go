@@ -690,7 +690,7 @@ func ProbingDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Pro
 	out := &krm.ProbingDetailsObservedState{}
 	out.Result = direct.Enum_FromProto(mapCtx, in.GetResult())
 	out.VerifyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVerifyTime())
-	out.Error = StatusObservedState_FromProto(mapCtx, in.GetError())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
 	out.AbortCause = direct.Enum_FromProto(mapCtx, in.GetAbortCause())
 	out.SentProbeCount = direct.LazyPtr(in.GetSentProbeCount())
 	out.SuccessfulProbeCount = direct.LazyPtr(in.GetSuccessfulProbeCount())
@@ -706,7 +706,7 @@ func ProbingDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Prob
 	out := &pb.ProbingDetails{}
 	out.Result = direct.Enum_ToProto[pb.ProbingDetails_ProbingResult](mapCtx, in.Result)
 	out.VerifyTime = direct.StringTimestamp_ToProto(mapCtx, in.VerifyTime)
-	out.Error = StatusObservedState_ToProto(mapCtx, in.Error)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
 	out.AbortCause = direct.Enum_ToProto[pb.ProbingDetails_ProbingAbortCause](mapCtx, in.AbortCause)
 	out.SentProbeCount = direct.ValueOf(in.SentProbeCount)
 	out.SuccessfulProbeCount = direct.ValueOf(in.SuccessfulProbeCount)
@@ -774,7 +774,7 @@ func ReachabilityDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out := &krm.ReachabilityDetailsObservedState{}
 	out.Result = direct.Enum_FromProto(mapCtx, in.GetResult())
 	out.VerifyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVerifyTime())
-	out.Error = StatusObservedState_FromProto(mapCtx, in.GetError())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
 	out.Traces = direct.Slice_FromProto(mapCtx, in.Traces, TraceObservedState_FromProto)
 	return out
 }
@@ -785,7 +785,7 @@ func ReachabilityDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out := &pb.ReachabilityDetails{}
 	out.Result = direct.Enum_ToProto[pb.ReachabilityDetails_Result](mapCtx, in.Result)
 	out.VerifyTime = direct.StringTimestamp_ToProto(mapCtx, in.VerifyTime)
-	out.Error = StatusObservedState_ToProto(mapCtx, in.Error)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
 	out.Traces = direct.Slice_ToProto(mapCtx, in.Traces, TraceObservedState_ToProto)
 	return out
 }
