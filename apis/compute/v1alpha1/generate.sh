@@ -21,18 +21,10 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-go run . generate-types \
-  --service google.cloud.compute.v1 \
-  --api-version compute.cnrm.cloud.google.com/v1beta1  \
-  --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
-  --resource ComputeForwardingRule:ForwardingRule \
-  --resource ComputeSubnetwork:Subnetwork \
-  --resource ComputeTargetTcpProxy:TargetTcpProxy
-
 go run . generate-mapper \
     --multiversion \
     --service google.cloud.compute.v1 \
-    --api-version compute.cnrm.cloud.google.com/v1beta1
+    --api-version compute.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

@@ -26,7 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ComputeSubnetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krm.ComputeSubnetworkSpec {
+func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krm.ComputeSubnetworkSpec {
 	if in == nil {
 		return nil
 	}
@@ -45,7 +45,7 @@ func ComputeSubnetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwor
 	// MISSING: IPV6CIDRRange
 	// MISSING: IPV6GCEEndpoint
 	// MISSING: Kind
-	out.LogConfig = SubnetworkLogConfig_FromProto(mapCtx, in.GetLogConfig())
+	out.LogConfig = SubnetworkLogConfig_v1beta1_FromProto(mapCtx, in.GetLogConfig())
 	// MISSING: Name
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
@@ -57,7 +57,7 @@ func ComputeSubnetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwor
 	out.Region = in.Region
 	// MISSING: ReservedInternalRange
 	out.Role = in.Role
-	out.SecondaryIPRanges = direct.Slice_FromProto(mapCtx, in.SecondaryIpRanges, SubnetworkSecondaryRange_FromProto)
+	out.SecondaryIPRanges = direct.Slice_FromProto(mapCtx, in.SecondaryIpRanges, SubnetworkSecondaryRange_v1beta1_FromProto)
 	// MISSING: SelfLink
 	out.StackType = in.StackType
 	// MISSING: State
@@ -65,7 +65,7 @@ func ComputeSubnetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwor
 	// MISSING: SystemReservedInternalIPV6Ranges
 	return out
 }
-func ComputeSubnetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSubnetworkSpec) *pb.Subnetwork {
+func ComputeSubnetworkSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSubnetworkSpec) *pb.Subnetwork {
 	if in == nil {
 		return nil
 	}
@@ -84,7 +84,7 @@ func ComputeSubnetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSub
 	// MISSING: IPV6CIDRRange
 	// MISSING: IPV6GCEEndpoint
 	// MISSING: Kind
-	out.LogConfig = SubnetworkLogConfig_ToProto(mapCtx, in.LogConfig)
+	out.LogConfig = SubnetworkLogConfig_v1beta1_ToProto(mapCtx, in.LogConfig)
 	// MISSING: Name
 	if in.NetworkRef != nil {
 		out.Network = &in.NetworkRef.External
@@ -96,7 +96,7 @@ func ComputeSubnetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSub
 	out.Region = in.Region
 	// MISSING: ReservedInternalRange
 	out.Role = in.Role
-	out.SecondaryIpRanges = direct.Slice_ToProto(mapCtx, in.SecondaryIPRanges, SubnetworkSecondaryRange_ToProto)
+	out.SecondaryIpRanges = direct.Slice_ToProto(mapCtx, in.SecondaryIPRanges, SubnetworkSecondaryRange_v1beta1_ToProto)
 	// MISSING: SelfLink
 	out.StackType = in.StackType
 	// MISSING: State
@@ -104,7 +104,7 @@ func ComputeSubnetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSub
 	// MISSING: SystemReservedInternalIPV6Ranges
 	return out
 }
-func ComputeSubnetworkStatus_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krm.ComputeSubnetworkStatus {
+func ComputeSubnetworkStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krm.ComputeSubnetworkStatus {
 	if in == nil {
 		return nil
 	}
@@ -141,7 +141,7 @@ func ComputeSubnetworkStatus_FromProto(mapCtx *direct.MapContext, in *pb.Subnetw
 	// MISSING: SystemReservedInternalIPV6Ranges
 	return out
 }
-func ComputeSubnetworkStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSubnetworkStatus) *pb.Subnetwork {
+func ComputeSubnetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSubnetworkStatus) *pb.Subnetwork {
 	if in == nil {
 		return nil
 	}
@@ -178,7 +178,7 @@ func ComputeSubnetworkStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeS
 	// MISSING: SystemReservedInternalIPV6Ranges
 	return out
 }
-func FirewallPolicyRuleMatcher_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
+func FirewallPolicyRuleMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
 	if in == nil {
 		return nil
 	}
@@ -189,7 +189,7 @@ func FirewallPolicyRuleMatcher_FromProto(mapCtx *direct.MapContext, in *pb.Firew
 	// MISSING: DestNetworkType
 	out.DestRegionCodes = in.DestRegionCodes
 	out.DestThreatIntelligences = in.DestThreatIntelligences
-	out.Layer4Configs = direct.Slice_FromProto(mapCtx, in.Layer4Configs, FirewallPolicyRuleMatcherLayer4Config_FromProto)
+	out.Layer4Configs = direct.Slice_FromProto(mapCtx, in.Layer4Configs, FirewallPolicyRuleMatcherLayer4Config_v1beta1_FromProto)
 	out.SrcAddressGroups = in.SrcAddressGroups
 	out.SrcFqdns = in.SrcFqdns
 	out.SrcIPRanges = in.SrcIpRanges
@@ -200,7 +200,7 @@ func FirewallPolicyRuleMatcher_FromProto(mapCtx *direct.MapContext, in *pb.Firew
 	out.SrcThreatIntelligences = in.SrcThreatIntelligences
 	return out
 }
-func FirewallPolicyRuleMatcher_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicyRuleMatcher) *pb.FirewallPolicyRuleMatcher {
+func FirewallPolicyRuleMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicyRuleMatcher) *pb.FirewallPolicyRuleMatcher {
 	if in == nil {
 		return nil
 	}
@@ -211,7 +211,7 @@ func FirewallPolicyRuleMatcher_ToProto(mapCtx *direct.MapContext, in *krm.Firewa
 	// MISSING: DestNetworkType
 	out.DestRegionCodes = in.DestRegionCodes
 	out.DestThreatIntelligences = in.DestThreatIntelligences
-	out.Layer4Configs = direct.Slice_ToProto(mapCtx, in.Layer4Configs, FirewallPolicyRuleMatcherLayer4Config_ToProto)
+	out.Layer4Configs = direct.Slice_ToProto(mapCtx, in.Layer4Configs, FirewallPolicyRuleMatcherLayer4Config_v1beta1_ToProto)
 	out.SrcAddressGroups = in.SrcAddressGroups
 	out.SrcFqdns = in.SrcFqdns
 	out.SrcIpRanges = in.SrcIPRanges
@@ -222,7 +222,7 @@ func FirewallPolicyRuleMatcher_ToProto(mapCtx *direct.MapContext, in *krm.Firewa
 	out.SrcThreatIntelligences = in.SrcThreatIntelligences
 	return out
 }
-func FirewallPolicyRuleSecureTag_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleSecureTag) *krm.FirewallPolicyRuleSecureTag {
+func FirewallPolicyRuleSecureTag_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleSecureTag) *krm.FirewallPolicyRuleSecureTag {
 	if in == nil {
 		return nil
 	}
@@ -231,7 +231,7 @@ func FirewallPolicyRuleSecureTag_FromProto(mapCtx *direct.MapContext, in *pb.Fir
 	out.State = in.State
 	return out
 }
-func FirewallPolicyRuleSecureTag_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicyRuleSecureTag) *pb.FirewallPolicyRuleSecureTag {
+func FirewallPolicyRuleSecureTag_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicyRuleSecureTag) *pb.FirewallPolicyRuleSecureTag {
 	if in == nil {
 		return nil
 	}
@@ -240,7 +240,7 @@ func FirewallPolicyRuleSecureTag_ToProto(mapCtx *direct.MapContext, in *krm.Fire
 	out.State = in.State
 	return out
 }
-func ForwardingruleServiceDirectoryRegistrations_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRuleServiceDirectoryRegistration) *krm.ForwardingruleServiceDirectoryRegistrations {
+func ForwardingruleServiceDirectoryRegistrations_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRuleServiceDirectoryRegistration) *krm.ForwardingruleServiceDirectoryRegistrations {
 	if in == nil {
 		return nil
 	}
@@ -250,7 +250,7 @@ func ForwardingruleServiceDirectoryRegistrations_FromProto(mapCtx *direct.MapCon
 	// MISSING: ServiceDirectoryRegion
 	return out
 }
-func ForwardingruleServiceDirectoryRegistrations_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingruleServiceDirectoryRegistrations) *pb.ForwardingRuleServiceDirectoryRegistration {
+func ForwardingruleServiceDirectoryRegistrations_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingruleServiceDirectoryRegistrations) *pb.ForwardingRuleServiceDirectoryRegistration {
 	if in == nil {
 		return nil
 	}
@@ -260,105 +260,111 @@ func ForwardingruleServiceDirectoryRegistrations_ToProto(mapCtx *direct.MapConte
 	// MISSING: ServiceDirectoryRegion
 	return out
 }
-func Interconnect_FromProto(mapCtx *direct.MapContext, in *pb.Interconnect) *krmcomputev1alpha1.Interconnect {
+func InterconnectCircuitInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectCircuitInfo) *krmcomputev1alpha1.InterconnectCircuitInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krmcomputev1alpha1.Interconnect{}
-	// MISSING: AaiEnabled
-	out.AdminEnabled = in.AdminEnabled
-	// MISSING: ApplicationAwareInterconnect
-	out.AvailableFeatures = in.AvailableFeatures
-	out.CircuitInfos = direct.Slice_FromProto(mapCtx, in.CircuitInfos, InterconnectCircuitInfo_FromProto)
-	out.CreationTimestamp = in.CreationTimestamp
-	out.CustomerName = in.CustomerName
-	out.Description = in.Description
-	out.ExpectedOutages = direct.Slice_FromProto(mapCtx, in.ExpectedOutages, InterconnectOutageNotification_FromProto)
-	out.GoogleIPAddress = in.GoogleIpAddress
-	out.GoogleReferenceID = in.GoogleReferenceId
-	out.ID = in.Id
-	out.InterconnectAttachments = in.InterconnectAttachments
-	// MISSING: InterconnectGroups
-	out.InterconnectType = in.InterconnectType
-	out.Kind = in.Kind
-	out.LabelFingerprint = in.LabelFingerprint
-	out.Labels = in.Labels
-	out.LinkType = in.LinkType
-	out.Location = in.Location
-	out.Macsec = InterconnectMacsec_FromProto(mapCtx, in.GetMacsec())
-	out.MacsecEnabled = in.MacsecEnabled
-	out.Name = in.Name
-	out.NocContactEmail = in.NocContactEmail
-	out.OperationalStatus = in.OperationalStatus
-	out.PeerIPAddress = in.PeerIpAddress
-	out.ProvisionedLinkCount = in.ProvisionedLinkCount
-	out.RemoteLocation = in.RemoteLocation
-	out.RequestedFeatures = in.RequestedFeatures
-	out.RequestedLinkCount = in.RequestedLinkCount
-	out.SatisfiesPzs = in.SatisfiesPzs
-	out.SelfLink = in.SelfLink
-	out.State = in.State
+	out := &krmcomputev1alpha1.InterconnectCircuitInfo{}
+	out.CustomerDemarcID = in.CustomerDemarcId
+	out.GoogleCircuitID = in.GoogleCircuitId
+	out.GoogleDemarcID = in.GoogleDemarcId
 	return out
 }
-func Interconnect_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.Interconnect) *pb.Interconnect {
+func InterconnectCircuitInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectCircuitInfo) *pb.InterconnectCircuitInfo {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Interconnect{}
-	// MISSING: AaiEnabled
-	out.AdminEnabled = in.AdminEnabled
-	// MISSING: ApplicationAwareInterconnect
-	out.AvailableFeatures = in.AvailableFeatures
-	out.CircuitInfos = direct.Slice_ToProto(mapCtx, in.CircuitInfos, InterconnectCircuitInfo_ToProto)
-	out.CreationTimestamp = in.CreationTimestamp
-	out.CustomerName = in.CustomerName
-	out.Description = in.Description
-	out.ExpectedOutages = direct.Slice_ToProto(mapCtx, in.ExpectedOutages, InterconnectOutageNotification_ToProto)
-	out.GoogleIpAddress = in.GoogleIPAddress
-	out.GoogleReferenceId = in.GoogleReferenceID
-	out.Id = in.ID
-	out.InterconnectAttachments = in.InterconnectAttachments
-	// MISSING: InterconnectGroups
-	out.InterconnectType = in.InterconnectType
-	out.Kind = in.Kind
-	out.LabelFingerprint = in.LabelFingerprint
-	out.Labels = in.Labels
-	out.LinkType = in.LinkType
-	out.Location = in.Location
-	out.Macsec = InterconnectMacsec_ToProto(mapCtx, in.Macsec)
-	out.MacsecEnabled = in.MacsecEnabled
+	out := &pb.InterconnectCircuitInfo{}
+	out.CustomerDemarcId = in.CustomerDemarcID
+	out.GoogleCircuitId = in.GoogleCircuitID
+	out.GoogleDemarcId = in.GoogleDemarcID
+	return out
+}
+func InterconnectMacsec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectMacsec) *krmcomputev1alpha1.InterconnectMacsec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectMacsec{}
+	out.FailOpen = in.FailOpen
+	out.PreSharedKeys = direct.Slice_FromProto(mapCtx, in.PreSharedKeys, InterconnectMacsecPreSharedKey_v1alpha1_FromProto)
+	return out
+}
+func InterconnectMacsec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectMacsec) *pb.InterconnectMacsec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectMacsec{}
+	out.FailOpen = in.FailOpen
+	out.PreSharedKeys = direct.Slice_ToProto(mapCtx, in.PreSharedKeys, InterconnectMacsecPreSharedKey_v1alpha1_ToProto)
+	return out
+}
+func InterconnectMacsecPreSharedKey_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectMacsecPreSharedKey) *krmcomputev1alpha1.InterconnectMacsecPreSharedKey {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectMacsecPreSharedKey{}
 	out.Name = in.Name
-	out.NocContactEmail = in.NocContactEmail
-	out.OperationalStatus = in.OperationalStatus
-	out.PeerIpAddress = in.PeerIPAddress
-	out.ProvisionedLinkCount = in.ProvisionedLinkCount
-	out.RemoteLocation = in.RemoteLocation
-	out.RequestedFeatures = in.RequestedFeatures
-	out.RequestedLinkCount = in.RequestedLinkCount
-	out.SatisfiesPzs = in.SatisfiesPzs
-	out.SelfLink = in.SelfLink
+	out.StartTime = in.StartTime
+	return out
+}
+func InterconnectMacsecPreSharedKey_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectMacsecPreSharedKey) *pb.InterconnectMacsecPreSharedKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectMacsecPreSharedKey{}
+	out.Name = in.Name
+	out.StartTime = in.StartTime
+	return out
+}
+func InterconnectOutageNotification_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectOutageNotification) *krmcomputev1alpha1.InterconnectOutageNotification {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.InterconnectOutageNotification{}
+	out.AffectedCircuits = in.AffectedCircuits
+	out.Description = in.Description
+	out.EndTime = in.EndTime
+	out.IssueType = in.IssueType
+	out.Name = in.Name
+	out.Source = in.Source
+	out.StartTime = in.StartTime
 	out.State = in.State
 	return out
 }
-func MetadataFilter_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilter) *krm.MetadataFilter {
+func InterconnectOutageNotification_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.InterconnectOutageNotification) *pb.InterconnectOutageNotification {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterconnectOutageNotification{}
+	out.AffectedCircuits = in.AffectedCircuits
+	out.Description = in.Description
+	out.EndTime = in.EndTime
+	out.IssueType = in.IssueType
+	out.Name = in.Name
+	out.Source = in.Source
+	out.StartTime = in.StartTime
+	out.State = in.State
+	return out
+}
+func MetadataFilter_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilter) *krm.MetadataFilter {
 	if in == nil {
 		return nil
 	}
 	out := &krm.MetadataFilter{}
-	out.FilterLabels = direct.Slice_FromProto(mapCtx, in.FilterLabels, MetadataFilterLabelMatch_FromProto)
+	out.FilterLabels = direct.Slice_FromProto(mapCtx, in.FilterLabels, MetadataFilterLabelMatch_v1beta1_FromProto)
 	out.FilterMatchCriteria = in.FilterMatchCriteria
 	return out
 }
-func MetadataFilter_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFilter) *pb.MetadataFilter {
+func MetadataFilter_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFilter) *pb.MetadataFilter {
 	if in == nil {
 		return nil
 	}
 	out := &pb.MetadataFilter{}
-	out.FilterLabels = direct.Slice_ToProto(mapCtx, in.FilterLabels, MetadataFilterLabelMatch_ToProto)
+	out.FilterLabels = direct.Slice_ToProto(mapCtx, in.FilterLabels, MetadataFilterLabelMatch_v1beta1_ToProto)
 	out.FilterMatchCriteria = in.FilterMatchCriteria
 	return out
 }
-func MetadataFilterLabelMatch_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilterLabelMatch) *krm.MetadataFilterLabelMatch {
+func MetadataFilterLabelMatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilterLabelMatch) *krm.MetadataFilterLabelMatch {
 	if in == nil {
 		return nil
 	}
@@ -367,7 +373,7 @@ func MetadataFilterLabelMatch_FromProto(mapCtx *direct.MapContext, in *pb.Metada
 	out.Value = in.Value
 	return out
 }
-func MetadataFilterLabelMatch_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFilterLabelMatch) *pb.MetadataFilterLabelMatch {
+func MetadataFilterLabelMatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFilterLabelMatch) *pb.MetadataFilterLabelMatch {
 	if in == nil {
 		return nil
 	}
@@ -376,85 +382,35 @@ func MetadataFilterLabelMatch_ToProto(mapCtx *direct.MapContext, in *krm.Metadat
 	out.Value = in.Value
 	return out
 }
-func NetworkAttachment_FromProto(mapCtx *direct.MapContext, in *pb.NetworkAttachment) *krmcomputev1alpha1.NetworkAttachment {
+func NetworkAttachmentConnectedEndpoint_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkAttachmentConnectedEndpoint) *krmcomputev1alpha1.NetworkAttachmentConnectedEndpoint {
 	if in == nil {
 		return nil
 	}
-	out := &krmcomputev1alpha1.NetworkAttachment{}
-	out.ConnectionEndpoints = direct.Slice_FromProto(mapCtx, in.ConnectionEndpoints, NetworkAttachmentConnectedEndpoint_FromProto)
-	out.ConnectionPreference = in.ConnectionPreference
-	out.CreationTimestamp = in.CreationTimestamp
-	out.Description = in.Description
-	out.Fingerprint = in.Fingerprint
-	out.ID = in.Id
-	out.Kind = in.Kind
-	out.Name = in.Name
-	out.Network = in.Network
-	out.ProducerAcceptLists = in.ProducerAcceptLists
-	out.ProducerRejectLists = in.ProducerRejectLists
-	out.Region = in.Region
-	out.SelfLink = in.SelfLink
-	out.SelfLinkWithID = in.SelfLinkWithId
-	out.Subnetworks = in.Subnetworks
+	out := &krmcomputev1alpha1.NetworkAttachmentConnectedEndpoint{}
+	out.IPAddress = in.IpAddress
+	out.IPV6Address = in.Ipv6Address
+	out.ProjectIDOrNum = in.ProjectIdOrNum
+	out.SecondaryIPCIDRRanges = in.SecondaryIpCidrRanges
+	out.Status = in.Status
+	out.Subnetwork = in.Subnetwork
+	out.SubnetworkCIDRRange = in.SubnetworkCidrRange
 	return out
 }
-func NetworkAttachment_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.NetworkAttachment) *pb.NetworkAttachment {
+func NetworkAttachmentConnectedEndpoint_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.NetworkAttachmentConnectedEndpoint) *pb.NetworkAttachmentConnectedEndpoint {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NetworkAttachment{}
-	out.ConnectionEndpoints = direct.Slice_ToProto(mapCtx, in.ConnectionEndpoints, NetworkAttachmentConnectedEndpoint_ToProto)
-	out.ConnectionPreference = in.ConnectionPreference
-	out.CreationTimestamp = in.CreationTimestamp
-	out.Description = in.Description
-	out.Fingerprint = in.Fingerprint
-	out.Id = in.ID
-	out.Kind = in.Kind
-	out.Name = in.Name
-	out.Network = in.Network
-	out.ProducerAcceptLists = in.ProducerAcceptLists
-	out.ProducerRejectLists = in.ProducerRejectLists
-	out.Region = in.Region
-	out.SelfLink = in.SelfLink
-	out.SelfLinkWithId = in.SelfLinkWithID
-	out.Subnetworks = in.Subnetworks
+	out := &pb.NetworkAttachmentConnectedEndpoint{}
+	out.IpAddress = in.IPAddress
+	out.Ipv6Address = in.IPV6Address
+	out.ProjectIdOrNum = in.ProjectIDOrNum
+	out.SecondaryIpCidrRanges = in.SecondaryIPCIDRRanges
+	out.Status = in.Status
+	out.Subnetwork = in.Subnetwork
+	out.SubnetworkCidrRange = in.SubnetworkCIDRRange
 	return out
 }
-func NetworkEdgeSecurityService_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEdgeSecurityService) *krmcomputev1alpha1.NetworkEdgeSecurityService {
-	if in == nil {
-		return nil
-	}
-	out := &krmcomputev1alpha1.NetworkEdgeSecurityService{}
-	out.CreationTimestamp = in.CreationTimestamp
-	out.Description = in.Description
-	out.Fingerprint = in.Fingerprint
-	out.ID = in.Id
-	out.Kind = in.Kind
-	out.Name = in.Name
-	out.Region = in.Region
-	out.SecurityPolicy = in.SecurityPolicy
-	out.SelfLink = in.SelfLink
-	out.SelfLinkWithID = in.SelfLinkWithId
-	return out
-}
-func NetworkEdgeSecurityService_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.NetworkEdgeSecurityService) *pb.NetworkEdgeSecurityService {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NetworkEdgeSecurityService{}
-	out.CreationTimestamp = in.CreationTimestamp
-	out.Description = in.Description
-	out.Fingerprint = in.Fingerprint
-	out.Id = in.ID
-	out.Kind = in.Kind
-	out.Name = in.Name
-	out.Region = in.Region
-	out.SecurityPolicy = in.SecurityPolicy
-	out.SelfLink = in.SelfLink
-	out.SelfLinkWithId = in.SelfLinkWithID
-	return out
-}
-func SubnetworkLogConfig_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkLogConfig) *krm.SubnetworkLogConfig {
+func SubnetworkLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkLogConfig) *krm.SubnetworkLogConfig {
 	if in == nil {
 		return nil
 	}
@@ -467,7 +423,7 @@ func SubnetworkLogConfig_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkL
 	out.MetadataFields = in.MetadataFields
 	return out
 }
-func SubnetworkLogConfig_ToProto(mapCtx *direct.MapContext, in *krm.SubnetworkLogConfig) *pb.SubnetworkLogConfig {
+func SubnetworkLogConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SubnetworkLogConfig) *pb.SubnetworkLogConfig {
 	if in == nil {
 		return nil
 	}
@@ -480,7 +436,7 @@ func SubnetworkLogConfig_ToProto(mapCtx *direct.MapContext, in *krm.SubnetworkLo
 	out.MetadataFields = in.MetadataFields
 	return out
 }
-func SubnetworkParams_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkParams) *krm.SubnetworkParams {
+func SubnetworkParams_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkParams) *krm.SubnetworkParams {
 	if in == nil {
 		return nil
 	}
@@ -488,7 +444,7 @@ func SubnetworkParams_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkPara
 	out.ResourceManagerTags = in.ResourceManagerTags
 	return out
 }
-func SubnetworkParams_ToProto(mapCtx *direct.MapContext, in *krm.SubnetworkParams) *pb.SubnetworkParams {
+func SubnetworkParams_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SubnetworkParams) *pb.SubnetworkParams {
 	if in == nil {
 		return nil
 	}
@@ -496,7 +452,7 @@ func SubnetworkParams_ToProto(mapCtx *direct.MapContext, in *krm.SubnetworkParam
 	out.ResourceManagerTags = in.ResourceManagerTags
 	return out
 }
-func SubnetworkSecondaryRange_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkSecondaryRange) *krm.SubnetworkSecondaryRange {
+func SubnetworkSecondaryRange_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkSecondaryRange) *krm.SubnetworkSecondaryRange {
 	if in == nil {
 		return nil
 	}
@@ -506,7 +462,7 @@ func SubnetworkSecondaryRange_FromProto(mapCtx *direct.MapContext, in *pb.Subnet
 	// MISSING: ReservedInternalRange
 	return out
 }
-func SubnetworkSecondaryRange_ToProto(mapCtx *direct.MapContext, in *krm.SubnetworkSecondaryRange) *pb.SubnetworkSecondaryRange {
+func SubnetworkSecondaryRange_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SubnetworkSecondaryRange) *pb.SubnetworkSecondaryRange {
 	if in == nil {
 		return nil
 	}

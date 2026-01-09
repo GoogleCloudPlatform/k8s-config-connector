@@ -138,7 +138,7 @@ func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *direct
 
 	desired := a.desired.DeepCopy()
 
-	firewallPolicyRule := ComputeFirewallPolicyRuleSpec_ToProto(mapCtx, &desired.Spec)
+	firewallPolicyRule := ComputeFirewallPolicyRuleSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -167,7 +167,7 @@ func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *direct
 	}
 
 	status := &krm.ComputeFirewallPolicyRuleStatus{}
-	status = ComputeFirewallPolicyRuleStatus_FromProto(mapCtx, created)
+	status = ComputeFirewallPolicyRuleStatus_v1beta1_FromProto(mapCtx, created)
 
 	priority := strconv.Itoa(int(*created.Priority))
 	externalRef := a.id.Parent().String() + "/rules/" + priority
@@ -188,7 +188,7 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	firewallPolicyRule := ComputeFirewallPolicyRuleSpec_ToProto(mapCtx, &desired.Spec)
+	firewallPolicyRule := ComputeFirewallPolicyRuleSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -249,7 +249,7 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 		}
 	}
 	status := &krm.ComputeFirewallPolicyRuleStatus{}
-	status = ComputeFirewallPolicyRuleStatus_FromProto(mapCtx, updated)
+	status = ComputeFirewallPolicyRuleStatus_v1beta1_FromProto(mapCtx, updated)
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -259,7 +259,7 @@ func (a *firewallPolicyRuleAdapter) Export(ctx context.Context) (*unstructured.U
 	}
 
 	mc := &direct.MapContext{}
-	spec := ComputeFirewallPolicyRuleSpec_FromProto(mc, a.actual)
+	spec := ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mc, a.actual)
 	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
 	if err != nil {
 		return nil, fmt.Errorf("error converting firewallPolicyRule spec to unstructured: %w", err)
