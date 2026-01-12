@@ -53,7 +53,7 @@ type URLTemplate[T any] struct {
 	host                string
 	template            string
 	segments            []string
-	segmentToFieldIndex []int
+	segmentToFieldIndex [][]int
 }
 
 // Template creates a new URLTemplate for the given host and template string.
@@ -73,10 +73,14 @@ func Template[T any](host, template string) *URLTemplate[T] {
 		panic(fmt.Sprintf("type %T must be a struct", zero))
 	}
 
-	t.segmentToFieldIndex = make([]int, len(t.segments))
+	t.segmentToFieldIndex = make([][]int, len(t.segments))
 	for i, segment := range t.segments {
 		if strings.HasPrefix(segment, "{") && strings.HasSuffix(segment, "}") {
+			list := ""
 			key := segment[1 : len(segment)-1]
+			if strings.Contains(key, ".") {
+				key = strings.Split(key, ".")[0]
+			}
 			fieldIdx := -1
 
 			// Find matching field
@@ -85,9 +89,11 @@ func Template[T any](host, template string) *URLTemplate[T] {
 			var matches []int
 			for j := 0; j < typ.NumField(); j++ {
 				f := typ.Field(j)
+				list = fmt.Sprintf("%s, %v", list, typ.Field(j))
 				if strings.EqualFold(f.Name, key) {
 					matches = append(matches, j)
 				}
+				// Need to deal with compound keys here.
 			}
 
 			if len(matches) == 1 {
@@ -97,17 +103,36 @@ func Template[T any](host, template string) *URLTemplate[T] {
 			}
 
 			if fieldIdx == -1 {
-				panic(fmt.Sprintf("field %q not found in struct %T", key, zero))
+				panic(fmt.Sprintf("field %q not found in struct %T or field list %s", key, zero, list))
 			}
 
 			// Verify field is a string
-			if typ.Field(fieldIdx).Type.Kind() != reflect.String {
-				panic(fmt.Sprintf("field %q in struct %T is not a string", key, zero))
+			if typ.Field(fieldIdx).Type.Kind() == reflect.String {
+				t.segmentToFieldIndex[i] = []int{fieldIdx}
+			} else if typ.Field(fieldIdx).Type.Kind() == reflect.Struct {
+				// Should really do this recursively to handle nested structs. Later.
+				structType := typ.Field(fieldIdx).Type
+				fieldKey := segment[len(key)+2 : len(segment)-1]
+				indexList := []int{fieldIdx}
+				fieldList := ""
+				for k := 0; k < structType.NumField(); k++ {
+					field := structType.Field(k)
+					fieldList = fmt.Sprintf("%s, %v", fieldList, field)
+					if strings.EqualFold(field.Name, fieldKey) {
+						indexList = append(indexList, k)
+						break
+					}
+				}
+				if len(indexList) == 2 {
+					t.segmentToFieldIndex[i] = indexList
+				} else {
+					panic(fmt.Sprintf("field %q in struct %T is not a string or a struct(%v)", fieldKey, structType, fieldList))
+				}
+			} else {
+				panic(fmt.Sprintf("field %q in struct %T is not a string or a struct", key, zero))
 			}
-
-			t.segmentToFieldIndex[i] = fieldIdx
 		} else {
-			t.segmentToFieldIndex[i] = -1
+			t.segmentToFieldIndex[i] = []int{-1}
 		}
 	}
 
@@ -139,9 +164,10 @@ func (t *URLTemplate[T]) Parse(s string) (*T, bool, error) {
 
 	var result T
 	val := reflect.ValueOf(&result).Elem()
+	typ := reflect.TypeOf(result)
 
 	for i, part := range parts {
-		fieldIdx := t.segmentToFieldIndex[i]
+		fieldIdx := t.segmentToFieldIndex[i][0]
 		if fieldIdx != -1 {
 			// Variable
 			if part == "" {
@@ -149,7 +175,22 @@ func (t *URLTemplate[T]) Parse(s string) (*T, bool, error) {
 			}
 			f := val.Field(fieldIdx)
 			// We checked type in Template()
-			f.SetString(part)
+			if typ.Field(fieldIdx).Type.Kind() == reflect.String {
+				f.SetString(part)
+			} else {
+				s := f.Addr()
+				if s.IsNil() {
+					panic(fmt.Sprintf("field %q is nil", typ.Field(fieldIdx).Type.Kind()))
+				}
+				tp := typ.Field(fieldIdx).Type
+				c := s.Convert(reflect.PointerTo(tp))
+				subIdx := t.segmentToFieldIndex[i][1]
+				if tp.Field(subIdx).Type.Kind() == reflect.String {
+					f.Field(subIdx).SetString(part)
+				} else {
+					panic(fmt.Sprintf("field %q on %v(%T)(%d) in struct %T is not a string", tp, c, c, c.NumMethod(), result))
+				}
+			}
 		} else {
 			// Static
 			if part != t.segments[i] {
@@ -177,7 +218,7 @@ func (t *URLTemplate[T]) ToString(v T) string {
 	val := reflect.ValueOf(v)
 
 	for i, segment := range t.segments {
-		fieldIdx := t.segmentToFieldIndex[i]
+		fieldIdx := t.segmentToFieldIndex[i][0]
 		if fieldIdx != -1 {
 			f := val.Field(fieldIdx)
 			parts = append(parts, f.String())
