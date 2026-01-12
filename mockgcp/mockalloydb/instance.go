@@ -227,7 +227,7 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.AvailabilityType = req.Instance.GetAvailabilityType()
 		case "connectionPoolConfig":
 			obj.ConnectionPoolConfig = req.Instance.GetConnectionPoolConfig()
-			if obj.ConnectionPoolConfig != nil {
+			if obj.ConnectionPoolConfig != nil && obj.ConnectionPoolConfig.Enabled {
 				obj.ConnectionPoolConfig.PoolerCount = 1
 			}
 		case "readPoolConfig":
