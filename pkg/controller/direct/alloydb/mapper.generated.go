@@ -334,11 +334,7 @@ func AlloyDBInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.In
 	// MISSING: GeminiConfig
 	// MISSING: OutboundPublicIPAddresses
 	// MISSING: ActivationPolicy
-<<<<<<< HEAD
-	// MISSING: ConnectionPoolConfig
-=======
 	out.ConnectionPoolConfig = Instance_ConnectionPoolConfigObservedState_FromProto(mapCtx, in.GetConnectionPoolConfig())
->>>>>>> a568af681 (use correct method for referencing output only fields for connectionPoolConfig)
 	// MISSING: GcaConfig
 	return out
 }

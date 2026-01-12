@@ -363,6 +363,15 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  connectionPoolConfig:
+                    description: Output for Managed Connection Pool (MCP).
+                    properties:
+                      pooler_count:
+                        description: Output only. The number of running poolers per
+                          instance.
+                        format: int32
+                        type: integer
+                    type: object
                   observabilityConfig:
                     description: Observability feature status for an instance.
                     properties:
@@ -373,15 +382,6 @@ spec:
                           flag is also turned on. This is read-only flag and only
                           modifiable by internal API.
                         type: boolean
-                    type: object
-                  connectionPoolConfig:
-                    description: Output for Managed Connection Pool (MCP).
-                    properties:
-                      pooler_count:
-                        description: Output only. The number of running poolers per
-                          instance.
-                        format: int32
-                        type: integer
                     type: object
                 type: object
               outboundPublicIpAddresses:
@@ -758,7 +758,15 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-<<<<<<< HEAD
+                  connectionPoolConfig:
+                    description: Output for Managed Connection Pool (MCP).
+                    properties:
+                      pooler_count:
+                        description: Output only. The number of running poolers per
+                          instance.
+                        format: int32
+                        type: integer
+                    type: object
                   observabilityConfig:
                     description: Observability feature status for an instance.
                     properties:
@@ -769,16 +777,6 @@ spec:
                           flag is also turned on. This is read-only flag and only
                           modifiable by internal API.
                         type: boolean
-=======
-                  connectionPoolConfig:
-                    description: Output for Managed Connection Pool (MCP).
-                    properties:
-                      pooler_count:
-                        description: Output only. The number of running poolers per
-                          instance.
-                        format: int32
-                        type: integer
->>>>>>> a568af681 (use correct method for referencing output only fields for connectionPoolConfig)
                     type: object
                 type: object
               outboundPublicIpAddresses:

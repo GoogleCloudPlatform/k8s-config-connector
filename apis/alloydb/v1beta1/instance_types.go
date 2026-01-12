@@ -193,7 +193,7 @@ type AlloyDBInstanceObservedState struct {
 	// Observability feature status for an instance.
 	// +kcc:observedstate:proto=google.cloud.alloydb.beta.Instance.ObservabilityInstanceConfig
 	ObservabilityInstanceConfig *Instance_ObservabilityInstanceConfigObservedState `json:"observabilityConfig,omitempty"`
-	
+
 	// Output for Managed Connection Pool (MCP).
 	ConnectionPoolConfig *Instance_ConnectionPoolConfigObservedState `json:"connectionPoolConfig,omitempty"`
 }
