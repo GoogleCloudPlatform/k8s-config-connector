@@ -15,8 +15,6 @@
 package bigqueryanalyticshub
 
 import (
-	"strings"
-
 	pb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
@@ -257,7 +255,7 @@ func Listing_BigQueryDatasetSource_ToProto(mapCtx *direct.MapContext, in *krm.Bi
 
 	if in.DatasetRef != nil {
 		out.BigqueryDataset = &pb.Listing_BigQueryDatasetSource{
-			Dataset: strings.TrimPrefix(in.DatasetRef.External, "//bigquery.googleapis.com/"),
+			Dataset: in.DatasetRef.External,
 		}
 	}
 
