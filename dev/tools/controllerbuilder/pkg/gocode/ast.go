@@ -239,12 +239,20 @@ func (p *Package) addStruct(name *ast.Ident, def *ast.StructType, comments []ast
 		tokens := strings.Split(s, ".")
 		if len(tokens) > 1 {
 			packageName := tokens[0]
-			for _, imp := range p.Imports {
-				if imp.Alias == packageName {
-					structField.GoPackage = imp.GoPackage
-					break
+			// if packageName == "apiextensionsv1" {
+			//	structField.GoPackage = "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+			//	p.Imports = append(p.Imports, &GoImport{
+			//		GoPackage: structField.GoPackage,
+			//		Alias:     packageName,
+			//	})
+			// } else {
+				for _, imp := range p.Imports {
+					if imp.Alias == packageName {
+						structField.GoPackage = imp.GoPackage
+						break
+					}
 				}
-			}
+			// }
 			if structField.GoPackage == "" {
 				for _, imp := range p.Imports {
 					fmt.Printf("imp: %+v\n", imp)
