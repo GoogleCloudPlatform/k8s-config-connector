@@ -31,7 +31,7 @@ var _ refsv1beta1.Ref = &DatasetRef{}
 // holds the GCP identifier for the KRM object.
 type DatasetRef struct {
 	// A reference to an externally-managed BigQueryDataset resource.
-	// Should be in the format "//bigquery.googleapis.com/projects/{{projectID}}/datasets/{{datasetID}}".
+	// Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BigQueryDataset resource.
@@ -78,7 +78,7 @@ func (r *DatasetRef) Normalize(ctx context.Context, reader client.Reader, defaul
 		if err != nil {
 			return ""
 		}
-		return fmt.Sprintf("//bigquery.googleapis.com/projects/%s/datasets/%s", projectID, datasetID)
+		return fmt.Sprintf("projects/%s/datasets/%s", projectID, datasetID)
 	}
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

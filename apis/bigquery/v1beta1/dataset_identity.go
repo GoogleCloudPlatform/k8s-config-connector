@@ -36,7 +36,7 @@ type DatasetIdentity struct {
 }
 
 func (i *DatasetIdentity) String() string {
-	return "//bigquery.googleapis.com/" + i.parent.String() + "/datasets/" + i.id
+	return i.parent.String() + "/datasets/" + i.id
 }
 
 func (i *DatasetIdentity) ID() string {
