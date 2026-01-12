@@ -146,6 +146,7 @@ generate-including-dcl:
 # Generate code
 .PHONY: generate
 generate:
+	dev/tasks/generate-all
 	go generate ./pkg/apis/...
 	make -C operator generate
 	make fmt
