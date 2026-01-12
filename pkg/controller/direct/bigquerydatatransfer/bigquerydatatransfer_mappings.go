@@ -15,6 +15,8 @@
 package bigquerydatatransfer
 
 import (
+	"strings"
+
 	pb "cloud.google.com/go/bigquery/datatransfer/apiv1/datatransferpb"
 	bigquery "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
@@ -85,7 +87,7 @@ func BigQueryDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.B
 	}
 	out := &pb.TransferConfig{}
 	if in.DatasetRef != nil {
-		out.Destination = &pb.TransferConfig_DestinationDatasetId{DestinationDatasetId: in.DatasetRef.External}
+		out.Destination = &pb.TransferConfig_DestinationDatasetId{DestinationDatasetId: strings.TrimPrefix(in.DatasetRef.External, "//bigquery.googleapis.com/")}
 	}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.DataSourceId = direct.ValueOf(in.DataSourceID)
