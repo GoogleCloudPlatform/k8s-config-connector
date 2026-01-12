@@ -20,9 +20,13 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var _ identity.Identity = &DatasetIdentity{}
+var _ identity.Resource = &BigQueryDataset{}
 
 // DatasetIdentity defines the resource reference to BigQueryDataset, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -32,7 +36,7 @@ type DatasetIdentity struct {
 }
 
 func (i *DatasetIdentity) String() string {
-	return i.parent.String() + "/datasets/" + i.id
+	return "//bigquery.googleapis.com/" + i.parent.String() + "/datasets/" + i.id
 }
 
 func (i *DatasetIdentity) ID() string {
@@ -41,6 +45,20 @@ func (i *DatasetIdentity) ID() string {
 
 func (i *DatasetIdentity) Parent() *DatasetParent {
 	return i.parent
+}
+
+func (i *DatasetIdentity) FromExternal(ref string) error {
+	ref = strings.TrimPrefix(ref, "//bigquery.googleapis.com/")
+	tokens := strings.Split(ref, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "datasets" {
+		return fmt.Errorf("format of BigQueryDataset external=%q was not known (use projects/<projectId>/datasets/<datasetID>)", ref)
+	}
+
+	i.parent = &DatasetParent{
+		ProjectID: tokens[1],
+	}
+	i.id = tokens[3]
+	return nil
 }
 
 type DatasetParent struct {
@@ -80,16 +98,16 @@ func NewDatasetIdentity(ctx context.Context, reader client.Reader, obj *BigQuery
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseDatasetExternal(externalRef)
-		if err != nil {
+		actualIdentity := &DatasetIdentity{}
+		if err := actualIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actualIdentity.parent.ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.parent.ProjectID, projectID)
 		}
-		if actualResourceID != resourceID {
+		if actualIdentity.id != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+				resourceID, actualIdentity.id)
 		}
 	}
 	return &DatasetIdentity{
@@ -100,7 +118,12 @@ func NewDatasetIdentity(ctx context.Context, reader client.Reader, obj *BigQuery
 	}, nil
 }
 
+func (obj *BigQueryDataset) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	return NewDatasetIdentity(ctx, reader, obj)
+}
+
 func ParseDatasetExternal(external string) (parent *DatasetParent, resourceID string, err error) {
+	external = strings.TrimPrefix(external, "//bigquery.googleapis.com/")
 	tokens := strings.Split(external, "/")
 
 	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "datasets" {
