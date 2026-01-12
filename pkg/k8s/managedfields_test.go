@@ -16,6 +16,7 @@ package k8s_test
 
 import (
 	"encoding/json"
+	"reflect"
 	"testing"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -731,5 +732,129 @@ func mapToManagedFieldEntry(t *testing.T, manager string, fields map[string]inte
 		Manager:    manager,
 		FieldsType: k8s.ManagedFieldsTypeFieldsV1,
 		FieldsV1:   &v1.FieldsV1{Raw: b},
+	}
+}
+
+func TestSanitizeManagedFields(t *testing.T) {
+	tests := []struct {
+		name                string
+		managedFieldEntries []v1.ManagedFieldsEntry
+		expectedEntries     []v1.ManagedFieldsEntry
+	}{
+		{
+			name: "remove subresource from spec managed field",
+			managedFieldEntries: []v1.ManagedFieldsEntry{
+				{
+					Manager:     "manager",
+					FieldsType:  k8s.ManagedFieldsTypeFieldsV1,
+					FieldsV1:    &v1.FieldsV1{Raw: []byte(`{"f:spec":{}}`)},
+					Subresource: "status",
+				},
+			},
+			expectedEntries: []v1.ManagedFieldsEntry{
+				{
+					Manager:     "manager",
+					FieldsType:  k8s.ManagedFieldsTypeFieldsV1,
+					FieldsV1:    &v1.FieldsV1{Raw: []byte(`{"f:spec":{}}`)},
+					Subresource: "",
+				},
+			},
+		},
+		{
+			name: "keep subresource for non-spec managed field",
+			managedFieldEntries: []v1.ManagedFieldsEntry{
+				{
+					Manager:     "manager",
+					FieldsType:  k8s.ManagedFieldsTypeFieldsV1,
+					FieldsV1:    &v1.FieldsV1{Raw: []byte(`{"f:status":{}}`)},
+					Subresource: "status",
+				},
+			},
+			expectedEntries: []v1.ManagedFieldsEntry{
+				{
+					Manager:     "manager",
+					FieldsType:  k8s.ManagedFieldsTypeFieldsV1,
+					FieldsV1:    &v1.FieldsV1{Raw: []byte(`{"f:status":{}}`)},
+					Subresource: "status",
+				},
+			},
+		},
+		{
+			name: "no change if subresource is empty",
+			managedFieldEntries: []v1.ManagedFieldsEntry{
+				{
+					Manager:     "manager",
+					FieldsType:  k8s.ManagedFieldsTypeFieldsV1,
+					FieldsV1:    &v1.FieldsV1{Raw: []byte(`{"f:spec":{}}`)},
+					Subresource: "",
+				},
+			},
+			expectedEntries: []v1.ManagedFieldsEntry{
+				{
+					Manager:     "manager",
+					FieldsType:  k8s.ManagedFieldsTypeFieldsV1,
+					FieldsV1:    &v1.FieldsV1{Raw: []byte(`{"f:spec":{}}`)},
+					Subresource: "",
+				},
+			},
+		},
+		{
+			name: "remove subresource from mixed spec and metadata managed field",
+			managedFieldEntries: []v1.ManagedFieldsEntry{
+				{
+					Manager:    "kubectl",
+					FieldsType: k8s.ManagedFieldsTypeFieldsV1,
+					FieldsV1: &v1.FieldsV1{Raw: []byte(`{
+						"f:metadata": {
+							"f:annotations": {
+								".": {},
+								"f:cnrm.cloud.google.com/deletion-policy": {},
+								"f:kubectl.kubernetes.io/last-applied-configuration": {}
+							}
+						},
+						"f:spec": {
+							".": {},
+							"f:attemptDeadline": {},
+							"f:description": {}
+						}
+					}`)},
+					Subresource: "status",
+				},
+			},
+			expectedEntries: []v1.ManagedFieldsEntry{
+				{
+					Manager:    "kubectl",
+					FieldsType: k8s.ManagedFieldsTypeFieldsV1,
+					FieldsV1: &v1.FieldsV1{Raw: []byte(`{
+						"f:metadata": {
+							"f:annotations": {
+								".": {},
+								"f:cnrm.cloud.google.com/deletion-policy": {},
+								"f:kubectl.kubernetes.io/last-applied-configuration": {}
+							}
+						},
+						"f:spec": {
+							".": {},
+							"f:attemptDeadline": {},
+							"f:description": {}
+						}
+					}`)},
+					Subresource: "",
+				},
+			},
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			r := &k8s.Resource{
+				ObjectMeta: v1.ObjectMeta{
+					ManagedFields: tc.managedFieldEntries,
+				},
+			}
+			k8s.SanitizeSpecManagedFields(r)
+			if !reflect.DeepEqual(r.ObjectMeta.ManagedFields, tc.expectedEntries) {
+				t.Errorf("actual: %+v, expected: %+v", r.ObjectMeta.ManagedFields, tc.expectedEntries)
+			}
+		})
 	}
 }

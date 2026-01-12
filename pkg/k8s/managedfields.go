@@ -16,6 +16,7 @@ package k8s
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -29,6 +30,7 @@ import (
 	"sigs.k8s.io/structured-merge-diff/v4/schema"
 	"sigs.k8s.io/structured-merge-diff/v4/typed"
 	"sigs.k8s.io/structured-merge-diff/v4/value"
+	"k8s.io/klog/v2"
 )
 
 /*
@@ -161,6 +163,24 @@ func GetK8sManagedFields(u *unstructured.Unstructured) (*fieldpath.Set, error) {
 		return res, nil
 	}
 	return nil, nil
+}
+
+// SanitizeSpecManagedFields ensures that managed fields entries for spec fields do not have
+// Subresource field configured.
+func SanitizeSpecManagedFields(r *Resource) {
+	for i := range r.ObjectMeta.ManagedFields {
+		if r.ObjectMeta.ManagedFields[i].FieldsV1 == nil {
+			continue
+		}
+		var fields map[string]interface{}
+		if err := json.Unmarshal(r.ObjectMeta.ManagedFields[i].FieldsV1.Raw, &fields); err != nil {
+			klog.Warningf("managedfields: error unmarshalling FieldsV1.Raw for manager %v: %v", r.ObjectMeta.ManagedFields[i].Manager, err)
+			continue
+		}
+		if _, ok := fields["f:spec"]; ok {
+			r.ObjectMeta.ManagedFields[i].Subresource = ""
+		}
+	}
 }
 
 // OverlayManagedFieldsOntoState overlays the fields managed by Kubernetes managers onto the
