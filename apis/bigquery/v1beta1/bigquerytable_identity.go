@@ -23,36 +23,36 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// TableIdentity defines the resource reference to BigQueryTable, which "External" field
+// BigQueryTableIdentity defines the resource reference to BigQueryTable, which "External" field
 // holds the GCP identifier for the KRM object.
-type TableIdentity struct {
-	parent *TableParent
+type BigQueryTableIdentity struct {
+	parent *BigQueryTableParent
 	id     string
 }
 
-func (i *TableIdentity) String() string {
+func (i *BigQueryTableIdentity) String() string {
 	return i.parent.String() + "/tables/" + i.id
 }
 
-func (i *TableIdentity) ID() string {
+func (i *BigQueryTableIdentity) ID() string {
 	return i.id
 }
 
-func (i *TableIdentity) Parent() *TableParent {
+func (i *BigQueryTableIdentity) Parent() *BigQueryTableParent {
 	return i.parent
 }
 
-type TableParent struct {
+type BigQueryTableParent struct {
 	ProjectID string
 	DatasetID string
 }
 
-func (p *TableParent) String() string {
+func (p *BigQueryTableParent) String() string {
 	return "projects/" + p.ProjectID + "/datasets/" + p.DatasetID
 }
 
-// New builds a TableIdentity from the Config Connector Table object.
-func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigQueryTable) (*TableIdentity, error) {
+// NewBigQueryTableIdentity builds a BigQueryTableIdentity from the Config Connector Table object.
+func NewBigQueryTableIdentity(ctx context.Context, reader client.Reader, obj *BigQueryTable) (*BigQueryTableIdentity, error) {
 	datasetExternalRef, err := obj.Spec.DatasetRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigQueryTa
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseTableExternal(externalRef)
+		actualParent, actualResourceID, err := ParseBigQueryTableExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -92,8 +92,8 @@ func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigQueryTa
 				resourceID, actualResourceID)
 		}
 	}
-	return &TableIdentity{
-		parent: &TableParent{
+	return &BigQueryTableIdentity{
+		parent: &BigQueryTableParent{
 			ProjectID: datasetParent.ProjectID,
 			DatasetID: dataset,
 		},
@@ -101,12 +101,12 @@ func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigQueryTa
 	}, nil
 }
 
-func ParseTableExternal(external string) (parent *TableParent, resourceID string, err error) {
+func ParseBigQueryTableExternal(external string) (parent *BigQueryTableParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "datasets" || tokens[4] != "tables" {
 		return nil, "", fmt.Errorf("format of BigQueryTable external=%q was not known (use projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}})", external)
 	}
-	parent = &TableParent{
+	parent = &BigQueryTableParent{
 		ProjectID: tokens[1],
 		DatasetID: tokens[3],
 	}
