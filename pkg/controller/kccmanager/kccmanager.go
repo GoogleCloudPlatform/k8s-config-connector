@@ -22,8 +22,6 @@ import (
 	"strconv"
 	"time"
 
-	mclv1alpha1 "github.com/gke-labs/multicluster-leader-election/api/v1alpha1"
-
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
