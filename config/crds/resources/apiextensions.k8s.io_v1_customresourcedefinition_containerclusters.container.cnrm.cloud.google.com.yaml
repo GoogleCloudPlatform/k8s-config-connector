@@ -284,6 +284,10 @@ spec:
                               keep the nodes in your node pool up to date with the
                               latest release version of Kubernetes.
                             type: boolean
+                          defaultComputeClassEnabled:
+                            description: Whether the default compute class is enabled
+                              for the node pool.
+                            type: boolean
                           upgradeOptions:
                             description: Specifies the Auto Upgrade knobs for the
                               node pool.
@@ -588,6 +592,10 @@ spec:
                 required:
                 - enabledApis
                 type: object
+              enableK8sTokensViaDns:
+                description: Whether to allow access to the cluster's control plane
+                  endpoint for any user who has a valid service account token.
+                type: boolean
               enableKubernetesAlpha:
                 description: Immutable. Whether to enable Kubernetes Alpha features
                   for this cluster. Note that when this option is enabled, the cluster
