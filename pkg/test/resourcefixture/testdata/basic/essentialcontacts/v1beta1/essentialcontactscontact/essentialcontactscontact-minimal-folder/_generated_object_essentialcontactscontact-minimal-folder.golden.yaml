@@ -23,7 +23,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: folders/86007946806/contacts/${contactId}
+  externalRef: folders/${folderID}/contacts/${contactId}
   observedGeneration: 2
   observedState:
     validateTime: "1970-01-01T00:00:00Z"

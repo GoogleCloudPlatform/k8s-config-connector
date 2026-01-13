@@ -26,5 +26,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: folders/969386542818/feeds/assetfeed-minimal-${uniqueId}
+  externalRef: folders/${folderID}/feeds/assetfeed-minimal-${uniqueId}
   observedGeneration: 2

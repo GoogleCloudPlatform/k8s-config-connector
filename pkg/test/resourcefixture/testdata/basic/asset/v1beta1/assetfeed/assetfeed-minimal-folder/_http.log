@@ -1,6 +1,5 @@
 GET https://cloudresourcemanager.googleapis.com/v3/folders:search?alt=json&pageToken=&prettyPrint=false&query=state%3DACTIVE+AND+parent%3Dorganizations%2F${organizationID}+AND+displayName%3D%22KCC+${uniqueId}%22
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -19,7 +18,6 @@ X-Xss-Protection: 0
 POST https://cloudresourcemanager.googleapis.com/v3/folders?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 {
   "displayName": "KCC ${uniqueId}",
@@ -45,7 +43,6 @@ X-Xss-Protection: 0
 GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -76,7 +73,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -107,7 +103,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -134,7 +129,6 @@ X-Xss-Protection: 0
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -159,7 +153,6 @@ X-Xss-Protection: 0
 PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 {
   "labels": {
@@ -191,7 +184,6 @@ X-Xss-Protection: 0
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -217,7 +209,6 @@ GET https://cloudasset.googleapis.com/v1/folders/${folderID}/feeds/assetfeed-min
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=folders%2F${folderID}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
-X-Goog-User-Project: ${projectNumber}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -243,7 +234,6 @@ POST https://cloudasset.googleapis.com/v1/folders/${folderID}/feeds?%24alt=json%
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=folders%2F${folderID}
-X-Goog-User-Project: ${projectNumber}
 
 {
   "feed": {
@@ -289,7 +279,6 @@ GET https://cloudasset.googleapis.com/v1/folders/${folderID}/feeds/assetfeed-min
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=folders%2F${folderID}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -319,7 +308,6 @@ PATCH https://cloudasset.googleapis.com/v1/folders/${folderID}/feeds/assetfeed-m
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: feed.name=folders%2F${folderID}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
-X-Goog-User-Project: ${projectNumber}
 
 {
   "feed": {
@@ -366,7 +354,6 @@ GET https://cloudasset.googleapis.com/v1/folders/${folderID}/feeds/assetfeed-min
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=folders%2F${folderID}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -397,7 +384,6 @@ DELETE https://cloudasset.googleapis.com/v1/folders/${folderID}/feeds/assetfeed-
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=folders%2F${folderID}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -416,7 +402,6 @@ X-Xss-Protection: 0
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -441,7 +426,6 @@ X-Xss-Protection: 0
 DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -459,7 +443,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -485,7 +468,6 @@ X-Xss-Protection: 0
 
 DELETE https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

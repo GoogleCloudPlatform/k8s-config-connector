@@ -1,6 +1,5 @@
 GET https://cloudresourcemanager.googleapis.com/v3/folders:search?alt=json&pageToken=&prettyPrint=false&query=state%3DACTIVE+AND+parent%3Dorganizations%2F${organizationID}+AND+displayName%3D%22KCC+${uniqueId}%22
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -19,7 +18,6 @@ X-Xss-Protection: 0
 POST https://cloudresourcemanager.googleapis.com/v3/folders?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 {
   "displayName": "KCC ${uniqueId}",
@@ -45,7 +43,6 @@ X-Xss-Protection: 0
 GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -76,7 +73,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -107,7 +103,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -135,7 +130,6 @@ POST https://essentialcontacts.googleapis.com/v1/folders/${folderID}/contacts?%2
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=folders%2F${folderID}
-X-Goog-User-Project: ${projectNumber}
 
 {
   "email": "bill-alerts@test.com",
@@ -158,7 +152,7 @@ X-Xss-Protection: 0
 {
   "email": "bill-alerts@test.com",
   "languageTag": "en",
-  "name": "folders/${folderID}/contacts/0",
+  "name": "folders/${folderID}/contacts/7",
   "notificationCategorySubscriptions": [
     7
   ],
@@ -168,11 +162,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://essentialcontacts.googleapis.com/v1/folders/${folderID}/contacts/0?%24alt=json%3Benum-encoding%3Dint
+GET https://essentialcontacts.googleapis.com/v1/folders/${folderID}/contacts/7?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=folders%2F${folderID}%2Fcontacts%2F0
-X-Goog-User-Project: ${projectNumber}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Fcontacts%2F7
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -187,7 +180,7 @@ X-Xss-Protection: 0
 {
   "email": "bill-alerts@test.com",
   "languageTag": "en",
-  "name": "folders/${folderID}/contacts/0",
+  "name": "folders/${folderID}/contacts/7",
   "notificationCategorySubscriptions": [
     7
   ],
@@ -197,16 +190,15 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://essentialcontacts.googleapis.com/v1/folders/${folderID}/contacts/0?%24alt=json%3Benum-encoding%3Dint&updateMask=notificationCategorySubscriptions
+PATCH https://essentialcontacts.googleapis.com/v1/folders/${folderID}/contacts/7?%24alt=json%3Benum-encoding%3Dint&updateMask=notificationCategorySubscriptions
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: contact.name=folders%2F${folderID}%2Fcontacts%2F0
-X-Goog-User-Project: ${projectNumber}
+X-Goog-Request-Params: contact.name=folders%2F${folderID}%2Fcontacts%2F7
 
 {
   "email": "all-alerts@test.com",
   "languageTag": "en",
-  "name": "folders/${folderID}/contacts/0",
+  "name": "folders/${folderID}/contacts/7",
   "notificationCategorySubscriptions": [
     2
   ]
@@ -225,7 +217,7 @@ X-Xss-Protection: 0
 {
   "email": "bill-alerts@test.com",
   "languageTag": "en",
-  "name": "folders/${folderID}/contacts/0",
+  "name": "folders/${folderID}/contacts/7",
   "notificationCategorySubscriptions": [
     2
   ],
@@ -235,11 +227,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://essentialcontacts.googleapis.com/v1/folders/${folderID}/contacts/0?%24alt=json%3Benum-encoding%3Dint
+GET https://essentialcontacts.googleapis.com/v1/folders/${folderID}/contacts/7?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=folders%2F${folderID}%2Fcontacts%2F0
-X-Goog-User-Project: ${projectNumber}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Fcontacts%2F7
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -254,7 +245,7 @@ X-Xss-Protection: 0
 {
   "email": "bill-alerts@test.com",
   "languageTag": "en",
-  "name": "folders/${folderID}/contacts/0",
+  "name": "folders/${folderID}/contacts/7",
   "notificationCategorySubscriptions": [
     2
   ],
@@ -264,11 +255,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://essentialcontacts.googleapis.com/v1/folders/${folderID}/contacts/0?%24alt=json%3Benum-encoding%3Dint
+DELETE https://essentialcontacts.googleapis.com/v1/folders/${folderID}/contacts/7?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=folders%2F${folderID}%2Fcontacts%2F0
-X-Goog-User-Project: ${projectNumber}
+X-Goog-Request-Params: name=folders%2F${folderID}%2Fcontacts%2F7
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -286,7 +276,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -312,7 +301,6 @@ X-Xss-Protection: 0
 
 DELETE https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

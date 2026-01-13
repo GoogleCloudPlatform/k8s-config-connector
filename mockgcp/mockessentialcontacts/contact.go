@@ -146,37 +146,56 @@ func (s *EssentialContactsV1) ListContacts(ctx context.Context, req *pb.ListCont
 }
 
 type contactName struct {
-	Project *projects.ProjectData
-	Contact string
+	Project        *projects.ProjectData
+	Contact        string
+	folderID       string
+	organizationID string
 }
 
 // GetName returns the name using the project number instead of ID
 func (n *contactName) GetName() string {
+	if n.organizationID != "" {
+		return fmt.Sprintf("organizations/%s/contacts/%s", n.organizationID, n.Contact)
+	}
+	if n.folderID != "" {
+		return fmt.Sprintf("folders/%s/contacts/%s", n.folderID, n.Contact)
+	}
 	return fmt.Sprintf("projects/%d/contacts/%s", n.Project.Number, n.Contact)
 }
 
 func (n *contactName) String() string {
+	if n.organizationID != "" {
+		return fmt.Sprintf("organizations/%s/contacts/%s", n.organizationID, n.Contact)
+	}
+	if n.folderID != "" {
+		return fmt.Sprintf("folders/%s/contacts/%s", n.folderID, n.Contact)
+	}
 	return fmt.Sprintf("projects/%s/contacts/%s", n.Project.ID, n.Contact)
 }
 
 // parseContactName parses a string into an contactName.
-// The expected form is `projects/*/contacts/*`.
 func (s *MockService) parseContactName(name string) (*contactName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "contacts" {
+	if len(tokens) != 4 || tokens[2] != "contacts" {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+
+	contactName := &contactName{}
+	contactName.Contact = tokens[3]
+	switch tokens[0] {
+	case "projects":
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
-
-		name := &contactName{
-			Project: project,
-			Contact: tokens[3],
-		}
-
-		return name, nil
+		contactName.Project = project
+	case "folders":
+		contactName.folderID = tokens[1]
+	case "organizations":
+		contactName.organizationID = tokens[1]
+	default:
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
-
-	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	return contactName, nil
 }

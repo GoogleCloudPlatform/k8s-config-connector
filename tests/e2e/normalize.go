@@ -504,19 +504,31 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 				}
 			}
 		}
-		// Get firewall policy id from firewall policy rule's externalRef and replace it
+
 		externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
 		if externalRef != "" {
 			tokens := strings.Split(externalRef, "/")
 			n := len(tokens)
+
+			if n >= 4 {
+				typeName := tokens[len(tokens)-4]
+				switch typeName {
+				case "folders":
+					folderId := tokens[len(tokens)-3]
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, folderId, "${folderID}")
+					})
+				}
+			}
+
 			if n >= 2 {
 				typeName := tokens[len(tokens)-2]
 				switch typeName {
 				case "contacts":
 					// "projects/${projectNumber}/contacts/${contactId}"
-					needle := "contacts/" + tokens[len(tokens)-1]
+					contact := "contacts/" + tokens[len(tokens)-1]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, needle, "contacts/${contactId}")
+						return strings.ReplaceAll(s, contact, "contacts/${contactId}")
 					})
 				case "rules":
 					// Get firewall policy id from firewall policy rule's externalRef and replace it
