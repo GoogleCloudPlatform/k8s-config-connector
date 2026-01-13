@@ -17,10 +17,10 @@ package preview
 import (
 	"context"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/preview"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -56,6 +56,18 @@ type PreviewOptions struct {
 	namespace        string
 	inCluster        bool
 	reconcilerTypeOverride []string
+}
+
+type TimeoutError struct {
+	Err error
+}
+
+func (e *TimeoutError) Error() string {
+	return fmt.Sprintf("timeout reached: %v", e.Err)
+}
+
+func (e *TimeoutError) Unwrap() error {
+	return e.Err
 }
 
 func BuildPreviewCmd() *cobra.Command {
@@ -111,24 +123,52 @@ func getGCPAuthorization(ctx context.Context, opts *PreviewOptions) (oauth2.Toke
 func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 	log.SetLogger(klogr.New())
 	klog.Info("Starting preview tool.")
-	override, err := generateReconcilerOverride(opts.reconcilerTypeOverride)
+	
+	defaultRecorder, err := runKCCManagerPreview(ctx, map[string]string{}, opts)
+	if err != nil {
+		if _, ok := err.(*TimeoutError); ok {
+			klog.Info("Timeout reached when running preview with default reconcilers, exporting partial report")
+			return nil
+		}
+		return fmt.Errorf("error running preview with default reconcilers: %w", err)
+	}
+
+	// Load the static config to generation overrides.
+	config := resourceconfig.LoadConfig()
+	override, err := generateAlternativeReconcilerOverride(config)
 	if err != nil {
 		return fmt.Errorf("failed to generate reconciler config: %w", err)
 	}
+	alternativeRecorder, err := runKCCManagerPreview(ctx, override, opts)
+	if err != nil {
+		if _, ok := err.(*TimeoutError); ok {
+			klog.Info("Timeout reached when running preview with alternative reconcilers, exporting partial report")
+			return nil
+		}
+		return fmt.Errorf("error running preview with alternative reconcilers: %w", err)
+	}
+
+	report := preview.NewPreviewReport(defaultRecorder, alternativeRecorder)
+	report.Export(generateFilename(opts.reportNamePrefix) + "-combined-result")
+	return nil
+}
+
+func runKCCManagerPreview(ctx context.Context, reconcilerOverride map[string]string, opts *PreviewOptions) (*preview.Recorder, error) {
 	upstreamRESTConfig, err := getRESTConfig(ctx, opts)
 	if err != nil {
-		return fmt.Errorf("error building kubeconfig: %w", err)
+		return nil, fmt.Errorf("error building kubeconfig: %w", err)
+	}
+	authorization, err := getGCPAuthorization(ctx, opts)
+	if err != nil {
+		return nil, fmt.Errorf("error building GCP authorization: %w", err)
 	}
 	recorder := preview.NewRecorder()
 	klog.Info("Preloading the list of resources to reconcile")
 	if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig, opts.namespace); err != nil {
-		return fmt.Errorf("error preload the list of resources to reconcile: %w", err)
+		return nil, fmt.Errorf("error preload the list of resources to reconcile: %w", err)
 	}
 	klog.Info("Successfully preload the list of resources to reconcile.")
-	authorization, err := getGCPAuthorization(ctx, opts)
-	if err != nil {
-		return fmt.Errorf("error building GCP authorization: %w", err)
-	}
+
 	preview, err := preview.NewPreviewInstance(recorder, preview.PreviewInstanceOptions{
 		UpstreamRESTConfig:       upstreamRESTConfig,
 		UpstreamGCPAuthorization: authorization,
@@ -136,13 +176,13 @@ func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 		UpstreamGCPQPS:           opts.gcpQPS,
 		UpstreamGCPBurst:         opts.gcpBurst,
 		Namespace:                opts.namespace,
-		ReconcilerOverride: 				override,
+		ReconcilerOverride:       reconcilerOverride,
 	})
 	if err != nil {
-		return fmt.Errorf("building preview instance: %v", err)
+		return nil, fmt.Errorf("building preview instance: %v", err)
 	}
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(opts.timeout)*time.Minute)
-	defer printCapturedObjects(recorder, opts.reportNamePrefix, opts.fullReport)
+	// defer printCapturedObjects(recorder, opts.reportNamePrefix, opts.fullReport)
 	defer cancel()
 
 	errChan := make(chan error, 1)
@@ -154,41 +194,48 @@ func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 	select {
 	case err := <-errChan:
 		if err != nil {
-			return fmt.Errorf("error starting preview: %w", err)
+			return nil, fmt.Errorf("error starting preview: %w", err)
 		}
 	case <-ctx.Done():
-		return fmt.Errorf("timeout reached: %w", ctx.Err())
+		return recorder, &TimeoutError{Err: ctx.Err()}
 	}
 	klog.Info("Preview finished successfully")
-	return nil
+	return recorder, nil
 }
 
 func printCapturedObjects(recorder *preview.Recorder, prefix string, full bool) error {
-	now := time.Now()
-	timestamp := now.Format("20060102-150405.000")
-	summaryFile := fmt.Sprintf("%s-%s", prefix, timestamp)
+	summaryFile := generateFilename(prefix)
 	if err := recorder.SummaryReport(summaryFile); err != nil {
 		return fmt.Errorf("error writing summary: %w", err)
 	}
 
 	if full {
-		outputFile := fmt.Sprintf("%s-%s-full", prefix, timestamp)
+		outputFile := generateFilename(prefix + "-full")
 		if err := recorder.ExportDetailObjectsEvent(outputFile); err != nil {
 			return fmt.Errorf("error writing events: %w", err)
 		}
-
 	}
 	return nil
 }
 
-func generateReconcilerOverride(overrides []string) (map[string]string, error) {
+func generateFilename(prefix string) string {
+	now := time.Now()
+	timestamp := now.Format("20060102-150405.000")
+	return fmt.Sprintf("%s-%s", prefix, timestamp)
+}
+
+// generateAlternativeReconcilerOverride generates a map of resource to alternative reconciler type.
+func generateAlternativeReconcilerOverride(config resourceconfig.ResourcesControllerMap) (map[string]string, error) {
 	overrideMap := make(map[string]string)
-	for _, override := range overrides {
-		parts := strings.Split(override, ":")
-		if len(parts) != 2 {
-			return nil, fmt.Errorf("invalid override format: %s (expected Kind.Group:ReconcilerType)", override)
+	for gk, controllerConfig := range config {
+		for _, controller := range controllerConfig.SupportedControllers {
+			// Assuming there are maxium 2 supported controller types.
+			// If there is alternative controller type, we will use it.
+			if controller != controllerConfig.DefaultController {
+				overrideMap[gk.String()] = string(controller)
+				break
+			}
 		}
-		overrideMap[parts[0]] = parts[1]
 	}
 	return overrideMap, nil
 }

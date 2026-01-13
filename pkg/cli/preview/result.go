@@ -20,6 +20,8 @@ import (
 	"reflect"
 	"strings"
 	"text/tabwriter"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
 
 type PreviewSummary struct {
@@ -212,4 +214,121 @@ func (r *Recorder) SummaryReport(filename string) error {
 		}
 	}
 	return detailFile.Close()
+}
+
+func(r *Recorder) GKNNPreviewResult() map[GKNN]*GKNNPreviewResult {
+	result := make(map[GKNN]*GKNNPreviewResult)
+	for gknn := range r.objects {
+		result[gknn] = &GKNNPreviewResult{
+			Group:   gknn.Group,
+			Kind:    gknn.Kind,
+			Namespace: gknn.Namespace,
+			Name:    gknn.Name,
+			Good: true,
+		}
+		for _, event := range r.objects[gknn].events {
+			switch event.eventType {
+			case EventTypeDiff:
+				// Ignore for now
+			case EventTypeReconcileStart:
+				result[gknn].ControllerType = event.reconcilerType
+			case EventTypeReconcileEnd:
+				result[gknn].ControllerType = event.reconcilerType
+			case EventTypeKubeAction:
+				// Ignore for now
+			case EventTypeGCPAction:
+				result[gknn].Good = false
+			default:
+				// Ignore for now
+			}
+		}
+	}
+	return result
+}
+
+
+type GKNNPreviewResult struct {
+	Group   string
+	Kind    string
+	Namespace string
+	Name    string
+	ControllerType k8s.ReconcilerType
+	Good bool
+}
+
+type PreviewReport struct {
+	report map[GKNN]*GKNNReport
+}
+
+// NewPreviewReport creates a new PreviewReport from the given default and alternative recorders.
+func NewPreviewReport(defaultRecorder *Recorder, alternativeRecorder *Recorder) *PreviewReport {
+	defaultResult := defaultRecorder.GKNNPreviewResult()
+	alternativeResult := alternativeRecorder.GKNNPreviewResult()
+
+	previewReport := &PreviewReport{report: make(map[GKNN]*GKNNReport)}
+	previewReport.Initialize(defaultRecorder)
+	previewReport.Initialize(alternativeRecorder)
+
+	for gknn := range defaultResult {
+		previewReport.report[gknn] = &GKNNReport{
+			DefaultControllerType: &defaultResult[gknn].ControllerType,
+			DefaultGood: &defaultResult[gknn].Good,
+		}
+	}
+	for gknn := range alternativeResult {
+		if alternativeResult[gknn].ControllerType != defaultResult[gknn].ControllerType {
+			previewReport.report[gknn].AlternativeControllerType = &alternativeResult[gknn].ControllerType
+			previewReport.report[gknn].AlternativeGood = &alternativeResult[gknn].Good
+		}
+	}
+	return previewReport
+}
+
+// Initialize the report with the given recorder.
+func (r *PreviewReport) Initialize(recorder *Recorder) {
+	if r.report == nil {
+		r.report = make(map[GKNN]*GKNNReport)
+	}
+	for gknn := range recorder.ReconciledResources {
+		r.report[gknn] = &GKNNReport{}
+	}
+}
+
+// Export the report to a file.
+func (r *PreviewReport) Export(filename string) error {
+	f, err := os.Create(filename)
+	if err != nil {
+		return fmt.Errorf("error creating file %q: %w", filename, err)
+	}
+	defer f.Close()
+	w := tabwriter.NewWriter(f, 0, 0, 3, ' ', 0)
+	fmt.Fprintln(w, "GROUP\tKIND\tNAMESPACE\tNAME\tDEFAULT CONTROLLER\tDEFAULT GOOD\tALTERNATIVE CONTROLLER\tALTERNATIVE GOOD")
+	for gknn, report := range r.report {
+		defaultGood := "N/A"
+		if report.DefaultGood != nil {
+			defaultGood = fmt.Sprintf("%t", *report.DefaultGood)
+		}
+		defaultControllerType := "N/A"
+		if report.DefaultControllerType != nil {
+			defaultControllerType = fmt.Sprintf("%s", *report.DefaultControllerType)
+		}
+		alternativeGood := "N/A"
+		if report.AlternativeGood != nil {
+			alternativeGood = fmt.Sprintf("%t", *report.AlternativeGood)
+		}
+		alternativeControllerType := "N/A"
+		if report.AlternativeControllerType != nil {
+			alternativeControllerType = fmt.Sprintf("%s", *report.AlternativeControllerType)
+		}
+		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", gknn.Group, gknn.Kind, gknn.Namespace, gknn.Name, defaultControllerType, defaultGood, alternativeControllerType, alternativeGood)
+	}
+	w.Flush()
+	return nil
+}
+
+type GKNNReport struct {
+	DefaultControllerType *k8s.ReconcilerType
+	DefaultGood *bool
+	AlternativeControllerType *k8s.ReconcilerType
+	AlternativeGood *bool
 }

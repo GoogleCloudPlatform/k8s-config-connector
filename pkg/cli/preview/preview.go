@@ -30,6 +30,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -172,6 +173,12 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 	kccConfig.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
 	kccConfig.HTTPClient = gcpHTTPClient
 	kccConfig.GCPAccessToken = "dummytoken" // Use a fake token as a failsafe against requests "leaking" to real GCP
+
+	// When we run the preview command, we might start multiple managers sequentially (e.g. for different passes).
+	// controller-runtime keeps a global registry of metrics, and it refuses to register controllers with the same name twice.
+	// Since we can't easily reset the global metrics registry, we skip the name validation in the controller.
+	// This does mean metrics might be messed up, but for "preview" command we don't care about metrics.
+	registration.SkipControllerNameValidation = true
 
 	mgr, err := kccmanager.New(ctx, restConfig, kccConfig)
 	if err != nil {
