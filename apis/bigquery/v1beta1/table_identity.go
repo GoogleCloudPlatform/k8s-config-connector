@@ -23,22 +23,22 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// BigQueryTableIdentity defines the resource reference to BigQueryTable, which "External" field
+// TableIdentity defines the resource reference to BigQueryTable, which "External" field
 // holds the GCP identifier for the KRM object.
-type BigQueryTableIdentity struct {
+type TableIdentity struct {
 	parent *BigQueryTableParent
 	id     string
 }
 
-func (i *BigQueryTableIdentity) String() string {
+func (i *TableIdentity) String() string {
 	return i.parent.String() + "/tables/" + i.id
 }
 
-func (i *BigQueryTableIdentity) ID() string {
+func (i *TableIdentity) ID() string {
 	return i.id
 }
 
-func (i *BigQueryTableIdentity) Parent() *BigQueryTableParent {
+func (i *TableIdentity) Parent() *BigQueryTableParent {
 	return i.parent
 }
 
@@ -51,8 +51,8 @@ func (p *BigQueryTableParent) String() string {
 	return "projects/" + p.ProjectID + "/datasets/" + p.DatasetID
 }
 
-// NewBigQueryTableIdentity builds a BigQueryTableIdentity from the Config Connector Table object.
-func NewBigQueryTableIdentity(ctx context.Context, reader client.Reader, obj *BigQueryTable) (*BigQueryTableIdentity, error) {
+// NewTableIdentity builds a TableIdentity from the Config Connector Table object.
+func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigQueryTable) (*TableIdentity, error) {
 	datasetExternalRef, err := obj.Spec.DatasetRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
@@ -92,7 +92,7 @@ func NewBigQueryTableIdentity(ctx context.Context, reader client.Reader, obj *Bi
 				resourceID, actualResourceID)
 		}
 	}
-	return &BigQueryTableIdentity{
+	return &TableIdentity{
 		parent: &BigQueryTableParent{
 			ProjectID: datasetParent.ProjectID,
 			DatasetID: dataset,

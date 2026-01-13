@@ -26,11 +26,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &BigQueryTableRef{}
+var _ refsv1beta1.Ref = &TableRef{}
 
-// BigQueryTableRef defines the resource reference to BigQueryTable, which "External" field
+// TableRef defines the resource reference to BigQueryTable, which "External" field
 // holds the GCP identifier for the KRM object.
-type BigQueryTableRef struct {
+type TableRef struct {
 	// A reference to an externally-managed BigQueryTable resource.
 	// Should be in the format "projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}".
 	External string `json:"external,omitempty"`
@@ -42,31 +42,31 @@ type BigQueryTableRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-func (r *BigQueryTableRef) GetGVK() schema.GroupVersionKind {
+func (r *TableRef) GetGVK() schema.GroupVersionKind {
 	return BigQueryTableGVK
 }
 
-func (r *BigQueryTableRef) GetNamespacedName() types.NamespacedName {
+func (r *TableRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *BigQueryTableRef) GetExternal() string {
+func (r *TableRef) GetExternal() string {
 	return r.External
 }
 
-func (r *BigQueryTableRef) SetExternal(ref string) {
+func (r *TableRef) SetExternal(ref string) {
 	r.External = ref
 }
 
-func (r *BigQueryTableRef) ValidateExternal(ref string) error {
+func (r *TableRef) ValidateExternal(ref string) error {
 	_, _, err := ParseBigQueryTableExternal(ref)
 	return err
 }
 
-func (r *BigQueryTableRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *TableRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
 		// Get resourceID
 		tableID, err := refsv1beta1.GetResourceID(u)

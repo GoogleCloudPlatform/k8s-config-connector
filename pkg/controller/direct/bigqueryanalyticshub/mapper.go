@@ -127,7 +127,7 @@ func Listing_BigQueryDatasetSource_SelectedResource_FromProto(mapCtx *direct.Map
 	}
 	out := &krm.SelectedResource{}
 	if in.GetTable() != "" {
-		out.TableRef = &bigqueryv1beta1.BigQueryTableRef{
+		out.TableRef = &bigqueryv1beta1.TableRef{
 			External: in.GetTable(),
 		}
 	}
