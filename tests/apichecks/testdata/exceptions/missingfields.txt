@@ -96,9 +96,7 @@
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.mavenRepository.publicRepository" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.npmRepository.publicRepository" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.pythonRepository.publicRepository" is not set in unstructured objects
-[missing_field] crd=assetfeeds.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetfeeds.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=backupdrbackupvaults.backupdr.cnrm.cloud.google.com version=v1beta1: field ".spec.annotations" is not set in unstructured objects
@@ -162,7 +160,6 @@
 [missing_field] crd=bigqueryjobs.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.query.scriptOptions.statementByteBudget" is not set in unstructured objects
 [missing_field] crd=bigqueryjobs.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.query.userDefinedFunctionResources[].inlineCode" is not set in unstructured objects
 [missing_field] crd=bigqueryjobs.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.query.userDefinedFunctionResources[].resourceUri" is not set in unstructured objects
-[missing_field] crd=bigqueryreservationassignments.bigqueryreservation.cnrm.cloud.google.com version=v1beta1: field ".spec.assignee.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigqueryroutines.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.arguments[].mode" is not set in unstructured objects
 [missing_field] crd=bigqueryroutines.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.importedLibraries[]" is not set in unstructured objects
 [missing_field] crd=bigqueryroutines.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.returnTableType" is not set in unstructured objects
@@ -2129,7 +2126,6 @@
 [missing_field] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv6Cidr[]" is not set in unstructured objects
 [missing_field] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.vlanId" is not set in unstructured objects
-[missing_field] crd=essentialcontactscontacts.essentialcontacts.cnrm.cloud.google.com version=v1beta1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=essentialcontactscontacts.essentialcontacts.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=eventarctriggers.eventarc.cnrm.cloud.google.com version=v1beta1: field ".spec.channelRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=eventarctriggers.eventarc.cnrm.cloud.google.com version=v1beta1: field ".spec.destination.cloudFunctionRef" is not set; neither 'external' nor 'name' are set
