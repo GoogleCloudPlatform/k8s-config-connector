@@ -1,0 +1,500 @@
+GET https://cloudresourcemanager.googleapis.com/v3/folders:search?alt=json&pageToken=&prettyPrint=false&query=state%3DACTIVE+AND+parent%3Dorganizations%2F${organizationID}+AND+displayName%3D%22KCC+${uniqueId}%22
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v3/folders?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectNumber}
+
+{
+  "displayName": "KCC ${uniqueId}",
+  "parent": "organizations/${organizationID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "KCC ${uniqueId}",
+    "etag": "abcdef0123A=",
+    "name": "folders/${folderID}",
+    "parent": "organizations/${organizationID}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "KCC ${uniqueId}",
+    "etag": "abcdef0123A=",
+    "name": "folders/${folderID}",
+    "parent": "organizations/${organizationID}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "KCC ${uniqueId}",
+  "etag": "abcdef0123A=",
+  "name": "folders/${folderID}",
+  "parent": "organizations/${organizationID}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudasset.googleapis.com/v1/folders/${folderID}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudasset.googleapis.com/v1/folders/${folderID}/savedQueries?%24alt=json%3Benum-encoding%3Dint&savedQueryId=assetsavedquery-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=folders%2F${folderID}
+X-Goog-User-Project: ${projectNumber}
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "accessSelector": {
+        "permissions": [
+          "resourcemanager.projects.get"
+        ],
+        "roles": [
+          "roles/owner"
+        ]
+      },
+      "conditionContext": {
+        "accessTime": "2035-01-01T10:00:00Z"
+      },
+      "identitySelector": {
+        "identity": "user:test-user@example.com"
+      },
+      "options": {
+        "analyzeServiceAccountImpersonation": true,
+        "expandGroups": true,
+        "expandResources": true,
+        "expandRoles": true,
+        "outputGroupEdges": true,
+        "outputResourceEdges": true
+      },
+      "resourceSelector": {
+        "fullResourceName": "//cloudresourcemanager.googleapis.com/projects/${projectId}"
+      },
+      "scope": "projects/${projectId}"
+    }
+  },
+  "description": "A minimal saved query for testing."
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "accessSelector": {
+        "permissions": [
+          "resourcemanager.projects.get"
+        ],
+        "roles": [
+          "roles/owner"
+        ]
+      },
+      "conditionContext": {
+        "accessTime": "2035-01-01T10:00:00Z"
+      },
+      "identitySelector": {
+        "identity": "user:test-user@example.com"
+      },
+      "options": {
+        "analyzeServiceAccountImpersonation": true,
+        "expandGroups": true,
+        "expandResources": true,
+        "expandRoles": true,
+        "outputGroupEdges": true,
+        "outputResourceEdges": true
+      },
+      "resourceSelector": {
+        "fullResourceName": "//cloudresourcemanager.googleapis.com/projects/${projectId}"
+      },
+      "scope": "projects/${projectId}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A minimal saved query for testing.",
+  "lastUpdateTime": "2025-04-14T20:19:35.325343Z",
+  "name": "folders/${folderID}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+}
+
+---
+
+GET https://cloudasset.googleapis.com/v1/folders/${folderID}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "accessSelector": {
+        "permissions": [
+          "resourcemanager.projects.get"
+        ],
+        "roles": [
+          "roles/owner"
+        ]
+      },
+      "conditionContext": {
+        "accessTime": "2035-01-01T10:00:00Z"
+      },
+      "identitySelector": {
+        "identity": "user:test-user@example.com"
+      },
+      "options": {
+        "analyzeServiceAccountImpersonation": true,
+        "expandGroups": true,
+        "expandResources": true,
+        "expandRoles": true,
+        "outputGroupEdges": true,
+        "outputResourceEdges": true
+      },
+      "resourceSelector": {
+        "fullResourceName": "//cloudresourcemanager.googleapis.com/projects/${projectId}"
+      },
+      "scope": "projects/${projectId}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A minimal saved query for testing.",
+  "lastUpdateTime": "2025-04-14T20:19:35.325343Z",
+  "name": "folders/${folderID}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+}
+
+---
+
+PATCH https://cloudasset.googleapis.com/v1/folders/${folderID}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: saved_query.name=folders%2F${folderID}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+{
+  "description": "An updated minimal saved query for testing.",
+  "name": "folders/${folderID}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "accessSelector": {
+        "permissions": [
+          "resourcemanager.projects.get"
+        ],
+        "roles": [
+          "roles/owner"
+        ]
+      },
+      "conditionContext": {
+        "accessTime": "2035-01-01T10:00:00Z"
+      },
+      "identitySelector": {
+        "identity": "user:test-user@example.com"
+      },
+      "options": {
+        "analyzeServiceAccountImpersonation": true,
+        "expandGroups": true,
+        "expandResources": true,
+        "expandRoles": true,
+        "outputGroupEdges": true,
+        "outputResourceEdges": true
+      },
+      "resourceSelector": {
+        "fullResourceName": "//cloudresourcemanager.googleapis.com/projects/${projectId}"
+      },
+      "scope": "projects/${projectId}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated minimal saved query for testing.",
+  "lastUpdateTime": "2025-04-14T20:19:35.325343Z",
+  "name": "folders/${folderID}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+}
+
+---
+
+GET https://cloudasset.googleapis.com/v1/folders/${folderID}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "accessSelector": {
+        "permissions": [
+          "resourcemanager.projects.get"
+        ],
+        "roles": [
+          "roles/owner"
+        ]
+      },
+      "conditionContext": {
+        "accessTime": "2035-01-01T10:00:00Z"
+      },
+      "identitySelector": {
+        "identity": "user:test-user@example.com"
+      },
+      "options": {
+        "analyzeServiceAccountImpersonation": true,
+        "expandGroups": true,
+        "expandResources": true,
+        "expandRoles": true,
+        "outputGroupEdges": true,
+        "outputResourceEdges": true
+      },
+      "resourceSelector": {
+        "fullResourceName": "//cloudresourcemanager.googleapis.com/projects/${projectId}"
+      },
+      "scope": "projects/${projectId}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated minimal saved query for testing.",
+  "lastUpdateTime": "2025-04-14T20:19:35.325343Z",
+  "name": "folders/${folderID}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+}
+
+---
+
+DELETE https://cloudasset.googleapis.com/v1/folders/${folderID}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "KCC ${uniqueId}",
+  "etag": "abcdef0123A=",
+  "name": "folders/${folderID}",
+  "parent": "organizations/${organizationID}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "KCC ${uniqueId}",
+    "etag": "abcdef0123A=",
+    "name": "folders/${folderID}",
+    "parent": "organizations/${organizationID}",
+    "state": "DELETE_REQUESTED",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
