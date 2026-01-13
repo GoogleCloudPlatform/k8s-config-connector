@@ -23,8 +23,6 @@
 [acronyms] crd=apigeeorganizations.apigee.cnrm.cloud.google.com version=v1beta1: field ".status.projectId" should be ".status.projectID"
 [acronyms] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.iosKeyRestrictions.allowedBundleIds" should be ".spec.restrictions.iosKeyRestrictions.allowedBundleIDs"
 [acronyms] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.serverKeyRestrictions.allowedIps" should be ".spec.restrictions.serverKeyRestrictions.allowedIPs"
-[acronyms] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslSettings.certificateId" should be ".spec.sslSettings.certificateID"
-[acronyms] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslSettings.pendingManagedCertificateId" should be ".spec.sslSettings.pendingManagedCertificateID"
 [acronyms] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.deployment.files[].sourceUrl" should be ".spec.deployment.files[].sourceURL"
 [acronyms] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.deployment.zip.sourceUrl" should be ".spec.deployment.zip.sourceURL"
 [acronyms] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpointsApiService" should be ".spec.endpointsAPIService"

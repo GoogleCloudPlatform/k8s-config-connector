@@ -76,6 +76,11 @@
 [missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1beta1: field ".spec.justification" is not set in unstructured objects
 [missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1beta1: field ".spec.quotaConfig.annotations" is not set in unstructured objects
+[missing_field] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1beta1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1beta1: field ".spec.sslSettings.certificateID" is not set in unstructured objects
+[missing_field] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1beta1: field ".spec.sslSettings.pendingManagedCertificateID" is not set in unstructured objects
+[missing_field] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1beta1: field ".spec.sslSettings.sslManagementType" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].action" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].condition.newerThan" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].condition.olderThan" is not set in unstructured objects
