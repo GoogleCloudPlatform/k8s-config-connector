@@ -619,6 +619,12 @@ func ResourceContainerCluster() *schema.Resource {
 													Computed:    true,
 													Description: `Specifies whether node auto-upgrade is enabled for the node pool. If enabled, node auto-upgrade helps keep the nodes in your node pool up to date with the latest release version of Kubernetes.`,
 												},
+												"default_compute_class_enabled": {
+													Type:        schema.TypeBool,
+													Optional:    true,
+													Computed:    true,
+													Description: `Whether the default compute class is enabled for the node pool.`,
+												},
 												"auto_repair": {
 													Type:        schema.TypeBool,
 													Optional:    true,
@@ -1935,6 +1941,13 @@ func ResourceContainerCluster() *schema.Resource {
 				Description: `Whether FQDN Network Policy is enabled on this cluster.`,
 				Default:     false,
 			},
+
+			"enable_k8s_tokens_via_dns": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: `Whether to allow access to the cluster's control plane endpoint for any user who has a valid service account token.`,
+				Default:     false,
+			},
 			"private_ipv6_google_access": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -2166,17 +2179,17 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		ClusterTelemetry: expandClusterTelemetry(d.Get("cluster_telemetry")),
 		EnableTpu:        d.Get("enable_tpu").(bool),
 		NetworkConfig: &container.NetworkConfig{
-			EnableIntraNodeVisibility: d.Get("enable_intranode_visibility").(bool),
-			DefaultSnatStatus:         expandDefaultSnatStatus(d.Get("default_snat_status")),
-			DatapathProvider:          d.Get("datapath_provider").(string),
-			PrivateIpv6GoogleAccess:   d.Get("private_ipv6_google_access").(string),
-			EnableL4ilbSubsetting:     d.Get("enable_l4_ilb_subsetting").(bool),
-			DnsConfig:                 expandDnsConfig(d.Get("dns_config")),
-			GatewayApiConfig:          expandGatewayApiConfig(d.Get("gateway_api_config")),
-			EnableMultiNetworking:     d.Get("enable_multi_networking").(bool),
+			EnableIntraNodeVisibility:            d.Get("enable_intranode_visibility").(bool),
+			DefaultSnatStatus:                    expandDefaultSnatStatus(d.Get("default_snat_status")),
+			DatapathProvider:                     d.Get("datapath_provider").(string),
+			PrivateIpv6GoogleAccess:              d.Get("private_ipv6_google_access").(string),
+			EnableL4ilbSubsetting:                d.Get("enable_l4_ilb_subsetting").(bool),
+			DnsConfig:                            expandDnsConfig(d.Get("dns_config")),
+			GatewayApiConfig:                     expandGatewayApiConfig(d.Get("gateway_api_config")),
+			EnableMultiNetworking:                d.Get("enable_multi_networking").(bool),
 			EnableCiliumClusterwideNetworkPolicy: d.Get("enable_cilium_clusterwide_network_policy").(bool),
-			EnableFqdnNetworkPolicy:   d.Get("enable_fqdn_network_policy").(bool),
-			DefaultEnablePrivateNodes: expandDefaultEnablePrivateNodes(d),
+			EnableFqdnNetworkPolicy:              d.Get("enable_fqdn_network_policy").(bool),
+			DefaultEnablePrivateNodes:            expandDefaultEnablePrivateNodes(d),
 		},
 		MasterAuth:           expandMasterAuth(d.Get("master_auth")),
 		NotificationConfig:   expandNotificationConfig(d.Get("notification_config")),
@@ -2693,6 +2706,16 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	if err := d.Set("enable_fqdn_network_policy", cluster.NetworkConfig.EnableFqdnNetworkPolicy); err != nil {
 		return fmt.Errorf("Error setting enable_fqdn_network_policy: %s", err)
 	}
+	if err := d.Set("enable_cilium_clusterwide_network_policy", cluster.NetworkConfig.EnableCiliumClusterwideNetworkPolicy); err != nil {
+		return fmt.Errorf("Error setting enable_cilium_clusterwide_network_policy: %s", err)
+	}
+
+	if err := d.Set("gateway_api_config", flattenGatewayApiConfig(cluster.NetworkConfig.GatewayApiConfig)); err != nil {
+		return fmt.Errorf("Error setting gateway_api_config: %s", err)
+	}
+	if err := d.Set("enable_k8s_beta_apis", flattenEnableK8sBetaApis(cluster.EnableK8sBetaApis)); err != nil {
+		return fmt.Errorf("Error setting enable_k8s_beta_apis: %s", err)
+	}
 	if err := d.Set("private_ipv6_google_access", cluster.NetworkConfig.PrivateIpv6GoogleAccess); err != nil {
 		return fmt.Errorf("Error setting private_ipv6_google_access: %s", err)
 	}
@@ -3146,7 +3169,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		req := &container.UpdateClusterRequest{
 			Update: &container.ClusterUpdate{
 				DesiredEnableCiliumClusterwideNetworkPolicy: enabled,
-				ForceSendFields:                             []string{"DesiredEnableCiliumClusterwideNetworkPolicy"},
+				ForceSendFields: []string{"DesiredEnableCiliumClusterwideNetworkPolicy"},
 			},
 		}
 		updateF := updateFunc(req, "updating cilium clusterwide network policy")
@@ -3172,6 +3195,54 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s FQDN Network Policy has been updated to %v", d.Id(), enabled)
+	}
+
+	if d.HasChange("enable_cilium_clusterwide_network_policy") {
+		enabled := d.Get("enable_cilium_clusterwide_network_policy").(bool)
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredEnableCiliumClusterwideNetworkPolicy: enabled,
+			},
+		}
+		updateF := updateFunc(req, "updating cilium clusterwide network policy")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s Cilium Clusterwide Network Policy has been updated to %v", d.Id(), enabled)
+	}
+
+	if d.HasChange("gateway_api_config") {
+		c := d.Get("gateway_api_config")
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredGatewayApiConfig: expandGatewayApiConfig(c),
+			},
+		}
+		updateF := updateFunc(req, "updating gateway api config")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s Gateway API Config has been updated", d.Id())
+	}
+
+	if d.HasChange("enable_k8s_beta_apis") {
+		c := d.Get("enable_k8s_beta_apis")
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredK8sBetaApis: expandEnableK8sBetaApis(c, nil),
+			},
+		}
+		updateF := updateFunc(req, "updating enable k8s beta apis")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s Enable K8s Beta APIs has been updated", d.Id())
 	}
 
 	if d.HasChange("cost_management_config") {
@@ -6263,9 +6334,11 @@ func containerClusterPrivateClusterConfigSuppress(k, old, new string, d *schema.
 
 	if k == "private_cluster_config.0.enable_private_endpoint" {
 		return suppressEndpoint && !hasSubnet
-	} else if k == "private_cluster_config.0.enable_private_nodes" {
+	}
+	if k == "private_cluster_config.0.enable_private_nodes" {
 		return suppressNodes && !hasSubnet
-	} else if k == "private_cluster_config.#" {
+	}
+	if k == "private_cluster_config.#" {
 		return suppressEndpoint && suppressNodes && !hasSubnet && !hasGlobalAccessConfig
 	}
 	return false
