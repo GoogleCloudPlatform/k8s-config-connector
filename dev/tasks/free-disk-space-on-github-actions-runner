@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd "${REPO_ROOT}"
+
+# Free up disk space on GitHub Actions runners
+
+if [[ -z "${GITHUB_ACTIONS:-}" ]]; then
+  echo "Not running on GitHub Actions; skipping disk space cleanup (for safety)"
+  exit 1
+fi
+
+
+echo "Before cleanup:"
+df -h /
+
+
+sudo rm -rf /opt/hostedtoolcache/*  # remove pre-installed tool versions
+sudo rm -rf /usr/share/dotnet
+sudo docker system prune -af || true
+
+echo "After cleanup:"
+df -h /
