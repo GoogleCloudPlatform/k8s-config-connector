@@ -25,8 +25,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
 var ProjectGVK = schema.GroupVersionKind{
@@ -65,19 +63,6 @@ func (r *ProjectRef) GetExternal() string {
 
 func (r *ProjectRef) SetExternal(ref string) {
 	r.External = ref
-}
-
-// AsProjectRef converts a generic ResourceRef into a ProjectRef
-func AsProjectRef(in *deprecatedrefs.ResourceRef) *ProjectRef {
-	if in == nil {
-		return nil
-	}
-	return &ProjectRef{
-		Namespace: in.Namespace,
-		Name:      in.Name,
-		External:  in.External,
-		Kind:      in.Kind,
-	}
 }
 
 type Project struct {
