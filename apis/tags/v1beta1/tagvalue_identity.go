@@ -26,14 +26,14 @@ import (
 
 const (
 	// TagsTagValueIdentityURL is the format for the externalRef of a TagsTagValue.
-	TagsTagValueIdentityURL = "tagValues/{{tagValue}}"
+	TagsTagValueIdentityURL = "tagValues/{tagValue}"
 )
 
 var _ identity.Identity = &TagsTagValueIdentity{}
 
 var tagValueURL = gcpurls.Template[TagsTagValueIdentity](
 	"cloudresourcemanager.googleapis.com",
-	"tagValues/{TagValue}",
+	TagsTagValueIdentityURL,
 )
 
 // TagsTagValueIdentity represents the identity of a TagsTagValue.
@@ -52,10 +52,7 @@ func (i *TagsTagValueIdentity) FromExternal(ref string) error {
 		return err
 	}
 	if !match {
-		return fmt.Errorf("format of TagValue external=%q was not known (use %s)", ref, TagsTagValueIdentityURL)
-	}
-	if out.TagValue == "" {
-		return fmt.Errorf("tagValue was empty in external=%q", ref)
+		return fmt.Errorf("format of TagValue external=%q was not known (use %s)", ref, tagValueURL.CanonicalForm())
 	}
 	*i = *out
 	return nil
