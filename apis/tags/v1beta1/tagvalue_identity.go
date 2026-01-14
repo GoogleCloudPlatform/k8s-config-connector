@@ -43,7 +43,7 @@ type TagsTagValueIdentity struct {
 }
 
 func (i *TagsTagValueIdentity) String() string {
-	return "tagValues/" + i.TagValue
+	return tagValueURL.ToString(*i)
 }
 
 func (i *TagsTagValueIdentity) FromExternal(ref string) error {
