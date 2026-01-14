@@ -94,6 +94,20 @@ type Experiments struct {
 	// e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
 	// +optional
 	ControllerOverrides map[string]k8scontrollertype.ReconcilerType `json:"controllerOverrides,omitempty"`
+
+	// ReconcileControls allows specifying the reconciliation configuration for a given
+	// resource kind within this namespace.
+	// The format for the entries should follow the format as Kind.group :
+	// e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: { "maxConcurrentReconciles": 50 }
+	// +optional
+	ReconcileControls map[string]ReconcileControl `json:"reconcileControls,omitempty"`
+}
+
+type ReconcileControl struct {
+	// MaxConcurrentReconciles specifies the maximum number of concurrent reconciliations
+	// for the controller of the resource kind.
+	// +optional
+	MaxConcurrentReconciles *int `json:"maxConcurrentReconciles,omitempty"`
 }
 
 type StateIntoSpecValue string
