@@ -2214,7 +2214,6 @@
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.applicationSettings.attributePropagationSettings.outputCredentials[]" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.applicationSettings.csmSettings.rctokenAud" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.computeServiceRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.projectWebRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.projectWebRef.projectRef" is not set; neither 'external' nor 'name' are set
