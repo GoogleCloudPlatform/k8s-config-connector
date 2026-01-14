@@ -16,6 +16,9 @@ package configconnector
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -47,7 +50,7 @@ func (r *Reconciler) applyExperiments(ctx context.Context, cc *corev1beta1.Confi
 	}
 
 	if cc.Spec.Experiments.MultiClusterLease != nil {
-		if err := r.applyMultiClusterLeaderElection(ctx, m); err != nil {
+		if err := r.applyMultiClusterLeaderElection(ctx, cc.Spec.Experiments.MultiClusterLease, m); err != nil {
 			return err
 		}
 	}
@@ -59,7 +62,7 @@ func IsControllerManagerStatefulSet(item *manifest.Object) bool {
 	return item.Kind == "StatefulSet" && strings.HasPrefix(item.GetName(), "cnrm-controller-manager")
 }
 
-func (r *Reconciler) applyMultiClusterLeaderElection(ctx context.Context, obj *manifest.Objects) error {
+func (r *Reconciler) applyMultiClusterLeaderElection(ctx context.Context, lease *corev1beta1.MultiClusterLeaseSpec, obj *manifest.Objects) error {
 	log := log.FromContext(ctx)
 	for _, item := range obj.Items {
 		if !IsControllerManagerStatefulSet(item) {
@@ -83,6 +86,28 @@ func (r *Reconciler) applyMultiClusterLeaderElection(ctx context.Context, obj *m
 			return nil
 		}); err != nil {
 			return fmt.Errorf("failed to apply multi-cluster leader election to %s: %w", item.GetName(), err)
+		}
+
+		// Calculate hash of the lease config
+		leaseBytes, err := json.Marshal(lease)
+		if err != nil {
+			return fmt.Errorf("failed to marshal multi-cluster lease config: %w", err)
+		}
+		hash := sha256.Sum256(leaseBytes)
+		hashString := hex.EncodeToString(hash[:])
+
+		// Add hash as annotation to the Pod template
+		u := item.UnstructuredObject()
+		annotations, _, err := unstructured.NestedStringMap(u.Object, "spec", "template", "metadata", "annotations")
+		if err != nil {
+			return fmt.Errorf("failed to get pod template annotations: %w", err)
+		}
+		if annotations == nil {
+			annotations = make(map[string]string)
+		}
+		annotations["cnrm.cloud.google.com/multi-cluster-lease-hash"] = hashString
+		if err := unstructured.SetNestedStringMap(u.Object, annotations, "spec", "template", "metadata", "annotations"); err != nil {
+			return fmt.Errorf("failed to set pod template annotations: %w", err)
 		}
 	}
 
