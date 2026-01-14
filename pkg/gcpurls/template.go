@@ -135,6 +135,9 @@ func (t *URLTemplate[T]) Parse(s string) (*T, bool, error) {
 		fieldIdx := t.segmentToFieldIndex[i]
 		if fieldIdx != -1 {
 			// Variable
+			if part == "" {
+				return nil, false, nil
+			}
 			f := val.Field(fieldIdx)
 			// We checked type in Template()
 			f.SetString(part)
@@ -149,8 +152,13 @@ func (t *URLTemplate[T]) Parse(s string) (*T, bool, error) {
 	return &result, true, nil
 }
 
+// CanonicalForm returns the template string.
+func (t *URLTemplate[T]) CanonicalForm() string {
+	return t.template
+}
+
 // ToString formats the struct T into a URL string.
-func (t *URLTemplate[T]) ToString(v T) (string, error) {
+func (t *URLTemplate[T]) ToString(v T) string {
 	var parts []string
 	val := reflect.ValueOf(v)
 
@@ -163,5 +171,5 @@ func (t *URLTemplate[T]) ToString(v T) (string, error) {
 			parts = append(parts, segment)
 		}
 	}
-	return strings.Join(parts, "/"), nil
+	return strings.Join(parts, "/")
 }
