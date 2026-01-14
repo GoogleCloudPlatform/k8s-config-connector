@@ -10,7 +10,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: containercluster-${uniqueId}
@@ -20,7 +20,8 @@ spec:
     autoProvisioningDefaults:
       management:
         autoUpgrade: true
-        defaultComputeClassEnabled: true
+    defaultComputeClassConfig:
+      enabled: true
     enabled: true
     resourceLimits:
     - maximum: 2
@@ -29,10 +30,13 @@ spec:
     - maximum: 8
       minimum: 4
       resourceType: memory
+  controlPlaneEndpointsConfig:
+    dnsEndpointConfig:
+      allowExternalTraffic: true
+      enableKubernetesTokensViaDns: true
   datapathProvider: ADVANCED_DATAPATH
   enableCiliumClusterwideNetworkPolicy: true
   enableFqdnNetworkPolicy: true
-  enableK8sTokensViaDns: false
   gatewayApiConfig:
     channel: CHANNEL_STANDARD
   initialNodeCount: 1
@@ -48,7 +52,7 @@ status:
   endpoint: 1.23.456.78
   labelFingerprint: abcdef0123A=
   masterVersion: 1.30.5-gke.1014001
-  observedGeneration: 3
+  observedGeneration: 2
   observedState:
     controlPlaneEndpointsConfig:
       dnsEndpointConfig:
