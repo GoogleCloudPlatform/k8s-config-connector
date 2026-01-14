@@ -20,6 +20,7 @@ import (
 
 	gcp "cloud.google.com/go/orchestration/airflow/service/apiv1"
 	composerpb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
+	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -74,15 +75,28 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, reader client.R
 		return nil, err
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, err
+	}
+
+	mapCtx := &direct.MapContext{}
+	copied := obj.DeepCopy()
+	desired := ComposerEnvironmentSpec_ToProto(mapCtx, &copied.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desired.Name = id.String()
+
 	// Get composer GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return &EnvironmentAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
+		id:                 id,
+		gcpClient:          gcpClient,
+		desired:            desired,
+		lastModifiedCookie: obj.Status.LastModifiedCookie,
 	}, nil
 }
 
@@ -92,10 +106,11 @@ func (m *modelEnvironment) AdapterForURL(ctx context.Context, url string) (direc
 }
 
 type EnvironmentAdapter struct {
-	id        *krm.EnvironmentIdentity
-	gcpClient *gcp.EnvironmentsClient
-	desired   *krm.ComposerEnvironment
-	actual    *composerpb.Environment
+	id                 *krm.EnvironmentIdentity
+	gcpClient          *gcp.EnvironmentsClient
+	desired            *composerpb.Environment
+	actual             *composerpb.Environment
+	lastModifiedCookie *string
 }
 
 var _ directbase.Adapter = &EnvironmentAdapter{}
@@ -125,18 +140,10 @@ func (a *EnvironmentAdapter) Find(ctx context.Context) (bool, error) {
 func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Environment", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = a.id.String()
 
 	req := &composerpb.CreateEnvironmentRequest{
 		Parent:      a.id.Parent().String(),
-		Environment: resource,
+		Environment: a.desired,
 	}
 	op, err := a.gcpClient.CreateEnvironment(ctx, req)
 	if err != nil {
@@ -148,47 +155,73 @@ func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 	log.V(2).Info("successfully created Environment", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.ComposerEnvironmentStatus{}
 	status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
+	newCookie, err := common.NewCookie(a.desired, created)
+	if err != nil {
+		return nil
+	}
+	status.LastModifiedCookie = direct.LazyPtr(newCookie.String())
 	return createOp.UpdateStatus(ctx, status, nil)
+}
+
+func (a *EnvironmentAdapter) updateStatus(ctx context.Context, updated *pb.Environment, updateOp *directbase.UpdateOperation) error {
+	status := &krm.ComposerEnvironmentStatus{}
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, updated)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	updatedCookie, err := common.NewCookie(a.desired, updated)
+	if err != nil {
+		return err
+	}
+	status.LastModifiedCookie = direct.LazyPtr(updatedCookie.String())
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Environment", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+	populateDefaultsForEnvironment(a.desired, a.actual)
+
+	currentCookie, err := common.NewCookie(a.desired, a.actual)
+	if err != nil {
+		return err
 	}
-	desiredPb.Name = a.id.String()
-	populateDefaultsForEnvironment(desiredPb, a.actual)
 
-	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	if currentCookie.Equal(a.lastModifiedCookie) {
+		log.V(2).Info("resource is up to date", "name", a.id)
+		return a.updateStatus(ctx, a.actual, updateOp)
+	}
+
+	paths, err := common.CompareProtoMessage(a.desired, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		return a.updateStatus(ctx, a.actual, updateOp)
 	}
+
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
 	}
-
 	// Composer Environments service uses UpdateEnvironment function to fulfill
 	// the PATCH request.
 	req := &composerpb.UpdateEnvironmentRequest{
 		Name:        a.id.String(),
 		UpdateMask:  updateMask,
-		Environment: desiredPb,
+		Environment: a.desired,
 	}
 	op, err := a.gcpClient.UpdateEnvironment(ctx, req)
 	if err != nil {
@@ -200,12 +233,7 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 	log.V(2).Info("successfully updated Environment", "name", a.id)
 
-	status := &krm.ComposerEnvironmentStatus{}
-	status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	return updateOp.UpdateStatus(ctx, status, nil)
+	return a.updateStatus(ctx, updated, updateOp)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
