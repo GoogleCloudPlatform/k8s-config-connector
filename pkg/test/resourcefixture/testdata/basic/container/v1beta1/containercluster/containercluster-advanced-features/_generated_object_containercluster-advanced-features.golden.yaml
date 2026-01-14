@@ -33,7 +33,7 @@ spec:
   controlPlaneEndpointsConfig:
     dnsEndpointConfig:
       allowExternalTraffic: true
-      enableKubernetesTokensViaDns: true
+      enableKubernetesTokensViaDNS: true
   datapathProvider: ADVANCED_DATAPATH
   enableCiliumClusterwideNetworkPolicy: true
   enableFqdnNetworkPolicy: true

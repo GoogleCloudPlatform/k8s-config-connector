@@ -298,7 +298,7 @@ type ClusterDnsEndpointConfig struct {
 
 	/* Controls whether Kubernetes tokens are enabled for this endpoint. can be set to true if allow_external_traffic is true. */
 	// +optional
-	EnableKubernetesTokensViaDns *bool `json:"enableKubernetesTokensViaDns,omitempty"`
+	EnableKubernetesTokensViaDNS *bool `json:"enableKubernetesTokensViaDNS,omitempty"`
 }
 
 type ClusterEnableK8sBetaApis struct {

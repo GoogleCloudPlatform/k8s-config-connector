@@ -1,149 +1,122 @@
-This is the Config Connector project, also known as KCC.
+# KCC Development Guide (GEMINI.md)
 
-KCC is a set of kubernetes controllers for managing Google Cloud Platform (GCP) resources.  It is OSS under the Apache 2 license.
+> **Mission**: To achieve "Zero Friction" development by internalizing the project's unwritten rules, avoiding known pitfalls (like the "Generator Trap"), and strictly adhering to the "Golden PR" standard.
 
-Each GCP resource maps to a different CRD and controller.
+## 1. Scope & Context
+*   **Terraform-Based Resources** (e.g., `ContainerCluster`): This guide primarily addresses the maintenance of these "Legacy" resources, where the "Surgical Workflow" is critical to avoid destructive generation.
+*   **Direct Resources**: For modern "Direct" resources, prioritize the official [AI-Assisted Workflow](docs/develop-resources/ai/README.md).
 
-For example, GCP Storage Buckets is managed by the StorageBucket CRD.  The group for StorageBucket is storage.cnrm.cloud.google.com.
+## 2. The "Golden PR" Standard
+Based on "Golden" PRs (#4941, #5815) and [Official MockGCP Standards](docs/develop-resources/deep-dives/1-add-mockgcp-tests.md), a PR must follow this structure to minimize review friction.
 
-KCC has been running for many years, and the older controllers wrap the terraform provider for google, or a library called DCL.
-Newer controllers follow the more traditional kubernetes controller pattern, leveraging controller-runtime and making calls to the google cloud SDKs.  We call this approach the "direct" approach.
-We are gradually trying to migrate all controllers to the "direct" approach, because the code is much simpler to understand.
+### 2.1 The "Atomic Scope" Rule (One Field Per PR)
+*   **Rule**: Do not bundle multiple unrelated feature additions into a single PR.
+*   **Why**: Large PRs get stale and are harder to review. Atomic PRs merge faster.
+*   **Exception**: If fields are strictly dependent on each other, they can be grouped.
 
-However, KCC has a lot of existing users using it at scale.  We want to ensure that the same KCC yaml produces the same GCP resources,
-i.e. we do not want to break existing users.  For this reason we must be careful when replacing terraform or DCL controllers with direct controllers.
-We have a large and growing test-suite, containing KCC yaml for descibing GCP resources.
-We have a mock layer for GCP, so that we can run this test suite without requiring a real GCP account; this lets us inject faults and can be much faster for slow resources.
-We can then also run these tests hermetically, which is very handy for running tests against github - we do not need a GCP account.
+### 2.2 The "Contiguous Commit" Rule
+Reviewers (**and the official docs**) explicitly request that Real GCP logs and Mock GCP logs are committed sequentially to facilitate diffing.
 
-# GCP Projects and Namespaces
+**Ideal Commit Sequence:**
+1.  `fix(tf): patch resource_container_cluster.go` (Logic)
+2.  `feat(mock): update mockgcp/mockcontainer` (Simulation)
+3.  `fix(crd): surgical update to crd` (Schema)
+4.  `test(real): update goldens from Real GCP` (Evidence A)
+5.  `test(mock): update goldens from Mock GCP` (Evidence B - Should match A)
 
-KCC can manage resources in multiple GCP projects.  Typically a platform team will run KCC in a central "platfrom" cluster,
-and app teams will each have their own GCP project, and each app team GCP project will be managed in its own kubernetes namespace.
+### 2.3 The PR Description Template
+*   **Title**: `feat(resource): add support for <field>`
+*   **Release Note**: Clear, user-facing summary.
+*   **Tests**: Explicitly listed.
+    *   *Correct*: "Ran `hack/record-gcp` against Real and `hack/compare-mock` against Mock."
 
-By default, KCC will use the namespace as the GCP project name.  This can be tweaked by setting the `cnrm.cloud.google.com/project-id` annotation
-either on a KCC object or on a namespace.  In general though, things work well if there is a 1:1 correspondence between kube namespaces and GCP projects.
+## 3. The "Surgical" Workflow (Anti-Friction)
+The standard tools (`make manifests`) are "blunt instruments" that can destroy manual fixes in Terraform-based resources.
 
-# Namespace mode and Cluster mode
+### 3.1 The Generator Trap
+*   **Danger**: `scripts/generate-crds` often fails to pick up custom Terraform patches. Running `make manifests` will **wipe out** your manual CRD edits.
+*   **Solution**: Patch the CRD manually (`config/crds/resources/...`) unless you are certain the generator is configured for your new fields.
 
-KCC has two modes of operation: namespace mode and cluster mode.
+### 3.2 The "Surgical" Loop
+1.  **Edit**: Modify `third_party/...` (Go logic).
+2.  **Lint (Early)**: Run `dev/tasks/run-linters` immediately.
+3.  **Patch CRD**: Manually add new fields to the CRD YAML.
+4.  **Verify**: Run `hack/compare-mock` immediately.
 
-In cluster mode, we run one instance of the KCC controller binary for the whole cluster.  It watches for instances of the KCC CRDs in all namespaces,
-and creates/updates/deletes the corresponding GCP resources.  Because it is a single instance, it runs as one kubernetes ServiceAccount and a single
-GCP ServiceAccount (typically using Workload Identity, but we can also configure a GCP serviceaccount key).
+## 4. The 5-Point Verification Protocol
+Pass these gates locally before pushing.
 
-In namespace mode, we run one instance of the KCC controller binary for each "enabled" namespace.  Each instance only watches for KCC CRDs instances
-in that namespace.  This lets us run with a kubernetes ServiceAccount per namespace, as well as a GCP ServiceAccount per namespace.  This is more secure,
-and also is easier to scale.
+1.  **Mock Verification**:
+    ```bash
+    hack/compare-mock fixtures/<category-or-path>
+    ```
+    *   *Ref*: [Add MockGCP Tests](docs/develop-resources/deep-dives/1-add-mockgcp-tests.md)
 
-There are two CRDs that control the behaviour: ConfigConnector is a cluster-scoped CRD that controls cluster-scoped options.  In particular:
-* spec.mode determines whether we run in cluster-mode or namespace-mode.
+2.  **Real Verification**:
+    ```bash
+    hack/record-gcp fixtures/<category-or-path>
+    ```
+    *   *Goal*: Generate the definitive `_http.log`.
 
-When running in namespace mode, a namespace is enabled by creating a instance of the ConfigConnectorContext CRD in that namespace.  This acts
-as the trigger for watching that namespace, and also allows configuration of things like the GCP ServiceAccount to use for that namespace.
+3.  **Unit Tests & API Checks**:
+    ```bash
+    ./scripts/unit-test.sh
+    ```
+    *   *Goal*: Pass `TestCRDsAcronyms` and `TestCRDFieldPresenceInTests`.
+    *   *Ref*: [API Conventions](docs/develop-resources/api-conventions)
 
-We often abbreviate ConfigConnectorContext to CCC or "triple-C".
+4.  **CRD Schema Check**:
+    *   Ensure Go types (`pkg/clients/generated`), CRD YAML, and Mock implementations align.
+    *   *Rule*: Use `*string` (pointers) for optional fields, not raw types.
 
-# Resources and Controllers
+5.  **Lint Check**:
+    *   `dev/tasks/run-linters`
 
-Each resource is represented by a file under `config/crds/resources`.
-You can extract the name of the resource by running `cat <file> | yq '.spec.names.kind'` on the file.
+## 5. Official Resource Map
+Consult these official documents for deep dives:
 
-A top-level parent controller routes reconciliation to one of three underlying controllers: Terraform (TF), DCL, or Direct. The controller is selected using the following order of precedence:
+| Topic | Doc Path | Why Read? |
+| :--- | :--- | :--- |
+| **New Fields** | [scenarios/new-field.md](docs/develop-resources/scenarios/new-field.md) | Standard procedure for adding fields (Focuses on "Direct"). |
+| **Validation** | [api-conventions/validations.md](docs/develop-resources/api-conventions/validations.md) | Rules for `+required`, `omitempty`, and CEL validation. |
+| **MockGCP** | [deep-dives/1-add-mockgcp-tests.md](docs/develop-resources/deep-dives/1-add-mockgcp-tests.md) | **Critical**: Defining the `create.yaml` / `update.yaml` suite structure. |
+| **Pointers** | [reviewing/REVIEWAGENT.md](docs/reviewing/REVIEWAGENT.md) | Why `*int` is preferred over `int`. |
 
-1.  **Resource Annotation (deprecated):** A resource can specify a controller directly using the annotation `cnrm.cloud.google.com/reconciler: direct`. This is supported for backward compatibility, but its use is discouraged and it will be deprecated in the future.
+## 6. Friction Removal Cheatsheet
 
-2.  **ConfigConnectorContext Override:** The `ConfigConnectorContext` resource allows for overriding the controller for a specific resource `GroupKind` using the `spec.experiments.controllerOverrides` field.
+| Friction Point | Solution |
+| :--- | :--- |
+| **"make manifests" deleted my code** | Use **Surgical Mode**: Edit CRD directly. |
+| **"unknown field" in E2E logs** | Missed CRD patch. Check `config/crds/...`. |
+| **CI reports "Unapproved"** | You need `lgtm` labels. |
+| **Diff between Real/Mock** | **Never** change `create.yaml` input between runs. |
+| **Linter "import order"** | Use `goimports` locally. |
 
-3.  **Static Configuration:** A static map in `pkg/controller/resourceconfig/static_config.go` defines the default and supported controllers for each resource. This is the default mechanism if no overrides are specified.
+## 7. CI Troubleshooting / Advanced Diagnosis
 
-Direct controllers can be found under `pkg/controller/direct`.
-The controller will have a file name ending in `_controller.go`.
-The controller will call `RegisterModel` using a KRM containing the resource name and ending in GVK.
+### 7.1 Retrieving Logs for "In Progress" Runs
+When a CI run is "In Progress", `gh run view --log` is often blocked. Use `gh api` to bypass this and fetch logs for specific failed jobs.
 
-# Resource Status
+**Protocol:**
+1.  **List Jobs** (Find the `databaseId` of the failed job):
+    ```bash
+    gh run view <RUN_ID> --json jobs > ci_jobs.json
+    # Inspect JSON to find the job with "conclusion": "failure"
+    ```
+2.  **Fetch Raw Logs** (Using the Job ID):
+    ```bash
+    gh api repos/GoogleCloudPlatform/k8s-config-connector/actions/jobs/<JOB_ID>/logs > job_failure.log
+    ```
+3.  **Analyze**:
+    ```bash
+    grep -C 5 "FAIL" job_failure.log
+    ```
 
-Config Connector updates the "status" field to reflect the current state of the resource. To check if a resource is ready, 
-inspect its "status.condition":
+### 7.2 Common Failure Signatures
+| Error Signature | Likely Cause | Fix |
+| :--- | :--- | :--- |
+| `FAIL: unexpected diff in testdata/exceptions/acronyms.txt` | Field naming violation (e.g., `Dns` vs `DNS`, `Id` vs `ID`). | Rename field in Go struct to match K8s conventions (e.g., `ViaDNS`). |
+| `Manifests must be regenerated` | `config/crds` out of sync with Go types. | Run `make manifests` (Be careful of "Surgical" mode!). |
+| `field not declared in schema` | Missing field in CRD. | Patch CRD YAML manually or fix generator config. |
+| `error retrieving userinfo... scope?` | Missing OAuth scopes in test environment. | Ensure `hack/record-gcp` has correct credentials/scopes. |
 
-1. Ready: The resource is successfully reconciled when "status.condition.status" is set to "True" and "status.condition.reason" is "UpToDate".
-2. Not Ready: (todo)
-3. Error: If "status.condition.status" is "False", the resource is not ready. the "message" and "reason" fields under "status.condition"
-will provide additional information.
-
-on the resource's status.
-
-# Resource References
-
-In Config Connector, a resource reference is a mechanism for defining dependencies between resources within Kubernetes configuration. 
-This simplifies management by allowing one resource to point to other resources, which Config Connector then resolves its dependencies
-automatically. 
-
-To specify resource references in the primary resource's yaml configuration Spec, the reference field's name is the
-referenced resource's short name followed by "Ref" suffix. For example:
-The reference to a PubSubTopic is "topicRef"; The reference to a StorageBucket is "bucketRef".
-
-There are three primary ways to reference to another resource:
-
-1. Use the "name" field to point to another Config Connector managed resource located in the same Kubernetes namespace.
-2. Use both "name" and "namespace" fields to point to another Config Connector managed resource located in a different Kubernetes namespace.
-3. use the "external" field to point to a pre-existing Google Cloud resource not managed by Config Connector.
-
-
-
-# Options
-
-We have an emerging pattern for configuring options.  The "state-into-spec" option was an early option to demonstrate the pattern.
-When we want to configure the behaviour of a KCC object - and in particular when we want to change behaviour - we will often first
-make the behaviour opt-in by supporting an annotation on the object.  Because it is opt-in, we do not break existing users,
-but we still can unblock the use-case and get user feedback.  As it becomes more concrete, we can add corresponding fields to the ConfigConnectorContext
-and the ConfigConnector CRD.  Because the platform team often controls the ConfigConnector and ConfigConnectorContext objects,
-this lets the platform team change the default behaviour of KCC without requiring all their app-teams to opt-in on each of their resources.
-
-We typically do not set a default value for these CCC and CC fields, and later if we want to change the opt-in behaviour to be opt-in,
-we can set the default to the opt-in value.  We typically continue to allow users to explicitly set the opt-out value, so that
-they can have the old behaviour for as long as they want, particularly if the old feature is easy to support, just not recommended.
-
-This strategy lets us introduce new features with minimal risk of breaking users, it lets us get feedback, and it later lets us change the default
-behaviour while still giving users a way to opt-out back into the old behaviour.
-
-# Testing Strategy
-
-We use a lot of golden testing.  We have a set of test fixtures rooted in `pkg/test/resourcefixture/testdata/basic`.  They are in directories, often
-`<service_name>/<version>/<kind>/<testname>` (for example `pkg/test/resourcefixture/testdata/basic/storage/v1beta1/storagebucket/storagebucketsoftdelete`),
-but we have not been 100% consistent on this.
-
-Within a test directory, we typically have `create.yaml` which describes the primary resource that we are testing.  We have `update.yaml`, which describes an
-update to make to that primary resource. If the primary resource's configuration contains reference fields, we need a `dependencies.yaml`, which contains 
-all dependency resources that are referenced by the primary resource. We create the resources in `dependencies.yaml`, then the resource in `create.yaml`, 
-then we run `update.yaml`. We expect the resources to become "ready" at each step of the test.
-
-We capture the logs from the HTTP (and GRPC) traffic to GCP APIs.  This is compared against the "golden traffic" in the `_http.log` file.  We do
-perform some normalization to remove volatile values, such as timestamps, server-generated identifiers and complicated hashes.
-
-The core test here is TestAllInSeries under tests/e2e.  We normally run this test first against real GCP (env var `E2E_GCP_TARGET=real`),
-write the `_http.log` (env var `WRITE_GOLDEN_OUTPUT=1`), and then commit this.
-We then run the tests again against our mockgcp emulation/testing layer for GCP (env var `E2E_GCP_TARGET=mock`),
-and often we have to improve our mockgcp layer or the normalization to get the results to be the same.
-We have two scripts `hack/record-gcp` and `hack/compare-mock` to help streamline this process.
-
-# Github Issues
-
-When asked to work with github issues, use the `gh issue` tool to read/update issues.
-
-# Import Alias Convention
-
-When promoting a resource from `v1alpha1` to `v1beta1`, we should keep `krm` as the import alias for `v1alpha1` and use `krmv1beta1` for `v1beta1`. This is to minimize the code changes.
-
-
-# Task-Specific Docs
-
-* `docs/ai/qualify-alpha-for-beta.md` shares tips on how to qualify alpha resources for beta promotion.
-* `docs/ai/how-to-promote-resource.md` shares tips on how to promote alpha resources to beta.
-* `docs/ai/add-missing-field.md` describes how to add a missing field, for example when the GCP service adds a new field.
-* `docs/ai/create-crd-for-existing-terraform-resource.md` describes how to create a CRD for an existing terraform resource.
-* `docs/ai/github-workflow.md` describes how to generate github workflows.
-
-# Helpful scripts
-
-* `dev/tasks/generate-types-and-mappers` will regenerate all our generated CRD files and generated mapper code.  It should be run after changing API types.

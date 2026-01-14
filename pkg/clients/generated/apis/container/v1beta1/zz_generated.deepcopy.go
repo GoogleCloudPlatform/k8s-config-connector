@@ -654,8 +654,8 @@ func (in *ClusterDnsEndpointConfig) DeepCopyInto(out *ClusterDnsEndpointConfig) 
 		*out = new(bool)
 		**out = **in
 	}
-	if in.EnableKubernetesTokensViaDns != nil {
-		in, out := &in.EnableKubernetesTokensViaDns, &out.EnableKubernetesTokensViaDns
+	if in.EnableKubernetesTokensViaDNS != nil {
+		in, out := &in.EnableKubernetesTokensViaDNS, &out.EnableKubernetesTokensViaDNS
 		*out = new(bool)
 		**out = **in
 	}

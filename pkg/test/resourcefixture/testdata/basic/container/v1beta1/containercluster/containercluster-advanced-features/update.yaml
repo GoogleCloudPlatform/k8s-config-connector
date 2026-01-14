@@ -9,7 +9,7 @@ spec:
   controlPlaneEndpointsConfig:
     dnsEndpointConfig:
       allowExternalTraffic: true
-      enableKubernetesTokensViaDns: true
+      enableKubernetesTokensViaDNS: true
   enableFqdnNetworkPolicy: true
   datapathProvider: ADVANCED_DATAPATH
   clusterAutoscaling:

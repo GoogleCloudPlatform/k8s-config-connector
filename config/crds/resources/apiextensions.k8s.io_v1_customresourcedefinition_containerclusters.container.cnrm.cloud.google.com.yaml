@@ -490,7 +490,7 @@ spec:
                           this endpoint. Note that GCP-managed services may still
                           use the endpoint even if this is false.
                         type: boolean
-                      enableKubernetesTokensViaDns:
+                      enableKubernetesTokensViaDNS:
                         description: Controls whether Kubernetes tokens are enabled for
                           this endpoint. can be set to true if allow_external_traffic
                           is true.
