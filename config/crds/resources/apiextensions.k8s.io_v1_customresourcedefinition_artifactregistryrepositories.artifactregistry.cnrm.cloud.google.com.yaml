@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com
 spec:
   group: artifactregistry.cnrm.cloud.google.com
@@ -16,10 +14,11 @@ spec:
     categories:
     - gcp
     kind: ArtifactRegistryRepository
+    listKind: ArtifactRegistryRepositoryList
     plural: artifactregistryrepositories
     shortNames:
     - gcpartifactregistryrepository
-    - gcpartifactregistryrepositories
+    - gcpartifactregistryrepositorys
     singular: artifactregistryrepository
   preserveUnknownFields: false
   scope: Namespaced
@@ -43,31 +42,35 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: ArtifactRegistryRepository is the Schema for the ArtifactRegistryRepository
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: ArtifactRegistryRepositorySpec defines the desired state
+              of ArtifactRegistryRepository
             properties:
               cleanupPolicies:
-                description: |-
-                  Cleanup policies for this repository. Cleanup policies indicate when
-                  certain package versions can be automatically deleted.
-                  Map keys are policy IDs supplied by users during policy creation. They must
-                  unique within a repository and be under 128 characters in length.
+                description: Cleanup policies for this repository. Cleanup policies
+                  indicate when certain package versions can be automatically deleted.
+                  Map keys are policy IDs supplied by users during policy creation.
+                  They must unique within a repository and be under 128 characters
+                  in length.
                 items:
                   properties:
                     action:
-                      description: 'Policy action. Possible values: ["DELETE", "KEEP"].'
+                      description: Policy action.
                       type: string
                     condition:
                       description: Policy condition for matching versions.
@@ -91,8 +94,7 @@ spec:
                             type: string
                           type: array
                         tagState:
-                          description: 'Match versions by tag status. Default value:
-                            "ANY" Possible values: ["TAGGED", "UNTAGGED", "ANY"].'
+                          description: Match versions by tag status.
                           type: string
                         versionNamePrefixes:
                           description: Match versions by version name prefix. Applied
@@ -102,37 +104,36 @@ spec:
                           type: array
                       type: object
                     id:
+                      description: The user-provided ID of the cleanup policy.
                       type: string
                     mostRecentVersions:
-                      description: |-
-                        Policy condition for retaining a minimum number of versions. May only be
-                        specified with a Keep action.
+                      description: Policy condition for retaining a minimum number
+                        of versions. May only be specified with a Keep action.
                       properties:
                         keepCount:
                           description: Minimum number of versions to keep.
+                          format: int32
                           type: integer
                         packageNamePrefixes:
-                          description: Match versions by package prefix. Applied on
-                            any prefix match.
+                          description: List of package name prefixes that will apply
+                            this rule.
                           items:
                             type: string
                           type: array
                       type: object
-                  required:
-                  - id
                   type: object
                 type: array
               cleanupPolicyDryRun:
-                description: |-
-                  If true, the cleanup pipeline is prevented from deleting versions in this
-                  repository.
+                description: Optional. If true, the cleanup pipeline is prevented
+                  from deleting versions in this repository.
                 type: boolean
               description:
                 description: The user-provided description of the repository.
                 type: string
               dockerConfig:
-                description: Docker repository config contains repository level configuration
-                  for the repositories of docker type.
+                description: Repository-specific configurations. Docker repository
+                  config contains repository level configuration for the repositories
+                  of docker type.
                 properties:
                   immutableTags:
                     description: The repository which enabled this flag prevents all
@@ -141,16 +142,14 @@ spec:
                     type: boolean
                 type: object
               format:
-                description: |-
-                  Immutable. The format of packages that are stored in the repository. Supported formats
-                  can be found [here](https://cloud.google.com/artifact-registry/docs/supported-formats).
-                  You can only create alpha formats if you are a member of the
-                  [alpha user group](https://cloud.google.com/artifact-registry/docs/supported-formats#alpha-access).
+                description: Optional. The format of packages that are stored in the
+                  repository.
                 type: string
               kmsKeyRef:
-                description: |-
-                  The customer managed encryption key that’s used to encrypt the
-                  contents of the Repository.
+                description: 'The Cloud KMS resource name of the customer managed
+                  encryption key that''s used to encrypt the contents of the Repository.
+                  Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
+                  This value may not be changed after the Repository has been created.'
                 oneOf:
                 - not:
                     required:
@@ -182,80 +181,188 @@ spec:
                   located in.
                 type: string
               mavenConfig:
-                description: |-
-                  MavenRepositoryConfig is maven related repository details.
-                  Provides additional configuration details for repositories of the maven
-                  format type.
+                description: Repository-specific configurations. Maven repository
+                  config contains repository level configuration for the repositories
+                  of maven type.
                 properties:
                   allowSnapshotOverwrites:
-                    description: |-
-                      Immutable. The repository with this flag will allow publishing the same
-                      snapshot versions.
+                    description: The repository with this flag will allow publishing
+                      the same snapshot versions.
                     type: boolean
                   versionPolicy:
-                    description: 'Immutable. Version policy defines the versions that
-                      the registry will accept. Default value: "VERSION_POLICY_UNSPECIFIED"
-                      Possible values: ["VERSION_POLICY_UNSPECIFIED", "RELEASE", "SNAPSHOT"].'
+                    description: Version policy defines the versions that the registry
+                      will accept.
                     type: string
                 type: object
               mode:
-                description: 'Immutable. The mode configures the repository to serve
-                  artifacts from different sources. Default value: "STANDARD_REPOSITORY"
-                  Possible values: ["STANDARD_REPOSITORY", "VIRTUAL_REPOSITORY", "REMOTE_REPOSITORY"].'
+                description: Optional. The mode of the repository.
                 type: string
               remoteRepositoryConfig:
-                description: Immutable. Configuration specific for a Remote Repository.
+                description: Repository configuration specific to the Mode value being
+                  selected (Remote or Virtual) Configuration specific for a Remote
+                  Repository.
                 properties:
-                  description:
-                    description: Immutable. The description of the remote source.
-                    type: string
-                  dockerRepository:
-                    description: Immutable. Specific settings for a Docker remote
-                      repository.
+                  aptRepository:
+                    description: Specific settings for an Apt remote repository.
                     properties:
+                      customRepository:
+                        description: Customer-specified remote repository.
+                        properties:
+                          uri:
+                            description: 'An http/https uri reference to the upstream
+                              remote repository, for ex: "https://my.apt.registry/".'
+                            type: string
+                        type: object
                       publicRepository:
-                        description: 'Immutable. Address of the remote repository.
-                          Default value: "DOCKER_HUB" Possible values: ["DOCKER_HUB"].'
+                        description: One of the publicly available Apt repositories
+                          supported by Artifact Registry.
+                        properties:
+                          repositoryBase:
+                            description: A common public repository base for Apt.
+                            type: string
+                          repositoryPath:
+                            description: A custom field to define a path to a specific
+                              repository from the base.
+                            type: string
+                        type: object
+                    type: object
+                  commonRepository:
+                    description: Common remote repository settings. Used as the remote
+                      repository upstream URL.
+                    properties:
+                      uri:
+                        description: Required. A common public repository base for
+                          remote repository.
+                        type: string
+                    type: object
+                  description:
+                    description: The description of the remote source.
+                    type: string
+                  disableUpstreamValidation:
+                    description: Input only. A create/update remote repo option to
+                      avoid making a HEAD/GET request to validate a remote repo and
+                      any supplied upstream credentials.
+                    type: boolean
+                  dockerRepository:
+                    description: Specific settings for a Docker remote repository.
+                    properties:
+                      customRepository:
+                        description: Customer-specified remote repository.
+                        properties:
+                          uri:
+                            description: 'An http/https uri reference to the custom
+                              remote repository, for ex: "https://registry-1.docker.io".'
+                            type: string
+                        type: object
+                      publicRepository:
+                        description: One of the publicly available Docker repositories
+                          supported by Artifact Registry.
                         type: string
                     type: object
                   mavenRepository:
-                    description: Immutable. Specific settings for a Maven remote repository.
+                    description: Specific settings for a Maven remote repository.
                     properties:
+                      customRepository:
+                        description: Customer-specified remote repository.
+                        properties:
+                          uri:
+                            description: 'An http/https uri reference to the upstream
+                              remote repository, for ex: "https://my.maven.registry/".'
+                            type: string
+                        type: object
                       publicRepository:
-                        description: 'Immutable. Address of the remote repository.
-                          Default value: "MAVEN_CENTRAL" Possible values: ["MAVEN_CENTRAL"].'
+                        description: One of the publicly available Maven repositories
+                          supported by Artifact Registry.
                         type: string
                     type: object
                   npmRepository:
-                    description: Immutable. Specific settings for an Npm remote repository.
+                    description: Specific settings for an Npm remote repository.
                     properties:
+                      customRepository:
+                        description: Customer-specified remote repository.
+                        properties:
+                          uri:
+                            description: 'An http/https uri reference to the upstream
+                              remote repository, for ex: "https://my.npm.registry/".'
+                            type: string
+                        type: object
                       publicRepository:
-                        description: 'Immutable. Address of the remote repository.
-                          Default value: "NPMJS" Possible values: ["NPMJS"].'
+                        description: One of the publicly available Npm repositories
+                          supported by Artifact Registry.
                         type: string
                     type: object
                   pythonRepository:
-                    description: Immutable. Specific settings for a Python remote
+                    description: Specific settings for a Python remote repository.
+                    properties:
+                      customRepository:
+                        description: Customer-specified remote repository.
+                        properties:
+                          uri:
+                            description: 'An http/https uri reference to the upstream
+                              remote repository, for ex: "https://my.python.registry/".'
+                            type: string
+                        type: object
+                      publicRepository:
+                        description: One of the publicly available Python repositories
+                          supported by Artifact Registry.
+                        type: string
+                    type: object
+                  upstreamCredentials:
+                    description: Optional. The credentials used to access the remote
                       repository.
                     properties:
+                      usernamePasswordCredentials:
+                        description: Use username and password to access the remote
+                          repository.
+                        properties:
+                          passwordSecretVersion:
+                            description: The Secret Manager key version that holds
+                              the password to access the remote repository. Must be
+                              in the format of `projects/{project}/secrets/{secret}/versions/{version}`.
+                            type: string
+                          username:
+                            description: The username to access the remote repository.
+                            type: string
+                        type: object
+                    type: object
+                  yumRepository:
+                    description: Specific settings for a Yum remote repository.
+                    properties:
+                      customRepository:
+                        description: Customer-specified remote repository.
+                        properties:
+                          uri:
+                            description: 'An http/https uri reference to the upstream
+                              remote repository, for ex: "https://my.yum.registry/".'
+                            type: string
+                        type: object
                       publicRepository:
-                        description: 'Immutable. Address of the remote repository.
-                          Default value: "PYPI" Possible values: ["PYPI"].'
-                        type: string
+                        description: One of the publicly available Yum repositories
+                          supported by Artifact Registry.
+                        properties:
+                          repositoryBase:
+                            description: A common public repository base for Yum.
+                            type: string
+                          repositoryPath:
+                            description: A custom field to define a path to a specific
+                              repository from the base.
+                            type: string
+                        type: object
                     type: object
                 type: object
               resourceID:
-                description: Immutable. Optional. The repositoryId of the resource.
-                  Used for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The ArtifactRegistryRepository name. If not given, the
+                  metadata.name will be used.
                 type: string
               virtualRepositoryConfig:
-                description: Configuration specific for a Virtual Repository.
+                description: Repository configuration specific to the Mode value being
+                  selected (Remote or Virtual) Configuration specific for a Virtual
+                  Repository.
                 properties:
                   upstreamPolicies:
-                    description: |-
-                      Policies that configure the upstream artifacts distributed by the Virtual
-                      Repository. Upstream policies cannot be set on a standard repository.
+                    description: Policies that configure the upstream artifacts distributed
+                      by the Virtual Repository. Upstream policies cannot be set on
+                      a standard repository.
                     items:
                       properties:
                         id:
@@ -264,11 +371,11 @@ spec:
                         priority:
                           description: Entries with a greater priority value take
                             precedence in the pull order.
+                          format: int32
                           type: integer
                         repositoryRef:
-                          description: |-
-                            A reference to the repository resource, for example:
-                            "projects/p1/locations/us-central1/repositories/repo1".
+                          description: 'A reference to the repository resource, for
+                            example: `projects/p1/locations/us-central1/repositories/repo1`.'
                           oneOf:
                           - not:
                               required:
@@ -300,15 +407,26 @@ spec:
                       type: object
                     type: array
                 type: object
+              vulnerabilityScanningConfig:
+                description: Optional. Config and state for vulnerability scanning
+                  of resources within this Repository.
+                properties:
+                  enablementConfig:
+                    description: Optional. Config for whether this repository has
+                      vulnerability scanning disabled.
+                    type: string
+                type: object
             required:
             - format
             - location
             type: object
           status:
+            description: ArtifactRegistryRepositoryStatus defines the config connector
+              machine state of ArtifactRegistryRepository
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -333,12 +451,15 @@ spec:
                   type: object
                 type: array
               createTime:
-                description: The time when the repository was created.
+                description: Output only. The time when the repository was created.
+                type: string
+              externalRef:
+                description: A unique specifier for the ArtifactRegistryRepository
+                  resource in GCP.
                 type: string
               name:
-                description: |-
-                  The name of the repository, for example:
-                  "repo1".
+                description: 'Output only. The name of the repository, for example:
+                  "repo1".'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -346,9 +467,14 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
               updateTime:
-                description: The time when the repository was last updated.
+                description: Output only. The time when the repository was last updated.
                 type: string
             type: object
         required:
@@ -358,9 +484,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

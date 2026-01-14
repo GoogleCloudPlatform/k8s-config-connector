@@ -65,6 +65,7 @@ fi
 
 protoc --include_imports --include_source_info \
     --experimental_allow_proto3_optional \
+    -I ${REPO_ROOT}/.build/third_party/protoc/include \
     -I ${THIRD_PARTY}/googleapis/ \
     -I ${REPO_ROOT}/mockgcp/apis \
     ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto \
@@ -94,4 +95,5 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/storage/control/v2/*.proto \
     ${THIRD_PARTY}/googleapis/google/pubsub/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1/*.proto \
+    ${THIRD_PARTY}/googleapis/google/devtools/artifactregistry/v1/*.proto \
     -o ${OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
