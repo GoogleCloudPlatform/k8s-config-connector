@@ -26,7 +26,8 @@ go run . generate-types \
     --api-version "clouddms.cnrm.cloud.google.com/v1alpha1" \
     --resource CloudDMSConversionWorkspace:ConversionWorkspace \
     --resource CloudDMSPrivateConnection:PrivateConnection \
-    --resource CloudDMSMigrationJob:MigrationJob
+    --resource CloudDMSMigrationJob:MigrationJob \
+    --resource CloudDMSMappingRule:MappingRule
 
 go run . generate-mapper \
     --service google.cloud.clouddms.v1 \
@@ -36,4 +37,3 @@ cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/clouddms/
-
