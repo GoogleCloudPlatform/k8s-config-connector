@@ -167,14 +167,29 @@ func GetK8sManagedFields(u *unstructured.Unstructured) (*fieldpath.Set, error) {
 
 // SanitizeSpecManagedFields ensures that managed fields entries for spec fields do not have
 // Subresource field configured.
+// This function modifies the resource in-place.
+// This is needed to clean up the leaked `subresource: status` when unmarshalling the correct resource into existing
+// structs (b/465380187).
 func SanitizeSpecManagedFields(r *Resource) {
+	if r == nil || r.ObjectMeta.ManagedFields == nil {
+		return
+	}
 	for i := range r.ObjectMeta.ManagedFields {
 		if r.ObjectMeta.ManagedFields[i].FieldsV1 == nil {
 			continue
 		}
 		var fields map[string]interface{}
+		if len(r.ObjectMeta.ManagedFields[i].FieldsV1.Raw) == 0 {
+			continue
+		}
+		if !bytes.Contains(r.ObjectMeta.ManagedFields[i].FieldsV1.Raw, []byte("\"f:spec\"")) {
+			continue
+		}
+		// json.Unmarshal is called here to strictly check if "f:spec" is a top-level key.
+		// While unmarshalling adds some overhead, it is necessary for correctness (vs simple string matching),
+		// and the cost is acceptable given the low frequency of calls (per status update) and typical small size of managed fields.
 		if err := json.Unmarshal(r.ObjectMeta.ManagedFields[i].FieldsV1.Raw, &fields); err != nil {
-			klog.Warningf("managedfields: error unmarshalling FieldsV1.Raw for manager %v: %v", r.ObjectMeta.ManagedFields[i].Manager, err)
+			klog.V(2).Infof("managedfields: error unmarshalling FieldsV1.Raw for manager %v: %v", r.ObjectMeta.ManagedFields[i].Manager, err)
 			continue
 		}
 		if _, ok := fields["f:spec"]; ok {

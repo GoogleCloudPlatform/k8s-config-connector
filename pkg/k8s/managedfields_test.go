@@ -16,7 +16,6 @@ package k8s_test
 
 import (
 	"encoding/json"
-	"reflect"
 	"testing"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -24,7 +23,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testk8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
+	"github.com/google/go-cmp/cmp"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
@@ -735,7 +736,7 @@ func mapToManagedFieldEntry(t *testing.T, manager string, fields map[string]inte
 	}
 }
 
-func TestSanitizeManagedFields(t *testing.T) {
+func TestSanitizeSpecManagedFields(t *testing.T) {
 	tests := []struct {
 		name                string
 		managedFieldEntries []v1.ManagedFieldsEntry
@@ -843,6 +844,61 @@ func TestSanitizeManagedFields(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "do not remove subresource if f:spec is deeply nested",
+			managedFieldEntries: []v1.ManagedFieldsEntry{
+				{
+					Manager:    "manager",
+					FieldsType: k8s.ManagedFieldsTypeFieldsV1,
+					FieldsV1: &v1.FieldsV1{Raw: []byte(`{
+						"f:metadata": {
+							"f:labels": {
+								"f:spec": {}
+							}
+						}
+					}`)},
+					Subresource: "status",
+				},
+			},
+			expectedEntries: []v1.ManagedFieldsEntry{
+				{
+					Manager:    "manager",
+					FieldsType: k8s.ManagedFieldsTypeFieldsV1,
+					FieldsV1: &v1.FieldsV1{Raw: []byte(`{
+						"f:metadata": {
+							"f:labels": {
+								"f:spec": {}
+							}
+						}
+					}`)},
+					Subresource: "status",
+				},
+			},
+		},
+		{
+			name: "ignore entry with empty FieldsV1.Raw",
+			managedFieldEntries: []v1.ManagedFieldsEntry{
+				{
+					Manager:     "manager",
+					FieldsType:  k8s.ManagedFieldsTypeFieldsV1,
+					FieldsV1:    &v1.FieldsV1{Raw: []byte{}},
+					Subresource: "status",
+				},
+			},
+			expectedEntries: []v1.ManagedFieldsEntry{
+				{
+					Manager:     "manager",
+					FieldsType:  k8s.ManagedFieldsTypeFieldsV1,
+					FieldsV1:    &v1.FieldsV1{Raw: []byte{}},
+					Subresource: "status",
+				},
+			},
+		},
+		{
+			name:                "handle nil ManagedFields in resource",
+			managedFieldEntries: nil,
+			expectedEntries:     nil,
+		},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
@@ -852,9 +908,78 @@ func TestSanitizeManagedFields(t *testing.T) {
 				},
 			}
 			k8s.SanitizeSpecManagedFields(r)
-			if !reflect.DeepEqual(r.ObjectMeta.ManagedFields, tc.expectedEntries) {
+			if !cmp.Equal(r.ObjectMeta.ManagedFields, tc.expectedEntries) {
 				t.Errorf("actual: %+v, expected: %+v", r.ObjectMeta.ManagedFields, tc.expectedEntries)
 			}
 		})
+	}
+}
+
+func TestUnmarshalMergeBehavior(t *testing.T) {
+	// This test validates that unmarshalling a JSON object where a field is omitted into an existing struct where that
+	// field is set results in the field value being PRESERVED (merged), rather than cleared.
+	//
+	// In the context of ManagedFieldsEntry:
+	// If we have an existing entry with Subresource: "status", and we unmarshal a JSON update that represents a spec
+	// update (and thus omits "subresource"), the "status" value persists, incorrectly marking the spec update as a
+	// status update.
+
+	// 1. Existing resource with "dirty" managed fields (simulating state after status update)
+	existing := &k8s.Resource{
+		ObjectMeta: v1.ObjectMeta{
+			ManagedFields: []v1.ManagedFieldsEntry{
+				{
+					Manager:     "kubectl",
+					Operation:   v1.ManagedFieldsOperationUpdate,
+					Subresource: "status", // The "dirty" bit
+					FieldsV1:    &v1.FieldsV1{Raw: []byte(`{"f:status":{}}`)},
+				},
+			},
+		},
+	}
+
+	// 2. Incoming resource with a Spec update.
+	// Note: "subresource" is intentionally not set (omitempty) as this "fieldsV1" manages spec.
+	updated := &k8s.Resource{
+		ObjectMeta: v1.ObjectMeta{
+			ManagedFields: []v1.ManagedFieldsEntry{
+				{
+					Manager:   "kubectl",
+					Operation: v1.ManagedFieldsOperationUpdate,
+					FieldsV1:  &v1.FieldsV1{Raw: []byte(`{"f:spec":{}}`)},
+				},
+			},
+		},
+	}
+
+	// 3. Call util.Marshal()
+	if err := util.Marshal(updated, existing); err != nil {
+		t.Fatalf("json.Unmarshal failed: %v", err)
+	}
+
+	// 4. Verify the existing entry is updated via merge. I.e. the old "status" value persists.
+	// Go's json.Unmarshal documentation says:
+	// "To unmarshal a JSON array into a slice, Unmarshal resets the slice length to zero and then appends each element to the slice."
+	//
+	// This implies that if a ManagedFieldsEntry is reused (due to slice capacity),
+	// its existing fields are not zeroed out before unmarshalling the new JSON object into it.
+	if len(existing.ObjectMeta.ManagedFields) != 1 {
+		t.Fatalf("Expected 1 managed field entry, got %d", len(existing.ObjectMeta.ManagedFields))
+	}
+	entry := existing.ObjectMeta.ManagedFields[0]
+
+	// If corruption happens, this will be "status".
+	// If json.Unmarshal cleared it (which it doesn't for reused slice elements),
+	// this would be "".
+	if !cmp.Equal(entry.Subresource, "status") {
+		t.Fatalf("Corruption not reproduced: Expected subresource 'status', got %q", entry.Subresource)
+	}
+
+	// 5. Apply sanitizing function
+	k8s.SanitizeSpecManagedFields(existing)
+
+	// 6. Verify managed fields entry is "fixed".
+	if !cmp.Equal(existing.ObjectMeta.ManagedFields[0].Subresource, "") {
+		t.Fatalf("Sanitization failed. Expected empty subresource, got %q", existing.ObjectMeta.ManagedFields[0].Subresource)
 	}
 }
