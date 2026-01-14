@@ -28,23 +28,23 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &CustomTargetTypeRef{}
 
-// CustomTargetTypeRef defines the resource reference to CloudDeployCustomTargetType, which "External" field
+// CustomTargetTypeRef defines the resource reference to DeployCustomTargetType, which "External" field
 // holds the GCP identifier for the KRM object.
 type CustomTargetTypeRef struct {
-	// A reference to an externally managed CloudDeployCustomTargetType resource.
+	// A reference to an externally managed DeployCustomTargetType resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/customtargettypes/{{customtargettypeID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a CloudDeployCustomTargetType resource.
+	// The name of a DeployCustomTargetType resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a CloudDeployCustomTargetType resource.
+	// The namespace of a DeployCustomTargetType resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on CloudDeployCustomTargetType.
-// If the "External" is given in the other resource's spec.CloudDeployCustomTargetTypeRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual CloudDeployCustomTargetType object from the cluster.
+// NormalizedExternal provision the "External" value for other resource that depends on DeployCustomTargetType.
+// If the "External" is given in the other resource's spec.DeployCustomTargetTypeRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual DeployCustomTargetType object from the cluster.
 func (r *CustomTargetTypeRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", CustomTargetTypeGVK.Kind)

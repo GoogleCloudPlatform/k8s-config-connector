@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ package clouddeploy
 
 import (
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
-	krmcloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
 	krmclouddeployv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -484,28 +483,6 @@ func ExecutionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionConfig)
 	out.Verbose = direct.ValueOf(in.Verbose)
 	return out
 }
-func GKECluster_FromProto(mapCtx *direct.MapContext, in *pb.GkeCluster) *krm.GKECluster {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKECluster{}
-	out.Cluster = direct.LazyPtr(in.GetCluster())
-	out.InternalIP = direct.LazyPtr(in.GetInternalIp())
-	out.ProxyURL = direct.LazyPtr(in.GetProxyUrl())
-	out.DNSEndpoint = direct.LazyPtr(in.GetDnsEndpoint())
-	return out
-}
-func GKECluster_ToProto(mapCtx *direct.MapContext, in *krm.GKECluster) *pb.GkeCluster {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GkeCluster{}
-	out.Cluster = direct.ValueOf(in.Cluster)
-	out.InternalIp = direct.ValueOf(in.InternalIP)
-	out.ProxyUrl = direct.ValueOf(in.ProxyURL)
-	out.DnsEndpoint = direct.ValueOf(in.DNSEndpoint)
-	return out
-}
 func KubernetesConfig_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig) *krmclouddeployv1beta1.KubernetesConfig {
 	if in == nil {
 		return nil
@@ -855,9 +832,7 @@ func SkaffoldModules_SkaffoldGcbRepoSource_FromProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &krm.SkaffoldModules_SkaffoldGcbRepoSource{}
-	if in.GetRepository() != "" {
-		out.RepositoryRef = &krmcloudbuildv1alpha1.RepositoryRef{External: in.GetRepository()}
-	}
+	out.Repository = direct.LazyPtr(in.GetRepository())
 	out.Path = direct.LazyPtr(in.GetPath())
 	out.Ref = direct.LazyPtr(in.GetRef())
 	return out
@@ -867,9 +842,7 @@ func SkaffoldModules_SkaffoldGcbRepoSource_ToProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &pb.SkaffoldModules_SkaffoldGCBRepoSource{}
-	if in.RepositoryRef != nil {
-		out.Repository = in.RepositoryRef.External
-	}
+	out.Repository = direct.ValueOf(in.Repository)
 	out.Path = direct.ValueOf(in.Path)
 	out.Ref = direct.ValueOf(in.Ref)
 	return out

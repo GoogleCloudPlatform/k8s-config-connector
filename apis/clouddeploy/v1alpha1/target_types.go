@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	containerkrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -165,7 +166,7 @@ type GKECluster struct {
 	// Optional. Information specifying a GKE Cluster. Format is
 	//  `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`.
 	// +kcc:proto:field=google.cloud.deploy.v1.GkeCluster.cluster
-	Cluster *string `json:"cluster,omitempty"`
+	ClusterRef *containerkrm.ContainerClusterRef `json:"clusterRef,omitempty"`
 
 	// Optional. If true, `cluster` is accessed using the private IP address of
 	//  the control plane endpoint. Otherwise, the default IP address of the

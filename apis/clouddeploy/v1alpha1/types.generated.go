@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 // krm.group: clouddeploy.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.deploy.v1
-// resource: CloudDeployCustomTargetType:CustomTargetType
+// resource: DeployCustomTargetType:CustomTargetType
 // resource: CloudDeployDeployPolicy:DeployPolicy
 // resource: CloudDeployTarget:Target
 
@@ -258,6 +258,24 @@ type SkaffoldModules struct {
 	//  modules.
 	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.google_cloud_build_repo
 	GoogleCloudBuildRepo *SkaffoldModules_SkaffoldGcbRepoSource `json:"googleCloudBuildRepo,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource
+type SkaffoldModules_SkaffoldGcbRepoSource struct {
+	// Required. Name of the Cloud Build V2 Repository.
+	//  Format is
+	//  projects/{project}/locations/{location}/connections/{connection}/repositories/{repository}.
+	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.repository
+	Repository *string `json:"repository,omitempty"`
+
+	// Optional. Relative path from the repository root to the Skaffold Config
+	//  file.
+	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.path
+	Path *string `json:"path,omitempty"`
+
+	// Optional. Branch or tag to use when cloning the repository.
+	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.ref
+	Ref *string `json:"ref,omitempty"`
 }
 
 // +kcc:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCSSource

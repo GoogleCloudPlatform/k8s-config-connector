@@ -17,6 +17,7 @@ package clouddeploy
 import (
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
+	containerkrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -141,5 +142,32 @@ func AssociatedEntities_ToProto(mapCtx *direct.MapContext, in *krm.AssociatedEnt
 	out := &pb.AssociatedEntities{}
 	out.GkeClusters = direct.Slice_ToProto(mapCtx, in.GKEClusters, GKECluster_ToProto)
 	out.AnthosClusters = direct.Slice_ToProto(mapCtx, in.AnthosClusters, AnthosCluster_ToProto)
+	return out
+}
+
+func GKECluster_FromProto(mapCtx *direct.MapContext, in *pb.GkeCluster) *krm.GKECluster {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKECluster{}
+	if in.GetCluster() != "" {
+		out.ClusterRef = &containerkrm.ContainerClusterRef{External: in.GetCluster()}
+	}
+	out.InternalIP = direct.LazyPtr(in.GetInternalIp())
+	out.ProxyURL = direct.LazyPtr(in.GetProxyUrl())
+	out.DNSEndpoint = direct.LazyPtr(in.GetDnsEndpoint())
+	return out
+}
+func GKECluster_ToProto(mapCtx *direct.MapContext, in *krm.GKECluster) *pb.GkeCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GkeCluster{}
+	if in.ClusterRef != nil {
+		out.Cluster = in.ClusterRef.External
+	}
+	out.InternalIp = direct.ValueOf(in.InternalIP)
+	out.ProxyUrl = direct.ValueOf(in.ProxyURL)
+	out.DnsEndpoint = direct.ValueOf(in.DNSEndpoint)
 	return out
 }

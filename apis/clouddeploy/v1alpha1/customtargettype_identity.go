@@ -24,7 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// CustomTargetTypeIdentity defines the resource reference to CloudDeployCustomTargetType, which "External" field
+// CustomTargetTypeIdentity defines the resource reference to DeployCustomTargetType, which "External" field
 // holds the GCP identifier for the KRM object.
 type CustomTargetTypeIdentity struct {
 	parent *CustomTargetTypeParent
@@ -53,7 +53,7 @@ func (p *CustomTargetTypeParent) String() string {
 }
 
 // New builds a CustomTargetTypeIdentity from the Config Connector CustomTargetType object.
-func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj *CloudDeployCustomTargetType) (*CustomTargetTypeIdentity, error) {
+func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj *DeployCustomTargetType) (*CustomTargetTypeIdentity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
@@ -106,7 +106,7 @@ func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj 
 func ParseCustomTargetTypeExternal(external string) (parent *CustomTargetTypeParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "customTargetTypes" {
-		return nil, "", fmt.Errorf("format of CloudDeployCustomTargetType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/customTargetTypes/{{customtargettypeID}})", external)
+		return nil, "", fmt.Errorf("format of DeployCustomTargetType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/customTargetTypes/{{customtargettypeID}})", external)
 	}
 	parent = &CustomTargetTypeParent{
 		ProjectID: tokens[1],

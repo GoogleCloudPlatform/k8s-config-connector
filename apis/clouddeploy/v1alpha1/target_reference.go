@@ -51,7 +51,8 @@ func (r *TargetRef) NormalizedExternal(ctx context.Context, reader client.Reader
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseTargetExternal(r.External); err != nil {
+		id := &TargetIdentity{}
+		if err := id.FromExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil

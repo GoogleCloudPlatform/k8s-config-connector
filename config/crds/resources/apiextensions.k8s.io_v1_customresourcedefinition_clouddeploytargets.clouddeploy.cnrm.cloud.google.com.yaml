@@ -94,10 +94,25 @@ spec:
                         associated entities.
                       items:
                         properties:
-                          cluster:
+                          clusterRef:
                             description: Optional. Information specifying a GKE Cluster.
                               Format is `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`.
-                            type: string
+                            properties:
+                              external:
+                                description: 'The GKE cluster. Valid formats: `projects/{projectID}/locations/{location}/clusters/{clusterID}`
+                                  `projects/{projectID}/zones/{zone}/clusters/{clusterID}`'
+                                type: string
+                              name:
+                                description: 'Name of the project resource. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  */'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the project resource. More
+                                  info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+                                  */'
+                                type: string
+                            type: object
                           dnsEndpoint:
                             description: Optional. If set, the cluster will be accessed
                               using the DNS endpoint. Note that both `dns_endpoint`
@@ -227,10 +242,38 @@ spec:
               gke:
                 description: Information specifying a GKE Cluster.
                 properties:
-                  cluster:
+                  clusterRef:
                     description: Optional. Information specifying a GKE Cluster. Format
                       is `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'The GKE cluster. Valid formats: `projects/{projectID}/locations/{location}/clusters/{clusterID}`
+                          `projects/{projectID}/zones/{zone}/clusters/{clusterID}`'
+                        type: string
+                      name:
+                        description: 'Name of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                          */'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the project resource. More info:
+                          https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+                          */'
+                        type: string
+                    type: object
                   dnsEndpoint:
                     description: Optional. If set, the cluster will be accessed using
                       the DNS endpoint. Note that both `dns_endpoint` and `internal_ip`

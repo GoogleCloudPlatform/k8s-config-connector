@@ -45,14 +45,14 @@ func cloudDeployTargetFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".deploy_parameters")
 	f.SpecFields.Insert(".associated_entities")
 
-	f.StatusFields.Insert(".target_id")
-	f.StatusFields.Insert(".uid")
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".etag")
+	f.StatusField(".target_id")
+	f.StatusField(".uid")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
+	f.StatusField(".etag")
 
-	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".labels")
+	f.Unimplemented_Identity(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

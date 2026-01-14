@@ -15,18 +15,17 @@
 package v1alpha1
 
 import (
-	cloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var CustomTargetTypeGVK = GroupVersion.WithKind("CloudDeployCustomTargetType")
+var CustomTargetTypeGVK = GroupVersion.WithKind("DeployCustomTargetType")
 
-// CustomTargetTypeSpec defines the desired state of CloudDeployCustomTargetType
-// +kcc:spec:proto=google.cloud.deploy.v1.CustomTargetType
+// CustomTargetTypeSpec defines the desired state of DeployCustomTargetType
+// +kcc:proto=google.cloud.deploy.v1.CustomTargetType
 type CustomTargetTypeSpec struct {
-	// The CloudDeployCustomTargetType name. If not given, the metadata.name will be used.
+	// The DeployCustomTargetType name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// The project that this resource belongs to.
@@ -76,7 +75,7 @@ type CustomTargetTypeSpec struct {
 	CustomActions *CustomTargetSkaffoldActions `json:"customActions,omitempty"`
 }
 
-// CustomTargetTypeStatus defines the config connector machine state of CloudDeployCustomTargetType
+// CustomTargetTypeStatus defines the config connector machine state of DeployCustomTargetType
 type CustomTargetTypeStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
@@ -85,15 +84,15 @@ type CustomTargetTypeStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the CloudDeployCustomTargetType resource in GCP.
+	// A unique specifier for the DeployCustomTargetType resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *CustomTargetTypeObservedState `json:"observedState,omitempty"`
 }
 
-// CustomTargetTypeObservedState is the state of the CloudDeployCustomTargetType resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.deploy.v1.CustomTargetType
+// CustomTargetTypeObservedState is the state of the DeployCustomTargetType resource as most recently observed in GCP.
+// +kcc:proto=google.cloud.deploy.v1.CustomTargetType
 type CustomTargetTypeObservedState struct {
 	// Output only. Resource id of the `CustomTargetType`.
 	// +kcc:proto:field=google.cloud.deploy.v1.CustomTargetType.custom_target_type_id
@@ -122,9 +121,9 @@ type CustomTargetTypeObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// CloudDeployCustomTargetType is the Schema for the CloudDeployCustomTargetType API
+// DeployCustomTargetType is the Schema for the DeployCustomTargetType API
 // +k8s:openapi-gen=true
-type CloudDeployCustomTargetType struct {
+type DeployCustomTargetType struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
@@ -134,31 +133,13 @@ type CloudDeployCustomTargetType struct {
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// CloudDeployCustomTargetTypeList contains a list of CloudDeployCustomTargetType
-type CloudDeployCustomTargetTypeList struct {
+// DeployCustomTargetTypeList contains a list of DeployCustomTargetType
+type DeployCustomTargetTypeList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []CloudDeployCustomTargetType `json:"items"`
+	Items           []DeployCustomTargetType `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&CloudDeployCustomTargetType{}, &CloudDeployCustomTargetTypeList{})
-}
-
-// +kcc:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource
-type SkaffoldModules_SkaffoldGcbRepoSource struct {
-	// Required. Name of the Cloud Build V2 RepositoryRef.
-	//  Format is
-	//  projects/{project}/locations/{location}/connections/{connection}/repositories/{repository}.
-	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.repository
-	RepositoryRef *cloudbuildv1alpha1.RepositoryRef `json:"repositoryRef,omitempty"`
-
-	// Optional. Relative path from the repository root to the Skaffold Config
-	//  file.
-	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.path
-	Path *string `json:"path,omitempty"`
-
-	// Optional. Branch or tag to use when cloning the repository.
-	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.ref
-	Ref *string `json:"ref,omitempty"`
+	SchemeBuilder.Register(&DeployCustomTargetType{}, &DeployCustomTargetTypeList{})
 }
