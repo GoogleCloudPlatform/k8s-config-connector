@@ -98,26 +98,6 @@ func (t *URLTemplate[T]) Parse(s string) (*T, bool, error) {
 	if t.host != "" {
 		if strings.HasPrefix(s, t.host+"/") {
 			s = strings.TrimPrefix(s, t.host)
-		} else if strings.Contains(s, ".") && strings.HasPrefix(s, "/") {
-			// If it looks like it has a host (contains dot and starts with / after scheme removal),
-			// but it doesn't match our host, then it's a mismatch.
-			// However, simple relative paths like "projects/..." don't have a leading slash usually.
-			// If s is "other.com/foo", we should mismatch.
-
-			// We already stripped scheme and //
-			// So "compute.googleapis.com/projects/foo" is the input s
-
-			firstSlash := strings.Index(s, "/")
-			if firstSlash != -1 {
-				potentialHost := s[:firstSlash]
-				if strings.Contains(potentialHost, ".") {
-					// It has a host part.
-					if potentialHost != t.host {
-						return nil, false, nil
-					}
-					s = s[firstSlash:]
-				}
-			}
 		}
 	}
 
