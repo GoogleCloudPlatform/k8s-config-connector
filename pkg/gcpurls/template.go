@@ -38,23 +38,20 @@ func Template[T any](host, template string) *URLTemplate[T] {
 			fieldIdx := -1
 
 			// Find matching field
-			// 1. Exact match
-			if f, ok := typ.FieldByName(key); ok {
-				fieldIdx = f.Index[0] // Assuming flat struct for now
-			} else {
-				// 2. Case-insensitive match
-				var matches []int
-				for j := 0; j < typ.NumField(); j++ {
-					f := typ.Field(j)
-					if strings.EqualFold(f.Name, key) {
-						matches = append(matches, j)
-					}
+			// We look for all fields that match case-insensitively.
+			// If we find multiple, we panic to avoid ambiguity.
+			var matches []int
+			for j := 0; j < typ.NumField(); j++ {
+				f := typ.Field(j)
+				if strings.EqualFold(f.Name, key) {
+					matches = append(matches, j)
 				}
-				if len(matches) == 1 {
-					fieldIdx = matches[0]
-				} else if len(matches) > 1 {
-					panic(fmt.Sprintf("multiple fields match %q in struct %T", key, zero))
-				}
+			}
+
+			if len(matches) == 1 {
+				fieldIdx = matches[0]
+			} else if len(matches) > 1 {
+				panic(fmt.Sprintf("multiple fields match %q in struct %T", key, zero))
 			}
 
 			if fieldIdx == -1 {

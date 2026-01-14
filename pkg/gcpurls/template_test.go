@@ -290,6 +290,12 @@ func TestPanics(t *testing.T) {
 		Template[Ambiguous]("", "items/{foo}")
 	})
 
+	// 1b. Duplicate case-insensitive fields with exact match
+	// Even if one matches exactly, it should panic because it is ambiguous case-insensitively
+	assertPanic("ambiguous fields with exact match", func() {
+		Template[Ambiguous]("", "items/{Foo}")
+	})
+
 	// 2. Field not string
 	type NotString struct {
 		Foo int
