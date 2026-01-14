@@ -86,10 +86,7 @@ func TestTemplate(t *testing.T) {
 		t.Errorf("Expected project 'my-project' (with host), got '%s'", id1Host.Project)
 	}
 
-	str1, err := tmpl1.ToString(*id1)
-	if err != nil {
-		t.Errorf("ToString failed: %v", err)
-	}
+	str1 := tmpl1.ToString(*id1)
 	if str1 != "projects/my-project" {
 		t.Errorf("ToString mismatch: expected 'projects/my-project', got '%s'", str1)
 	}
@@ -164,10 +161,7 @@ func TestCAIExamples(t *testing.T) {
 	}
 
 	// Reverse
-	s, err := alloyDBTmpl.ToString(*alloyDBId)
-	if err != nil {
-		t.Errorf("Failed to ToString AlloyDB: %v", err)
-	}
+	s := alloyDBTmpl.ToString(*alloyDBId)
 	if s != "projects/my-project/locations/us-central1/backups/my-backup" {
 		t.Errorf("AlloyDB ToString mismatch: got %q", s)
 	}

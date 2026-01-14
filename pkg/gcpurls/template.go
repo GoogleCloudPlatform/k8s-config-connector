@@ -158,7 +158,7 @@ func (t *URLTemplate[T]) CanonicalForm() string {
 }
 
 // ToString formats the struct T into a URL string.
-func (t *URLTemplate[T]) ToString(v T) (string, error) {
+func (t *URLTemplate[T]) ToString(v T) string {
 	var parts []string
 	val := reflect.ValueOf(v)
 
@@ -171,5 +171,5 @@ func (t *URLTemplate[T]) ToString(v T) (string, error) {
 			parts = append(parts, segment)
 		}
 	}
-	return strings.Join(parts, "/"), nil
+	return strings.Join(parts, "/")
 }
