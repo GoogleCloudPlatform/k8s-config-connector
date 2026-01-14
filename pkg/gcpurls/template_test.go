@@ -311,7 +311,7 @@ func TestPanics(t *testing.T) {
 	assertPanic("missing field", func() {
 		Template[MissingField]("", "items/{foo}")
 	})
-	
+
 	// 4. Not a struct
 	assertPanic("not a struct", func() {
 		Template[string]("", "items/{foo}")
