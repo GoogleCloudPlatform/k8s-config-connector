@@ -17,10 +17,10 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -30,6 +30,11 @@ const (
 )
 
 var _ identity.Identity = &TagsTagValueIdentity{}
+
+var tagValueURL = gcpurls.Template[TagsTagValueIdentity](
+	"cloudresourcemanager.googleapis.com",
+	"tagValues/{TagValue}",
+)
 
 // TagsTagValueIdentity represents the identity of a TagsTagValue.
 // +k8s:deepcopy-gen=false
@@ -42,19 +47,18 @@ func (i *TagsTagValueIdentity) String() string {
 }
 
 func (i *TagsTagValueIdentity) FromExternal(ref string) error {
-	// Should be able to parse https://docs.cloud.google.com/asset-inventory/docs/asset-names
-	ref = strings.TrimPrefix(ref, "//cloudresourcemanager.googleapis.com/")
-
-	tokens := strings.Split(ref, "/")
-	if len(tokens) == 2 && tokens[0] == "tagValues" {
-		i.TagValue = tokens[1]
-		if i.TagValue == "" {
-			return fmt.Errorf("tagValue was empty in external=%q", ref)
-		}
-		return nil
+	out, match, err := tagValueURL.Parse(ref)
+	if err != nil {
+		return err
 	}
-
-	return fmt.Errorf("format of TagValue external=%q was not known (use %s)", ref, TagsTagValueIdentityURL)
+	if !match {
+		return fmt.Errorf("format of TagValue external=%q was not known (use %s)", ref, TagsTagValueIdentityURL)
+	}
+	if out.TagValue == "" {
+		return fmt.Errorf("tagValue was empty in external=%q", ref)
+	}
+	*i = *out
+	return nil
 }
 
 var _ identity.Resource = &TagsTagValue{}
