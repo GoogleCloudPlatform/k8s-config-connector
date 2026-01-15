@@ -96,6 +96,16 @@ func (m *modelParameter) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, err
 	}
 
+	format := direct.ValueOf(obj.Spec.Format)
+
+	if format == ""	{
+		obj.Spec.Format = direct.LazyPtr("UNFORMATTED")
+	} else {
+		if format != "UNFORMATTED" && format != "JSON" && format != "YAML"{
+			return nil, fmt.Errorf("invalid format %q, only UNFORMATTED, JSON, and YAML are supported", format)
+		}
+	}
+
 	mapCtx := &direct.MapContext{}
 
 	copied := obj.DeepCopy()
