@@ -511,7 +511,7 @@ type BrowserInfo struct {
 	IsBuiltInDnsClientEnabled *bool `protobuf:"varint,3,opt,name=is_built_in_dns_client_enabled,json=isBuiltInDnsClientEnabled" json:"is_built_in_dns_client_enabled,omitempty"`
 	// Current state of [bulk data analysis](https://chromeenterprise.google/policies/#OnBulkDataEntryEnterpriseConnector). Set to true if provider list from Chrome is non-empty.
 	IsBulkDataEntryAnalysisEnabled *bool `protobuf:"varint,4,opt,name=is_bulk_data_entry_analysis_enabled,json=isBulkDataEntryAnalysisEnabled" json:"is_bulk_data_entry_analysis_enabled,omitempty"`
-	// Current state of [Chrome Cleanup](https://chromeenterprise.google/policies/#ChromeCleanupEnabled).
+	// Deprecated: This field is not used for Chrome version 118 and later. Current state of [Chrome Cleanup](https://chromeenterprise.google/policies/#ChromeCleanupEnabled).
 	IsChromeCleanupEnabled *bool `protobuf:"varint,5,opt,name=is_chrome_cleanup_enabled,json=isChromeCleanupEnabled" json:"is_chrome_cleanup_enabled,omitempty"`
 	// Current state of [Chrome Remote Desktop app](https://chromeenterprise.google/policies/#URLBlocklist).
 	IsChromeRemoteDesktopAppBlocked *bool `protobuf:"varint,6,opt,name=is_chrome_remote_desktop_app_blocked,json=isChromeRemoteDesktopAppBlocked" json:"is_chrome_remote_desktop_app_blocked,omitempty"`
@@ -2991,7 +2991,7 @@ type GoogleAppsCloudidentityDevicesV1BrowserInfo struct {
 	IsBuiltInDnsClientEnabled *bool `protobuf:"varint,3,opt,name=is_built_in_dns_client_enabled,json=isBuiltInDnsClientEnabled" json:"is_built_in_dns_client_enabled,omitempty"`
 	// Current state of [bulk data analysis](https://chromeenterprise.google/policies/#OnBulkDataEntryEnterpriseConnector). Set to true if provider list from Chrome is non-empty.
 	IsBulkDataEntryAnalysisEnabled *bool `protobuf:"varint,4,opt,name=is_bulk_data_entry_analysis_enabled,json=isBulkDataEntryAnalysisEnabled" json:"is_bulk_data_entry_analysis_enabled,omitempty"`
-	// Current state of [Chrome Cleanup](https://chromeenterprise.google/policies/#ChromeCleanupEnabled).
+	// Deprecated: This field is not used for Chrome version 118 and later. Current state of [Chrome Cleanup](https://chromeenterprise.google/policies/#ChromeCleanupEnabled).
 	IsChromeCleanupEnabled *bool `protobuf:"varint,5,opt,name=is_chrome_cleanup_enabled,json=isChromeCleanupEnabled" json:"is_chrome_cleanup_enabled,omitempty"`
 	// Current state of [Chrome Remote Desktop app](https://chromeenterprise.google/policies/#URLBlocklist).
 	IsChromeRemoteDesktopAppBlocked *bool `protobuf:"varint,6,opt,name=is_chrome_remote_desktop_app_blocked,json=isChromeRemoteDesktopAppBlocked" json:"is_chrome_remote_desktop_app_blocked,omitempty"`

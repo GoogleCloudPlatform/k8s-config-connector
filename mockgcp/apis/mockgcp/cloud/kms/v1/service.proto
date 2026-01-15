@@ -1,17 +1,3 @@
-// Copyright 2025 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 syntax = "proto2";
 package mockgcp.cloud.kms.v1;
 import "google/api/annotations.proto";
@@ -446,6 +432,97 @@ service ProjectsLocationsKeyRingsImportJobsServer {
   };
 }
 
+service ProjectsLocationsSingleTenantHsmInstancesServer {
+
+  // Creates a new SingleTenantHsmInstance in a given Project and Location. User must create a RegisterTwoFactorAuthKeys proposal with this single-tenant HSM instance to finish setup of the instance.
+  rpc CreateProjectsLocationsSingleTenantHsmInstance(CreateProjectsLocationsSingleTenantHsmInstanceRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/singleTenantHsmInstances"
+      body: "projects_locations_single_tenant_hsm_instance"
+    };
+  };
+
+  // Returns metadata for a given SingleTenantHsmInstance.
+  rpc GetProjectsLocationsSingleTenantHsmInstance(GetProjectsLocationsSingleTenantHsmInstanceRequest) returns (SingleTenantHsmInstance) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/singleTenantHsmInstances/*}"
+    };
+  };
+
+  // Lists SingleTenantHsmInstances.
+  rpc ListProjectsLocationsSingleTenantHsmInstances(ListProjectsLocationsSingleTenantHsmInstancesRequest) returns (ListSingleTenantHsmInstancesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/singleTenantHsmInstances"
+    };
+  };
+}
+
+service ProjectsLocationsSingleTenantHsmInstancesProposalsServer {
+
+  // Approves a SingleTenantHsmInstanceProposal for a given SingleTenantHsmInstance. The proposal must be in the PENDING state.
+  rpc ApproveProjectsLocationsSingleTenantHsmInstancesProposal(ApproveProjectsLocationsSingleTenantHsmInstancesProposalRequest) returns (ApproveSingleTenantHsmInstanceProposalResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/singleTenantHsmInstances/*/proposals/*}:approve"
+      body: "projects_locations_single_tenant_hsm_instances_proposal"
+    };
+  };
+
+  // Creates a new SingleTenantHsmInstanceProposal for a given SingleTenantHsmInstance.
+  rpc CreateProjectsLocationsSingleTenantHsmInstancesProposal(CreateProjectsLocationsSingleTenantHsmInstancesProposalRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/singleTenantHsmInstances/*}/proposals"
+      body: "projects_locations_single_tenant_hsm_instances_proposal"
+    };
+  };
+
+  // Deletes a SingleTenantHsmInstanceProposal.
+  rpc DeleteProjectsLocationsSingleTenantHsmInstancesProposal(DeleteProjectsLocationsSingleTenantHsmInstancesProposalRequest) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/singleTenantHsmInstances/*/proposals/*}"
+    };
+  };
+
+  // Executes a SingleTenantHsmInstanceProposal for a given SingleTenantHsmInstance. The proposal must be in the APPROVED state.
+  rpc ExecuteProjectsLocationsSingleTenantHsmInstancesProposal(ExecuteProjectsLocationsSingleTenantHsmInstancesProposalRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/singleTenantHsmInstances/*/proposals/*}:execute"
+      body: "projects_locations_single_tenant_hsm_instances_proposal"
+    };
+  };
+
+  // Returns metadata for a given SingleTenantHsmInstanceProposal.
+  rpc GetProjectsLocationsSingleTenantHsmInstancesProposal(GetProjectsLocationsSingleTenantHsmInstancesProposalRequest) returns (SingleTenantHsmInstanceProposal) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/singleTenantHsmInstances/*/proposals/*}"
+    };
+  };
+
+  // Lists SingleTenantHsmInstanceProposals.
+  rpc ListProjectsLocationsSingleTenantHsmInstancesProposals(ListProjectsLocationsSingleTenantHsmInstancesProposalsRequest) returns (ListSingleTenantHsmInstanceProposalsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*/singleTenantHsmInstances/*}/proposals"
+    };
+  };
+}
+
+// Add a quorum member to the SingleTenantHsmInstance. This will increase the total_approver_count by 1. The SingleTenantHsmInstance must be in the ACTIVE state to perform this operation.
+message AddQuorumMember {
+  // Required. The public key associated with the 2FA key for the new quorum member to add. Public keys must be associated with RSA 2048 keys.
+  optional string two_factor_public_key_pem = 1 [json_name="twoFactorPublicKeyPem"];
+}
+
+// Request message for HsmManagement.ApproveSingleTenantHsmInstanceProposal.
+message ApproveSingleTenantHsmInstanceProposalRequest {
+  // Required. The reply to QuorumParameters for approving the proposal.
+  optional QuorumReply quorum_reply = 1 [json_name="quorumReply"];
+  // Required. The reply to RequiredActionQuorumParameters for approving the proposal.
+  optional RequiredActionQuorumReply required_action_quorum_reply = 2 [json_name="requiredActionQuorumReply"];
+}
+
+// Response message for HsmManagement.ApproveSingleTenantHsmInstanceProposal.
+message ApproveSingleTenantHsmInstanceProposalResponse {
+}
+
 // Request message for KeyManagementService.AsymmetricDecrypt.
 message AsymmetricDecryptRequest {
   // Required. The data encrypted with the named CryptoKeyVersion's public key using OAEP.
@@ -562,6 +639,22 @@ message CertificateChains {
   repeated string google_card_certs = 2 [json_name="googleCardCerts"];
   // Google partition certificate chain corresponding to the attestation.
   repeated string google_partition_certs = 3 [json_name="googlePartitionCerts"];
+}
+
+// A challenge to be signed by a 2FA key.
+message Challenge {
+  // Output only. The challenge to be signed by the 2FA key indicated by the public key.
+  optional bytes challenge = 1 [json_name="challenge"];
+  // Output only. The public key associated with the 2FA key that should sign the challenge.
+  optional string public_key_pem = 2 [json_name="publicKeyPem"];
+}
+
+// A reply to a challenge signed by a 2FA key.
+message ChallengeReply {
+  // Required. The public key associated with the 2FA key.
+  optional string public_key_pem = 1 [json_name="publicKeyPem"];
+  // Required. The signed challenge associated with the 2FA key. The signature must be RSASSA-PKCS1 v1.5 with a SHA256 digest.
+  optional bytes signed_challenge = 2 [json_name="signedChallenge"];
 }
 
 // Data with integrity verification field.
@@ -690,6 +783,10 @@ message DecryptResponse {
   optional bool used_primary = 4 [json_name="usedPrimary"];
 }
 
+// Delete the SingleTenantHsmInstance. Deleting a SingleTenantHsmInstance will make all CryptoKeys attached to the SingleTenantHsmInstance unusable. The SingleTenantHsmInstance must not be in the DELETING or DELETED state to perform this operation.
+message DeleteSingleTenantHsmInstance {
+}
+
 // Request message for KeyManagementService.DestroyCryptoKeyVersion.
 message DestroyCryptoKeyVersionRequest {
 }
@@ -702,6 +799,10 @@ message Digest {
   optional bytes sha384 = 2 [json_name="sha384"];
   // A message digest produced with the SHA-512 algorithm.
   optional bytes sha512 = 3 [json_name="sha512"];
+}
+
+// Disable the SingleTenantHsmInstance. The SingleTenantHsmInstance must be in the ACTIVE state to perform this operation.
+message DisableSingleTenantHsmInstance {
 }
 
 // An EkmConfig is a singleton resource that represents configuration parameters that apply to all CryptoKeys and CryptoKeyVersions with a ProtectionLevel of EXTERNAL_VPC in a given project and location.
@@ -726,6 +827,14 @@ message EkmConnection {
   optional string name = 5 [json_name="name"];
   // Optional. A list of ServiceResolvers where the EKM can be reached. There should be one ServiceResolver per EKM replica. Currently, only a single ServiceResolver is supported.
   repeated ServiceResolver service_resolvers = 6 [json_name="serviceResolvers"];
+}
+
+// A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); }
+message Empty {
+}
+
+// Enable the SingleTenantHsmInstance. The SingleTenantHsmInstance must be in the DISABLED state to perform this operation.
+message EnableSingleTenantHsmInstance {
 }
 
 // Request message for KeyManagementService.Encrypt.
@@ -754,6 +863,10 @@ message EncryptResponse {
   optional bool verified_additional_authenticated_data_crc32c = 5 [json_name="verifiedAdditionalAuthenticatedDataCrc32c"];
   // Integrity verification field. A flag indicating whether EncryptRequest.plaintext_crc32c was received by KeyManagementService and used for the integrity verification of the plaintext. A false value of this field indicates either that EncryptRequest.plaintext_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set EncryptRequest.plaintext_crc32c but this field is still false, discard the response and perform a limited number of retries.
   optional bool verified_plaintext_crc32c = 6 [json_name="verifiedPlaintextCrc32c"];
+}
+
+// Request message for HsmManagement.ExecuteSingleTenantHsmInstanceProposal.
+message ExecuteSingleTenantHsmInstanceProposalRequest {
 }
 
 // Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec. Example (Comparison): title: "Summary size limit" description: "Determines if a summary is less than 100 chars" expression: "document.summary.size() < 100" Example (Equality): title: "Requestor is owner" description: "Determines if requestor is the document owner" expression: "document.owner == request.auth.claims.email" Example (Logic): title: "Public documents" description: "Determine whether the document should be publicly visible" expression: "document.type != 'private' && document.type != 'internal'" Example (Data Manipulation): title: "Notification string" description: "Create a notification string with a timestamp." expression: "'New message received at ' + string(document.create_time)" The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information.
@@ -948,6 +1061,26 @@ message ListLocationsResponse {
   optional string next_page_token = 2 [json_name="nextPageToken"];
 }
 
+// Response message for HsmManagement.ListSingleTenantHsmInstanceProposals.
+message ListSingleTenantHsmInstanceProposalsResponse {
+  // A token to retrieve next page of results. Pass this value in ListSingleTenantHsmInstanceProposalsRequest.page_token to retrieve the next page of results.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of SingleTenantHsmInstanceProposals.
+  repeated SingleTenantHsmInstanceProposal single_tenant_hsm_instance_proposals = 2 [json_name="singleTenantHsmInstanceProposals"];
+  // The total number of SingleTenantHsmInstanceProposals that matched the query. This field is not populated if ListSingleTenantHsmInstanceProposalsRequest.filter is applied.
+  optional int32 total_size = 3 [json_name="totalSize"];
+}
+
+// Response message for HsmManagement.ListSingleTenantHsmInstances.
+message ListSingleTenantHsmInstancesResponse {
+  // A token to retrieve next page of results. Pass this value in ListSingleTenantHsmInstancesRequest.page_token to retrieve the next page of results.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of SingleTenantHsmInstances.
+  repeated SingleTenantHsmInstance single_tenant_hsm_instances = 2 [json_name="singleTenantHsmInstances"];
+  // The total number of SingleTenantHsmInstances that matched the query. This field is not populated if ListSingleTenantHsmInstancesRequest.filter is applied.
+  optional int32 total_size = 3 [json_name="totalSize"];
+}
+
 // A resource that represents a Google Cloud location.
 message Location {
   // The friendly name for this location, typically a nearby city name. For example, "Tokyo".
@@ -1052,6 +1185,32 @@ message PublicKey {
   optional string public_key_format = 7 [json_name="publicKeyFormat"];
 }
 
+// Configuration for M of N quorum auth.
+message QuorumAuth {
+  // Output only. The required numbers of approvers. The M value used for M of N quorum auth. Must be greater than or equal to 2 and less than or equal to total_approver_count - 1.
+  optional int32 required_approver_count = 1 [json_name="requiredApproverCount"];
+  // Required. The total number of approvers. This is the N value used for M of N quorum auth. Must be greater than or equal to 3 and less than or equal to 16.
+  optional int32 total_approver_count = 2 [json_name="totalApproverCount"];
+  // Output only. The public keys associated with the 2FA keys for M of N quorum auth.
+  repeated string two_factor_public_key_pems = 3 [json_name="twoFactorPublicKeyPems"];
+}
+
+// Parameters of quorum approval for the SingleTenantHsmInstanceProposal.
+message QuorumParameters {
+  // Output only. The public keys associated with the 2FA keys that have already approved the SingleTenantHsmInstanceProposal by signing the challenge.
+  repeated string approved_two_factor_public_key_pems = 1 [json_name="approvedTwoFactorPublicKeyPems"];
+  // Output only. The challenges to be signed by 2FA keys for quorum auth. M of N of these challenges are required to be signed to approve the operation.
+  repeated Challenge challenges = 2 [json_name="challenges"];
+  // Output only. The required numbers of approvers. This is the M value used for M of N quorum auth. It is less than the number of public keys.
+  optional int32 required_approver_count = 3 [json_name="requiredApproverCount"];
+}
+
+// The reply to QuorumParameters for approving the proposal.
+message QuorumReply {
+  // Required. The challenge replies to approve the proposal. Challenge replies can be sent across multiple requests. The proposal will be approved when required_approver_count challenge replies are provided.
+  repeated ChallengeReply challenge_replies = 1 [json_name="challengeReplies"];
+}
+
 // Request message for KeyManagementService.RawDecrypt.
 message RawDecryptRequest {
   // Optional. Optional data that must match the data originally supplied in RawEncryptRequest.additional_authenticated_data.
@@ -1126,6 +1285,44 @@ message RawEncryptResponse {
   optional bool verified_plaintext_crc32c = 10 [json_name="verifiedPlaintextCrc32c"];
 }
 
+// Refreshes the SingleTenantHsmInstance. This operation must be performed periodically to keep the SingleTenantHsmInstance active. This operation must be performed before unrefreshed_duration_until_disable has passed. The SingleTenantHsmInstance must be in the ACTIVE state to perform this operation.
+message RefreshSingleTenantHsmInstance {
+}
+
+// Register 2FA keys for the SingleTenantHsmInstance. This operation requires all Challenges to be signed by 2FA keys. The SingleTenantHsmInstance must be in the PENDING_TWO_FACTOR_AUTH_REGISTRATION state to perform this operation.
+message RegisterTwoFactorAuthKeys {
+  // Required. The required numbers of approvers to set for the SingleTenantHsmInstance. This is the M value used for M of N quorum auth. Must be greater than or equal to 2 and less than or equal to total_approver_count - 1.
+  optional int32 required_approver_count = 1 [json_name="requiredApproverCount"];
+  // Required. The public keys associated with the 2FA keys for M of N quorum auth. Public keys must be associated with RSA 2048 keys.
+  repeated string two_factor_public_key_pems = 2 [json_name="twoFactorPublicKeyPems"];
+}
+
+// Remove a quorum member from the SingleTenantHsmInstance. This will reduce total_approver_count by 1. The SingleTenantHsmInstance must be in the ACTIVE state to perform this operation.
+message RemoveQuorumMember {
+  // Required. The public key associated with the 2FA key for the quorum member to remove. Public keys must be associated with RSA 2048 keys.
+  optional string two_factor_public_key_pem = 1 [json_name="twoFactorPublicKeyPem"];
+}
+
+// Parameters for an approval that has both required challenges and a quorum.
+message RequiredActionQuorumParameters {
+  // Output only. The public keys associated with the 2FA keys that have already approved the SingleTenantHsmInstanceProposal by signing the challenge.
+  repeated string approved_two_factor_public_key_pems = 1 [json_name="approvedTwoFactorPublicKeyPems"];
+  // Output only. The challenges to be signed by 2FA keys for quorum auth. M of N of these challenges are required to be signed to approve the operation.
+  repeated Challenge quorum_challenges = 2 [json_name="quorumChallenges"];
+  // Output only. The required number of quorum approvers. This is the M value used for M of N quorum auth. It is less than the number of public keys.
+  optional int32 required_approver_count = 3 [json_name="requiredApproverCount"];
+  // Output only. A list of specific challenges that must be signed. For some operations, this will contain a single challenge.
+  repeated Challenge required_challenges = 4 [json_name="requiredChallenges"];
+}
+
+// The reply to RequiredActionQuorumParameters for approving the proposal.
+message RequiredActionQuorumReply {
+  // Required. Quorum members' signed challenge replies. These can be provided across multiple requests. The proposal will be approved when required_approver_count quorum_challenge_replies are provided and when all required_challenge_replies are provided.
+  repeated ChallengeReply quorum_challenge_replies = 1 [json_name="quorumChallengeReplies"];
+  // Required. All required challenges must be signed for the proposal to be approved. These can be sent across multiple requests.
+  repeated ChallengeReply required_challenge_replies = 2 [json_name="requiredChallengeReplies"];
+}
+
 // Request message for KeyManagementService.RestoreCryptoKeyVersion.
 message RestoreCryptoKeyVersionRequest {
 }
@@ -1170,6 +1367,62 @@ message ShowEffectiveKeyAccessJustificationsEnrollmentConfigResponse {
 message ShowEffectiveKeyAccessJustificationsPolicyConfigResponse {
   // The effective KeyAccessJustificationsPolicyConfig.
   optional KeyAccessJustificationsPolicyConfig effective_kaj_policy = 1 [json_name="effectiveKajPolicy"];
+}
+
+// A SingleTenantHsmInstance represents a single-tenant HSM instance. It can be used for creating CryptoKeys with a ProtectionLevel of HSM_SINGLE_TENANT, as well as performing cryptographic operations using keys created within the SingleTenantHsmInstance.
+message SingleTenantHsmInstance {
+  // Output only. The time at which the SingleTenantHsmInstance was created.
+  optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Output only. The time at which the SingleTenantHsmInstance was deleted.
+  optional .google.protobuf.Timestamp delete_time = 2 [json_name="deleteTime"];
+  // Output only. The time at which the instance will be automatically disabled if not refreshed. This field is updated upon creation and after each successful refresh operation and enable. A RefreshSingleTenantHsmInstance operation must be made via a SingleTenantHsmInstanceProposal before this time otherwise the SingleTenantHsmInstance will become disabled.
+  optional .google.protobuf.Timestamp disable_time = 3 [json_name="disableTime"];
+  // Identifier. The resource name for this SingleTenantHsmInstance in the format `projects/*/locations/*/singleTenantHsmInstances/*`.
+  optional string name = 4 [json_name="name"];
+  // Required. The quorum auth configuration for the SingleTenantHsmInstance.
+  optional QuorumAuth quorum_auth = 5 [json_name="quorumAuth"];
+  // Output only. The state of the SingleTenantHsmInstance.
+  optional string state = 6 [json_name="state"];
+  // Output only. The system-defined duration that an instance can remain unrefreshed until it is automatically disabled. This will have a value of 120 days.
+  optional .google.protobuf.Duration unrefreshed_duration_until_disable = 7 [json_name="unrefreshedDurationUntilDisable"];
+}
+
+// A SingleTenantHsmInstanceProposal represents a proposal to perform an operation on a SingleTenantHsmInstance.
+message SingleTenantHsmInstanceProposal {
+  // Add a quorum member to the SingleTenantHsmInstance. This will increase the total_approver_count by 1. The SingleTenantHsmInstance must be in the ACTIVE state to perform this operation.
+  optional AddQuorumMember add_quorum_member = 1 [json_name="addQuorumMember"];
+  // Output only. The time at which the SingleTenantHsmInstanceProposal was created.
+  optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // Delete the SingleTenantHsmInstance. Deleting a SingleTenantHsmInstance will make all CryptoKeys attached to the SingleTenantHsmInstance unusable. The SingleTenantHsmInstance must be in the DISABLED or PENDING_TWO_FACTOR_AUTH_REGISTRATION state to perform this operation.
+  optional DeleteSingleTenantHsmInstance delete_single_tenant_hsm_instance = 3 [json_name="deleteSingleTenantHsmInstance"];
+  // Output only. The time at which the SingleTenantHsmInstanceProposal was deleted.
+  optional .google.protobuf.Timestamp delete_time = 4 [json_name="deleteTime"];
+  // Disable the SingleTenantHsmInstance. The SingleTenantHsmInstance must be in the ACTIVE state to perform this operation.
+  optional DisableSingleTenantHsmInstance disable_single_tenant_hsm_instance = 5 [json_name="disableSingleTenantHsmInstance"];
+  // Enable the SingleTenantHsmInstance. The SingleTenantHsmInstance must be in the DISABLED state to perform this operation.
+  optional EnableSingleTenantHsmInstance enable_single_tenant_hsm_instance = 6 [json_name="enableSingleTenantHsmInstance"];
+  // The time at which the SingleTenantHsmInstanceProposal will expire if not approved and executed.
+  optional .google.protobuf.Timestamp expire_time = 7 [json_name="expireTime"];
+  // Output only. The root cause of the most recent failure. Only present if state is FAILED.
+  optional string failure_reason = 8 [json_name="failureReason"];
+  // Identifier. The resource name for this SingleTenantHsmInstance in the format `projects/*/locations/*/singleTenantHsmInstances/*/proposals/*`.
+  optional string name = 9 [json_name="name"];
+  // Output only. The time at which the soft-deleted SingleTenantHsmInstanceProposal will be permanently purged. This field is only populated when the state is DELETED and will be set a time after expiration of the proposal, i.e. >= expire_time or (create_time + ttl).
+  optional .google.protobuf.Timestamp purge_time = 10 [json_name="purgeTime"];
+  // Output only. The quorum approval parameters for the SingleTenantHsmInstanceProposal.
+  optional QuorumParameters quorum_parameters = 11 [json_name="quorumParameters"];
+  // Refreshes the SingleTenantHsmInstance. This operation must be performed periodically to keep the SingleTenantHsmInstance active. This operation must be performed before unrefreshed_duration_until_disable has passed. The SingleTenantHsmInstance must be in the ACTIVE state to perform this operation.
+  optional RefreshSingleTenantHsmInstance refresh_single_tenant_hsm_instance = 12 [json_name="refreshSingleTenantHsmInstance"];
+  // Register 2FA keys for the SingleTenantHsmInstance. This operation requires all N Challenges to be signed by 2FA keys. The SingleTenantHsmInstance must be in the PENDING_TWO_FACTOR_AUTH_REGISTRATION state to perform this operation.
+  optional RegisterTwoFactorAuthKeys register_two_factor_auth_keys = 13 [json_name="registerTwoFactorAuthKeys"];
+  // Remove a quorum member from the SingleTenantHsmInstance. This will reduce total_approver_count by 1. The SingleTenantHsmInstance must be in the ACTIVE state to perform this operation.
+  optional RemoveQuorumMember remove_quorum_member = 14 [json_name="removeQuorumMember"];
+  // Output only. Parameters for an approval of a SingleTenantHsmInstanceProposal that has both required challenges and a quorum.
+  optional RequiredActionQuorumParameters required_action_quorum_parameters = 15 [json_name="requiredActionQuorumParameters"];
+  // Output only. The state of the SingleTenantHsmInstanceProposal.
+  optional string state = 16 [json_name="state"];
+  // Input only. The TTL for the SingleTenantHsmInstanceProposal. Proposals will expire after this duration.
+  optional .google.protobuf.Duration ttl = 17 [json_name="ttl"];
 }
 
 // The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
@@ -1488,4 +1741,56 @@ message ListProjectsLocationsKeyRingsImportJobsRequest {
   optional int32 page_size = 3;
   optional string page_token = 4;
   optional string parent = 5;
+}
+
+message CreateProjectsLocationsSingleTenantHsmInstanceRequest {
+  optional string parent = 1;
+  optional string single_tenant_hsm_instance_id = 2;
+  optional SingleTenantHsmInstance projects_locations_single_tenant_hsm_instance = 3;
+}
+
+message GetProjectsLocationsSingleTenantHsmInstanceRequest {
+  optional string name = 1;
+}
+
+message ListProjectsLocationsSingleTenantHsmInstancesRequest {
+  optional string filter = 1;
+  optional string order_by = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+  optional string parent = 5;
+  optional bool show_deleted = 6;
+}
+
+message ApproveProjectsLocationsSingleTenantHsmInstancesProposalRequest {
+  optional string name = 1;
+  optional ApproveSingleTenantHsmInstanceProposalRequest projects_locations_single_tenant_hsm_instances_proposal = 2;
+}
+
+message CreateProjectsLocationsSingleTenantHsmInstancesProposalRequest {
+  optional string parent = 1;
+  optional string single_tenant_hsm_instance_proposal_id = 2;
+  optional SingleTenantHsmInstanceProposal projects_locations_single_tenant_hsm_instances_proposal = 3;
+}
+
+message DeleteProjectsLocationsSingleTenantHsmInstancesProposalRequest {
+  optional string name = 1;
+}
+
+message ExecuteProjectsLocationsSingleTenantHsmInstancesProposalRequest {
+  optional string name = 1;
+  optional ExecuteSingleTenantHsmInstanceProposalRequest projects_locations_single_tenant_hsm_instances_proposal = 2;
+}
+
+message GetProjectsLocationsSingleTenantHsmInstancesProposalRequest {
+  optional string name = 1;
+}
+
+message ListProjectsLocationsSingleTenantHsmInstancesProposalsRequest {
+  optional string filter = 1;
+  optional string order_by = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+  optional string parent = 5;
+  optional bool show_deleted = 6;
 }
