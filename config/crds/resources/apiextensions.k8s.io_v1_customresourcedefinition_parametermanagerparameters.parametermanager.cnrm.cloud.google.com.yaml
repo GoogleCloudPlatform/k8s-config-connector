@@ -62,12 +62,7 @@ spec:
               ParameterManagerParameter
             properties:
               format:
-                default: UNFORMATTED
                 description: Optional. Specifies the format of a Parameter.
-                enum:
-                - UNFORMATTED
-                - YAML
-                - JSON
                 type: string
               kmsKeyRef:
                 description: Optional. Customer managed encryption key (CMEK) to use
