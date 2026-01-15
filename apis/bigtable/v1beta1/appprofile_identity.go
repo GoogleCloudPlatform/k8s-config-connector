@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 
@@ -43,10 +42,10 @@ func (i *AppProfileIdentity) String() string {
 func (i *AppProfileIdentity) FromExternal(ref string) error {
 	parsed, match, err := AppProfileIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of AppProfile external=%q was not known (use %s): %w", ref, AppProfileIdentityFormat, err)
+		return fmt.Errorf("format of AppProfile external=%q was not known (use %s): %w", ref, AppProfileIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of AppProfile external=%q was not known (use %s)", ref, AppProfileIdentityFormat)
+		return fmt.Errorf("format of AppProfile external=%q was not known (use %s)", ref, AppProfileIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
@@ -117,24 +116,4 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 		Instance:   instanceID,
 		AppProfile: resourceID,
 	}, nil
-}
-
-func ParseAppProfileExternal(external string) (*InstanceIdentity, string, error) {
-	id := &AppProfileIdentity{}
-	if err := id.FromExternal(external); err != nil {
-		// Fallback to manual parsing if FromExternal fails, or just return error.
-		// However, FromExternal logic is:
-		// parsed, match, err := AppProfileIdentityFormat.Parse(ref)
-		// ...
-		// if !match ...
-		// The error returned by FromExternal seems sufficient.
-		// Use original parsing logic as fallback or just rely on FromExternal?
-		// The original logic was:
-		tokens := strings.Split(external, "/")
-		if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "appProfiles" {
-			return nil, "", fmt.Errorf("format of BigtableAppProfile external=%q was not known (use projects/{{projectID}}/instances/{{instance}}/appProfiles/{{appprofileID}})", external)
-		}
-		return &InstanceIdentity{Parent: &parent.ProjectParent{ProjectID: tokens[1]}, Id: tokens[3]}, tokens[5], nil
-	}
-	return id.Parent(), id.AppProfile, nil
 }
