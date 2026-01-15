@@ -34,7 +34,6 @@ type ParameterManagerParameterSpec struct {
 
 	// Optional. Specifies the format of a Parameter.
 	// +kcc:proto:field=google.cloud.parametermanager.v1.Parameter.format
-	// +kubebuilder:validation:Enum=PARAMETER_FORMAT_UNSPECIFIED;UNFORMATTED;YAML;JSON
 	Format *string `json:"format,omitempty"`
 
 	// Optional. Customer managed encryption key (CMEK) to use for encrypting the
