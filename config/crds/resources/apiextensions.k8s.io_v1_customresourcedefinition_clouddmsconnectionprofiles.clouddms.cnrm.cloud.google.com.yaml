@@ -89,9 +89,6 @@ spec:
                         description: Required. Input only. Initial user to setup during
                           cluster creation. Required.
                         properties:
-                          password:
-                            description: The initial password for the user.
-                            type: string
                           user:
                             description: The database username.
                             type: string
@@ -261,9 +258,6 @@ spec:
                               enforced or not.
                             type: boolean
                         type: object
-                      rootPassword:
-                        description: Input only. Initial root password.
-                        type: string
                       secondaryZone:
                         description: Optional. The Google Cloud Platform zone where
                           the failover Cloud SQL database instance is located. Used
@@ -318,12 +312,6 @@ spec:
                     description: Required. The IP or hostname of the source MySQL
                       database.
                     type: string
-                  password:
-                    description: Required. Input only. The password for the user that
-                      Database Migration Service will be using to connect to the database.
-                      This field is not returned on request, and the value is encrypted
-                      when stored in Database Migration Service.
-                    type: string
                   port:
                     description: Required. The network port of the source MySQL database.
                     format: int32
@@ -369,9 +357,6 @@ spec:
                       hostname:
                         description: Required. Hostname for the SSH tunnel.
                         type: string
-                      password:
-                        description: Input only. SSH password.
-                        type: string
                       port:
                         description: Port for the SSH tunnel, default value is 22.
                         format: int32
@@ -386,12 +371,6 @@ spec:
                   host:
                     description: Required. The IP or hostname of the source Oracle
                       database.
-                    type: string
-                  password:
-                    description: Required. Input only. The password for the user that
-                      Database Migration Service will be using to connect to the database.
-                      This field is not returned on request, and the value is encrypted
-                      when stored in Database Migration Service.
                     type: string
                   port:
                     description: Required. The network port of the source Oracle database.
@@ -450,12 +429,6 @@ spec:
                   host:
                     description: Required. The IP or hostname of the source PostgreSQL
                       database.
-                    type: string
-                  password:
-                    description: Required. Input only. The password for the user that
-                      Database Migration Service will be using to connect to the database.
-                      This field is not returned on request, and the value is encrypted
-                      when stored in Database Migration Service.
                     type: string
                   port:
                     description: Required. The network port of the source PostgreSQL

@@ -491,7 +491,6 @@
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.suspended" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.clusterID" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.encryptionConfig.kmsKeyName" is not set in unstructured objects
-[missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.initialUser.password" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.initialUser.user" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.labels" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.primaryInstanceSettings.databaseFlags" is not set in unstructured objects
@@ -517,7 +516,6 @@
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.ipConfig.enableIPV4" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.ipConfig.privateNetwork" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.ipConfig.requireSSL" is not set in unstructured objects
-[missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.rootPassword" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.secondaryZone" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.sourceID" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.storageAutoResizeLimit" is not set in unstructured objects
@@ -528,7 +526,6 @@
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.cloudSQLID" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.host" is not set in unstructured objects
-[missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.password" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.port" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.ssl.caCertificate" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.ssl.clientCertificate" is not set in unstructured objects
@@ -536,12 +533,10 @@
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.username" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.databaseService" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.forwardSSHConnectivity.hostname" is not set in unstructured objects
-[missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.forwardSSHConnectivity.password" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.forwardSSHConnectivity.port" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.forwardSSHConnectivity.privateKey" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.forwardSSHConnectivity.username" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.host" is not set in unstructured objects
-[missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.password" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.port" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.privateConnectivity.privateConnection" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.ssl.caCertificate" is not set in unstructured objects
@@ -551,7 +546,6 @@
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.username" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.cloudSQLID" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.host" is not set in unstructured objects
-[missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.password" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.port" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.privateServiceConnectConnectivity.serviceAttachment" is not set in unstructured objects
 [missing_field] crd=clouddmsconnectionprofiles.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.ssl.caCertificate" is not set in unstructured objects
