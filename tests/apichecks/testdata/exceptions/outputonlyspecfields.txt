@@ -1,4 +1,3 @@
-[output_only_spec_field] crd=alloydbinstances.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.connectionPoolConfig.pooler_count" is not set in unstructured objects
 [output_only_spec_field] crd=cloudidentitymemberships.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.memberKey.id" is not set in unstructured objects
 [output_only_spec_field] crd=cloudidentitymemberships.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.memberKey.namespace" is not set in unstructured objects
 [output_only_spec_field] crd=cloudidentitymemberships.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.roles[].restrictionEvaluations.memberRestrictionEvaluation.state" is not set in unstructured objects

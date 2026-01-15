@@ -78,9 +78,16 @@ func AlloyDBInstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 	out.Uid = direct.LazyPtr(in.Uid)
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 
-	if in.GetObservabilityConfig() != nil && in.GetObservabilityConfig().GetEnabled() {
+	observabilityConfigEnabled := in.GetObservabilityConfig() != nil && in.GetObservabilityConfig().GetEnabled()
+	connectionPoolConfigEnabled := in.GetConnectionPoolConfig() != nil && in.GetConnectionPoolConfig().GetEnabled()
+	if observabilityConfigEnabled || connectionPoolConfigEnabled {
 		out.ObservedState = &krm.AlloyDBInstanceObservedState{}
+	}
+	if observabilityConfigEnabled {
 		out.ObservedState.ObservabilityInstanceConfig = Instance_ObservabilityInstanceConfigObservedState_FromProto(mapCtx, in.GetObservabilityConfig())
+	}
+	if connectionPoolConfigEnabled {
+		out.ObservedState.ConnectionPoolConfig = Instance_ConnectionPoolConfigObservedState_FromProto(mapCtx, in.GetConnectionPoolConfig())
 	}
 
 	return out
@@ -102,6 +109,7 @@ func AlloyDBInstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBIns
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	if in.ObservedState != nil {
 		out.ObservabilityConfig = Instance_ObservabilityInstanceConfigObservedState_ToProto(mapCtx, in.ObservedState.ObservabilityInstanceConfig)
+		out.ConnectionPoolConfig = Instance_ConnectionPoolConfigObservedState_ToProto(mapCtx, in.ObservedState.ConnectionPoolConfig)
 	}
 
 	return out
@@ -122,4 +130,26 @@ func Instance_InstanceType_ToProto(mapCtx *direct.MapContext, in *refs.AlloyDBCl
 		return direct.Enum_ToProto[pb.Instance_InstanceType](mapCtx, nil)
 	}
 	return direct.Enum_ToProto[pb.Instance_InstanceType](mapCtx, direct.PtrTo(in.External))
+}
+
+func Instance_ConnectionPoolConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionPoolConfig) *krm.Instance_ConnectionPoolConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_ConnectionPoolConfigObservedState{}
+	// MISSING: Enabled
+	// MISSING: Flags
+	out.PoolerCount = &in.PoolerCount
+	return out
+}
+
+func Instance_ConnectionPoolConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ConnectionPoolConfigObservedState) *pb.Instance_ConnectionPoolConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_ConnectionPoolConfig{}
+	// MISSING: Enabled
+	// MISSING: Flags
+	out.PoolerCount = *in.PoolerCount
+	return out
 }

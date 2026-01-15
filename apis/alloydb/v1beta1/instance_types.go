@@ -203,7 +203,7 @@ type Instance_ConnectionPoolConfigObservedState struct {
 
 	// Output only. The number of running poolers per instance.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.pooler_count
-	PoolerCount *int32 `json:"pooler_count,omitempty"`
+	PoolerCount *int32 `json:"poolerCount,omitempty"`
 }
 
 // +genclient
