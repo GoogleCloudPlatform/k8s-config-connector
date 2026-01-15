@@ -19,8 +19,11 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"maps"
 	"os"
+	"slices"
 	"sort"
+	"strings"
 
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/klog/v2"
@@ -33,7 +36,7 @@ func main() {
 	var opt ConvertOptions
 
 	flag.StringVar(&opt.Version, "version", "", "CRD version to convert")
-	flag.StringVar(&opt.CRDFile, "crd-file", "", "CRD file to convert; if empty, reads from stdin")
+	flag.StringVar(&opt.CRDFile, "crd-file", "", "CRD file to convert; if -, reads from stdin")
 	flag.StringVar(&opt.DiffCRDFile, "diff-crd-file", "", "CRD file to compare against; if empty, no comparison is done")
 	flag.BoolVar(&opt.Flatten, "flatten", false, "Flatten output to path=type lines (easier for diffing)")
 	flag.BoolVar(&opt.IgnoreIntegerTypeDifferences, "ignore-integer-type-differences", opt.IgnoreIntegerTypeDifferences, "Treat int32 and int64 as equivalent to integer when diffing.")
@@ -47,7 +50,7 @@ func main() {
 }
 
 type ConvertOptions struct {
-	// CRD file to convert; if empty, reads from stdin
+	// CRD file to convert; if -, reads from stdin
 	CRDFile string
 
 	// CRD file to compare against; if empty, no comparison is done
@@ -64,9 +67,12 @@ type ConvertOptions struct {
 }
 
 func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
+	if opt.CRDFile == "" {
+		return fmt.Errorf("--crd-file is required (use - for stdin)")
+	}
 
 	var data []byte
-	if opt.CRDFile == "" {
+	if opt.CRDFile == "-" {
 		b, err := io.ReadAll(os.Stdin)
 		if err != nil {
 			return fmt.Errorf("reading stdin: %w", err)
@@ -142,13 +148,8 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 			if s0[1:] < s1[1:] {
 				return true
 			}
-			if s0[1:] > s1[1:] {
-				return false
-			}
-			if s0[0] == '-' {
-				return false
-			}
-			return true
+
+			return s0 < s1
 		})
 
 		for _, line := range diff {
@@ -158,11 +159,12 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 	}
 
 	if opt.Flatten {
-		lines := make(map[string]string)
-		flatten("", schema, lines)
+		pathsAndTypes := make(map[string]string)
+		flatten("", schema, pathsAndTypes)
 
-		for _, line := range lines {
-			fmt.Fprintln(out, line)
+		for _, k := range slices.Sorted(maps.Keys(pathsAndTypes)) {
+			v := pathsAndTypes[k]
+			fmt.Fprintf(out, "%s=%s\n", k, v)
 		}
 		return nil
 	}
@@ -178,6 +180,10 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 }
 
 func buildSimpleSchema(data []byte, opt ConvertOptions) (any, error) {
+	if strings.Contains(string(data), "\n---\n") {
+		return nil, fmt.Errorf("multiple documents in CRD file are not yet supported")
+	}
+
 	var crd apiextensionsv1.CustomResourceDefinition
 	if err := yaml.Unmarshal(data, &crd); err != nil {
 		return nil, fmt.Errorf("unmarshaling CRD: %w", err)
@@ -224,7 +230,7 @@ func flatten(path string, schema any, out map[string]string) {
 	case string:
 		out[path] = schema
 	default:
-		klog.Fatalf("unhandled type %T", schema)
+		klog.Fatalf("unhandled type %T in flatten method", schema)
 	}
 
 }
