@@ -38,37 +38,6 @@ type AuxiliaryVersionConfig struct {
 	ConfigOverrides map[string]string `json:"configOverrides,omitempty"`
 }
 
-// +kcc:proto=google.cloud.metastore.v1.HiveMetastoreConfig
-type HiveMetastoreConfig struct {
-	// Immutable. The Hive metastore schema version.
-	// +kcc:proto:field=google.cloud.metastore.v1.HiveMetastoreConfig.version
-	Version *string `json:"version,omitempty"`
-
-	// A mapping of Hive metastore configuration key-value pairs to apply to the
-	//  Hive metastore (configured in `hive-site.xml`). The mappings
-	//  override system defaults (some keys cannot be overridden). These
-	//  overrides are also applied to auxiliary versions and can be further
-	//  customized in the auxiliary version's `AuxiliaryVersionConfig`.
-	// +kcc:proto:field=google.cloud.metastore.v1.HiveMetastoreConfig.config_overrides
-	ConfigOverrides map[string]string `json:"configOverrides,omitempty"`
-
-	// Information used to configure the Hive metastore service as a service
-	//  principal in a Kerberos realm. To disable Kerberos, use the `UpdateService`
-	//  method and specify this field's path
-	//  (`hive_metastore_config.kerberos_config`) in the request's `update_mask`
-	//  while omitting this field from the request's `service`.
-	// +kcc:proto:field=google.cloud.metastore.v1.HiveMetastoreConfig.kerberos_config
-	KerberosConfig *KerberosConfig `json:"kerberosConfig,omitempty"`
-
-	// The protocol to use for the metastore service endpoint. If unspecified,
-	//  defaults to `THRIFT`.
-	// +kcc:proto:field=google.cloud.metastore.v1.HiveMetastoreConfig.endpoint_protocol
-	EndpointProtocol *string `json:"endpointProtocol,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-}
-
 // +kcc:proto=google.cloud.metastore.v1.KerberosConfig
 type KerberosConfig struct {
 	// A Kerberos keytab file that can be used to authenticate a service principal

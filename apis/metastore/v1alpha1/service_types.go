@@ -74,6 +74,45 @@ type EncryptionConfig struct {
 	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.metastore.v1.HiveMetastoreConfig
+type HiveMetastoreConfig struct {
+	// Immutable. The Hive metastore schema version.
+	// +kcc:proto:field=google.cloud.metastore.v1.HiveMetastoreConfig.version
+	Version *string `json:"version,omitempty"`
+
+	// A mapping of Hive metastore configuration key-value pairs to apply to the
+	//  Hive metastore (configured in `hive-site.xml`). The mappings
+	//  override system defaults (some keys cannot be overridden). These
+	//  overrides are also applied to auxiliary versions and can be further
+	//  customized in the auxiliary version's `AuxiliaryVersionConfig`.
+	// +kcc:proto:field=google.cloud.metastore.v1.HiveMetastoreConfig.config_overrides
+	ConfigOverrides map[string]string `json:"configOverrides,omitempty"`
+
+	// Information used to configure the Hive metastore service as a service
+	//  principal in a Kerberos realm. To disable Kerberos, use the `UpdateService`
+	//  method and specify this field's path
+	//  (`hive_metastore_config.kerberos_config`) in the request's `update_mask`
+	//  while omitting this field from the request's `service`.
+	// +kcc:proto:field=google.cloud.metastore.v1.HiveMetastoreConfig.kerberos_config
+	KerberosConfig *KerberosConfig `json:"kerberosConfig,omitempty"`
+
+	// The protocol to use for the metastore service endpoint. If unspecified,
+	//  defaults to `THRIFT`.
+	// +kcc:proto:field=google.cloud.metastore.v1.HiveMetastoreConfig.endpoint_protocol
+	EndpointProtocol *string `json:"endpointProtocol,omitempty"`
+
+	// A mapping of Hive metastore version to the auxiliary version
+	// configuration. When specified, a secondary Hive metastore service is
+	// created along with the primary service. All auxiliary versions must be less
+	// than the service's primary version. The key is the auxiliary service name
+	// and it must match the regular expression [a-z]([-a-z0-9]*[a-z0-9])?. This
+	// means that the first character must be a lowercase letter, and all the
+	// following characters must be hyphens, lowercase letters, or digits, except
+	// the last character, which cannot be a hyphen.
+	// +kcc:proto:field=google.cloud.metastore.v1.HiveMetastoreConfig.auxiliary_versions
+	AuxiliaryVersions map[string]AuxiliaryVersionConfig `json:"auxiliaryVersions,omitempty"`
+}
+
 // Parent defines the parent resource hierarchy.
 type MetastoreServiceParent struct {
 	// +required

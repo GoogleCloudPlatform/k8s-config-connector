@@ -99,7 +99,11 @@ func HiveMetastoreConfig_FromProto(mapCtx *direct.MapContext, in *pb.HiveMetasto
 	out.ConfigOverrides = in.ConfigOverrides
 	out.KerberosConfig = KerberosConfig_FromProto(mapCtx, in.GetKerberosConfig())
 	out.EndpointProtocol = direct.Enum_FromProto(mapCtx, in.GetEndpointProtocol())
-	// MISSING: AuxiliaryVersions
+
+	out.AuxiliaryVersions = make(map[string]krmv1alpha1.AuxiliaryVersionConfig)
+	for k, v := range in.GetAuxiliaryVersions() {
+		out.AuxiliaryVersions[k] = *AuxiliaryVersionConfig_FromProto(mapCtx, v)
+	}
 	return out
 }
 func HiveMetastoreConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.HiveMetastoreConfig) *pb.HiveMetastoreConfig {
@@ -111,7 +115,11 @@ func HiveMetastoreConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Hive
 	out.ConfigOverrides = in.ConfigOverrides
 	out.KerberosConfig = KerberosConfig_ToProto(mapCtx, in.KerberosConfig)
 	out.EndpointProtocol = direct.Enum_ToProto[pb.HiveMetastoreConfig_EndpointProtocol](mapCtx, in.EndpointProtocol)
-	// MISSING: AuxiliaryVersions
+
+	out.AuxiliaryVersions = make(map[string]*pb.AuxiliaryVersionConfig)
+	for k, v := range in.AuxiliaryVersions {
+		out.AuxiliaryVersions[k] = AuxiliaryVersionConfig_ToProto(mapCtx, &v)
+	}
 	return out
 }
 func KerberosConfig_FromProto(mapCtx *direct.MapContext, in *pb.KerberosConfig) *krmv1alpha1.KerberosConfig {
