@@ -26,6 +26,7 @@ import (
 
 var _ identity.Identity = &ComputeImageIdentity{}
 
+// +k8s:deepcopy-gen=false
 type ComputeImageIdentity struct {
 	ProjectID string
 

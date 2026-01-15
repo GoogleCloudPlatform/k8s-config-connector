@@ -22,10 +22,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ManagedFolderIdentity defines the resource reference to StorageManagedFolder, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ManagedFolderIdentity struct {
 	parent *ManagedFolderParent
 	id     string
@@ -115,3 +118,5 @@ func ParseManagedFolderExternal(external string) (parent *ManagedFolderParent, r
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &ManagedFolderIdentity{}

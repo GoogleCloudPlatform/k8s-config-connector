@@ -22,10 +22,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	// refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1" // No longer needed directly
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // TagIdentity defines the resource reference to DataCatalogTag, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type TagIdentity struct {
 	parent *TagParent
 	id     string
@@ -163,3 +166,5 @@ func ParseTagExternal(external string) (parent *TagParent, resourceID string, er
 	resourceID = tokens[9]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &TagIdentity{}

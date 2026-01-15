@@ -23,10 +23,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ImportJobIdentity defines the resource reference to KMSImportJob, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ImportJobIdentity struct {
 	parent *KMSKeyRingIdentity
 	id     string
@@ -101,3 +104,5 @@ func ParseImportJobExternal(external string) (*KMSKeyRingIdentity, string, error
 	resourceID := tokens[7]
 	return p, resourceID, nil
 }
+
+var _ identity.Identity = &ImportJobIdentity{}

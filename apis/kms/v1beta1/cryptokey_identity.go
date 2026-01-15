@@ -19,8 +19,11 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
+// +k8s:deepcopy-gen=false
 type KMSCryptoKeyIdentity struct {
 	parent *KMSKeyRingIdentity
 	id     string
@@ -44,3 +47,5 @@ func ParseKMSCryptoKeyExternal(external string) (*KMSCryptoKeyIdentity, error) {
 	return nil, fmt.Errorf("format of KMSCryptoKey external=%q was not known (use projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}/cryptoKeys/{{keyId}})", external)
 
 }
+
+var _ identity.Identity = &KMSCryptoKeyIdentity{}

@@ -19,10 +19,13 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // InstanceIdentity defines the resource reference to BigtableInstance, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type InstanceIdentity struct {
 	Parent *parent.ProjectParent
 	Id     string
@@ -48,3 +51,5 @@ func ParseInstanceExternal(external string) (*parent.ProjectParent, string, erro
 
 	return &parent.ProjectParent{ProjectID: tokens[1]}, tokens[3], nil
 }
+
+var _ identity.Identity = &InstanceIdentity{}

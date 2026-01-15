@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 )
 
@@ -65,3 +66,5 @@ func (i *StorageBucketIdentity) FromExternal(ref string) error {
 	*i = *parsed
 	return nil
 }
+
+// var _ identity.Identity = &StorageBucketIdentity{} // Tracking in issue #6073

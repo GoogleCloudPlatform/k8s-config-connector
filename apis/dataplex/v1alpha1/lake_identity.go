@@ -33,6 +33,7 @@ const (
 
 // LakeIdentity defines the resource reference to DataplexLake, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type LakeIdentity struct {
 	parent *parent.ProjectAndLocationParent
 	id     string

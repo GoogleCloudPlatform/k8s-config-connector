@@ -22,10 +22,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ProcessorIdentity defines the resource reference to DocumentAIProcessor, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ProcessorIdentity struct {
 	parent *ProcessorParent
 	id     string
@@ -142,3 +145,5 @@ func parseProjectNumberFromExternalRef(externalRef string) string {
 	}
 	return parent.ProjectNumber
 }
+
+var _ identity.Identity = &ProcessorIdentity{}

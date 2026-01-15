@@ -17,10 +17,13 @@ package v1beta1
 import (
 	"fmt"
 	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // InstanceIdentity defines the resource reference to ComputeInstance, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type InstanceIdentity struct {
 	parent *InstanceParent
 	id     string
@@ -136,3 +139,5 @@ func ParseSelfLink(selfLink string) (InstanceIdentity, error) {
 		id:     resourceID,
 	}, nil
 }
+
+var _ identity.Identity = &InstanceIdentity{}

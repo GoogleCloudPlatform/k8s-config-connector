@@ -31,6 +31,7 @@ const (
 
 var _ identity.Identity = &ApigeeEnvironmentIdentity{}
 
+// +k8s:deepcopy-gen=false
 type ApigeeEnvironmentIdentity struct {
 	ParentID   *ApigeeOrganizationIdentity
 	ResourceID string

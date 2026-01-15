@@ -33,6 +33,7 @@ const (
 
 // TaskIdentity defines the resource reference to DataplexTask, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type TaskIdentity struct {
 	parent *LakeIdentity
 	id     string

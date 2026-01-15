@@ -22,8 +22,11 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
+// +k8s:deepcopy-gen=false
 type SpannerInstanceIdentity struct {
 	id     string
 	parent *SpannerInstanceParent
@@ -88,3 +91,5 @@ func NewSpannerInstanceIdentity(ctx context.Context, reader client.Reader, obj *
 func (r *SpannerInstanceIdentity) SpannerInstanceConfigPrefix() string {
 	return fmt.Sprintf("projects/%s/instanceConfigs/", r.parent.ProjectID)
 }
+
+var _ identity.Identity = &SpannerInstanceIdentity{}

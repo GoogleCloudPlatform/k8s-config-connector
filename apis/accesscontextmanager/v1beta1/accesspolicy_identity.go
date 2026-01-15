@@ -20,10 +20,13 @@ import (
 	"strings"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // AccessPolicyIdentity defines the resource reference to AccessContextManagerAccessPolicy, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type AccessPolicyIdentity struct {
 	resourceID string
 	title      string
@@ -59,3 +62,5 @@ func ParseAccessPolicyExternal(external string) (resourceID string, err error) {
 	resourceID = tokens[1]
 	return resourceID, nil
 }
+
+var _ identity.Identity = &AccessPolicyIdentity{}

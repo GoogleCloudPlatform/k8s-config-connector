@@ -32,6 +32,7 @@ const (
 
 // DatabaseIdentity defines the resource reference to BigLakeDatabase, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type DatabaseIdentity struct {
 	parent *CatalogIdentity
 	id     string

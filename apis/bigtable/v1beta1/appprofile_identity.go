@@ -23,12 +23,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 var AppProfileIdentityFormat = gcpurls.Template[AppProfileIdentity]("bigtableadmin.googleapis.com", "projects/{project}/instances/{instance}/appProfiles/{appProfile}")
 
 // AppProfileIdentity defines the resource reference to BigtableAppProfile, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type AppProfileIdentity struct {
 	Project    string
 	Instance   string
@@ -117,3 +120,5 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 		AppProfile: resourceID,
 	}, nil
 }
+
+var _ identity.Identity = &AppProfileIdentity{}

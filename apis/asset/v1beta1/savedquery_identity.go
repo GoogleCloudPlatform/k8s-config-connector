@@ -22,10 +22,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // SavedQueryIdentity defines the resource reference to AssetSavedQuery, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type SavedQueryIdentity struct {
 	parent *SavedQueryParent
 	id     string
@@ -155,3 +158,5 @@ func ParseSavedQueryExternal(external string) (parent *SavedQueryParent, resourc
 	}
 	return nil, "", fmt.Errorf("format of AssetSavedQuery external=%q was not known (use projects/{{projectID}}/savedQueries/{{savedqueryID}})", external)
 }
+
+var _ identity.Identity = &SavedQueryIdentity{}

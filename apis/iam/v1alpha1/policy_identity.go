@@ -14,8 +14,13 @@
 
 package v1alpha1
 
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+)
+
 // PolicyIdentity defines the resource reference to IAMDenyPolicy, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type PolicyIdentity struct {
 	parent *PolicyParent
 	id     string
@@ -107,3 +112,5 @@ func ParsePolicyExternal(external string) (parent *PolicyParent, resourceID stri
 	return parent, resourceID, nil
 }
 */
+
+var _ identity.Identity = &PolicyIdentity{}

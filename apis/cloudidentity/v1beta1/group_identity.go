@@ -21,10 +21,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // GroupIdentity defines the resource reference to CloudIdentityGroup, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type GroupIdentity struct {
 	id string
 }
@@ -80,3 +83,5 @@ func ParseGroupExternal(external string) (resourceID string, err error) {
 	resourceID = tokens[1]
 	return resourceID, nil
 }
+
+var _ identity.Identity = &GroupIdentity{}

@@ -22,8 +22,11 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
+// +k8s:deepcopy-gen=false
 type DataExchangeIdentity struct {
 	id     string
 	parent *DataExchangeParent
@@ -86,3 +89,5 @@ func NewDataExchangeIdentity(ctx context.Context, reader client.Reader, obj *Big
 		id:     resourceID,
 	}, nil
 }
+
+var _ identity.Identity = &DataExchangeIdentity{}

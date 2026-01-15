@@ -20,6 +20,8 @@ import (
 	"strings"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // TargetSiteIdentity defines the full identity for a DataStoreTargetSite
@@ -92,3 +94,5 @@ func ParseTargetSiteExternal(external string) (*TargetSiteIdentity, error) {
 	}
 	return nil, fmt.Errorf("format of DiscoveryEngineDataStoreTargetSite external=%q was not known (use projects/{{projectId}}/locations/{{location}}/collections/{{collectionID}}/dataStores/{{dataStoreID}}/siteSearchEngine/targetSites/{{targetSiteID}})", external)
 }
+
+var _ identity.Identity = &TargetSiteIdentity{}

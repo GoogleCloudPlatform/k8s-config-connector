@@ -22,10 +22,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ClusterIdentity defines the resource reference to ManagedKafkaCluster, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ClusterIdentity struct {
 	parent *ClusterParent
 	id     string
@@ -114,3 +117,5 @@ func ParseClusterExternal(external string) (parent *ClusterParent, resourceID st
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &ClusterIdentity{}

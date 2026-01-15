@@ -28,6 +28,7 @@ var _ identity.Identity = &LinkIdentity{}
 
 // LinkIdentity defines the resource reference to LoggingLink, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type LinkIdentity struct {
 	parent *LogBucketIdentity
 	id     string

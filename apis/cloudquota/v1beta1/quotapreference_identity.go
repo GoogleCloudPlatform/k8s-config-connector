@@ -22,10 +22,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // QuotaPreferenceIdentity defines the resource reference to APIQuotaPreference, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type QuotaPreferenceIdentity struct {
 	parent *QuotaPreferenceParent
 	id     string
@@ -161,3 +164,5 @@ func NewQuotaPreferenceIdentity(ctx context.Context, reader client.Reader, obj *
 		id: resourceID,
 	}, nil
 }
+
+var _ identity.Identity = &QuotaPreferenceIdentity{}

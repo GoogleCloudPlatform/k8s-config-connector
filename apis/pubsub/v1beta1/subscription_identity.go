@@ -19,10 +19,13 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // SubscriptionIdentity defines the resource reference to PubSubSubscription, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type SubscriptionIdentity struct {
 	parent *parent.ProjectParent
 	id     string
@@ -45,3 +48,5 @@ func ParseSubscriptionExternal(external string) (*SubscriptionIdentity, error) {
 		ProjectID: tokens[1],
 	}, id: tokens[3]}, nil
 }
+
+var _ identity.Identity = &SubscriptionIdentity{}

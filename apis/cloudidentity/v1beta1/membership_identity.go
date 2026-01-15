@@ -21,6 +21,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // type: "cloudidentity.googleapis.com/Membership"
@@ -30,6 +32,7 @@ import (
 
 // MembershipIdentity defines the resource reference to CloudIdentityMembership, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type MembershipIdentity struct {
 	parent *GroupIdentity
 	id     string
@@ -98,3 +101,5 @@ func ParseMembershipExternal(external string) (parent *GroupIdentity, resourceID
 	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &MembershipIdentity{}

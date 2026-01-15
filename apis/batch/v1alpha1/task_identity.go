@@ -23,10 +23,13 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // TaskIdentity defines the resource reference to BatchTask, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type TaskIdentity struct {
 	parent *TaskParent
 	id     string
@@ -117,3 +120,5 @@ func ParseTaskExternal(external string) (parent *TaskParent, resourceID string, 
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &TaskIdentity{}

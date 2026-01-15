@@ -31,6 +31,7 @@ const (
 
 var _ identity.Identity = &ApigeeInstanceIdentity{}
 
+// +k8s:deepcopy-gen=false
 type ApigeeOrganizationIdentity struct {
 	ResourceID string
 }
@@ -86,3 +87,5 @@ func (obj *ApigeeOrganization) GetIdentity(ctx context.Context, reader client.Re
 func (obj *ApigeeOrganization) GetParentIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
 	return nil, nil
 }
+
+var _ identity.Identity = &ApigeeOrganizationIdentity{}

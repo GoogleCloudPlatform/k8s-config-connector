@@ -23,10 +23,13 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	workflow "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ExecutionIdentity defines the resource reference to WorkflowsExecution, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ExecutionIdentity struct {
 	parent *ExecutionParent
 	id     string
@@ -123,3 +126,5 @@ func ParseExecutionExternal(external string) (parent *ExecutionParent, resourceI
 	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &ExecutionIdentity{}

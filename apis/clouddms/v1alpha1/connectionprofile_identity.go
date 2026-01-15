@@ -19,12 +19,15 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 const (
 	ConnectionProfileIDURL = parent.ProjectAndLocationURL + "/connectionProfiles/{{connectionProfileID}}"
 )
 
+// +k8s:deepcopy-gen=false
 type ConnectionProfileIdentity struct {
 	parent *parent.ProjectAndLocationParent
 	id     string
@@ -53,3 +56,5 @@ func (i *ConnectionProfileIdentity) FromExternal(external string) error {
 	}
 	return nil
 }
+
+var _ identity.Identity = &ConnectionProfileIdentity{}

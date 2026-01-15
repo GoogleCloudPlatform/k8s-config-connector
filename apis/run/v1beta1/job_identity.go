@@ -29,6 +29,7 @@ var _ identity.Identity = &JobIdentity{}
 
 // JobIdentity defines the resource reference to RunJob, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type JobIdentity struct {
 	parent *JobParent
 	id     string

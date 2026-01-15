@@ -22,10 +22,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // PolicyIdentity defines the resource reference to OrgPolicyPolicy, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type PolicyIdentity struct {
 	parent *PolicyParent
 	id     string
@@ -163,3 +166,5 @@ func ParsePolicyExternal(external string) (parent *PolicyParent, resourceID stri
 	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &PolicyIdentity{}

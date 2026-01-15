@@ -33,6 +33,7 @@ const (
 
 // ZoneIdentity defines the resource reference to DataplexZone, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ZoneIdentity struct {
 	parent *LakeIdentity
 	id     string

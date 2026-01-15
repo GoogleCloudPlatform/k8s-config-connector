@@ -14,6 +14,11 @@
 
 package v1beta1
 
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+)
+
+// +k8s:deepcopy-gen=false
 type SpannerDatabaseIdentity struct {
 	id     string
 	parent *SpannerInstanceIdentity
@@ -30,3 +35,5 @@ func (r *SpannerDatabaseIdentity) Parent() *SpannerInstanceIdentity {
 func (r *SpannerDatabaseIdentity) ID() string {
 	return r.id
 }
+
+var _ identity.Identity = &SpannerDatabaseIdentity{}

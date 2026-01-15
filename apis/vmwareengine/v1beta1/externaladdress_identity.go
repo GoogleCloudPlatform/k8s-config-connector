@@ -21,10 +21,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ExternalAddressIdentity defines the resource reference to VMwareEngineExternalAddress, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ExternalAddressIdentity struct {
 	parent *ExternalAddressParent
 	id     string
@@ -103,3 +106,5 @@ func ParseExternalAddressExternal(external string) (parent *ExternalAddressParen
 	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &ExternalAddressIdentity{}

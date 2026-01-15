@@ -23,6 +23,8 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // IAPSettingsIdentity defines the resource reference to IAPSettings.
@@ -39,6 +41,8 @@ import (
 //	projects/{projects_id}/iap_web/appengine-{app_id}
 //	projects/{projects_id}/iap_web/appengine-{app_id}/services/{service_id}
 //	projects/{projects_id}/iap_web/appengine-{app_id}/services/{service_id}/versions/{version_id}
+//
+// +k8s:deepcopy-gen=false
 type IAPSettingsIdentity struct {
 	id string
 }
@@ -350,3 +354,5 @@ func parseComputeBackendServiceID(selfLink string) (string, error) {
 	}
 	return "", fmt.Errorf("invalid selfLink %q: must have at least 3 segments (e.g., 'projects/{project_id}/global/backendServices/{backend_service_id}')", selfLink)
 }
+
+var _ identity.Identity = &IAPSettingsIdentity{}
