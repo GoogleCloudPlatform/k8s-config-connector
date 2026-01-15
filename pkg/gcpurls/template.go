@@ -18,7 +18,35 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"sync"
 )
+
+// RegisteredTemplate is an interface for accessing template information.
+type RegisteredTemplate interface {
+	Host() string
+	CanonicalForm() string
+}
+
+var (
+	registryMu sync.Mutex
+	registry   []RegisteredTemplate
+)
+
+// AllTemplates returns a snapshot of all registered templates.
+func AllTemplates() []RegisteredTemplate {
+	registryMu.Lock()
+	defer registryMu.Unlock()
+	// Return a copy to be safe
+	out := make([]RegisteredTemplate, len(registry))
+	copy(out, registry)
+	return out
+}
+
+func register(t RegisteredTemplate) {
+	registryMu.Lock()
+	defer registryMu.Unlock()
+	registry = append(registry, t)
+}
 
 // URLTemplate handles parsing and formatting of URLs based on a template.
 type URLTemplate[T any] struct {
@@ -83,6 +111,7 @@ func Template[T any](host, template string) *URLTemplate[T] {
 		}
 	}
 
+	register(t)
 	return t
 }
 
@@ -135,6 +164,11 @@ func (t *URLTemplate[T]) Parse(s string) (*T, bool, error) {
 // CanonicalForm returns the template string.
 func (t *URLTemplate[T]) CanonicalForm() string {
 	return t.template
+}
+
+// Host returns the host.
+func (t *URLTemplate[T]) Host() string {
+	return t.host
 }
 
 // ToString formats the struct T into a URL string.
