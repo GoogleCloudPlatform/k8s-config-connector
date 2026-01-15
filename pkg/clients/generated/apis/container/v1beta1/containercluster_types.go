@@ -297,8 +297,6 @@ type ClusterDnsEndpointConfig struct {
 	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
 }
 
-
-
 type ClusterEphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	LocalSsdCount int64 `json:"localSsdCount"`
@@ -323,8 +321,6 @@ type ClusterFilter struct {
 	/* Can be used to filter what notifications are sent. Valid values include include UPGRADE_AVAILABLE_EVENT, UPGRADE_EVENT and SECURITY_BULLETIN_EVENT. */
 	EventType []string `json:"eventType"`
 }
-
-
 
 type ClusterGcePersistentDiskCsiDriverConfig struct {
 	Enabled bool `json:"enabled"`
@@ -1143,8 +1139,6 @@ type ContainerClusterSpec struct {
 	// +optional
 	EnableIntranodeVisibility *bool `json:"enableIntranodeVisibility,omitempty"`
 
-
-
 	/* Immutable. Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. */
 	// +optional
 	EnableKubernetesAlpha *bool `json:"enableKubernetesAlpha,omitempty"`
@@ -1168,8 +1162,6 @@ type ContainerClusterSpec struct {
 	/* Immutable. Whether to enable Cloud TPU resources in this cluster. */
 	// +optional
 	EnableTpu *bool `json:"enableTpu,omitempty"`
-
-
 
 	/* Configuration for Identity Service which allows customers to use external identity providers with the K8S API. */
 	// +optional

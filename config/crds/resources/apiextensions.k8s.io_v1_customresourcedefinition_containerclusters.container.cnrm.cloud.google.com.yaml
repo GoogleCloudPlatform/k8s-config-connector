@@ -412,14 +412,6 @@ spec:
                       when deciding to remove nodes from a cluster. Can be BALANCED
                       or OPTIMIZE_UTILIZATION. Defaults to BALANCED.
                     type: string
-                  defaultComputeClassConfig:
-                    description: Configuration for the default compute class.
-                    properties:
-                      enabled:
-                        description: Whether the default Compute Engine machine class
-                          is enabled for new autoprovisioned node pools.
-                        type: boolean
-                    type: object
                   enabled:
                     description: Whether node auto-provisioning is enabled. Resource
                       limits for cpu and memory must be defined to enable node auto-provisioning.
@@ -479,7 +471,7 @@ spec:
               controlPlaneEndpointsConfig:
                 description: Configuration for all of the cluster's control plane
                   endpoints. Currently supports only DNS endpoint configuration and
-                  disabling IP endpoint. Other IP endpoint configurations are available
+                  disable IP endpoint. Other IP endpoint configurations are available
                   in private_cluster_config.
                 properties:
                   dnsEndpointConfig:
@@ -489,11 +481,6 @@ spec:
                         description: Controls whether user traffic is allowed over
                           this endpoint. Note that GCP-managed services may still
                           use the endpoint even if this is false.
-                        type: boolean
-                      enableKubernetesTokensViaDNS:
-                        description: Controls whether Kubernetes tokens are enabled for
-                          this endpoint. Can be set to true if allow_external_traffic
-                          is true.
                         type: boolean
                     type: object
                   ipEndpointsConfig:
@@ -594,13 +581,26 @@ spec:
                 description: Whether Intra-node visibility is enabled for this cluster.
                   This makes same node pod to pod traffic visible for VPC network.
                 type: boolean
+              enableK8sBetaApis:
+                description: Configuration for Kubernetes Beta APIs.
+                properties:
+                  enabledApis:
+                    description: Enabled Kubernetes Beta APIs.
+                    items:
+                      type: string
+                    type: array
+                required:
+                - enabledApis
+                type: object
+              enableK8sTokensViaDns:
+                description: Whether to allow access to the cluster's control plane
+                  endpoint for any user who has a valid service account token.
+                type: boolean
               enableKubernetesAlpha:
                 description: Immutable. Whether to enable Kubernetes Alpha features
                   for this cluster. Note that when this option is enabled, the cluster
                   cannot be upgraded and will be automatically deleted after 30 days.
                 type: boolean
-
-
               enableL4IlbSubsetting:
                 description: Whether L4ILB Subsetting is enabled for this cluster.
                 type: boolean

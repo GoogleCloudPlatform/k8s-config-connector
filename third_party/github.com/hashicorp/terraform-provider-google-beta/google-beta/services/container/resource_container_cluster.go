@@ -5054,8 +5054,8 @@ func expandControlPlaneEndpointsConfig(d *schema.ResourceData) *container.Contro
 		dns.ForceSendFields = append(dns.ForceSendFields, "AllowExternalTraffic")
 	}
 	if v := d.Get("control_plane_endpoints_config.0.dns_endpoint_config.0.enable_kubernetes_tokens_via_dns"); v != nil {
-		dns.EnableKubernetesTokensViaDNS = v.(bool)
-		dns.ForceSendFields = append(dns.ForceSendFields, "EnableKubernetesTokensViaDNS")
+		dns.EnableK8sTokensViaDns = v.(bool)
+		dns.ForceSendFields = append(dns.ForceSendFields, "EnableK8sTokensViaDns")
 	}
 
 	ip := &container.IPEndpointsConfig{
@@ -5656,7 +5656,7 @@ func flattenDnsEndpointConfig(dns *container.DNSEndpointConfig) []map[string]int
 
 			"endpoint":                         dns.Endpoint,
 			"allow_external_traffic":           dns.AllowExternalTraffic,
-			"enable_kubernetes_tokens_via_dns": dns.EnableKubernetesTokensViaDNS,
+			"enable_kubernetes_tokens_via_dns": dns.EnableK8sTokensViaDns,
 		},
 	}
 }
