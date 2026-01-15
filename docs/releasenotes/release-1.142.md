@@ -9,7 +9,7 @@
 
 ## New Fields:
 
-*   `AlloyDBInstance`: Added `spec.observabilityConfig` field.
+*   `AlloyDBInstance`: Added `spec.observabilityConfig` and `spec.queryInsightsConfig` fields.
 *   `ContainerNodePool`: Added `spec.nodeConfig.enableNestedVirtualization` field.
 *   `MonitoringDashboard`: Added support for `spec.charts[].dataSets[].timeSeriesQuery.opsAnalyticsQuery.sqlQueryRef`
 
@@ -30,7 +30,6 @@ support (and we list some of the issues that this fixes):
 
 ## Bug Fixes:
 
-*   `AlloyDBInstance`: Fixed a bug where the resource would be continuously updated.
 *   `BatchJob`: Fixed a bug where the resource could not be created.
 *   `FirewallPolicyRule`: Fixed an issue with updating the resource.
 *   `IAMServiceAccountKey`: Fixed a bug that caused re-reconciliation.
