@@ -1599,6 +1599,11 @@ func ResourceContainerCluster() *schema.Resource {
 										Optional:    true,
 										Description: `Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false.`,
 									},
+									"enable_kubernetes_tokens_via_dns": {
+										Type:        schema.TypeBool,
+										Optional:    true,
+										Description: `Controls whether Kubernetes tokens are enabled for this endpoint. Can be set to true if allow_external_traffic is true.`,
+									},
 								},
 							},
 						},
@@ -1942,12 +1947,7 @@ func ResourceContainerCluster() *schema.Resource {
 				Default:     false,
 			},
 
-			"enable_k8s_tokens_via_dns": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Description: `Whether to allow access to the cluster's control plane endpoint for any user who has a valid service account token.`,
-				Default:     false,
-			},
+
 			"private_ipv6_google_access": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -3169,7 +3169,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		req := &container.UpdateClusterRequest{
 			Update: &container.ClusterUpdate{
 				DesiredEnableCiliumClusterwideNetworkPolicy: enabled,
-				ForceSendFields: []string{"DesiredEnableCiliumClusterwideNetworkPolicy"},
+				ForceSendFields:                             []string{"DesiredEnableCiliumClusterwideNetworkPolicy"},
 			},
 		}
 		updateF := updateFunc(req, "updating cilium clusterwide network policy")
@@ -5051,7 +5051,11 @@ func expandControlPlaneEndpointsConfig(d *schema.ResourceData) *container.Contro
 	dns := &container.DNSEndpointConfig{}
 	if v := d.Get("control_plane_endpoints_config.0.dns_endpoint_config.0.allow_external_traffic"); v != nil {
 		dns.AllowExternalTraffic = v.(bool)
-		dns.ForceSendFields = []string{"AllowExternalTraffic"}
+		dns.ForceSendFields = append(dns.ForceSendFields, "AllowExternalTraffic")
+	}
+	if v := d.Get("control_plane_endpoints_config.0.dns_endpoint_config.0.enable_kubernetes_tokens_via_dns"); v != nil {
+		dns.EnableKubernetesTokensViaDNS = v.(bool)
+		dns.ForceSendFields = append(dns.ForceSendFields, "EnableKubernetesTokensViaDNS")
 	}
 
 	ip := &container.IPEndpointsConfig{
@@ -5649,8 +5653,10 @@ func flattenDnsEndpointConfig(dns *container.DNSEndpointConfig) []map[string]int
 	}
 	return []map[string]interface{}{
 		{
-			"endpoint":               dns.Endpoint,
-			"allow_external_traffic": dns.AllowExternalTraffic,
+
+			"endpoint":                         dns.Endpoint,
+			"allow_external_traffic":           dns.AllowExternalTraffic,
+			"enable_kubernetes_tokens_via_dns": dns.EnableKubernetesTokensViaDNS,
 		},
 	}
 }

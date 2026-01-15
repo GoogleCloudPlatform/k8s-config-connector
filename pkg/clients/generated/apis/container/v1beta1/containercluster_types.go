@@ -295,16 +295,9 @@ type ClusterDnsEndpointConfig struct {
 	/* Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false. */
 	// +optional
 	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
-
-	/* Controls whether Kubernetes tokens are enabled for this endpoint. can be set to true if allow_external_traffic is true. */
-	// +optional
-	EnableKubernetesTokensViaDNS *bool `json:"enableKubernetesTokensViaDNS,omitempty"`
 }
 
-type ClusterEnableK8sBetaApis struct {
-	/* Enabled Kubernetes Beta APIs. */
-	EnabledApis []string `json:"enabledApis"`
-}
+
 
 type ClusterEphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
@@ -331,10 +324,7 @@ type ClusterFilter struct {
 	EventType []string `json:"eventType"`
 }
 
-type ClusterGatewayApiConfig struct {
-	/* The Gateway API release channel to use for Gateway API. */
-	Channel string `json:"channel"`
-}
+
 
 type ClusterGcePersistentDiskCsiDriverConfig struct {
 	Enabled bool `json:"enabled"`
@@ -1101,7 +1091,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	ConfidentialNodes *ClusterConfidentialNodes `json:"confidentialNodes,omitempty"`
 
-	/* Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disable IP endpoint. Other IP endpoint configurations are available in private_cluster_config. */
+	/* Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disabling IP endpoint. Other IP endpoint configurations are available in private_cluster_config. */
 	// +optional
 	ControlPlaneEndpointsConfig *ClusterControlPlaneEndpointsConfig `json:"controlPlaneEndpointsConfig,omitempty"`
 
@@ -1153,9 +1143,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	EnableIntranodeVisibility *bool `json:"enableIntranodeVisibility,omitempty"`
 
-	/* Configuration for Kubernetes Beta APIs. */
-	// +optional
-	EnableK8sBetaApis *ClusterEnableK8sBetaApis `json:"enableK8sBetaApis,omitempty"`
+
 
 	/* Immutable. Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. */
 	// +optional
@@ -1181,9 +1169,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	EnableTpu *bool `json:"enableTpu,omitempty"`
 
-	/* Configuration for GKE Gateway API controller. */
-	// +optional
-	GatewayApiConfig *ClusterGatewayApiConfig `json:"gatewayApiConfig,omitempty"`
+
 
 	/* Configuration for Identity Service which allows customers to use external identity providers with the K8S API. */
 	// +optional
@@ -1341,7 +1327,7 @@ type ClusterMasterAuthStatus struct {
 }
 
 type ClusterObservedStateStatus struct {
-	/* Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disable IP endpoint. Other IP endpoint configurations are available in private_cluster_config. */
+	/* Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disabling IP endpoint. Other IP endpoint configurations are available in private_cluster_config. */
 	// +optional
 	ControlPlaneEndpointsConfig *ClusterControlPlaneEndpointsConfigStatus `json:"controlPlaneEndpointsConfig,omitempty"`
 
