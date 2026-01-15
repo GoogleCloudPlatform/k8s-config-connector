@@ -16,27 +16,29 @@ package v1beta1
 
 import (
 	"fmt"
-	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 )
 
-const (
-	// StorageBucketURLFormat is the format for the externalRef of a StorageBucket.
-	StorageBucketURLFormat = "projects/{{project}}/buckets/{{bucket}}"
+var (
+	StorageBucketIdentityFormat = gcpurls.Template[StorageBucketIdentity]("storage.googleapis.com", "projects/{project}/buckets/{bucket}")
 )
 
+// StorageBucketURLFormat is the format for the externalRef of a StorageBucket.
+const StorageBucketURLFormat = "projects/{{project}}/buckets/{{bucket}}"
+
+// +k8s:deepcopy-gen=false
 type StorageBucketIdentity struct {
-	bucket string
-	parent *parent.ProjectParent
+	Project string
+	Bucket  string
 }
 
 func (i *StorageBucketIdentity) String() string {
-	return i.parent.String() + "/buckets/" + i.bucket
+	return StorageBucketIdentityFormat.ToString(*i)
 }
 
-func (i *StorageBucketIdentity) Bucket() string {
-	return i.bucket
+func (i *StorageBucketIdentity) BucketName() string {
+	return i.Bucket
 }
 
 // Deprecated: prefer FromExternal
@@ -52,21 +54,14 @@ func ParseStorageBucketExternal(external string) (*StorageBucketIdentity, error)
 }
 
 func (i *StorageBucketIdentity) FromExternal(ref string) error {
-	ref = strings.TrimPrefix(ref, "//storage.googleapis.com/")
-
-	tokens := strings.Split(ref, "/")
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "buckets" {
-		i.parent = &parent.ProjectParent{}
-		if err := i.parent.FromExternal("projects/" + tokens[1]); err != nil {
-			return fmt.Errorf("format of StorageBucket external=%q was not known (use %s)", ref, StorageBucketURLFormat)
-		}
-
-		i.bucket = tokens[3]
-		if i.bucket == "" {
-			return fmt.Errorf("format of StorageBucket external=%q was not known (use %s)", ref, StorageBucketURLFormat)
-		}
-		return nil
+	parsed, match, err := StorageBucketIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of StorageBucket external=%q was not known (use %s): %w", ref, StorageBucketURLFormat, err)
+	}
+	if !match {
+		return fmt.Errorf("format of StorageBucket external=%q was not known (use %s)", ref, StorageBucketURLFormat)
 	}
 
-	return fmt.Errorf("format of StorageBucket external=%q was not known (use %s)", ref, StorageBucketURLFormat)
+	*i = *parsed
+	return nil
 }

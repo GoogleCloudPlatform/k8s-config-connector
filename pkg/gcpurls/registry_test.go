@@ -68,6 +68,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	ignoredTemplates := map[string]bool{
 		// Add known exceptions here.
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
+		"//storage.googleapis.com/projects/{}/buckets/{}": true,
 	}
 
 	for _, tmpl := range templates {
