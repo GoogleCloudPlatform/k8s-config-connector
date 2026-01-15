@@ -362,7 +362,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				}
 			}
 			if SkipControllerNameValidation {
-				parent.SkipControllerNameValidation = SkipControllerNameValidation	
+				parent.SkipControllerNameValidation = SkipControllerNameValidation
 			}
 			r.reconcilers[gvk] = reconcilers
 			if err := parent.Add(r.mgr, gvk, reconcilers); err != nil {

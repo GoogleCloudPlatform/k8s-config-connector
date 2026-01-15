@@ -216,15 +216,15 @@ func (r *Recorder) SummaryReport(filename string) error {
 	return detailFile.Close()
 }
 
-func(r *Recorder) GKNNPreviewResult() map[GKNN]*GKNNPreviewResult {
+func (r *Recorder) GKNNPreviewResult() map[GKNN]*GKNNPreviewResult {
 	result := make(map[GKNN]*GKNNPreviewResult)
 	for gknn := range r.objects {
 		result[gknn] = &GKNNPreviewResult{
-			Group:   gknn.Group,
-			Kind:    gknn.Kind,
+			Group:     gknn.Group,
+			Kind:      gknn.Kind,
 			Namespace: gknn.Namespace,
-			Name:    gknn.Name,
-			Good: true,
+			Name:      gknn.Name,
+			Good:      true,
 		}
 		for _, event := range r.objects[gknn].events {
 			switch event.eventType {
@@ -246,14 +246,13 @@ func(r *Recorder) GKNNPreviewResult() map[GKNN]*GKNNPreviewResult {
 	return result
 }
 
-
 type GKNNPreviewResult struct {
-	Group   string
-	Kind    string
-	Namespace string
-	Name    string
+	Group          string
+	Kind           string
+	Namespace      string
+	Name           string
 	ControllerType k8s.ReconcilerType
-	Good bool
+	Good           bool
 }
 
 type PreviewReport struct {
@@ -272,7 +271,7 @@ func NewPreviewReport(defaultRecorder *Recorder, alternativeRecorder *Recorder) 
 	for gknn := range defaultResult {
 		previewReport.report[gknn] = &GKNNReport{
 			DefaultControllerType: &defaultResult[gknn].ControllerType,
-			DefaultGood: &defaultResult[gknn].Good,
+			DefaultGood:           &defaultResult[gknn].Good,
 		}
 	}
 	for gknn := range alternativeResult {
@@ -327,8 +326,8 @@ func (r *PreviewReport) Export(filename string) error {
 }
 
 type GKNNReport struct {
-	DefaultControllerType *k8s.ReconcilerType
-	DefaultGood *bool
+	DefaultControllerType     *k8s.ReconcilerType
+	DefaultGood               *bool
 	AlternativeControllerType *k8s.ReconcilerType
-	AlternativeGood *bool
+	AlternativeGood           *bool
 }
