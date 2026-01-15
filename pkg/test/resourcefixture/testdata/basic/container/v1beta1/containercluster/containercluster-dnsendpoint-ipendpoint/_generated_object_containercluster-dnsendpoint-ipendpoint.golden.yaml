@@ -19,6 +19,7 @@ spec:
   controlPlaneEndpointsConfig:
     dnsEndpointConfig:
       allowExternalTraffic: true
+      enableK8sTokensViaDns: false
   initialNodeCount: 1
   location: northamerica-south1-b
   masterAuthorizedNetworksConfig:
