@@ -34,6 +34,9 @@ func (m *grpcMux) addGCPHeaders(ctx context.Context, w http.ResponseWriter, resp
 	w.Header().Set("X-Frame-Options", "SAMEORIGIN")
 	w.Header().Set("X-Xss-Protection", "0")
 
+	if m.overrideHeaders != nil {
+		m.overrideHeaders(w)
+	}
 	return nil
 }
 

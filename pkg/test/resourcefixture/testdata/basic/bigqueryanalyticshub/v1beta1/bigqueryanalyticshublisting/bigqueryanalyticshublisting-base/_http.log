@@ -230,6 +230,8 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "bigqueryDataset": {
     "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "effectiveReplicas": [],
+    "replicaLocations": [],
     "restrictedExportPolicy": null,
     "selectedResources": []
   },
@@ -246,7 +248,8 @@ Grpc-Metadata-Content-Type: application/grpc
   "requestAccess": "",
   "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
   "restrictedExportConfig": null,
-  "state": "STATE_UNSPECIFIED"
+  "state": "STATE_UNSPECIFIED",
+  "storedProcedureConfig": null
 }
 
 ---
@@ -263,6 +266,8 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "bigqueryDataset": {
     "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "effectiveReplicas": [],
+    "replicaLocations": [],
     "restrictedExportPolicy": null,
     "selectedResources": []
   },
@@ -279,7 +284,8 @@ Grpc-Metadata-Content-Type: application/grpc
   "requestAccess": "",
   "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
   "restrictedExportConfig": null,
-  "state": "STATE_UNSPECIFIED"
+  "state": "STATE_UNSPECIFIED",
+  "storedProcedureConfig": null
 }
 
 ---
@@ -305,6 +311,8 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "bigqueryDataset": {
     "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "effectiveReplicas": [],
+    "replicaLocations": [],
     "restrictedExportPolicy": null,
     "selectedResources": []
   },
@@ -321,7 +329,8 @@ Grpc-Metadata-Content-Type: application/grpc
   "requestAccess": "",
   "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
   "restrictedExportConfig": null,
-  "state": "STATE_UNSPECIFIED"
+  "state": "STATE_UNSPECIFIED",
+  "storedProcedureConfig": null
 }
 
 ---
@@ -338,6 +347,8 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "bigqueryDataset": {
     "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+    "effectiveReplicas": [],
+    "replicaLocations": [],
     "restrictedExportPolicy": null,
     "selectedResources": []
   },
@@ -354,7 +365,8 @@ Grpc-Metadata-Content-Type: application/grpc
   "requestAccess": "",
   "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
   "restrictedExportConfig": null,
-  "state": "STATE_UNSPECIFIED"
+  "state": "STATE_UNSPECIFIED",
+  "storedProcedureConfig": null
 }
 
 ---
