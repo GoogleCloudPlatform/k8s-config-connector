@@ -173,13 +173,15 @@ func (a *QueueAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	if err != nil {
 		return err
 	}
+
+	// remove output only fields
+	paths = paths.Delete("name")
+	paths = paths.Delete("state")
+
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
-	// remove output only fields
-	paths = paths.Delete("name")
-	paths = paths.Delete("state")
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	for path := range paths {
