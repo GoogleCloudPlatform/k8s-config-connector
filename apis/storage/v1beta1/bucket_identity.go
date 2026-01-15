@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 )
 
@@ -39,10 +38,6 @@ func (i *StorageBucketIdentity) String() string {
 
 func (i *StorageBucketIdentity) BucketName() string {
 	return i.Bucket
-}
-
-func (i *StorageBucketIdentity) Parent() *parent.ProjectParent {
-	return &parent.ProjectParent{ProjectID: i.Project}
 }
 
 // Deprecated: prefer FromExternal

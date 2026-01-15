@@ -15,10 +15,7 @@
 package v1beta1
 
 import (
-	"reflect"
 	"testing"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
 
 func TestStorageBucketIdentity_FromExternal(t *testing.T) {
@@ -95,10 +92,5 @@ func TestStorageBucketIdentity_Methods(t *testing.T) {
 
 	if got := i.BucketName(); got != "my-bucket" {
 		t.Errorf("BucketName() = %v, want %v", got, "my-bucket")
-	}
-
-	wantParent := &parent.ProjectParent{ProjectID: "my-project"}
-	if got := i.Parent(); !reflect.DeepEqual(got, wantParent) {
-		t.Errorf("Parent() = %v, want %v", got, wantParent)
 	}
 }

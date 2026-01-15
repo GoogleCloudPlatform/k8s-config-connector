@@ -76,7 +76,7 @@ func NewFolderIdentity(ctx context.Context, reader client.Reader, obj *StorageFo
 		return nil, err
 	}
 
-	bucketName := bucketIdentity.Bucket()
+	bucketName := bucketIdentity.BucketName()
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
