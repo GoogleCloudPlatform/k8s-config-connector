@@ -22,37 +22,57 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var AppProfileIdentityFormat = gcpurls.Template[AppProfileIdentity]("bigtableadmin.googleapis.com", "projects/{project}/instances/{instance}/appProfiles/{appProfile}")
 
 // AppProfileIdentity defines the resource reference to BigtableAppProfile, which "External" field
 // holds the GCP identifier for the KRM object.
 type AppProfileIdentity struct {
-	parent *InstanceIdentity
-	id     string
+	Project    string
+	Instance   string
+	AppProfile string
 }
 
 func (i *AppProfileIdentity) String() string {
-	return i.ParentString() + "/appProfiles/" + i.id
+	return AppProfileIdentityFormat.ToString(*i)
+}
+
+func (i *AppProfileIdentity) FromExternal(ref string) error {
+	parsed, match, err := AppProfileIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of AppProfile external=%q was not known (use %s): %w", ref, AppProfileIdentityFormat, err)
+	}
+	if !match {
+		return fmt.Errorf("format of AppProfile external=%q was not known (use %s)", ref, AppProfileIdentityFormat)
+	}
+
+	*i = *parsed
+	return nil
 }
 
 func (i *AppProfileIdentity) ID() string {
-	return i.id
+	return i.AppProfile
 }
 
 func (i *AppProfileIdentity) Parent() *InstanceIdentity {
-	return i.parent
+	return &InstanceIdentity{
+		Parent: &parent.ProjectParent{ProjectID: i.Project},
+		Id:     i.Instance,
+	}
 }
 
 func (i *AppProfileIdentity) ParentString() string {
-	return i.parent.String()
+	return i.Parent().String()
 }
 
 func (i *AppProfileIdentity) ParentInstanceIdString() string {
-	return i.parent.Id
+	return i.Instance
 }
 
-// New builds a AppProfileIdentity from the Config Connector AppProfile object.
+// NewAppProfileIdentity builds a AppProfileIdentity from the Config Connector AppProfile object.
 func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *BigtableAppProfile) (*AppProfileIdentity, error) {
 	// Get Parent
 	instanceRef, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
@@ -77,34 +97,44 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseAppProfileExternal(externalRef)
-		if err != nil {
+		actualIdentity := &AppProfileIdentity{}
+		if err := actualIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.Parent.ProjectID != instanceParent.ProjectID {
-			return nil, fmt.Errorf("ProjectID in spec.instanceRef changed, expect %s, got %s", actualParent.Parent.ProjectID, instanceParent.ProjectID)
+		if actualIdentity.Project != instanceParent.ProjectID {
+			return nil, fmt.Errorf("ProjectID in spec.instanceRef changed, expect %s, got %s", actualIdentity.Project, instanceParent.ProjectID)
 		}
-		if actualParent.Id != instanceID {
-			return nil, fmt.Errorf("instanceID in spec.instanceRef changed, expect %s, got %s", actualParent.Id, instanceID)
+		if actualIdentity.Instance != instanceID {
+			return nil, fmt.Errorf("instanceID in spec.instanceRef changed, expect %s, got %s", actualIdentity.Instance, instanceID)
 		}
-		if actualResourceID != resourceID {
+		if actualIdentity.AppProfile != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+				resourceID, actualIdentity.AppProfile)
 		}
 	}
 	return &AppProfileIdentity{
-		parent: &InstanceIdentity{
-			Parent: instanceParent,
-			Id:     instanceID,
-		},
-		id: resourceID,
+		Project:    instanceParent.ProjectID,
+		Instance:   instanceID,
+		AppProfile: resourceID,
 	}, nil
 }
 
 func ParseAppProfileExternal(external string) (*InstanceIdentity, string, error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "appProfiles" {
-		return nil, "", fmt.Errorf("format of BigtableAppProfile external=%q was not known (use projects/{{projectID}}/instances/{{instance}}/appProfiles/{{appprofileID}})", external)
+	id := &AppProfileIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		// Fallback to manual parsing if FromExternal fails, or just return error.
+		// However, FromExternal logic is:
+		// parsed, match, err := AppProfileIdentityFormat.Parse(ref)
+		// ...
+		// if !match ...
+		// The error returned by FromExternal seems sufficient.
+		// Use original parsing logic as fallback or just rely on FromExternal?
+		// The original logic was:
+		tokens := strings.Split(external, "/")
+		if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "appProfiles" {
+			return nil, "", fmt.Errorf("format of BigtableAppProfile external=%q was not known (use projects/{{projectID}}/instances/{{instance}}/appProfiles/{{appprofileID}})", external)
+		}
+		return &InstanceIdentity{Parent: &parent.ProjectParent{ProjectID: tokens[1]}, Id: tokens[3]}, tokens[5], nil
 	}
-	return &InstanceIdentity{Parent: &parent.ProjectParent{ProjectID: tokens[1]}, Id: tokens[3]}, tokens[5], nil
+	return id.Parent(), id.AppProfile, nil
 }
