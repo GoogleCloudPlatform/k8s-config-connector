@@ -17,37 +17,60 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var ExternalAddressIdentityFormat = gcpurls.Template[ExternalAddressIdentity]("vmwareengine.googleapis.com", "projects/{project}/locations/{location}/privateClouds/{privateCloud}/externalAddresses/{externalAddress}")
 
 // ExternalAddressIdentity defines the resource reference to VMwareEngineExternalAddress, which "External" field
 // holds the GCP identifier for the KRM object.
 type ExternalAddressIdentity struct {
-	parent *ExternalAddressParent
-	id     string
+	Project         string
+	Location        string
+	PrivateCloud    string
+	ExternalAddress string
 }
 
 func (i *ExternalAddressIdentity) String() string {
-	return i.parent.String() + "/externalAddresses/" + i.id
+	return ExternalAddressIdentityFormat.ToString(*i)
 }
 
 func (i *ExternalAddressIdentity) ID() string {
-	return i.id
+	return i.ExternalAddress
 }
 
 func (i *ExternalAddressIdentity) Parent() *ExternalAddressParent {
-	return i.parent
+	return &ExternalAddressParent{
+		Project:      i.Project,
+		Location:     i.Location,
+		PrivateCloud: i.PrivateCloud,
+	}
+}
+
+func (i *ExternalAddressIdentity) FromExternal(ref string) error {
+	parsed, match, err := ExternalAddressIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of ExternalAddress external=%q was not known (use %s): %w", ref, ExternalAddressIdentityFormat, err)
+	}
+	if !match {
+		return fmt.Errorf("format of ExternalAddress external=%q was not known (use %s)", ref, ExternalAddressIdentityFormat)
+	}
+
+	*i = *parsed
+	return nil
 }
 
 type ExternalAddressParent struct {
+	Project      string
+	Location     string
 	PrivateCloud string
 }
 
 func (p *ExternalAddressParent) String() string {
-	return p.PrivateCloud
+	return fmt.Sprintf("projects/%s/locations/%s/privateClouds/%s", p.Project, p.Location, p.PrivateCloud)
 }
 
 // New builds a ExternalAddressIdentity from the Config Connector ExternalAddress object.
@@ -71,35 +94,33 @@ func NewExternalAddressIdentity(ctx context.Context, reader client.Reader, obj *
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseExternalAddressExternal(externalRef)
-		if err != nil {
+		id := &ExternalAddressIdentity{}
+		if err := id.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.PrivateCloud != privateCloud {
-			return nil, fmt.Errorf("spec.privateCloudRef changed, expect %s, got %s", actualParent.PrivateCloud, privateCloud)
+		if id.Parent().String() != privateCloud {
+			return nil, fmt.Errorf("spec.privateCloudRef changed, expect %s, got %s", id.Parent().String(), privateCloud)
 		}
-		if actualResourceID != resourceID {
+		if id.ExternalAddress != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+				resourceID, id.ExternalAddress)
 		}
+		return id, nil
 	}
-	return &ExternalAddressIdentity{
-		parent: &ExternalAddressParent{
-			PrivateCloud: privateCloud,
-		},
-		id: resourceID,
-	}, nil
+
+	// Construct from spec
+	fullPath := fmt.Sprintf("%s/externalAddresses/%s", privateCloud, resourceID)
+	id := &ExternalAddressIdentity{}
+	if err := id.FromExternal(fullPath); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
 func ParseExternalAddressExternal(external string) (parent *ExternalAddressParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "privateClouds" || tokens[6] != "externalAddresses" {
-		return nil, "", fmt.Errorf("format of VMwareEngineExternalAddress external=%q was not known (use projects/{{projectID}}/locations/{{location}}/privateClouds/{{privatecloudID}}/externalAddresses/{{externaladdressID}})", external)
+	id := &ExternalAddressIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		return nil, "", err
 	}
-	privateCloud := strings.Join(tokens[:len(tokens)-2], "/")
-	parent = &ExternalAddressParent{
-		PrivateCloud: privateCloud,
-	}
-	resourceID = tokens[7]
-	return parent, resourceID, nil
+	return id.Parent(), id.ExternalAddress, nil
 }
