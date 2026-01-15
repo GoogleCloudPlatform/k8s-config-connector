@@ -36,7 +36,6 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 		name          string
 		cc            *corev1beta1.ConfigConnector
 		expectEnabled bool
-		expectHash    bool
 	}{
 		{
 			name: "experiments nil",
@@ -46,7 +45,6 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 				},
 			},
 			expectEnabled: false,
-			expectHash:    false,
 		},
 		{
 			name: "multicluster lease nil",
@@ -58,7 +56,6 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 				},
 			},
 			expectEnabled: false,
-			expectHash:    false,
 		},
 		{
 			name: "multicluster lease set",
@@ -74,7 +71,6 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 				},
 			},
 			expectEnabled: true,
-			expectHash:    true,
 		},
 	}
 
@@ -91,7 +87,7 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 			for _, item := range m.Items {
 				if IsControllerManagerStatefulSet(item) {
 					foundStatefulSet = true
-					
+
 					// Check args
 					foundArg := false
 					err := item.MutateContainers(func(container map[string]interface{}) error {
@@ -122,22 +118,23 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 					annotations := item.UnstructuredObject().GetAnnotations()
 					// Check template annotations
 					templateAnnotations, _, _ := unstructured.NestedStringMap(item.UnstructuredObject().Object, "spec", "template", "metadata", "annotations")
-					
-					hashKey := "cnrm.cloud.google.com/multi-cluster-lease-hash"
-					hashVal, hasHash := templateAnnotations[hashKey]
-					
-					if tc.expectHash && !hasHash {
-						t.Errorf("expected pod template annotation %s, but not found", hashKey)
+
+					if tc.expectEnabled {
+						if val, ok := templateAnnotations["cnrm.cloud.google.com/lease-name"]; !ok || val != "foo" {
+							t.Errorf("expected pod template annotation cnrm.cloud.google.com/lease-name to be 'foo', got '%s'", val)
+						}
+						if val, ok := templateAnnotations["cnrm.cloud.google.com/lease-namespace"]; !ok || val != "bar" {
+							t.Errorf("expected pod template annotation cnrm.cloud.google.com/lease-namespace to be 'bar', got '%s'", val)
+						}
+						if val, ok := templateAnnotations["cnrm.cloud.google.com/lease-identity"]; !ok || val != "baz" {
+							t.Errorf("expected pod template annotation cnrm.cloud.google.com/lease-identity to be 'baz', got '%s'", val)
+						}
+					} else {
+						if _, ok := templateAnnotations["cnrm.cloud.google.com/lease-name"]; ok {
+							t.Errorf("did not expect pod template annotation cnrm.cloud.google.com/lease-name")
+						}
 					}
-					if !tc.expectHash && hasHash {
-						t.Errorf("did not expect pod template annotation %s, but found: %s", hashKey, hashVal)
-					}
-					
-					// If hash is expected, ensure it is not empty
-					if tc.expectHash && hashVal == "" {
-						t.Errorf("expected non-empty hash value")
-					}
-					
+
 					// Log annotations for debugging
 					t.Logf("StatefulSet Annotations: %v", annotations)
 					t.Logf("Pod Template Annotations: %v", templateAnnotations)

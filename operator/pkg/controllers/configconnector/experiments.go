@@ -16,9 +16,6 @@ package configconnector
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -88,15 +85,7 @@ func (r *Reconciler) applyMultiClusterLeaderElection(ctx context.Context, lease 
 			return fmt.Errorf("failed to apply multi-cluster leader election to %s: %w", item.GetName(), err)
 		}
 
-		// Calculate hash of the lease config
-		leaseBytes, err := json.Marshal(lease)
-		if err != nil {
-			return fmt.Errorf("failed to marshal multi-cluster lease config: %w", err)
-		}
-		hash := sha256.Sum256(leaseBytes)
-		hashString := hex.EncodeToString(hash[:])
-
-		// Add hash as annotation to the Pod template
+		// Add annotations to the Pod template
 		u := item.UnstructuredObject()
 		annotations, _, err := unstructured.NestedStringMap(u.Object, "spec", "template", "metadata", "annotations")
 		if err != nil {
@@ -105,7 +94,10 @@ func (r *Reconciler) applyMultiClusterLeaderElection(ctx context.Context, lease 
 		if annotations == nil {
 			annotations = make(map[string]string)
 		}
-		annotations["cnrm.cloud.google.com/multi-cluster-lease-hash"] = hashString
+		annotations["cnrm.cloud.google.com/lease-name"] = lease.LeaseName
+		annotations["cnrm.cloud.google.com/lease-namespace"] = lease.Namespace
+		annotations["cnrm.cloud.google.com/lease-identity"] = lease.ClusterCandidateIdentity
+
 		if err := unstructured.SetNestedStringMap(u.Object, annotations, "spec", "template", "metadata", "annotations"); err != nil {
 			return fmt.Errorf("failed to set pod template annotations: %w", err)
 		}
