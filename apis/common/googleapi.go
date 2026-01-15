@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,9 +64,9 @@ type Any struct {
 	//  Schemes other than `http`, `https` (or the empty scheme) might be
 	//  used with implementation specific semantics.
 	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeURL,omitempty"`
+	TypeURL *string `json:"typeUrl,omitempty"`
 
 	// Must be a valid serialized protocol buffer of the above specified type.
 	// +kcc:proto:field=google.protobuf.Any.value
-	Value []byte `json:"value,omitempty"`
+	Value *string `json:"value,omitempty"`
 }

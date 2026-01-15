@@ -22,6 +22,8 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/genproto/googleapis/rpc/status"
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 func EndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.EndpointObservedState {
@@ -80,6 +82,59 @@ func EndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EndpointOb
 	// MISSING: Network
 	// MISSING: NetworkType
 	// MISSING: ProjectID
+	return out
+}
+func StatusObservedState_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.StatusObservedState {
+	if in == nil {
+		return nil
+	}
+
+	out := &krm.StatusObservedState{
+		Code:    direct.LazyPtr(in.Code),
+		Message: direct.LazyPtr(in.Message),
+	}
+	if len(in.Details) == 0 {
+		return out
+	}
+	detailsOut := make([]krm.Any, 0)
+	for _, d := range in.Details {
+		if d == nil {
+			continue
+		}
+		dOut := krm.Any{
+			TypeURL: direct.LazyPtr(d.TypeUrl),
+			Value:   direct.ByteSliceToStringPtr(mapCtx, d.Value),
+		}
+		detailsOut = append(detailsOut, dOut)
+	}
+	if len(detailsOut) > 0 {
+		out.Details = detailsOut
+	}
+	return out
+}
+func StatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StatusObservedState) *status.Status {
+	if in == nil {
+		return nil
+	}
+
+	out := &status.Status{
+		Code:    direct.ValueOf(in.Code),
+		Message: direct.ValueOf(in.Message),
+	}
+	if len(in.Details) == 0 {
+		return out
+	}
+	detailsOut := make([]*anypb.Any, 0)
+	for _, d := range in.Details {
+		dOut := &anypb.Any{
+			TypeUrl: direct.ValueOf(d.TypeURL),
+			Value:   direct.StringPtrToByteSlice(mapCtx, d.Value),
+		}
+		detailsOut = append(detailsOut, dOut)
+	}
+	if len(detailsOut) > 0 {
+		out.Details = detailsOut
+	}
 	return out
 }
 func NetworkManagementConnectivityTestSpec_RelatedProjects_FromProto(mapCtx *direct.MapContext, in []string) []refs.ProjectRef {
@@ -199,5 +254,61 @@ func Endpoint_CloudRunRevisionEndpoint_ToProto(mapCtx *direct.MapContext, in *kr
 	if in.RunRevisionRef != nil {
 		out.Uri = in.RunRevisionRef.External
 	}
+	return out
+}
+
+func ReachabilityDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReachabilityDetails) *krm.ReachabilityDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReachabilityDetailsObservedState{}
+	out.Result = direct.Enum_FromProto(mapCtx, in.GetResult())
+	out.VerifyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVerifyTime())
+	out.Error = StatusObservedState_FromProto(mapCtx, in.GetError())
+	out.Traces = direct.Slice_FromProto(mapCtx, in.Traces, TraceObservedState_FromProto)
+	return out
+}
+func ReachabilityDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ReachabilityDetailsObservedState) *pb.ReachabilityDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReachabilityDetails{}
+	out.Result = direct.Enum_ToProto[pb.ReachabilityDetails_Result](mapCtx, in.Result)
+	out.VerifyTime = direct.StringTimestamp_ToProto(mapCtx, in.VerifyTime)
+	out.Error = StatusObservedState_ToProto(mapCtx, in.Error)
+	out.Traces = direct.Slice_ToProto(mapCtx, in.Traces, TraceObservedState_ToProto)
+	return out
+}
+
+func ProbingDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProbingDetails) *krm.ProbingDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProbingDetailsObservedState{}
+	out.Result = direct.Enum_FromProto(mapCtx, in.GetResult())
+	out.VerifyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVerifyTime())
+	out.Error = StatusObservedState_FromProto(mapCtx, in.GetError())
+	out.AbortCause = direct.Enum_FromProto(mapCtx, in.GetAbortCause())
+	out.SentProbeCount = direct.LazyPtr(in.GetSentProbeCount())
+	out.SuccessfulProbeCount = direct.LazyPtr(in.GetSuccessfulProbeCount())
+	out.EndpointInfo = EndpointInfoObservedState_FromProto(mapCtx, in.GetEndpointInfo())
+	out.ProbingLatency = LatencyDistributionObservedState_FromProto(mapCtx, in.GetProbingLatency())
+	out.DestinationEgressLocation = ProbingDetails_EdgeLocationObservedState_FromProto(mapCtx, in.GetDestinationEgressLocation())
+	return out
+}
+func ProbingDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ProbingDetailsObservedState) *pb.ProbingDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProbingDetails{}
+	out.Result = direct.Enum_ToProto[pb.ProbingDetails_ProbingResult](mapCtx, in.Result)
+	out.VerifyTime = direct.StringTimestamp_ToProto(mapCtx, in.VerifyTime)
+	out.Error = StatusObservedState_ToProto(mapCtx, in.Error)
+	out.AbortCause = direct.Enum_ToProto[pb.ProbingDetails_ProbingAbortCause](mapCtx, in.AbortCause)
+	out.SentProbeCount = direct.ValueOf(in.SentProbeCount)
+	out.SuccessfulProbeCount = direct.ValueOf(in.SuccessfulProbeCount)
+	out.EndpointInfo = EndpointInfoObservedState_ToProto(mapCtx, in.EndpointInfo)
+	out.ProbingLatency = LatencyDistributionObservedState_ToProto(mapCtx, in.ProbingLatency)
+	out.DestinationEgressLocation = ProbingDetails_EdgeLocationObservedState_ToProto(mapCtx, in.DestinationEgressLocation)
 	return out
 }

@@ -683,38 +683,6 @@ func NetworkManagementConnectivityTestSpec_ToProto(mapCtx *direct.MapContext, in
 	out.BypassFirewallChecks = direct.ValueOf(in.BypassFirewallChecks)
 	return out
 }
-func ProbingDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProbingDetails) *krm.ProbingDetailsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ProbingDetailsObservedState{}
-	out.Result = direct.Enum_FromProto(mapCtx, in.GetResult())
-	out.VerifyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVerifyTime())
-	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
-	out.AbortCause = direct.Enum_FromProto(mapCtx, in.GetAbortCause())
-	out.SentProbeCount = direct.LazyPtr(in.GetSentProbeCount())
-	out.SuccessfulProbeCount = direct.LazyPtr(in.GetSuccessfulProbeCount())
-	out.EndpointInfo = EndpointInfoObservedState_FromProto(mapCtx, in.GetEndpointInfo())
-	out.ProbingLatency = LatencyDistributionObservedState_FromProto(mapCtx, in.GetProbingLatency())
-	out.DestinationEgressLocation = ProbingDetails_EdgeLocationObservedState_FromProto(mapCtx, in.GetDestinationEgressLocation())
-	return out
-}
-func ProbingDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ProbingDetailsObservedState) *pb.ProbingDetails {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ProbingDetails{}
-	out.Result = direct.Enum_ToProto[pb.ProbingDetails_ProbingResult](mapCtx, in.Result)
-	out.VerifyTime = direct.StringTimestamp_ToProto(mapCtx, in.VerifyTime)
-	out.Error = direct.Status_ToProto(mapCtx, in.Error)
-	out.AbortCause = direct.Enum_ToProto[pb.ProbingDetails_ProbingAbortCause](mapCtx, in.AbortCause)
-	out.SentProbeCount = direct.ValueOf(in.SentProbeCount)
-	out.SuccessfulProbeCount = direct.ValueOf(in.SuccessfulProbeCount)
-	out.EndpointInfo = EndpointInfoObservedState_ToProto(mapCtx, in.EndpointInfo)
-	out.ProbingLatency = LatencyDistributionObservedState_ToProto(mapCtx, in.ProbingLatency)
-	out.DestinationEgressLocation = ProbingDetails_EdgeLocationObservedState_ToProto(mapCtx, in.DestinationEgressLocation)
-	return out
-}
 func ProbingDetails_EdgeLocationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ProbingDetails_EdgeLocation) *krm.ProbingDetails_EdgeLocationObservedState {
 	if in == nil {
 		return nil
@@ -765,28 +733,6 @@ func ProxyConnectionInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.NewDestinationPort = direct.ValueOf(in.NewDestinationPort)
 	out.SubnetUri = direct.ValueOf(in.SubnetURI)
 	out.NetworkUri = direct.ValueOf(in.NetworkURI)
-	return out
-}
-func ReachabilityDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReachabilityDetails) *krm.ReachabilityDetailsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ReachabilityDetailsObservedState{}
-	out.Result = direct.Enum_FromProto(mapCtx, in.GetResult())
-	out.VerifyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVerifyTime())
-	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
-	out.Traces = direct.Slice_FromProto(mapCtx, in.Traces, TraceObservedState_FromProto)
-	return out
-}
-func ReachabilityDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ReachabilityDetailsObservedState) *pb.ReachabilityDetails {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ReachabilityDetails{}
-	out.Result = direct.Enum_ToProto[pb.ReachabilityDetails_Result](mapCtx, in.Result)
-	out.VerifyTime = direct.StringTimestamp_ToProto(mapCtx, in.VerifyTime)
-	out.Error = direct.Status_ToProto(mapCtx, in.Error)
-	out.Traces = direct.Slice_ToProto(mapCtx, in.Traces, TraceObservedState_ToProto)
 	return out
 }
 func RedisClusterInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RedisClusterInfo) *krm.RedisClusterInfoObservedState {

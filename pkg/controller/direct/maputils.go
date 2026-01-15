@@ -595,14 +595,14 @@ func Status_FromProto(mapCtx *MapContext, in *statuspb.Status) *common.Status {
 	if len(in.Details) == 0 {
 		return out
 	}
-	detailsOut := make([]common.Any, 0)
+	detailsOut := make([]common.Any, 0, len(in.Details))
 	for _, d := range in.Details {
 		if d == nil {
 			continue
 		}
 		dOut := common.Any{
 			TypeURL: LazyPtr(d.TypeUrl),
-			Value:   d.Value,
+			Value:   ByteSliceToStringPtr(mapCtx, d.Value),
 		}
 		detailsOut = append(detailsOut, dOut)
 	}
@@ -623,11 +623,11 @@ func Status_ToProto(mapCtx *MapContext, in *common.Status) *statuspb.Status {
 	if len(in.Details) == 0 {
 		return out
 	}
-	detailsOut := make([]*anypb.Any, 0)
+	detailsOut := make([]*anypb.Any, 0, len(in.Details))
 	for _, d := range in.Details {
 		dOut := &anypb.Any{
 			TypeUrl: ValueOf(d.TypeURL),
-			Value:   d.Value,
+			Value:   StringPtrToByteSlice(mapCtx, d.Value),
 		}
 		detailsOut = append(detailsOut, dOut)
 	}

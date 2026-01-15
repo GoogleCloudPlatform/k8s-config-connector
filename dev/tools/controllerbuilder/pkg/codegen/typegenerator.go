@@ -133,7 +133,17 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
-		out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
+
+		for i := 0; i < msg.Fields().Len(); i++ {
+			field := msg.Fields().Get(i)
+			if field.Message() != nil {
+				name := field.Message().FullName()
+				if name == "google.protobuf.Any" || name == "google.rpc.Status" {
+					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
+					break
+				}
+			}
+		}
 
 		out.goPackage = lastGoComponent(g.goPackage)
 
@@ -176,7 +186,15 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		}
 
 		out := g.getOutputFile(k)
-		out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
+		for _, field := range msgDetails.OutputFields {
+			if field.Message() != nil {
+				name := field.Message().FullName()
+				if name == "google.protobuf.Any" || name == "google.rpc.Status" {
+					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
+					break
+				}
+			}
+		}
 		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
