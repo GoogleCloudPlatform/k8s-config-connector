@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 )
 
