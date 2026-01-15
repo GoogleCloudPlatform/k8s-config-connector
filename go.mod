@@ -57,6 +57,7 @@ require (
 	cloud.google.com/go/notebooks v1.12.7
 	cloud.google.com/go/orchestration v1.11.10
 	cloud.google.com/go/orgpolicy v1.15.1
+	cloud.google.com/go/parametermanager v0.3.1
 	cloud.google.com/go/privilegedaccessmanager v0.3.1
 	cloud.google.com/go/profiler v0.4.3
 	cloud.google.com/go/pubsub/v2 v2.3.0
