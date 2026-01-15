@@ -55,9 +55,9 @@ type modelListing struct {
 	config config.ControllerConfig
 }
 
-func (m *modelListing) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelListing) client(ctx context.Context, project string) (*gcp.Client, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.RESTClientOptions(config.WithDefaultQuotaProject(project))
 	if err != nil {
 		return nil, err
 	}
@@ -74,6 +74,16 @@ func (m *modelListing) AdapterForObject(ctx context.Context, reader client.Reade
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	// Get Project
+	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
+	}
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
 	id, err := krm.NewBigQueryAnalyticsHubListingRef(ctx, reader, obj)
 	if err != nil {
 		return nil, err
@@ -83,7 +93,7 @@ func (m *modelListing) AdapterForObject(ctx context.Context, reader client.Reade
 		return nil, err
 	}
 	// Get bigqueryanalyticshub GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, projectID)
 	if err != nil {
 		return nil, err
 	}

@@ -48,6 +48,9 @@ type grpcMux struct {
 
 	// services are the gRPC services registered with the mux
 	services []*grpcService
+
+	// overrideHeaders allows changing headers before they are sent
+	overrideHeaders func(response http.ResponseWriter)
 }
 
 var _ Mux = (*grpcMux)(nil)
@@ -55,6 +58,11 @@ var _ Mux = (*grpcMux)(nil)
 // NewGRPCMux creates a new grpcMux.
 func NewGRPCMux(conn *grpc.ClientConn) (*grpcMux, error) {
 	return &grpcMux{conn: conn}, nil
+}
+
+// OverrideHeaders allows changing headers before they are sent.
+func (m *grpcMux) OverrideHeaders(headers func(response http.ResponseWriter)) {
+	m.overrideHeaders = headers
 }
 
 // grpcMethods holds state for a single gRPC method.
