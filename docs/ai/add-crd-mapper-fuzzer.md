@@ -31,6 +31,8 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
+
 # Generate the KCC type structs from the GCP proto definitions
 go run . generate-types \
   --service google.example.api.v1 \

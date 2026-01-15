@@ -26,6 +26,8 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
+
 go run . generate-types \
     --service google.cloud.myservice.v1 \
     --api-version "myservice.cnrm.cloud.google.com/v1alpha1" \
