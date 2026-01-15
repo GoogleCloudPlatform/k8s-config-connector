@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:mapper
+// +generated:types
 // krm.group: iam.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.iam.admin.v1
+// resource: IAMServiceAccountKey:ServiceAccountKey
 
-package iam
+package v1beta1
