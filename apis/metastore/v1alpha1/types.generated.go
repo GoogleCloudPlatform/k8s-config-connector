@@ -36,6 +36,8 @@ type AuxiliaryVersionConfig struct {
 	//  the auxiliary version's overrides takes precedence.
 	// +kcc:proto:field=google.cloud.metastore.v1.AuxiliaryVersionConfig.config_overrides
 	ConfigOverrides map[string]string `json:"configOverrides,omitempty"`
+	// +kcc:proto:field=google.cloud.metastore.v1.AuxiliaryVersionConfig.network_config
+	NetworkConfig *NetworkConfig `json:"networkConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.metastore.v1.KerberosConfig

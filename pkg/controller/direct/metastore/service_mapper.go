@@ -41,7 +41,7 @@ func AuxiliaryVersionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Auxiliar
 	out := &krmv1alpha1.AuxiliaryVersionConfig{}
 	out.Version = direct.LazyPtr(in.GetVersion())
 	out.ConfigOverrides = in.ConfigOverrides
-	// MISSING: NetworkConfig
+	out.NetworkConfig = NetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
 	return out
 }
 func AuxiliaryVersionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.AuxiliaryVersionConfig) *pb.AuxiliaryVersionConfig {
@@ -51,7 +51,7 @@ func AuxiliaryVersionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.A
 	out := &pb.AuxiliaryVersionConfig{}
 	out.Version = direct.ValueOf(in.Version)
 	out.ConfigOverrides = in.ConfigOverrides
-	// MISSING: NetworkConfig
+	out.NetworkConfig = NetworkConfig_ToProto(mapCtx, in.NetworkConfig)
 	return out
 }
 func BackendMetastore_FromProto(mapCtx *direct.MapContext, in *pb.BackendMetastore) *krmv1alpha1.BackendMetastore {
@@ -102,7 +102,9 @@ func HiveMetastoreConfig_FromProto(mapCtx *direct.MapContext, in *pb.HiveMetasto
 
 	out.AuxiliaryVersions = make(map[string]krmv1alpha1.AuxiliaryVersionConfig)
 	for k, v := range in.GetAuxiliaryVersions() {
-		out.AuxiliaryVersions[k] = *AuxiliaryVersionConfig_FromProto(mapCtx, v)
+		if val := AuxiliaryVersionConfig_FromProto(mapCtx, v); val != nil {
+			out.AuxiliaryVersions[k] = *val
+		}
 	}
 	return out
 }

@@ -117,6 +117,40 @@ spec:
                             overrides and the primary version's overrides, the value
                             from the auxiliary version's overrides takes precedence.
                           type: object
+                        networkConfig:
+                          properties:
+                            consumers:
+                              description: Immutable. The consumer-side network configuration
+                                for the Dataproc Metastore instance.
+                              items:
+                                properties:
+                                  subnetworkRef:
+                                    description: Immutable. The subnetwork of the
+                                      customer project from which an IP address is
+                                      reserved and used as the Dataproc Metastore
+                                      service's endpoint. It is accessible to hosts
+                                      in the subnet and to all hosts in a subnet in
+                                      the same region and same network. There must
+                                      be at least one IP address available in the
+                                      subnet's primary range.
+                                    properties:
+                                      external:
+                                        description: The ComputeSubnetwork selflink
+                                          of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
+                                          when not managed by Config Connector.
+                                        type: string
+                                      name:
+                                        description: The `name` field of a `ComputeSubnetwork`
+                                          resource.
+                                        type: string
+                                      namespace:
+                                        description: The `namespace` field of a `ComputeSubnetwork`
+                                          resource.
+                                        type: string
+                                    type: object
+                                type: object
+                              type: array
+                          type: object
                         version:
                           description: The Hive metastore version of the auxiliary
                             service. It must be less than the primary Hive metastore
