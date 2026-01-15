@@ -112,14 +112,25 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 		endpointProtocol = pb.HiveMetastoreConfig_GRPC
 	}
 	// Add HiveMetastoreConfig with endpointProtocol
+	// Add HiveMetastoreConfig with endpointProtocol
+	hiveConfig := req.Service.GetHiveMetastoreConfig()
+	if hiveConfig == nil {
+		hiveConfig = &pb.HiveMetastoreConfig{}
+	}
+	// Copy or merge default values
+	if hiveConfig.EndpointProtocol == pb.HiveMetastoreConfig_ENDPOINT_PROTOCOL_UNSPECIFIED {
+		hiveConfig.EndpointProtocol = endpointProtocol
+	}
+	if hiveConfig.Version == "" {
+		hiveConfig.Version = "3.1.2"
+	}
+	if hiveConfig.ConfigOverrides == nil {
+		hiveConfig.ConfigOverrides = make(map[string]string)
+	}
+	hiveConfig.ConfigOverrides["hive.metastore.warehouse.dir"] = "gs://gcs-bucket-" + name.Name + "/hive-warehouse"
+
 	obj.MetastoreConfig = &pb.Service_HiveMetastoreConfig{
-		HiveMetastoreConfig: &pb.HiveMetastoreConfig{
-			EndpointProtocol: endpointProtocol,
-			Version:          "3.1.2",
-			ConfigOverrides: map[string]string{
-				"hive.metastore.warehouse.dir": "gs://gcs-bucket-" + name.Name + "/hive-warehouse",
-			},
-		},
+		HiveMetastoreConfig: hiveConfig,
 	}
 
 	// Generate a UID if not present
@@ -190,6 +201,14 @@ func (s *DataprocMetastoreV1) UpdateService(ctx context.Context, req *pb.UpdateS
 				obj.Tier = req.Service.Tier
 			case "hive_metastore_config":
 				obj.MetastoreConfig = req.Service.MetastoreConfig
+			default:
+				if strings.HasPrefix(path, "hive_metastore_config.") {
+					obj.MetastoreConfig = req.Service.MetastoreConfig
+				}
+				if strings.HasPrefix(path, "network_config.") {
+					obj.NetworkConfig = req.Service.NetworkConfig
+				}
+				// Ignore other unknown paths or handle specific nested fields if necessary
 			case "maintenance_window":
 				obj.MaintenanceWindow = req.Service.MaintenanceWindow
 			case "labels":
