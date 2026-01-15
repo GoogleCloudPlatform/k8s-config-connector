@@ -52,7 +52,8 @@ func (r *TableRef) NormalizedExternal(ctx context.Context, reader client.Reader,
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseTableExternal(r.External); err != nil {
+		identity := &TableIdentity{}
+		if err := identity.FromExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
