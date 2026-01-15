@@ -27,6 +27,7 @@ var (
 // StorageBucketURLFormat is the format for the externalRef of a StorageBucket.
 const StorageBucketURLFormat = "projects/{{project}}/buckets/{{bucket}}"
 
+// +k8s:deepcopy-gen=false
 type StorageBucketIdentity struct {
 	Project string
 	Bucket  string
