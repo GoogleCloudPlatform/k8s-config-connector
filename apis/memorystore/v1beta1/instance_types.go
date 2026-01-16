@@ -477,26 +477,6 @@ type CrossInstanceReplicationConfig_RemoteInstanceObservedState struct {
 	Uid *string `json:"uid,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1.EncryptionInfo
-type EncryptionInfoObservedState struct {
-	// Output only. Type of encryption
-	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.encryption_type
-	EncryptionType *string `json:"encryptionType,omitempty"`
-
-	// Output only. KMS key versions that are being used to protect the data at-rest.
-	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.kms_key_versions
-	KmsKeyVersions []string `json:"kmsKeyVersions,omitempty"`
-
-	// Output only. The state of the primary version of the KMS key perceived by the system.
-	//  This field is not populated in backups.
-	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.kms_key_primary_state
-	KmsKeyPrimaryState *string `json:"kmsKeyPrimaryState,omitempty"`
-
-	// Output only. The most recent time when the encryption info was updated.
-	// +kcc:proto:field=google.cloud.memorystore.v1.EncryptionInfo.last_update_time
-	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
-}
-
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
 type Instance_ConnectionDetailObservedState struct {
 	// Detailed information of a PSC connection that is created through
