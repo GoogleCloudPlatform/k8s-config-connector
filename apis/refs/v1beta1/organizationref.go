@@ -22,6 +22,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -32,6 +34,46 @@ type OrganizationRef struct {
 	// The 'name' field of an organization, when not managed by Config Connector.
 	// +required
 	External string `json:"external,omitempty"`
+}
+
+var _ Ref = &OrganizationRef{}
+
+func (r *OrganizationRef) GetGVK() schema.GroupVersionKind {
+	// There is no CRD yet for Organization
+	return schema.GroupVersionKind{}
+}
+
+func (r *OrganizationRef) GetNamespacedName() types.NamespacedName {
+	// OrganizationRef does not have Name or Namespace fields (because there is no CRD)
+	return types.NamespacedName{}
+}
+
+func (r *OrganizationRef) GetExternal() string {
+	return r.External
+}
+
+func (r *OrganizationRef) SetExternal(external string) {
+	r.External = external
+}
+
+func (r *OrganizationRef) ValidateExternal(external string) error {
+	if external == "" {
+		return fmt.Errorf("must specify 'external' in 'organizationRef'")
+	}
+
+	// When Organization implements identity.Identity, we should delegate to it
+	tokens := strings.Split(external, "/")
+	if len(tokens) == 2 && tokens[0] == "organizations" {
+		return nil
+	}
+	return fmt.Errorf("format of 'organizationRef.external'=%q was not known (use organizations/<organizationID>)", external)
+}
+
+func (r *OrganizationRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External == "" {
+		return fmt.Errorf("must specify 'external' in 'organizationRef'")
+	}
+	return r.ValidateExternal(r.External)
 }
 
 // AsOrganizationRef converts a generic ResourceRef into a OrganizationRef.
