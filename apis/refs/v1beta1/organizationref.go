@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -51,7 +52,13 @@ type OrganizationIdentity struct {
 // Deprecated: Use OrganizationIdentity instead.
 type Organization = OrganizationIdentity
 
+var _ identity.Identity = &OrganizationIdentity{}
+
 var OrganizationFormat = gcpurls.Template[OrganizationIdentity]("cloudresourcemanager.googleapis.com", "organizations/{organizationID}")
+
+func (i *OrganizationIdentity) String() string {
+	return OrganizationFormat.ToString(*i)
+}
 
 func (i *OrganizationIdentity) FromExternal(ref string) error {
 	parsed, match, err := OrganizationFormat.Parse(ref)
