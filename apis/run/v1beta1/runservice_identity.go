@@ -22,6 +22,7 @@ import (
 
 var RunServiceIdentityFormat = gcpurls.Template[RunServiceIdentity]("run.googleapis.com", "projects/{project}/locations/{location}/services/{service}")
 
+// +k8s:deepcopy-gen=false
 type RunServiceIdentity struct {
 	Project  string
 	Location string
