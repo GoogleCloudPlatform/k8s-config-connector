@@ -234,11 +234,11 @@ type ClusterConfigConnectorConfig struct {
 type ClusterControlPlaneEndpointsConfig struct {
 	/* DNS endpoint configuration. */
 	// +optional
-	DnsEndpointConfig *ClusterDnsEndpointConfig `json:"dnsEndpointConfig,omitempty"`
+	DnsEndpointConfig *ClusterDNSEndpointConfig `json:"dnsEndpointConfig,omitempty"`
 
 	/* IP endpoint configuration. */
 	// +optional
-	IpEndpointsConfig *ClusterIpEndpointsConfig `json:"ipEndpointsConfig,omitempty"`
+	IpEndpointsConfig *ClusterIPEndpointsConfig `json:"ipEndpointsConfig,omitempty"`
 }
 
 type ClusterCostManagementConfig struct {
@@ -291,10 +291,19 @@ type ClusterDnsConfig struct {
 	ClusterDnsScope *string `json:"clusterDnsScope,omitempty"`
 }
 
-type ClusterDnsEndpointConfig struct {
+type ClusterDNSEndpointConfig struct {
 	/* Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false. */
 	// +optional
 	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
+
+	/* Controls whether Kubernetes tokens are enabled for this endpoint. Can be set to true if allow_external_traffic is true. */
+	// +optional
+	EnableKubernetesTokensViaDNS *bool `json:"enableKubernetesTokensViaDNS,omitempty"`
+}
+
+type ClusterEnableK8sBetaApis struct {
+	/* Enabled Kubernetes Beta APIs. */
+	EnabledApis []string `json:"enabledApis"`
 }
 
 type ClusterEphemeralStorageConfig struct {
@@ -320,6 +329,11 @@ type ClusterFastSocket struct {
 type ClusterFilter struct {
 	/* Can be used to filter what notifications are sent. Valid values include include UPGRADE_AVAILABLE_EVENT, UPGRADE_EVENT and SECURITY_BULLETIN_EVENT. */
 	EventType []string `json:"eventType"`
+}
+
+type ClusterGatewayApiConfig struct {
+	/* The Gateway API release channel to use for Gateway API. */
+	Channel string `json:"channel"`
 }
 
 type ClusterGcePersistentDiskCsiDriverConfig struct {
@@ -430,7 +444,7 @@ type ClusterIpAllocationPolicy struct {
 	StackType *string `json:"stackType,omitempty"`
 }
 
-type ClusterIpEndpointsConfig struct {
+type ClusterIPEndpointsConfig struct {
 	/* Controls whether to allow direct IP access. When false, configuration of masterAuthorizedNetworksConfig, privateClusterConfig.enablePrivateEndpoint, privateClusterConfig.privateEndpointSubnetwork and privateClusterConfig.masterGlobalAccessConfig fields won't be used, and privateClusterConfig.privateEndpoint and privateClusterConfig.publicEndpoint fields won't be populated. */
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`
@@ -1139,6 +1153,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	EnableIntranodeVisibility *bool `json:"enableIntranodeVisibility,omitempty"`
 
+	/* Configuration for Kubernetes Beta APIs. */
+	// +optional
+	EnableK8sBetaApis *ClusterEnableK8sBetaApis `json:"enableK8sBetaApis,omitempty"`
+
 	/* Immutable. Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. */
 	// +optional
 	EnableKubernetesAlpha *bool `json:"enableKubernetesAlpha,omitempty"`
@@ -1162,6 +1180,10 @@ type ContainerClusterSpec struct {
 	/* Immutable. Whether to enable Cloud TPU resources in this cluster. */
 	// +optional
 	EnableTpu *bool `json:"enableTpu,omitempty"`
+
+	/* Configuration for GKE Gateway API controller. */
+	// +optional
+	GatewayApiConfig *ClusterGatewayApiConfig `json:"gatewayApiConfig,omitempty"`
 
 	/* Configuration for Identity Service which allows customers to use external identity providers with the K8S API. */
 	// +optional
@@ -1299,10 +1321,10 @@ type ContainerClusterSpec struct {
 type ClusterControlPlaneEndpointsConfigStatus struct {
 	/* DNS endpoint configuration. */
 	// +optional
-	DnsEndpointConfig *ClusterDnsEndpointConfigStatus `json:"dnsEndpointConfig,omitempty"`
+	DnsEndpointConfig *ClusterDNSEndpointConfigStatus `json:"dnsEndpointConfig,omitempty"`
 }
 
-type ClusterDnsEndpointConfigStatus struct {
+type ClusterDNSEndpointConfigStatus struct {
 	/* The cluster's DNS endpoint. */
 	// +optional
 	Endpoint *string `json:"endpoint,omitempty"`

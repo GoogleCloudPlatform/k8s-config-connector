@@ -5031,9 +5031,14 @@ func isEnablePrivateEndpointPSCCluster(cluster *container.Cluster) bool {
 func expandPrivateClusterConfigMasterIpv4CidrBlock(configured interface{}, c *container.Cluster) *container.PrivateClusterConfig {
 	v := configured.(string)
 
+	enablePrivateNodes := false
+	if c != nil && c.NetworkConfig != nil {
+		enablePrivateNodes = c.NetworkConfig.DefaultEnablePrivateNodes
+	}
+
 	return &container.PrivateClusterConfig{
 		MasterIpv4CidrBlock: v,
-		EnablePrivateNodes:  c.NetworkConfig.DefaultEnablePrivateNodes,
+		EnablePrivateNodes:  enablePrivateNodes,
 		ForceSendFields:     []string{"MasterIpv4CidrBlock"},
 	}
 }
