@@ -304,12 +304,16 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 
 	if sourceLocations.LeadingComments != "" {
 		comment := strings.TrimSpace(sourceLocations.LeadingComments)
+		isRequired := strings.HasPrefix(comment, "Required.") || strings.HasPrefix(comment, "REQUIRED:")
 		for _, line := range strings.Split(comment, "\n") {
 			if strings.TrimSpace(line) == "" {
 				fmt.Fprintf(out, "\t//\n")
 			} else {
 				fmt.Fprintf(out, "\t// %s\n", line)
 			}
+		}
+		if isRequired {
+			fmt.Fprintf(out, "\t// +required\n")
 		}
 	}
 
