@@ -17,29 +17,48 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var TableIdentityFormat = gcpurls.Template[TableIdentity]("bigquery.googleapis.com", "projects/{project}/datasets/{dataset}/tables/{table}")
 
 // TableIdentity defines the resource reference to BigQueryTable, which "External" field
 // holds the GCP identifier for the KRM object.
 type TableIdentity struct {
-	parent *TableParent
-	id     string
+	Project string
+	Dataset string
+	Table   string
 }
 
 func (i *TableIdentity) String() string {
-	return i.parent.String() + "/tables/" + i.id
+	return TableIdentityFormat.ToString(*i)
 }
 
 func (i *TableIdentity) ID() string {
-	return i.id
+	return i.Table
 }
 
 func (i *TableIdentity) Parent() *TableParent {
-	return i.parent
+	return &TableParent{
+		ProjectID: i.Project,
+		DatasetID: i.Dataset,
+	}
+}
+
+func (i *TableIdentity) FromExternal(ref string) error {
+	parsed, match, err := TableIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of Table external=%q was not known (use %s): %w", ref, TableIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of Table external=%q was not known (use %s)", ref, TableIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
 }
 
 type TableParent struct {
@@ -77,39 +96,24 @@ func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigQueryTa
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseTableExternal(externalRef)
-		if err != nil {
+		actualIdentity := &TableIdentity{}
+		if err := actualIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != datasetParent.ProjectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actualIdentity.Project != datasetParent.ProjectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.Project, projectID)
 		}
-		if actualParent.DatasetID != dataset {
-			return nil, fmt.Errorf("spec.datasetRef changed, expect %s, got %s", actualParent.DatasetID, dataset)
+		if actualIdentity.Dataset != dataset {
+			return nil, fmt.Errorf("spec.datasetRef changed, expect %s, got %s", actualIdentity.Dataset, dataset)
 		}
-		if actualResourceID != resourceID {
+		if actualIdentity.Table != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+				resourceID, actualIdentity.Table)
 		}
 	}
 	return &TableIdentity{
-		parent: &TableParent{
-			ProjectID: datasetParent.ProjectID,
-			DatasetID: dataset,
-		},
-		id: resourceID,
+		Project: projectID,
+		Dataset: dataset,
+		Table:   resourceID,
 	}, nil
-}
-
-func ParseTableExternal(external string) (parent *TableParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "datasets" || tokens[4] != "tables" {
-		return nil, "", fmt.Errorf("format of BigQueryTable external=%q was not known (use projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}})", external)
-	}
-	parent = &TableParent{
-		ProjectID: tokens[1],
-		DatasetID: tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
 }
