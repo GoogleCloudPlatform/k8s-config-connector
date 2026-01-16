@@ -34,25 +34,24 @@ type OrganizationRef struct {
 	External string `json:"external,omitempty"`
 }
 
+var _ Ref = &OrganizationRef{}
+
 func (r *OrganizationRef) GetGVK() schema.GroupVersionKind {
+	// There is no CRD yet for Organization
 	return schema.GroupVersionKind{}
 }
 
 func (r *OrganizationRef) GetNamespacedName() types.NamespacedName {
+	// OrganizationRef does not have Name or Namespace fields (because there is no CRD)
 	return types.NamespacedName{}
 }
 
 func (r *OrganizationRef) GetExternal() string {
-	if r != nil {
-		return r.External
-	}
-	return ""
+	return r.External
 }
 
 func (r *OrganizationRef) SetExternal(external string) {
-	if r != nil {
-		r.External = external
-	}
+	r.External = external
 }
 
 func (r *OrganizationRef) ValidateExternal(external string) error {
@@ -60,6 +59,7 @@ func (r *OrganizationRef) ValidateExternal(external string) error {
 		return fmt.Errorf("must specify 'external' in 'organizationRef'")
 	}
 
+	// When Organization implements identity.Identity, we should delegate to it
 	tokens := strings.Split(external, "/")
 	if len(tokens) == 2 && tokens[0] == "organizations" {
 		return nil
