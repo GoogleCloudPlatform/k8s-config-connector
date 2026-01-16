@@ -26,6 +26,7 @@ import (
 
 // DiscoveredWorkloadIdentity defines the resource reference to AppHubDiscoveredWorkload, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type DiscoveredWorkloadIdentity struct {
 	parent *DiscoveredWorkloadParent
 	id     string
@@ -115,3 +116,5 @@ func ParseDiscoveredWorkloadExternal(external string) (parent *DiscoveredWorkloa
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &DiscoveredWorkloadIdentity{} // Tracking in issue #6073

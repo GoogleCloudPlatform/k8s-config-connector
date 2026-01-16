@@ -26,6 +26,7 @@ import (
 
 // WorkflowsWorkflowIdentity defines the resource reference to WorkflowsWorkflow, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type WorkflowsWorkflowIdentity struct {
 	parent *WorkflowsWorkflowParent
 	id     string
@@ -115,3 +116,5 @@ func ParseWorkflowsWorkflowExternal(external string) (parent *WorkflowsWorkflowP
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &WorkflowsWorkflowIdentity{} // Tracking in issue #6073

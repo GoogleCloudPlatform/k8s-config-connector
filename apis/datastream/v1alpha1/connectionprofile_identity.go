@@ -22,10 +22,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ConnectionProfileIdentity defines the resource reference to DatastreamConnectionProfile, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ConnectionProfileIdentity struct {
 	parent *ConnectionProfileParent
 	id     string
@@ -115,3 +118,5 @@ func ParseConnectionProfileExternal(external string) (parent *ConnectionProfileP
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &ConnectionProfileIdentity{}

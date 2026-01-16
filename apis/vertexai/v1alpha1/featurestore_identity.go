@@ -26,6 +26,7 @@ import (
 
 // FeaturestoreIdentity defines the resource reference to VertexAIFeaturestore, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type FeaturestoreIdentity struct {
 	parent *FeaturestoreParent
 	id     string
@@ -115,3 +116,5 @@ func ParseFeaturestoreExternal(external string) (parent *FeaturestoreParent, res
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &FeaturestoreIdentity{} // Tracking in issue #6073

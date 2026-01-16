@@ -21,9 +21,12 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // WorkstationConfigIdentity defines the resource reference to WorkstationConfig.
+// +k8s:deepcopy-gen=false
 type WorkstationConfigIdentity struct {
 	parent *WorkstationConfigParent
 	id     string
@@ -129,3 +132,5 @@ func ParseWorkstationConfigExternal(external string) (parent *WorkstationConfigP
 	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &WorkstationConfigIdentity{}

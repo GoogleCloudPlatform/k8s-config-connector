@@ -14,6 +14,7 @@
 
 package v1beta1
 
+// +k8s:deepcopy-gen=false
 type SpannerDatabaseIdentity struct {
 	id     string
 	parent *SpannerInstanceIdentity
@@ -30,3 +31,5 @@ func (r *SpannerDatabaseIdentity) Parent() *SpannerInstanceIdentity {
 func (r *SpannerDatabaseIdentity) ID() string {
 	return r.id
 }
+
+// var _ identity.Identity = &SpannerDatabaseIdentity{} // Tracking in issue #6073

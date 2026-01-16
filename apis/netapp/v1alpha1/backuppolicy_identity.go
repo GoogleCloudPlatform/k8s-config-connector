@@ -26,6 +26,7 @@ import (
 
 // BackupPolicyIdentity defines the resource reference to NetAppBackupPolicy, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type BackupPolicyIdentity struct {
 	parent *BackupPolicyParent
 	id     string
@@ -115,3 +116,5 @@ func ParseBackupPolicyExternal(external string) (parent *BackupPolicyParent, res
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &BackupPolicyIdentity{} // Tracking in issue #6073

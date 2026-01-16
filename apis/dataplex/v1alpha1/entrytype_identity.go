@@ -33,6 +33,7 @@ const (
 
 // EntryTypeIdentity defines the resource reference to DataplexEntryType, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type EntryTypeIdentity struct {
 	parent *parent.ProjectAndLocationParent
 	id     string

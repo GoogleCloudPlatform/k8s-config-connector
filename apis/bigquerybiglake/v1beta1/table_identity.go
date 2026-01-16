@@ -33,6 +33,7 @@ const (
 
 // TableIdentity defines the resource reference to BigLakeTable, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type TableIdentity struct {
 	parent *krmv1alpha1.DatabaseIdentity
 	id     string

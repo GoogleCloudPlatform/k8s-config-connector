@@ -26,6 +26,7 @@ import (
 
 var _ identity.Identity = &BillingAccountIdentity{}
 
+// +k8s:deepcopy-gen=false
 type BillingAccountIdentity struct {
 	BillingAccountID string
 }

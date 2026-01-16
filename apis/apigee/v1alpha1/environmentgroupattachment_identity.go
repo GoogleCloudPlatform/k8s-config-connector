@@ -31,6 +31,7 @@ const (
 
 var _ identity.Identity = &ApigeeEnvgroupAttachmentIdentity{}
 
+// +k8s:deepcopy-gen=false
 type ApigeeEnvgroupAttachmentIdentity struct {
 	ParentID   *ApigeeEnvgroupIdentity
 	ResourceID string

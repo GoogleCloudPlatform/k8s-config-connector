@@ -26,6 +26,7 @@ import (
 
 // TagTemplateIdentity defines the resource reference to DataCatalogTagTemplate, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type TagTemplateIdentity struct {
 	parent *TagTemplateParent
 	id     string
@@ -131,3 +132,5 @@ func ParseTagTemplateExternal(external string) (parent *TagTemplateParent, resou
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &TagTemplateIdentity{} // Tracking in issue #6073

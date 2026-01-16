@@ -26,6 +26,7 @@ import (
 
 // QuotaPreferenceIdentity defines the resource reference to APIQuotaPreference, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type QuotaPreferenceIdentity struct {
 	parent *QuotaPreferenceParent
 	id     string
@@ -161,3 +162,5 @@ func NewQuotaPreferenceIdentity(ctx context.Context, reader client.Reader, obj *
 		id: resourceID,
 	}, nil
 }
+
+// var _ identity.Identity = &QuotaPreferenceIdentity{} // Tracking in issue #6073

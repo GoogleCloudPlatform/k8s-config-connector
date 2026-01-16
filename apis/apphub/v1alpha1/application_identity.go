@@ -26,6 +26,7 @@ import (
 
 // ApplicationIdentity defines the resource reference to AppHubApplication, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ApplicationIdentity struct {
 	parent *ApplicationParent
 	id     string
@@ -116,3 +117,5 @@ func ParseApplicationExternal(external string) (parent *ApplicationParent, resou
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &ApplicationIdentity{} // Tracking in issue #6073

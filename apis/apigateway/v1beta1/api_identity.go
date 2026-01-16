@@ -26,6 +26,7 @@ import (
 
 // ApiIdentity defines the resource reference to APIGatewayAPI, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ApiIdentity struct {
 	parent *ApiParent
 	id     string
@@ -115,3 +116,5 @@ func ParseApiExternal(external string) (parent *ApiParent, resourceID string, er
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &ApiIdentity{} // Tracking in issue #6073

@@ -25,6 +25,7 @@ import (
 
 // RestoreIdentity defines the resource reference to GKEBackupRestore, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type RestoreIdentity struct {
 	parent *RestoreParent
 	id     string
@@ -104,3 +105,5 @@ func ParseRestoreExternal(external string) (parent *RestoreParent, resourceID st
 	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &RestoreIdentity{} // Tracking in issue #6073

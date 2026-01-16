@@ -25,6 +25,7 @@ import (
 
 // PolicyTagIdentity defines the resource reference to DataCatalogPolicyTag, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type PolicyTagIdentity struct {
 	parent *PolicyTagParent
 	id     string
@@ -123,3 +124,5 @@ func ParsePolicyTagExternal(external string) (parent *PolicyTagParent, resourceI
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &PolicyTagIdentity{} // Tracking in issue #6073

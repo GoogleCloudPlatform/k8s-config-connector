@@ -26,6 +26,7 @@ import (
 
 // ProcessorIdentity defines the resource reference to DocumentAIProcessor, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ProcessorIdentity struct {
 	parent *ProcessorParent
 	id     string
@@ -142,3 +143,5 @@ func parseProjectNumberFromExternalRef(externalRef string) string {
 	}
 	return parent.ProjectNumber
 }
+
+// var _ identity.Identity = &ProcessorIdentity{} // Tracking in issue #6073

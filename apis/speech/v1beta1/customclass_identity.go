@@ -26,6 +26,7 @@ import (
 
 // CustomClassIdentity defines the resource reference to SpeechCustomClass, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type CustomClassIdentity struct {
 	parent *CustomClassParent
 	id     string
@@ -115,3 +116,5 @@ func ParseCustomClassExternal(external string) (parent *CustomClassParent, resou
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &CustomClassIdentity{} // Tracking in issue #6073

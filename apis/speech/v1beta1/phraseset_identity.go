@@ -26,6 +26,7 @@ import (
 
 // PhraseSetIdentity defines the resource reference to SpeechPhraseSet, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type PhraseSetIdentity struct {
 	parent *PhraseSetParent
 	id     string
@@ -115,3 +116,5 @@ func ParsePhraseSetExternal(external string) (parent *PhraseSetParent, resourceI
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &PhraseSetIdentity{} // Tracking in issue #6073

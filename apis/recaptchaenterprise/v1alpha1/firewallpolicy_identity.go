@@ -26,6 +26,7 @@ import (
 
 // FirewallPolicyIdentity defines the resource reference to ReCAPTCHAEnterpriseFirewallPolicy, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type FirewallPolicyIdentity struct {
 	parent *FirewallPolicyParent
 	id     string
@@ -112,3 +113,5 @@ func ParseFirewallPolicyExternal(external string) (parent *FirewallPolicyParent,
 	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &FirewallPolicyIdentity{} // Tracking in issue #6073

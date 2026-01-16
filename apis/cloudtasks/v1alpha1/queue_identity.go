@@ -26,6 +26,7 @@ import (
 
 // QueueIdentity defines the resource reference to TasksQueue, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type QueueIdentity struct {
 	parent *QueueParent
 	id     string
@@ -115,3 +116,5 @@ func ParseQueueExternal(external string) (parent *QueueParent, resourceID string
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &QueueIdentity{} // Tracking in issue #6073

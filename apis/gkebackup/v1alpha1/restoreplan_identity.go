@@ -26,6 +26,7 @@ import (
 
 // RestorePlanIdentity defines the resource reference to GKEBackupRestorePlan, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type RestorePlanIdentity struct {
 	parent *RestorePlanParent
 	id     string
@@ -115,3 +116,5 @@ func ParseRestorePlanExternal(external string) (parent *RestorePlanParent, resou
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &RestorePlanIdentity{} // Tracking in issue #6073

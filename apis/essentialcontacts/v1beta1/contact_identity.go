@@ -26,6 +26,7 @@ import (
 
 // ContactIdentity defines the resource reference to EssentialContactsContact, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ContactIdentity struct {
 	parent *ContactParent
 	id     string
@@ -171,3 +172,5 @@ func ParseContactExternal(external string) (parent *ContactParent, resourceID st
 	}
 	return nil, "", fmt.Errorf("format of EssentialContactsContact external=%q was not known (use projects/{{projectID}}/contacts/{{contactID}} or organizations/{{organizationID}}/contacts/{{contactID}} or folders/{{folderID}}/contacts/{{contactID}})", external)
 }
+
+// var _ identity.Identity = &ContactIdentity{} // Tracking in issue #6073

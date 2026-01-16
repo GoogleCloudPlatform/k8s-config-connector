@@ -23,6 +23,7 @@ import (
 
 // ProviderIdentity defines the resource reference to Provider, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ProviderIdentity struct {
 	parent *ProviderParent
 	id     string
@@ -66,3 +67,5 @@ func ParseProviderExternal(external string) (parent *ProviderParent, resourceID 
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &ProviderIdentity{} // Tracking in issue #6073

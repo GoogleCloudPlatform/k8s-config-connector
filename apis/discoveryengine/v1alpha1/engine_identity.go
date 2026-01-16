@@ -26,6 +26,7 @@ import (
 
 // EngineIdentity defines the resource reference to DiscoveryEngineEngine, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type EngineIdentity struct {
 	parent *EngineParent
 	id     string
@@ -115,3 +116,5 @@ func ParseEngineExternal(external string) (parent *EngineParent, resourceID stri
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &EngineIdentity{} // Tracking in issue #6073

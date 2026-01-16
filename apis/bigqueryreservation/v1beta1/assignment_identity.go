@@ -25,6 +25,7 @@ import (
 
 // AssignmentIdentity defines the resource identity to BigQueryReservationAssignment,
 // which is to be used in the controller.
+// +k8s:deepcopy-gen=false
 type AssignmentIdentity struct {
 	// The reservation to which the assignment is currently attached
 	parent *BQReservation
@@ -138,3 +139,5 @@ func ParseAssignmentExternal(external string) (parent *BQReservation, resourceID
 	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &AssignmentIdentity{} // Tracking in issue #6073

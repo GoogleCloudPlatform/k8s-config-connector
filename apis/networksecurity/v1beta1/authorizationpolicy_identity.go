@@ -26,6 +26,7 @@ import (
 
 // AuthorizationPolicyIdentity defines the resource reference to NetworkSecurityAuthorizationPolicy, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type AuthorizationPolicyIdentity struct {
 	parent *AuthorizationPolicyParent
 	id     string
@@ -115,3 +116,5 @@ func ParseAuthorizationPolicyExternal(external string) (parent *AuthorizationPol
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &AuthorizationPolicyIdentity{} // Tracking in issue #6073

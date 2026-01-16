@@ -21,10 +21,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // AccountIdentity defines the resource reference to AnalyticsAccount, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type AccountIdentity struct {
 	id string
 }
@@ -77,3 +80,5 @@ func ParseAccountExternal(external string) (resourceID string, err error) {
 	resourceID = tokens[1]
 	return resourceID, nil
 }
+
+var _ identity.Identity = &AccountIdentity{}

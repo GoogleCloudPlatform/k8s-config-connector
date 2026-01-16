@@ -21,6 +21,7 @@ import (
 
 // InstanceIdentity defines the resource reference to ComputeInstance, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type InstanceIdentity struct {
 	parent *InstanceParent
 	id     string
@@ -136,3 +137,5 @@ func ParseSelfLink(selfLink string) (InstanceIdentity, error) {
 		id:     resourceID,
 	}, nil
 }
+
+// var _ identity.Identity = &InstanceIdentity{} // Tracking in issue #6073

@@ -24,6 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// +k8s:deepcopy-gen=false
 type KMSAutokeyConfigIdentity struct {
 	parent *KMSAutokeyConfigParent
 }
@@ -78,3 +79,5 @@ func ParseKMSAutokeyConfigExternal(external string) (parent *KMSAutokeyConfigIde
 		FolderID: tokens[1],
 	}}, nil
 }
+
+// var _ identity.Identity = &KMSAutokeyConfigIdentity{} // Tracking in issue #6073

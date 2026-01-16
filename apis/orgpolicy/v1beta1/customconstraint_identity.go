@@ -26,6 +26,7 @@ import (
 
 // CustomConstraintIdentity defines the resource reference to OrgPolicyCustomConstraint, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type CustomConstraintIdentity struct {
 	parent *CustomConstraintParent
 	id     string
@@ -108,3 +109,5 @@ func ParseCustomConstraintExternal(external string) (parent *CustomConstraintPar
 	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &CustomConstraintIdentity{} // Tracking in issue #6073

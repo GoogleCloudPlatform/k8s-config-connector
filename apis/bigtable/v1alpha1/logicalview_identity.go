@@ -23,10 +23,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // LogicalViewIdentity defines the resource reference to BigtableLogicalView, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type LogicalViewIdentity struct {
 	parent *v1beta1.InstanceIdentity
 	id     string
@@ -109,3 +112,5 @@ func ParseLogicalViewExternal(external string) (*v1beta1.InstanceIdentity, strin
 	}
 	return &v1beta1.InstanceIdentity{Parent: &parent.ProjectParent{ProjectID: tokens[1]}, Id: tokens[3]}, tokens[5], nil
 }
+
+var _ identity.Identity = &LogicalViewIdentity{}

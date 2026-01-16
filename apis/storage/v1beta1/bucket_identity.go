@@ -65,3 +65,5 @@ func (i *StorageBucketIdentity) FromExternal(ref string) error {
 	*i = *parsed
 	return nil
 }
+
+// var _ identity.Identity = &StorageBucketIdentity{} // Tracking in issue #6073

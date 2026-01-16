@@ -26,6 +26,7 @@ import (
 
 // ServiceBindingIdentity defines the resource reference to NetworkServicesServiceBinding, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ServiceBindingIdentity struct {
 	parent *ServiceBindingParent
 	id     string
@@ -115,3 +116,5 @@ func ParseServiceBindingExternal(external string) (parent *ServiceBindingParent,
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &ServiceBindingIdentity{} // Tracking in issue #6073

@@ -26,6 +26,7 @@ var _ identity.Identity = &LogBucketIdentity{}
 
 // LogBucketIdentity defines the resource reference to LoggingLogBucketIdentity, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type LogBucketIdentity struct {
 	parent *parent.ProjectAndLocationParent
 	id     string

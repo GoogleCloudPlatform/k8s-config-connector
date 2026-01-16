@@ -26,6 +26,7 @@ import (
 
 // TaxonomyIdentity defines the resource reference to DataCatalogTaxonomy, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type TaxonomyIdentity struct {
 	parent *TaxonomyParent
 	id     string
@@ -110,3 +111,5 @@ func ParseTaxonomyExternal(external string) (parent *TaxonomyParent, resourceID 
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &TaxonomyIdentity{} // Tracking in issue #6073

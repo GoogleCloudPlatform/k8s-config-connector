@@ -26,6 +26,7 @@ import (
 
 // BackupVaultIdentity defines the resource reference to NetAppBackupVault, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type BackupVaultIdentity struct {
 	parent *BackupVaultParent
 	id     string
@@ -115,3 +116,5 @@ func ParseBackupVaultExternal(external string) (parent *BackupVaultParent, resou
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &BackupVaultIdentity{} // Tracking in issue #6073

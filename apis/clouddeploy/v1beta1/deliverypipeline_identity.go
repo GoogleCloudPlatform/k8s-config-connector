@@ -26,6 +26,7 @@ import (
 
 // DeliveryPipelineIdentity defines the resource reference to DeployDeliveryPipeline, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type DeliveryPipelineIdentity struct {
 	parent *DeliveryPipelineParent
 	id     string
@@ -118,3 +119,5 @@ func ParseDeliveryPipelineExternal(external string) (parent *DeliveryPipelinePar
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &DeliveryPipelineIdentity{} // Tracking in issue #6073

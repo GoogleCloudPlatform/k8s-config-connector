@@ -24,10 +24,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // AuthorizedViewIdentity defines the resource reference to BigtableAuthorizedView, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type AuthorizedViewIdentity struct {
 	parent *bigtablev1beta1.TableIdentity
 	id     string
@@ -111,3 +114,5 @@ func ParseAuthorizedViewExternal(external string) (*bigtablev1beta1.TableIdentit
 	resourceID := tokens[7]
 	return p, resourceID, nil
 }
+
+var _ identity.Identity = &AuthorizedViewIdentity{}

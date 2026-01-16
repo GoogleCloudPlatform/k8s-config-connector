@@ -26,6 +26,7 @@ import (
 
 // TopicIdentity defines the resource reference to ManagedKafkaTopic, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type TopicIdentity struct {
 	parent *TopicParent
 	id     string
@@ -127,3 +128,5 @@ func ParseTopicExternal(external string) (parent *TopicParent, resourceID string
 	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &TopicIdentity{} // Tracking in issue #6073

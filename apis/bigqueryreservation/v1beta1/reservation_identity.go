@@ -26,6 +26,7 @@ import (
 
 // ReservationIdentity defines the resource reference to BigqueryReservation, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ReservationIdentity struct {
 	parent *ReservationParent
 	id     string
@@ -115,3 +116,5 @@ func ParseReservationExternal(external string) (parent *ReservationParent, resou
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &ReservationIdentity{} // Tracking in issue #6073

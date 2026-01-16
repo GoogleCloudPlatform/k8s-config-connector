@@ -22,10 +22,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // FeedIdentity defines the resource reference to AssetFeed, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type FeedIdentity struct {
 	parent *FeedParent
 	id     string
@@ -182,3 +185,5 @@ func ParseFeedExternal(external string) (parent *FeedParent, resourceID string, 
 
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &FeedIdentity{}

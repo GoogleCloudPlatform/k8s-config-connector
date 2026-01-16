@@ -21,10 +21,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // RouteIdentity defines the resource reference to DatastreamRoute, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type RouteIdentity struct {
 	parent *RouteParent
 	id     string
@@ -103,3 +106,5 @@ func ParseRouteExternal(external string) (parent *RouteParent, resourceID string
 	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &RouteIdentity{}

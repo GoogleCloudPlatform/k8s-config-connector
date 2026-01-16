@@ -21,6 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
 
+// +k8s:deepcopy-gen=false
 type KMSKeyRingIdentity struct {
 	Parent *parent.ProjectAndLocationParent
 	ID     string
@@ -41,3 +42,5 @@ func ParseKMSKeyRingExternal(external string) (*KMSKeyRingIdentity, error) {
 	}
 	return nil, fmt.Errorf("format of KMSKeyRing external=%q was not known (use projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}})", external)
 }
+
+// var _ identity.Identity = &KMSKeyRingIdentity{} // Tracking in issue #6073

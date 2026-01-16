@@ -21,10 +21,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ExternalAccessRuleIdentity defines the resource reference to VMwareEngineExternalAccessRule, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ExternalAccessRuleIdentity struct {
 	parent *ExternalAccessRuleParent
 	id     string
@@ -104,3 +107,5 @@ func ParseExternalAccessRuleExternal(external string) (parent *ExternalAccessRul
 	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &ExternalAccessRuleIdentity{}

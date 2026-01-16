@@ -21,6 +21,7 @@ import (
 
 // ClusterIdentity defines the resource reference to DataprocCluster, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ClusterIdentity struct {
 	parent *ClusterParent
 	id     string
@@ -55,3 +56,5 @@ func ParseClusterExternal(external string) (id *ClusterIdentity, err error) {
 
 	return &ClusterIdentity{parent: &ClusterParent{ProjectID: tokens[1], Region: tokens[3]}, id: tokens[5]}, nil
 }
+
+// var _ identity.Identity = &ClusterIdentity{} // Tracking in issue #6073

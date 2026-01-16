@@ -25,6 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// +k8s:deepcopy-gen=false
 type TargetTCPProxyIdentity struct {
 	id     string
 	parent *parent.ComputeParent
@@ -89,3 +90,5 @@ func NewTargetTCPProxyIdentity(ctx context.Context, reader client.Reader, obj *C
 		id:     resourceID,
 	}, nil
 }
+
+// var _ identity.Identity = &TargetTCPProxyIdentity{} // Tracking in issue #6073

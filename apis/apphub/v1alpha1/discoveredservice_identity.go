@@ -26,6 +26,7 @@ import (
 
 // DiscoveredServiceIdentity defines the resource reference to AppHubDiscoveredService, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type DiscoveredServiceIdentity struct {
 	parent *DiscoveredServiceParent
 	id     string
@@ -117,3 +118,5 @@ func ParseDiscoveredServiceExternal(external string) (parent *DiscoveredServiceP
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &DiscoveredServiceIdentity{} // Tracking in issue #6073

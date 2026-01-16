@@ -25,10 +25,13 @@ import (
 	// TODO: Add import for the parent service reference if needed, e.g.,
 	// metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // BackupIdentity defines the resource reference to MetastoreBackup, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type BackupIdentity struct {
 	parent *BackupParent
 	id     string
@@ -151,3 +154,5 @@ func ParseBackupExternal(external string) (parent *BackupParent, resourceID stri
 	resourceID = tokens[7] // Extract BackupID
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &BackupIdentity{}

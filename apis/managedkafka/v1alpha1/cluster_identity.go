@@ -26,6 +26,7 @@ import (
 
 // ClusterIdentity defines the resource reference to ManagedKafkaCluster, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ClusterIdentity struct {
 	parent *ClusterParent
 	id     string
@@ -114,3 +115,5 @@ func ParseClusterExternal(external string) (parent *ClusterParent, resourceID st
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &ClusterIdentity{} // Tracking in issue #6073

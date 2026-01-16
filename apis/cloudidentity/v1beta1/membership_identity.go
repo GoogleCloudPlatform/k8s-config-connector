@@ -30,6 +30,7 @@ import (
 
 // MembershipIdentity defines the resource reference to CloudIdentityMembership, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type MembershipIdentity struct {
 	parent *GroupIdentity
 	id     string
@@ -98,3 +99,5 @@ func ParseMembershipExternal(external string) (parent *GroupIdentity, resourceID
 	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &MembershipIdentity{} // Tracking in issue #6073

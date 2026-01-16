@@ -25,10 +25,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ClusterIdentity defines the resource reference to BigtableCluster, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ClusterIdentity struct {
 	parent *bigtablev1beta1.InstanceIdentity
 	id     string
@@ -108,3 +111,5 @@ func ParseClusterExternal(external string) (*bigtablev1beta1.InstanceIdentity, s
 	resourceID := tokens[5]
 	return p, resourceID, nil
 }
+
+var _ identity.Identity = &ClusterIdentity{}

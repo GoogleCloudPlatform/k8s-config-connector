@@ -26,6 +26,7 @@ import (
 
 // DatasetIdentity defines the resource reference to BigQueryDataset, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type DatasetIdentity struct {
 	parent *DatasetParent
 	id     string
@@ -114,3 +115,5 @@ func ParseDatasetExternal(external string) (parent *DatasetParent, resourceID st
 
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &DatasetIdentity{} // Tracking in issue #6073

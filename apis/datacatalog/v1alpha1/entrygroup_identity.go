@@ -27,6 +27,7 @@ import (
 
 // EntryGroupIdentity defines the resource reference to DataCatalogEntryGroup, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type EntryGroupIdentity struct {
 	parent *EntryGroupParent
 	id     string
@@ -132,3 +133,5 @@ func ParseEntryGroupExternal(external string) (parent *EntryGroupParent, resourc
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &EntryGroupIdentity{} // Tracking in issue #6073

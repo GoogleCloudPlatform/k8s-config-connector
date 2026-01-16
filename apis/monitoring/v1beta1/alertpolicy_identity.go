@@ -20,6 +20,7 @@ import (
 
 // AlertPolicyIdentity defines the resource reference to AlertPolicy, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type AlertPolicyIdentity struct {
 	parent *parent.ProjectParent
 	id     string
@@ -32,3 +33,5 @@ func (i *AlertPolicyIdentity) String() string {
 func (i *AlertPolicyIdentity) ID() string {
 	return i.id
 }
+
+// var _ identity.Identity = &AlertPolicyIdentity{} // Tracking in issue #6073

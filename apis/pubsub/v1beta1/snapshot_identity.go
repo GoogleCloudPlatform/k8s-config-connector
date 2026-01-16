@@ -26,6 +26,7 @@ import (
 
 // SnapshotIdentity defines the resource reference to PubSubSnapshot, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type SnapshotIdentity struct {
 	parent *SnapshotParent
 	id     string
@@ -108,3 +109,5 @@ func ParseSnapshotExternal(external string) (parent *SnapshotParent, resourceID 
 	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &SnapshotIdentity{} // Tracking in issue #6073

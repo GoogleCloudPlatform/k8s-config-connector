@@ -29,6 +29,7 @@ const JobIDURL = "/jobs/{{JobID}}"
 
 var _ identity.Identity = &JobIdentity{}
 
+// +k8s:deepcopy-gen=false
 type JobIdentity struct {
 	parent *parent.ProjectAndLocationParent
 	id     string

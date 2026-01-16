@@ -14,6 +14,7 @@
 
 package v1beta1
 
+// +k8s:deepcopy-gen=false
 type BackendServiceIdentity struct {
 	id     string
 	parent *BackendServiceParent
@@ -43,3 +44,5 @@ func (p *BackendServiceParent) String() string {
 		return "projects/" + p.ProjectID + "/regions/" + p.Location
 	}
 }
+
+// var _ identity.Identity = &BackendServiceIdentity{} // Tracking in issue #6073

@@ -26,6 +26,7 @@ import (
 
 // DataStoreIdentity defines the resource reference to DiscoveryEngineDataStore, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type DataStoreIdentity struct {
 	parent *DataStoreParent
 	id     string
@@ -115,3 +116,5 @@ func ParseDataStoreExternal(external string) (parent *DataStoreParent, resourceI
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &DataStoreIdentity{} // Tracking in issue #6073

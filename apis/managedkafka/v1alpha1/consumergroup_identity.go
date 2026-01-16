@@ -26,6 +26,7 @@ import (
 
 // ConsumerGroupIdentity defines the resource reference to ManagedKafkaConsumerGroup, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type ConsumerGroupIdentity struct {
 	parent *ConsumerGroupParent
 	id     string
@@ -122,3 +123,5 @@ func ParseConsumerGroupExternal(external string) (parent *ConsumerGroupParent, r
 	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &ConsumerGroupIdentity{} // Tracking in issue #6073

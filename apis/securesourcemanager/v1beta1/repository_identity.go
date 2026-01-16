@@ -25,6 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// +k8s:deepcopy-gen=false
 type RepositoryIdentity struct {
 	id     string
 	parent *RepositoryParent
@@ -91,3 +92,5 @@ func NewRepositoryIdentity(ctx context.Context, reader client.Reader, obj *Secur
 		id:     resourceID,
 	}, nil
 }
+
+// var _ identity.Identity = &RepositoryIdentity{} // Tracking in issue #6073

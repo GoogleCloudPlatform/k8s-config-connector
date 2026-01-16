@@ -23,10 +23,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // BackupScheduleIdentity defines the resource reference to SpannerBackupSchedule, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type BackupScheduleIdentity struct {
 	parent *BackupScheduleParent
 	id     string
@@ -126,3 +129,5 @@ func ParseBackupScheduleExternal(external string) (parent *BackupScheduleParent,
 	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
+
+var _ identity.Identity = &BackupScheduleIdentity{}

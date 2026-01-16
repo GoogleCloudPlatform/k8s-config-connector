@@ -21,8 +21,11 @@ import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
+// +k8s:deepcopy-gen=false
 type NetworkIdentity struct {
 	id     string
 	parent parent.ProjectParent
@@ -64,3 +67,5 @@ func ParseComputeNetworkExternal(external string) (*NetworkIdentity, error) {
 	}
 	return nil, fmt.Errorf("format of computenetwork external=%q was not known (use https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}} or projects/{{projectId}}/global/networks/{{networkId}})", external)
 }
+
+var _ identity.Identity = &NetworkIdentity{}

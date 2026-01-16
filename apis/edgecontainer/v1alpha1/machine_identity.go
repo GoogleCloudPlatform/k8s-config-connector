@@ -26,6 +26,7 @@ import (
 
 // MachineIdentity defines the resource reference to EdgeContainerMachine, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type MachineIdentity struct {
 	parent *MachineParent
 	id     string
@@ -115,3 +116,5 @@ func ParseMachineExternal(external string) (parent *MachineParent, resourceID st
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &MachineIdentity{} // Tracking in issue #6073

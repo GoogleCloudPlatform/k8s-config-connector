@@ -24,6 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// +k8s:deepcopy-gen=false
 type FirewallPolicyRuleIdentity struct {
 	id     int64
 	parent *FirewallPolicyRuleParent
@@ -85,3 +86,5 @@ func NewFirewallPolicyRuleIdentity(ctx context.Context, reader client.Reader, ob
 		id:     priority,
 	}, nil
 }
+
+// var _ identity.Identity = &FirewallPolicyRuleIdentity{} // Tracking in issue #6073

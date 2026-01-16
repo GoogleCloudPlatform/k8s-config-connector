@@ -26,6 +26,7 @@ import (
 
 // MetadataStoreIdentity defines the resource reference to VertexAIMetadataStore, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type MetadataStoreIdentity struct {
 	parent *MetadataStoreParent
 	id     string
@@ -115,3 +116,5 @@ func ParseMetadataStoreExternal(external string) (parent *MetadataStoreParent, r
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &MetadataStoreIdentity{} // Tracking in issue #6073

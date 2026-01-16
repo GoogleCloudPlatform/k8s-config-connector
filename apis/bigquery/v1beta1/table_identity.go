@@ -25,6 +25,7 @@ import (
 
 // TableIdentity defines the resource reference to BigQueryTable, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type TableIdentity struct {
 	parent *TableParent
 	id     string
@@ -113,3 +114,5 @@ func ParseTableExternal(external string) (parent *TableParent, resourceID string
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+// var _ identity.Identity = &TableIdentity{} // Tracking in issue #6073
