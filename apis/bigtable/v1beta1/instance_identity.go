@@ -19,8 +19,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // InstanceIdentity defines the resource reference to BigtableInstance, which "External" field
@@ -52,4 +50,4 @@ func ParseInstanceExternal(external string) (*parent.ProjectParent, string, erro
 	return &parent.ProjectParent{ProjectID: tokens[1]}, tokens[3], nil
 }
 
-var _ identity.Identity = &InstanceIdentity{}
+// var _ identity.Identity = &InstanceIdentity{} // Tracking in issue #6073

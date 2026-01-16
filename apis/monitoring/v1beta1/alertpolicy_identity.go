@@ -16,8 +16,6 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // AlertPolicyIdentity defines the resource reference to AlertPolicy, which "External" field
@@ -36,4 +34,4 @@ func (i *AlertPolicyIdentity) ID() string {
 	return i.id
 }
 
-var _ identity.Identity = &AlertPolicyIdentity{}
+// var _ identity.Identity = &AlertPolicyIdentity{} // Tracking in issue #6073

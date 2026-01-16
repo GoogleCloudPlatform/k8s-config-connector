@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // QueueIdentity defines the resource reference to TasksQueue, which "External" field
@@ -119,4 +117,4 @@ func ParseQueueExternal(external string) (parent *QueueParent, resourceID string
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &QueueIdentity{}
+// var _ identity.Identity = &QueueIdentity{} // Tracking in issue #6073

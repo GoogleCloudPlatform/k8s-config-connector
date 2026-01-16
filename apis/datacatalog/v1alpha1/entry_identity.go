@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // EntryIdentity defines the resource reference to DataCatalogEntry, which "External" field
@@ -146,4 +144,4 @@ func ParseEntryExternal(external string) (parent *EntryParent, resourceID string
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &EntryIdentity{}
+// var _ identity.Identity = &EntryIdentity{} // Tracking in issue #6073

@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ClusterIdentity defines the resource reference to ManagedKafkaCluster, which "External" field
@@ -118,4 +116,4 @@ func ParseClusterExternal(external string) (parent *ClusterParent, resourceID st
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &ClusterIdentity{}
+// var _ identity.Identity = &ClusterIdentity{} // Tracking in issue #6073

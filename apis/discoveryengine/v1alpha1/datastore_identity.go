@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // DataStoreIdentity defines the resource reference to DiscoveryEngineDataStore, which "External" field
@@ -119,4 +117,4 @@ func ParseDataStoreExternal(external string) (parent *DataStoreParent, resourceI
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &DataStoreIdentity{}
+// var _ identity.Identity = &DataStoreIdentity{} // Tracking in issue #6073

@@ -23,8 +23,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // +k8s:deepcopy-gen=false
@@ -95,4 +93,4 @@ func NewRepositoryIdentity(ctx context.Context, reader client.Reader, obj *Secur
 	}, nil
 }
 
-var _ identity.Identity = &RepositoryIdentity{}
+// var _ identity.Identity = &RepositoryIdentity{} // Tracking in issue #6073

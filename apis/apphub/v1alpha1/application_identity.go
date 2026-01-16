@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ApplicationIdentity defines the resource reference to AppHubApplication, which "External" field
@@ -120,4 +118,4 @@ func ParseApplicationExternal(external string) (parent *ApplicationParent, resou
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &ApplicationIdentity{}
+// var _ identity.Identity = &ApplicationIdentity{} // Tracking in issue #6073

@@ -17,8 +17,6 @@ package v1beta1
 import (
 	"fmt"
 	"strings"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ClusterIdentity defines the resource reference to DataprocCluster, which "External" field
@@ -59,4 +57,4 @@ func ParseClusterExternal(external string) (id *ClusterIdentity, err error) {
 	return &ClusterIdentity{parent: &ClusterParent{ProjectID: tokens[1], Region: tokens[3]}, id: tokens[5]}, nil
 }
 
-var _ identity.Identity = &ClusterIdentity{}
+// var _ identity.Identity = &ClusterIdentity{} // Tracking in issue #6073

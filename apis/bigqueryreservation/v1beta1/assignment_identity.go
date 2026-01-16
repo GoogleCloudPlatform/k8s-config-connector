@@ -21,8 +21,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // AssignmentIdentity defines the resource identity to BigQueryReservationAssignment,
@@ -142,4 +140,4 @@ func ParseAssignmentExternal(external string) (parent *BQReservation, resourceID
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &AssignmentIdentity{}
+// var _ identity.Identity = &AssignmentIdentity{} // Tracking in issue #6073

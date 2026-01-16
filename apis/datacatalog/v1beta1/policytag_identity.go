@@ -21,8 +21,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // PolicyTagIdentity defines the resource reference to DataCatalogPolicyTag, which "External" field
@@ -127,4 +125,4 @@ func ParsePolicyTagExternal(external string) (parent *PolicyTagParent, resourceI
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &PolicyTagIdentity{}
+// var _ identity.Identity = &PolicyTagIdentity{} // Tracking in issue #6073

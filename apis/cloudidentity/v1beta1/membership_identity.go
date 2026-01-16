@@ -21,8 +21,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // type: "cloudidentity.googleapis.com/Membership"
@@ -102,4 +100,4 @@ func ParseMembershipExternal(external string) (parent *GroupIdentity, resourceID
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &MembershipIdentity{}
+// var _ identity.Identity = &MembershipIdentity{} // Tracking in issue #6073

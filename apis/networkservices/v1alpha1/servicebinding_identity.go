@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ServiceBindingIdentity defines the resource reference to NetworkServicesServiceBinding, which "External" field
@@ -119,4 +117,4 @@ func ParseServiceBindingExternal(external string) (parent *ServiceBindingParent,
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &ServiceBindingIdentity{}
+// var _ identity.Identity = &ServiceBindingIdentity{} // Tracking in issue #6073

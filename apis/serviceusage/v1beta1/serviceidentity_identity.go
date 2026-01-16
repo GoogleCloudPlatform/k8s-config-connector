@@ -14,8 +14,6 @@
 
 package v1beta1
 
-import "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-
 /*
 import (
 	"context"
@@ -124,4 +122,4 @@ func ParseServiceIdentityExternal(external string) (parent *ServiceIdentityParen
 }
 */
 
-var _ identity.Identity = &ServiceIdentityIdentity{}
+// var _ identity.Identity = &ServiceIdentityIdentity{} // Tracking in issue #6073

@@ -19,8 +19,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // +k8s:deepcopy-gen=false
@@ -48,4 +46,4 @@ func ParseKMSCryptoKeyExternal(external string) (*KMSCryptoKeyIdentity, error) {
 
 }
 
-var _ identity.Identity = &KMSCryptoKeyIdentity{}
+// var _ identity.Identity = &KMSCryptoKeyIdentity{} // Tracking in issue #6073

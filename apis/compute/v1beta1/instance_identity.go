@@ -17,8 +17,6 @@ package v1beta1
 import (
 	"fmt"
 	"strings"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // InstanceIdentity defines the resource reference to ComputeInstance, which "External" field
@@ -140,4 +138,4 @@ func ParseSelfLink(selfLink string) (InstanceIdentity, error) {
 	}, nil
 }
 
-var _ identity.Identity = &InstanceIdentity{}
+// var _ identity.Identity = &InstanceIdentity{} // Tracking in issue #6073

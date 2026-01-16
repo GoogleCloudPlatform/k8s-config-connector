@@ -21,8 +21,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ExternalAddressIdentity defines the resource reference to VMwareEngineExternalAddress, which "External" field
@@ -107,4 +105,4 @@ func ParseExternalAddressExternal(external string) (parent *ExternalAddressParen
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &ExternalAddressIdentity{}
+// var _ identity.Identity = &ExternalAddressIdentity{} // Tracking in issue #6073

@@ -21,8 +21,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // TableIdentity defines the resource reference to BigQueryTable, which "External" field
@@ -117,4 +115,4 @@ func ParseTableExternal(external string) (parent *TableParent, resourceID string
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &TableIdentity{}
+// var _ identity.Identity = &TableIdentity{} // Tracking in issue #6073

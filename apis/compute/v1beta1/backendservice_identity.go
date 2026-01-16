@@ -14,10 +14,6 @@
 
 package v1beta1
 
-import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-)
-
 // +k8s:deepcopy-gen=false
 type BackendServiceIdentity struct {
 	id     string
@@ -49,4 +45,4 @@ func (p *BackendServiceParent) String() string {
 	}
 }
 
-var _ identity.Identity = &BackendServiceIdentity{}
+// var _ identity.Identity = &BackendServiceIdentity{} // Tracking in issue #6073

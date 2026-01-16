@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // QuotaAdjusterSettingsIdentity defines the resource reference to APIQuotaAdjusterSettings, which "External" field
@@ -114,4 +112,4 @@ func ParseQuotaAdjusterSettingsExternal(external string) (parent *QuotaAdjusterS
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &QuotaAdjusterSettingsIdentity{}
+// var _ identity.Identity = &QuotaAdjusterSettingsIdentity{} // Tracking in issue #6073

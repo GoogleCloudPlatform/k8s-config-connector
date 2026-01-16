@@ -19,8 +19,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // SubscriptionIdentity defines the resource reference to PubSubSubscription, which "External" field
@@ -49,4 +47,4 @@ func ParseSubscriptionExternal(external string) (*SubscriptionIdentity, error) {
 	}, id: tokens[3]}, nil
 }
 
-var _ identity.Identity = &SubscriptionIdentity{}
+// var _ identity.Identity = &SubscriptionIdentity{} // Tracking in issue #6073

@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // TagTemplateIdentity defines the resource reference to DataCatalogTagTemplate, which "External" field
@@ -135,4 +133,4 @@ func ParseTagTemplateExternal(external string) (parent *TagTemplateParent, resou
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &TagTemplateIdentity{}
+// var _ identity.Identity = &TagTemplateIdentity{} // Tracking in issue #6073

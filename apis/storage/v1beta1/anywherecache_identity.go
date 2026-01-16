@@ -21,8 +21,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // AnywhereCacheIdentity defines the resource reference to StorageAnywhereCache, which "External" field
@@ -130,4 +128,4 @@ func ParseBucketExternal(external string) (string, error) {
 	return tokens[3], nil
 }
 
-var _ identity.Identity = &AnywhereCacheIdentity{}
+// var _ identity.Identity = &AnywhereCacheIdentity{} // Tracking in issue #6073

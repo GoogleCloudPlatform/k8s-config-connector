@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // DatasetIdentity defines the resource reference to BigQueryDataset, which "External" field
@@ -118,4 +116,4 @@ func ParseDatasetExternal(external string) (parent *DatasetParent, resourceID st
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &DatasetIdentity{}
+// var _ identity.Identity = &DatasetIdentity{} // Tracking in issue #6073

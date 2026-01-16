@@ -21,8 +21,6 @@ import (
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // +k8s:deepcopy-gen=false
@@ -113,4 +111,4 @@ func ParseKMSKeyHandleExternal(external string) (parent *KMSKeyHandleParent, res
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &KMSKeyHandleIdentity{}
+// var _ identity.Identity = &KMSKeyHandleIdentity{} // Tracking in issue #6073

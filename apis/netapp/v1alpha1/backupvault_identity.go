@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // BackupVaultIdentity defines the resource reference to NetAppBackupVault, which "External" field
@@ -119,4 +117,4 @@ func ParseBackupVaultExternal(external string) (parent *BackupVaultParent, resou
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &BackupVaultIdentity{}
+// var _ identity.Identity = &BackupVaultIdentity{} // Tracking in issue #6073

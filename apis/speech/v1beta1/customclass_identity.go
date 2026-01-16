@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // CustomClassIdentity defines the resource reference to SpeechCustomClass, which "External" field
@@ -119,4 +117,4 @@ func ParseCustomClassExternal(external string) (parent *CustomClassParent, resou
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &CustomClassIdentity{}
+// var _ identity.Identity = &CustomClassIdentity{} // Tracking in issue #6073

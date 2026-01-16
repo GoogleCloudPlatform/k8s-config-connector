@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // CustomConstraintIdentity defines the resource reference to OrgPolicyCustomConstraint, which "External" field
@@ -112,4 +110,4 @@ func ParseCustomConstraintExternal(external string) (parent *CustomConstraintPar
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &CustomConstraintIdentity{}
+// var _ identity.Identity = &CustomConstraintIdentity{} // Tracking in issue #6073

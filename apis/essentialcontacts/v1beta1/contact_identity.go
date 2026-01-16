@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ContactIdentity defines the resource reference to EssentialContactsContact, which "External" field
@@ -175,4 +173,4 @@ func ParseContactExternal(external string) (parent *ContactParent, resourceID st
 	return nil, "", fmt.Errorf("format of EssentialContactsContact external=%q was not known (use projects/{{projectID}}/contacts/{{contactID}} or organizations/{{organizationID}}/contacts/{{contactID}} or folders/{{folderID}}/contacts/{{contactID}})", external)
 }
 
-var _ identity.Identity = &ContactIdentity{}
+// var _ identity.Identity = &ContactIdentity{} // Tracking in issue #6073

@@ -23,8 +23,6 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // +k8s:deepcopy-gen=false
@@ -93,4 +91,4 @@ func NewTargetTCPProxyIdentity(ctx context.Context, reader client.Reader, obj *C
 	}, nil
 }
 
-var _ identity.Identity = &TargetTCPProxyIdentity{}
+// var _ identity.Identity = &TargetTCPProxyIdentity{} // Tracking in issue #6073

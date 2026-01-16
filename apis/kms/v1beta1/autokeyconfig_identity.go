@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // +k8s:deepcopy-gen=false
@@ -82,4 +80,4 @@ func ParseKMSAutokeyConfigExternal(external string) (parent *KMSAutokeyConfigIde
 	}}, nil
 }
 
-var _ identity.Identity = &KMSAutokeyConfigIdentity{}
+// var _ identity.Identity = &KMSAutokeyConfigIdentity{} // Tracking in issue #6073

@@ -21,8 +21,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // BackupScheduleIdentity defines the resource reference to SpannerBackupSchedule, which "External" field
@@ -127,4 +125,4 @@ func ParseBackupScheduleExternal(external string) (parent *BackupScheduleParent,
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &BackupScheduleIdentity{}
+// var _ identity.Identity = &BackupScheduleIdentity{} // Tracking in issue #6073

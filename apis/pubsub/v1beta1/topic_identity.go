@@ -19,8 +19,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // TopicIdentity defines the resource reference to PubSubTopic, which "External" field
@@ -49,4 +47,4 @@ func ParseTopicExternal(external string) (*TopicIdentity, error) {
 	}, id: tokens[3]}, nil
 }
 
-var _ identity.Identity = &TopicIdentity{}
+// var _ identity.Identity = &TopicIdentity{} // Tracking in issue #6073

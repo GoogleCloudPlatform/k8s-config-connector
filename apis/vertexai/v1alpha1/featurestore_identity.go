@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // FeaturestoreIdentity defines the resource reference to VertexAIFeaturestore, which "External" field
@@ -119,4 +117,4 @@ func ParseFeaturestoreExternal(external string) (parent *FeaturestoreParent, res
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &FeaturestoreIdentity{}
+// var _ identity.Identity = &FeaturestoreIdentity{} // Tracking in issue #6073

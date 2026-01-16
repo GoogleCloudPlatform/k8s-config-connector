@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // MetadataStoreIdentity defines the resource reference to VertexAIMetadataStore, which "External" field
@@ -119,4 +117,4 @@ func ParseMetadataStoreExternal(external string) (parent *MetadataStoreParent, r
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &MetadataStoreIdentity{}
+// var _ identity.Identity = &MetadataStoreIdentity{} // Tracking in issue #6073

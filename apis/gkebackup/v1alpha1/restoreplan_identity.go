@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // RestorePlanIdentity defines the resource reference to GKEBackupRestorePlan, which "External" field
@@ -119,4 +117,4 @@ func ParseRestorePlanExternal(external string) (parent *RestorePlanParent, resou
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &RestorePlanIdentity{}
+// var _ identity.Identity = &RestorePlanIdentity{} // Tracking in issue #6073

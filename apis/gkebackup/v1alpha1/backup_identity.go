@@ -21,8 +21,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // BackupIdentity defines the resource reference to GKEBackupBackup, which "External" field
@@ -108,4 +106,4 @@ func ParseBackupExternal(external string) (parent *BackupParent, resourceID stri
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &BackupIdentity{}
+// var _ identity.Identity = &BackupIdentity{} // Tracking in issue #6073

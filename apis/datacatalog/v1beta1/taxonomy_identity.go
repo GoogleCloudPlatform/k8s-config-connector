@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // TaxonomyIdentity defines the resource reference to DataCatalogTaxonomy, which "External" field
@@ -114,4 +112,4 @@ func ParseTaxonomyExternal(external string) (parent *TaxonomyParent, resourceID 
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &TaxonomyIdentity{}
+// var _ identity.Identity = &TaxonomyIdentity{} // Tracking in issue #6073

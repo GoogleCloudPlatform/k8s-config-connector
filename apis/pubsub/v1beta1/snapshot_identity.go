@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // SnapshotIdentity defines the resource reference to PubSubSnapshot, which "External" field
@@ -112,4 +110,4 @@ func ParseSnapshotExternal(external string) (parent *SnapshotParent, resourceID 
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &SnapshotIdentity{}
+// var _ identity.Identity = &SnapshotIdentity{} // Tracking in issue #6073

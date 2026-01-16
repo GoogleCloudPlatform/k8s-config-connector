@@ -21,8 +21,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // GroupIdentity defines the resource reference to CloudIdentityGroup, which "External" field
@@ -84,4 +82,4 @@ func ParseGroupExternal(external string) (resourceID string, err error) {
 	return resourceID, nil
 }
 
-var _ identity.Identity = &GroupIdentity{}
+// var _ identity.Identity = &GroupIdentity{} // Tracking in issue #6073

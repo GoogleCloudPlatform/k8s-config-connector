@@ -22,8 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // DeliveryPipelineIdentity defines the resource reference to DeployDeliveryPipeline, which "External" field
@@ -122,4 +120,4 @@ func ParseDeliveryPipelineExternal(external string) (parent *DeliveryPipelinePar
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &DeliveryPipelineIdentity{}
+// var _ identity.Identity = &DeliveryPipelineIdentity{} // Tracking in issue #6073

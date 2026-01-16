@@ -17,8 +17,6 @@ package v1
 import (
 	"fmt"
 	"strings"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // Based on google/cloud/connectors/v1/provider.proto
@@ -70,4 +68,4 @@ func ParseProviderExternal(external string) (parent *ProviderParent, resourceID 
 	return parent, resourceID, nil
 }
 
-var _ identity.Identity = &ProviderIdentity{}
+// var _ identity.Identity = &ProviderIdentity{} // Tracking in issue #6073

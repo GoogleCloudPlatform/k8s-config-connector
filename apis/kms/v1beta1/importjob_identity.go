@@ -23,8 +23,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 )
 
 // ImportJobIdentity defines the resource reference to KMSImportJob, which "External" field
@@ -105,4 +103,4 @@ func ParseImportJobExternal(external string) (*KMSKeyRingIdentity, string, error
 	return p, resourceID, nil
 }
 
-var _ identity.Identity = &ImportJobIdentity{}
+// var _ identity.Identity = &ImportJobIdentity{} // Tracking in issue #6073
