@@ -66,7 +66,7 @@ for f in $(find dev/ci/presubmits -type f | sort ); do
     name=$(basename ${f})
 
     needs_clause=""
-    if [[ "${name}" != "unit-tests" ]]; then
+    if [[ "${name}" == tests-e2e-* ]]; then
       needs_clause="needs: unit-tests"
     fi
 

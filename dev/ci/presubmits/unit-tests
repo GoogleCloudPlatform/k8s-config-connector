@@ -20,7 +20,14 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-./scripts/github-actions/ga-unit-test.sh
+. ${REPO_ROOT}/dev/tasks/setup-envtest
+
+echo "Running unit tests..."
+# A dummy default project id is required for a few unit test cases
+gcloud config set project foobar
+
+GITHUB_ACTION=1 \
+make test
 
 # Move artifact to where the generator expects it
 mkdir -p /tmp/artifacts
