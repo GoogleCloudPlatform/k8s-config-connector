@@ -22,6 +22,7 @@ import (
 
 var ArtifactRegistryRepositoryIdentityFormat = gcpurls.Template[ArtifactRegistryRepositoryIdentity]("artifactregistry.googleapis.com", "projects/{project}/locations/{location}/repositories/{repository}")
 
+// +k8s:deepcopy-gen=false
 type ArtifactRegistryRepositoryIdentity struct {
 	Project    string
 	Location   string
