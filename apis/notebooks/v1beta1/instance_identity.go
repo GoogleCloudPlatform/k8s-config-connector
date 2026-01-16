@@ -28,6 +28,7 @@ var InstanceIdentityFormat = gcpurls.Template[InstanceIdentity]("notebooks.googl
 
 // InstanceIdentity defines the resource reference to NotebookInstance, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type InstanceIdentity struct {
 	Project  string
 	Location string
@@ -62,6 +63,7 @@ func (i *InstanceIdentity) FromExternal(ref string) error {
 	return nil
 }
 
+// +k8s:deepcopy-gen=false
 type InstanceParent struct {
 	ProjectID string
 	Location  string
