@@ -25,4 +25,8 @@ spec:
   machineConfig:
     cpuCount: 2
   connectionPoolConfig:
-    enabled: false
+    enabled: true
+    flags:
+      query_wait_timeout: "100"
+      stats_users: "foo,bar,baz"
+      pool_mode: "session"
