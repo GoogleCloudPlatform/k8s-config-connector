@@ -366,6 +366,7 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.StateInfo = Instance_StateInfoObservedState_FromProto(mapCtx, in.GetStateInfo())
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.NodeConfig = NodeConfigObservedState_FromProto(mapCtx, in.GetNodeConfig())
+	out.PscAttachmentDetails = direct.Slice_FromProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_FromProto)
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
 	out.MaintenancePolicy = MaintenancePolicyObservedState_FromProto(mapCtx, in.MaintenancePolicy)
 	out.MaintenanceSchedule = MaintenanceScheduleObservedState_FromProto(mapCtx, in.MaintenanceSchedule)
@@ -384,6 +385,7 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.StateInfo = Instance_StateInfoObservedState_ToProto(mapCtx, in.StateInfo)
 	out.Uid = direct.ValueOf(in.Uid)
 	out.NodeConfig = NodeConfigObservedState_ToProto(mapCtx, in.NodeConfig)
+	out.PscAttachmentDetails = direct.Slice_ToProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_ToProto)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
 	return out
 }
@@ -509,6 +511,24 @@ func PersistenceConfig_RdbConfig_ToProto(mapCtx *direct.MapContext, in *krmv1bet
 	out := &pb.PersistenceConfig_RDBConfig{}
 	out.RdbSnapshotPeriod = direct.Enum_ToProto[pb.PersistenceConfig_RDBConfig_SnapshotPeriod](mapCtx, in.RdbSnapshotPeriod)
 	out.RdbSnapshotStartTime = direct.StringTimestamp_ToProto(mapCtx, in.RdbSnapshotStartTime)
+	return out
+}
+func PscAttachmentDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscAttachmentDetail) *krmv1beta1.PscAttachmentDetailObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.PscAttachmentDetailObservedState{}
+	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	out.ConnectionType = direct.Enum_FromProto(mapCtx, in.GetConnectionType())
+	return out
+}
+func PscAttachmentDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscAttachmentDetailObservedState) *pb.PscAttachmentDetail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscAttachmentDetail{}
+	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
+	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
 	return out
 }
 func PscAutoConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnection) *krmv1beta1.PscAutoConnection {

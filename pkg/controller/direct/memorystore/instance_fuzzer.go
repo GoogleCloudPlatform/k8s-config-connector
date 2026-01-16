@@ -38,7 +38,6 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".satisfies_pzs")
 	f.UnimplementedFields.Insert(".psc_auto_connections")
 	f.UnimplementedFields.Insert(".discovery_endpoints")
-	f.UnimplementedFields.Insert(".psc_attachment_details")
 	f.UnimplementedFields.Insert(".async_instance_endpoints_deletion_enabled")
 	f.UnimplementedFields.Insert(".ondemand_maintenance")
 
@@ -67,6 +66,7 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state_info")
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".node_config")
+	f.StatusFields.Insert(".psc_attachment_details")
 	f.StatusFields.Insert(".endpoints")
 	f.StatusFields.Insert(".maintenance_policy")
 	f.StatusFields.Insert(".maintenance_schedule")
