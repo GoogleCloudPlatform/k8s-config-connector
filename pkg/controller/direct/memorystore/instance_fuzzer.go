@@ -38,23 +38,9 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".satisfies_pzs")
 	f.UnimplementedFields.Insert(".psc_auto_connections")
 	f.UnimplementedFields.Insert(".discovery_endpoints")
-	f.UnimplementedFields.Insert(".node_config") // Handled in status, but not spec.
-	// The `port` field in PscAutoConnection is a repeated field in proto
-	// but a singular field in KRM, making it not round-trippable.
-	f.UnimplementedFields.Insert(".endpoints[].connections[].psc_auto_connection.port")
-	// The `state_info` struct in KRM is empty, meaning its subfields are not propagated.
-	f.UnimplementedFields.Insert(".state_info.update_info")
-	f.UnimplementedFields.Insert(".maintenance_schedule")
-	f.UnimplementedFields.Insert(".gcs_source")
-	f.UnimplementedFields.Insert(".backup_collection")
-	f.UnimplementedFields.Insert(".automated_backup_config")
 	f.UnimplementedFields.Insert(".psc_attachment_details")
-	f.UnimplementedFields.Insert(".maintenance_policy")
-	f.UnimplementedFields.Insert(".managed_backup_source")
 	f.UnimplementedFields.Insert(".async_instance_endpoints_deletion_enabled")
 	f.UnimplementedFields.Insert(".ondemand_maintenance")
-	f.UnimplementedFields.Insert(".cross_instance_replication_config")
-	f.UnimplementedFields.Insert(".gcs_source")
 
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".replica_count")
@@ -67,16 +53,25 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".engine_configs")
 	f.SpecFields.Insert(".zone_distribution_config")
 	f.SpecFields.Insert(".deletion_protection_enabled")
+	f.SpecFields.Insert(".gcs_source")
+	f.SpecFields.Insert(".managed_backup_source")
 	f.SpecFields.Insert(".endpoints")
 	f.SpecFields.Insert(".mode")
+	f.SpecFields.Insert(".maintenance_policy")
+	f.SpecFields.Insert(".cross_instance_replication_config")
+	f.SpecFields.Insert(".automated_backup_config")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".state_info")
 	f.StatusFields.Insert(".uid")
-	f.StatusFields.Insert(".node_config") // NodeConfig is an output-only field in the proto, but KRM needs it for status.
+	f.StatusFields.Insert(".node_config")
 	f.StatusFields.Insert(".endpoints")
+	f.StatusFields.Insert(".maintenance_policy")
+	f.StatusFields.Insert(".maintenance_schedule")
+	f.StatusFields.Insert(".cross_instance_replication_config")
+	f.StatusFields.Insert(".backup_collection")
 
 	return f
 }
