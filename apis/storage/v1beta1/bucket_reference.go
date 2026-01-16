@@ -71,6 +71,9 @@ func (r *StorageBucketRef) ValidateExternal(ref string) error {
 }
 
 func (r *StorageBucketRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External != "" && r.Name != "" {
+		return fmt.Errorf("cannot specify both name and external on %s reference", StorageBucketGVK.Kind)
+	}
 	fallback := func(u *unstructured.Unstructured) string {
 		// Backward compatible to Terraform/DCL based resource, which does not have status.externalRef.
 		resourceID, err := refsv1beta1.GetResourceID(u)
