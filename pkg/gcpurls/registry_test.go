@@ -70,6 +70,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Example: "//some.googleapis.com/foo/{}/bar": true,
 		"//storage.googleapis.com/projects/{}/buckets/{}":                   true,
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}": true,
+		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}": true,
 	}
 
 	for _, tmpl := range templates {
