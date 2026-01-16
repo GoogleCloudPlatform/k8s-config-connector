@@ -14,11 +14,12 @@ spec:
   clusterRef:
     name: alloydbcluster-${uniqueId}
   connectionPoolConfig:
-    enabled: false
+    enabled: true
     flags:
+      pool_mode: session
       query_wait_timeout: "100"
       server_lifetime: "7200"
-      stats_users: foo,bar
+      stats_users: foo,bar,baz
   instanceTypeRef:
     name: alloydbcluster-${uniqueId}
   machineConfig:
@@ -35,6 +36,9 @@ status:
   ipAddress: 10.1.2.3
   name: projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}
   observedGeneration: 2
+  observedState:
+    connectionPoolConfig:
+      poolerCount: 1
   state: READY
   uid: "12345678"
   updateTime: "1970-01-01T00:00:00Z"
