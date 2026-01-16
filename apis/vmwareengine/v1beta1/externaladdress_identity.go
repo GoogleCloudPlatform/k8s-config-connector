@@ -53,10 +53,10 @@ func (i *ExternalAddressIdentity) Parent() *ExternalAddressParent {
 func (i *ExternalAddressIdentity) FromExternal(ref string) error {
 	parsed, match, err := ExternalAddressIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of ExternalAddress external=%q was not known (use %s): %w", ref, ExternalAddressIdentityFormat, err)
+		return fmt.Errorf("format of ExternalAddress external=%q was not known (use %s): %w", ref, ExternalAddressIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of ExternalAddress external=%q was not known (use %s)", ref, ExternalAddressIdentityFormat)
+		return fmt.Errorf("format of ExternalAddress external=%q was not known (use %s)", ref, ExternalAddressIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
