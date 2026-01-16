@@ -28,6 +28,7 @@ def run_and_verify_no_changes(command):
         # Use subprocess.run to simply execute and print the output of git diff
         subprocess.run(["git", "--no-pager", "diff"])
         print("ERROR: Generated files out-of-date. Please run '{}' and update your PR.".format(" ".join(command)))
+        print("<hint_for_agent>Generated files out of date.  Run '{}' to regenerate, and then update your PR.</hint_for_agent>".format(" ".join(command)))
         print("Affected files:")
         print(diff_output)
         sys.exit(1)
