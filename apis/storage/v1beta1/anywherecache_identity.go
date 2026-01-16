@@ -70,10 +70,10 @@ func GetAnywhereCacheIdentity(parent *AnywhereCacheParent, id string) *AnywhereC
 func NewAnywhereCacheIdentity(ctx context.Context, reader client.Reader, obj *StorageAnywhereCache) (*AnywhereCacheIdentity, error) {
 
 	// Get Parent
-	storageBucketExternal, err := obj.Spec.BucketRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
+	if err := obj.Spec.BucketRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
+	storageBucketExternal := obj.Spec.BucketRef.External
 	bucketName, err := ParseBucketExternal(storageBucketExternal)
 	if err != nil {
 		return nil, err

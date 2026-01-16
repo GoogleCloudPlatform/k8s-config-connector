@@ -67,10 +67,10 @@ func NewFolderIdentity(ctx context.Context, reader client.Reader, obj *StorageFo
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	external, err := obj.Spec.StorageBucketRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
+	if err := obj.Spec.StorageBucketRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
+	external := obj.Spec.StorageBucketRef.External
 	bucketIdentity, err := storagev1beta1.ParseStorageBucketExternal(external)
 	if err != nil {
 		return nil, err
