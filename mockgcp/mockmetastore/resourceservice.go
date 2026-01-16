@@ -112,7 +112,6 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 		endpointProtocol = pb.HiveMetastoreConfig_GRPC
 	}
 	// Add HiveMetastoreConfig with endpointProtocol
-	// Add HiveMetastoreConfig with endpointProtocol
 	hiveConfig := req.Service.GetHiveMetastoreConfig()
 	if hiveConfig == nil {
 		hiveConfig = &pb.HiveMetastoreConfig{}
@@ -127,7 +126,6 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	if hiveConfig.ConfigOverrides == nil {
 		hiveConfig.ConfigOverrides = make(map[string]string)
 	}
-	hiveConfig.ConfigOverrides["hive.metastore.warehouse.dir"] = "gs://gcs-bucket-" + name.Name + "/hive-warehouse"
 
 	obj.MetastoreConfig = &pb.Service_HiveMetastoreConfig{
 		HiveMetastoreConfig: hiveConfig,
@@ -199,32 +197,59 @@ func (s *DataprocMetastoreV1) UpdateService(ctx context.Context, req *pb.UpdateS
 			switch path {
 			case "tier":
 				obj.Tier = req.Service.Tier
-			case "hive_metastore_config":
+			case "hive_metastore_config", "hiveMetastoreConfig":
 				obj.MetastoreConfig = req.Service.MetastoreConfig
-			default:
-				if strings.HasPrefix(path, "hive_metastore_config.") {
-					obj.MetastoreConfig = req.Service.MetastoreConfig
-				}
-				if strings.HasPrefix(path, "network_config.") {
-					obj.NetworkConfig = req.Service.NetworkConfig
-				}
-				// Ignore other unknown paths or handle specific nested fields if necessary
 			case "maintenance_window":
 				obj.MaintenanceWindow = req.Service.MaintenanceWindow
 			case "labels":
 				obj.Labels = req.Service.Labels
-			case "network_config":
+			case "network_config", "networkConfig":
 				obj.NetworkConfig = req.Service.NetworkConfig
 			case "scaling_config":
 				obj.ScalingConfig = req.Service.ScalingConfig
-			case "scheduledBackup":
-				// Ignore scheduledBackup
-			case "encryptionConfig":
-				// Ignore
-			case "networkConfig":
-				obj.NetworkConfig = req.Service.NetworkConfig
-			case "metadataIntegration":
-				// Ignore
+			default:
+				if strings.HasPrefix(path, "hive_metastore_config.") || strings.HasPrefix(path, "hiveMetastoreConfig.") {
+					if obj.MetastoreConfig == nil {
+						obj.MetastoreConfig = &pb.Service_HiveMetastoreConfig{}
+					}
+					// Ensure we have a HiveMetastoreConfig struct to write to
+					if obj.GetHiveMetastoreConfig() == nil {
+						if obj.MetastoreConfig == nil {
+							// Should be covered by above, but ensuring type-safe assignment
+							obj.MetastoreConfig = &pb.Service_HiveMetastoreConfig{
+								HiveMetastoreConfig: &pb.HiveMetastoreConfig{},
+							}
+						}
+					}
+
+					currentConfig := obj.GetHiveMetastoreConfig()
+					newConfig := req.Service.GetHiveMetastoreConfig()
+
+					// Naive field matching for common sub-fields
+					if strings.HasSuffix(path, "version") {
+						currentConfig.Version = newConfig.Version
+					}
+					if strings.HasSuffix(path, "endpoint_protocol") || strings.HasSuffix(path, "endpointProtocol") {
+						currentConfig.EndpointProtocol = newConfig.EndpointProtocol
+					}
+					if strings.HasSuffix(path, "config_overrides") || strings.HasSuffix(path, "configOverrides") {
+						currentConfig.ConfigOverrides = newConfig.ConfigOverrides
+					}
+					if strings.HasSuffix(path, "auxiliary_versions") || strings.HasSuffix(path, "auxiliaryVersions") {
+						currentConfig.AuxiliaryVersions = newConfig.AuxiliaryVersions
+					}
+					if strings.HasSuffix(path, "kerberos_config") || strings.HasSuffix(path, "kerberosConfig") {
+						currentConfig.KerberosConfig = newConfig.KerberosConfig
+					}
+
+					// Re-assign to handle the wrapper oneof case if it was just created
+					obj.MetastoreConfig = &pb.Service_HiveMetastoreConfig{
+						HiveMetastoreConfig: currentConfig,
+					}
+				}
+				if strings.HasPrefix(path, "network_config.") || strings.HasPrefix(path, "networkConfig.") {
+					obj.NetworkConfig = req.Service.NetworkConfig
+				}
 			}
 		}
 		obj.UpdateTime = timestamppb.New(now)
