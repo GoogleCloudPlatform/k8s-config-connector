@@ -59,6 +59,7 @@ type Index_IndexField_VectorConfig struct {
 	//
 	//  The resulting index will only include vectors of this dimension, and
 	//  can be used for vector search with the same dimension.
+	// +required
 	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.VectorConfig.dimension
 	Dimension *int32 `json:"dimension,omitempty"`
 

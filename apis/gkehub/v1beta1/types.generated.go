@@ -67,6 +67,7 @@ type ConfigSync struct {
 // +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.GitConfig
 type GitConfig struct {
 	// Required. The URL of the Git repository to use as the source of truth.
+	// +required
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.GitConfig.sync_repo
 	SyncRepo *string `json:"syncRepo,omitempty"`
 
@@ -91,6 +92,7 @@ type GitConfig struct {
 	//  Must be one of ssh, cookiefile, gcenode, token, gcpserviceaccount,
 	//  githubapp or none.
 	//  The validation of this is case-sensitive.
+	// +required
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.GitConfig.secret_type
 	SecretType *string `json:"secretType,omitempty"`
 
@@ -124,6 +126,7 @@ type HierarchyControllerConfig struct {
 type OciConfig struct {
 	// Required. The OCI image repository URL for the package to sync from.
 	//  e.g. `LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY_NAME/PACKAGE_NAME`.
+	// +required
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.OciConfig.sync_repo
 	SyncRepo *string `json:"syncRepo,omitempty"`
 
@@ -139,6 +142,7 @@ type OciConfig struct {
 	// Required. Type of secret configured for access to the OCI repo.
 	//  Must be one of gcenode, gcpserviceaccount, k8sserviceaccount or none.
 	//  The validation of this is case-sensitive.
+	// +required
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.OciConfig.secret_type
 	SecretType *string `json:"secretType,omitempty"`
 

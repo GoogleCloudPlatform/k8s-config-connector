@@ -46,6 +46,7 @@ type CanaryDeployment struct {
 	//  0 <= n < 100.
 	//  If the GatewayServiceMesh is configured for Kubernetes, then the range for
 	//  n is 0 <= n <= 100.
+	// +required
 	// +kcc:proto:field=google.cloud.deploy.v1.CanaryDeployment.percentages
 	Percentages []int32 `json:"percentages,omitempty"`
 
@@ -94,6 +95,7 @@ type CloudRunConfig struct {
 type CustomCanaryDeployment struct {
 	// Required. Configuration for each phase in the canary deployment in the
 	//  order executed.
+	// +required
 	// +kcc:proto:field=google.cloud.deploy.v1.CustomCanaryDeployment.phase_configs
 	PhaseConfigs []CustomCanaryDeployment_PhaseConfig `json:"phaseConfigs,omitempty"`
 }
@@ -105,10 +107,12 @@ type CustomCanaryDeployment_PhaseConfig struct {
 	//  start with a letter and end with a letter or a number, and have a max
 	//  length of 63 characters. In other words, it must match the following
 	//  regex: `^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$`.
+	// +required
 	// +kcc:proto:field=google.cloud.deploy.v1.CustomCanaryDeployment.PhaseConfig.phase_id
 	PhaseID *string `json:"phaseID,omitempty"`
 
 	// Required. Percentage deployment for the phase.
+	// +required
 	// +kcc:proto:field=google.cloud.deploy.v1.CustomCanaryDeployment.PhaseConfig.percentage
 	Percentage *int32 `json:"percentage,omitempty"`
 
@@ -137,6 +141,7 @@ type CustomCanaryDeployment_PhaseConfig struct {
 // +kcc:proto=google.cloud.deploy.v1.DeployParameters
 type DeployParameters struct {
 	// Required. Values are deploy parameters in key-value pairs.
+	// +required
 	// +kcc:proto:field=google.cloud.deploy.v1.DeployParameters.values
 	Values map[string]string `json:"values,omitempty"`
 
@@ -161,15 +166,18 @@ type KubernetesConfig struct {
 // +kcc:proto=google.cloud.deploy.v1.KubernetesConfig.GatewayServiceMesh
 type KubernetesConfig_GatewayServiceMesh struct {
 	// Required. Name of the Gateway API HTTPRoute.
+	// +required
 	// +kcc:proto:field=google.cloud.deploy.v1.KubernetesConfig.GatewayServiceMesh.http_route
 	HTTPRoute *string `json:"httpRoute,omitempty"`
 
 	// Required. Name of the Kubernetes Service.
+	// +required
 	// +kcc:proto:field=google.cloud.deploy.v1.KubernetesConfig.GatewayServiceMesh.service
 	Service *string `json:"service,omitempty"`
 
 	// Required. Name of the Kubernetes Deployment whose traffic is managed by
 	//  the specified HTTPRoute and Service.
+	// +required
 	// +kcc:proto:field=google.cloud.deploy.v1.KubernetesConfig.GatewayServiceMesh.deployment
 	Deployment *string `json:"deployment,omitempty"`
 
@@ -203,11 +211,13 @@ type KubernetesConfig_GatewayServiceMesh struct {
 // +kcc:proto=google.cloud.deploy.v1.KubernetesConfig.ServiceNetworking
 type KubernetesConfig_ServiceNetworking struct {
 	// Required. Name of the Kubernetes Service.
+	// +required
 	// +kcc:proto:field=google.cloud.deploy.v1.KubernetesConfig.ServiceNetworking.service
 	Service *string `json:"service,omitempty"`
 
 	// Required. Name of the Kubernetes Deployment whose traffic is managed by
 	//  the specified Service.
+	// +required
 	// +kcc:proto:field=google.cloud.deploy.v1.KubernetesConfig.ServiceNetworking.deployment
 	Deployment *string `json:"deployment,omitempty"`
 

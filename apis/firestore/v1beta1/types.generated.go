@@ -33,6 +33,7 @@ type Database_CmekConfig struct {
 	//
 	//  The expected format is
 	//  `projects/{project_id}/locations/{kms_location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+	// +required
 	// +kcc:proto:field=google.firestore.admin.v1.Database.CmekConfig.kms_key_name
 	KMSKeyName *string `json:"kmsKeyName,omitempty"`
 }
@@ -66,6 +67,7 @@ type Index_IndexField_VectorConfig struct {
 	//
 	//  The resulting index will only include vectors of this dimension, and
 	//  can be used for vector search with the same dimension.
+	// +required
 	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.VectorConfig.dimension
 	Dimension *int32 `json:"dimension,omitempty"`
 

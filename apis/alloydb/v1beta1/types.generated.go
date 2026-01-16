@@ -94,10 +94,12 @@ type CloudSQLBackupRunSource struct {
 	Project *string `json:"project,omitempty"`
 
 	// Required. The CloudSQL instance ID.
+	// +required
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.CloudSQLBackupRunSource.instance_id
 	InstanceID *string `json:"instanceID,omitempty"`
 
 	// Required. The CloudSQL backup run ID.
+	// +required
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.CloudSQLBackupRunSource.backup_run_id
 	BackupRunID *int64 `json:"backupRunID,omitempty"`
 }

@@ -143,6 +143,7 @@ type Task_InfrastructureSpec_VPCNetwork struct {
 // +kcc:proto=google.cloud.dataplex.v1.Task.TriggerSpec
 type Task_TriggerSpec struct {
 	// Required. Immutable. Trigger type of the user-specified Task.
+	// +required
 	// +kcc:proto:field=google.cloud.dataplex.v1.Task.TriggerSpec.type
 	Type *string `json:"type,omitempty"`
 
@@ -177,6 +178,7 @@ type Task_TriggerSpec struct {
 // +kcc:proto=google.cloud.dataplex.v1.Zone.DiscoverySpec
 type Zone_DiscoverySpec struct {
 	// Required. Whether discovery is enabled.
+	// +required
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -256,6 +258,7 @@ type Zone_DiscoverySpec_JsonOptions struct {
 type Zone_ResourceSpec struct {
 	// Required. Immutable. The location type of the resources that are allowed
 	//  to be attached to the assets within this zone.
+	// +required
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.ResourceSpec.location_type
 	LocationType *string `json:"locationType,omitempty"`
 }
