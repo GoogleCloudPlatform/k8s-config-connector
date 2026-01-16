@@ -108,17 +108,17 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 					}
 				}
 			}
-			// if connection.PscConnection != nil {
-			// 	userConnection := connection.PscConnection
-			// 	if userConnection.NetworkRef != nil {
-			// 		if err := userConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
-			// 			return err
-			// 		}
-			// 	}
-			// 	if err := refs.ResolveComputeServiceAttachment(ctx, reader, obj.GetNamespace(), userConnection.ServiceAttachmentRef); err != nil {
-			// 		return err
-			// 	}
-			// }
+			if connection.PscConnection != nil {
+				userConnection := connection.PscConnection
+				if userConnection.NetworkRef != nil {
+					if err := userConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
+						return err
+					}
+				}
+				if err := refs.ResolveComputeServiceAttachment(ctx, reader, obj.GetNamespace(), userConnection.ServiceAttachmentRef); err != nil {
+					return err
+				}
+			}
 		}
 	}
 	return nil
@@ -246,6 +246,15 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 	if a.desired.Spec.NodeType != nil && !reflect.DeepEqual(desiredPb.NodeType, a.actual.NodeType) {
 		paths = append(paths, "node_type")
+	}
+	if a.desired.Spec.MaintenancePolicy != nil && !reflect.DeepEqual(desiredPb.MaintenancePolicy, a.actual.MaintenancePolicy) {
+		paths = append(paths, "maintenance_policy")
+	}
+	if a.desired.Spec.CrossInstanceReplicationConfig != nil && !reflect.DeepEqual(desiredPb.CrossInstanceReplicationConfig, a.actual.CrossInstanceReplicationConfig) {
+		paths = append(paths, "cross_instance_replication_config")
+	}
+	if a.desired.Spec.AutomatedBackupConfig != nil && !reflect.DeepEqual(desiredPb.AutomatedBackupConfig, a.actual.AutomatedBackupConfig) {
+		paths = append(paths, "automated_backup_config")
 	}
 
 	updated := a.actual
