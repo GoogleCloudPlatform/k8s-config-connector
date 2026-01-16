@@ -1,0 +1,110 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1beta1
+
+import (
+	"context"
+	"testing"
+
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
+	tests := []struct {
+		name             string
+		initial          TagsTagBindingParentRef
+		expectedExternal string
+		wantErr          bool
+	}{
+		{
+			name: "External: projects/{project} with kind=Project",
+			initial: TagsTagBindingParentRef{
+				Kind:     "Project",
+				External: "projects/my-project",
+			},
+			expectedExternal: "//cloudresourcemanager.googleapis.com/projects/my-project",
+		},
+		{
+			name: "External: projects/{project} with no kind",
+			initial: TagsTagBindingParentRef{
+				External: "projects/my-project",
+			},
+			expectedExternal: "//cloudresourcemanager.googleapis.com/projects/my-project",
+		},
+		{
+			name: "External: //cloudresourcemanager.googleapis.com/projects/{project} with kind=Project",
+			initial: TagsTagBindingParentRef{
+				Kind:     "Project",
+				External: "//cloudresourcemanager.googleapis.com/projects/my-project",
+			},
+			expectedExternal: "//cloudresourcemanager.googleapis.com/projects/my-project",
+		},
+		{
+			name: "External: //cloudresourcemanager.googleapis.com/projects/{project} with no kind",
+			initial: TagsTagBindingParentRef{
+				External: "//cloudresourcemanager.googleapis.com/projects/my-project",
+			},
+			expectedExternal: "//cloudresourcemanager.googleapis.com/projects/my-project",
+		},
+		{
+			name: "External: projects/{project}/buckets/{bucket} with kind=StorageBucket",
+			initial: TagsTagBindingParentRef{
+				Kind:     "StorageBucket",
+				External: "projects/my-project/buckets/my-bucket",
+			},
+			expectedExternal: "//storage.googleapis.com/projects/my-project/buckets/my-bucket",
+		},
+		{
+			name: "External: //storage.googleapis.com/projects/{project}/buckets/{bucket} with kind=StorageBucket",
+			initial: TagsTagBindingParentRef{
+				Kind:     "StorageBucket",
+				External: "//storage.googleapis.com/projects/my-project/buckets/my-bucket",
+			},
+			expectedExternal: "//storage.googleapis.com/projects/my-project/buckets/my-bucket",
+		},
+		{
+			name: "External: //storage.googleapis.com/buckets/{bucket} with kind=StorageBucket (invalid without projects)",
+			initial: TagsTagBindingParentRef{
+				Kind:     "StorageBucket",
+				External: "//storage.googleapis.com/buckets/my-bucket",
+			},
+			wantErr: true,
+		},
+		{
+			name: "External: //storage.googleapis.com/projects/_/buckets/somebucket with kind=StorageBucket",
+			initial: TagsTagBindingParentRef{
+				Kind:     "StorageBucket",
+				External: "//storage.googleapis.com/projects/_/buckets/my-bucket",
+			},
+			expectedExternal: "//storage.googleapis.com/projects/_/buckets/my-bucket",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			r := tt.initial
+			// We pass a nil reader as we are only testing External normalization which shouldn't require reading k8s objects
+			var reader client.Reader
+			err := r.Normalize(context.Background(), reader, "default")
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Normalize() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr && r.External != tt.expectedExternal {
+				t.Errorf("Normalize() external = %v, want %v", r.External, tt.expectedExternal)
+			}
+		})
+	}
+}
