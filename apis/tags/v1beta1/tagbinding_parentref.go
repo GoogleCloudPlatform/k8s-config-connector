@@ -27,8 +27,14 @@ import (
 )
 
 // ParentRef is a reference to a parent resource.
-// +kcc:ref=Project
+// +kcc:ref=Project;StorageBucket
 type TagsTagBindingParentRef struct {
+	// Kind of the referent.
+	// +optional
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:default=Project
+	Kind string `json:"kind,omitempty"`
+
 	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	Name string `json:"name,omitempty"`
 
@@ -97,23 +103,25 @@ func (r *TagsTagBindingParentRef) Normalize(ctx context.Context, reader client.R
 }
 
 func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref) {
-	if suffix, ok := strings.CutPrefix(r.External, "//storage.googleapis.com/"); ok {
-		service := "storage.googleapis.com"
-
-		tokens := strings.Split(suffix, "/")
-		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "buckets" {
-			return service, &storage.StorageBucketRef{
-				External:  suffix,
-				Name:      r.Name,
-				Namespace: r.Namespace,
-			}
-		}
-		return "", nil
+	kind := r.Kind
+	if kind == "" {
+		kind = "Project"
 	}
 
-	return "cloudresourcemanager.googleapis.com", &refs.ProjectRef{
-		Name:      r.Name,
-		Namespace: r.Namespace,
-		External:  r.External,
+	switch kind {
+	case "StorageBucket":
+		return "storage.googleapis.com", &storage.StorageBucketRef{
+			Name:      r.Name,
+			Namespace: r.Namespace,
+			External:  strings.TrimPrefix(r.External, "//storage.googleapis.com/"),
+		}
+	case "Project":
+		return "cloudresourcemanager.googleapis.com", &refs.ProjectRef{
+			Name:      r.Name,
+			Namespace: r.Namespace,
+			External:  r.External,
+		}
+	default:
+		return "", nil
 	}
 }
