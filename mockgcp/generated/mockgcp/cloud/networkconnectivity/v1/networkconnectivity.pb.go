@@ -777,7 +777,7 @@ type ConsumerPscConfig struct {
 	ProducerInstanceMetadata map[string]string `protobuf:"bytes,6,rep,name=producer_instance_metadata,json=producerInstanceMetadata,proto3" json:"producer_instance_metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// The consumer project where PSC connections are allowed to be created in.
 	Project string `protobuf:"bytes,7,opt,name=project,proto3" json:"project,omitempty"`
-	// Output only. A map to store mapping between customer vip and target service attachment. Only service attachment with producer specified ip addresses are stored here.
+	// Optional. A map to store mapping between customer vip and target service attachment. This field can be used to specify a static IP address for a PSC connection.
 	ServiceAttachmentIpAddressMap map[string]string `protobuf:"bytes,8,rep,name=service_attachment_ip_address_map,json=serviceAttachmentIpAddressMap,proto3" json:"service_attachment_ip_address_map,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Output only. Overall state of PSC Connections management for this consumer psc config.
 	State string `protobuf:"bytes,9,opt,name=state,proto3" json:"state,omitempty"`
