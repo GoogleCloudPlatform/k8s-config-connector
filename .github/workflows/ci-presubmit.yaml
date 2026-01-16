@@ -36,6 +36,7 @@ jobs:
 
   capture-pprof:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -49,6 +50,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-capture-pprof
           path: /tmp/artifacts/
@@ -56,6 +58,7 @@ jobs:
 
   fuzz-roundtrippers:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -69,6 +72,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-fuzz-roundtrippers
           path: /tmp/artifacts/
@@ -76,6 +80,7 @@ jobs:
 
   run-linters:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -89,6 +94,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-run-linters
           path: /tmp/artifacts/
@@ -96,6 +102,7 @@ jobs:
 
   test-mockgcp:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -113,6 +120,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-test-mockgcp
           path: /tmp/artifacts/
@@ -120,6 +128,7 @@ jobs:
 
   test-pause:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -133,6 +142,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-test-pause
           path: /tmp/artifacts/
@@ -140,6 +150,7 @@ jobs:
 
   tests-e2e-direct-iam:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -153,6 +164,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-direct-iam
           path: /tmp/artifacts/
@@ -160,6 +172,7 @@ jobs:
 
   tests-e2e-fixtures:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -173,6 +186,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures
           path: /tmp/artifacts/
@@ -180,6 +194,7 @@ jobs:
 
   tests-e2e-fixtures-accesscontextmanager:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -193,6 +208,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-accesscontextmanager
           path: /tmp/artifacts/
@@ -200,6 +216,7 @@ jobs:
 
   tests-e2e-fixtures-alloydb:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -213,6 +230,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-alloydb
           path: /tmp/artifacts/
@@ -220,6 +238,7 @@ jobs:
 
   tests-e2e-fixtures-apigateway:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -233,6 +252,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-apigateway
           path: /tmp/artifacts/
@@ -240,6 +260,7 @@ jobs:
 
   tests-e2e-fixtures-apigee:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -253,6 +274,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-apigee
           path: /tmp/artifacts/
@@ -260,6 +282,7 @@ jobs:
 
   tests-e2e-fixtures-apikeys:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -273,6 +296,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-apikeys
           path: /tmp/artifacts/
@@ -280,6 +304,7 @@ jobs:
 
   tests-e2e-fixtures-artifactregistry:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -293,6 +318,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-artifactregistry
           path: /tmp/artifacts/
@@ -300,6 +326,7 @@ jobs:
 
   tests-e2e-fixtures-asset:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -313,6 +340,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-asset
           path: /tmp/artifacts/
@@ -320,6 +348,7 @@ jobs:
 
   tests-e2e-fixtures-backupdr:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -333,6 +362,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-backupdr
           path: /tmp/artifacts/
@@ -340,6 +370,7 @@ jobs:
 
   tests-e2e-fixtures-batch:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -353,6 +384,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-batch
           path: /tmp/artifacts/
@@ -360,6 +392,7 @@ jobs:
 
   tests-e2e-fixtures-bigquery:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -373,6 +406,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigquery
           path: /tmp/artifacts/
@@ -380,6 +414,7 @@ jobs:
 
   tests-e2e-fixtures-bigquerybiglake:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -393,6 +428,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigquerybiglake
           path: /tmp/artifacts/
@@ -400,6 +436,7 @@ jobs:
 
   tests-e2e-fixtures-bigquerydatapolicy:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -413,6 +450,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigquerydatapolicy
           path: /tmp/artifacts/
@@ -420,6 +458,7 @@ jobs:
 
   tests-e2e-fixtures-bigtable:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -433,6 +472,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-bigtable
           path: /tmp/artifacts/
@@ -440,6 +480,7 @@ jobs:
 
   tests-e2e-fixtures-certificatemanager:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -453,6 +494,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-certificatemanager
           path: /tmp/artifacts/
@@ -460,6 +502,7 @@ jobs:
 
   tests-e2e-fixtures-cloudbuild:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -473,6 +516,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudbuild
           path: /tmp/artifacts/
@@ -480,6 +524,7 @@ jobs:
 
   tests-e2e-fixtures-clouddeploy:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -493,6 +538,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-clouddeploy
           path: /tmp/artifacts/
@@ -500,6 +546,7 @@ jobs:
 
   tests-e2e-fixtures-clouddms:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -513,6 +560,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-clouddms
           path: /tmp/artifacts/
@@ -520,6 +568,7 @@ jobs:
 
   tests-e2e-fixtures-cloudidentity:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -533,6 +582,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudidentity
           path: /tmp/artifacts/
@@ -540,6 +590,7 @@ jobs:
 
   tests-e2e-fixtures-cloudquota:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -553,6 +604,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudquota
           path: /tmp/artifacts/
@@ -560,6 +612,7 @@ jobs:
 
   tests-e2e-fixtures-cloudtasks:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -573,6 +626,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-cloudtasks
           path: /tmp/artifacts/
@@ -580,6 +634,7 @@ jobs:
 
   tests-e2e-fixtures-colab:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -593,6 +648,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-colab
           path: /tmp/artifacts/
@@ -600,6 +656,7 @@ jobs:
 
   tests-e2e-fixtures-composer:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -613,6 +670,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-composer
           path: /tmp/artifacts/
@@ -620,6 +678,7 @@ jobs:
 
   tests-e2e-fixtures-compute:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -633,6 +692,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-compute
           path: /tmp/artifacts/
@@ -640,6 +700,7 @@ jobs:
 
   tests-e2e-fixtures-container:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -653,6 +714,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-container
           path: /tmp/artifacts/
@@ -660,6 +722,7 @@ jobs:
 
   tests-e2e-fixtures-containerattached:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -673,6 +736,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-containerattached
           path: /tmp/artifacts/
@@ -680,6 +744,7 @@ jobs:
 
   tests-e2e-fixtures-datacatalog:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -693,6 +758,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-datacatalog
           path: /tmp/artifacts/
@@ -700,6 +766,7 @@ jobs:
 
   tests-e2e-fixtures-dataflow:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -713,6 +780,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-dataflow
           path: /tmp/artifacts/
@@ -720,6 +788,7 @@ jobs:
 
   tests-e2e-fixtures-dataform:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -733,6 +802,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-dataform
           path: /tmp/artifacts/
@@ -740,6 +810,7 @@ jobs:
 
   tests-e2e-fixtures-dataplex:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -753,6 +824,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-dataplex
           path: /tmp/artifacts/
@@ -760,6 +832,7 @@ jobs:
 
   tests-e2e-fixtures-dataproc:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -773,6 +846,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-dataproc
           path: /tmp/artifacts/
@@ -780,6 +854,7 @@ jobs:
 
   tests-e2e-fixtures-datastream:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -793,6 +868,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-datastream
           path: /tmp/artifacts/
@@ -800,6 +876,7 @@ jobs:
 
   tests-e2e-fixtures-discoveryengine:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -813,6 +890,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-discoveryengine
           path: /tmp/artifacts/
@@ -820,6 +898,7 @@ jobs:
 
   tests-e2e-fixtures-documentai:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -833,6 +912,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-documentai
           path: /tmp/artifacts/
@@ -840,6 +920,7 @@ jobs:
 
   tests-e2e-fixtures-edgecontainer:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -853,6 +934,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-edgecontainer
           path: /tmp/artifacts/
@@ -860,6 +942,7 @@ jobs:
 
   tests-e2e-fixtures-essentialcontacts:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -873,6 +956,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-essentialcontacts
           path: /tmp/artifacts/
@@ -880,6 +964,7 @@ jobs:
 
   tests-e2e-fixtures-eventarc:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -893,6 +978,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-eventarc
           path: /tmp/artifacts/
@@ -900,6 +986,7 @@ jobs:
 
   tests-e2e-fixtures-firestore:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -913,6 +1000,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-firestore
           path: /tmp/artifacts/
@@ -920,6 +1008,7 @@ jobs:
 
   tests-e2e-fixtures-gkebackup:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -933,6 +1022,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-gkebackup
           path: /tmp/artifacts/
@@ -940,6 +1030,7 @@ jobs:
 
   tests-e2e-fixtures-gkehub:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -953,6 +1044,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-gkehub
           path: /tmp/artifacts/
@@ -960,6 +1052,7 @@ jobs:
 
   tests-e2e-fixtures-iam:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -973,6 +1066,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-iam
           path: /tmp/artifacts/
@@ -980,6 +1074,7 @@ jobs:
 
   tests-e2e-fixtures-iap:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -993,6 +1088,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-iap
           path: /tmp/artifacts/
@@ -1000,6 +1096,7 @@ jobs:
 
   tests-e2e-fixtures-kms:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1013,6 +1110,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-kms
           path: /tmp/artifacts/
@@ -1020,6 +1118,7 @@ jobs:
 
   tests-e2e-fixtures-logging:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1033,6 +1132,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-logging
           path: /tmp/artifacts/
@@ -1040,6 +1140,7 @@ jobs:
 
   tests-e2e-fixtures-managedkafka:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1053,6 +1154,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-managedkafka
           path: /tmp/artifacts/
@@ -1060,6 +1162,7 @@ jobs:
 
   tests-e2e-fixtures-memorystore:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1073,6 +1176,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-memorystore
           path: /tmp/artifacts/
@@ -1080,6 +1184,7 @@ jobs:
 
   tests-e2e-fixtures-metastore:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1093,6 +1198,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-metastore
           path: /tmp/artifacts/
@@ -1100,6 +1206,7 @@ jobs:
 
   tests-e2e-fixtures-monitoring:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1113,6 +1220,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-monitoring
           path: /tmp/artifacts/
@@ -1120,6 +1228,7 @@ jobs:
 
   tests-e2e-fixtures-netapp:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1133,6 +1242,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-netapp
           path: /tmp/artifacts/
@@ -1140,6 +1250,7 @@ jobs:
 
   tests-e2e-fixtures-networkconnectivity:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1153,6 +1264,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-networkconnectivity
           path: /tmp/artifacts/
@@ -1160,6 +1272,7 @@ jobs:
 
   tests-e2e-fixtures-networkmanagement:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1173,6 +1286,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-networkmanagement
           path: /tmp/artifacts/
@@ -1180,6 +1294,7 @@ jobs:
 
   tests-e2e-fixtures-networksecurity:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1193,6 +1308,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-networksecurity
           path: /tmp/artifacts/
@@ -1200,6 +1316,7 @@ jobs:
 
   tests-e2e-fixtures-networkservices:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1213,6 +1330,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-networkservices
           path: /tmp/artifacts/
@@ -1220,6 +1338,7 @@ jobs:
 
   tests-e2e-fixtures-notebooks:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1233,6 +1352,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-notebooks
           path: /tmp/artifacts/
@@ -1240,6 +1360,7 @@ jobs:
 
   tests-e2e-fixtures-orgpolicy:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1253,6 +1374,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-orgpolicy
           path: /tmp/artifacts/
@@ -1260,6 +1382,7 @@ jobs:
 
   tests-e2e-fixtures-privilegedaccessmanager:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1273,6 +1396,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-privilegedaccessmanager
           path: /tmp/artifacts/
@@ -1280,6 +1404,7 @@ jobs:
 
   tests-e2e-fixtures-pubsub:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1293,6 +1418,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-pubsub
           path: /tmp/artifacts/
@@ -1300,6 +1426,7 @@ jobs:
 
   tests-e2e-fixtures-recaptchaenterprise:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1313,6 +1440,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-recaptchaenterprise
           path: /tmp/artifacts/
@@ -1320,6 +1448,7 @@ jobs:
 
   tests-e2e-fixtures-redis:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1333,6 +1462,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-redis
           path: /tmp/artifacts/
@@ -1340,6 +1470,7 @@ jobs:
 
   tests-e2e-fixtures-resourcemanager:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1353,6 +1484,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-resourcemanager
           path: /tmp/artifacts/
@@ -1360,6 +1492,7 @@ jobs:
 
   tests-e2e-fixtures-run:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1373,6 +1506,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-run
           path: /tmp/artifacts/
@@ -1380,6 +1514,7 @@ jobs:
 
   tests-e2e-fixtures-secretmanager:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1393,6 +1528,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-secretmanager
           path: /tmp/artifacts/
@@ -1400,6 +1536,7 @@ jobs:
 
   tests-e2e-fixtures-securesourcemanager:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1413,6 +1550,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-securesourcemanager
           path: /tmp/artifacts/
@@ -1420,6 +1558,7 @@ jobs:
 
   tests-e2e-fixtures-spanner:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1433,6 +1572,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-spanner
           path: /tmp/artifacts/
@@ -1440,6 +1580,7 @@ jobs:
 
   tests-e2e-fixtures-sql:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1453,6 +1594,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-sql
           path: /tmp/artifacts/
@@ -1460,6 +1602,7 @@ jobs:
 
   tests-e2e-fixtures-storage:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1473,6 +1616,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-storage
           path: /tmp/artifacts/
@@ -1480,6 +1624,7 @@ jobs:
 
   tests-e2e-fixtures-tags:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1493,6 +1638,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-tags
           path: /tmp/artifacts/
@@ -1500,6 +1646,7 @@ jobs:
 
   tests-e2e-fixtures-vertexai:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1513,6 +1660,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-vertexai
           path: /tmp/artifacts/
@@ -1520,6 +1668,7 @@ jobs:
 
   tests-e2e-fixtures-vmwareengine:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1533,6 +1682,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-vmwareengine
           path: /tmp/artifacts/
@@ -1540,6 +1690,7 @@ jobs:
 
   tests-e2e-fixtures-workstations:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1553,6 +1704,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-workstations
           path: /tmp/artifacts/
@@ -1560,6 +1712,7 @@ jobs:
 
   tests-e2e-samples-alloydb:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1573,6 +1726,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-alloydb
           path: /tmp/artifacts/
@@ -1580,6 +1734,7 @@ jobs:
 
   tests-e2e-samples-apigateway:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1593,6 +1748,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-apigateway
           path: /tmp/artifacts/
@@ -1600,6 +1756,7 @@ jobs:
 
   tests-e2e-samples-apigee:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1613,6 +1770,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-apigee
           path: /tmp/artifacts/
@@ -1620,6 +1778,7 @@ jobs:
 
   tests-e2e-samples-bigquery:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1633,6 +1792,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-bigquery
           path: /tmp/artifacts/
@@ -1640,6 +1800,7 @@ jobs:
 
   tests-e2e-samples-bigqueryconnection:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1653,6 +1814,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-bigqueryconnection
           path: /tmp/artifacts/
@@ -1660,6 +1822,7 @@ jobs:
 
   tests-e2e-samples-bigquerydatapolicy:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1673,6 +1836,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-bigquerydatapolicy
           path: /tmp/artifacts/
@@ -1680,6 +1844,7 @@ jobs:
 
   tests-e2e-samples-bigquerydatatransfer:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1693,6 +1858,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-bigquerydatatransfer
           path: /tmp/artifacts/
@@ -1700,6 +1866,7 @@ jobs:
 
   tests-e2e-samples-cloudbuild:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1713,6 +1880,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-cloudbuild
           path: /tmp/artifacts/
@@ -1720,6 +1888,7 @@ jobs:
 
   tests-e2e-samples-cloudidentity:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1733,6 +1902,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-cloudidentity
           path: /tmp/artifacts/
@@ -1740,6 +1910,7 @@ jobs:
 
   tests-e2e-samples-compute:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1753,6 +1924,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-compute
           path: /tmp/artifacts/
@@ -1760,6 +1932,7 @@ jobs:
 
   tests-e2e-samples-dataflow:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1773,6 +1946,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-dataflow
           path: /tmp/artifacts/
@@ -1780,6 +1954,7 @@ jobs:
 
   tests-e2e-samples-dataproc:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1793,6 +1968,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-dataproc
           path: /tmp/artifacts/
@@ -1800,6 +1976,7 @@ jobs:
 
   tests-e2e-samples-gkehub:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1813,6 +1990,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-gkehub
           path: /tmp/artifacts/
@@ -1820,6 +1998,7 @@ jobs:
 
   tests-e2e-samples-iam:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1833,6 +2012,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-iam
           path: /tmp/artifacts/
@@ -1840,6 +2020,7 @@ jobs:
 
   tests-e2e-samples-kms:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1853,6 +2034,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-kms
           path: /tmp/artifacts/
@@ -1860,6 +2042,7 @@ jobs:
 
   tests-e2e-samples-orgpolicy:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1873,6 +2056,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-orgpolicy
           path: /tmp/artifacts/
@@ -1880,6 +2064,7 @@ jobs:
 
   tests-e2e-samples-redis:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1893,6 +2078,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-redis
           path: /tmp/artifacts/
@@ -1900,6 +2086,7 @@ jobs:
 
   tests-e2e-samples-secretmanager:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1913,6 +2100,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-secretmanager
           path: /tmp/artifacts/
@@ -1920,6 +2108,7 @@ jobs:
 
   tests-e2e-samples-spanner:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1933,6 +2122,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-spanner
           path: /tmp/artifacts/
@@ -1940,6 +2130,7 @@ jobs:
 
   tests-e2e-samples-sql:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1953,6 +2144,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-sql
           path: /tmp/artifacts/
@@ -1960,6 +2152,7 @@ jobs:
 
   tests-e2e-samples-storage:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1973,6 +2166,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-storage
           path: /tmp/artifacts/
@@ -1980,6 +2174,7 @@ jobs:
 
   tests-e2e-samples-unclassified:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -1993,6 +2188,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-unclassified
           path: /tmp/artifacts/
@@ -2000,6 +2196,7 @@ jobs:
 
   tests-e2e-samples-workstations:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -2013,6 +2210,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-workstations
           path: /tmp/artifacts/
@@ -2020,6 +2218,7 @@ jobs:
 
   tests-gcptracker:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -2033,6 +2232,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-gcptracker
           path: /tmp/artifacts/
@@ -2040,6 +2240,7 @@ jobs:
 
   tests-scenarios-acquisition:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -2053,6 +2254,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-acquisition
           path: /tmp/artifacts/
@@ -2060,6 +2262,7 @@ jobs:
 
   tests-scenarios-gkehubfeaturemembership:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -2073,6 +2276,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-gkehubfeaturemembership
           path: /tmp/artifacts/
@@ -2080,6 +2284,7 @@ jobs:
 
   tests-scenarios-powertool:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -2093,6 +2298,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-powertool
           path: /tmp/artifacts/
@@ -2100,6 +2306,7 @@ jobs:
 
   tests-scenarios-unclassified:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -2113,13 +2320,43 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-unclassified
           path: /tmp/artifacts/
 
 
+  unit-tests:
+    runs-on: ubuntu-latest
+    
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free up disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: 'go.mod'
+      - uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          version: '546.0.0'
+          install_components: 'alpha,beta'
+      - name: "Run dev/ci/presubmits/unit-tests"
+        run: |
+          ./dev/ci/presubmits/unit-tests
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-unit-tests
+          path: /tmp/artifacts/
+
+
   validate-generated-files:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -2133,6 +2370,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-generated-files
           path: /tmp/artifacts/
@@ -2140,6 +2378,7 @@ jobs:
 
   validate-generated-types:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -2153,6 +2392,7 @@ jobs:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-generated-types
           path: /tmp/artifacts/

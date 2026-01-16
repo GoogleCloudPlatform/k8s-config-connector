@@ -65,20 +65,36 @@ EOF
 for f in $(find dev/ci/presubmits -type f | sort ); do
     name=$(basename ${f})
 
+    needs_clause=""
+    if [[ "${name}" != "unit-tests" ]]; then
+      needs_clause="needs: unit-tests"
+    fi
+
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
   ${name}:
     runs-on: ubuntu-latest
+    ${needs_clause}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+EOF
+
+    if [[ "${name}" == "unit-tests" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+      - name: Free up disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
+EOF
+    fi
+
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
           go-version-file: 'go.mod'
 EOF
 
     # TODO: We should look at the script to see if it needs gcloud
-    if [[ "${name}" == "test-mockgcp" ]]; then
+    if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: 'google-github-actions/setup-gcloud@v2'
         with:
@@ -95,6 +111,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
+        if: \${{ !cancelled() }}
         with:
           name: artifacts-${name}
           path: /tmp/artifacts/
