@@ -387,6 +387,10 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.NodeConfig = NodeConfigObservedState_ToProto(mapCtx, in.NodeConfig)
 	out.PscAttachmentDetails = direct.Slice_ToProto(mapCtx, in.PscAttachmentDetails, PscAttachmentDetailObservedState_ToProto)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
+	out.MaintenancePolicy = MaintenancePolicyObservedState_ToProto(mapCtx, in.MaintenancePolicy)
+	out.MaintenanceSchedule = MaintenanceScheduleObservedState_ToProto(mapCtx, in.MaintenanceSchedule)
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
+	out.BackupCollection = in.BackupCollection
 	return out
 }
 func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceSpec {
