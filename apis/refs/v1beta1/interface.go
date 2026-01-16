@@ -73,6 +73,9 @@ func Normalize(ctx context.Context, reader client.Reader, ref Ref, defaultNamesp
 // for obtaining the external reference if it is not found in status.externalRef,
 // this is useful for terraform/DCL resources that store the external reference in a different field.
 func NormalizeWithFallback(ctx context.Context, reader client.Reader, ref Ref, defaultNamespace string, fallback func(u *unstructured.Unstructured) string) error {
+	if ref.GetExternal() != "" && ref.GetNamespacedName().Name != "" {
+		return fmt.Errorf("cannot specify both name and external on %s reference", ref.GetGVK().Kind)
+	}
 	if ref.GetExternal() == "" {
 		key := ref.GetNamespacedName()
 		if key.Namespace == "" {
