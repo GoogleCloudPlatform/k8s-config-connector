@@ -41,3 +41,7 @@ func (i *RunServiceIdentity) FromExternal(ref string) error {
 	*i = *parsed
 	return nil
 }
+
+func (i *RunServiceIdentity) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s/services/%s", i.Project, i.Location, i.Service)
+}
