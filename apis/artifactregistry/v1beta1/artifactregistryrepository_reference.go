@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,15 +17,19 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1beta1"
-	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var ArtifactRegistryRepositoryGVK = schema.GroupVersionKind{
+	Group:   "artifactregistry.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "ArtifactRegistryRepository",
+}
 
 var _ refs.Ref = &ArtifactRegistryRepositoryRef{}
 
@@ -45,11 +49,7 @@ type ArtifactRegistryRepositoryRef struct {
 }
 
 func (r *ArtifactRegistryRepositoryRef) GetGVK() schema.GroupVersionKind {
-	return schema.GroupVersionKind{
-		Group:   "artifactregistry.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ArtifactRegistryRepository",
-	}
+	return ArtifactRegistryRepositoryGVK
 }
 
 func (r *ArtifactRegistryRepositoryRef) GetNamespacedName() types.NamespacedName {
@@ -68,60 +68,31 @@ func (r *ArtifactRegistryRepositoryRef) SetExternal(ref string) {
 }
 
 func (r *ArtifactRegistryRepositoryRef) ValidateExternal(ref string) error {
-	if !strings.HasPrefix(ref, "projects/") || !strings.Contains(ref, "/locations/") || !strings.Contains(ref, "/repositories/") {
-		return fmt.Errorf("ArtifactRegistryRepositoryRef.External must be in the format \"projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}\", got %s", ref)
+	id := &ArtifactRegistryRepositoryIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
 	}
 	return nil
 }
 
 func (r *ArtifactRegistryRepositoryRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.External != "" && r.Name != "" {
-		return fmt.Errorf("cannot specify both name and external on ArtifactRegistryRepositoryRef")
-	}
-	if r.External != "" {
-		return r.ValidateExternal(r.External)
-	}
+	fallback := func(u *unstructured.Unstructured) string {
+		resourceID, err := refs.GetResourceID(u)
+		if err != nil {
+			return ""
+		}
 
-	if r.Namespace == "" {
-		r.Namespace = defaultNamespace
-	}
+		location, err := refs.GetLocation(u)
+		if err != nil {
+			return ""
+		}
 
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &krm.ArtifactRegistryRepository{}
-	if err := reader.Get(ctx, key, u); err != nil {
-		return err
-	}
+		projectID, err := refs.ResolveProjectID(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
 
-	projectID, err := resolveProject(ctx, reader, u)
-	if err != nil {
-		return err
+		return fmt.Sprintf("projects/%s/locations/%s/repositories/%s", projectID, location, resourceID)
 	}
-
-	location := u.Spec.Location
-	repositoryID := u.Spec.ResourceID
-	if repositoryID == nil || *repositoryID == "" {
-		repositoryID = &u.Name
-	}
-
-	r.External = fmt.Sprintf("projects/%s/locations/%s/repositories/%s", projectID, location, *repositoryID)
-	return nil
-}
-
-func resolveProject(ctx context.Context, reader client.Reader, obj *krm.ArtifactRegistryRepository) (string, error) {
-	// Check annotation on the object
-	if projectID := obj.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
-		return projectID, nil
-	}
-
-	// Check annotation on the namespace
-	ns := &corev1.Namespace{}
-	if err := reader.Get(ctx, types.NamespacedName{Name: obj.GetNamespace()}, ns); err != nil {
-		return "", fmt.Errorf("error getting namespace %q: %w", obj.GetNamespace(), err)
-	}
-	if projectID := ns.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
-		return projectID, nil
-	}
-
-	// Fallback to namespace name
-	return obj.GetNamespace(), nil
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
