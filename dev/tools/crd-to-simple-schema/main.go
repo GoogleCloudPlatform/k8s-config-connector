@@ -141,10 +141,14 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 
 func diffCRD(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition, opt ConvertOptions) error {
 	// Metadata Diffs
-	diffMetadata(out, crd1, crd2)
+	if err := diffMetadata(out, crd1, crd2); err != nil {
+		return fmt.Errorf("diffing metadata: %w", err)
+	}
 
 	// Naming Diffs
-	diffNames(out, crd1, crd2)
+	if err := diffNames(out, crd1, crd2); err != nil {
+		return fmt.Errorf("diffing names: %w", err)
+	}
 
 	// Schema Diffs
 	schema1, err := buildSimpleSchema(crd1, opt)
@@ -160,18 +164,21 @@ func diffCRD(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition
 	return nil
 }
 
-func diffMetadata(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition) {
+func diffMetadata(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition) error {
 	var buf bytes.Buffer
 	printMapDiff(&buf, "metadata.labels", crd1.Labels, crd2.Labels)
 	printMapDiff(&buf, "metadata.annotations", crd1.Annotations, crd2.Annotations)
 
 	if buf.Len() > 0 {
 		fmt.Fprintln(out, "metadata:")
-		io.Copy(out, &buf)
+		if _, err := io.Copy(out, &buf); err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
-func diffNames(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition) {
+func diffNames(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition) error {
 	var buf bytes.Buffer
 	if crd1.Spec.Names.Plural != crd2.Spec.Names.Plural {
 		fmt.Fprintf(&buf, "- spec.names.plural=%s\n", crd1.Spec.Names.Plural)
@@ -209,8 +216,11 @@ func diffNames(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefiniti
 
 	if buf.Len() > 0 {
 		fmt.Fprintln(out, "names:")
-		io.Copy(out, &buf)
+		if _, err := io.Copy(out, &buf); err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 func printMapDiff(out io.Writer, prefix string, m1, m2 map[string]string) {
