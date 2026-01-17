@@ -239,10 +239,10 @@ func buildSimpleSchema(data []byte, opt ConvertOptions) (any, error) {
 		"singular": crd.Spec.Names.Singular,
 	}
 	if len(crd.Spec.Names.ShortNames) > 0 {
-		// Convert []string to []any
-		shortNames := make([]any, len(crd.Spec.Names.ShortNames))
-		for i, v := range crd.Spec.Names.ShortNames {
-			shortNames[i] = v
+		// Convert []string to map[string]any for better diffing (set semantics)
+		shortNames := make(map[string]any)
+		for _, v := range crd.Spec.Names.ShortNames {
+			shortNames[v] = "true"
 		}
 		names["shortNames"] = shortNames
 	}
