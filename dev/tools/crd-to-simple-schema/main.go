@@ -15,6 +15,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"flag"
 	"fmt"
@@ -160,22 +161,29 @@ func diffCRD(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition
 }
 
 func diffMetadata(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition) {
-	printMapDiff(out, "metadata.labels", crd1.Labels, crd2.Labels)
-	printMapDiff(out, "metadata.annotations", crd1.Annotations, crd2.Annotations)
+	var buf bytes.Buffer
+	printMapDiff(&buf, "metadata.labels", crd1.Labels, crd2.Labels)
+	printMapDiff(&buf, "metadata.annotations", crd1.Annotations, crd2.Annotations)
+
+	if buf.Len() > 0 {
+		fmt.Fprintln(out, "metadata:")
+		io.Copy(out, &buf)
+	}
 }
 
 func diffNames(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition) {
+	var buf bytes.Buffer
 	if crd1.Spec.Names.Plural != crd2.Spec.Names.Plural {
-		fmt.Fprintf(out, "- spec.names.plural=%s\n", crd1.Spec.Names.Plural)
-		fmt.Fprintf(out, "+ spec.names.plural=%s\n", crd2.Spec.Names.Plural)
+		fmt.Fprintf(&buf, "- spec.names.plural=%s\n", crd1.Spec.Names.Plural)
+		fmt.Fprintf(&buf, "+ spec.names.plural=%s\n", crd2.Spec.Names.Plural)
 	}
 	if crd1.Spec.Names.Singular != crd2.Spec.Names.Singular {
-		fmt.Fprintf(out, "- spec.names.singular=%s\n", crd1.Spec.Names.Singular)
-		fmt.Fprintf(out, "+ spec.names.singular=%s\n", crd2.Spec.Names.Singular)
+		fmt.Fprintf(&buf, "- spec.names.singular=%s\n", crd1.Spec.Names.Singular)
+		fmt.Fprintf(&buf, "+ spec.names.singular=%s\n", crd2.Spec.Names.Singular)
 	}
 	if crd1.Spec.Names.Kind != crd2.Spec.Names.Kind {
-		fmt.Fprintf(out, "- spec.names.kind=%s\n", crd1.Spec.Names.Kind)
-		fmt.Fprintf(out, "+ spec.names.kind=%s\n", crd2.Spec.Names.Kind)
+		fmt.Fprintf(&buf, "- spec.names.kind=%s\n", crd1.Spec.Names.Kind)
+		fmt.Fprintf(&buf, "+ spec.names.kind=%s\n", crd2.Spec.Names.Kind)
 	}
 
 	// ShortNames
@@ -190,13 +198,18 @@ func diffNames(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefiniti
 
 	for _, k := range slices.Sorted(maps.Keys(s1)) {
 		if !s2[k] {
-			fmt.Fprintf(out, "- spec.names.shortNames.%s=true\n", k)
+			fmt.Fprintf(&buf, "- spec.names.shortNames.%s\n", k)
 		}
 	}
 	for _, k := range slices.Sorted(maps.Keys(s2)) {
 		if !s1[k] {
-			fmt.Fprintf(out, "+ spec.names.shortNames.%s=true\n", k)
+			fmt.Fprintf(&buf, "+ spec.names.shortNames.%s\n", k)
 		}
+	}
+
+	if buf.Len() > 0 {
+		fmt.Fprintln(out, "names:")
+		io.Copy(out, &buf)
 	}
 }
 
@@ -271,8 +284,11 @@ func diffSchema(out io.Writer, schema1, schema2 any, opt ConvertOptions) {
 		return s0 < s1
 	})
 
-	for _, line := range diff {
-		fmt.Fprintln(out, line)
+	if len(diff) > 0 {
+		fmt.Fprintln(out, "schema:")
+		for _, line := range diff {
+			fmt.Fprintln(out, line)
+		}
 	}
 }
 
