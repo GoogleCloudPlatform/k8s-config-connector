@@ -305,10 +305,9 @@ oneOf:
 				ruleYAML = refRuleWithKind
 			}
 		} else if signature == "external,kind,name,namespace" {
-			ruleYAML = refRuleWithKind
-			// kind is optional for projectRef (and maybe in future other well-known ref types)
-			// fieldPath is the best mechanism we have today (?)
-			if isProjectPath(fieldPath) || strings.HasSuffix(fieldPath, ".requiredAccessLevels[]") {
+			if hasString(props.Required, "kind") {
+				ruleYAML = refRuleWithKind
+			} else {
 				ruleYAML = refRuleWithOptionalKind
 			}
 		} else if signature == "external,name,namespace" {
@@ -333,7 +332,11 @@ oneOf:
 	return nil
 }
 
-// isProjectPath checks if the given fieldPath defines a Project reference resource.
-func isProjectPath(fieldPath string) bool {
-	return strings.HasSuffix(fieldPath, ".projectRef") || strings.HasSuffix(fieldPath, ".projectRefs[]") || strings.HasSuffix(fieldPath, ".project") || strings.HasSuffix(fieldPath, ".projects[]")
+func hasString(list []string, s string) bool {
+	for _, v := range list {
+		if v == s {
+			return true
+		}
+	}
+	return false
 }
