@@ -96,8 +96,6 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 		return fmt.Errorf("building simple schema: %w", err)
 	}
 	
-	meta1 := getCRDMetadata(crd1)
-
 	if opt.DiffCRDFile != "" {
 		b, err := os.ReadFile(opt.DiffCRDFile)
 		if err != nil {
@@ -113,7 +111,6 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 		if err != nil {
 			return fmt.Errorf("building simple schema: %w", err)
 		}
-		meta2 := getCRDMetadata(crd2)
 
 		if !opt.Flatten {
 			return fmt.Errorf("diffing requires --flatten")
@@ -121,11 +118,9 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 
 		lines1 := make(map[string]string)
 		flatten("", schema1, lines1)
-		maps.Copy(lines1, meta1)
 
 		lines2 := make(map[string]string)
 		flatten("", schema2, lines2)
-		maps.Copy(lines2, meta2)
 
 		var diff []string
 
@@ -156,6 +151,9 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 			}
 		}
 
+		// Add metadata diffs
+		diff = append(diff, diffMetadata(crd1, crd2)...)
+
 		// Funky sort that tries to match up + and - lines
 		sort.Slice(diff, func(i, j int) bool {
 			s0 := diff[i]
@@ -176,7 +174,6 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 	if opt.Flatten {
 		pathsAndTypes := make(map[string]string)
 		flatten("", schema1, pathsAndTypes)
-		maps.Copy(pathsAndTypes, meta1)
 
 		for _, k := range slices.Sorted(maps.Keys(pathsAndTypes)) {
 			v := pathsAndTypes[k]
@@ -234,23 +231,62 @@ func buildSimpleSchema(crd *apiextensionsv1.CustomResourceDefinition, opt Conver
 	return simple, nil
 }
 
-func getCRDMetadata(crd *apiextensionsv1.CustomResourceDefinition) map[string]string {
-	meta := make(map[string]string)
-	
-	for k, v := range crd.Labels {
-		meta[fmt.Sprintf("._crd.metadata.labels.%s", k)] = v
+func diffMetadata(crd1, crd2 *apiextensionsv1.CustomResourceDefinition) []string {
+	var diffs []string
+	prefix := "._crd"
+
+	// Spec Names: Plural
+	if crd1.Spec.Names.Plural != crd2.Spec.Names.Plural {
+		diffs = append(diffs, fmt.Sprintf("- %s.spec.names.plural=%s", prefix, crd1.Spec.Names.Plural))
+		diffs = append(diffs, fmt.Sprintf("+ %s.spec.names.plural=%s", prefix, crd2.Spec.Names.Plural))
 	}
 
-	namesPrefix := "._crd.spec.names"
-	meta[namesPrefix+".plural"] = crd.Spec.Names.Plural
-	meta[namesPrefix+".singular"] = crd.Spec.Names.Singular
-	
-	// Treat shortNames as a set
-	for _, v := range crd.Spec.Names.ShortNames {
-		meta[fmt.Sprintf("%s.shortNames.%s", namesPrefix, v)] = "true"
+	// Spec Names: Singular
+	if crd1.Spec.Names.Singular != crd2.Spec.Names.Singular {
+		diffs = append(diffs, fmt.Sprintf("- %s.spec.names.singular=%s", prefix, crd1.Spec.Names.Singular))
+		diffs = append(diffs, fmt.Sprintf("+ %s.spec.names.singular=%s", prefix, crd2.Spec.Names.Singular))
 	}
 
-	return meta
+	// Spec Names: ShortNames (Set comparison)
+	sn1 := make(map[string]bool)
+	for _, v := range crd1.Spec.Names.ShortNames {
+		sn1[v] = true
+	}
+	sn2 := make(map[string]bool)
+	for _, v := range crd2.Spec.Names.ShortNames {
+		sn2[v] = true
+	}
+
+	for k := range sn1 {
+		if !sn2[k] {
+			diffs = append(diffs, fmt.Sprintf("- %s.spec.names.shortNames.%s=true", prefix, k))
+		}
+	}
+	for k := range sn2 {
+		if !sn1[k] {
+			diffs = append(diffs, fmt.Sprintf("+ %s.spec.names.shortNames.%s=true", prefix, k))
+		}
+	}
+
+	// Metadata: Labels (Map comparison)
+	for k, v1 := range crd1.Labels {
+		v2, ok := crd2.Labels[k]
+		if !ok {
+			diffs = append(diffs, fmt.Sprintf("- %s.metadata.labels.%s=%s", prefix, k, v1))
+			continue
+		}
+		if v1 != v2 {
+			diffs = append(diffs, fmt.Sprintf("- %s.metadata.labels.%s=%s", prefix, k, v1))
+			diffs = append(diffs, fmt.Sprintf("+ %s.metadata.labels.%s=%s", prefix, k, v2))
+		}
+	}
+	for k, v2 := range crd2.Labels {
+		if _, ok := crd1.Labels[k]; !ok {
+			diffs = append(diffs, fmt.Sprintf("+ %s.metadata.labels.%s=%s", prefix, k, v2))
+		}
+	}
+
+	return diffs
 }
 
 func flatten(path string, schema any, out map[string]string) {
