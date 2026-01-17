@@ -213,7 +213,50 @@ func buildSimpleSchema(data []byte, opt ConvertOptions) (any, error) {
 
 	simple := walk(schema)
 
-	return simple, nil
+	var root map[string]any
+	if m, ok := simple.(map[string]any); ok {
+		root = m
+	} else {
+		root = map[string]any{
+			"schema": simple,
+		}
+	}
+
+	crdMeta := make(map[string]any)
+	if len(crd.Labels) > 0 {
+		// Convert map[string]string to map[string]any
+		labels := make(map[string]any)
+		for k, v := range crd.Labels {
+			labels[k] = v
+		}
+		crdMeta["metadata"] = map[string]any{
+			"labels": labels,
+		}
+	}
+
+	names := map[string]any{
+		"plural":   crd.Spec.Names.Plural,
+		"singular": crd.Spec.Names.Singular,
+	}
+	if len(crd.Spec.Names.ShortNames) > 0 {
+		// Convert []string to []any
+		shortNames := make([]any, len(crd.Spec.Names.ShortNames))
+		for i, v := range crd.Spec.Names.ShortNames {
+			shortNames[i] = v
+		}
+		names["shortNames"] = shortNames
+	}
+
+	if len(names) > 0 {
+		if _, ok := crdMeta["spec"]; !ok {
+			crdMeta["spec"] = make(map[string]any)
+		}
+		crdMeta["spec"].(map[string]any)["names"] = names
+	}
+
+	root["_crd"] = crdMeta
+
+	return root, nil
 }
 
 func flatten(path string, schema any, out map[string]string) {
