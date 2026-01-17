@@ -44,14 +44,10 @@ var {{ .Kind }}GVK = GroupVersion.WithKind("{{ .Kind }}")
 // +kcc:spec:proto={{ .KindProtoTag }}
 {{- end }}
 type {{ .Kind }}Spec struct {
-	/*
-	The project that this resource belongs to.
-	*/
+	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef ` + "`" + `json:"projectRef"` + "`" + `
 
-	/*
-	The location of this resource.
-	*/
+	// The location of this resource.
 	Location string ` + "`" + `json:"location"` + "`" + `
 
 	// The {{ .Kind }} name. If not given, the metadata.name will be used.
