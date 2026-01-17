@@ -345,7 +345,11 @@ func flatten(path string, schema any, out map[string]string) {
 	switch schema := schema.(type) {
 	case map[string]any:
 		for k, v := range schema {
-			flatten(path+"."+k, v, out)
+			if path == "" {
+				flatten(k, v, out)
+			} else {
+				flatten(path+"."+k, v, out)
+			}
 		}
 
 	case []any:
