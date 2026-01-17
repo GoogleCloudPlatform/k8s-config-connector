@@ -199,6 +199,18 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.EngineVersion == "" {
 		obj.EngineVersion = "VALKEY_7_2"
 	}
+	if obj.CrossInstanceReplicationConfig == nil {
+		obj.CrossInstanceReplicationConfig = &pb.CrossInstanceReplicationConfig{}
+	}
+	if obj.CrossInstanceReplicationConfig.InstanceRole == pb.CrossInstanceReplicationConfig_INSTANCE_ROLE_UNSPECIFIED {
+		obj.CrossInstanceReplicationConfig.InstanceRole = pb.CrossInstanceReplicationConfig_NONE
+	}
+	if obj.AutomatedBackupConfig == nil {
+		obj.AutomatedBackupConfig = &pb.AutomatedBackupConfig{}
+	}
+	if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
+		obj.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
+	}
 	return nil
 }
 
@@ -255,9 +267,16 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.Endpoints = req.Instance.Endpoints
 		case "labels":
 			obj.Labels = req.Instance.Labels
+		case "engineVersion":
+			obj.EngineVersion = req.Instance.EngineVersion
 		case "nodeType":
 			obj.NodeType = req.Instance.NodeType
-
+		case "maintenancePolicy":
+			obj.MaintenancePolicy = req.Instance.MaintenancePolicy
+		case "crossInstanceReplicationConfig":
+			obj.CrossInstanceReplicationConfig = req.Instance.CrossInstanceReplicationConfig
+		case "automatedBackupConfig":
+			obj.AutomatedBackupConfig = req.Instance.AutomatedBackupConfig
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
@@ -282,8 +301,6 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		metadata.EndTime = timestamppb.Now()
 
 		retObj := proto.Clone(obj).(*pb.Instance)
-		// pscConfigs is not included in the response
-		retObj.PscAutoConnections = nil
 		retObj.State = pb.Instance_ACTIVE
 		retObj.UpdateTime = timestamppb.New(time.Now())
 		return retObj, nil
