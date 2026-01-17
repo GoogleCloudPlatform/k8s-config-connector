@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	"context"
+	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -73,48 +74,23 @@ func (r *RunServiceRef) Normalize(ctx context.Context, reader client.Reader, def
 	fallback := func(u *unstructured.Unstructured) string {
 		// Fallback to constructing the external reference from the object state.
 		// This is needed for resources that don't have status.externalRef (e.g. TF-based resources).
-		// We need Project, Location, and Service Name.
 
-		// 1. Resolve Project
-		projectRefMap, found, _ := unstructured.NestedMap(u.Object, "spec", "projectRef")
-		if !found {
-			return ""
-		}
-		projectRef := &refsv1beta1.ProjectRef{}
-		if val, ok := projectRefMap["external"].(string); ok {
-			projectRef.External = val
-		}
-		if val, ok := projectRefMap["name"].(string); ok {
-			projectRef.Name = val
-		}
-		if val, ok := projectRefMap["namespace"].(string); ok {
-			projectRef.Namespace = val
-		}
-
-		project, err := refsv1beta1.ResolveProject(ctx, reader, u.GetNamespace(), projectRef)
+		resourceID, err := refsv1beta1.GetResourceID(u)
 		if err != nil {
 			return ""
 		}
 
-		// 2. Get Location
-		location, found, _ := unstructured.NestedString(u.Object, "spec", "location")
-		if !found || location == "" {
+		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+		if err != nil {
 			return ""
 		}
 
-		// 3. Get Service Name (spec.resourceID or metadata.name)
-		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
-		if resourceID == "" {
-			resourceID = u.GetName()
+		location, err := refsv1beta1.GetLocation(u)
+		if err != nil {
+			return ""
 		}
 
-		// Construct Identity
-		id := &RunServiceIdentity{
-			Project:  project.ProjectID,
-			Location: location,
-			Service:  resourceID,
-		}
-		return id.String()
+		return fmt.Sprintf("projects/%s/locations/%s/services/%s", projectID, location, resourceID)
 	}
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
