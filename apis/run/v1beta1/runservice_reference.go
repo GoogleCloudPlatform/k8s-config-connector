@@ -16,16 +16,15 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var RunServiceGVK = GroupVersion.WithKind("RunService")
 
 var _ refsv1beta1.Ref = &RunServiceRef{}
 
@@ -71,88 +70,51 @@ func (r *RunServiceRef) ValidateExternal(ref string) error {
 }
 
 func (r *RunServiceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	if r.External != "" {
-		return r.ValidateExternal(r.External)
-	}
+	fallback := func(u *unstructured.Unstructured) string {
+		// Fallback to constructing the external reference from the object state.
+		// This is needed for resources that don't have status.externalRef (e.g. TF-based resources).
+		// We need Project, Location, and Service Name.
 
-	key := r.GetNamespacedName()
-	if key.Namespace == "" {
-		key.Namespace = defaultNamespace
-	}
-
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(RunServiceGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		// 1. Resolve Project
+		projectRefMap, found, _ := unstructured.NestedMap(u.Object, "spec", "projectRef")
+		if !found {
+			return ""
 		}
-		return fmt.Errorf("reading referenced %s %s: %w", RunServiceGVK, key, err)
-	}
+		projectRef := &refsv1beta1.ProjectRef{}
+		if val, ok := projectRefMap["external"].(string); ok {
+			projectRef.External = val
+		}
+		if val, ok := projectRefMap["name"].(string); ok {
+			projectRef.Name = val
+		}
+		if val, ok := projectRefMap["namespace"].(string); ok {
+			projectRef.Namespace = val
+		}
 
-	// Get external from status.externalRef. This is the most trustworthy place.
-	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if externalRef != "" {
-		r.External = externalRef
-		return r.ValidateExternal(r.External)
-	}
+		project, err := refsv1beta1.ResolveProject(ctx, reader, u.GetNamespace(), projectRef)
+		if err != nil {
+			return ""
+		}
 
-	// Fallback to constructing the external reference from the object state.
-	// This is needed for resources that don't have status.externalRef (e.g. TF-based resources).
-	// We need Project, Location, and Service Name.
+		// 2. Get Location
+		location, found, _ := unstructured.NestedString(u.Object, "spec", "location")
+		if !found || location == "" {
+			return ""
+		}
 
-	// 1. Resolve Project
-	projectRefMap, found, err := unstructured.NestedMap(u.Object, "spec", "projectRef")
-	if err != nil {
-		return fmt.Errorf("reading spec.projectRef: %w", err)
-	}
-	if !found {
-		return fmt.Errorf("spec.projectRef not found")
-	}
-	projectRef := &refsv1beta1.ProjectRef{}
-	if val, ok := projectRefMap["external"].(string); ok {
-		projectRef.External = val
-	}
-	if val, ok := projectRefMap["name"].(string); ok {
-		projectRef.Name = val
-	}
-	if val, ok := projectRefMap["namespace"].(string); ok {
-		projectRef.Namespace = val
-	}
+		// 3. Get Service Name (spec.resourceID or metadata.name)
+		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+		if resourceID == "" {
+			resourceID = u.GetName()
+		}
 
-	project, err := refsv1beta1.ResolveProject(ctx, reader, u.GetNamespace(), projectRef)
-	if err != nil {
-		return fmt.Errorf("resolving project: %w", err)
+		// Construct Identity
+		id := &RunServiceIdentity{
+			Project:  project.ProjectID,
+			Location: location,
+			Service:  resourceID,
+		}
+		return id.String()
 	}
-
-	// 2. Get Location
-	location, found, err := unstructured.NestedString(u.Object, "spec", "location")
-	if err != nil {
-		return fmt.Errorf("reading spec.location: %w", err)
-	}
-	if !found || location == "" {
-		return fmt.Errorf("spec.location not found")
-	}
-
-	// 3. Get Service Name (spec.resourceID or metadata.name)
-	resourceID, _, err := unstructured.NestedString(u.Object, "spec", "resourceID")
-	if err != nil {
-		return fmt.Errorf("reading spec.resourceID: %w", err)
-	}
-	if resourceID == "" {
-		resourceID = u.GetName()
-	}
-
-	// Construct Identity
-	id := &RunServiceIdentity{
-		Project:  project.ProjectID,
-		Location: location,
-		Service:  resourceID,
-	}
-	r.External = id.String()
-	return nil
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
-
-var RunServiceGVK = GroupVersion.WithKind("RunService")
