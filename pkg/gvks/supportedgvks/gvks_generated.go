@@ -225,6 +225,14 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		DCL:       false,
 	},
 	{
+		Group:   "artifactregistry.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ArtifactRegistryRepository",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
 		Group:   "beyondcorp.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "BeyondCorpAppConnection",

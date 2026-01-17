@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,8 +25,8 @@ var ArtifactRegistryRepositoryGVK = GroupVersion.WithKind("ArtifactRegistryRepos
 // ArtifactRegistryRepositorySpec defines the desired state of ArtifactRegistryRepository
 // +kcc:spec:proto=google.devtools.artifactregistry.v1.Repository
 type ArtifactRegistryRepositorySpec struct {
-	// Required. Defines the parent path of the resource.
-	*parent.ProjectAndLocationRef `json:",inline"`
+	// Immutable. The name of the location this repository is located in.
+	Location string `json:"location"`
 
 	// The ArtifactRegistryRepository name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -75,7 +74,7 @@ type ArtifactRegistryRepositorySpec struct {
 
 	// Configuration specific for a Remote Repository.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.remote_repository_config
-	RemoteRepositoryConfig *RemoteRepositoryConfig `json:"remoteRepositoryConfig,omitempty"`
+	RemoteRepositoryConfig *ArtifactRegistryRepositoryRemoteRepositoryConfig `json:"remoteRepositoryConfig,omitempty"`
 
 	// Configuration specific for a Virtual Repository.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.virtual_repository_config
@@ -127,6 +126,7 @@ type ArtifactRegistryRepositoryRef struct {
 	External string `json:"external,omitempty"`
 }
 
+// +kcc:proto=google.devtools.artifactregistry.v1.UpstreamPolicy
 type ArtifactRegistryRepositoryUpstreamPolicy struct {
 	// The user-provided ID of the upstream policy.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.UpstreamPolicy.id
@@ -142,6 +142,7 @@ type ArtifactRegistryRepositoryUpstreamPolicy struct {
 	RepositoryRef *ArtifactRegistryRepositoryRef `json:"repositoryRef,omitempty"`
 }
 
+// +kcc:proto=google.devtools.artifactregistry.v1.VirtualRepositoryConfig
 type ArtifactRegistryRepositoryVirtualRepositoryConfig struct {
 	// Policies that configure the upstream artifacts distributed by the Virtual
 	//  Repository. Upstream policies cannot be set on a standard repository.
@@ -149,11 +150,66 @@ type ArtifactRegistryRepositoryVirtualRepositoryConfig struct {
 	UpstreamPolicies []ArtifactRegistryRepositoryUpstreamPolicy `json:"upstreamPolicies,omitempty"`
 }
 
+// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig
+type ArtifactRegistryRepositoryRemoteRepositoryConfig struct {
+	// Specific settings for a Docker remote repository.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.docker_repository
+	DockerRepository *ArtifactRegistryRepositoryDockerRepository `json:"dockerRepository,omitempty"`
+
+	// Specific settings for a Maven remote repository.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.maven_repository
+	MavenRepository *ArtifactRegistryRepositoryMavenRepository `json:"mavenRepository,omitempty"`
+
+	// Specific settings for an Npm remote repository.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.npm_repository
+	NpmRepository *ArtifactRegistryRepositoryNpmRepository `json:"npmRepository,omitempty"`
+
+	// Specific settings for a Python remote repository.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.python_repository
+	PythonRepository *ArtifactRegistryRepositoryPythonRepository `json:"pythonRepository,omitempty"`
+
+	// The description of the remote source.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.description
+	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository
+type ArtifactRegistryRepositoryDockerRepository struct {
+	// One of the publicly available Docker repositories supported by Artifact
+	//  Registry.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository.public_repository
+	PublicRepository *string `json:"publicRepository,omitempty"`
+}
+
+// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository
+type ArtifactRegistryRepositoryMavenRepository struct {
+	// One of the publicly available Maven repositories supported by Artifact
+	//  Registry.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository.public_repository
+	PublicRepository *string `json:"publicRepository,omitempty"`
+}
+
+// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository
+type ArtifactRegistryRepositoryNpmRepository struct {
+	// One of the publicly available Npm repositories supported by Artifact
+	//  Registry.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository.public_repository
+	PublicRepository *string `json:"publicRepository,omitempty"`
+}
+
+// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository
+type ArtifactRegistryRepositoryPythonRepository struct {
+	// One of the publicly available Python repositories supported by Artifact
+	//  Registry.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository.public_repository
+	PublicRepository *string `json:"publicRepository,omitempty"`
+}
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpartifactregistryrepository;gcpartifactregistryrepositorys
+// +kubebuilder:resource:categories=gcp,shortName=gcpartifactregistryrepository;gcpartifactregistryrepositories
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

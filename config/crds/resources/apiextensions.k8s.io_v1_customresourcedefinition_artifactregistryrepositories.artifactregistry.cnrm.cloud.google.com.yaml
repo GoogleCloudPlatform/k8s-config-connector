@@ -6,7 +6,9 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
   name: artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com
 spec:
   group: artifactregistry.cnrm.cloud.google.com
@@ -18,7 +20,7 @@ spec:
     plural: artifactregistryrepositories
     shortNames:
     - gcpartifactregistryrepository
-    - gcpartifactregistryrepositorys
+    - gcpartifactregistryrepositories
     singular: artifactregistryrepository
   preserveUnknownFields: false
   scope: Namespaced
@@ -176,6 +178,8 @@ spec:
                     type: string
                 type: object
               location:
+                description: Immutable. The name of the location this repository is
+                  located in.
                 type: string
               mavenConfig:
                 description: Maven repository config contains repository level configuration
@@ -193,93 +197,15 @@ spec:
               mode:
                 description: Optional. The mode of the repository.
                 type: string
-              projectRef:
-                description: The Project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               remoteRepositoryConfig:
                 description: Configuration specific for a Remote Repository.
                 properties:
-                  aptRepository:
-                    description: Specific settings for an Apt remote repository.
-                    properties:
-                      customRepository:
-                        description: Customer-specified remote repository.
-                        properties:
-                          uri:
-                            description: 'An http/https uri reference to the upstream
-                              remote repository, for ex: "https://my.apt.registry/".'
-                            type: string
-                        type: object
-                      publicRepository:
-                        description: One of the publicly available Apt repositories
-                          supported by Artifact Registry.
-                        properties:
-                          repositoryBase:
-                            description: A common public repository base for Apt.
-                            type: string
-                          repositoryPath:
-                            description: A custom field to define a path to a specific
-                              repository from the base.
-                            type: string
-                        type: object
-                    type: object
-                  commonRepository:
-                    description: Common remote repository settings. Used as the remote
-                      repository upstream URL.
-                    properties:
-                      uri:
-                        description: Required. A common public repository base for
-                          remote repository.
-                        type: string
-                    type: object
                   description:
                     description: The description of the remote source.
                     type: string
-                  disableUpstreamValidation:
-                    description: Input only. A create/update remote repo option to
-                      avoid making a HEAD/GET request to validate a remote repo and
-                      any supplied upstream credentials.
-                    type: boolean
                   dockerRepository:
                     description: Specific settings for a Docker remote repository.
                     properties:
-                      customRepository:
-                        description: Customer-specified remote repository.
-                        properties:
-                          uri:
-                            description: 'An http/https uri reference to the custom
-                              remote repository, for ex: "https://registry-1.docker.io".'
-                            type: string
-                        type: object
                       publicRepository:
                         description: One of the publicly available Docker repositories
                           supported by Artifact Registry.
@@ -288,14 +214,6 @@ spec:
                   mavenRepository:
                     description: Specific settings for a Maven remote repository.
                     properties:
-                      customRepository:
-                        description: Customer-specified remote repository.
-                        properties:
-                          uri:
-                            description: 'An http/https uri reference to the upstream
-                              remote repository, for ex: "https://my.maven.registry/".'
-                            type: string
-                        type: object
                       publicRepository:
                         description: One of the publicly available Maven repositories
                           supported by Artifact Registry.
@@ -304,14 +222,6 @@ spec:
                   npmRepository:
                     description: Specific settings for an Npm remote repository.
                     properties:
-                      customRepository:
-                        description: Customer-specified remote repository.
-                        properties:
-                          uri:
-                            description: 'An http/https uri reference to the upstream
-                              remote repository, for ex: "https://my.npm.registry/".'
-                            type: string
-                        type: object
                       publicRepository:
                         description: One of the publicly available Npm repositories
                           supported by Artifact Registry.
@@ -320,60 +230,10 @@ spec:
                   pythonRepository:
                     description: Specific settings for a Python remote repository.
                     properties:
-                      customRepository:
-                        description: Customer-specified remote repository.
-                        properties:
-                          uri:
-                            description: 'An http/https uri reference to the upstream
-                              remote repository, for ex: "https://my.python.registry/".'
-                            type: string
-                        type: object
                       publicRepository:
                         description: One of the publicly available Python repositories
                           supported by Artifact Registry.
                         type: string
-                    type: object
-                  upstreamCredentials:
-                    description: Optional. The credentials used to access the remote
-                      repository.
-                    properties:
-                      usernamePasswordCredentials:
-                        description: Use username and password to access the remote
-                          repository.
-                        properties:
-                          passwordSecretVersion:
-                            description: The Secret Manager key version that holds
-                              the password to access the remote repository. Must be
-                              in the format of `projects/{project}/secrets/{secret}/versions/{version}`.
-                            type: string
-                          username:
-                            description: The username to access the remote repository.
-                            type: string
-                        type: object
-                    type: object
-                  yumRepository:
-                    description: Specific settings for a Yum remote repository.
-                    properties:
-                      customRepository:
-                        description: Customer-specified remote repository.
-                        properties:
-                          uri:
-                            description: 'An http/https uri reference to the upstream
-                              remote repository, for ex: "https://my.yum.registry/".'
-                            type: string
-                        type: object
-                      publicRepository:
-                        description: One of the publicly available Yum repositories
-                          supported by Artifact Registry.
-                        properties:
-                          repositoryBase:
-                            description: A common public repository base for Yum.
-                            type: string
-                          repositoryPath:
-                            description: A custom field to define a path to a specific
-                              repository from the base.
-                            type: string
-                        type: object
                     type: object
                 type: object
               resourceID:
@@ -439,7 +299,6 @@ spec:
                 type: object
             required:
             - location
-            - projectRef
             type: object
           status:
             description: ArtifactRegistryRepositoryStatus defines the config connector

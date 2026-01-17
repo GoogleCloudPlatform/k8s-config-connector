@@ -78,51 +78,6 @@ type CleanupPolicyMostRecentVersions struct {
 	KeepCount *int32 `json:"keepCount,omitempty"`
 }
 
-// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig
-type RemoteRepositoryConfig struct {
-	// Specific settings for a Docker remote repository.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.docker_repository
-	DockerRepository *RemoteRepositoryConfig_DockerRepository `json:"dockerRepository,omitempty"`
-
-	// Specific settings for a Maven remote repository.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.maven_repository
-	MavenRepository *RemoteRepositoryConfig_MavenRepository `json:"mavenRepository,omitempty"`
-
-	// Specific settings for an Npm remote repository.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.npm_repository
-	NpmRepository *RemoteRepositoryConfig_NpmRepository `json:"npmRepository,omitempty"`
-
-	// Specific settings for a Python remote repository.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.python_repository
-	PythonRepository *RemoteRepositoryConfig_PythonRepository `json:"pythonRepository,omitempty"`
-
-	// Specific settings for an Apt remote repository.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.apt_repository
-	AptRepository *RemoteRepositoryConfig_AptRepository `json:"aptRepository,omitempty"`
-
-	// Specific settings for a Yum remote repository.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.yum_repository
-	YumRepository *RemoteRepositoryConfig_YumRepository `json:"yumRepository,omitempty"`
-
-	// Common remote repository settings.
-	//  Used as the remote repository upstream URL.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.common_repository
-	CommonRepository *RemoteRepositoryConfig_CommonRemoteRepository `json:"commonRepository,omitempty"`
-
-	// The description of the remote source.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. The credentials used to access the remote repository.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.upstream_credentials
-	UpstreamCredentials *RemoteRepositoryConfig_UpstreamCredentials `json:"upstreamCredentials,omitempty"`
-
-	// Input only. A create/update remote repo option to avoid making a HEAD/GET
-	//  request to validate a remote repo and any supplied upstream credentials.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.disable_upstream_validation
-	DisableUpstreamValidation *bool `json:"disableUpstreamValidation,omitempty"`
-}
-
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.AptRepository
 type RemoteRepositoryConfig_AptRepository struct {
 	// One of the publicly available Apt repositories supported by Artifact
@@ -161,36 +116,12 @@ type RemoteRepositoryConfig_CommonRemoteRepository struct {
 	URI *string `json:"uri,omitempty"`
 }
 
-// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository
-type RemoteRepositoryConfig_DockerRepository struct {
-	// One of the publicly available Docker repositories supported by Artifact
-	//  Registry.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository.public_repository
-	PublicRepository *string `json:"publicRepository,omitempty"`
-
-	// Customer-specified remote repository.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository.custom_repository
-	CustomRepository *RemoteRepositoryConfig_DockerRepository_CustomRepository `json:"customRepository,omitempty"`
-}
-
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository.CustomRepository
 type RemoteRepositoryConfig_DockerRepository_CustomRepository struct {
 	// An http/https uri reference to the custom remote repository, for ex:
 	//  "https://registry-1.docker.io".
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository.CustomRepository.uri
 	URI *string `json:"uri,omitempty"`
-}
-
-// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository
-type RemoteRepositoryConfig_MavenRepository struct {
-	// One of the publicly available Maven repositories supported by Artifact
-	//  Registry.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository.public_repository
-	PublicRepository *string `json:"publicRepository,omitempty"`
-
-	// Customer-specified remote repository.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository.custom_repository
-	CustomRepository *RemoteRepositoryConfig_MavenRepository_CustomRepository `json:"customRepository,omitempty"`
 }
 
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository.CustomRepository
@@ -201,36 +132,12 @@ type RemoteRepositoryConfig_MavenRepository_CustomRepository struct {
 	URI *string `json:"uri,omitempty"`
 }
 
-// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository
-type RemoteRepositoryConfig_NpmRepository struct {
-	// One of the publicly available Npm repositories supported by Artifact
-	//  Registry.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository.public_repository
-	PublicRepository *string `json:"publicRepository,omitempty"`
-
-	// Customer-specified remote repository.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository.custom_repository
-	CustomRepository *RemoteRepositoryConfig_NpmRepository_CustomRepository `json:"customRepository,omitempty"`
-}
-
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository.CustomRepository
 type RemoteRepositoryConfig_NpmRepository_CustomRepository struct {
 	// An http/https uri reference to the upstream remote repository, for ex:
 	//  "https://my.npm.registry/".
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository.CustomRepository.uri
 	URI *string `json:"uri,omitempty"`
-}
-
-// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository
-type RemoteRepositoryConfig_PythonRepository struct {
-	// One of the publicly available Python repositories supported by Artifact
-	//  Registry.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository.public_repository
-	PublicRepository *string `json:"publicRepository,omitempty"`
-
-	// Customer-specified remote repository.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository.custom_repository
-	CustomRepository *RemoteRepositoryConfig_PythonRepository_CustomRepository `json:"customRepository,omitempty"`
 }
 
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository.CustomRepository
@@ -319,30 +226,6 @@ type Repository_VulnerabilityScanningConfig struct {
 	//  disabled.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.VulnerabilityScanningConfig.enablement_config
 	EnablementConfig *string `json:"enablementConfig,omitempty"`
-}
-
-// +kcc:proto=google.devtools.artifactregistry.v1.UpstreamPolicy
-type UpstreamPolicy struct {
-	// The user-provided ID of the upstream policy.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.UpstreamPolicy.id
-	ID *string `json:"id,omitempty"`
-
-	// A reference to the repository resource, for example:
-	//  `projects/p1/locations/us-central1/repositories/repo1`.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.UpstreamPolicy.repository
-	Repository *string `json:"repository,omitempty"`
-
-	// Entries with a greater priority value take precedence in the pull order.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.UpstreamPolicy.priority
-	Priority *int32 `json:"priority,omitempty"`
-}
-
-// +kcc:proto=google.devtools.artifactregistry.v1.VirtualRepositoryConfig
-type VirtualRepositoryConfig struct {
-	// Policies that configure the upstream artifacts distributed by the Virtual
-	//  Repository. Upstream policies cannot be set on a standard repository.
-	// +kcc:proto:field=google.devtools.artifactregistry.v1.VirtualRepositoryConfig.upstream_policies
-	UpstreamPolicies []UpstreamPolicy `json:"upstreamPolicies,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.devtools.artifactregistry.v1.Repository.VulnerabilityScanningConfig

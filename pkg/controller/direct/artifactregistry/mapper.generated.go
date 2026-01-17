@@ -25,6 +25,260 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ArtifactRegistryRepositoryDockerRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_DockerRepository) *krm.ArtifactRegistryRepositoryDockerRepository {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArtifactRegistryRepositoryDockerRepository{}
+	out.PublicRepository = direct.Enum_FromProto(mapCtx, in.GetPublicRepository())
+	// MISSING: CustomRepository
+	return out
+}
+func ArtifactRegistryRepositoryDockerRepository_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryDockerRepository) *pb.RemoteRepositoryConfig_DockerRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_DockerRepository{}
+	if oneof := ArtifactRegistryRepositoryDockerRepository_PublicRepository_ToProto(mapCtx, in.PublicRepository); oneof != nil {
+		out.Upstream = oneof
+	}
+	// MISSING: CustomRepository
+	return out
+}
+func ArtifactRegistryRepositoryDockerRepository_PublicRepository_ToProto(mapCtx *direct.MapContext, in *string) *pb.RemoteRepositoryConfig_DockerRepository_PublicRepository_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.RemoteRepositoryConfig_DockerRepository_PublicRepository_{PublicRepository: direct.Enum_ToProto[pb.RemoteRepositoryConfig_DockerRepository_PublicRepository](mapCtx, in)}
+}
+func ArtifactRegistryRepositoryMavenRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_MavenRepository) *krm.ArtifactRegistryRepositoryMavenRepository {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArtifactRegistryRepositoryMavenRepository{}
+	out.PublicRepository = direct.Enum_FromProto(mapCtx, in.GetPublicRepository())
+	// MISSING: CustomRepository
+	return out
+}
+func ArtifactRegistryRepositoryMavenRepository_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryMavenRepository) *pb.RemoteRepositoryConfig_MavenRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_MavenRepository{}
+	if oneof := ArtifactRegistryRepositoryMavenRepository_PublicRepository_ToProto(mapCtx, in.PublicRepository); oneof != nil {
+		out.Upstream = oneof
+	}
+	// MISSING: CustomRepository
+	return out
+}
+func ArtifactRegistryRepositoryMavenRepository_PublicRepository_ToProto(mapCtx *direct.MapContext, in *string) *pb.RemoteRepositoryConfig_MavenRepository_PublicRepository_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.RemoteRepositoryConfig_MavenRepository_PublicRepository_{PublicRepository: direct.Enum_ToProto[pb.RemoteRepositoryConfig_MavenRepository_PublicRepository](mapCtx, in)}
+}
+func ArtifactRegistryRepositoryNpmRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_NpmRepository) *krm.ArtifactRegistryRepositoryNpmRepository {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArtifactRegistryRepositoryNpmRepository{}
+	out.PublicRepository = direct.Enum_FromProto(mapCtx, in.GetPublicRepository())
+	// MISSING: CustomRepository
+	return out
+}
+func ArtifactRegistryRepositoryNpmRepository_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryNpmRepository) *pb.RemoteRepositoryConfig_NpmRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_NpmRepository{}
+	if oneof := ArtifactRegistryRepositoryNpmRepository_PublicRepository_ToProto(mapCtx, in.PublicRepository); oneof != nil {
+		out.Upstream = oneof
+	}
+	// MISSING: CustomRepository
+	return out
+}
+func ArtifactRegistryRepositoryNpmRepository_PublicRepository_ToProto(mapCtx *direct.MapContext, in *string) *pb.RemoteRepositoryConfig_NpmRepository_PublicRepository_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.RemoteRepositoryConfig_NpmRepository_PublicRepository_{PublicRepository: direct.Enum_ToProto[pb.RemoteRepositoryConfig_NpmRepository_PublicRepository](mapCtx, in)}
+}
+func ArtifactRegistryRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArtifactRegistryRepositoryObservedState{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	// MISSING: Name
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	// MISSING: SizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: CleanupPolicyDryRun
+	// MISSING: VulnerabilityScanningConfig
+	// MISSING: DisallowUnspecifiedMode
+	// MISSING: SatisfiesPzi
+	// MISSING: RegistryURI
+	return out
+}
+func ArtifactRegistryRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryObservedState) *pb.Repository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	// MISSING: Name
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	// MISSING: SizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: CleanupPolicyDryRun
+	// MISSING: VulnerabilityScanningConfig
+	// MISSING: DisallowUnspecifiedMode
+	// MISSING: SatisfiesPzi
+	// MISSING: RegistryURI
+	return out
+}
+func ArtifactRegistryRepositoryPythonRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_PythonRepository) *krm.ArtifactRegistryRepositoryPythonRepository {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArtifactRegistryRepositoryPythonRepository{}
+	out.PublicRepository = direct.Enum_FromProto(mapCtx, in.GetPublicRepository())
+	// MISSING: CustomRepository
+	return out
+}
+func ArtifactRegistryRepositoryPythonRepository_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryPythonRepository) *pb.RemoteRepositoryConfig_PythonRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_PythonRepository{}
+	if oneof := ArtifactRegistryRepositoryPythonRepository_PublicRepository_ToProto(mapCtx, in.PublicRepository); oneof != nil {
+		out.Upstream = oneof
+	}
+	// MISSING: CustomRepository
+	return out
+}
+func ArtifactRegistryRepositoryPythonRepository_PublicRepository_ToProto(mapCtx *direct.MapContext, in *string) *pb.RemoteRepositoryConfig_PythonRepository_PublicRepository_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.RemoteRepositoryConfig_PythonRepository_PublicRepository_{PublicRepository: direct.Enum_ToProto[pb.RemoteRepositoryConfig_PythonRepository_PublicRepository](mapCtx, in)}
+}
+func ArtifactRegistryRepositoryRemoteRepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig) *krm.ArtifactRegistryRepositoryRemoteRepositoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArtifactRegistryRepositoryRemoteRepositoryConfig{}
+	out.DockerRepository = ArtifactRegistryRepositoryDockerRepository_FromProto(mapCtx, in.GetDockerRepository())
+	out.MavenRepository = ArtifactRegistryRepositoryMavenRepository_FromProto(mapCtx, in.GetMavenRepository())
+	out.NpmRepository = ArtifactRegistryRepositoryNpmRepository_FromProto(mapCtx, in.GetNpmRepository())
+	out.PythonRepository = ArtifactRegistryRepositoryPythonRepository_FromProto(mapCtx, in.GetPythonRepository())
+	// MISSING: AptRepository
+	// MISSING: YumRepository
+	// MISSING: CommonRepository
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: UpstreamCredentials
+	// MISSING: DisableUpstreamValidation
+	return out
+}
+func ArtifactRegistryRepositoryRemoteRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryRemoteRepositoryConfig) *pb.RemoteRepositoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig{}
+	if oneof := ArtifactRegistryRepositoryDockerRepository_ToProto(mapCtx, in.DockerRepository); oneof != nil {
+		out.RemoteSource = &pb.RemoteRepositoryConfig_DockerRepository_{DockerRepository: oneof}
+	}
+	if oneof := ArtifactRegistryRepositoryMavenRepository_ToProto(mapCtx, in.MavenRepository); oneof != nil {
+		out.RemoteSource = &pb.RemoteRepositoryConfig_MavenRepository_{MavenRepository: oneof}
+	}
+	if oneof := ArtifactRegistryRepositoryNpmRepository_ToProto(mapCtx, in.NpmRepository); oneof != nil {
+		out.RemoteSource = &pb.RemoteRepositoryConfig_NpmRepository_{NpmRepository: oneof}
+	}
+	if oneof := ArtifactRegistryRepositoryPythonRepository_ToProto(mapCtx, in.PythonRepository); oneof != nil {
+		out.RemoteSource = &pb.RemoteRepositoryConfig_PythonRepository_{PythonRepository: oneof}
+	}
+	// MISSING: AptRepository
+	// MISSING: YumRepository
+	// MISSING: CommonRepository
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: UpstreamCredentials
+	// MISSING: DisableUpstreamValidation
+	return out
+}
+func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositorySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArtifactRegistryRepositorySpec{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	// MISSING: Name
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	// MISSING: SizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: CleanupPolicyDryRun
+	// MISSING: VulnerabilityScanningConfig
+	// MISSING: DisallowUnspecifiedMode
+	// MISSING: SatisfiesPzi
+	// MISSING: RegistryURI
+	return out
+}
+func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositorySpec) *pb.Repository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	// MISSING: Name
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	// MISSING: SizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: CleanupPolicyDryRun
+	// MISSING: VulnerabilityScanningConfig
+	// MISSING: DisallowUnspecifiedMode
+	// MISSING: SatisfiesPzi
+	// MISSING: RegistryURI
+	return out
+}
 func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositorySpec {
 	if in == nil {
 		return nil
@@ -33,7 +287,7 @@ func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.MavenConfig = Repository_MavenRepositoryConfig_FromProto(mapCtx, in.GetMavenConfig())
 	out.DockerConfig = Repository_DockerRepositoryConfig_FromProto(mapCtx, in.GetDockerConfig())
 	out.VirtualRepositoryConfig = ArtifactRegistryRepositoryVirtualRepositoryConfig_FromProto(mapCtx, in.GetVirtualRepositoryConfig())
-	out.RemoteRepositoryConfig = RemoteRepositoryConfig_FromProto(mapCtx, in.GetRemoteRepositoryConfig())
+	out.RemoteRepositoryConfig = ArtifactRegistryRepositoryRemoteRepositoryConfig_FromProto(mapCtx, in.GetRemoteRepositoryConfig())
 	// MISSING: Name
 	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -66,7 +320,7 @@ func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.A
 	if oneof := ArtifactRegistryRepositoryVirtualRepositoryConfig_ToProto(mapCtx, in.VirtualRepositoryConfig); oneof != nil {
 		out.ModeConfig = &pb.Repository_VirtualRepositoryConfig{VirtualRepositoryConfig: oneof}
 	}
-	if oneof := RemoteRepositoryConfig_ToProto(mapCtx, in.RemoteRepositoryConfig); oneof != nil {
+	if oneof := ArtifactRegistryRepositoryRemoteRepositoryConfig_ToProto(mapCtx, in.RemoteRepositoryConfig); oneof != nil {
 		out.ModeConfig = &pb.Repository_RemoteRepositoryConfig{RemoteRepositoryConfig: oneof}
 	}
 	// MISSING: Name
@@ -85,6 +339,46 @@ func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.A
 	// MISSING: DisallowUnspecifiedMode
 	// MISSING: SatisfiesPzi
 	// MISSING: RegistryURI
+	return out
+}
+func ArtifactRegistryRepositoryUpstreamPolicy_FromProto(mapCtx *direct.MapContext, in *pb.UpstreamPolicy) *krm.ArtifactRegistryRepositoryUpstreamPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArtifactRegistryRepositoryUpstreamPolicy{}
+	out.ID = direct.LazyPtr(in.GetId())
+	if in.GetRepository() != "" {
+		out.RepositoryRef = &krm.ArtifactRegistryRepositoryRef{External: in.GetRepository()}
+	}
+	out.Priority = direct.LazyPtr(in.GetPriority())
+	return out
+}
+func ArtifactRegistryRepositoryUpstreamPolicy_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryUpstreamPolicy) *pb.UpstreamPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UpstreamPolicy{}
+	out.Id = direct.ValueOf(in.ID)
+	if in.RepositoryRef != nil {
+		out.Repository = in.RepositoryRef.External
+	}
+	out.Priority = direct.ValueOf(in.Priority)
+	return out
+}
+func ArtifactRegistryRepositoryVirtualRepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.VirtualRepositoryConfig) *krm.ArtifactRegistryRepositoryVirtualRepositoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArtifactRegistryRepositoryVirtualRepositoryConfig{}
+	out.UpstreamPolicies = direct.Slice_FromProto(mapCtx, in.UpstreamPolicies, ArtifactRegistryRepositoryUpstreamPolicy_FromProto)
+	return out
+}
+func ArtifactRegistryRepositoryVirtualRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryVirtualRepositoryConfig) *pb.VirtualRepositoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VirtualRepositoryConfig{}
+	out.UpstreamPolicies = direct.Slice_ToProto(mapCtx, in.UpstreamPolicies, ArtifactRegistryRepositoryUpstreamPolicy_ToProto)
 	return out
 }
 func CleanupPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CleanupPolicy) *krm.CleanupPolicy {
@@ -159,54 +453,6 @@ func CleanupPolicyMostRecentVersions_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.KeepCount = in.KeepCount
 	return out
 }
-func RemoteRepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig) *krm.RemoteRepositoryConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RemoteRepositoryConfig{}
-	out.DockerRepository = RemoteRepositoryConfig_DockerRepository_FromProto(mapCtx, in.GetDockerRepository())
-	out.MavenRepository = RemoteRepositoryConfig_MavenRepository_FromProto(mapCtx, in.GetMavenRepository())
-	out.NpmRepository = RemoteRepositoryConfig_NpmRepository_FromProto(mapCtx, in.GetNpmRepository())
-	out.PythonRepository = RemoteRepositoryConfig_PythonRepository_FromProto(mapCtx, in.GetPythonRepository())
-	out.AptRepository = RemoteRepositoryConfig_AptRepository_FromProto(mapCtx, in.GetAptRepository())
-	out.YumRepository = RemoteRepositoryConfig_YumRepository_FromProto(mapCtx, in.GetYumRepository())
-	out.CommonRepository = RemoteRepositoryConfig_CommonRemoteRepository_FromProto(mapCtx, in.GetCommonRepository())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.UpstreamCredentials = RemoteRepositoryConfig_UpstreamCredentials_FromProto(mapCtx, in.GetUpstreamCredentials())
-	out.DisableUpstreamValidation = direct.LazyPtr(in.GetDisableUpstreamValidation())
-	return out
-}
-func RemoteRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig) *pb.RemoteRepositoryConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RemoteRepositoryConfig{}
-	if oneof := RemoteRepositoryConfig_DockerRepository_ToProto(mapCtx, in.DockerRepository); oneof != nil {
-		out.RemoteSource = &pb.RemoteRepositoryConfig_DockerRepository_{DockerRepository: oneof}
-	}
-	if oneof := RemoteRepositoryConfig_MavenRepository_ToProto(mapCtx, in.MavenRepository); oneof != nil {
-		out.RemoteSource = &pb.RemoteRepositoryConfig_MavenRepository_{MavenRepository: oneof}
-	}
-	if oneof := RemoteRepositoryConfig_NpmRepository_ToProto(mapCtx, in.NpmRepository); oneof != nil {
-		out.RemoteSource = &pb.RemoteRepositoryConfig_NpmRepository_{NpmRepository: oneof}
-	}
-	if oneof := RemoteRepositoryConfig_PythonRepository_ToProto(mapCtx, in.PythonRepository); oneof != nil {
-		out.RemoteSource = &pb.RemoteRepositoryConfig_PythonRepository_{PythonRepository: oneof}
-	}
-	if oneof := RemoteRepositoryConfig_AptRepository_ToProto(mapCtx, in.AptRepository); oneof != nil {
-		out.RemoteSource = &pb.RemoteRepositoryConfig_AptRepository_{AptRepository: oneof}
-	}
-	if oneof := RemoteRepositoryConfig_YumRepository_ToProto(mapCtx, in.YumRepository); oneof != nil {
-		out.RemoteSource = &pb.RemoteRepositoryConfig_YumRepository_{YumRepository: oneof}
-	}
-	if oneof := RemoteRepositoryConfig_CommonRemoteRepository_ToProto(mapCtx, in.CommonRepository); oneof != nil {
-		out.RemoteSource = &pb.RemoteRepositoryConfig_CommonRepository{CommonRepository: oneof}
-	}
-	out.Description = direct.ValueOf(in.Description)
-	out.UpstreamCredentials = RemoteRepositoryConfig_UpstreamCredentials_ToProto(mapCtx, in.UpstreamCredentials)
-	out.DisableUpstreamValidation = direct.ValueOf(in.DisableUpstreamValidation)
-	return out
-}
 func RemoteRepositoryConfig_AptRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_AptRepository) *krm.RemoteRepositoryConfig_AptRepository {
 	if in == nil {
 		return nil
@@ -279,34 +525,6 @@ func RemoteRepositoryConfig_CommonRemoteRepository_ToProto(mapCtx *direct.MapCon
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
-func RemoteRepositoryConfig_DockerRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_DockerRepository) *krm.RemoteRepositoryConfig_DockerRepository {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RemoteRepositoryConfig_DockerRepository{}
-	out.PublicRepository = direct.Enum_FromProto(mapCtx, in.GetPublicRepository())
-	out.CustomRepository = RemoteRepositoryConfig_DockerRepository_CustomRepository_FromProto(mapCtx, in.GetCustomRepository())
-	return out
-}
-func RemoteRepositoryConfig_DockerRepository_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_DockerRepository) *pb.RemoteRepositoryConfig_DockerRepository {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RemoteRepositoryConfig_DockerRepository{}
-	if oneof := RemoteRepositoryConfig_DockerRepository_PublicRepository_ToProto(mapCtx, in.PublicRepository); oneof != nil {
-		out.Upstream = oneof
-	}
-	if oneof := RemoteRepositoryConfig_DockerRepository_CustomRepository_ToProto(mapCtx, in.CustomRepository); oneof != nil {
-		out.Upstream = &pb.RemoteRepositoryConfig_DockerRepository_CustomRepository_{CustomRepository: oneof}
-	}
-	return out
-}
-func RemoteRepositoryConfig_DockerRepository_PublicRepository_ToProto(mapCtx *direct.MapContext, in *string) *pb.RemoteRepositoryConfig_DockerRepository_PublicRepository_ {
-	if in == nil {
-		return nil
-	}
-	return &pb.RemoteRepositoryConfig_DockerRepository_PublicRepository_{PublicRepository: direct.Enum_ToProto[pb.RemoteRepositoryConfig_DockerRepository_PublicRepository](mapCtx, in)}
-}
 func RemoteRepositoryConfig_DockerRepository_CustomRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_DockerRepository_CustomRepository) *krm.RemoteRepositoryConfig_DockerRepository_CustomRepository {
 	if in == nil {
 		return nil
@@ -322,34 +540,6 @@ func RemoteRepositoryConfig_DockerRepository_CustomRepository_ToProto(mapCtx *di
 	out := &pb.RemoteRepositoryConfig_DockerRepository_CustomRepository{}
 	out.Uri = direct.ValueOf(in.URI)
 	return out
-}
-func RemoteRepositoryConfig_MavenRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_MavenRepository) *krm.RemoteRepositoryConfig_MavenRepository {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RemoteRepositoryConfig_MavenRepository{}
-	out.PublicRepository = direct.Enum_FromProto(mapCtx, in.GetPublicRepository())
-	out.CustomRepository = RemoteRepositoryConfig_MavenRepository_CustomRepository_FromProto(mapCtx, in.GetCustomRepository())
-	return out
-}
-func RemoteRepositoryConfig_MavenRepository_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_MavenRepository) *pb.RemoteRepositoryConfig_MavenRepository {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RemoteRepositoryConfig_MavenRepository{}
-	if oneof := RemoteRepositoryConfig_MavenRepository_PublicRepository_ToProto(mapCtx, in.PublicRepository); oneof != nil {
-		out.Upstream = oneof
-	}
-	if oneof := RemoteRepositoryConfig_MavenRepository_CustomRepository_ToProto(mapCtx, in.CustomRepository); oneof != nil {
-		out.Upstream = &pb.RemoteRepositoryConfig_MavenRepository_CustomRepository_{CustomRepository: oneof}
-	}
-	return out
-}
-func RemoteRepositoryConfig_MavenRepository_PublicRepository_ToProto(mapCtx *direct.MapContext, in *string) *pb.RemoteRepositoryConfig_MavenRepository_PublicRepository_ {
-	if in == nil {
-		return nil
-	}
-	return &pb.RemoteRepositoryConfig_MavenRepository_PublicRepository_{PublicRepository: direct.Enum_ToProto[pb.RemoteRepositoryConfig_MavenRepository_PublicRepository](mapCtx, in)}
 }
 func RemoteRepositoryConfig_MavenRepository_CustomRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_MavenRepository_CustomRepository) *krm.RemoteRepositoryConfig_MavenRepository_CustomRepository {
 	if in == nil {
@@ -367,34 +557,6 @@ func RemoteRepositoryConfig_MavenRepository_CustomRepository_ToProto(mapCtx *dir
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
-func RemoteRepositoryConfig_NpmRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_NpmRepository) *krm.RemoteRepositoryConfig_NpmRepository {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RemoteRepositoryConfig_NpmRepository{}
-	out.PublicRepository = direct.Enum_FromProto(mapCtx, in.GetPublicRepository())
-	out.CustomRepository = RemoteRepositoryConfig_NpmRepository_CustomRepository_FromProto(mapCtx, in.GetCustomRepository())
-	return out
-}
-func RemoteRepositoryConfig_NpmRepository_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_NpmRepository) *pb.RemoteRepositoryConfig_NpmRepository {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RemoteRepositoryConfig_NpmRepository{}
-	if oneof := RemoteRepositoryConfig_NpmRepository_PublicRepository_ToProto(mapCtx, in.PublicRepository); oneof != nil {
-		out.Upstream = oneof
-	}
-	if oneof := RemoteRepositoryConfig_NpmRepository_CustomRepository_ToProto(mapCtx, in.CustomRepository); oneof != nil {
-		out.Upstream = &pb.RemoteRepositoryConfig_NpmRepository_CustomRepository_{CustomRepository: oneof}
-	}
-	return out
-}
-func RemoteRepositoryConfig_NpmRepository_PublicRepository_ToProto(mapCtx *direct.MapContext, in *string) *pb.RemoteRepositoryConfig_NpmRepository_PublicRepository_ {
-	if in == nil {
-		return nil
-	}
-	return &pb.RemoteRepositoryConfig_NpmRepository_PublicRepository_{PublicRepository: direct.Enum_ToProto[pb.RemoteRepositoryConfig_NpmRepository_PublicRepository](mapCtx, in)}
-}
 func RemoteRepositoryConfig_NpmRepository_CustomRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_NpmRepository_CustomRepository) *krm.RemoteRepositoryConfig_NpmRepository_CustomRepository {
 	if in == nil {
 		return nil
@@ -410,34 +572,6 @@ func RemoteRepositoryConfig_NpmRepository_CustomRepository_ToProto(mapCtx *direc
 	out := &pb.RemoteRepositoryConfig_NpmRepository_CustomRepository{}
 	out.Uri = direct.ValueOf(in.URI)
 	return out
-}
-func RemoteRepositoryConfig_PythonRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_PythonRepository) *krm.RemoteRepositoryConfig_PythonRepository {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RemoteRepositoryConfig_PythonRepository{}
-	out.PublicRepository = direct.Enum_FromProto(mapCtx, in.GetPublicRepository())
-	out.CustomRepository = RemoteRepositoryConfig_PythonRepository_CustomRepository_FromProto(mapCtx, in.GetCustomRepository())
-	return out
-}
-func RemoteRepositoryConfig_PythonRepository_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig_PythonRepository) *pb.RemoteRepositoryConfig_PythonRepository {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RemoteRepositoryConfig_PythonRepository{}
-	if oneof := RemoteRepositoryConfig_PythonRepository_PublicRepository_ToProto(mapCtx, in.PublicRepository); oneof != nil {
-		out.Upstream = oneof
-	}
-	if oneof := RemoteRepositoryConfig_PythonRepository_CustomRepository_ToProto(mapCtx, in.CustomRepository); oneof != nil {
-		out.Upstream = &pb.RemoteRepositoryConfig_PythonRepository_CustomRepository_{CustomRepository: oneof}
-	}
-	return out
-}
-func RemoteRepositoryConfig_PythonRepository_PublicRepository_ToProto(mapCtx *direct.MapContext, in *string) *pb.RemoteRepositoryConfig_PythonRepository_PublicRepository_ {
-	if in == nil {
-		return nil
-	}
-	return &pb.RemoteRepositoryConfig_PythonRepository_PublicRepository_{PublicRepository: direct.Enum_ToProto[pb.RemoteRepositoryConfig_PythonRepository_PublicRepository](mapCtx, in)}
 }
 func RemoteRepositoryConfig_PythonRepository_CustomRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_PythonRepository_CustomRepository) *krm.RemoteRepositoryConfig_PythonRepository_CustomRepository {
 	if in == nil {
@@ -623,41 +757,5 @@ func Repository_VulnerabilityScanningConfigObservedState_ToProto(mapCtx *direct.
 	out.LastEnableTime = direct.StringTimestamp_ToProto(mapCtx, in.LastEnableTime)
 	out.EnablementState = direct.Enum_ToProto[pb.Repository_VulnerabilityScanningConfig_EnablementState](mapCtx, in.EnablementState)
 	out.EnablementStateReason = direct.ValueOf(in.EnablementStateReason)
-	return out
-}
-func UpstreamPolicy_FromProto(mapCtx *direct.MapContext, in *pb.UpstreamPolicy) *krm.UpstreamPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &krm.UpstreamPolicy{}
-	out.ID = direct.LazyPtr(in.GetId())
-	out.Repository = direct.LazyPtr(in.GetRepository())
-	out.Priority = direct.LazyPtr(in.GetPriority())
-	return out
-}
-func UpstreamPolicy_ToProto(mapCtx *direct.MapContext, in *krm.UpstreamPolicy) *pb.UpstreamPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UpstreamPolicy{}
-	out.Id = direct.ValueOf(in.ID)
-	out.Repository = direct.ValueOf(in.Repository)
-	out.Priority = direct.ValueOf(in.Priority)
-	return out
-}
-func VirtualRepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.VirtualRepositoryConfig) *krm.VirtualRepositoryConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VirtualRepositoryConfig{}
-	out.UpstreamPolicies = direct.Slice_FromProto(mapCtx, in.UpstreamPolicies, UpstreamPolicy_FromProto)
-	return out
-}
-func VirtualRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.VirtualRepositoryConfig) *pb.VirtualRepositoryConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VirtualRepositoryConfig{}
-	out.UpstreamPolicies = direct.Slice_ToProto(mapCtx, in.UpstreamPolicies, UpstreamPolicy_ToProto)
 	return out
 }
