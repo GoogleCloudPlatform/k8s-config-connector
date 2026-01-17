@@ -19,15 +19,13 @@ import (
 	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &StorageBucketRef{}
+var _ refsv1beta1.Ref = &StorageBucketRef{}
 var StorageBucketGVK = GroupVersion.WithKind("StorageBucket")
 
 // StorageBucketRef defines the resource reference to StorageBucket, which "External" field
@@ -43,58 +41,6 @@ type StorageBucketRef struct {
 
 	// The namespace of a StorageBucket resource.
 	Namespace string `json:"namespace,omitempty"`
-}
-
-// NormalizedExternal provision the "External" value for other resource that depends on StorageBucket.
-// If the "External" is given in the other resource's spec.StorageBucketRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual StorageBucket object from the cluster.
-func (r *StorageBucketRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", StorageBucketGVK.Kind)
-	}
-	// From given External
-	// For backward compatibility, we are not validating the external format.
-	// todo: validate external when it's referenced by a pure direct resource
-	if r.External != "" {
-		return r.External, nil
-	}
-
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(StorageBucketGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", StorageBucketGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef != "" {
-		r.External = actualExternalRef
-		return r.External, nil
-	}
-
-	// Backward compatible to Terraform/DCL based resource, which does not have status.externalRef.
-	resourceID, err := refsv1beta1.GetResourceID(u)
-	if err != nil {
-		return "", err
-	}
-
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-	if err != nil {
-		return "", err
-	}
-
-	r.External = fmt.Sprintf("projects/%s/buckets/%s", projectID, resourceID)
-	return r.External, nil
 }
 
 func (r *StorageBucketRef) GetGVK() schema.GroupVersionKind {
