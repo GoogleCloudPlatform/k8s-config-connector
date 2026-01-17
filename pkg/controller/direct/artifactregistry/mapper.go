@@ -33,7 +33,7 @@ func ArtifactRegistryRepositoryRef_FromProto(mapCtx *direct.MapContext, in *pb.R
 		return nil
 	}
 	out := &krm.ArtifactRegistryRepositoryRef{}
-	out.Name = in.GetName()
+	out.External = in.GetName()
 	return out
 }
 
