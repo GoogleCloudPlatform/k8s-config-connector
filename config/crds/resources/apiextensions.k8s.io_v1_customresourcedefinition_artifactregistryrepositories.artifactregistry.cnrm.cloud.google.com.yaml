@@ -333,10 +333,6 @@ spec:
               createTime:
                 description: Output only. The time when the repository was created.
                 type: string
-              externalRef:
-                description: A unique specifier for the ArtifactRegistryRepository
-                  resource in GCP.
-                type: string
               name:
                 description: 'The name of the repository, for example: "repo1".'
                 type: string
@@ -348,6 +344,10 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
               updateTime:
                 description: Output only. The time when the repository was last updated.
                 type: string

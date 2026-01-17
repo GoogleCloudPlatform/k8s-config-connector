@@ -108,22 +108,13 @@ func ArtifactRegistryRepositoryObservedState_FromProto(mapCtx *direct.MapContext
 		return nil
 	}
 	out := &krm.ArtifactRegistryRepositoryObservedState{}
-	// MISSING: MavenConfig
-	// MISSING: DockerConfig
-	// MISSING: VirtualRepositoryConfig
-	// MISSING: RemoteRepositoryConfig
 	// MISSING: Name
-	// MISSING: Format
-	// MISSING: Description
 	// MISSING: Labels
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: KMSKeyName
-	// MISSING: Mode
-	// MISSING: CleanupPolicies
 	// MISSING: SizeBytes
 	// MISSING: SatisfiesPzs
-	// MISSING: CleanupPolicyDryRun
 	// MISSING: VulnerabilityScanningConfig
 	// MISSING: DisallowUnspecifiedMode
 	// MISSING: SatisfiesPzi
@@ -135,22 +126,13 @@ func ArtifactRegistryRepositoryObservedState_ToProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &pb.Repository{}
-	// MISSING: MavenConfig
-	// MISSING: DockerConfig
-	// MISSING: VirtualRepositoryConfig
-	// MISSING: RemoteRepositoryConfig
 	// MISSING: Name
-	// MISSING: Format
-	// MISSING: Description
 	// MISSING: Labels
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: KMSKeyName
-	// MISSING: Mode
-	// MISSING: CleanupPolicies
 	// MISSING: SizeBytes
 	// MISSING: SatisfiesPzs
-	// MISSING: CleanupPolicyDryRun
 	// MISSING: VulnerabilityScanningConfig
 	// MISSING: DisallowUnspecifiedMode
 	// MISSING: SatisfiesPzi
@@ -223,60 +205,6 @@ func ArtifactRegistryRepositoryRemoteRepositoryConfig_ToProto(mapCtx *direct.Map
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: UpstreamCredentials
 	// MISSING: DisableUpstreamValidation
-	return out
-}
-func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositorySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ArtifactRegistryRepositorySpec{}
-	// MISSING: MavenConfig
-	// MISSING: DockerConfig
-	// MISSING: VirtualRepositoryConfig
-	// MISSING: RemoteRepositoryConfig
-	// MISSING: Name
-	// MISSING: Format
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: KMSKeyName
-	// MISSING: Mode
-	// MISSING: CleanupPolicies
-	// MISSING: SizeBytes
-	// MISSING: SatisfiesPzs
-	// MISSING: CleanupPolicyDryRun
-	// MISSING: VulnerabilityScanningConfig
-	// MISSING: DisallowUnspecifiedMode
-	// MISSING: SatisfiesPzi
-	// MISSING: RegistryURI
-	return out
-}
-func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositorySpec) *pb.Repository {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Repository{}
-	// MISSING: MavenConfig
-	// MISSING: DockerConfig
-	// MISSING: VirtualRepositoryConfig
-	// MISSING: RemoteRepositoryConfig
-	// MISSING: Name
-	// MISSING: Format
-	// MISSING: Description
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: KMSKeyName
-	// MISSING: Mode
-	// MISSING: CleanupPolicies
-	// MISSING: SizeBytes
-	// MISSING: SatisfiesPzs
-	// MISSING: CleanupPolicyDryRun
-	// MISSING: VulnerabilityScanningConfig
-	// MISSING: DisallowUnspecifiedMode
-	// MISSING: SatisfiesPzi
-	// MISSING: RegistryURI
 	return out
 }
 func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositorySpec {
