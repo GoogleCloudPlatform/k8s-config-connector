@@ -20,8 +20,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var ArtifactRegistryRepositoryGVK = GroupVersion.WithKind("ArtifactRegistryRepository")
-
 // ArtifactRegistryRepositorySpec defines the desired state of ArtifactRegistryRepository
 // +kcc:spec:proto=google.devtools.artifactregistry.v1.Repository
 type ArtifactRegistryRepositorySpec struct {

@@ -35,7 +35,6 @@ var _ refs.Ref = &ArtifactRegistryRepositoryRef{}
 
 // ArtifactRegistryRepositoryRef defines the resource reference to ArtifactRegistryRepository, which "External" field
 // holds the GCP identifier for the KRM object.
-// +kcc:proto=google.devtools.artifactregistry.v1.Repository
 type ArtifactRegistryRepositoryRef struct {
 	// A reference to an externally managed ArtifactRegistryRepository resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
