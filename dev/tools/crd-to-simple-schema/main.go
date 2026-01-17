@@ -86,10 +86,17 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 		data = b
 	}
 
-	schema, err := buildSimpleSchema(data, opt)
+	crd1, err := parseCRD(data)
+	if err != nil {
+		return fmt.Errorf("parsing CRD: %w", err)
+	}
+
+	schema1, err := buildSimpleSchema(crd1, opt)
 	if err != nil {
 		return fmt.Errorf("building simple schema: %w", err)
 	}
+	
+	meta1 := getCRDMetadata(crd1)
 
 	if opt.DiffCRDFile != "" {
 		b, err := os.ReadFile(opt.DiffCRDFile)
@@ -97,20 +104,28 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 			return fmt.Errorf("reading diff file %q: %w", opt.DiffCRDFile, err)
 		}
 
-		schema2, err := buildSimpleSchema(b, opt)
+		crd2, err := parseCRD(b)
+		if err != nil {
+			return fmt.Errorf("parsing diff CRD: %w", err)
+		}
+
+		schema2, err := buildSimpleSchema(crd2, opt)
 		if err != nil {
 			return fmt.Errorf("building simple schema: %w", err)
 		}
+		meta2 := getCRDMetadata(crd2)
 
 		if !opt.Flatten {
 			return fmt.Errorf("diffing requires --flatten")
 		}
 
 		lines1 := make(map[string]string)
-		flatten("", schema, lines1)
+		flatten("", schema1, lines1)
+		maps.Copy(lines1, meta1)
 
 		lines2 := make(map[string]string)
 		flatten("", schema2, lines2)
+		maps.Copy(lines2, meta2)
 
 		var diff []string
 
@@ -160,7 +175,8 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 
 	if opt.Flatten {
 		pathsAndTypes := make(map[string]string)
-		flatten("", schema, pathsAndTypes)
+		flatten("", schema1, pathsAndTypes)
+		maps.Copy(pathsAndTypes, meta1)
 
 		for _, k := range slices.Sorted(maps.Keys(pathsAndTypes)) {
 			v := pathsAndTypes[k]
@@ -169,7 +185,7 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 		return nil
 	}
 
-	res, err := yaml.Marshal(schema)
+	res, err := yaml.Marshal(schema1)
 	if err != nil {
 		return fmt.Errorf("marshaling simple schema: %w", err)
 	}
@@ -179,7 +195,7 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 	return nil
 }
 
-func buildSimpleSchema(data []byte, opt ConvertOptions) (any, error) {
+func parseCRD(data []byte) (*apiextensionsv1.CustomResourceDefinition, error) {
 	if strings.Contains(string(data), "\n---\n") {
 		return nil, fmt.Errorf("multiple documents in CRD file are not yet supported")
 	}
@@ -188,7 +204,10 @@ func buildSimpleSchema(data []byte, opt ConvertOptions) (any, error) {
 	if err := yaml.Unmarshal(data, &crd); err != nil {
 		return nil, fmt.Errorf("unmarshaling CRD: %w", err)
 	}
+	return &crd, nil
+}
 
+func buildSimpleSchema(crd *apiextensionsv1.CustomResourceDefinition, opt ConvertOptions) (any, error) {
 	// Find the stored version or the first version
 	var schema *apiextensionsv1.JSONSchemaProps
 	if opt.Version != "" {
@@ -212,51 +231,26 @@ func buildSimpleSchema(data []byte, opt ConvertOptions) (any, error) {
 	}
 
 	simple := walk(schema)
+	return simple, nil
+}
 
-	var root map[string]any
-	if m, ok := simple.(map[string]any); ok {
-		root = m
-	} else {
-		root = map[string]any{
-			"schema": simple,
-		}
+func getCRDMetadata(crd *apiextensionsv1.CustomResourceDefinition) map[string]string {
+	meta := make(map[string]string)
+	
+	for k, v := range crd.Labels {
+		meta[fmt.Sprintf("._crd.metadata.labels.%s", k)] = v
 	}
 
-	crdMeta := make(map[string]any)
-	if len(crd.Labels) > 0 {
-		// Convert map[string]string to map[string]any
-		labels := make(map[string]any)
-		for k, v := range crd.Labels {
-			labels[k] = v
-		}
-		crdMeta["metadata"] = map[string]any{
-			"labels": labels,
-		}
+	namesPrefix := "._crd.spec.names"
+	meta[namesPrefix+".plural"] = crd.Spec.Names.Plural
+	meta[namesPrefix+".singular"] = crd.Spec.Names.Singular
+	
+	// Treat shortNames as a set
+	for _, v := range crd.Spec.Names.ShortNames {
+		meta[fmt.Sprintf("%s.shortNames.%s", namesPrefix, v)] = "true"
 	}
 
-	names := map[string]any{
-		"plural":   crd.Spec.Names.Plural,
-		"singular": crd.Spec.Names.Singular,
-	}
-	if len(crd.Spec.Names.ShortNames) > 0 {
-		// Convert []string to map[string]any for better diffing (set semantics)
-		shortNames := make(map[string]any)
-		for _, v := range crd.Spec.Names.ShortNames {
-			shortNames[v] = "true"
-		}
-		names["shortNames"] = shortNames
-	}
-
-	if len(names) > 0 {
-		if _, ok := crdMeta["spec"]; !ok {
-			crdMeta["spec"] = make(map[string]any)
-		}
-		crdMeta["spec"].(map[string]any)["names"] = names
-	}
-
-	root["_crd"] = crdMeta
-
-	return root, nil
+	return meta
 }
 
 func flatten(path string, schema any, out map[string]string) {
