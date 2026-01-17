@@ -276,22 +276,16 @@ spec:
                             - external
                           properties:
                             external:
-                              description: |-
-                                The external reference.
-
-                                Allowed value: string of the format `projects/{{project}}/locations/{{location}}/repositories/{{value}}`, where {{value}} is the `name` field of an `ArtifactRegistryRepository` resource.
+                              description: A reference to an externally managed ArtifactRegistryRepository
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".
                               type: string
                             name:
-                              description: |-
-                                The name of the resource.
-
-                                Allowed value: The `name` field of an `ArtifactRegistryRepository` resource.
+                              description: The name of a ArtifactRegistryRepository
+                                resource.
                               type: string
                             namespace:
-                              description: |-
-                                The namespace of the resource.
-
-                                Allowed value: The `namespace` field of an `ArtifactRegistryRepository` resource.
+                              description: The namespace of a ArtifactRegistryRepository
+                                resource.
                               type: string
                           type: object
                       type: object
@@ -344,10 +338,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                type: object
               updateTime:
                 description: Output only. The time when the repository was last updated.
                 type: string

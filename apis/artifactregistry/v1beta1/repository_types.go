@@ -101,31 +101,6 @@ type ArtifactRegistryRepositoryStatus struct {
 	// The name of the repository, for example: "repo1".
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.name
 	Name *string `json:"name,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ArtifactRegistryRepositoryObservedState `json:"observedState,omitempty"`
-}
-
-// ArtifactRegistryRepositoryObservedState is the state of the ArtifactRegistryRepository resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.Repository
-type ArtifactRegistryRepositoryObservedState struct {
-}
-
-type ArtifactRegistryRepositoryRef struct {
-	/* The name of the resource.
-
-	Allowed value: The `name` field of an `ArtifactRegistryRepository` resource. */
-	Name string `json:"name,omitempty"`
-
-	/* The namespace of the resource.
-
-	Allowed value: The `namespace` field of an `ArtifactRegistryRepository` resource. */
-	Namespace string `json:"namespace,omitempty"`
-
-	/* The external reference.
-
-	Allowed value: string of the format `projects/{{project}}/locations/{{location}}/repositories/{{value}}`, where {{value}} is the `name` field of an `ArtifactRegistryRepository` resource. */
-	External string `json:"external,omitempty"`
 }
 
 // +kcc:proto=google.devtools.artifactregistry.v1.UpstreamPolicy

@@ -103,42 +103,6 @@ func ArtifactRegistryRepositoryNpmRepository_PublicRepository_ToProto(mapCtx *di
 	}
 	return &pb.RemoteRepositoryConfig_NpmRepository_PublicRepository_{PublicRepository: direct.Enum_ToProto[pb.RemoteRepositoryConfig_NpmRepository_PublicRepository](mapCtx, in)}
 }
-func ArtifactRegistryRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositoryObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ArtifactRegistryRepositoryObservedState{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: KMSKeyName
-	// MISSING: SizeBytes
-	// MISSING: SatisfiesPzs
-	// MISSING: VulnerabilityScanningConfig
-	// MISSING: DisallowUnspecifiedMode
-	// MISSING: SatisfiesPzi
-	// MISSING: RegistryURI
-	return out
-}
-func ArtifactRegistryRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryObservedState) *pb.Repository {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Repository{}
-	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: KMSKeyName
-	// MISSING: SizeBytes
-	// MISSING: SatisfiesPzs
-	// MISSING: VulnerabilityScanningConfig
-	// MISSING: DisallowUnspecifiedMode
-	// MISSING: SatisfiesPzi
-	// MISSING: RegistryURI
-	return out
-}
 func ArtifactRegistryRepositoryPythonRepository_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_PythonRepository) *krm.ArtifactRegistryRepositoryPythonRepository {
 	if in == nil {
 		return nil
@@ -164,6 +128,60 @@ func ArtifactRegistryRepositoryPythonRepository_PublicRepository_ToProto(mapCtx 
 		return nil
 	}
 	return &pb.RemoteRepositoryConfig_PythonRepository_PublicRepository_{PublicRepository: direct.Enum_ToProto[pb.RemoteRepositoryConfig_PythonRepository_PublicRepository](mapCtx, in)}
+}
+func ArtifactRegistryRepositoryRef_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositoryRef {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ArtifactRegistryRepositoryRef{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	// MISSING: SizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: CleanupPolicyDryRun
+	// MISSING: VulnerabilityScanningConfig
+	// MISSING: DisallowUnspecifiedMode
+	// MISSING: SatisfiesPzi
+	// MISSING: RegistryURI
+	return out
+}
+func ArtifactRegistryRepositoryRef_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryRef) *pb.Repository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	out.Name = ArtifactRegistryRepositoryRef_Name_ToProto(mapCtx, in.Name)
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	// MISSING: SizeBytes
+	// MISSING: SatisfiesPzs
+	// MISSING: CleanupPolicyDryRun
+	// MISSING: VulnerabilityScanningConfig
+	// MISSING: DisallowUnspecifiedMode
+	// MISSING: SatisfiesPzi
+	// MISSING: RegistryURI
+	return out
 }
 func ArtifactRegistryRepositoryRemoteRepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig) *krm.ArtifactRegistryRepositoryRemoteRepositoryConfig {
 	if in == nil {
