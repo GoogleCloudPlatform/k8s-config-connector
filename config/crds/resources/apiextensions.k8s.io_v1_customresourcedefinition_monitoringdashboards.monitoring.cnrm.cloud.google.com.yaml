@@ -275,15 +275,12 @@ spec:
                                           - external
                                         required:
                                         - name
-                                        - kind
                                       - not:
                                           anyOf:
                                           - required:
                                             - name
                                           - required:
                                             - namespace
-                                          - required:
-                                            - kind
                                         required:
                                         - external
                                       properties:
@@ -2324,15 +2321,12 @@ spec:
                                     - external
                                   required:
                                   - name
-                                  - kind
                                 - not:
                                     anyOf:
                                     - required:
                                       - name
                                     - required:
                                       - namespace
-                                    - required:
-                                      - kind
                                   required:
                                   - external
                                 properties:
@@ -4194,15 +4188,12 @@ spec:
                                         - external
                                       required:
                                       - name
-                                      - kind
                                     - not:
                                         anyOf:
                                         - required:
                                           - name
                                         - required:
                                           - namespace
-                                        - required:
-                                          - kind
                                       required:
                                       - external
                                     properties:
@@ -6209,15 +6200,12 @@ spec:
                                           - external
                                         required:
                                         - name
-                                        - kind
                                       - not:
                                           anyOf:
                                           - required:
                                             - name
                                           - required:
                                             - namespace
-                                          - required:
-                                            - kind
                                         required:
                                         - external
                                       properties:
