@@ -3,4 +3,4 @@
 # This file holds the pinned SHAs for mockgcp
 # It is generated using dev/tasks/update-mockgcp
 #
-https://github.com/googleapis/googleapis 731d7f2ab6e4e2ea15030c95039e2cb66174d4fb
+https://github.com/googleapis/googleapis ef6a532bfd9ab7a944bdedd64c69a2b4042db58b

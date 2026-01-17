@@ -702,7 +702,7 @@ message ConsumerPscConfig {
   map<string, string> producer_instance_metadata = 6 [json_name="producerInstanceMetadata"];
   // The consumer project where PSC connections are allowed to be created in.
   string project = 7 [json_name="project"];
-  // Output only. A map to store mapping between customer vip and target service attachment. Only service attachment with producer specified ip addresses are stored here.
+  // Optional. A map to store mapping between customer vip and target service attachment. This field can be used to specify a static IP address for a PSC connection.
   map<string, string> service_attachment_ip_address_map = 8 [json_name="serviceAttachmentIpAddressMap"];
   // Output only. Overall state of PSC Connections management for this consumer psc config.
   string state = 9 [json_name="state"];

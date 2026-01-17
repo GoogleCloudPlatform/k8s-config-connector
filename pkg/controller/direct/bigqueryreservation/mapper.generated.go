@@ -42,6 +42,7 @@ func BigQueryReservationAssignmentObservedState_FromProto(mapCtx *direct.MapCont
 	// MISSING: Name
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: EnableGeminiInBigquery
+	// MISSING: SchedulingPolicy
 	return out
 }
 func BigQueryReservationAssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentObservedState) *pb.Assignment {
@@ -52,6 +53,7 @@ func BigQueryReservationAssignmentObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: Name
 	out.State = direct.Enum_ToProto[pb.Assignment_State](mapCtx, in.State)
 	// MISSING: EnableGeminiInBigquery
+	// MISSING: SchedulingPolicy
 	return out
 }
 func Reservation_ReplicationStatus_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_ReplicationStatus) *krm.Reservation_ReplicationStatus {
@@ -62,6 +64,7 @@ func Reservation_ReplicationStatus_FromProto(mapCtx *direct.MapContext, in *pb.R
 	// MISSING: Error
 	// MISSING: LastErrorTime
 	// MISSING: LastReplicationTime
+	// MISSING: SoftFailoverStartTime
 	return out
 }
 func Reservation_ReplicationStatus_ToProto(mapCtx *direct.MapContext, in *krm.Reservation_ReplicationStatus) *pb.Reservation_ReplicationStatus {
@@ -72,6 +75,7 @@ func Reservation_ReplicationStatus_ToProto(mapCtx *direct.MapContext, in *krm.Re
 	// MISSING: Error
 	// MISSING: LastErrorTime
 	// MISSING: LastReplicationTime
+	// MISSING: SoftFailoverStartTime
 	return out
 }
 func Reservation_ReplicationStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_ReplicationStatus) *krm.Reservation_ReplicationStatusObservedState {
@@ -82,6 +86,7 @@ func Reservation_ReplicationStatusObservedState_FromProto(mapCtx *direct.MapCont
 	out.Error = Status_FromProto(mapCtx, in.GetError())
 	out.LastErrorTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastErrorTime())
 	out.LastReplicationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastReplicationTime())
+	out.SoftFailoverStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetSoftFailoverStartTime())
 	return out
 }
 func Reservation_ReplicationStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Reservation_ReplicationStatusObservedState) *pb.Reservation_ReplicationStatus {
@@ -92,5 +97,24 @@ func Reservation_ReplicationStatusObservedState_ToProto(mapCtx *direct.MapContex
 	out.Error = Status_ToProto(mapCtx, in.Error)
 	out.LastErrorTime = direct.StringTimestamp_ToProto(mapCtx, in.LastErrorTime)
 	out.LastReplicationTime = direct.StringTimestamp_ToProto(mapCtx, in.LastReplicationTime)
+	out.SoftFailoverStartTime = direct.StringTimestamp_ToProto(mapCtx, in.SoftFailoverStartTime)
+	return out
+}
+func SchedulingPolicy_FromProto(mapCtx *direct.MapContext, in *pb.SchedulingPolicy) *krm.SchedulingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SchedulingPolicy{}
+	out.Concurrency = in.Concurrency
+	out.MaxSlots = in.MaxSlots
+	return out
+}
+func SchedulingPolicy_ToProto(mapCtx *direct.MapContext, in *krm.SchedulingPolicy) *pb.SchedulingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SchedulingPolicy{}
+	out.Concurrency = in.Concurrency
+	out.MaxSlots = in.MaxSlots
 	return out
 }

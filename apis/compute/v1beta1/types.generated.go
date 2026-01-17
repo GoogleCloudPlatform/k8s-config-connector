@@ -29,7 +29,9 @@ type FirewallPolicyRuleSecureTag struct {
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleSecureTag.name
 	Name *string `json:"name,omitempty"`
 
-	// [Output Only] State of the secure tag, either `EFFECTIVE` or `INEFFECTIVE`. A secure tag is `INEFFECTIVE` when it is deleted or its network is deleted.
+	// Output only. [Output Only] State of the secure tag, either `EFFECTIVE` or
+	//  `INEFFECTIVE`. A secure tag is `INEFFECTIVE` when it is deleted
+	//  or its network is deleted.
 	//  Check the State enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleSecureTag.state
 	State *string `json:"state,omitempty"`
