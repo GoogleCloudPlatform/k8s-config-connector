@@ -91,11 +91,6 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 		return fmt.Errorf("parsing CRD: %w", err)
 	}
 
-	schema1, err := buildSimpleSchema(crd1, opt)
-	if err != nil {
-		return fmt.Errorf("building simple schema: %w", err)
-	}
-	
 	if opt.DiffCRDFile != "" {
 		b, err := os.ReadFile(opt.DiffCRDFile)
 		if err != nil {
@@ -107,68 +102,19 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 			return fmt.Errorf("parsing diff CRD: %w", err)
 		}
 
-		schema2, err := buildSimpleSchema(crd2, opt)
-		if err != nil {
-			return fmt.Errorf("building simple schema: %w", err)
-		}
-
 		if !opt.Flatten {
 			return fmt.Errorf("diffing requires --flatten")
 		}
 
-		lines1 := make(map[string]string)
-		flatten("", schema1, lines1)
-
-		lines2 := make(map[string]string)
-		flatten("", schema2, lines2)
-
-		var diff []string
-
-		for k, v1 := range lines1 {
-			v2, ok := lines2[k]
-			if !ok {
-				diff = append(diff, fmt.Sprintf("- %s=%s", k, v1))
-				continue
-			}
-			if v1 != v2 {
-				// Special case: treat int32 and int64 as equivalent to integer
-				if opt.IgnoreIntegerTypeDifferences {
-					if (v1 == "int32" || v1 == "int64") && v2 == "integer" {
-						continue
-					}
-					if v1 == "integer" && (v2 == "int32" || v2 == "int64") {
-						continue
-					}
-				}
-				diff = append(diff, fmt.Sprintf("- %s=%s", k, v1))
-				diff = append(diff, fmt.Sprintf("+ %s=%s", k, v2))
-			}
-		}
-		for k, v2 := range lines2 {
-			_, ok := lines1[k]
-			if !ok {
-				diff = append(diff, fmt.Sprintf("+ %s=%s", k, v2))
-			}
-		}
-
-		// Add metadata diffs
-		diff = append(diff, diffMetadata(crd1, crd2)...)
-
-		// Funky sort that tries to match up + and - lines
-		sort.Slice(diff, func(i, j int) bool {
-			s0 := diff[i]
-			s1 := diff[j]
-			if s0[1:] < s1[1:] {
-				return true
-			}
-
-			return s0 < s1
-		})
-
-		for _, line := range diff {
-			fmt.Fprintln(out, line)
+		if err := diffCRD(out, crd1, crd2, opt); err != nil {
+			return err
 		}
 		return nil
+	}
+
+	schema1, err := buildSimpleSchema(crd1, opt)
+	if err != nil {
+		return fmt.Errorf("building simple schema: %w", err)
 	}
 
 	if opt.Flatten {
@@ -190,6 +136,144 @@ func Run(ctx context.Context, opt ConvertOptions, out io.Writer) error {
 		return fmt.Errorf("writing output: %w", err)
 	}
 	return nil
+}
+
+func diffCRD(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition, opt ConvertOptions) error {
+	// Metadata Diffs
+	diffMetadata(out, crd1, crd2)
+
+	// Naming Diffs
+	diffNames(out, crd1, crd2)
+
+	// Schema Diffs
+	schema1, err := buildSimpleSchema(crd1, opt)
+	if err != nil {
+		return fmt.Errorf("building simple schema 1: %w", err)
+	}
+	schema2, err := buildSimpleSchema(crd2, opt)
+	if err != nil {
+		return fmt.Errorf("building simple schema 2: %w", err)
+	}
+
+	diffSchema(out, schema1, schema2, opt)
+	return nil
+}
+
+func diffMetadata(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition) {
+	printMapDiff(out, "metadata.labels", crd1.Labels, crd2.Labels)
+	printMapDiff(out, "metadata.annotations", crd1.Annotations, crd2.Annotations)
+}
+
+func diffNames(out io.Writer, crd1, crd2 *apiextensionsv1.CustomResourceDefinition) {
+	if crd1.Spec.Names.Plural != crd2.Spec.Names.Plural {
+		fmt.Fprintf(out, "- spec.names.plural=%s\n", crd1.Spec.Names.Plural)
+		fmt.Fprintf(out, "+ spec.names.plural=%s\n", crd2.Spec.Names.Plural)
+	}
+	if crd1.Spec.Names.Singular != crd2.Spec.Names.Singular {
+		fmt.Fprintf(out, "- spec.names.singular=%s\n", crd1.Spec.Names.Singular)
+		fmt.Fprintf(out, "+ spec.names.singular=%s\n", crd2.Spec.Names.Singular)
+	}
+	if crd1.Spec.Names.Kind != crd2.Spec.Names.Kind {
+		fmt.Fprintf(out, "- spec.names.kind=%s\n", crd1.Spec.Names.Kind)
+		fmt.Fprintf(out, "+ spec.names.kind=%s\n", crd2.Spec.Names.Kind)
+	}
+
+	// ShortNames
+	s1 := make(map[string]bool)
+	for _, v := range crd1.Spec.Names.ShortNames {
+		s1[v] = true
+	}
+	s2 := make(map[string]bool)
+	for _, v := range crd2.Spec.Names.ShortNames {
+		s2[v] = true
+	}
+
+	for _, k := range slices.Sorted(maps.Keys(s1)) {
+		if !s2[k] {
+			fmt.Fprintf(out, "- spec.names.shortNames.%s=true\n", k)
+		}
+	}
+	for _, k := range slices.Sorted(maps.Keys(s2)) {
+		if !s1[k] {
+			fmt.Fprintf(out, "+ spec.names.shortNames.%s=true\n", k)
+		}
+	}
+}
+
+func printMapDiff(out io.Writer, prefix string, m1, m2 map[string]string) {
+	keys := make(map[string]bool)
+	for k := range m1 {
+		keys[k] = true
+	}
+	for k := range m2 {
+		keys[k] = true
+	}
+
+	for _, k := range slices.Sorted(maps.Keys(keys)) {
+		v1, ok1 := m1[k]
+		v2, ok2 := m2[k]
+
+		if ok1 && !ok2 {
+			fmt.Fprintf(out, "- %s.%s=%s\n", prefix, k, v1)
+		} else if !ok1 && ok2 {
+			fmt.Fprintf(out, "+ %s.%s=%s\n", prefix, k, v2)
+		} else if v1 != v2 {
+			fmt.Fprintf(out, "- %s.%s=%s\n", prefix, k, v1)
+			fmt.Fprintf(out, "+ %s.%s=%s\n", prefix, k, v2)
+		}
+	}
+}
+
+func diffSchema(out io.Writer, schema1, schema2 any, opt ConvertOptions) {
+	lines1 := make(map[string]string)
+	flatten("", schema1, lines1)
+
+	lines2 := make(map[string]string)
+	flatten("", schema2, lines2)
+
+	var diff []string
+
+	for k, v1 := range lines1 {
+		v2, ok := lines2[k]
+		if !ok {
+			diff = append(diff, fmt.Sprintf("- %s=%s", k, v1))
+			continue
+		}
+		if v1 != v2 {
+			// Special case: treat int32 and int64 as equivalent to integer
+			if opt.IgnoreIntegerTypeDifferences {
+				if (v1 == "int32" || v1 == "int64") && v2 == "integer" {
+					continue
+				}
+				if v1 == "integer" && (v2 == "int32" || v2 == "int64") {
+					continue
+				}
+			}
+			diff = append(diff, fmt.Sprintf("- %s=%s", k, v1))
+			diff = append(diff, fmt.Sprintf("+ %s=%s", k, v2))
+		}
+	}
+	for k, v2 := range lines2 {
+		_, ok := lines1[k]
+		if !ok {
+			diff = append(diff, fmt.Sprintf("+ %s=%s", k, v2))
+		}
+	}
+
+	// Funky sort that tries to match up + and - lines
+	sort.Slice(diff, func(i, j int) bool {
+		s0 := diff[i]
+		s1 := diff[j]
+		if s0[1:] < s1[1:] {
+			return true
+		}
+
+		return s0 < s1
+	})
+
+	for _, line := range diff {
+		fmt.Fprintln(out, line)
+	}
 }
 
 func parseCRD(data []byte) (*apiextensionsv1.CustomResourceDefinition, error) {
@@ -229,64 +313,6 @@ func buildSimpleSchema(crd *apiextensionsv1.CustomResourceDefinition, opt Conver
 
 	simple := walk(schema)
 	return simple, nil
-}
-
-func diffMetadata(crd1, crd2 *apiextensionsv1.CustomResourceDefinition) []string {
-	var diffs []string
-	prefix := "._crd"
-
-	// Spec Names: Plural
-	if crd1.Spec.Names.Plural != crd2.Spec.Names.Plural {
-		diffs = append(diffs, fmt.Sprintf("- %s.spec.names.plural=%s", prefix, crd1.Spec.Names.Plural))
-		diffs = append(diffs, fmt.Sprintf("+ %s.spec.names.plural=%s", prefix, crd2.Spec.Names.Plural))
-	}
-
-	// Spec Names: Singular
-	if crd1.Spec.Names.Singular != crd2.Spec.Names.Singular {
-		diffs = append(diffs, fmt.Sprintf("- %s.spec.names.singular=%s", prefix, crd1.Spec.Names.Singular))
-		diffs = append(diffs, fmt.Sprintf("+ %s.spec.names.singular=%s", prefix, crd2.Spec.Names.Singular))
-	}
-
-	// Spec Names: ShortNames (Set comparison)
-	sn1 := make(map[string]bool)
-	for _, v := range crd1.Spec.Names.ShortNames {
-		sn1[v] = true
-	}
-	sn2 := make(map[string]bool)
-	for _, v := range crd2.Spec.Names.ShortNames {
-		sn2[v] = true
-	}
-
-	for k := range sn1 {
-		if !sn2[k] {
-			diffs = append(diffs, fmt.Sprintf("- %s.spec.names.shortNames.%s=true", prefix, k))
-		}
-	}
-	for k := range sn2 {
-		if !sn1[k] {
-			diffs = append(diffs, fmt.Sprintf("+ %s.spec.names.shortNames.%s=true", prefix, k))
-		}
-	}
-
-	// Metadata: Labels (Map comparison)
-	for k, v1 := range crd1.Labels {
-		v2, ok := crd2.Labels[k]
-		if !ok {
-			diffs = append(diffs, fmt.Sprintf("- %s.metadata.labels.%s=%s", prefix, k, v1))
-			continue
-		}
-		if v1 != v2 {
-			diffs = append(diffs, fmt.Sprintf("- %s.metadata.labels.%s=%s", prefix, k, v1))
-			diffs = append(diffs, fmt.Sprintf("+ %s.metadata.labels.%s=%s", prefix, k, v2))
-		}
-	}
-	for k, v2 := range crd2.Labels {
-		if _, ok := crd1.Labels[k]; !ok {
-			diffs = append(diffs, fmt.Sprintf("+ %s.metadata.labels.%s=%s", prefix, k, v2))
-		}
-	}
-
-	return diffs
 }
 
 func flatten(path string, schema any, out map[string]string) {
