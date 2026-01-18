@@ -129,7 +129,7 @@ lint:
 
 .PHONY: lint-custom
 lint-custom:
-	go run ./dev/linters/main.go ./pkg/... ./cmd/... ./config/...
+	go run ./dev/linters/main.go ./pkg/... ./cmd/... ./config/... 2>&1 | go run ./dev/tools/lint-filter/main.go
 
 # Run go vet against code
 .PHONY: vet
