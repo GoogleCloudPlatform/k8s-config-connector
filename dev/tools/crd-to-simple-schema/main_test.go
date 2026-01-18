@@ -45,6 +45,10 @@ func TestRun(t *testing.T) {
 			opt.DiffCRDFile = crd2
 			opt.Flatten = true
 
+			if _, err := os.Stat(filepath.Join(dir, "ignore_int_diff")); err == nil {
+				opt.IgnoreIntegerTypeDifferences = true
+			}
+
 			var buf bytes.Buffer
 			if err := Run(t.Context(), opt, &buf); err != nil {
 				t.Fatalf("Run failed: %v", err)
