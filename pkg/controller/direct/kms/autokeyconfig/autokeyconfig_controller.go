@@ -79,7 +79,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err != nil {
 		return nil, fmt.Errorf("unable to resolve folder for autokeyConfig name: %s, err: %w", obj.GetName(), err)
 	}
-	var keyProject *refs.Project
+	var keyProject *refs.ProjectIdentity
 	if obj.Spec.KeyProjectRef != nil {
 		var err error
 		keyProject, err = refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.KeyProjectRef)
@@ -106,7 +106,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 
 type Adapter struct {
 	id                *krm.KMSAutokeyConfigIdentity
-	desiredKeyProject *refs.Project
+	desiredKeyProject *refs.ProjectIdentity
 	gcpClient         *gcp.AutokeyAdminClient
 	desired           *krm.KMSAutokeyConfig
 	actual            *kmspb.AutokeyConfig

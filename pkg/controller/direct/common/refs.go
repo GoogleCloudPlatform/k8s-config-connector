@@ -24,7 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func NormalizeReferences(ctx context.Context, reader client.Reader, obj client.Object, projectRef *refs.Project) error {
+func NormalizeReferences(ctx context.Context, reader client.Reader, obj client.Object, projectRef *refs.ProjectIdentity) error {
 	if err := VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: projectRef, kube: reader}); err != nil {
 		return err
 	}
@@ -50,7 +50,7 @@ type refNormalizer struct {
 	ctx     context.Context
 	kube    client.Reader
 	src     client.Object
-	project *refs.Project
+	project *refs.ProjectIdentity
 }
 
 func (r *refNormalizer) VisitField(path string, v any) error {
