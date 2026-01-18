@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
@@ -57,16 +56,11 @@ func (r *OrganizationRef) SetExternal(external string) {
 }
 
 func (r *OrganizationRef) ValidateExternal(external string) error {
-	if external == "" {
-		return fmt.Errorf("must specify 'external' in 'organizationRef'")
+	id := &OrganizationIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		return err
 	}
-
-	// When Organization implements identity.Identity, we should delegate to it
-	tokens := strings.Split(external, "/")
-	if len(tokens) == 2 && tokens[0] == "organizations" {
-		return nil
-	}
-	return fmt.Errorf("format of 'organizationRef.external'=%q was not known (use organizations/<organizationID>)", external)
+	return nil
 }
 
 func (r *OrganizationRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
@@ -137,12 +131,11 @@ func ResolveOrganization(ctx context.Context, reader client.Reader, src client.O
 		return nil, fmt.Errorf("must specify 'external' in 'organizationRef'")
 	}
 
-	// We support "organizations/12345"
-	tokens := strings.Split(ref.External, "/")
-	if len(tokens) == 2 && tokens[0] == "organizations" {
-		return &OrganizationIdentity{OrganizationID: tokens[1]}, nil
+	id := &OrganizationIdentity{}
+	if err := id.FromExternal(ref.External); err != nil {
+		return nil, err
 	}
-	return nil, fmt.Errorf("format of 'organizationRef.external'=%q was not known (use organizations/<organizationID>)", ref.External)
+	return id, nil
 }
 
 func ResolveOrganizationID(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (string, error) {
