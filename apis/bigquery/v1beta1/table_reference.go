@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -72,8 +71,8 @@ func (r *TableRef) ValidateExternal(external string) error {
 		return fmt.Errorf("external reference cannot be empty")
 	}
 	// Expected format: projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}
-	if !strings.HasPrefix(external, "projects/") || !strings.Contains(external, "/datasets/") || !strings.Contains(external, "/tables/") {
-		return fmt.Errorf("invalid external reference format %q: expected projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}", external)
+	if err := (&TableIdentity{}).FromExternal(external); err != nil {
+		return err
 	}
 	return nil
 }
@@ -92,11 +91,10 @@ func (r *TableRef) Normalize(ctx context.Context, reader client.Reader, defaultN
 			return ""
 		}
 		datasetRef := obj.Spec.DatasetRef
-		datasetExternal, err := datasetRef.NormalizedExternal(ctx, reader, defaultNamespace)
-		if err != nil {
+		if err := datasetRef.Normalize(ctx, reader, defaultNamespace); err != nil {
 			return ""
 		}
-		return fmt.Sprintf("%s/tables/%s", datasetExternal, tableID)
+		return fmt.Sprintf("%s/tables/%s", datasetRef.External, tableID)
 	}
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

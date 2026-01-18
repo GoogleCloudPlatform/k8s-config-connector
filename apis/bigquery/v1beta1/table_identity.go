@@ -75,10 +75,10 @@ func (p *TableParent) String() string {
 
 // New builds a TableIdentity from the Config Connector Table object.
 func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigQueryTable) (*TableIdentity, error) {
-	datasetExternalRef, err := obj.Spec.DatasetRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
+	if err := obj.Spec.DatasetRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
+	datasetExternalRef := obj.Spec.DatasetRef.External
 	datasetParent, dataset, err := ParseDatasetExternal(datasetExternalRef)
 	if err != nil {
 		return nil, err
