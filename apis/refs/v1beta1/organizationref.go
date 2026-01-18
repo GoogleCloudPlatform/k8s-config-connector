@@ -123,7 +123,7 @@ func ResolveOrganizationFromAnnotation(ctx context.Context, reader client.Reader
 
 // ResolveOrganization will resolve an OrganizationRef to an Organization, with
 // the OrganizationID.
-// Deprecated: Use ResolveOrganizationID instead.
+// Deprecated: Use Normalize instead.
 func ResolveOrganization(ctx context.Context, reader client.Reader, src client.Object, ref *OrganizationRef) (*OrganizationIdentity, error) {
 	if ref == nil {
 		return nil, nil
