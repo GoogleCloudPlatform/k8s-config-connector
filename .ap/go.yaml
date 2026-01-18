@@ -5,3 +5,5 @@ govet:
 skip:
 - "third_party/"
 - "mockgcp/generated/"
+- "testdata/"
+- "scripts/resource-autogen/"
