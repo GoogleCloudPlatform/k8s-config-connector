@@ -30,8 +30,16 @@ func TestDatasetIdentity_FromExternal(t *testing.T) {
 			name: "valid reference",
 			ref:  "projects/my-project/datasets/my-dataset",
 			want: &DatasetIdentity{
-				parent: &DatasetParent{ProjectID: "my-project"},
-				id:     "my-dataset",
+				Project: "my-project",
+				Dataset: "my-dataset",
+			},
+		},
+		{
+			name: "full url",
+			ref:  "https://bigquery.googleapis.com/projects/my-project/datasets/my-dataset",
+			want: &DatasetIdentity{
+				Project: "my-project",
+				Dataset: "my-dataset",
 			},
 		},
 		{
