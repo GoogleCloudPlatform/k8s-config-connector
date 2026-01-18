@@ -55,6 +55,8 @@ func (r *OrganizationRef) SetExternal(external string) {
 	r.External = external
 }
 
+// ValidateExternal validates the external reference.
+// Deprecated: Use Normalize instead.
 func (r *OrganizationRef) ValidateExternal(external string) error {
 	id := &OrganizationIdentity{}
 	if err := id.FromExternal(external); err != nil {
