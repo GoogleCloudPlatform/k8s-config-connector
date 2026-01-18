@@ -20,9 +20,12 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var _ identity.Identity = &DatasetIdentity{}
 
 // DatasetIdentity defines the resource reference to BigQueryDataset, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -33,6 +36,16 @@ type DatasetIdentity struct {
 
 func (i *DatasetIdentity) String() string {
 	return i.parent.String() + "/datasets/" + i.id
+}
+
+func (i *DatasetIdentity) FromExternal(ref string) error {
+	parent, resourceID, err := ParseDatasetExternal(ref)
+	if err != nil {
+		return err
+	}
+	i.parent = parent
+	i.id = resourceID
+	return nil
 }
 
 func (i *DatasetIdentity) ID() string {
