@@ -79,7 +79,7 @@ func GetResources(discoveryClient discovery.DiscoveryInterface, resources []sche
 }
 
 func GetResourcesWithKindFilter(discoveryClient discovery.DiscoveryInterface, resources []schema.GroupVersionResource, kinds map[string]bool) ([]schema.GroupVersionResource, error) {
-		apiResourceLists, err := discoveryClient.ServerPreferredResources()
+	apiResourceLists, err := discoveryClient.ServerPreferredResources()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get preferred resources: %w", err)
 	}
