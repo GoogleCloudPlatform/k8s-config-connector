@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 )
 
@@ -26,6 +27,8 @@ var (
 
 // StorageBucketURLFormat is the format for the externalRef of a StorageBucket.
 const StorageBucketURLFormat = "projects/{{project}}/buckets/{{bucket}}"
+
+var _ identity.Identity = &StorageBucketIdentity{}
 
 // +k8s:deepcopy-gen=false
 type StorageBucketIdentity struct {
