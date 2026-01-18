@@ -20,13 +20,13 @@ import (
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &DatasetRef{}
+var _ refsv1beta1.Ref = &DatasetRef{}
 
 // DatasetRef defines the resource reference to BigQueryDataset, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -42,65 +42,63 @@ type DatasetRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on BigQueryDataset.
-// If the "External" is given in the other resource's spec.BigQueryDatasetRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual BigQueryDataset object from the cluster.
-func (r *DatasetRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", BigQueryDatasetGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseDatasetExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func (r *DatasetRef) GetGVK() schema.GroupVersionKind {
+	return BigQueryDatasetGVK
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *DatasetRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(BigQueryDatasetGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", BigQueryDatasetGVK, key, err)
+}
+
+func (r *DatasetRef) GetExternal() string {
+	return r.External
+}
+
+func (r *DatasetRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *DatasetRef) ValidateExternal(ref string) error {
+	id := &DatasetIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, found, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if !found {
+	return nil
+}
+
+func (r *DatasetRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
 		// BigQueryDataset is still TF based so we resolve the reference from the object
 		// BUT only construct the reference if the resource is ready
 		resource, err := k8s.NewResource(u)
 		if err != nil {
-			return "", fmt.Errorf("error converting unstructured to resource: %w", err)
+			return ""
 		}
 		if !k8s.IsResourceReady(resource) {
-			return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+			return ""
 		}
 
 		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
 		if err != nil {
-			return "", err
+			return ""
 		}
 		datasetID, err := refsv1beta1.GetResourceID(u)
 		if err != nil {
-			return "", err
+			return ""
 		}
-		actualExternal := fmt.Sprintf("projects/%s/datasets/%s", projectID, datasetID)
-		r.External = actualExternal
-		return r.External, nil
+		return fmt.Sprintf("projects/%s/datasets/%s", projectID, datasetID)
 	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, otherNamespace, fallback)
+}
+
+// NormalizedExternal is a helper function to resolve the external reference.
+// Deprecated: Use Normalize instead.
+func (r *DatasetRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
+		return "", err
 	}
-	r.External = actualExternalRef
 	return r.External, nil
 }
