@@ -8,7 +8,9 @@ Content-Type: application/json
   "cmekConfig": {},
   "databaseEdition": "STANDARD",
   "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+  "firestoreDataAccessMode": "DATA_ACCESS_MODE_UNSPECIFIED",
   "locationId": "us-central1",
+  "mongodbCompatibleDataAccessMode": "DATA_ACCESS_MODE_UNSPECIFIED",
   "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED",
   "type": "FIRESTORE_NATIVE"
 }
