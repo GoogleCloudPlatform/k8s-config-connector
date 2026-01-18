@@ -26,6 +26,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// ExternalNormalizer is a deprecated interface.
+// Deprecated: Use Ref instead.
 type ExternalNormalizer interface {
 	// NormalizedExternal expects the implemented struct has a "External" field, and this function
 	// assigns a value to the "External" field if it is empty.
