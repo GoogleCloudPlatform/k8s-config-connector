@@ -19,11 +19,14 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var TableIdentityFormat = gcpurls.Template[TableIdentity]("bigquery.googleapis.com", "projects/{project}/datasets/{dataset}/tables/{table}")
+
+var _ identity.Identity = &TableIdentity{}
 
 // TableIdentity defines the resource reference to BigQueryTable, which "External" field
 // holds the GCP identifier for the KRM object.
