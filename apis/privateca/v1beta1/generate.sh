@@ -28,13 +28,25 @@ go run . generate-types \
   --api-version privateca.cnrm.cloud.google.com/v1beta1  \
   --resource PrivateCACAPool:CaPool
 
+# Remove duplicated structs from types.generated.go (overridden in capool_types.go)
+# Using sed to delete from annotation to closing brace.
+TYPES_FILE="${REPO_ROOT}/apis/privateca/v1beta1/types.generated.go"
+sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.CaPool\.IssuancePolicy/,/^}/d' "${TYPES_FILE}"
+sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.CaPool\.PublishingOptions/,/^}/d' "${TYPES_FILE}"
+sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.X509Extension/,/^}/d' "${TYPES_FILE}"
+sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.ObjectId/,/^}/d' "${TYPES_FILE}"
+# Use $ to match end of line to avoid prefix matching CaOptions
+sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.X509Parameters$/,/^}/d' "${TYPES_FILE}"
+sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.X509Parameters\.CaOptions/,/^}/d' "${TYPES_FILE}"
+sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.X509Parameters\.NameConstraints/,/^}/d' "${TYPES_FILE}"
+
 go run . generate-mapper \
   --service google.cloud.security.privateca.v1 \
   --api-version privateca.cnrm.cloud.google.com/v1beta1
 
 cd ${REPO_ROOT}
 
-# Fix Value conversion (byte[] <-> string mismatch)
+# Fix Value conversion (byte[] <-> string mismatch) in mapper.generated.go
 # FromProto: generated code uses direct.LazyPtr(in.GetValue()) or in.GetValue(), we want string(in.GetValue())
 sed -i 's/out.Value = direct.LazyPtr(in.GetValue())/out.Value = string(in.GetValue())/g' pkg/controller/direct/privateca/mapper.generated.go
 sed -i 's/out.Value = in.GetValue()/out.Value = string(in.GetValue())/g' pkg/controller/direct/privateca/mapper.generated.go
@@ -47,5 +59,6 @@ sed -i '/ZeroMaxIssuerPathLength/d' pkg/controller/direct/privateca/mapper.gener
 
 dev/tasks/generate-crds
 
+# Format files
 go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/privateca/
 go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  apis/privateca/v1beta1/

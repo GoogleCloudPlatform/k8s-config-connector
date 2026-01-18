@@ -31,7 +31,7 @@ func CAPool_IssuancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_Is
 	}
 	out := &krm.CAPool_IssuancePolicy{}
 	out.AllowedKeyTypes = direct.Slice_FromProto(mapCtx, in.AllowedKeyTypes, CAPool_IssuancePolicy_AllowedKeyType_FromProto)
-	out.BackdateDuration = direct.StringDuration_FromProto(mapCtx, in.GetBackdateDuration())
+	// MISSING: BackdateDuration
 	out.MaximumLifetime = direct.StringDuration_FromProto(mapCtx, in.GetMaximumLifetime())
 	out.AllowedIssuanceModes = CAPool_IssuancePolicy_IssuanceModes_FromProto(mapCtx, in.GetAllowedIssuanceModes())
 	out.BaselineValues = X509Parameters_FromProto(mapCtx, in.GetBaselineValues())
@@ -45,7 +45,7 @@ func CAPool_IssuancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.CAPool_Iss
 	}
 	out := &pb.CaPool_IssuancePolicy{}
 	out.AllowedKeyTypes = direct.Slice_ToProto(mapCtx, in.AllowedKeyTypes, CAPool_IssuancePolicy_AllowedKeyType_ToProto)
-	out.BackdateDuration = direct.StringDuration_ToProto(mapCtx, in.BackdateDuration)
+	// MISSING: BackdateDuration
 	out.MaximumLifetime = direct.StringDuration_ToProto(mapCtx, in.MaximumLifetime)
 	out.AllowedIssuanceModes = CAPool_IssuancePolicy_IssuanceModes_ToProto(mapCtx, in.AllowedIssuanceModes)
 	out.BaselineValues = X509Parameters_ToProto(mapCtx, in.BaselineValues)

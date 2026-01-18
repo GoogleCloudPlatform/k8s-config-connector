@@ -34,11 +34,6 @@ func (in *CAPool_IssuancePolicy) DeepCopyInto(out *CAPool_IssuancePolicy) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.BackdateDuration != nil {
-		in, out := &in.BackdateDuration, &out.BackdateDuration
-		*out = new(string)
-		**out = **in
-	}
 	if in.MaximumLifetime != nil {
 		in, out := &in.MaximumLifetime, &out.MaximumLifetime
 		*out = new(string)
