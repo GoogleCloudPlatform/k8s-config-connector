@@ -18,7 +18,6 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 )
 
@@ -39,16 +38,6 @@ type StorageBucketIdentity struct {
 
 func (i *StorageBucketIdentity) String() string {
 	return StorageBucketIdentityFormat.ToString(*i)
-}
-
-func (i *StorageBucketIdentity) ID() string {
-	return i.Bucket
-}
-
-func (i *StorageBucketIdentity) Parent() *parent.ProjectParent {
-	return &parent.ProjectParent{
-		ProjectID: i.Project,
-	}
 }
 
 func (i *StorageBucketIdentity) BucketName() string {

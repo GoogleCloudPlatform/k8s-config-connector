@@ -93,12 +93,4 @@ func TestStorageBucketIdentity_Methods(t *testing.T) {
 	if got := i.BucketName(); got != "my-bucket" {
 		t.Errorf("BucketName() = %v, want %v", got, "my-bucket")
 	}
-
-	if got := i.ID(); got != "my-bucket" {
-		t.Errorf("ID() = %v, want %v", got, "my-bucket")
-	}
-
-	if got := i.Parent().String(); got != "projects/my-project" {
-		t.Errorf("Parent().String() = %v, want %v", got, "projects/my-project")
-	}
 }
