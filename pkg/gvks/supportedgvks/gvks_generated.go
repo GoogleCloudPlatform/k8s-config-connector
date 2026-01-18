@@ -2059,6 +2059,14 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "privateca.cnrm.cloud.google.com",
 		Version: "v1beta1",
+		Kind:    "PrivateCACAPool",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "privateca.cnrm.cloud.google.com",
+		Version: "v1beta1",
 		Kind:    "PrivateCACertificateAuthority",
 	}: {
 		Terraform: false,

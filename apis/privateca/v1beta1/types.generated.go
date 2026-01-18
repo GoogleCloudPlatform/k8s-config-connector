@@ -37,7 +37,7 @@ type CAPool_IssuancePolicy struct {
 	//  not_after_time will be adjusted to preserve the requested lifetime. The
 	//  backdate_duration must be less than or equal to 48 hours.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.backdate_duration
-	// BackdateDuration *string `json:"backdateDuration,omitempty"`
+	BackdateDuration *string `json:"backdateDuration,omitempty"`
 
 	// Optional. The maximum lifetime allowed for issued
 	//  [Certificates][google.cloud.security.privateca.v1.Certificate]. Note that
@@ -145,38 +145,6 @@ type CAPool_IssuancePolicy_IssuanceModes struct {
 	//  [CertificateConfig][google.cloud.security.privateca.v1.CertificateConfig].
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.IssuancePolicy.IssuanceModes.allow_config_based_issuance
 	AllowConfigBasedIssuance *bool `json:"allowConfigBasedIssuance,omitempty"`
-}
-
-// +kcc:proto=google.cloud.security.privateca.v1.CaPool.PublishingOptions
-type CAPool_PublishingOptions struct {
-	// Optional. When true, publishes each
-	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
-	//  CA certificate and includes its URL in the "Authority Information Access"
-	//  X.509 extension in all issued
-	//  [Certificates][google.cloud.security.privateca.v1.Certificate]. If this
-	//  is false, the CA certificate will not be published and the corresponding
-	//  X.509 extension will not be written in issued certificates.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.PublishingOptions.publish_ca_cert
-	PublishCACert *bool `json:"publishCaCert,omitempty"`
-
-	// Optional. When true, publishes each
-	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
-	//  CRL and includes its URL in the "CRL Distribution Points" X.509 extension
-	//  in all issued
-	//  [Certificates][google.cloud.security.privateca.v1.Certificate]. If this
-	//  is false, CRLs will not be published and the corresponding X.509
-	//  extension will not be written in issued certificates. CRLs will expire 7
-	//  days from their creation. However, we will rebuild daily. CRLs are also
-	//  rebuilt shortly after a certificate is revoked.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.PublishingOptions.publish_crl
-	PublishCrl *bool `json:"publishCrl,omitempty"`
-
-	// Optional. Specifies the encoding format of each
-	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
-	//  resource's CA certificate and CRLs. If this is omitted, CA certificates
-	//  and CRLs will be published in PEM.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.CaPool.PublishingOptions.encoding_format
-	// EncodingFormat *string `json:"encodingFormat,omitempty"`
 }
 
 // +kcc:proto=google.cloud.security.privateca.v1.CertificateExtensionConstraints
@@ -312,87 +280,6 @@ type KeyUsage_KeyUsageOptions struct {
 	DecipherOnly *bool `json:"decipherOnly,omitempty"`
 }
 
-// +kcc:proto=google.cloud.security.privateca.v1.ObjectId
-type ObjectID struct {
-	// Required. The parts of an OID path. The most significant parts of the path
-	//  come first.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.ObjectId.object_id_path
-	ObjectIDPath []int32 `json:"objectIdPath,omitempty"`
-}
-
-// +kcc:proto=google.cloud.security.privateca.v1.X509Extension
-type X509Extension struct {
-	// Required. The OID for this X.509 extension.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.object_id
-	ObjectID *ObjectID `json:"objectId,omitempty"`
-
-	// Optional. Indicates whether or not this extension is critical (i.e., if the
-	//  client does not know how to handle this extension, the client should
-	//  consider this to be an error).
-	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.critical
-	Critical *bool `json:"critical,omitempty"`
-
-	// Required. The value of this X.509 extension.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.value
-	Value string `json:"value,omitempty"`
-}
-
-// +kcc:proto=google.cloud.security.privateca.v1.X509Parameters
-type X509Parameters struct {
-	// Optional. Indicates the intended use for keys that correspond to a
-	//  certificate.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.key_usage
-	KeyUsage *KeyUsage `json:"keyUsage,omitempty"`
-
-	// Optional. Describes options in this
-	//  [X509Parameters][google.cloud.security.privateca.v1.X509Parameters] that
-	//  are relevant in a CA certificate. If not specified, a default basic
-	//  constraints extension with `is_ca=false` will be added for leaf
-	//  certificates.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.ca_options
-	CAOptions *X509Parameters_CAOptions `json:"caOptions,omitempty"`
-
-	// Optional. Describes the X.509 certificate policy object identifiers, per
-	//  https://tools.ietf.org/html/rfc5280#section-4.2.1.4.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.policy_ids
-	PolicyIds []ObjectID `json:"policyIds,omitempty"`
-
-	// Optional. Describes Online Certificate Status Protocol (OCSP) endpoint
-	//  addresses that appear in the "Authority Information Access" extension in
-	//  the certificate.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.aia_ocsp_servers
-	AiaOcspServers []string `json:"aiaOcspServers,omitempty"`
-
-	// Optional. Describes the X.509 name constraints extension.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.name_constraints
-	// NameConstraints *X509Parameters_NameConstraints `json:"nameConstraints,omitempty"`
-
-	// Optional. Describes custom X.509 extensions.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.additional_extensions
-	AdditionalExtensions []X509Extension `json:"additionalExtensions,omitempty"`
-}
-
-// +kcc:proto=google.cloud.security.privateca.v1.X509Parameters.CaOptions
-type X509Parameters_CAOptions struct {
-	// Optional. Refers to the "CA" boolean field in the X.509 extension.
-	//  When this value is missing, the basic constraints extension will be
-	//  omitted from the certificate.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.CaOptions.is_ca
-	IsCA *bool `json:"isCa,omitempty"`
-
-	// Optional. Refers to the path length constraint field in the X.509
-	//  extension. For a CA certificate, this value describes the depth of
-	//  subordinate CA certificates that are allowed. If this value is less than
-	//  0, the request will fail. If this value is missing, the max path length
-	//  will be omitted from the certificate.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.CaOptions.max_issuer_path_length
-	MaxIssuerPathLength *int32 `json:"maxIssuerPathLength,omitempty"`
-
-	// Optional. When true, the "path length constraint" in Basic Constraints extension will be set to 0. if both max_issuer_path_length and zero_max_issuer_path_length are unset, the max path length will be omitted from the CA certificate.
-	ZeroMaxIssuerPathLength *bool `json:"zeroMaxIssuerPathLength,omitempty"`
-}
-
-/*
 // +kcc:proto=google.cloud.security.privateca.v1.X509Parameters.NameConstraints
 type X509Parameters_NameConstraints struct {
 	// Indicates whether or not the name constraints are marked critical.
@@ -405,7 +292,7 @@ type X509Parameters_NameConstraints struct {
 	//  For example, `example.com`, `www.example.com`, `www.sub.example.com`
 	//  would satisfy `example.com` while `example1.com` does not.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.NameConstraints.permitted_dns_names
-	PermittedDNSNames []string `json:"permittedDnsNames,omitempty"`
+	PermittedDNSNames []string `json:"permittedDNSNames,omitempty"`
 
 	// Contains excluded DNS names. Any DNS name that can be
 	//  constructed by simply adding zero or more labels to
@@ -413,21 +300,21 @@ type X509Parameters_NameConstraints struct {
 	//  For example, `example.com`, `www.example.com`, `www.sub.example.com`
 	//  would satisfy `example.com` while `example1.com` does not.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.NameConstraints.excluded_dns_names
-	ExcludedDNSNames []string `json:"excludedDnsNames,omitempty"`
+	ExcludedDNSNames []string `json:"excludedDNSNames,omitempty"`
 
 	// Contains the permitted IP ranges. For IPv4 addresses, the ranges
 	//  are expressed using CIDR notation as specified in RFC 4632.
 	//  For IPv6 addresses, the ranges are expressed in similar encoding as IPv4
 	//  addresses.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.NameConstraints.permitted_ip_ranges
-	PermittedIPRanges []string `json:"permittedIpRanges,omitempty"`
+	PermittedIPRanges []string `json:"permittedIPRanges,omitempty"`
 
 	// Contains the excluded IP ranges. For IPv4 addresses, the ranges
 	//  are expressed using CIDR notation as specified in RFC 4632.
 	//  For IPv6 addresses, the ranges are expressed in similar encoding as IPv4
 	//  addresses.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.NameConstraints.excluded_ip_ranges
-	ExcludedIPRanges []string `json:"excludedIpRanges,omitempty"`
+	ExcludedIPRanges []string `json:"excludedIPRanges,omitempty"`
 
 	// Contains the permitted email addresses. The value can be a particular
 	//  email address, a hostname to indicate all email addresses on that host or
@@ -455,7 +342,6 @@ type X509Parameters_NameConstraints struct {
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.NameConstraints.excluded_uris
 	ExcludedUris []string `json:"excludedUris,omitempty"`
 }
-*/
 
 // +kcc:proto=google.type.Expr
 type Expr struct {

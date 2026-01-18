@@ -31,7 +31,7 @@ func CAPool_IssuancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.CaPool_Is
 	}
 	out := &krm.CAPool_IssuancePolicy{}
 	out.AllowedKeyTypes = direct.Slice_FromProto(mapCtx, in.AllowedKeyTypes, CAPool_IssuancePolicy_AllowedKeyType_FromProto)
-	// MISSING: BackdateDuration
+	out.BackdateDuration = direct.StringDuration_FromProto(mapCtx, in.GetBackdateDuration())
 	out.MaximumLifetime = direct.StringDuration_FromProto(mapCtx, in.GetMaximumLifetime())
 	out.AllowedIssuanceModes = CAPool_IssuancePolicy_IssuanceModes_FromProto(mapCtx, in.GetAllowedIssuanceModes())
 	out.BaselineValues = X509Parameters_FromProto(mapCtx, in.GetBaselineValues())
@@ -45,7 +45,7 @@ func CAPool_IssuancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.CAPool_Iss
 	}
 	out := &pb.CaPool_IssuancePolicy{}
 	out.AllowedKeyTypes = direct.Slice_ToProto(mapCtx, in.AllowedKeyTypes, CAPool_IssuancePolicy_AllowedKeyType_ToProto)
-	// MISSING: BackdateDuration
+	out.BackdateDuration = direct.StringDuration_ToProto(mapCtx, in.BackdateDuration)
 	out.MaximumLifetime = direct.StringDuration_ToProto(mapCtx, in.MaximumLifetime)
 	out.AllowedIssuanceModes = CAPool_IssuancePolicy_IssuanceModes_ToProto(mapCtx, in.AllowedIssuanceModes)
 	out.BaselineValues = X509Parameters_ToProto(mapCtx, in.BaselineValues)
@@ -350,7 +350,7 @@ func X509Parameters_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters) 
 	out.CAOptions = X509Parameters_CAOptions_FromProto(mapCtx, in.GetCaOptions())
 	out.PolicyIds = direct.Slice_FromProto(mapCtx, in.PolicyIds, ObjectID_FromProto)
 	out.AiaOcspServers = in.AiaOcspServers
-	// out.NameConstraints = X509Parameters_NameConstraints_FromProto(mapCtx, in.GetNameConstraints())
+	// MISSING: NameConstraints
 	out.AdditionalExtensions = direct.Slice_FromProto(mapCtx, in.AdditionalExtensions, X509Extension_FromProto)
 	return out
 }
@@ -363,7 +363,7 @@ func X509Parameters_ToProto(mapCtx *direct.MapContext, in *krm.X509Parameters) *
 	out.CaOptions = X509Parameters_CAOptions_ToProto(mapCtx, in.CAOptions)
 	out.PolicyIds = direct.Slice_ToProto(mapCtx, in.PolicyIds, ObjectID_ToProto)
 	out.AiaOcspServers = in.AiaOcspServers
-	// out.NameConstraints = X509Parameters_NameConstraints_ToProto(mapCtx, in.NameConstraints)
+	// MISSING: NameConstraints
 	out.AdditionalExtensions = direct.Slice_ToProto(mapCtx, in.AdditionalExtensions, X509Extension_ToProto)
 	return out
 }
@@ -374,7 +374,6 @@ func X509Parameters_CAOptions_FromProto(mapCtx *direct.MapContext, in *pb.X509Pa
 	out := &krm.X509Parameters_CAOptions{}
 	out.IsCA = in.IsCa
 	out.MaxIssuerPathLength = in.MaxIssuerPathLength
-	// out.ZeroMaxIssuerPathLength = in.ZeroMaxIssuerPathLength
 	return out
 }
 func X509Parameters_CAOptions_ToProto(mapCtx *direct.MapContext, in *krm.X509Parameters_CAOptions) *pb.X509Parameters_CaOptions {
@@ -384,10 +383,8 @@ func X509Parameters_CAOptions_ToProto(mapCtx *direct.MapContext, in *krm.X509Par
 	out := &pb.X509Parameters_CaOptions{}
 	out.IsCa = in.IsCA
 	out.MaxIssuerPathLength = in.MaxIssuerPathLength
-	// out.ZeroMaxIssuerPathLength = in.ZeroMaxIssuerPathLength
 	return out
 }
-/*
 func X509Parameters_NameConstraints_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters_NameConstraints) *krm.X509Parameters_NameConstraints {
 	if in == nil {
 		return nil
@@ -420,4 +417,3 @@ func X509Parameters_NameConstraints_ToProto(mapCtx *direct.MapContext, in *krm.X
 	out.ExcludedUris = in.ExcludedUris
 	return out
 }
-*/
