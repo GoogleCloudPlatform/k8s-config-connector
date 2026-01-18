@@ -41,25 +41,34 @@ func run(pass *analysis.Pass) (interface{}, error) {
 	inspect.Preorder(nodeFilter, func(n ast.Node) {
 		call := n.(*ast.CallExpr)
 
-		// Check if it's a call to json.Unmarshal
+		// Check function call identifier
 		sel, ok := call.Fun.(*ast.SelectorExpr)
 		if !ok {
 			return
 		}
 
-		if sel.Sel.Name != "Unmarshal" {
-			return
+		isTarget := false
+		
+		// Target 1: encoding/json.Unmarshal
+		if sel.Sel.Name == "Unmarshal" {
+			if obj := pass.TypesInfo.ObjectOf(sel.Sel); obj != nil {
+				if pkg := obj.Pkg(); pkg != nil && pkg.Path() == "encoding/json" {
+					isTarget = true
+				}
+			}
+		}
+		
+		// Target 2: pkg/util.Marshal
+		if !isTarget && sel.Sel.Name == "Marshal" {
+			if obj := pass.TypesInfo.ObjectOf(sel.Sel); obj != nil {
+				if pkg := obj.Pkg(); pkg != nil && pkg.Path() == "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util" {
+					isTarget = true
+				}
+			}
 		}
 
-		// Check if the selector is from the "encoding/json" package
-		if obj := pass.TypesInfo.ObjectOf(sel.Sel); obj != nil {
-			if pkg := obj.Pkg(); pkg != nil && pkg.Path() == "encoding/json" {
-				// This is a call to json.Unmarshal
-			} else {
-				return
-			}
-		} else {
-			return		
+		if !isTarget {
+			return
 		}
 
 		// Ensure there are at least two arguments (data, v)
@@ -83,14 +92,12 @@ func run(pass *analysis.Pass) (interface{}, error) {
 			expr = starExpr.X
 		}
 
-		// Note: We deliberately removed the check for slice types to catch all potential reuses (maps, structs, etc.)
-
 		// Function to check if an expression is a problematic initialization
 		isProblematic := func(e ast.Expr) (bool, string) {
 			// Check for non-empty composite literal (struct, slice, map)
 			if lit, isLit := e.(*ast.CompositeLit); isLit {
 				if len(lit.Elts) > 0 {
-					return true, "potential reuse of non-empty variable in json.Unmarshal; consider using an empty literal or nil"
+					return true, "potential reuse of non-empty variable in json.Unmarshal/util.Marshal; consider using an empty literal or nil"
 				}
 			}
 
@@ -101,7 +108,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 						// The second argument of make is the length
 						if basicLit, isBasicLit := makeCall.Args[1].(*ast.BasicLit); isBasicLit && basicLit.Kind == token.INT {
 							if length, err := strconv.Atoi(basicLit.Value); err == nil && length > 0 {
-								return true, "potential reuse of variable created with non-zero length in json.Unmarshal; consider using make([]T, 0) or nil"
+								return true, "potential reuse of variable created with non-zero length in json.Unmarshal/util.Marshal; consider using make([]T, 0) or nil"
 							}
 						}
 					}
@@ -121,8 +128,6 @@ func run(pass *analysis.Pass) (interface{}, error) {
 			if obj := ident.Obj; obj != nil && obj.Kind == ast.Var {
 				if decl, ok := obj.Decl.(*ast.ValueSpec); ok {
 					// Check initialization values
-					// Note: This only checks simple "var x = ..." or "x := ..."
-					// It does NOT track reassignments.
 					for _, value := range decl.Values {
 						if problem, msg := isProblematic(value); problem {
 							pass.Reportf(call.Pos(), "%s", msg)
