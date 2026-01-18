@@ -112,10 +112,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 	// Resolve BigQueryDataSet Ref
 	if obj.Spec.DatasetRef != nil {
-		dataset, err := obj.Spec.DatasetRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-		if err != nil {
+		if err := obj.Spec.DatasetRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 			return nil, err
 		}
+		dataset := obj.Spec.DatasetRef.External
 
 		// for backwards compatibility and to satisfy the GCP API constraints, we must overrite the
 		// external reference in the payloads to just the resource ID of the dataset.

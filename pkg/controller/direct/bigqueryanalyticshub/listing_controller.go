@@ -107,15 +107,13 @@ func (m *modelListing) AdapterForObject(ctx context.Context, reader client.Reade
 func resolveOptionalReferences(ctx context.Context, reader client.Reader, obj *krm.BigQueryAnalyticsHubListing) error {
 	if obj.Spec.Source != nil && obj.Spec.Source.BigQueryDatasetSource != nil {
 		if ref := obj.Spec.Source.BigQueryDatasetSource.DatasetRef; ref != nil {
-			_, err := obj.Spec.Source.BigQueryDatasetSource.DatasetRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-			if err != nil {
+			if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 				return err
 			}
 
 			for _, selectedResource := range obj.Spec.Source.BigQueryDatasetSource.SelectedResources {
 				if ref := selectedResource.TableRef; ref != nil {
-					_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
-					if err != nil {
+					if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 						return err
 					}
 				}

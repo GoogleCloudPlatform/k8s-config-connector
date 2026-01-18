@@ -42,10 +42,12 @@ type DatasetRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+// GetGVK returns the GroupVersionKind for BigQueryDataset.
 func (r *DatasetRef) GetGVK() schema.GroupVersionKind {
 	return BigQueryDatasetGVK
 }
 
+// GetNamespacedName returns the NamespacedName for the reference.
 func (r *DatasetRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
@@ -53,6 +55,7 @@ func (r *DatasetRef) GetNamespacedName() types.NamespacedName {
 	}
 }
 
+// GetExternal returns the external reference.
 func (r *DatasetRef) GetExternal() string {
 	return r.External
 }
