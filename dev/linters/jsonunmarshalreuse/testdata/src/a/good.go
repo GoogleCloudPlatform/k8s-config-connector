@@ -3,6 +3,7 @@ package a
 import (
 	"encoding/json"
 	"log"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 )
 
 func GoodUnmarshalUsage() {
@@ -53,6 +54,12 @@ func GoodUnmarshalUsage() {
 	// Clean struct
 	var st = struct{ Field string }{}
 	if err := json.Unmarshal(data, &st); err != nil {
+		log.Fatal(err)
+	}
+
+	// util.Marshal good case
+	var u2 []string
+	if err := util.Marshal(data, &u2); err != nil {
 		log.Fatal(err)
 	}
 }
