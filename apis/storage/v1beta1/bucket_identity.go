@@ -17,6 +17,8 @@ package v1beta1
 import (
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 )
 
@@ -27,6 +29,8 @@ var (
 // StorageBucketURLFormat is the format for the externalRef of a StorageBucket.
 const StorageBucketURLFormat = "projects/{{project}}/buckets/{{bucket}}"
 
+var _ identity.Identity = &StorageBucketIdentity{}
+
 // +k8s:deepcopy-gen=false
 type StorageBucketIdentity struct {
 	Project string
@@ -35,6 +39,16 @@ type StorageBucketIdentity struct {
 
 func (i *StorageBucketIdentity) String() string {
 	return StorageBucketIdentityFormat.ToString(*i)
+}
+
+func (i *StorageBucketIdentity) ID() string {
+	return i.Bucket
+}
+
+func (i *StorageBucketIdentity) Parent() *parent.ProjectParent {
+	return &parent.ProjectParent{
+		ProjectID: i.Project,
+	}
 }
 
 func (i *StorageBucketIdentity) BucketName() string {
