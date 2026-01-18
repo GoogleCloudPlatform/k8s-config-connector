@@ -14,6 +14,7 @@ require (
 	cloud.google.com/go/apigateway v1.7.7
 	cloud.google.com/go/apikeys v1.2.7
 	cloud.google.com/go/apphub v0.4.0
+	cloud.google.com/go/artifactregistry v1.17.1
 	cloud.google.com/go/asset v1.22.0
 	cloud.google.com/go/assuredworkloads v1.13.0
 	cloud.google.com/go/backupdr v1.6.0

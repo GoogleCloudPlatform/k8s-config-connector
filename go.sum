@@ -21,6 +21,8 @@ cloud.google.com/go/apikeys v1.2.7 h1:JbdXKvx6i4zyGKmG+hPgtmFIoT5j3CIUgByJypFT1X
 cloud.google.com/go/apikeys v1.2.7/go.mod h1:A2yBJ+/0m3kDZaxJ27Wqw21pzr4wxoE8tTHbXpGepjk=
 cloud.google.com/go/apphub v0.4.0 h1:RJ38Qn1lIQH2YOQUboeVX9zUcPpG00NuzRrbowFeup0=
 cloud.google.com/go/apphub v0.4.0/go.mod h1:c/B7trbbiXwn1uOsa/qFa1JqS7nPnUca69exiqtZmb8=
+cloud.google.com/go/artifactregistry v1.17.1 h1:A20kj2S2HO9vlyBVyVFHPxArjxkXvLP5LjcdE7NhaPc=
+cloud.google.com/go/artifactregistry v1.17.1/go.mod h1:06gLv5QwQPWtaudI2fWO37gfwwRUHwxm3gA8Fe568Hc=
 cloud.google.com/go/asset v1.22.0 h1:81Ru5hjHfiGtk+u/Ix69eaWieKpvm7Ce7UHtcZhOLbk=
 cloud.google.com/go/asset v1.22.0/go.mod h1:q80JP2TeWWzMCazYnrAfDf36aQKf1QiKzzpNLflJwf8=
 cloud.google.com/go/assuredworkloads v1.13.0 h1:NQXyyGLksPmiapE1Oc64a3cMwYIBAoDBg6cWR+B3eaY=
