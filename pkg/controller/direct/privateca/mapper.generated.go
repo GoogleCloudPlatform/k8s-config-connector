@@ -321,26 +321,6 @@ func PrivateCACAPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivateCACAP
 	// MISSING: Labels
 	return out
 }
-func X509Extension_FromProto(mapCtx *direct.MapContext, in *pb.X509Extension) *krm.X509Extension {
-	if in == nil {
-		return nil
-	}
-	out := &krm.X509Extension{}
-	out.ObjectID = ObjectID_FromProto(mapCtx, in.GetObjectId())
-	out.Critical = direct.LazyPtr(in.GetCritical())
-	out.Value = string(in.GetValue())
-	return out
-}
-func X509Extension_ToProto(mapCtx *direct.MapContext, in *krm.X509Extension) *pb.X509Extension {
-	if in == nil {
-		return nil
-	}
-	out := &pb.X509Extension{}
-	out.ObjectId = ObjectID_ToProto(mapCtx, in.ObjectID)
-	out.Critical = direct.ValueOf(in.Critical)
-	out.Value = []byte(in.Value)
-	return out
-}
 func X509Parameters_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters) *krm.X509Parameters {
 	if in == nil {
 		return nil

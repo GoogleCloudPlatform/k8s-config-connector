@@ -130,6 +130,7 @@ spec:
                       additionalExtensions:
                         description: Optional. Describes custom X.509 extensions.
                         items:
+                          description: X509Extension
                           properties:
                             critical:
                               description: Optional. Indicates whether or not this
@@ -150,6 +151,7 @@ spec:
                               type: object
                             value:
                               description: Required. The value of this X.509 extension.
+                              format: byte
                               type: string
                           type: object
                         type: array

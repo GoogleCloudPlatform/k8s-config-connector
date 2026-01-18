@@ -214,7 +214,7 @@ type CAPool_PublishingOptions struct {
 	// EncodingFormat *string `json:"encodingFormat,omitempty"`
 }
 
-// +kcc:proto=google.cloud.security.privateca.v1.X509Extension
+// X509Extension
 type X509Extension struct {
 	// Required. The OID for this X.509 extension.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.object_id
@@ -228,7 +228,7 @@ type X509Extension struct {
 
 	// Required. The value of this X.509 extension.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Extension.value
-	Value string `json:"value,omitempty"`
+	Value []byte `json:"value,omitempty"`
 }
 
 // +kcc:proto=google.cloud.security.privateca.v1.ObjectId

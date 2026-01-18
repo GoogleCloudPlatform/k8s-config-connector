@@ -15,6 +15,7 @@
 package privateca
 
 import (
+	pb "cloud.google.com/go/security/privateca/apiv1/privatecapb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	exprpb "google.golang.org/genproto/googleapis/type/expr"
@@ -41,5 +42,27 @@ func Expr_ToProto(mapCtx *direct.MapContext, in *krm.Expr) *exprpb.Expr {
 	out.Title = direct.ValueOf(in.Title)
 	out.Description = direct.ValueOf(in.Description)
 	out.Location = direct.ValueOf(in.Location)
+	return out
+}
+
+func X509Extension_FromProto(mapCtx *direct.MapContext, in *pb.X509Extension) *krm.X509Extension {
+	if in == nil {
+		return nil
+	}
+	out := &krm.X509Extension{}
+	out.ObjectID = ObjectID_FromProto(mapCtx, in.GetObjectId())
+	out.Critical = direct.LazyPtr(in.GetCritical())
+	out.Value = in.GetValue()
+	return out
+}
+
+func X509Extension_ToProto(mapCtx *direct.MapContext, in *krm.X509Extension) *pb.X509Extension {
+	if in == nil {
+		return nil
+	}
+	out := &pb.X509Extension{}
+	out.ObjectId = ObjectID_ToProto(mapCtx, in.ObjectID)
+	out.Critical = direct.ValueOf(in.Critical)
+	out.Value = in.Value
 	return out
 }

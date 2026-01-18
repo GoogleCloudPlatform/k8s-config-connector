@@ -28,18 +28,6 @@ go run . generate-types \
   --api-version privateca.cnrm.cloud.google.com/v1beta1  \
   --resource PrivateCACAPool:CaPool
 
-# Remove duplicated structs from types.generated.go (overridden in capool_types.go)
-# Using sed to delete from annotation to closing brace.
-TYPES_FILE="${REPO_ROOT}/apis/privateca/v1beta1/types.generated.go"
-sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.CaPool\.IssuancePolicy/,/^}/d' "${TYPES_FILE}"
-sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.CaPool\.PublishingOptions/,/^}/d' "${TYPES_FILE}"
-sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.X509Extension/,/^}/d' "${TYPES_FILE}"
-sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.ObjectId/,/^}/d' "${TYPES_FILE}"
-# Use $ to match end of line to avoid prefix matching CaOptions
-sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.X509Parameters$/,/^}/d' "${TYPES_FILE}"
-sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.X509Parameters\.CaOptions/,/^}/d' "${TYPES_FILE}"
-sed -i '/\/\/ \+kcc:proto=google\.cloud\.security\.privateca\.v1\.X509Parameters\.NameConstraints/,/^}/d' "${TYPES_FILE}"
-
 go run . generate-mapper \
   --service google.cloud.security.privateca.v1 \
   --api-version privateca.cnrm.cloud.google.com/v1beta1
