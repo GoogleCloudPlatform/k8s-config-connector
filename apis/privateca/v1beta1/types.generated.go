@@ -365,7 +365,7 @@ type X509Parameters struct {
 
 	// Optional. Describes the X.509 name constraints extension.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.name_constraints
-	NameConstraints *X509Parameters_NameConstraints `json:"nameConstraints,omitempty"`
+	// NameConstraints *X509Parameters_NameConstraints `json:"nameConstraints,omitempty"`
 
 	// Optional. Describes custom X.509 extensions.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.additional_extensions
@@ -392,6 +392,7 @@ type X509Parameters_CAOptions struct {
 	ZeroMaxIssuerPathLength *bool `json:"zeroMaxIssuerPathLength,omitempty"`
 }
 
+/*
 // +kcc:proto=google.cloud.security.privateca.v1.X509Parameters.NameConstraints
 type X509Parameters_NameConstraints struct {
 	// Indicates whether or not the name constraints are marked critical.
@@ -454,6 +455,7 @@ type X509Parameters_NameConstraints struct {
 	// +kcc:proto:field=google.cloud.security.privateca.v1.X509Parameters.NameConstraints.excluded_uris
 	ExcludedUris []string `json:"excludedUris,omitempty"`
 }
+*/
 
 // +kcc:proto=google.type.Expr
 type Expr struct {

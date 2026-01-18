@@ -328,7 +328,7 @@ func X509Extension_FromProto(mapCtx *direct.MapContext, in *pb.X509Extension) *k
 	out := &krm.X509Extension{}
 	out.ObjectID = ObjectID_FromProto(mapCtx, in.GetObjectId())
 	out.Critical = direct.LazyPtr(in.GetCritical())
-	out.Value = in.GetValue()
+	out.Value = string(in.GetValue())
 	return out
 }
 func X509Extension_ToProto(mapCtx *direct.MapContext, in *krm.X509Extension) *pb.X509Extension {
@@ -338,7 +338,7 @@ func X509Extension_ToProto(mapCtx *direct.MapContext, in *krm.X509Extension) *pb
 	out := &pb.X509Extension{}
 	out.ObjectId = ObjectID_ToProto(mapCtx, in.ObjectID)
 	out.Critical = direct.ValueOf(in.Critical)
-	out.Value = in.Value
+	out.Value = []byte(in.Value)
 	return out
 }
 func X509Parameters_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters) *krm.X509Parameters {
@@ -350,7 +350,7 @@ func X509Parameters_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters) 
 	out.CAOptions = X509Parameters_CAOptions_FromProto(mapCtx, in.GetCaOptions())
 	out.PolicyIds = direct.Slice_FromProto(mapCtx, in.PolicyIds, ObjectID_FromProto)
 	out.AiaOcspServers = in.AiaOcspServers
-	out.NameConstraints = X509Parameters_NameConstraints_FromProto(mapCtx, in.GetNameConstraints())
+	// out.NameConstraints = X509Parameters_NameConstraints_FromProto(mapCtx, in.GetNameConstraints())
 	out.AdditionalExtensions = direct.Slice_FromProto(mapCtx, in.AdditionalExtensions, X509Extension_FromProto)
 	return out
 }
@@ -363,7 +363,7 @@ func X509Parameters_ToProto(mapCtx *direct.MapContext, in *krm.X509Parameters) *
 	out.CaOptions = X509Parameters_CAOptions_ToProto(mapCtx, in.CAOptions)
 	out.PolicyIds = direct.Slice_ToProto(mapCtx, in.PolicyIds, ObjectID_ToProto)
 	out.AiaOcspServers = in.AiaOcspServers
-	out.NameConstraints = X509Parameters_NameConstraints_ToProto(mapCtx, in.NameConstraints)
+	// out.NameConstraints = X509Parameters_NameConstraints_ToProto(mapCtx, in.NameConstraints)
 	out.AdditionalExtensions = direct.Slice_ToProto(mapCtx, in.AdditionalExtensions, X509Extension_ToProto)
 	return out
 }
@@ -374,7 +374,7 @@ func X509Parameters_CAOptions_FromProto(mapCtx *direct.MapContext, in *pb.X509Pa
 	out := &krm.X509Parameters_CAOptions{}
 	out.IsCA = in.IsCa
 	out.MaxIssuerPathLength = in.MaxIssuerPathLength
-	out.ZeroMaxIssuerPathLength = in.ZeroMaxIssuerPathLength
+	// out.ZeroMaxIssuerPathLength = in.ZeroMaxIssuerPathLength
 	return out
 }
 func X509Parameters_CAOptions_ToProto(mapCtx *direct.MapContext, in *krm.X509Parameters_CAOptions) *pb.X509Parameters_CaOptions {
@@ -384,9 +384,10 @@ func X509Parameters_CAOptions_ToProto(mapCtx *direct.MapContext, in *krm.X509Par
 	out := &pb.X509Parameters_CaOptions{}
 	out.IsCa = in.IsCA
 	out.MaxIssuerPathLength = in.MaxIssuerPathLength
-	out.ZeroMaxIssuerPathLength = in.ZeroMaxIssuerPathLength
+	// out.ZeroMaxIssuerPathLength = in.ZeroMaxIssuerPathLength
 	return out
 }
+/*
 func X509Parameters_NameConstraints_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters_NameConstraints) *krm.X509Parameters_NameConstraints {
 	if in == nil {
 		return nil
@@ -419,3 +420,4 @@ func X509Parameters_NameConstraints_ToProto(mapCtx *direct.MapContext, in *krm.X
 	out.ExcludedUris = in.ExcludedUris
 	return out
 }
+*/
