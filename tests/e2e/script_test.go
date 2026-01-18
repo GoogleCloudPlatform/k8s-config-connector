@@ -246,7 +246,7 @@ func TestE2EScript(t *testing.T) {
 					case "SLEEP":
 						// Allow some time for reconcile
 						// Maybe we should instead wait for observedState
-						time.Sleep(2 * time.Second)
+						time.Sleep(5 * time.Second)
 						exportResource = nil
 						shouldGetKubeObject = false
 
