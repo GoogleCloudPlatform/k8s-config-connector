@@ -17,10 +17,13 @@ package v1beta1
 import (
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 )
 
 var RunServiceIdentityFormat = gcpurls.Template[RunServiceIdentity]("run.googleapis.com", "projects/{project}/locations/{location}/services/{service}")
+
+var _ identity.Identity = &RunServiceIdentity{}
 
 // +k8s:deepcopy-gen=false
 type RunServiceIdentity struct {
