@@ -271,6 +271,9 @@ func diffSchema(out io.Writer, schema1, schema2 any, opt ConvertOptions) {
 				if v1 == "integer" && (v2 == "int32" || v2 == "int64") {
 					continue
 				}
+				if v1 == "int64" && v2 == "int32" {
+					continue
+				}
 			}
 			diff = append(diff, fmt.Sprintf("- %s=%s", k, v1))
 			diff = append(diff, fmt.Sprintf("+ %s=%s", k, v2))
