@@ -17,17 +17,17 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &TableRef{}
+var _ refsv1beta1.Ref = &TableRef{}
 
 // TableRef defines the resource reference to BigQueryTable, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -43,63 +43,60 @@ type TableRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on BigQueryTable.
-// If the "External" is given in the other resource's spec.BigQueryTableRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual BigQueryTable object from the cluster.
-func (r *TableRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", BigQueryTableGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		identity := &TableIdentity{}
-		if err := identity.FromExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+// GetGVK returns the GroupVersionKind for BigQueryTable.
+func (r *TableRef) GetGVK() schema.GroupVersionKind {
+	return BigQueryTableGVK
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+// GetNamespacedName returns the NamespacedName for the reference.
+func (r *TableRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(BigQueryTableGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", BigQueryTableGVK, key, err)
+}
+
+// GetExternal returns the external reference.
+func (r *TableRef) GetExternal() string {
+	return r.External
+}
+
+// SetExternal sets the external reference.
+func (r *TableRef) SetExternal(external string) {
+	r.External = external
+}
+
+// ValidateExternal validates the external reference format.
+func (r *TableRef) ValidateExternal(external string) error {
+	if external == "" {
+		return fmt.Errorf("external reference cannot be empty")
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, found, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	// Expected format: projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}
+	if !strings.HasPrefix(external, "projects/") || !strings.Contains(external, "/datasets/") || !strings.Contains(external, "/tables/") {
+		return fmt.Errorf("invalid external reference format %q: expected projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}", external)
 	}
-	// For non-direct resources, there's no status.externalRef
-	if !found {
+	return nil
+}
+
+// Normalize resolves the external reference.
+func (r *TableRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
 		// Get resourceID
 		tableID, err := refsv1beta1.GetResourceID(u)
 		if err != nil {
-			return "", err
+			return ""
 		}
 		// Resolve parent
 		obj := &BigQueryTable{}
 		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-			return "", fmt.Errorf("error converting to %T: %w", obj, err)
+			return ""
 		}
 		datasetRef := obj.Spec.DatasetRef
-		datasetExternal, err := datasetRef.NormalizedExternal(ctx, reader, otherNamespace)
+		datasetExternal, err := datasetRef.NormalizedExternal(ctx, reader, defaultNamespace)
 		if err != nil {
-			return "", err
+			return ""
 		}
-		r.External = fmt.Sprintf("%s/tables/%s", datasetExternal, tableID)
-		return r.External, nil
+		return fmt.Sprintf("%s/tables/%s", datasetExternal, tableID)
 	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
