@@ -62,7 +62,8 @@ func (r *DatasetRef) SetExternal(ref string) {
 }
 
 func (r *DatasetRef) ValidateExternal(ref string) error {
-	if _, _, err := ParseDatasetExternal(ref); err != nil {
+	id := &DatasetIdentity{}
+	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
