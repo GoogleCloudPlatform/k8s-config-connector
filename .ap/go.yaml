@@ -1,0 +1,7 @@
+gofmt:
+ enabled: true
+govet:
+ enabled: true
+skip:
+- "third_party/"
+- "mockgcp/generated/"

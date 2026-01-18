@@ -1,0 +1,9 @@
+license: apache-2.0
+copyrightHolder: Google LLC
+skip:
+- "*.toml"
+- "*.yaml"
+- "resource-autogen/"
+- "testdata/"
+- "third_party/"
+- "mockgcp/generated/"
