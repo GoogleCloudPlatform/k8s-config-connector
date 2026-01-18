@@ -31,8 +31,8 @@ import (
 )
 
 const (
-	kubeconfigFlag     = "kubeconfig"
-	timeoutFlag        = "timeout"
+	kubeconfigFlag = "kubeconfig"
+	timeoutFlag    = "timeout"
 
 	reportNamePrefixFlag = "report-prefix"
 	defaultScope         = "https://www.googleapis.com/auth/cloud-platform"
