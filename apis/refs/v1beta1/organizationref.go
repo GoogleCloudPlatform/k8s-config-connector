@@ -56,7 +56,6 @@ func (r *OrganizationRef) SetExternal(external string) {
 }
 
 // ValidateExternal validates the external reference.
-// Deprecated: Use Normalize instead.
 func (r *OrganizationRef) ValidateExternal(external string) error {
 	id := &OrganizationIdentity{}
 	if err := id.FromExternal(external); err != nil {
@@ -124,6 +123,7 @@ func ResolveOrganizationFromAnnotation(ctx context.Context, reader client.Reader
 
 // ResolveOrganization will resolve an OrganizationRef to an Organization, with
 // the OrganizationID.
+// Deprecated: Use ResolveOrganizationID instead.
 func ResolveOrganization(ctx context.Context, reader client.Reader, src client.Object, ref *OrganizationRef) (*OrganizationIdentity, error) {
 	if ref == nil {
 		return nil, nil
