@@ -180,17 +180,6 @@ type Instance_ClientConnectionConfig struct {
 	SSLConfig *SSLConfig `json:"sslConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig
-type Instance_ConnectionPoolConfig struct {
-	// Optional. Whether to enable Managed Connection Pool (MCP).
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.enabled
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// Optional. Connection Pool flags, as a list of "key": "value" pairs.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.flags
-	Flags map[string]string `json:"flags,omitempty"`
-}
-
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
 type Instance_InstanceNetworkConfig_AuthorizedNetwork struct {
 	// CIDR range for one authorzied network of the instance.

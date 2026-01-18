@@ -334,7 +334,7 @@ func AlloyDBInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.In
 	// MISSING: GeminiConfig
 	// MISSING: OutboundPublicIPAddresses
 	// MISSING: ActivationPolicy
-	// MISSING: ConnectionPoolConfig
+	out.ConnectionPoolConfig = Instance_ConnectionPoolConfigObservedState_FromProto(mapCtx, in.GetConnectionPoolConfig())
 	// MISSING: GcaConfig
 	return out
 }
@@ -365,7 +365,7 @@ func AlloyDBInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.All
 	// MISSING: GeminiConfig
 	// MISSING: OutboundPublicIPAddresses
 	// MISSING: ActivationPolicy
-	// MISSING: ConnectionPoolConfig
+	out.ConnectionPoolConfig = Instance_ConnectionPoolConfigObservedState_ToProto(mapCtx, in.ConnectionPoolConfig)
 	// MISSING: GcaConfig
 	return out
 }
