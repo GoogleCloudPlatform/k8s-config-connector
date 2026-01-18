@@ -5,7 +5,9 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: privatecacapools.privateca.cnrm.cloud.google.com
 spec:
@@ -135,10 +137,10 @@ spec:
                                 know how to handle this extension, the client should
                                 consider this to be an error).
                               type: boolean
-                            objectID:
+                            objectId:
                               description: Required. The OID for this X.509 extension.
                               properties:
-                                objectIDPath:
+                                objectIdPath:
                                   description: Required. The parts of an OID path.
                                     The most significant parts of the path come first.
                                   items:
@@ -148,7 +150,6 @@ spec:
                               type: object
                             value:
                               description: Required. The value of this X.509 extension.
-                              format: byte
                               type: string
                           type: object
                         type: array
@@ -165,7 +166,7 @@ spec:
                           a default basic constraints extension with `is_ca=false`
                           will be added for leaf certificates.
                         properties:
-                          isCA:
+                          isCa:
                             description: Optional. Refers to the "CA" boolean field
                               in the X.509 extension. When this value is missing,
                               the basic constraints extension will be omitted from
@@ -180,6 +181,13 @@ spec:
                               path length will be omitted from the certificate.
                             format: int32
                             type: integer
+                          zeroMaxIssuerPathLength:
+                            description: Optional. When true, the "path length constraint"
+                              in Basic Constraints extension will be set to 0. if
+                              both max_issuer_path_length and zero_max_issuer_path_length
+                              are unset, the max path length will be omitted from
+                              the CA certificate.
+                            type: boolean
                         type: object
                       keyUsage:
                         description: Optional. Indicates the intended use for keys
@@ -261,7 +269,7 @@ spec:
                               message.
                             items:
                               properties:
-                                objectIDPath:
+                                objectIdPath:
                                   description: Required. The parts of an OID path.
                                     The most significant parts of the path come first.
                                   items:
@@ -279,7 +287,7 @@ spec:
                             description: Indicates whether or not the name constraints
                               are marked critical.
                             type: boolean
-                          excludedDNSNames:
+                          excludedDnsNames:
                             description: Contains excluded DNS names. Any DNS name
                               that can be constructed by simply adding zero or more
                               labels to the left-hand side of the name satisfies the
@@ -298,7 +306,7 @@ spec:
                             items:
                               type: string
                             type: array
-                          excludedIPRanges:
+                          excludedIpRanges:
                             description: Contains the excluded IP ranges. For IPv4
                               addresses, the ranges are expressed using CIDR notation
                               as specified in RFC 4632. For IPv6 addresses, the ranges
@@ -313,7 +321,7 @@ spec:
                             items:
                               type: string
                             type: array
-                          permittedDNSNames:
+                          permittedDnsNames:
                             description: Contains permitted DNS names. Any DNS name
                               that can be constructed by simply adding zero or more
                               labels to the left-hand side of the name satisfies the
@@ -332,7 +340,7 @@ spec:
                             items:
                               type: string
                             type: array
-                          permittedIPRanges:
+                          permittedIpRanges:
                             description: Contains the permitted IP ranges. For IPv4
                               addresses, the ranges are expressed using CIDR notation
                               as specified in RFC 4632. For IPv6 addresses, the ranges
@@ -353,7 +361,7 @@ spec:
                           object identifiers, per https://tools.ietf.org/html/rfc5280#section-4.2.1.4.
                         items:
                           properties:
-                            objectIDPath:
+                            objectIdPath:
                               description: Required. The parts of an OID path. The
                                 most significant parts of the path come first.
                               items:
@@ -439,7 +447,7 @@ spec:
                           to determine the full set of X.509 extensions.
                         items:
                           properties:
-                            objectIDPath:
+                            objectIdPath:
                               description: Required. The parts of an OID path. The
                                 most significant parts of the path come first.
                               items:
@@ -496,7 +504,7 @@ spec:
                 description: Optional. The PublishingOptions to follow when issuing
                   Certificates from any CertificateAuthority in this CaPool.
                 properties:
-                  publishCACert:
+                  publishCaCert:
                     description: Optional. When true, publishes each [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
                       CA certificate and includes its URL in the "Authority Information
                       Access" X.509 extension in all issued [Certificates][google.cloud.security.privateca.v1.Certificate].

@@ -374,6 +374,7 @@ func X509Parameters_CAOptions_FromProto(mapCtx *direct.MapContext, in *pb.X509Pa
 	out := &krm.X509Parameters_CAOptions{}
 	out.IsCA = in.IsCa
 	out.MaxIssuerPathLength = in.MaxIssuerPathLength
+	out.ZeroMaxIssuerPathLength = in.ZeroMaxIssuerPathLength
 	return out
 }
 func X509Parameters_CAOptions_ToProto(mapCtx *direct.MapContext, in *krm.X509Parameters_CAOptions) *pb.X509Parameters_CaOptions {
@@ -383,6 +384,7 @@ func X509Parameters_CAOptions_ToProto(mapCtx *direct.MapContext, in *krm.X509Par
 	out := &pb.X509Parameters_CaOptions{}
 	out.IsCa = in.IsCA
 	out.MaxIssuerPathLength = in.MaxIssuerPathLength
+	out.ZeroMaxIssuerPathLength = in.ZeroMaxIssuerPathLength
 	return out
 }
 func X509Parameters_NameConstraints_FromProto(mapCtx *direct.MapContext, in *pb.X509Parameters_NameConstraints) *krm.X509Parameters_NameConstraints {
