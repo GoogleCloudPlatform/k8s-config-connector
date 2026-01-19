@@ -1,0 +1,9 @@
+types:
+- kind: AccessContextManagerAccessPolicy
+  group: accesscontextmanager.cnrm.cloud.google.com
+  version: v1beta1
+  proto:  google.identity.accesscontextmanager.v1.AccessPolicy
+- kind: AccessContextManagerAccessLevel
+  group: accesscontextmanager.cnrm.cloud.google.com
+  version: v1beta1
+  proto:  google.identity.accesscontextmanager.v1.AccessLevel
