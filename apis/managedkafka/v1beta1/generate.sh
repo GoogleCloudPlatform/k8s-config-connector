@@ -23,7 +23,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 go run . generate-types --config ${REPO_ROOT}/apis/managedkafka/v1beta1/generatetypes.yaml
-go run . generate-mapper --config ${REPO_ROOT}/apis/managedkafka/v1beta1/generatetypes.yaml
+# go run . generate-mapper --config ${REPO_ROOT}/apis/managedkafka/v1beta1/generatetypes.yaml
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
