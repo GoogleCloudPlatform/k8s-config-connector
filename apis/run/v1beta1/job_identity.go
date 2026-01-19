@@ -27,57 +27,38 @@ import (
 
 var _ identity.Identity = &JobIdentity{}
 
-var jobURL = gcpurls.Template[jobURLIdentity](
+var jobURL = gcpurls.Template[JobIdentity](
 	"run.googleapis.com",
 	"projects/{projectID}/locations/{location}/jobs/{jobID}",
 )
 
-type jobURLIdentity struct {
+// JobIdentity defines the resource reference to RunJob, which "External" field
+// holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
+type JobIdentity struct {
 	ProjectID string
 	Location  string
 	JobID     string
 }
 
-// JobIdentity defines the resource reference to RunJob, which "External" field
-// holds the GCP identifier for the KRM object.
-type JobIdentity struct {
-	parent *JobParent
-	id     string
-}
-
 func (i *JobIdentity) FromExternal(ref string) error {
-	parent, resourceID, err := ParseJobExternal(ref)
+	out, match, err := jobURL.Parse(ref)
 	if err != nil {
 		return err
 	}
-	i.parent = parent
-	i.id = resourceID
+	if !match {
+		return fmt.Errorf("format of RunJob external=%q was not known (use %s)", ref, jobURL.CanonicalForm())
+	}
+	*i = *out
 	return nil
 }
 
 func (i *JobIdentity) String() string {
-	return jobURL.ToString(jobURLIdentity{
-		ProjectID: i.parent.ProjectID,
-		Location:  i.parent.Location,
-		JobID:     i.id,
-	})
+	return jobURL.ToString(*i)
 }
 
 func (i *JobIdentity) ID() string {
-	return i.id
-}
-
-func (i *JobIdentity) Parent() *JobParent {
-	return i.parent
-}
-
-type JobParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *JobParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return i.JobID
 }
 
 // New builds a JobIdentity from the Config Connector Job object.
@@ -107,42 +88,24 @@ func NewJobIdentity(ctx context.Context, reader client.Reader, obj *RunJob) (*Jo
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseJobExternal(externalRef)
-		if err != nil {
+		actualIdentity := &JobIdentity{}
+		if err := actualIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actualIdentity.ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.ProjectID, projectID)
 		}
-		if actualParent.Location != *location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, *location)
+		if actualIdentity.Location != *location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualIdentity.Location, *location)
 		}
-		if actualResourceID != resourceID {
+		if actualIdentity.JobID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+				resourceID, actualIdentity.JobID)
 		}
 	}
 	return &JobIdentity{
-		parent: &JobParent{
-			ProjectID: projectID,
-			Location:  *location,
-		},
-		id: resourceID,
+		ProjectID: projectID,
+		Location:  *location,
+		JobID:     resourceID,
 	}, nil
-}
-
-func ParseJobExternal(external string) (parent *JobParent, resourceID string, err error) {
-	out, match, err := jobURL.Parse(external)
-	if err != nil {
-		return nil, "", err
-	}
-	if !match {
-		return nil, "", fmt.Errorf("format of RunJob external=%q was not known (use %s)", external, jobURL.CanonicalForm())
-	}
-	parent = &JobParent{
-		ProjectID: out.ProjectID,
-		Location:  out.Location,
-	}
-	resourceID = out.JobID
-	return parent, resourceID, nil
 }

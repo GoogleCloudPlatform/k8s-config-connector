@@ -48,14 +48,14 @@ func TestJobIdentity_FromExternal(t *testing.T) {
 				t.Errorf("JobIdentity.FromExternal() error = %v, wantErr %v", err, tt.wantErr)
 			}
 			if !tt.wantErr {
-				if i.parent.ProjectID != tt.wantProject {
-					t.Errorf("JobIdentity.FromExternal() ProjectID = %v, want %v", i.parent.ProjectID, tt.wantProject)
+				if i.ProjectID != tt.wantProject {
+					t.Errorf("JobIdentity.FromExternal() ProjectID = %v, want %v", i.ProjectID, tt.wantProject)
 				}
-				if i.parent.Location != tt.wantLocation {
-					t.Errorf("JobIdentity.FromExternal() Location = %v, want %v", i.parent.Location, tt.wantLocation)
+				if i.Location != tt.wantLocation {
+					t.Errorf("JobIdentity.FromExternal() Location = %v, want %v", i.Location, tt.wantLocation)
 				}
-				if i.id != tt.wantID {
-					t.Errorf("JobIdentity.FromExternal() ID = %v, want %v", i.id, tt.wantID)
+				if i.JobID != tt.wantID {
+					t.Errorf("JobIdentity.FromExternal() ID = %v, want %v", i.JobID, tt.wantID)
 				}
 				if got := i.String(); got != tt.ref {
 					t.Errorf("JobIdentity.String() = %v, want %v", got, tt.ref)
