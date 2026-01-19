@@ -26,20 +26,12 @@ type ServiceConfig struct {
 	APIVersion     string           `yaml:"apiVersion"`
 	GenerateMapper bool             `yaml:"generateMapper"`
 	Resources      []ResourceConfig `yaml:"resources"`
-	Types          []TypeConfig     `yaml:"types"`
 }
 
 type ResourceConfig struct {
 	Kind              string `yaml:"kind"`
 	ProtoName         string `yaml:"protoName"`
 	SkipScaffoldFiles bool   `yaml:"skipScaffoldFiles"`
-}
-
-type TypeConfig struct {
-	Kind    string `yaml:"kind"`
-	Group   string `yaml:"group"`
-	Version string `yaml:"version"`
-	Proto   string `yaml:"proto"`
 }
 
 func LoadConfig(configPath string) (*ServiceConfig, error) {

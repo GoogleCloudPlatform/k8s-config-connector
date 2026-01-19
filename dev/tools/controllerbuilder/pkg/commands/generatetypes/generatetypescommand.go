@@ -193,57 +193,16 @@ func (o *GenerateCRDOptions) loadAndApplyConfig() error {
 		return nil
 	}
 
-	if config.Service != "" {
-		o.ServiceName = config.Service
-		o.APIVersion = config.APIVersion
-		for _, res := range config.Resources {
-			o.Resources = append(o.Resources, options.Resource{
-				Kind:              res.Kind,
-				ProtoName:         res.ProtoName,
-				SkipScaffoldFiles: res.SkipScaffoldFiles,
-			})
-		}
-		return nil
-	}
-
-	if len(config.Types) > 0 {
-		first := config.Types[0]
-
-		service, _, err := parseProto(first.Proto)
-		if err != nil {
-			return err
-		}
-		o.ServiceName = service
-		o.APIVersion = fmt.Sprintf("%s/%s", first.Group, first.Version)
-
-		for _, t := range config.Types {
-			s, name, err := parseProto(t.Proto)
-			if err != nil {
-				return err
-			}
-			if s != o.ServiceName {
-				return fmt.Errorf("all types must belong to the same service: %s vs %s", s, o.ServiceName)
-			}
-			apiVersion := fmt.Sprintf("%s/%s", t.Group, t.Version)
-			if apiVersion != o.APIVersion {
-				return fmt.Errorf("all types must belong to the same api version: %s vs %s", apiVersion, o.APIVersion)
-			}
-
-			o.Resources = append(o.Resources, options.Resource{
-				Kind:      t.Kind,
-				ProtoName: name,
-			})
-		}
+	o.ServiceName = config.Service
+	o.APIVersion = config.APIVersion
+	for _, res := range config.Resources {
+		o.Resources = append(o.Resources, options.Resource{
+			Kind:              res.Kind,
+			ProtoName:         res.ProtoName,
+			SkipScaffoldFiles: res.SkipScaffoldFiles,
+		})
 	}
 	return nil
-}
-
-func parseProto(proto string) (service string, name string, err error) {
-	lastDot := strings.LastIndex(proto, ".")
-	if lastDot == -1 {
-		return "", "", fmt.Errorf("invalid proto string: %s", proto)
-	}
-	return proto[:lastDot], proto[lastDot+1:], nil
 }
 
 func (o *GenerateCRDOptions) validate() error {

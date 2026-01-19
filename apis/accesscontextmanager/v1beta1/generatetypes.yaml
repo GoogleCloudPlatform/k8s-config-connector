@@ -12,12 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-types:
-- kind: AccessContextManagerAccessPolicy
-  group: accesscontextmanager.cnrm.cloud.google.com
-  version: v1beta1
-  proto:  google.identity.accesscontextmanager.v1.AccessPolicy
-- kind: AccessContextManagerAccessLevel
-  group: accesscontextmanager.cnrm.cloud.google.com
-  version: v1beta1
-  proto:  google.identity.accesscontextmanager.v1.AccessLevel
+service: google.identity.accesscontextmanager.v1
+apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
+resources:
+  - kind: AccessContextManagerAccessPolicy
+    protoName: AccessPolicy
+  - kind: AccessContextManagerAccessLevel
+    protoName: AccessLevel
