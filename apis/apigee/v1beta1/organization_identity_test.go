@@ -6,10 +6,10 @@ import (
 
 func TestApigeeOrganizationIdentity_FromExternal(t *testing.T) {
 	testCases := []struct {
-		name       string
-		external   string
-		expectErr  bool
-		expectID   string
+		name      string
+		external  string
+		expectErr bool
+		expectID  string
 	}{
 		{
 			name:      "valid external ref",
