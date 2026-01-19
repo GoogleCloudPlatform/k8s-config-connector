@@ -39,6 +39,7 @@ import (
 	"github.com/ghodss/yaml" //nolint:depguard
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -154,12 +155,44 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	if len(opt.Updates) != 0 {
 		// treat as a patch
 		for _, updateUnstruct := range opt.Updates {
+			// We compute the diff so we can see if we only update labels
+			old := &unstructured.Unstructured{}
+			old.SetGroupVersionKind(updateUnstruct.GroupVersionKind())
+
+			id := types.NamespacedName{
+				Name:      updateUnstruct.GetName(),
+				Namespace: updateUnstruct.GetNamespace(),
+			}
+
+			if err := t.GetClient().Get(ctx, id, old); err != nil {
+				t.Fatalf("error getting existing resource: %v", err)
+			}
+
+			oldGeneration := old.GetGeneration()
+
 			t.Logf("using server-side apply to update object")
 			if err := t.GetClient().Patch(ctx, updateUnstruct, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
 				t.Fatalf("error updating resource: %v", err)
 			}
+
+			newGeneration := updateUnstruct.GetGeneration()
+
+			// Check if we are going to update the metadata.generation; only spec updates increment generation.
+			// Note in particular that updates that only touch labels/annotations do not update the generation field
+			willUpdateMetadataGeneration := true
+			if newGeneration == oldGeneration {
+				willUpdateMetadataGeneration = false
+				t.Logf("WARN: metadata.generation did not change for %v; consider updating this test to include an update to the spec", id)
+			}
+
 			if opt.CreateInOrder && !opt.SkipWaitForReady {
 				waitForReadySingleResource(t, updateUnstruct, DefaultWaitForReadyTimeout)
+			}
+
+			if !willUpdateMetadataGeneration {
+				// Allow some time for reconciliation
+				t.Logf("sleeping for five seconds to allow for reconciliation (on an update that did not update metadata.generation)")
+				time.Sleep(5 * time.Second)
 			}
 		}
 
