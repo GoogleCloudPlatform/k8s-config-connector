@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: PrivateCACAPool
+    listKind: PrivateCACAPoolList
     plural: privatecacapools
     shortNames:
     - gcpprivatecacapool
@@ -43,20 +44,22 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: PrivateCACAPool is the Schema for the PrivateCACAPool API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: PrivateCACAPoolSpec defines the desired state of PrivateCACAPool
             properties:
               issuancePolicy:
                 description: Optional. The IssuancePolicy to control how Certificates
@@ -64,31 +67,34 @@ spec:
                 properties:
                   allowedIssuanceModes:
                     description: Optional. If specified, then only methods allowed
-                      in the IssuanceModes may be used to issue Certificates.
+                      in the [IssuanceModes][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.IssuanceModes]
+                      may be used to issue [Certificates][google.cloud.security.privateca.v1.Certificate].
                     properties:
                       allowConfigBasedIssuance:
                         description: Optional. When true, allows callers to create
-                          Certificates by specifying a CertificateConfig.
+                          [Certificates][google.cloud.security.privateca.v1.Certificate]
+                          by specifying a [CertificateConfig][google.cloud.security.privateca.v1.CertificateConfig].
                         type: boolean
                       allowCsrBasedIssuance:
                         description: Optional. When true, allows callers to create
-                          Certificates by specifying a CSR.
+                          [Certificates][google.cloud.security.privateca.v1.Certificate]
+                          by specifying a CSR.
                         type: boolean
                     type: object
                   allowedKeyTypes:
-                    description: Optional. If any AllowedKeyType is specified, then
-                      the certificate request's public key must match one of the key
-                      types listed here. Otherwise, any key may be used.
+                    description: Optional. If any [AllowedKeyType][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.AllowedKeyType]
+                      is specified, then the certificate request's public key must
+                      match one of the key types listed here. Otherwise, any key may
+                      be used.
                     items:
                       properties:
                         ellipticCurve:
                           description: Represents an allowed Elliptic Curve key type.
                           properties:
                             signatureAlgorithm:
-                              description: 'Optional. A signature algorithm that must
+                              description: Optional. A signature algorithm that must
                                 be used. If this is omitted, any EC-based signature
-                                algorithm will be allowed. Possible values: EC_SIGNATURE_ALGORITHM_UNSPECIFIED,
-                                ECDSA_P256, ECDSA_P384, EDDSA_25519'
+                                algorithm will be allowed.
                               type: string
                           type: object
                         rsa:
@@ -96,16 +102,16 @@ spec:
                           properties:
                             maxModulusSize:
                               description: Optional. The maximum allowed RSA modulus
-                                size, in bits. If this is not set, or if set to zero,
-                                the service will not enforce an explicit upper bound
-                                on RSA modulus sizes.
+                                size (inclusive), in bits. If this is not set, or
+                                if set to zero, the service will not enforce an explicit
+                                upper bound on RSA modulus sizes.
                               format: int64
                               type: integer
                             minModulusSize:
                               description: Optional. The minimum allowed RSA modulus
-                                size, in bits. If this is not set, or if set to zero,
-                                the service-level min RSA modulus size will continue
-                                to apply.
+                                size (inclusive), in bits. If this is not set, or
+                                if set to zero, the service-level min RSA modulus
+                                size will continue to apply.
                               format: int64
                               type: integer
                           type: object
@@ -113,16 +119,18 @@ spec:
                     type: array
                   baselineValues:
                     description: Optional. A set of X.509 values that will be applied
-                      to all certificates issued through this CaPool. If a certificate
-                      request includes conflicting values for the same properties,
-                      they will be overwritten by the values defined here. If a certificate
-                      request uses a CertificateTemplate that defines conflicting
-                      predefined_values for the same properties, the certificate issuance
-                      request will fail.
+                      to all certificates issued through this [CaPool][google.cloud.security.privateca.v1.CaPool].
+                      If a certificate request includes conflicting values for the
+                      same properties, they will be overwritten by the values defined
+                      here. If a certificate request uses a [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
+                      that defines conflicting [predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values]
+                      for the same properties, the certificate issuance request will
+                      fail.
                     properties:
                       additionalExtensions:
                         description: Optional. Describes custom X.509 extensions.
                         items:
+                          description: X509Extension
                           properties:
                             critical:
                               description: Optional. Indicates whether or not this
@@ -137,18 +145,14 @@ spec:
                                   description: Required. The parts of an OID path.
                                     The most significant parts of the path come first.
                                   items:
-                                    format: int64
+                                    format: int32
                                     type: integer
                                   type: array
-                              required:
-                              - objectIdPath
                               type: object
                             value:
                               description: Required. The value of this X.509 extension.
+                              format: byte
                               type: string
-                          required:
-                          - objectId
-                          - value
                           type: object
                         type: array
                       aiaOcspServers:
@@ -159,22 +163,25 @@ spec:
                           type: string
                         type: array
                       caOptions:
-                        description: Optional. Describes options in this X509Parameters
-                          that are relevant in a CA certificate.
+                        description: Optional. Describes options in this [X509Parameters][google.cloud.security.privateca.v1.X509Parameters]
+                          that are relevant in a CA certificate. If not specified,
+                          a default basic constraints extension with `is_ca=false`
+                          will be added for leaf certificates.
                         properties:
                           isCa:
-                            description: Optional. Refers to the "CA" X.509 extension,
-                              which is a boolean value. When this value is missing,
-                              the extension will be omitted from the CA certificate.
+                            description: Optional. Refers to the "CA" boolean field
+                              in the X.509 extension. When this value is missing,
+                              the basic constraints extension will be omitted from
+                              the certificate.
                             type: boolean
                           maxIssuerPathLength:
-                            description: Optional. Refers to the path length restriction
-                              X.509 extension. For a CA certificate, this value describes
-                              the depth of subordinate CA certificates that are allowed.
-                              If this value is less than 0, the request will fail.
-                              If this value is missing, the max path length will be
-                              omitted from the CA certificate.
-                            format: int64
+                            description: Optional. Refers to the path length constraint
+                              field in the X.509 extension. For a CA certificate,
+                              this value describes the depth of subordinate CA certificates
+                              that are allowed. If this value is less than 0, the
+                              request will fail. If this value is missing, the max
+                              path length will be omitted from the certificate.
+                            format: int32
                             type: integer
                           zeroMaxIssuerPathLength:
                             description: Optional. When true, the "path length constraint"
@@ -260,7 +267,7 @@ spec:
                             type: object
                           unknownExtendedKeyUsages:
                             description: Used to describe extended key usages that
-                              are not listed in the KeyUsage.ExtendedKeyUsageOptions
+                              are not listed in the [KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1.KeyUsage.ExtendedKeyUsageOptions]
                               message.
                             items:
                               properties:
@@ -268,11 +275,9 @@ spec:
                                   description: Required. The parts of an OID path.
                                     The most significant parts of the path come first.
                                   items:
-                                    format: int64
+                                    format: int32
                                     type: integer
                                   type: array
-                              required:
-                              - objectIdPath
                               type: object
                             type: array
                         type: object
@@ -285,30 +290,30 @@ spec:
                               description: Required. The parts of an OID path. The
                                 most significant parts of the path come first.
                               items:
-                                format: int64
+                                format: int32
                                 type: integer
                               type: array
-                          required:
-                          - objectIdPath
                           type: object
                         type: array
                     type: object
                   identityConstraints:
                     description: Optional. Describes constraints on identities that
-                      may appear in Certificates issued through this CaPool. If this
-                      is omitted, then this CaPool will not add restrictions on a
-                      certificate's identity.
+                      may appear in [Certificates][google.cloud.security.privateca.v1.Certificate]
+                      issued through this [CaPool][google.cloud.security.privateca.v1.CaPool].
+                      If this is omitted, then this [CaPool][google.cloud.security.privateca.v1.CaPool]
+                      will not add restrictions on a certificate's identity.
                     properties:
                       allowSubjectAltNamesPassthrough:
-                        description: Required. If this is true, the SubjectAltNames
+                        description: Required. If this is true, the [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
                           extension may be copied from a certificate request into
-                          the signed certificate. Otherwise, the requested SubjectAltNames
+                          the signed certificate. Otherwise, the requested [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
                           will be discarded.
                         type: boolean
                       allowSubjectPassthrough:
-                        description: Required. If this is true, the Subject field
-                          may be copied from a certificate request into the signed
-                          certificate. Otherwise, the requested Subject will be discarded.
+                        description: Required. If this is true, the [Subject][google.cloud.security.privateca.v1.Subject]
+                          field may be copied from a certificate request into the
+                          signed certificate. Otherwise, the requested [Subject][google.cloud.security.privateca.v1.Subject]
+                          will be discarded.
                         type: boolean
                       celExpression:
                         description: Optional. A CEL expression that may be used to
@@ -336,30 +341,34 @@ spec:
                               e.g. in UIs which allow to enter the expression.
                             type: string
                         type: object
-                    required:
-                    - allowSubjectAltNamesPassthrough
-                    - allowSubjectPassthrough
                     type: object
                   maximumLifetime:
                     description: Optional. The maximum lifetime allowed for issued
-                      Certificates. Note that if the issuing CertificateAuthority
-                      expires before a Certificate's requested maximum_lifetime, the
-                      effective lifetime will be explicitly truncated to match it.
+                      [Certificates][google.cloud.security.privateca.v1.Certificate].
+                      Note that if the issuing [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+                      expires before a [Certificate][google.cloud.security.privateca.v1.Certificate]
+                      resource's requested maximum_lifetime, the effective lifetime
+                      will be explicitly truncated to match it.
                     type: string
                   passthroughExtensions:
                     description: Optional. Describes the set of X.509 extensions that
-                      may appear in a Certificate issued through this CaPool. If a
-                      certificate request sets extensions that don't appear in the
-                      passthrough_extensions, those extensions will be dropped. If
-                      a certificate request uses a CertificateTemplate with predefined_values
+                      may appear in a [Certificate][google.cloud.security.privateca.v1.Certificate]
+                      issued through this [CaPool][google.cloud.security.privateca.v1.CaPool].
+                      If a certificate request sets extensions that don't appear in
+                      the [passthrough_extensions][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.passthrough_extensions],
+                      those extensions will be dropped. If a certificate request uses
+                      a [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
+                      with [predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values]
                       that don't appear here, the certificate issuance request will
-                      fail. If this is omitted, then this CaPool will not add restrictions
-                      on a certificate's X.509 extensions. These constraints do not
-                      apply to X.509 extensions set in this CaPool's baseline_values.
+                      fail. If this is omitted, then this [CaPool][google.cloud.security.privateca.v1.CaPool]
+                      will not add restrictions on a certificate's X.509 extensions.
+                      These constraints do not apply to X.509 extensions set in this
+                      [CaPool][google.cloud.security.privateca.v1.CaPool]'s [baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values].
                     properties:
                       additionalExtensions:
-                        description: Optional. A set of ObjectIds identifying custom
-                          X.509 extensions. Will be combined with known_extensions
+                        description: Optional. A set of [ObjectIds][google.cloud.security.privateca.v1.ObjectId]
+                          identifying custom X.509 extensions. Will be combined with
+                          [known_extensions][google.cloud.security.privateca.v1.CertificateExtensionConstraints.known_extensions]
                           to determine the full set of X.509 extensions.
                         items:
                           properties:
@@ -367,27 +376,25 @@ spec:
                               description: Required. The parts of an OID path. The
                                 most significant parts of the path come first.
                               items:
-                                format: int64
+                                format: int32
                                 type: integer
                               type: array
-                          required:
-                          - objectIdPath
                           type: object
                         type: array
                       knownExtensions:
                         description: Optional. A set of named X.509 extensions. Will
-                          be combined with additional_extensions to determine the
-                          full set of X.509 extensions.
+                          be combined with [additional_extensions][google.cloud.security.privateca.v1.CertificateExtensionConstraints.additional_extensions]
+                          to determine the full set of X.509 extensions.
                         items:
                           type: string
                         type: array
                     type: object
                 type: object
               location:
-                description: Immutable. The location for the resource
+                description: The location of this resource.
                 type: string
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
+                description: The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -404,16 +411,18 @@ spec:
                   - external
                 properties:
                   external:
-                    description: |-
-                      The project for the resource
-
-                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               publishingOptions:
@@ -421,41 +430,43 @@ spec:
                   Certificates from any CertificateAuthority in this CaPool.
                 properties:
                   publishCaCert:
-                    description: Optional. When true, publishes each CertificateAuthority's
+                    description: Optional. When true, publishes each [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
                       CA certificate and includes its URL in the "Authority Information
-                      Access" X.509 extension in all issued Certificates. If this
-                      is false, the CA certificate will not be published and the corresponding
-                      X.509 extension will not be written in issued certificates.
+                      Access" X.509 extension in all issued [Certificates][google.cloud.security.privateca.v1.Certificate].
+                      If this is false, the CA certificate will not be published and
+                      the corresponding X.509 extension will not be written in issued
+                      certificates.
                     type: boolean
                   publishCrl:
-                    description: Optional. When true, publishes each CertificateAuthority's
+                    description: Optional. When true, publishes each [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
                       CRL and includes its URL in the "CRL Distribution Points" X.509
-                      extension in all issued Certificates. If this is false, CRLs
-                      will not be published and the corresponding X.509 extension
-                      will not be written in issued certificates. CRLs will expire
-                      7 days from their creation. However, we will rebuild daily.
-                      CRLs are also rebuilt shortly after a certificate is revoked.
+                      extension in all issued [Certificates][google.cloud.security.privateca.v1.Certificate].
+                      If this is false, CRLs will not be published and the corresponding
+                      X.509 extension will not be written in issued certificates.
+                      CRLs will expire 7 days from their creation. However, we will
+                      rebuild daily. CRLs are also rebuilt shortly after a certificate
+                      is revoked.
                     type: boolean
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The PrivateCACAPool name. If not given, the metadata.name
+                  will be used.
                 type: string
               tier:
-                description: 'Immutable. Required. Immutable. The Tier of this CaPool.
-                  Possible values: TIER_UNSPECIFIED, ENTERPRISE, DEVOPS'
+                description: 'Required. Immutable. The Tier of this CaPool. Possible
+                  values: TIER_UNSPECIFIED, ENTERPRISE, DEVOPS'
                 type: string
             required:
             - location
             - projectRef
-            - tier
             type: object
           status:
+            description: PrivateCACAPoolStatus defines the config connector machine
+              state of PrivateCACAPool
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -485,6 +496,7 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
         required:
@@ -494,9 +506,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
