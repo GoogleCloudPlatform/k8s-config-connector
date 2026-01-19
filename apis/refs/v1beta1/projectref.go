@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -86,21 +87,31 @@ type ProjectIdentity struct {
 
 var _ identity.Identity = &ProjectIdentity{}
 
+var ProjectFormat = gcpurls.Template[ProjectIdentity]("cloudresourcemanager.googleapis.com", "projects/{projectID}")
+
 func (p *ProjectIdentity) String() string {
-	return "projects/" + p.ProjectID
+	return ProjectFormat.ToString(*p)
 }
 
 func (p *ProjectIdentity) FromExternal(ref string) error {
-	tokens := strings.Split(ref, "/")
-	if len(tokens) == 1 {
-		p.ProjectID = tokens[0]
+	if ref == "" {
+		return fmt.Errorf("project external reference cannot be empty")
+	}
+	// Fallback to "short" format (projectID only) if there are no slashes.
+	if !strings.Contains(ref, "/") {
+		p.ProjectID = ref
 		return nil
 	}
-	if len(tokens) == 2 && tokens[0] == "projects" {
-		p.ProjectID = tokens[1]
-		return nil
+
+	parsed, match, err := ProjectFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of Project external=%q was not known (use %s): %w", ref, ProjectFormat.CanonicalForm(), err)
 	}
-	return fmt.Errorf("unknown format for project %q (use projects/{projectId})", ref)
+	if !match {
+		return fmt.Errorf("format of Project external=%q was not known (use %s)", ref, ProjectFormat.CanonicalForm())
+	}
+	*p = *parsed
+	return nil
 }
 
 // ResolveProjectFromAnnotation resolves the projectID to use for a resource,
