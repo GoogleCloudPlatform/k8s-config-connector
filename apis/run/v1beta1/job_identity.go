@@ -17,15 +17,26 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var _ identity.Identity = &JobIdentity{}
+
+var jobURL = gcpurls.Template[jobURLIdentity](
+	"run.googleapis.com",
+	"projects/{projectID}/locations/{location}/jobs/{jobID}",
+)
+
+type jobURLIdentity struct {
+	ProjectID string
+	Location  string
+	JobID     string
+}
 
 // JobIdentity defines the resource reference to RunJob, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -45,7 +56,11 @@ func (i *JobIdentity) FromExternal(ref string) error {
 }
 
 func (i *JobIdentity) String() string {
-	return i.parent.String() + "/jobs/" + i.id
+	return jobURL.ToString(jobURLIdentity{
+		ProjectID: i.parent.ProjectID,
+		Location:  i.parent.Location,
+		JobID:     i.id,
+	})
 }
 
 func (i *JobIdentity) ID() string {
@@ -117,14 +132,17 @@ func NewJobIdentity(ctx context.Context, reader client.Reader, obj *RunJob) (*Jo
 }
 
 func ParseJobExternal(external string) (parent *JobParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "jobs" {
-		return nil, "", fmt.Errorf("format of RunJob external=%q was not known (use projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}})", external)
+	out, match, err := jobURL.Parse(external)
+	if err != nil {
+		return nil, "", err
+	}
+	if !match {
+		return nil, "", fmt.Errorf("format of RunJob external=%q was not known (use %s)", external, jobURL.CanonicalForm())
 	}
 	parent = &JobParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID: out.ProjectID,
+		Location:  out.Location,
 	}
-	resourceID = tokens[5]
+	resourceID = out.JobID
 	return parent, resourceID, nil
 }
