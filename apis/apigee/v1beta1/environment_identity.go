@@ -26,7 +26,7 @@ import (
 
 const (
 	ApigeeEnvironmentIDToken  = "environments"
-	ApigeeEnvironmentIDFormat = ApigeeOrganizationIDFormat + "/" + ApigeeEnvironmentIDToken + "/{{environmentID}}"
+	ApigeeEnvironmentIDFormat = ApigeeOrganizationURLFormat + "/" + ApigeeEnvironmentIDToken + "/{{environmentID}}"
 )
 
 var _ identity.Identity = &ApigeeEnvironmentIdentity{}

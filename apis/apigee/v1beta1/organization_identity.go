@@ -17,40 +17,42 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const (
-	ApigeeOrganizationIDToken  = "organizations"
-	ApigeeOrganizationIDFormat = ApigeeOrganizationIDToken + "/{{organizationID}}"
+var (
+	ApigeeOrganizationIdentityFormat = gcpurls.Template[ApigeeOrganizationIdentity]("apigee.googleapis.com", "organizations/{resourceID}")
 )
 
-var _ identity.Identity = &ApigeeInstanceIdentity{}
+const (
+	ApigeeOrganizationIDToken   = "organizations"
+	ApigeeOrganizationURLFormat = ApigeeOrganizationIDToken + "/{{organizationID}}"
+)
+
+var _ identity.Identity = &ApigeeOrganizationIdentity{}
 
 type ApigeeOrganizationIdentity struct {
 	ResourceID string
 }
 
 func (i *ApigeeOrganizationIdentity) String() string {
-	return ApigeeOrganizationIDToken + "/" + i.ResourceID
+	return ApigeeOrganizationIdentityFormat.ToString(*i)
 }
 
 func (i *ApigeeOrganizationIdentity) FromExternal(ref string) error {
-	requiredTokens := len(strings.Split(ApigeeOrganizationIDFormat, "/"))
-
-	tokens := strings.Split(ref, "/")
-	if len(tokens) != requiredTokens || tokens[len(tokens)-2] != ApigeeOrganizationIDToken {
-		return fmt.Errorf("format of ApigeeOrganization ref=%q was not known (use %q)", ref, ApigeeOrganizationIDFormat)
+	parsed, match, err := ApigeeOrganizationIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of ApigeeOrganization external=%q was not known (use %s): %w", ref, ApigeeOrganizationURLFormat, err)
+	}
+	if !match {
+		return fmt.Errorf("format of ApigeeOrganization external=%q was not known (use %s)", ref, ApigeeOrganizationURLFormat)
 	}
 
-	resourceID := tokens[len(tokens)-1]
-
-	i.ResourceID = resourceID
-
+	*i = *parsed
 	return nil
 }
 
