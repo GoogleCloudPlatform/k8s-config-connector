@@ -290,8 +290,8 @@ func diffSchema(out io.Writer, schema1, schema2 any, opt ConvertOptions) {
 	sort.Slice(diff, func(i, j int) bool {
 		s0 := diff[i]
 		s1 := diff[j]
-		if s0[1:] < s1[1:] {
-			return true
+		if s0[1:] != s1[1:] {
+			return s0[1:] < s1[1:]
 		}
 
 		return s0 < s1
