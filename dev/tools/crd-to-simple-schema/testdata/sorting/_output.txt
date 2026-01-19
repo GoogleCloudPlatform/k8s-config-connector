@@ -1,0 +1,5 @@
+schema:
++ spec.keyUsage=int32
+- spec.keyUsage=int64
++ spec.policyIds=int32
+- spec.policyIds=int64
