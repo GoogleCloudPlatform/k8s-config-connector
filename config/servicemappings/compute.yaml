@@ -1279,6 +1279,8 @@ spec:
       idTemplate: "projects/{{project}}/global/networks/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
+      mutableButUnreadableFields:
+        - delete_default_routes_on_create
       containers:
         - type: project
           tfField: project
