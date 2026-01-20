@@ -140,7 +140,7 @@ func isProjectExternal(external string) bool {
 		return true
 	}
 	if strings.HasPrefix(external, "projects/") {
-		return true
+		return len(strings.Split(external, "/")) == 2
 	}
 	// "123456789" is also a valid project external (project number)
 	if !strings.Contains(external, "/") {

@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -27,6 +28,7 @@ func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
 		initial          TagsTagBindingParentRef
 		expectedExternal string
 		wantErr          bool
+		wantErrSubstr    string
 	}{
 		{
 			name: "External: projects/{project} with kind=Project",
@@ -90,6 +92,55 @@ func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
 			},
 			expectedExternal: "//storage.googleapis.com/projects/_/buckets/my-bucket",
 		},
+		{
+			name: "External: {project} (project ID) with kind=Project",
+			initial: TagsTagBindingParentRef{
+				Kind:     "Project",
+				External: "my-project",
+			},
+			expectedExternal: "//cloudresourcemanager.googleapis.com/projects/my-project",
+		},
+		{
+			name: "External: {project} (project ID) with no kind",
+			initial: TagsTagBindingParentRef{
+				External: "my-project",
+			},
+			expectedExternal: "//cloudresourcemanager.googleapis.com/projects/my-project",
+		},
+		{
+			name: "External: projects/{project}/buckets/{bucket} with kind=Project (should fail)",
+			initial: TagsTagBindingParentRef{
+				Kind:     "Project",
+				External: "projects/my-project/buckets/my-bucket",
+			},
+			wantErr:       true,
+			wantErrSubstr: "unknown format for a Project reference",
+		},
+		{
+			name: "External: projects/{project}/buckets/{bucket} with no kind (defaults to Project, should fail)",
+			initial: TagsTagBindingParentRef{
+				External: "projects/my-project/buckets/my-bucket",
+			},
+			wantErr:       true,
+			wantErrSubstr: "unknown format for a Project reference",
+		},
+		{
+			name: "External: //storage.googleapis.com/projects/{project}/buckets/{bucket} with kind=Project (should fail)",
+			initial: TagsTagBindingParentRef{
+				Kind:     "Project",
+				External: "//storage.googleapis.com/projects/my-project/buckets/my-bucket",
+			},
+			wantErr:       true,
+			wantErrSubstr: "unknown format for a Project reference",
+		},
+		{
+			name: "External: //storage.googleapis.com/projects/{project}/buckets/{bucket} with no kind (defaults to Project, should fail)",
+			initial: TagsTagBindingParentRef{
+				External: "//storage.googleapis.com/projects/my-project/buckets/my-bucket",
+			},
+			wantErr:       true,
+			wantErrSubstr: "unknown format for a Project reference",
+		},
 	}
 
 	for _, tt := range tests {
@@ -101,6 +152,11 @@ func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Normalize() error = %v, wantErr %v", err, tt.wantErr)
 				return
+			}
+			if tt.wantErr && tt.wantErrSubstr != "" {
+				if err == nil || !strings.Contains(err.Error(), tt.wantErrSubstr) {
+					t.Errorf("Normalize() error = %v, want substring %q", err, tt.wantErrSubstr)
+				}
 			}
 			if !tt.wantErr && r.External != tt.expectedExternal {
 				t.Errorf("Normalize() external = %v, want %v", r.External, tt.expectedExternal)
