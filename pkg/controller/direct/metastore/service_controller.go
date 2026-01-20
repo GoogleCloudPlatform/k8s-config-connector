@@ -221,7 +221,7 @@ func (a *MetastoreServiceAdapter) Update(ctx context.Context, updateOp *directba
 		paths = append(paths, "maintenance_window")
 	}
 	if desired.Spec.HiveMetastoreConfig != nil && !reflect.DeepEqual(resource.GetHiveMetastoreConfig(), a.actual.GetHiveMetastoreConfig()) {
-		// TODO(kcc): Add support for hiveMetastoreConfig.configOverrides and auxiliaryVersions
+// resource := MetastoreServiceSpec_ToProto(mapCtx, &desired.Spec)
 		paths = append(paths, "hive_metastore_config.kerberos_config")
 		// Endpoint protocol is output_only
 	}
