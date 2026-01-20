@@ -36,7 +36,7 @@ type StorageBucketIdentity struct {
 	Bucket  string
 }
 
-func (i *StorageBucketIdentity) Service() string {
+func (i *StorageBucketIdentity) Host() string {
 	return StorageBucketIdentityFormat.Host()
 }
 

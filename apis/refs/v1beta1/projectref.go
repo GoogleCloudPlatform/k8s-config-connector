@@ -93,7 +93,7 @@ var _ identity.Identity = &ProjectIdentity{}
 
 var ProjectFormat = gcpurls.Template[ProjectIdentity]("cloudresourcemanager.googleapis.com", "projects/{projectID}")
 
-func (p *ProjectIdentity) Service() string {
+func (p *ProjectIdentity) Host() string {
 	return ProjectFormat.Host()
 }
 
