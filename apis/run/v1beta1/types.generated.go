@@ -201,3 +201,26 @@ type BuildInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.run.v2.BuildInfo.source_location
 	SourceLocation *string `json:"sourceLocation,omitempty"`
 }
+
+// +kcc:observedstate:proto=google.cloud.run.v2.Container
+type ContainerObservedState struct {
+	// Output only. The build info of the container image.
+	// +kcc:proto:field=google.cloud.run.v2.Container.build_info
+	BuildInfo *BuildInfo `json:"buildInfo,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.run.v2.ExecutionTemplate
+type ExecutionTemplateObservedState struct {
+	// Required. Describes the task(s) that will be created when executing an
+	//  execution.
+	// +kcc:proto:field=google.cloud.run.v2.ExecutionTemplate.template
+	Template *TaskTemplateObservedState `json:"template,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.run.v2.TaskTemplate
+type TaskTemplateObservedState struct {
+	// Holds the single container that defines the unit of execution for this
+	//  task.
+	// +kcc:proto:field=google.cloud.run.v2.TaskTemplate.containers
+	Containers []ContainerObservedState `json:"containers,omitempty"`
+}
