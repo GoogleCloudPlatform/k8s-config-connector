@@ -19,6 +19,7 @@ metadata:
 spec:
   location: us-east4
   parentRef:
+    kind: StorageBucket
     external:  "//storage.googleapis.com/projects/_/buckets/storagebucket-${uniqueId}"
   tagValueRef:
     name: tagstagvalue-${uniqueId}
