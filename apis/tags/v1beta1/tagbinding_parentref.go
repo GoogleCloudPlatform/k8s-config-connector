@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -125,38 +124,24 @@ func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 		return "", nil, err
 	}
 
-	val := reflect.ValueOf(ref).Elem()
-
-	// Set Name
-	if f := val.FieldByName("Name"); f.IsValid() && f.CanSet() {
-		f.SetString(r.Name)
-	}
-	// Set Namespace
-	if f := val.FieldByName("Namespace"); f.IsValid() && f.CanSet() {
-		f.SetString(r.Namespace)
-	}
-	// Set External
-	if f := val.FieldByName("External"); f.IsValid() && f.CanSet() {
-		f.SetString(r.External)
+	if err := refs.SetRefFields(ref, r.Name, r.Namespace, r.External); err != nil {
+		return "", nil, err
 	}
 
 	// Get host/service
 	extRef, ok := ref.(refs.ExternalRef)
 	if !ok {
-		return "", ref, nil
+		return "", nil, fmt.Errorf("kind %q does not implement ExternalRef", kind)
 	}
 
 	id, err := extRef.ParseExternalToIdentity()
 	if err != nil {
-		// If external is empty or invalid, we might still want to return the ref for K8s lookup.
-		// But resolveReference is often used to get the service prefix.
-		// If we can't parse identity, we can't get the service (host).
-		return "", ref, nil
+		return "", nil, err
 	}
 
 	// Update External to canonical form (without host)
-	if f := val.FieldByName("External"); f.IsValid() && f.CanSet() {
-		f.SetString(id.String())
+	if err := refs.SetRefFields(ref, r.Name, r.Namespace, id.String()); err != nil {
+		return "", nil, err
 	}
 
 	idV2, ok := id.(identity.IdentityV2)
@@ -164,7 +149,7 @@ func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 		return "", ref, nil
 	}
 
-	return idV2.Service(), ref, nil
+	return idV2.Host(), ref, nil
 }
 
 func isProjectExternal(external string) bool {
