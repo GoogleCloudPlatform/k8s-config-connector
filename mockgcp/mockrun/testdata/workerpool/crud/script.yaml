@@ -1,4 +1,0 @@
-- exec: gcloud beta run worker-pools create test-${uniqueId} --region us-central1 --project ${projectId} --image=us-docker.pkg.dev/cloudrun/container/hello
-- exec: gcloud beta run worker-pools update test-${uniqueId} --region us-central1 --project ${projectId} --update-labels=foo=bar
-- exec: gcloud beta run worker-pools describe test-${uniqueId} --region us-central1 --project ${projectId}
-- exec: gcloud beta run worker-pools delete test-${uniqueId} --region us-central1 --project ${projectId} --quiet
