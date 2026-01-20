@@ -30,7 +30,8 @@ type Identity interface {
 
 type IdentityV2 interface {
 	Identity
-	Service() string
+	// Host returns the Host portion of the Cloud-Asset Inventory fully-qualified format (e.g. compute.googleapis.com)
+	Host() string
 }
 
 type Resource interface {

@@ -68,6 +68,8 @@ type Ref interface {
 
 type ExternalRef interface {
 	Ref
+	// ParseExternalToIdentity parses the External field to an Identity.
+	// Normalize should be called first to ensure that External is populated.
 	ParseExternalToIdentity() (identity.Identity, error)
 }
 

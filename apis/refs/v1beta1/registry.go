@@ -54,10 +54,17 @@ func NewRef(gk schema.GroupKind) (Ref, error) {
 func NewRefByKind(kind string) (Ref, error) {
 	registryMu.Lock()
 	defer registryMu.Unlock()
+	var found reflect.Type
 	for gk, typ := range registry {
 		if gk.Kind == kind {
-			return reflect.New(typ).Interface().(Ref), nil
+			if found != nil {
+				return nil, fmt.Errorf("multiple Refs registered for Kind %q", kind)
+			}
+			found = typ
 		}
+	}
+	if found != nil {
+		return reflect.New(found).Interface().(Ref), nil
 	}
 	return nil, fmt.Errorf("no Ref registered for Kind %q", kind)
 }
