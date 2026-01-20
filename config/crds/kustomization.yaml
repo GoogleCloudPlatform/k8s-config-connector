@@ -32,3 +32,9 @@ patches:
     version: v1
     kind: CustomResourceDefinition
     name: ".*"
+- path: config/crds/patches/container_cluster_network_config_json.yaml
+  target:
+    group: apiextensions.k8s.io
+    version: v1
+    kind: CustomResourceDefinition
+    name: containerclusters.container.cnrm.cloud.google.com
