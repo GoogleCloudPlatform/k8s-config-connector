@@ -36,6 +36,10 @@ type StorageBucketIdentity struct {
 	Bucket  string
 }
 
+func (i *StorageBucketIdentity) Service() string {
+	return StorageBucketIdentityFormat.Host()
+}
+
 func (i *StorageBucketIdentity) String() string {
 	return StorageBucketIdentityFormat.ToString(*i)
 }
