@@ -216,7 +216,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		Repository:   resource,
 		RepositoryId: a.id.dataform,
 	}
-	_, err := a.gcpClient.CreateRepository(ctx, req)
+	created, err := a.gcpClient.CreateRepository(ctx, req)
 	if err != nil {
 		return fmt.Errorf("DataformRepository %s creation failed: %w", resource.Name, err)
 	}
@@ -224,7 +224,12 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	status := &krm.DataformRepositoryStatus{}
 	status.ExternalRef = a.id.AsExternalRef()
 
-	// TODO(acpana): add observed state
+	mapCtx = &direct.MapContext{}
+	status.ObservedState = DataformRepositoryObservedState_FromProto(mapCtx, created)
+	if mapCtx.Err() != nil {
+		return fmt.Errorf("converting observed state: %w", mapCtx.Err())
+	}
+
 	return setStatus(u, status)
 }
 
@@ -276,14 +281,19 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	resource.Name = a.id.FullyQualifiedName()
 	req := &dataformpb.UpdateRepositoryRequest{UpdateMask: updateMask, Repository: resource}
-	_, err := a.gcpClient.UpdateRepository(ctx, req)
+	updated, err := a.gcpClient.UpdateRepository(ctx, req)
 	if err != nil {
 		return fmt.Errorf("DataformRepository %s update failed: %w", resource.Name, err)
 	}
 
 	status := &krm.DataformRepositoryStatus{}
 
-	// TODO(acpana): add observed state
+	mapCtx = &direct.MapContext{}
+	status.ObservedState = DataformRepositoryObservedState_FromProto(mapCtx, updated)
+	if mapCtx.Err() != nil {
+		return fmt.Errorf("converting observed state: %w", mapCtx.Err())
+	}
+
 	return setStatus(u, status)
 }
 
