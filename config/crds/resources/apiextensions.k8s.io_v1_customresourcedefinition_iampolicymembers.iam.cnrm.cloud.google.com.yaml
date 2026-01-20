@@ -82,7 +82,9 @@ spec:
                   rule: self == oldSelf
               member:
                 description: Immutable. The IAM identity to be bound to the role.
-                  Exactly one of 'member' or 'memberFrom' must be used.
+                  Exactly one of 'member' or 'memberFrom' must be used. This supports
+                  all standard IAM member formats, such as `user:`, `serviceAccount:`,
+                  `group:`, `domain:`, etc.
                 type: string
                 x-kubernetes-validations:
                 - message: member is immutable
