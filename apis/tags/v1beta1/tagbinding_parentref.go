@@ -17,10 +17,11 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	storage "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -113,25 +114,57 @@ func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 		kind = "Project"
 	}
 
-	switch kind {
-	case "StorageBucket":
-		return "storage.googleapis.com", &storage.StorageBucketRef{
-			Name:      r.Name,
-			Namespace: r.Namespace,
-			External:  strings.TrimPrefix(r.External, "//storage.googleapis.com/"),
-		}, nil
-	case "Project":
+	if kind == "Project" {
 		if r.External != "" && !isProjectExternal(r.External) {
 			return "", nil, fmt.Errorf("unknown format for a Project reference in %q, please set Kind for non-project references or use projects/{project} for project references", r.External)
 		}
-		return "cloudresourcemanager.googleapis.com", &refs.ProjectRef{
-			Name:      r.Name,
-			Namespace: r.Namespace,
-			External:  r.External,
-		}, nil
-	default:
-		return "", nil, nil
 	}
+
+	ref, err := refs.NewRefByKind(kind)
+	if err != nil {
+		return "", nil, err
+	}
+
+	val := reflect.ValueOf(ref).Elem()
+
+	// Set Name
+	if f := val.FieldByName("Name"); f.IsValid() && f.CanSet() {
+		f.SetString(r.Name)
+	}
+	// Set Namespace
+	if f := val.FieldByName("Namespace"); f.IsValid() && f.CanSet() {
+		f.SetString(r.Namespace)
+	}
+	// Set External
+	if f := val.FieldByName("External"); f.IsValid() && f.CanSet() {
+		f.SetString(r.External)
+	}
+
+	// Get host/service
+	extRef, ok := ref.(refs.ExternalRef)
+	if !ok {
+		return "", ref, nil
+	}
+
+	id, err := extRef.ParseExternalToIdentity()
+	if err != nil {
+		// If external is empty or invalid, we might still want to return the ref for K8s lookup.
+		// But resolveReference is often used to get the service prefix.
+		// If we can't parse identity, we can't get the service (host).
+		return "", ref, nil
+	}
+
+	// Update External to canonical form (without host)
+	if f := val.FieldByName("External"); f.IsValid() && f.CanSet() {
+		f.SetString(id.String())
+	}
+
+	idV2, ok := id.(identity.IdentityV2)
+	if !ok {
+		return "", ref, nil
+	}
+
+	return idV2.Service(), ref, nil
 }
 
 func isProjectExternal(external string) bool {
