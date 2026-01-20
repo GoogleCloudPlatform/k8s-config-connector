@@ -36,6 +36,7 @@ type ControllerResource struct {
 
 // ControllerResourceSpec is the specification of the resource customization for containers of
 // a config connector controller.
+// +kubebuilder:validation:XValidation:rule="!has(self.verticalPodAutoscalerMode) || self.verticalPodAutoscalerMode == 'Disabled' || !has(self.containers) || size(self.containers) == 0",message="VerticalPodAutoscalerMode cannot be Enabled when Containers are specified"
 type ControllerResourceSpec struct {
 	// The list of containers whose resource requirements to be customized.
 	// +optional
@@ -44,7 +45,22 @@ type ControllerResourceSpec struct {
 	// This field takes effect only if the controller name is "cnrm-webhook-manager".
 	// +optional
 	Replicas *int64 `json:"replicas,omitempty"`
+	// VerticalPodAutoscalerMode indicates the mode of Vertical Pod Autoscaler for the controller.
+	// +optional
+	// +kubebuilder:default=Disabled
+	VerticalPodAutoscalerMode *VPAMode `json:"verticalPodAutoscalerMode,omitempty"`
 }
+
+// VPAMode is the mode of Vertical Pod Autoscaler.
+// +kubebuilder:validation:Enum=Enabled;Disabled
+type VPAMode string
+
+const (
+	// VPAModeEnabled indicates that VPA is enabled.
+	VPAModeEnabled VPAMode = "Enabled"
+	// VPAModeDisabled indicates that VPA is disabled.
+	VPAModeDisabled VPAMode = "Disabled"
+)
 
 // ContainerResourceSpec is the specification of the resource customization for a container of
 // a config connector controller.

@@ -562,6 +562,50 @@ func (r *Reconciler) applyNamespacedControllerResource(ctx context.Context, cr *
 		Version: appsv1.SchemeGroupVersion.Version,
 		Kind:    "StatefulSet",
 	}
+	if cr.Spec.VerticalPodAutoscalerMode != nil && *cr.Spec.VerticalPodAutoscalerMode == customizev1beta1.VPAModeEnabled {
+		found := false
+		sts := &appsv1.StatefulSet{}
+		for _, item := range m.Items {
+			if item.GroupVersionKind() == controllerGVK && strings.HasPrefix(item.GetName(), cr.Name) {
+				sts.Name = item.GetName()
+				sts.Namespace = item.GetNamespace()
+				if err := controllers.EnsureVPAForStatefulSet(ctx, r.client, sts, *cr.Spec.VerticalPodAutoscalerMode); err != nil {
+					return r.handleApplyNamespacedControllerResourceFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to ensure VPA for StatefulSet %s: %v", sts.Name, err))
+				}
+				found = true
+				break
+			}
+		}
+		if !found {
+			r.log.Info("controller resource not found in the manifest for VPA configuration", "name", cr.Name)
+		}
+
+		// If VPA is enabled, we try to get the recommendations and use them as the container resource customization.
+		// We use the StatefulSet's name and namespace because the VPA is created with the same name and namespace as the target StatefulSet.
+		recommendations, err := controllers.GetVPARecommendations(ctx, r.client, sts.Namespace, sts.Name)
+		if err != nil {
+			r.log.Error(err, "failed to get VPA recommendations", "Name", sts.Name, "Namespace", sts.Namespace)
+			// We don't fail the reconciliation here, just log the error and proceed with existing containers (which should be empty if VPA is enabled, but just in case).
+		} else if len(recommendations) > 0 {
+			// Construct ContainerResourceSpec from recommendations
+			var vpaContainers []customizev1beta1.ContainerResourceSpec
+			for containerName, resources := range recommendations {
+				vpaContainers = append(vpaContainers, customizev1beta1.ContainerResourceSpec{
+					Name: containerName,
+					Resources: customizev1beta1.ResourceRequirements{
+						Limits:   resources.Limits,
+						Requests: resources.Requests,
+					},
+				})
+			}
+			// Use VPA recommendations as the source of truth for customization
+			if err := controllers.ApplyContainerResourceCustomization(true, m, cr.Name, controllerGVK, vpaContainers, nil); err != nil {
+				r.log.Error(err, "failed to apply VPA customization", "Name", cr.Name, "Namespace", cr.Namespace)
+				return r.handleApplyNamespacedControllerResourceFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to apply VPA customization %s: %v", cr.Name, err))
+			}
+			return r.handleApplyNamespacedControllerResourceSucceeded(ctx, cr.Namespace, cr.Name)
+		}
+	}
 	if err := controllers.ApplyContainerResourceCustomization(true, m, cr.Name, controllerGVK, cr.Spec.Containers, nil); err != nil {
 		r.log.Error(err, "failed to apply customization", "Namespace", cr.Namespace, "Name", cr.Name)
 		return r.handleApplyNamespacedControllerResourceFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to apply customization %s: %v", cr.Name, err))

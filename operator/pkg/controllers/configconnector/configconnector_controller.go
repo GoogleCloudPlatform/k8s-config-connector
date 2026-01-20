@@ -660,6 +660,53 @@ func (r *Reconciler) applyControllerResourceCR(ctx context.Context, cr *customiz
 		r.log.Info(msg)
 		return r.handleApplyControllerResourceCRFailed(ctx, cr, msg)
 	}
+	if cr.Spec.VerticalPodAutoscalerMode != nil && *cr.Spec.VerticalPodAutoscalerMode == customizev1beta1.VPAModeEnabled {
+		switch cr.Name {
+		case "cnrm-controller-manager", "cnrm-deletiondefender", "cnrm-unmanaged-detector":
+			sts := &appsv1.StatefulSet{}
+			sts.Namespace = k8s.CNRMSystemNamespace
+			sts.Name = cr.Name
+			if err := controllers.EnsureVPAForStatefulSet(ctx, r.client, sts, *cr.Spec.VerticalPodAutoscalerMode); err != nil {
+				return r.handleApplyControllerResourceCRFailed(ctx, cr, fmt.Sprintf("failed to ensure VPA for StatefulSet %s: %v", cr.Name, err))
+			}
+		case "cnrm-webhook-manager", "cnrm-resource-stats-recorder":
+			deployment := &appsv1.Deployment{}
+			deployment.Namespace = k8s.CNRMSystemNamespace
+			deployment.Name = cr.Name
+			if err := controllers.EnsureVPAForDeployment(ctx, r.client, deployment, *cr.Spec.VerticalPodAutoscalerMode); err != nil {
+				return r.handleApplyControllerResourceCRFailed(ctx, cr, fmt.Sprintf("failed to ensure VPA for Deployment %s: %v", cr.Name, err))
+			}
+		default:
+			r.log.Info("unrecognized controller resource name for VPA configuration", "name", cr.Name)
+		}
+
+		// If VPA is enabled, we try to get the recommendations and use them as the container resource customization.
+		recommendations, err := controllers.GetVPARecommendations(ctx, r.client, k8s.CNRMSystemNamespace, cr.Name)
+		if err != nil {
+			r.log.Error(err, "failed to get VPA recommendations", "Name", cr.Name)
+			// We don't fail the reconciliation here, just log the error and proceed with existing containers (which should be empty if VPA is enabled, but just in case).
+			// Actually, if VPA is enabled, cr.Spec.Containers must be empty per validation rule.
+			// So if we fail to get recommendations, we might end up applying nothing, which is fine (no customization).
+		} else if len(recommendations) > 0 {
+			// Construct ContainerResourceSpec from recommendations
+			var vpaContainers []customizev1beta1.ContainerResourceSpec
+			for containerName, resources := range recommendations {
+				vpaContainers = append(vpaContainers, customizev1beta1.ContainerResourceSpec{
+					Name: containerName,
+					Resources: customizev1beta1.ResourceRequirements{
+						Limits:   resources.Limits,
+						Requests: resources.Requests,
+					},
+				})
+			}
+			// Use VPA recommendations as the source of truth for customization
+			if err := controllers.ApplyContainerResourceCustomization(false, m, cr.Name, controllerGVK, vpaContainers, cr.Spec.Replicas); err != nil {
+				r.log.Error(err, "failed to apply VPA customization", "Name", cr.Name)
+				return r.handleApplyControllerResourceCRFailed(ctx, cr, fmt.Sprintf("failed to apply VPA customization %s: %v", cr.Name, err))
+			}
+			return r.handleApplyControllerResourceCRSucceeded(ctx, cr)
+		}
+	}
 	if err := controllers.ApplyContainerResourceCustomization(false, m, cr.Name, controllerGVK, cr.Spec.Containers, cr.Spec.Replicas); err != nil {
 		r.log.Error(err, "failed to apply customization", "Name", cr.Name)
 		return r.handleApplyControllerResourceCRFailed(ctx, cr, fmt.Sprintf("failed to apply customization %s: %v", cr.Name, err))
