@@ -5,10 +5,7 @@
             "command": "dev/mcp/github-mcp-server",
             "args": [
                 "stdio"
-            ],
-            "env": {
-                "GITHUB_READ_ONLY": "1"
-            }
+            ]
         }
     }
 }
