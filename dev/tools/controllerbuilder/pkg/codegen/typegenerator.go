@@ -149,7 +149,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
-		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
+		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated, []string{KCCProtoMessageAnnotationMisc, KCCProtoMessageAnnotationSpec})
 		if err != nil {
 			return fmt.Errorf("looking up go type by proto tag: %w", err)
 		}
@@ -190,7 +190,7 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			continue
 		}
 
-		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
+		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated, []string{KCCProtoMessageAnnotationMisc, KCCProtoMessageAnnotationObservedState, KCCProtoMessageAnnotationStatus})
 		if err != nil {
 			return fmt.Errorf("looking up go type by proto tag: %w", err)
 		}
