@@ -79,7 +79,7 @@ type RunJobStatus struct {
 	ObservedState *RunJobObservedState `json:",inline"`
 }
 
-// +kcc:spec:proto=google.cloud.run.v2.Job
+// +kcc:observedstate:proto=google.cloud.run.v2.Job
 type RunJobObservedState struct {
 
 	// Output only. The creation time.
@@ -216,7 +216,7 @@ type CloudSQLInstance struct {
 	InstanceRefs []*refs.SQLInstanceRef `json:"instanceRefs,omitempty"`
 }
 
-// +kcc:proto=google.cloud.run.v2.Container
+// +kcc:spec:proto=google.cloud.run.v2.Container
 type Container struct {
 	// Name of the container specified as a DNS_LABEL (RFC 1123).
 	// +kcc:proto:field=google.cloud.run.v2.Container.name
@@ -298,7 +298,7 @@ type EnvVarSource struct {
 	SecretKeyRef *SecretKeySelector `json:"secretKeyRef,omitempty"`
 }
 
-// +kcc:proto=google.cloud.run.v2.ExecutionTemplate
+// +kcc:spec:proto=google.cloud.run.v2.ExecutionTemplate
 type ExecutionTemplate struct {
 	// Unstructured key value map that can be used to organize and categorize
 	//  objects.
@@ -489,7 +489,7 @@ type SecretVolumeSource struct {
 	DefaultMode *int32 `json:"defaultMode,omitempty"`
 }
 
-// +kcc:proto=google.cloud.run.v2.TaskTemplate
+// +kcc:spec:proto=google.cloud.run.v2.TaskTemplate
 type TaskTemplate struct {
 	// Holds the single container that defines the unit of execution for this
 	//  task.

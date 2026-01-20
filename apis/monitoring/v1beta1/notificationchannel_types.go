@@ -90,7 +90,7 @@ type SensitiveLabels struct {
 }
 
 // MonitoringNotificationChannelStatus defines the config connector machine state of MonitoringNotificationChannel
-// +kcc:proto=google.monitoring.v3.NotificationChannel
+// +kcc:status:proto=google.monitoring.v3.NotificationChannel
 type MonitoringNotificationChannelStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
