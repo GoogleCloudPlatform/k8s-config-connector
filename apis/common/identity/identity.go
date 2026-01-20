@@ -28,6 +28,11 @@ type Identity interface {
 	FromExternal(ref string) error
 }
 
+type IdentityV2 interface {
+	Identity
+	Service() string
+}
+
 type Resource interface {
 	// GetIdentity gets the identity of a resource.
 	GetIdentity(ctx context.Context, reader client.Reader) (Identity, error)
