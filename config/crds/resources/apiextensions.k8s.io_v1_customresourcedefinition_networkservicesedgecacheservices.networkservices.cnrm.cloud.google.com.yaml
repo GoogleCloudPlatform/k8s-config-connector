@@ -573,6 +573,9 @@ spec:
                                           When the cache mode is set to "USE_ORIGIN_HEADERS" or "BYPASS_CACHE", you must omit this field.
                                           A duration in seconds terminated by 's'. Example: "3s".
                                         type: string
+                                      compressionMode:
+                                        description: 'Compress text responses using Brotli or Gzip compression options: "AUTOMATIC", "DISABLED".'
+                                        type: string
                                       defaultTtl:
                                         description: |-
                                           Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-max-age).

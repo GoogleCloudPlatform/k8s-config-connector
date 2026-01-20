@@ -182,6 +182,10 @@ type EdgecacheserviceCdnPolicy struct {
 	// +optional
 	ClientTtl *string `json:"clientTtl,omitempty"`
 
+	/* Compress text responses using Brotli or Gzip compression options: "AUTOMATIC", "DISABLED". */
+	// +optional
+	CompressionMode *string `json:"compressionMode,omitempty"`
+
 	/* Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-max-age).
 
 	Defaults to 3600s (1 hour).
