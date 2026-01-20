@@ -29,10 +29,9 @@ import (
 // ParentRef is a reference to a parent resource.
 // +kcc:ref=Project;StorageBucket
 type TagsTagBindingParentRef struct {
-	// Kind of the referent.
+	// Kind to which we are binding the tag.  Defaults to Project if not specified.
 	// +optional
 	// +kubebuilder:validation:Optional
-	// +kubebuilder:default=Project
 	Kind string `json:"kind,omitempty"`
 
 	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
