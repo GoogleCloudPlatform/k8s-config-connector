@@ -138,6 +138,10 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 
 		out.fileAnnotation = g.generatedFileAnnotation
 
+		{
+			out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
+		}
+
 		goTypeName := GoNameForProtoMessage(msg)
 		skipGenerated := true
 		goType, err := g.findTypeDeclaration(goTypeName, out.OutputDir(), skipGenerated)

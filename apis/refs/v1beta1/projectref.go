@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -248,4 +249,17 @@ func (r *ProjectRef) ValidateExternal(ref string) error {
 		return err
 	}
 	return nil
+}
+
+func ResolveProjectIdentity(ctx context.Context, reader client.Reader, obj client.Object) (*Project, error) {
+	m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, fmt.Errorf("converting to unstructured: %w", err)
+	}
+	u := &unstructured.Unstructured{Object: m}
+	projectID, err := ResolveProjectID(ctx, reader, u)
+	if err != nil {
+		return nil, err
+	}
+	return &Project{ProjectID: projectID}, nil
 }
