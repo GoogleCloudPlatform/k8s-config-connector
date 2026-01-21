@@ -44,7 +44,7 @@ func GetLocation(u *unstructured.Unstructured) (string, error) {
 }
 
 // SetRefFields sets the Name, Namespace and External fields on a Ref using reflection.
-// It returns an error if a field exists but cannot be set, or if the field is missing.
+// It returns an error if a field exists but cannot be set, or if the field is missing and a non-empty value is provided.
 func SetRefFields(ref Ref, name, namespace, external string) error {
 	val := reflect.ValueOf(ref).Elem()
 
@@ -53,7 +53,7 @@ func SetRefFields(ref Ref, name, namespace, external string) error {
 			return fmt.Errorf("cannot set Name field")
 		}
 		f.SetString(name)
-	} else {
+	} else if name != "" {
 		return fmt.Errorf("field Name not found in type %T", ref)
 	}
 
@@ -62,7 +62,7 @@ func SetRefFields(ref Ref, name, namespace, external string) error {
 			return fmt.Errorf("cannot set Namespace field")
 		}
 		f.SetString(namespace)
-	} else {
+	} else if namespace != "" {
 		return fmt.Errorf("field Namespace not found in type %T", ref)
 	}
 
@@ -71,7 +71,7 @@ func SetRefFields(ref Ref, name, namespace, external string) error {
 			return fmt.Errorf("cannot set External field")
 		}
 		f.SetString(external)
-	} else {
+	} else if external != "" {
 		return fmt.Errorf("field External not found in type %T", ref)
 	}
 	return nil

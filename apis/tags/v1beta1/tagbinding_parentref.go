@@ -110,7 +110,11 @@ func (r *TagsTagBindingParentRef) Normalize(ctx context.Context, reader client.R
 func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 	kind := r.Kind
 	if kind == "" {
-		kind = "Project"
+		if r.External != "" && (strings.HasPrefix(r.External, "organizations/") || strings.Contains(r.External, "/organizations/")) {
+			kind = "Organization"
+		} else {
+			kind = "Project"
+		}
 	}
 
 	if kind == "Project" {
