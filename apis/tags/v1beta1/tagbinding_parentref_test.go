@@ -142,6 +142,36 @@ func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
 			wantErr:       true,
 			wantErrSubstr: "unknown format for a Project reference",
 		},
+		{
+			name: "External: organizations/{organization} with kind=Organization",
+			initial: TagsTagBindingParentRef{
+				Kind:     "Organization",
+				External: "organizations/123456789",
+			},
+			expectedExternal: "//cloudresourcemanager.googleapis.com/organizations/123456789",
+		},
+		{
+			name: "External: //cloudresourcemanager.googleapis.com/organizations/{organization} with kind=Organization",
+			initial: TagsTagBindingParentRef{
+				Kind:     "Organization",
+				External: "//cloudresourcemanager.googleapis.com/organizations/123456789",
+			},
+			expectedExternal: "//cloudresourcemanager.googleapis.com/organizations/123456789",
+		},
+		{
+			name: "External: organizations/{organization} with no kind (should infer Organization)",
+			initial: TagsTagBindingParentRef{
+				External: "organizations/123456789",
+			},
+			expectedExternal: "//cloudresourcemanager.googleapis.com/organizations/123456789",
+		},
+		{
+			name: "External: //cloudresourcemanager.googleapis.com/organizations/{organization} with no kind (should infer Organization)",
+			initial: TagsTagBindingParentRef{
+				External: "//cloudresourcemanager.googleapis.com/organizations/123456789",
+			},
+			expectedExternal: "//cloudresourcemanager.googleapis.com/organizations/123456789",
+		},
 	}
 
 	for _, tt := range tests {

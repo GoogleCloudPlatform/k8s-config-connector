@@ -64,6 +64,14 @@ func (r *OrganizationRef) ValidateExternal(external string) error {
 	return nil
 }
 
+func (r *OrganizationRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &OrganizationIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
 func (r *OrganizationRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	if r.External == "" {
 		return fmt.Errorf("must specify 'external' in 'organizationRef'")
@@ -92,6 +100,10 @@ type Organization = OrganizationIdentity
 var _ identity.Identity = &OrganizationIdentity{}
 
 var OrganizationFormat = gcpurls.Template[OrganizationIdentity]("cloudresourcemanager.googleapis.com", "organizations/{organizationID}")
+
+func (i *OrganizationIdentity) Host() string {
+	return OrganizationFormat.Host()
+}
 
 func (i *OrganizationIdentity) String() string {
 	return OrganizationFormat.ToString(*i)

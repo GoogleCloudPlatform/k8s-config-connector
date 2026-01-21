@@ -110,7 +110,11 @@ func (r *TagsTagBindingParentRef) Normalize(ctx context.Context, reader client.R
 func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 	kind := r.Kind
 	if kind == "" {
-		kind = "Project"
+		if r.External != "" && (strings.HasPrefix(r.External, "organizations/") || strings.Contains(r.External, "/organizations/")) {
+			kind = "Organization"
+		} else {
+			kind = "Project"
+		}
 	}
 
 	if kind == "Project" {
@@ -119,13 +123,19 @@ func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 		}
 	}
 
-	ref, err := refs.NewRefByKind(kind)
-	if err != nil {
-		return "", nil, err
-	}
-
-	if err := refs.SetRefFields(ref, r.Name, r.Namespace, r.External); err != nil {
-		return "", nil, err
+	var ref refs.Ref
+	var err error
+	if kind == "Organization" {
+		ref = &refs.OrganizationRef{}
+		ref.SetExternal(r.External)
+	} else {
+		ref, err = refs.NewRefByKind(kind)
+		if err != nil {
+			return "", nil, err
+		}
+		if err := refs.SetRefFields(ref, r.Name, r.Namespace, r.External); err != nil {
+			return "", nil, err
+		}
 	}
 
 	// Get host/service
@@ -140,8 +150,12 @@ func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 	}
 
 	// Update External to canonical form (without host)
-	if err := refs.SetRefFields(ref, r.Name, r.Namespace, id.String()); err != nil {
-		return "", nil, err
+	if kind == "Organization" {
+		ref.SetExternal(id.String())
+	} else {
+		if err := refs.SetRefFields(ref, r.Name, r.Namespace, id.String()); err != nil {
+			return "", nil, err
+		}
 	}
 
 	idV2, ok := id.(identity.IdentityV2)
