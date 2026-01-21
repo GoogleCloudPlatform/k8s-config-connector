@@ -123,19 +123,13 @@ func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 		}
 	}
 
-	var ref refs.Ref
-	var err error
-	if kind == "Organization" {
-		ref = &refs.OrganizationRef{}
-		ref.SetExternal(r.External)
-	} else {
-		ref, err = refs.NewRefByKind(kind)
-		if err != nil {
-			return "", nil, err
-		}
-		if err := refs.SetRefFields(ref, r.Name, r.Namespace, r.External); err != nil {
-			return "", nil, err
-		}
+	ref, err := refs.NewRefByKind(kind)
+	if err != nil {
+		return "", nil, err
+	}
+
+	if err := refs.SetRefFields(ref, r.Name, r.Namespace, r.External); err != nil {
+		return "", nil, err
 	}
 
 	// Get host/service
@@ -150,12 +144,8 @@ func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 	}
 
 	// Update External to canonical form (without host)
-	if kind == "Organization" {
-		ref.SetExternal(id.String())
-	} else {
-		if err := refs.SetRefFields(ref, r.Name, r.Namespace, id.String()); err != nil {
-			return "", nil, err
-		}
+	if err := refs.SetRefFields(ref, r.Name, r.Namespace, id.String()); err != nil {
+		return "", nil, err
 	}
 
 	idV2, ok := id.(identity.IdentityV2)

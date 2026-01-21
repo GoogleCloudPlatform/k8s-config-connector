@@ -28,6 +28,16 @@ import (
 	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
+var OrganizationGVK = schema.GroupVersionKind{
+	Group:   "resourcemanager.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "Organization",
+}
+
+func init() {
+	Register(&OrganizationRef{})
+}
+
 // OrganizationRef represents the Organization that this resource belongs to.
 type OrganizationRef struct {
 	// The 'name' field of an organization, when not managed by Config Connector.
@@ -38,8 +48,7 @@ type OrganizationRef struct {
 var _ Ref = &OrganizationRef{}
 
 func (r *OrganizationRef) GetGVK() schema.GroupVersionKind {
-	// There is no CRD yet for Organization
-	return schema.GroupVersionKind{}
+	return OrganizationGVK
 }
 
 func (r *OrganizationRef) GetNamespacedName() types.NamespacedName {
