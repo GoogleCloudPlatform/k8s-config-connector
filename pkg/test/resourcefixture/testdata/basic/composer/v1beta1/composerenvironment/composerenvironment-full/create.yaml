@@ -16,8 +16,6 @@ kind: ComposerEnvironment
 metadata:
   name: composerenvironment-${uniqueId}
 spec:
-  labels:
-    custom-label: "foo"
   location: us-central1
   projectRef:
     external: ${projectId}

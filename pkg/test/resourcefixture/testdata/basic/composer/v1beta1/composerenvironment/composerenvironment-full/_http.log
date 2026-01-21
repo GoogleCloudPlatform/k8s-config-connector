@@ -142,7 +142,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
     }
   },
   "labels": {
-    "custom-label": "foo"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}"
 }
@@ -280,7 +281,8 @@ X-Xss-Protection: 0
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "labels": {
-      "custom-label": "foo"
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
     "storageConfig": {
@@ -384,7 +386,8 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "custom-label": "foo"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "storageConfig": {
@@ -396,7 +399,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.environmentSize%2Cconfig.nodeConfig.network%2Cconfig.nodeConfig.serviceAccount%2Cconfig.privateEnvironmentConfig.cloudComposerNetworkIpv4CidrBlock%2Cconfig.privateEnvironmentConfig.cloudSqlIpv4CidrBlock%2Cconfig.privateEnvironmentConfig.enablePrivateBuildsOnly%2Cconfig.privateEnvironmentConfig.enablePrivateEnvironment%2Cconfig.softwareConfig.imageVersion%2Clabels
+PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.environmentSize%2Cconfig.nodeConfig.network%2Cconfig.nodeConfig.serviceAccount%2Cconfig.privateEnvironmentConfig.cloudComposerNetworkIpv4CidrBlock%2Cconfig.privateEnvironmentConfig.cloudSqlIpv4CidrBlock%2Cconfig.privateEnvironmentConfig.enablePrivateBuildsOnly%2Cconfig.privateEnvironmentConfig.enablePrivateEnvironment%2Cconfig.softwareConfig.imageVersion
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
@@ -468,7 +471,8 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "custom-label": "bar"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "storageConfig": {
@@ -611,7 +615,8 @@ X-Xss-Protection: 0
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "labels": {
-      "custom-label": "foo"
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
     "storageConfig": {
@@ -715,7 +720,8 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "custom-label": "foo"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "storageConfig": {

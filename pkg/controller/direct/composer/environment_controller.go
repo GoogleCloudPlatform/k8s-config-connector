@@ -107,8 +107,20 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, reader client.R
 }
 
 func (m *modelEnvironment) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	i := &krm.EnvironmentIdentity{}
+	if err := i.FromExternal(url); err != nil {
+		return nil, fmt.Errorf("error parsing url: %w", err)
+	}
+
+	// Get composer GCP client
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &EnvironmentAdapter{
+		id:        i,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type EnvironmentAdapter struct {

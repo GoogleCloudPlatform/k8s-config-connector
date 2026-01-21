@@ -24,8 +24,6 @@ spec:
         webserver-rbac_user_registration_role: Viewer
       imageVersion: composer-3-airflow-2.10.5-build.19
       webServerPluginsMode: PLUGINS_ENABLED
-  labels:
-    custom-label: bar
   location: us-central1
   projectRef:
     external: ${projectId}
