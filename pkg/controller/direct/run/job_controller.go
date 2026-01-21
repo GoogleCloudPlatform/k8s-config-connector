@@ -86,7 +86,7 @@ func (m *modelJob) AdapterForObject(ctx context.Context, reader client.Reader, u
 	mapCtx := &direct.MapContext{}
 
 	copied := obj.DeepCopy()
-	desired := RunJobSpec_ToProto(mapCtx, &copied.Spec)
+	desired := RunJobSpec_v1beta1_ToProto(mapCtx, &copied.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -182,7 +182,7 @@ func (a *JobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 
 	mapCtx := &direct.MapContext{}
 	status := &krm.RunJobStatus{}
-	status.ObservedState = RunJobObservedState_FromProto(mapCtx, created)
+	status.ObservedState = RunJobObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -233,7 +233,7 @@ func (a *JobAdapter) updateStatus(ctx context.Context, updated *pb.Job, updateOp
 	log := klog.FromContext(ctx)
 	status := &krm.RunJobStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = RunJobObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = RunJobObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -260,7 +260,7 @@ func (a *JobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 
 	obj := &krm.RunJob{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(RunJobSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(RunJobSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
