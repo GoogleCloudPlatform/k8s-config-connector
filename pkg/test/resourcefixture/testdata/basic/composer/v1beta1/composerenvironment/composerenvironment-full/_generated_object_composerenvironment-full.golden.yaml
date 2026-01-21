@@ -4,16 +4,28 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
   name: composerenvironment-${uniqueId}
   namespace: ${uniqueId}
 spec:
   config:
+    environmentSize: ENVIRONMENT_SIZE_LARGE
     nodeConfig:
+      composerInternalIPv4CIDRBlock: 100.64.128.0/20
       serviceAccountRef:
         name: gsa-${uniqueId}
+    privateEnvironmentConfig:
+      enablePrivateBuildsOnly: false
+      enablePrivateEnvironment: false
+    softwareConfig:
+      airflowConfigOverrides:
+        webserver-rbac_user_registration_role: Viewer
+      imageVersion: composer-3-airflow-2.10.5-build.19
+      webServerPluginsMode: PLUGINS_ENABLED
+  labels:
+    custom-label: bar
   location: us-central1
   projectRef:
     external: ${projectId}
@@ -25,7 +37,7 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     config:
       airflowURI: https://{uuid}-dot-{location}.composer.googleusercontent.com

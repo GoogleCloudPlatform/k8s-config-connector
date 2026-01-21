@@ -303,6 +303,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.replacePaths[".status.observedState.create_time"] = "1970-01-01T00:00:00Z"
 	}
 
+	// Specific to Composer
+	visitor.replacePaths[".status.observedState.config.airflowURI"] = "https://{uuid}-dot-{location}.composer.googleusercontent.com"
+
 	// Specific to Datacatalog
 	visitor.replacePaths[".dataCatalogTimestamps.createTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".dataCatalogTimestamps.updateTime"] = "2024-04-01T12:34:56.123456Z"
