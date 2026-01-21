@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -47,6 +48,10 @@ type ArtifactRegistryRepositoryRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+func init() {
+	refs.Register(&ArtifactRegistryRepositoryRef{})
+}
+
 func (r *ArtifactRegistryRepositoryRef) GetGVK() schema.GroupVersionKind {
 	return ArtifactRegistryRepositoryGVK
 }
@@ -72,6 +77,14 @@ func (r *ArtifactRegistryRepositoryRef) ValidateExternal(ref string) error {
 		return err
 	}
 	return nil
+}
+
+func (r *ArtifactRegistryRepositoryRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ArtifactRegistryRepositoryIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
 func (r *ArtifactRegistryRepositoryRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {

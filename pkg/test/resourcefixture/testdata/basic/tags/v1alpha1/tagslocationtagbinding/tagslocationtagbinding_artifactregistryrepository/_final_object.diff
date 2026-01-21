@@ -1,0 +1,11 @@
+6d5
+<     cnrm.cloud.google.com/state-into-spec: absent
+20c19
+<   resourceID: tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}
+---
+>   resourceID: tagBindings/%2F%2F%2Fprojects%2F${projectId}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}
+30c29,30
+<   name: tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}
+---
+>   externalRef: tagBindings/%2F%2F%2Fprojects%2F${projectId}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}
+>   name: tagBindings/%2F%2F%2Fprojects%2F${projectId}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}
