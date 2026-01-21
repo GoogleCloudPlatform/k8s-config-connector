@@ -24,6 +24,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"google.golang.org/api/option"
@@ -87,9 +88,10 @@ func (m *modelWorkerPool) AdapterForObject(ctx context.Context, reader client.Re
 		return nil, err
 	}
 	return &WorkerPoolAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   desired,
+		id:                 id,
+		gcpClient:          gcpClient,
+		desired:            desired,
+		lastModifiedCookie: obj.Status.LastModifiedCookie,
 	}, nil
 }
 
@@ -117,10 +119,11 @@ func (m *modelWorkerPool) AdapterForURL(ctx context.Context, url string) (direct
 }
 
 type WorkerPoolAdapter struct {
-	id        *krm.WorkerPoolIdentity
-	gcpClient *gcp.WorkerPoolsClient
-	desired   *pb.WorkerPool
-	actual    *pb.WorkerPool
+	id                 *krm.WorkerPoolIdentity
+	gcpClient          *gcp.WorkerPoolsClient
+	desired            *pb.WorkerPool
+	actual             *pb.WorkerPool
+	lastModifiedCookie *string
 }
 
 var _ directbase.Adapter = &WorkerPoolAdapter{}
@@ -169,6 +172,12 @@ func (a *WorkerPoolAdapter) Create(ctx context.Context, createOp *directbase.Cre
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
+	newCookie, err := common.NewCookie(a.desired, created)
+	if err != nil {
+		return fmt.Errorf("composing cookie: %w", err)
+	}
+	log.V(2).Info("WorkerPool cookie added", "name", a.id, "new-cookie", newCookie.String())
+	status.LastModifiedCookie = direct.LazyPtr(newCookie.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -177,6 +186,17 @@ func (a *WorkerPoolAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating WorkerPool", "name", a.id)
 
+	currentCookie, err := common.NewCookie(a.desired, a.actual)
+	if err != nil {
+		return err
+	}
+	if currentCookie.Equal(a.lastModifiedCookie) {
+		log.V(2).Info("resource is up to date", "name", a.id)
+		return a.updateStatus(ctx, a.actual, updateOp)
+	}
+
+	// We need to set the name for the update request, but we don't want to modify a.desired
+	// as that would change the computed hash (specHash).
 	updateWorkerPool := proto.Clone(a.desired).(*pb.WorkerPool)
 	updateWorkerPool.Name = a.actual.Name
 	req := &pb.UpdateWorkerPoolRequest{
@@ -195,6 +215,7 @@ func (a *WorkerPoolAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 }
 
 func (a *WorkerPoolAdapter) updateStatus(ctx context.Context, updated *pb.WorkerPool, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
 	status := &krm.RunWorkerPoolStatus{}
 	mapCtx := &direct.MapContext{}
 	status.ObservedState = RunWorkerPoolObservedState_v1alpha1_FromProto(mapCtx, updated)
@@ -202,6 +223,17 @@ func (a *WorkerPoolAdapter) updateStatus(ctx context.Context, updated *pb.Worker
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
+
+	updatedCookie, err := common.NewCookie(a.desired, updated)
+	if err != nil {
+		return err
+	}
+	status.LastModifiedCookie = direct.LazyPtr(updatedCookie.String())
+
+	if !updatedCookie.Equal(a.lastModifiedCookie) {
+		log.Info("WorkerPool cookie updated", "name", a.id, "old-cookie", direct.ValueOf(a.lastModifiedCookie),
+			"new-cookie", updatedCookie.String())
+	}
 
 	return updateOp.UpdateStatus(ctx, status, nil)
 }

@@ -1,9 +1,9 @@
----
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.16.5
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
@@ -20,6 +20,7 @@ spec:
     - gcprunworkerpool
     - gcprunworkerpools
     singular: runworkerpool
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -44,19 +45,14 @@ spec:
         description: RunWorkerPool is the Schema for the RunWorkerPool API
         properties:
           apiVersion:
-            description: |-
-              APIVersion defines the versioned schema of this representation of an object.
-              Servers should convert recognized schemas to the latest internal value, and
-              may reject unrecognized values.
-              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: |-
-              Kind is a string value representing the REST resource this object represents.
-              Servers may infer this from the endpoint the client submits requests to.
-              Cannot be updated.
-              In CamelCase.
-              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -66,30 +62,26 @@ spec:
               annotations:
                 additionalProperties:
                   type: string
-                description: |-
-                  Optional. Unstructured key value map that may be set by external tools to
-                   store and arbitrary metadata. They are not queryable and should be
-                   preserved when modifying objects.
+                description: Optional. Unstructured key value map that may be set
+                  by external tools to store and arbitrary metadata. They are not
+                  queryable and should be preserved when modifying objects.
                 type: object
               binaryAuthorization:
                 description: Optional. Settings for the Binary Authorization feature.
                 properties:
                   breakglassJustification:
-                    description: |-
-                      Optional. If present, indicates to use Breakglass using this justification.
-                       If use_default is False, then it must be empty.
-                       For more information on breakglass, see
-                       https://cloud.google.com/binary-authorization/docs/using-breakglass
+                    description: Optional. If present, indicates to use Breakglass
+                      using this justification. If use_default is False, then it must
+                      be empty. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass
                     type: string
                   policy:
-                    description: |-
-                      Optional. The path to a binary authorization policy.
-                       Format: `projects/{project}/platforms/cloudRun/{policy-name}`
+                    description: 'Optional. The path to a binary authorization policy.
+                      Format: `projects/{project}/platforms/cloudRun/{policy-name}`'
                     type: string
                   useDefault:
-                    description: |-
-                      Optional. If True, indicates to use the default project's binary
-                       authorization policy. If False, binary authorization will be disabled.
+                    description: Optional. If True, indicates to use the default project's
+                      binary authorization policy. If False, binary authorization
+                      will be disabled.
                     type: boolean
                 type: object
               client:
@@ -105,26 +97,22 @@ spec:
                   type: string
                 type: array
               description:
-                description: |-
-                  User-provided description of the WorkerPool. This field currently has a
-                   512-character limit.
+                description: User-provided description of the WorkerPool. This field
+                  currently has a 512-character limit.
                 type: string
               instanceSplits:
-                description: |-
-                  Optional. Specifies how to distribute instances over a collection of
-                   Revisions belonging to the WorkerPool.
+                description: Optional. Specifies how to distribute instances over
+                  a collection of Revisions belonging to the WorkerPool.
                 items:
                   properties:
                     percent:
-                      description: |-
-                        Specifies percent of the instance split to this Revision.
-                         This defaults to zero if unspecified.
+                      description: Specifies percent of the instance split to this
+                        Revision. This defaults to zero if unspecified.
                       format: int32
                       type: integer
                     revision:
-                      description: |-
-                        Revision to which to assign this portion of instances, if split allocation
-                         is by revision.
+                      description: Revision to which to assign this portion of instances,
+                        if split allocation is by revision.
                       type: string
                     type:
                       description: The allocation type for this instance split.
@@ -132,14 +120,28 @@ spec:
                   type: object
                 type: array
               launchStage:
-                description: |-
-                  Optional. The launch stage as defined by Google Cloud Platform Launch Stages.
-                   Cloud Run supports `ALPHA`, `BETA`, and `GA`. If no value is specified, GA is assumed.
+                description: Optional. The launch stage as defined by Google Cloud
+                  Platform Launch Stages. Cloud Run supports `ALPHA`, `BETA`, and
+                  `GA`. If no value is specified, GA is assumed.
                 type: string
               location:
                 type: string
               projectRef:
                 description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
                 properties:
                   external:
                     description: The `projectID` field of a project, when not managed
@@ -190,27 +192,24 @@ spec:
                        rules.
                     type: object
                   containers:
-                    description: |-
-                      Holds list of the containers that defines the unit of execution for this
-                       Revision.
+                    description: Holds list of the containers that defines the unit
+                      of execution for this Revision.
                     items:
                       properties:
                         args:
-                          description: |-
-                            Arguments to the entrypoint.
-                             The docker image's CMD is used if this is not provided.
+                          description: Arguments to the entrypoint. The docker image's
+                            CMD is used if this is not provided.
                           items:
                             type: string
                           type: array
                         baseImageURI:
-                          description: |-
-                            Base image for this container. Only supported for services. If set, it
-                             indicates that the service is enrolled into automatic base image update.
+                          description: Base image for this container. Only supported
+                            for services. If set, it indicates that the service is
+                            enrolled into automatic base image update.
                           type: string
                         command:
-                          description: |-
-                            Entrypoint array. Not executed within a shell.
-                             The docker image's ENTRYPOINT is used if this is not provided.
+                          description: Entrypoint array. Not executed within a shell.
+                            The docker image's ENTRYPOINT is used if this is not provided.
                           items:
                             type: string
                           type: array
@@ -226,15 +225,14 @@ spec:
                           items:
                             properties:
                               name:
-                                description: |-
-                                  Required. Name of the environment variable. Must not exceed 32768
-                                   characters.
+                                description: Required. Name of the environment variable.
+                                  Must not exceed 32768 characters.
                                 type: string
                               value:
-                                description: |-
-                                  Literal value of the environment variable.
-                                   Defaults to "", and the maximum length is 32768 bytes.
-                                   Variable references are not supported in Cloud Run.
+                                description: Literal value of the environment variable.
+                                  Defaults to "", and the maximum length is 32768
+                                  bytes. Variable references are not supported in
+                                  Cloud Run.
                                 type: string
                               valueSource:
                                 description: Source for the environment variable's
@@ -245,68 +243,64 @@ spec:
                                       from Cloud Secret Manager.
                                     properties:
                                       secret:
-                                        description: |-
-                                          Required. The name of the secret in Cloud Secret Manager.
-                                           Format: {secret_name} if the secret is in the same project.
-                                           projects/{project}/secrets/{secret_name} if the secret is
-                                           in a different project.
+                                        description: 'Required. The name of the secret
+                                          in Cloud Secret Manager. Format: {secret_name}
+                                          if the secret is in the same project. projects/{project}/secrets/{secret_name}
+                                          if the secret is in a different project.'
                                         type: string
                                       version:
-                                        description: |-
-                                          The Cloud Secret Manager secret version.
-                                           Can be 'latest' for the latest version, an integer for a specific version,
-                                           or a version alias.
+                                        description: The Cloud Secret Manager secret
+                                          version. Can be 'latest' for the latest
+                                          version, an integer for a specific version,
+                                          or a version alias.
                                         type: string
                                     type: object
                                 type: object
                             type: object
                           type: array
                         image:
-                          description: |-
-                            Required. Name of the container image in Dockerhub, Google Artifact
-                             Registry, or Google Container Registry. If the host is not provided,
-                             Dockerhub is assumed.
+                          description: Required. Name of the container image in Dockerhub,
+                            Google Artifact Registry, or Google Container Registry.
+                            If the host is not provided, Dockerhub is assumed.
                           type: string
                         livenessProbe:
-                          description: |-
-                            Periodic probe of container liveness.
-                             Container will be restarted if the probe fails.
+                          description: Periodic probe of container liveness. Container
+                            will be restarted if the probe fails.
                           properties:
                             failureThreshold:
-                              description: |-
-                                Optional. Minimum consecutive failures for the probe to be considered
-                                 failed after having succeeded. Defaults to 3. Minimum value is 1.
+                              description: Optional. Minimum consecutive failures
+                                for the probe to be considered failed after having
+                                succeeded. Defaults to 3. Minimum value is 1.
                               format: int32
                               type: integer
                             grpc:
-                              description: |-
-                                Optional. GRPC specifies an action involving a gRPC port.
-                                 Exactly one of httpGet, tcpSocket, or grpc must be specified.
+                              description: Optional. GRPC specifies an action involving
+                                a gRPC port. Exactly one of httpGet, tcpSocket, or
+                                grpc must be specified.
                               properties:
                                 port:
-                                  description: |-
-                                    Optional. Port number of the gRPC service. Number must be in the range 1 to
-                                     65535. If not specified, defaults to the exposed port of the container,
-                                     which is the value of container.ports[0].containerPort.
+                                  description: Optional. Port number of the gRPC service.
+                                    Number must be in the range 1 to 65535. If not
+                                    specified, defaults to the exposed port of the
+                                    container, which is the value of container.ports[0].containerPort.
                                   format: int32
                                   type: integer
                                 service:
-                                  description: |-
-                                    Optional. Service is the name of the service to place in the gRPC
-                                     HealthCheckRequest (see
-                                     https://github.com/grpc/grpc/blob/master/doc/health-checking.md ). If this
-                                     is not specified, the default behavior is defined by gRPC.
+                                  description: Optional. Service is the name of the
+                                    service to place in the gRPC HealthCheckRequest
+                                    (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md
+                                    ). If this is not specified, the default behavior
+                                    is defined by gRPC.
                                   type: string
                               type: object
                             httpGet:
-                              description: |-
-                                Optional. HTTPGet specifies the http request to perform.
-                                 Exactly one of httpGet, tcpSocket, or grpc must be specified.
+                              description: Optional. HTTPGet specifies the http request
+                                to perform. Exactly one of httpGet, tcpSocket, or
+                                grpc must be specified.
                               properties:
                                 httpHeaders:
-                                  description: |-
-                                    Optional. Custom headers to set in the request. HTTP allows repeated
-                                     headers.
+                                  description: Optional. Custom headers to set in
+                                    the request. HTTP allows repeated headers.
                                   items:
                                     properties:
                                       name:
@@ -322,46 +316,47 @@ spec:
                                     server. Defaults to '/'.
                                   type: string
                                 port:
-                                  description: |-
-                                    Optional. Port number to access on the container. Must be in the range 1 to
-                                     65535. If not specified, defaults to the exposed port of the container,
-                                     which is the value of container.ports[0].containerPort.
+                                  description: Optional. Port number to access on
+                                    the container. Must be in the range 1 to 65535.
+                                    If not specified, defaults to the exposed port
+                                    of the container, which is the value of container.ports[0].containerPort.
                                   format: int32
                                   type: integer
                               type: object
                             initialDelaySeconds:
-                              description: |-
-                                Optional. Number of seconds after the container has started before the
-                                 probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum
-                                 value for liveness probe is 3600. Maximum value for startup probe is 240.
+                              description: Optional. Number of seconds after the container
+                                has started before the probe is initiated. Defaults
+                                to 0 seconds. Minimum value is 0. Maximum value for
+                                liveness probe is 3600. Maximum value for startup
+                                probe is 240.
                               format: int32
                               type: integer
                             periodSeconds:
-                              description: |-
-                                Optional. How often (in seconds) to perform the probe.
-                                 Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe
-                                 is 3600. Maximum value for startup probe is 240.
-                                 Must be greater or equal than timeout_seconds.
+                              description: Optional. How often (in seconds) to perform
+                                the probe. Default to 10 seconds. Minimum value is
+                                1. Maximum value for liveness probe is 3600. Maximum
+                                value for startup probe is 240. Must be greater or
+                                equal than timeout_seconds.
                               format: int32
                               type: integer
                             tcpSocket:
-                              description: |-
-                                Optional. TCPSocket specifies an action involving a TCP port.
-                                 Exactly one of httpGet, tcpSocket, or grpc must be specified.
+                              description: Optional. TCPSocket specifies an action
+                                involving a TCP port. Exactly one of httpGet, tcpSocket,
+                                or grpc must be specified.
                               properties:
                                 port:
-                                  description: |-
-                                    Optional. Port number to access on the container. Must be in the range 1 to
-                                     65535. If not specified, defaults to the exposed port of the container,
-                                     which is the value of container.ports[0].containerPort.
+                                  description: Optional. Port number to access on
+                                    the container. Must be in the range 1 to 65535.
+                                    If not specified, defaults to the exposed port
+                                    of the container, which is the value of container.ports[0].containerPort.
                                   format: int32
                                   type: integer
                               type: object
                             timeoutSeconds:
-                              description: |-
-                                Optional. Number of seconds after which the probe times out.
-                                 Defaults to 1 second. Minimum value is 1. Maximum value is 3600.
-                                 Must be smaller than period_seconds.
+                              description: Optional. Number of seconds after which
+                                the probe times out. Defaults to 1 second. Minimum
+                                value is 1. Maximum value is 3600. Must be smaller
+                                than period_seconds.
                               format: int32
                               type: integer
                           type: object
@@ -380,15 +375,14 @@ spec:
                           items:
                             properties:
                               containerPort:
-                                description: |-
-                                  Port number the container listens on.
-                                   This must be a valid TCP port number, 0 < container_port < 65536.
+                                description: Port number the container listens on.
+                                  This must be a valid TCP port number, 0 < container_port
+                                  < 65536.
                                 format: int32
                                 type: integer
                               name:
-                                description: |-
-                                  If specified, used to specify which protocol to use.
-                                   Allowed values are "http1" and "h2c".
+                                description: If specified, used to specify which protocol
+                                  to use. Allowed values are "http1" and "h2c".
                                 type: string
                             type: object
                           type: array
@@ -396,10 +390,10 @@ spec:
                           description: Compute Resource requirements by this container.
                           properties:
                             cpuIdle:
-                              description: |-
-                                Determines whether CPU is only allocated during requests (true by default).
-                                 However, if ResourceRequirements is set, the caller must explicitly
-                                 set this field to true to preserve the default behavior.
+                              description: Determines whether CPU is only allocated
+                                during requests (true by default). However, if ResourceRequirements
+                                is set, the caller must explicitly set this field
+                                to true to preserve the default behavior.
                               type: boolean
                             limits:
                               additionalProperties:
@@ -415,54 +409,51 @@ spec:
                                   https://cloud.google.com/run/docs/configuring/memory-limits
                               type: object
                             startupCPUBoost:
-                              description: |-
-                                Determines whether CPU should be boosted on startup of a new container
-                                 instance above the requested CPU threshold, this can help reduce cold-start
-                                 latency.
+                              description: Determines whether CPU should be boosted
+                                on startup of a new container instance above the requested
+                                CPU threshold, this can help reduce cold-start latency.
                               type: boolean
                           type: object
                         startupProbe:
-                          description: |-
-                            Startup probe of application within the container.
-                             All other probes are disabled if a startup probe is provided, until it
-                             succeeds. Container will not be added to service endpoints if the probe
-                             fails.
+                          description: Startup probe of application within the container.
+                            All other probes are disabled if a startup probe is provided,
+                            until it succeeds. Container will not be added to service
+                            endpoints if the probe fails.
                           properties:
                             failureThreshold:
-                              description: |-
-                                Optional. Minimum consecutive failures for the probe to be considered
-                                 failed after having succeeded. Defaults to 3. Minimum value is 1.
+                              description: Optional. Minimum consecutive failures
+                                for the probe to be considered failed after having
+                                succeeded. Defaults to 3. Minimum value is 1.
                               format: int32
                               type: integer
                             grpc:
-                              description: |-
-                                Optional. GRPC specifies an action involving a gRPC port.
-                                 Exactly one of httpGet, tcpSocket, or grpc must be specified.
+                              description: Optional. GRPC specifies an action involving
+                                a gRPC port. Exactly one of httpGet, tcpSocket, or
+                                grpc must be specified.
                               properties:
                                 port:
-                                  description: |-
-                                    Optional. Port number of the gRPC service. Number must be in the range 1 to
-                                     65535. If not specified, defaults to the exposed port of the container,
-                                     which is the value of container.ports[0].containerPort.
+                                  description: Optional. Port number of the gRPC service.
+                                    Number must be in the range 1 to 65535. If not
+                                    specified, defaults to the exposed port of the
+                                    container, which is the value of container.ports[0].containerPort.
                                   format: int32
                                   type: integer
                                 service:
-                                  description: |-
-                                    Optional. Service is the name of the service to place in the gRPC
-                                     HealthCheckRequest (see
-                                     https://github.com/grpc/grpc/blob/master/doc/health-checking.md ). If this
-                                     is not specified, the default behavior is defined by gRPC.
+                                  description: Optional. Service is the name of the
+                                    service to place in the gRPC HealthCheckRequest
+                                    (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md
+                                    ). If this is not specified, the default behavior
+                                    is defined by gRPC.
                                   type: string
                               type: object
                             httpGet:
-                              description: |-
-                                Optional. HTTPGet specifies the http request to perform.
-                                 Exactly one of httpGet, tcpSocket, or grpc must be specified.
+                              description: Optional. HTTPGet specifies the http request
+                                to perform. Exactly one of httpGet, tcpSocket, or
+                                grpc must be specified.
                               properties:
                                 httpHeaders:
-                                  description: |-
-                                    Optional. Custom headers to set in the request. HTTP allows repeated
-                                     headers.
+                                  description: Optional. Custom headers to set in
+                                    the request. HTTP allows repeated headers.
                                   items:
                                     properties:
                                       name:
@@ -478,46 +469,47 @@ spec:
                                     server. Defaults to '/'.
                                   type: string
                                 port:
-                                  description: |-
-                                    Optional. Port number to access on the container. Must be in the range 1 to
-                                     65535. If not specified, defaults to the exposed port of the container,
-                                     which is the value of container.ports[0].containerPort.
+                                  description: Optional. Port number to access on
+                                    the container. Must be in the range 1 to 65535.
+                                    If not specified, defaults to the exposed port
+                                    of the container, which is the value of container.ports[0].containerPort.
                                   format: int32
                                   type: integer
                               type: object
                             initialDelaySeconds:
-                              description: |-
-                                Optional. Number of seconds after the container has started before the
-                                 probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum
-                                 value for liveness probe is 3600. Maximum value for startup probe is 240.
+                              description: Optional. Number of seconds after the container
+                                has started before the probe is initiated. Defaults
+                                to 0 seconds. Minimum value is 0. Maximum value for
+                                liveness probe is 3600. Maximum value for startup
+                                probe is 240.
                               format: int32
                               type: integer
                             periodSeconds:
-                              description: |-
-                                Optional. How often (in seconds) to perform the probe.
-                                 Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe
-                                 is 3600. Maximum value for startup probe is 240.
-                                 Must be greater or equal than timeout_seconds.
+                              description: Optional. How often (in seconds) to perform
+                                the probe. Default to 10 seconds. Minimum value is
+                                1. Maximum value for liveness probe is 3600. Maximum
+                                value for startup probe is 240. Must be greater or
+                                equal than timeout_seconds.
                               format: int32
                               type: integer
                             tcpSocket:
-                              description: |-
-                                Optional. TCPSocket specifies an action involving a TCP port.
-                                 Exactly one of httpGet, tcpSocket, or grpc must be specified.
+                              description: Optional. TCPSocket specifies an action
+                                involving a TCP port. Exactly one of httpGet, tcpSocket,
+                                or grpc must be specified.
                               properties:
                                 port:
-                                  description: |-
-                                    Optional. Port number to access on the container. Must be in the range 1 to
-                                     65535. If not specified, defaults to the exposed port of the container,
-                                     which is the value of container.ports[0].containerPort.
+                                  description: Optional. Port number to access on
+                                    the container. Must be in the range 1 to 65535.
+                                    If not specified, defaults to the exposed port
+                                    of the container, which is the value of container.ports[0].containerPort.
                                   format: int32
                                   type: integer
                               type: object
                             timeoutSeconds:
-                              description: |-
-                                Optional. Number of seconds after which the probe times out.
-                                 Defaults to 1 second. Minimum value is 1. Maximum value is 3600.
-                                 Must be smaller than period_seconds.
+                              description: Optional. Number of seconds after which
+                                the probe times out. Defaults to 1 second. Minimum
+                                value is 1. Maximum value is 3600. Must be smaller
+                                than period_seconds.
                               format: int32
                               type: integer
                           type: object
@@ -526,12 +518,13 @@ spec:
                           items:
                             properties:
                               mountPath:
-                                description: |-
-                                  Required. Path within the container at which the volume should be mounted.
-                                   Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must
-                                   otherwise be `/cloudsql`. All instances defined in the Volume will be
-                                   available as `/cloudsql/[instance]`. For more information on Cloud SQL
-                                   volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run
+                                description: Required. Path within the container at
+                                  which the volume should be mounted. Must not contain
+                                  ':'. For Cloud SQL volumes, it can be left empty,
+                                  or must otherwise be `/cloudsql`. All instances
+                                  defined in the Volume will be available as `/cloudsql/[instance]`.
+                                  For more information on Cloud SQL volumes, visit
+                                  https://cloud.google.com/sql/docs/mysql/connect-run
                                 type: string
                               name:
                                 description: Required. This must match the Name of
@@ -540,27 +533,25 @@ spec:
                             type: object
                           type: array
                         workingDir:
-                          description: |-
-                            Container's working directory.
-                             If not specified, the container runtime's default will be used, which
-                             might be configured in the container image.
+                          description: Container's working directory. If not specified,
+                            the container runtime's default will be used, which might
+                            be configured in the container image.
                           type: string
                       type: object
                     type: array
                   encryptionKey:
-                    description: |-
-                      A reference to a customer managed encryption key (CMEK) to use to encrypt
-                       this container image. For more information, go to
-                       https://cloud.google.com/run/docs/securing/using-cmek
+                    description: A reference to a customer managed encryption key
+                      (CMEK) to use to encrypt this container image. For more information,
+                      go to https://cloud.google.com/run/docs/securing/using-cmek
                     type: string
                   encryptionKeyRevocationAction:
                     description: Optional. The action to take if the encryption key
                       is revoked.
                     type: string
                   encryptionKeyShutdownDuration:
-                    description: |-
-                      Optional. If encryption_key_revocation_action is SHUTDOWN, the duration
-                       before shutting down all instances. The minimum increment is 1 hour.
+                    description: Optional. If encryption_key_revocation_action is
+                      SHUTDOWN, the duration before shutting down all instances. The
+                      minimum increment is 1 hour.
                     type: string
                   labels:
                     additionalProperties:
@@ -587,25 +578,23 @@ spec:
                         type: string
                     type: object
                   revision:
-                    description: |-
-                      Optional. The unique name for the revision. If this field is omitted, it
-                       will be automatically generated based on the WorkerPool name.
+                    description: Optional. The unique name for the revision. If this
+                      field is omitted, it will be automatically generated based on
+                      the WorkerPool name.
                     type: string
                   serviceAccount:
-                    description: |-
-                      Optional. Email address of the IAM service account associated with the
-                       revision of the service. The service account represents the identity of the
-                       running revision, and determines what permissions the revision has. If not
-                       provided, the revision will use the project's default service account.
+                    description: Optional. Email address of the IAM service account
+                      associated with the revision of the service. The service account
+                      represents the identity of the running revision, and determines
+                      what permissions the revision has. If not provided, the revision
+                      will use the project's default service account.
                     type: string
                   serviceMesh:
                     description: Optional. Enables service mesh connectivity.
                     properties:
                       mesh:
-                        description: |-
-                          The Mesh resource name. Format:
-                           `projects/{project}/locations/global/meshes/{mesh}`, where `{project}` can
-                           be project id or number.
+                        description: 'The Mesh resource name. Format: `projects/{project}/locations/global/meshes/{mesh}`,
+                          where `{project}` can be project id or number.'
                         type: string
                     type: object
                   volumes:
@@ -614,18 +603,17 @@ spec:
                     items:
                       properties:
                         cloudSQLInstance:
-                          description: |-
-                            For Cloud SQL volumes, contains the specific instances that should be
-                             mounted. Visit https://cloud.google.com/sql/docs/mysql/connect-run for
-                             more information on how to connect Cloud SQL and Cloud Run.
+                          description: For Cloud SQL volumes, contains the specific
+                            instances that should be mounted. Visit https://cloud.google.com/sql/docs/mysql/connect-run
+                            for more information on how to connect Cloud SQL and Cloud
+                            Run.
                           properties:
                             instances:
-                              description: |-
-                                The Cloud SQL instance connection names, as can be found in
-                                 https://console.cloud.google.com/sql/instances. Visit
-                                 https://cloud.google.com/sql/docs/mysql/connect-run for more information on
-                                 how to connect Cloud SQL and Cloud Run. Format:
-                                 {project}:{location}:{instance}
+                              description: 'The Cloud SQL instance connection names,
+                                as can be found in https://console.cloud.google.com/sql/instances.
+                                Visit https://cloud.google.com/sql/docs/mysql/connect-run
+                                for more information on how to connect Cloud SQL and
+                                Cloud Run. Format: {project}:{location}:{instance}'
                               items:
                                 type: string
                               type: array
@@ -634,22 +622,20 @@ spec:
                           description: Ephemeral storage used as a shared volume.
                           properties:
                             medium:
-                              description: |-
-                                The medium on which the data is stored. Acceptable values today is only
-                                 MEMORY or none. When none, the default will currently be backed by memory
-                                 but could change over time. +optional
+                              description: The medium on which the data is stored.
+                                Acceptable values today is only MEMORY or none. When
+                                none, the default will currently be backed by memory
+                                but could change over time. +optional
                               type: string
                             sizeLimit:
-                              description: |-
-                                Limit on the storage usable by this EmptyDir volume.
-                                 The size limit is also applicable for memory medium.
-                                 The maximum usage on memory medium EmptyDir would be the minimum value
-                                 between the SizeLimit specified here and the sum of memory limits of all
-                                 containers. The default is nil which means that the limit is undefined.
-                                 More info:
-                                 https://cloud.google.com/run/docs/configuring/in-memory-volumes#configure-volume.
-                                 Info in Kubernetes:
-                                 https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
+                              description: 'Limit on the storage usable by this EmptyDir
+                                volume. The size limit is also applicable for memory
+                                medium. The maximum usage on memory medium EmptyDir
+                                would be the minimum value between the SizeLimit specified
+                                here and the sum of memory limits of all containers.
+                                The default is nil which means that the limit is undefined.
+                                More info: https://cloud.google.com/run/docs/configuring/in-memory-volumes#configure-volume.
+                                Info in Kubernetes: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir'
                               type: string
                           type: object
                         gcs:
@@ -660,9 +646,9 @@ spec:
                               description: Cloud Storage Bucket name.
                               type: string
                             mountOptions:
-                              description: |-
-                                A list of additional flags to pass to the gcsfuse CLI.
-                                 Options should be specified without the leading "--".
+                              description: A list of additional flags to pass to the
+                                gcsfuse CLI. Options should be specified without the
+                                leading "--".
                               items:
                                 type: string
                               type: array
@@ -715,12 +701,13 @@ spec:
                               format: int32
                               type: integer
                             items:
-                              description: |-
-                                If unspecified, the volume will expose a file whose name is the
-                                 secret, relative to VolumeMount.mount_path.
-                                 If specified, the key will be used as the version to fetch from Cloud
-                                 Secret Manager and the path will be the name of the file exposed in the
-                                 volume. When items are defined, they must specify a path and a version.
+                              description: If unspecified, the volume will expose
+                                a file whose name is the secret, relative to VolumeMount.mount_path.
+                                If specified, the key will be used as the version
+                                to fetch from Cloud Secret Manager and the path will
+                                be the name of the file exposed in the volume. When
+                                items are defined, they must specify a path and a
+                                version.
                               items:
                                 properties:
                                   mode:
@@ -746,63 +733,57 @@ spec:
                                       secret in the container.
                                     type: string
                                   version:
-                                    description: |-
-                                      The Cloud Secret Manager secret version.
-                                       Can be 'latest' for the latest value, or an integer or a secret alias for a
-                                       specific version.
+                                    description: The Cloud Secret Manager secret version.
+                                      Can be 'latest' for the latest value, or an
+                                      integer or a secret alias for a specific version.
                                     type: string
                                 type: object
                               type: array
                             secret:
-                              description: |-
-                                Required. The name of the secret in Cloud Secret Manager.
-                                 Format: {secret} if the secret is in the same project.
-                                 projects/{project}/secrets/{secret} if the secret is
-                                 in a different project.
+                              description: 'Required. The name of the secret in Cloud
+                                Secret Manager. Format: {secret} if the secret is
+                                in the same project. projects/{project}/secrets/{secret}
+                                if the secret is in a different project.'
                               type: string
                           type: object
                       type: object
                     type: array
                   vpcAccess:
-                    description: |-
-                      Optional. VPC Access configuration to use for this Revision. For more
-                       information, visit
-                       https://cloud.google.com/run/docs/configuring/connecting-vpc.
+                    description: Optional. VPC Access configuration to use for this
+                      Revision. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc.
                     properties:
                       connector:
-                        description: |-
-                          VPC Access connector name.
-                           Format: `projects/{project}/locations/{location}/connectors/{connector}`,
-                           where `{project}` can be project id or number.
-                           For more information on sending traffic to a VPC network via a connector,
-                           visit https://cloud.google.com/run/docs/configuring/vpc-connectors.
+                        description: 'VPC Access connector name. Format: `projects/{project}/locations/{location}/connectors/{connector}`,
+                          where `{project}` can be project id or number. For more
+                          information on sending traffic to a VPC network via a connector,
+                          visit https://cloud.google.com/run/docs/configuring/vpc-connectors.'
                         type: string
                       egress:
-                        description: |-
-                          Optional. Traffic VPC egress settings. If not provided, it defaults to
-                           PRIVATE_RANGES_ONLY.
+                        description: Optional. Traffic VPC egress settings. If not
+                          provided, it defaults to PRIVATE_RANGES_ONLY.
                         type: string
                       networkInterfaces:
-                        description: |-
-                          Optional. Direct VPC egress settings. Currently only single network
-                           interface is supported.
+                        description: Optional. Direct VPC egress settings. Currently
+                          only single network interface is supported.
                         items:
                           properties:
                             network:
-                              description: |-
-                                Optional. The VPC network that the Cloud Run resource will be able to
-                                 send traffic to. At least one of network or subnetwork must be specified.
-                                 If both network and subnetwork are specified, the given VPC subnetwork
-                                 must belong to the given VPC network. If network is not specified, it
-                                 will be looked up from the subnetwork.
+                              description: Optional. The VPC network that the Cloud
+                                Run resource will be able to send traffic to. At least
+                                one of network or subnetwork must be specified. If
+                                both network and subnetwork are specified, the given
+                                VPC subnetwork must belong to the given VPC network.
+                                If network is not specified, it will be looked up
+                                from the subnetwork.
                               type: string
                             subnetwork:
-                              description: |-
-                                Optional. The VPC subnetwork that the Cloud Run resource will get IPs
-                                 from. At least one of network or subnetwork must be specified. If both
-                                 network and subnetwork are specified, the given VPC subnetwork must
-                                 belong to the given VPC network. If subnetwork is not specified, the
-                                 subnetwork with the same name with the network will be used.
+                              description: Optional. The VPC subnetwork that the Cloud
+                                Run resource will get IPs from. At least one of network
+                                or subnetwork must be specified. If both network and
+                                subnetwork are specified, the given VPC subnetwork
+                                must belong to the given VPC network. If subnetwork
+                                is not specified, the subnetwork with the same name
+                                with the network will be used.
                               type: string
                             tags:
                               description: Optional. Network tags applied to this
@@ -823,9 +804,8 @@ spec:
               state of RunWorkerPool
             properties:
               conditions:
-                description: |-
-                  Conditions represent the latest available observations of the
-                  object's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -837,9 +817,8 @@ spec:
                         last transition.
                       type: string
                     reason:
-                      description: |-
-                        Unique, one-word, CamelCase reason for the condition's last
-                        transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
                       description: Status is the status of the condition. Can be True,
@@ -853,6 +832,10 @@ spec:
               externalRef:
                 description: A unique specifier for the RunWorkerPool resource in
                   GCP.
+                type: string
+              lastModifiedCookie:
+                description: LastModifiedCookie is used for stateful reconciliation
+                  to detect changes.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -887,12 +870,10 @@ spec:
                           description: State of the condition.
                           type: string
                         type:
-                          description: |-
-                            type is used to communicate the status of the reconciliation process.
-                             See also:
-                             https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
-                             Types common to all resources include:
-                             * "Ready": True when the Resource is ready.
+                          description: 'type is used to communicate the status of
+                            the reconciliation process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
+                            Types common to all resources include: * "Ready": True
+                            when the Resource is ready.'
                           type: string
                       type: object
                     type: array
@@ -966,12 +947,10 @@ spec:
                         description: State of the condition.
                         type: string
                       type:
-                        description: |-
-                          type is used to communicate the status of the reconciliation process.
-                           See also:
-                           https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
-                           Types common to all resources include:
-                           * "Ready": True when the Resource is ready.
+                        description: 'type is used to communicate the status of the
+                          reconciliation process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
+                          Types common to all resources include: * "Ready": True when
+                          the Resource is ready.'
                         type: string
                     type: object
                   uid:
