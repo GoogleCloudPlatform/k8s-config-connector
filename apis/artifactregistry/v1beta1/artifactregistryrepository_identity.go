@@ -25,8 +25,8 @@ import (
 )
 
 var (
-	_ identity.Identity = &ArtifactRegistryRepositoryIdentity{}
-	_ identity.Resource = &ArtifactRegistryRepository{}
+	_ identity.IdentityV2 = &ArtifactRegistryRepositoryIdentity{}
+	_ identity.Resource   = &ArtifactRegistryRepository{}
 )
 
 var ArtifactRegistryRepositoryIdentityFormat = gcpurls.Template[ArtifactRegistryRepositoryIdentity]("artifactregistry.googleapis.com", "projects/{project}/locations/{location}/repositories/{repository}")
@@ -53,6 +53,10 @@ func (i *ArtifactRegistryRepositoryIdentity) FromExternal(ref string) error {
 
 	*i = *parsed
 	return nil
+}
+
+func (i *ArtifactRegistryRepositoryIdentity) Host() string {
+	return ArtifactRegistryRepositoryIdentityFormat.Host()
 }
 
 func (obj *ArtifactRegistryRepository) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
