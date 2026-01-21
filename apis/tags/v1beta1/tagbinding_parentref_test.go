@@ -19,6 +19,7 @@ import (
 	"strings"
 	"testing"
 
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 

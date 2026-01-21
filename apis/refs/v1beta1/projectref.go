@@ -36,6 +36,10 @@ var ProjectGVK = schema.GroupVersionKind{
 	Kind:    "Project",
 }
 
+func init() {
+	Register(&ProjectRef{})
+}
+
 // The Project that this resource belongs to.
 type ProjectRef struct {
 	/* The `projectID` field of a project, when not managed by Config Connector. */
@@ -88,6 +92,10 @@ type ProjectIdentity struct {
 var _ identity.Identity = &ProjectIdentity{}
 
 var ProjectFormat = gcpurls.Template[ProjectIdentity]("cloudresourcemanager.googleapis.com", "projects/{projectID}")
+
+func (p *ProjectIdentity) Host() string {
+	return ProjectFormat.Host()
+}
 
 func (p *ProjectIdentity) String() string {
 	return ProjectFormat.ToString(*p)
@@ -248,4 +256,12 @@ func (r *ProjectRef) ValidateExternal(ref string) error {
 		return err
 	}
 	return nil
+}
+
+func (r *ProjectRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ProjectIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
 }

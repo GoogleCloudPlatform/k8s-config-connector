@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	storage "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -113,25 +113,43 @@ func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 		kind = "Project"
 	}
 
-	switch kind {
-	case "StorageBucket":
-		return "storage.googleapis.com", &storage.StorageBucketRef{
-			Name:      r.Name,
-			Namespace: r.Namespace,
-			External:  strings.TrimPrefix(r.External, "//storage.googleapis.com/"),
-		}, nil
-	case "Project":
+	if kind == "Project" {
 		if r.External != "" && !isProjectExternal(r.External) {
 			return "", nil, fmt.Errorf("unknown format for a Project reference in %q, please set Kind for non-project references or use projects/{project} for project references", r.External)
 		}
-		return "cloudresourcemanager.googleapis.com", &refs.ProjectRef{
-			Name:      r.Name,
-			Namespace: r.Namespace,
-			External:  r.External,
-		}, nil
-	default:
-		return "", nil, nil
 	}
+
+	ref, err := refs.NewRefByKind(kind)
+	if err != nil {
+		return "", nil, err
+	}
+
+	if err := refs.SetRefFields(ref, r.Name, r.Namespace, r.External); err != nil {
+		return "", nil, err
+	}
+
+	// Get host/service
+	extRef, ok := ref.(refs.ExternalRef)
+	if !ok {
+		return "", nil, fmt.Errorf("kind %q does not implement ExternalRef", kind)
+	}
+
+	id, err := extRef.ParseExternalToIdentity()
+	if err != nil {
+		return "", nil, err
+	}
+
+	// Update External to canonical form (without host)
+	if err := refs.SetRefFields(ref, r.Name, r.Namespace, id.String()); err != nil {
+		return "", nil, err
+	}
+
+	idV2, ok := id.(identity.IdentityV2)
+	if !ok {
+		return "", ref, nil
+	}
+
+	return idV2.Host(), ref, nil
 }
 
 func isProjectExternal(external string) bool {

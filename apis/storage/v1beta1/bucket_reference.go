@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -27,6 +28,10 @@ import (
 
 var _ refsv1beta1.Ref = &StorageBucketRef{}
 var StorageBucketGVK = GroupVersion.WithKind("StorageBucket")
+
+func init() {
+	refsv1beta1.Register(&StorageBucketRef{})
+}
 
 // StorageBucketRef defines the resource reference to StorageBucket, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -68,6 +73,14 @@ func (r *StorageBucketRef) ValidateExternal(ref string) error {
 		return err
 	}
 	return nil
+}
+
+func (r *StorageBucketRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &StorageBucketIdentity{}
+	if err := id.FromExternal(r.GetExternal()); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
 func (r *StorageBucketRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {

@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -63,6 +64,13 @@ type Ref interface {
 	// value. If "Namespace" is not specified in the reference, the
 	// `defaultNamespace“ will be used instead.
 	Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error
+}
+
+type ExternalRef interface {
+	Ref
+	// ParseExternalToIdentity parses the External field to an Identity.
+	// Normalize should be called first to ensure that External is populated.
+	ParseExternalToIdentity() (identity.Identity, error)
 }
 
 // Normalize is a general-purpose reference resolver that can be used to
