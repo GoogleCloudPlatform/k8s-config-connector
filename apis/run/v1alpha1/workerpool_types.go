@@ -91,6 +91,9 @@ type RunWorkerPoolStatus struct {
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *RunWorkerPoolObservedState `json:"observedState,omitempty"`
+
+	// LastModifiedCookie is used for stateful reconciliation to detect changes.
+	LastModifiedCookie *string `json:"lastModifiedCookie,omitempty"`
 }
 
 // RunWorkerPoolObservedState is the state of the RunWorkerPool resource as most recently observed in GCP.
