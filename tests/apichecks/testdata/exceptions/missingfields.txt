@@ -368,7 +368,6 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.machineType" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.oauthScopes[]" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.subnetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.tags[]" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeCount" is not set in unstructured objects
@@ -417,6 +416,7 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.worker.memoryGB" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.worker.minCount" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.worker.storageGB" is not set in unstructured objects
+[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.storageConfig.bucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.address" is not set in unstructured objects
 [missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv6EndpointType" is not set in unstructured objects
