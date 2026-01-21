@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"reflect"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -246,6 +246,15 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 	if a.desired.Spec.NodeType != nil && !reflect.DeepEqual(desiredPb.NodeType, a.actual.NodeType) {
 		paths = append(paths, "node_type")
+	}
+	if a.desired.Spec.MaintenancePolicy != nil && !reflect.DeepEqual(desiredPb.MaintenancePolicy, a.actual.MaintenancePolicy) {
+		paths = append(paths, "maintenance_policy")
+	}
+	if a.desired.Spec.CrossInstanceReplicationConfig != nil && !reflect.DeepEqual(desiredPb.CrossInstanceReplicationConfig, a.actual.CrossInstanceReplicationConfig) {
+		paths = append(paths, "cross_instance_replication_config")
+	}
+	if a.desired.Spec.AutomatedBackupConfig != nil && !reflect.DeepEqual(desiredPb.AutomatedBackupConfig, a.actual.AutomatedBackupConfig) {
+		paths = append(paths, "automated_backup_config")
 	}
 
 	updated := a.actual
