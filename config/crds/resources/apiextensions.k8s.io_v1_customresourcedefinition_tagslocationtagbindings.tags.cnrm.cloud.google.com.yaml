@@ -87,8 +87,8 @@ spec:
                       where {{value}} is the `number` field of a `Project` resource.'
                     type: string
                   kind:
-                    default: Project
-                    description: Kind of the referent.
+                    description: Kind to which we are binding the tag.  Defaults to
+                      Project if not specified.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

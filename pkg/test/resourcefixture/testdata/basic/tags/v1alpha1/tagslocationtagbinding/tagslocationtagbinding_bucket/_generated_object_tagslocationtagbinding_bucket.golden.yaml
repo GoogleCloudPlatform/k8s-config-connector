@@ -15,6 +15,7 @@ spec:
   location: us-east4
   parentRef:
     external: //storage.googleapis.com/projects/_/buckets/storagebucket-${uniqueId}
+    kind: StorageBucket
   resourceID: tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-${uniqueId}/tagValues/${tagValueID}
   tagValueRef:
     name: tagstagvalue-${uniqueId}
