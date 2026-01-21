@@ -27,7 +27,9 @@ For example: `pkg/test/resourcefixture/testdata/basic/tags/v1alpha1/tagslocation
         name: tagstagvalue-${uniqueId}
     ```
 
-2.  **`dependencies.yaml`** (Optional): This file contains any resources that must be created *before* the primary resource. You can define multiple resources here, separated by `---`.
+### Optional Files
+
+1.  **`dependencies.yaml`**: This file contains any resources that must be created *before* the primary resource. You can define multiple resources here, separated by `---`.
 
     ```yaml
     apiVersion: storage.cnrm.cloud.google.com/v1beta1
@@ -37,9 +39,7 @@ For example: `pkg/test/resourcefixture/testdata/basic/tags/v1alpha1/tagslocation
     ...
     ```
 
-### Optional Files
-
-1.  **`update.yaml`**: If you want to test updating the resource, create this file with the modified configuration of the primary resource. This is highly recommended for test coverage. Note that some fields or resources might be immutable.
+2.  **`update.yaml`**: If you want to test updating the resource, create this file with the modified configuration of the primary resource. This is highly recommended for test coverage. Note that some fields or resources might be immutable.
 
 ### Generated Golden Files
 
