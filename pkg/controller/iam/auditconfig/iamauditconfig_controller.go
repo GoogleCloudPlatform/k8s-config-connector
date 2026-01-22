@@ -79,7 +79,10 @@ func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 	if err != nil {
 		return err
 	}
-	return add(mgr, reconciler, deps.SkipNameValidation)
+	opt := controller.Options{
+		SkipNameValidation: &deps.SkipNameValidation,
+	}
+	return add(mgr, reconciler, opt)
 }
 
 func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter, jg jitter.Generator) (*Reconciler, error) {
@@ -101,12 +104,19 @@ func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *s
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler.
-func add(mgr manager.Manager, r *Reconciler, skipNameValidation bool) error {
+func add(mgr manager.Manager, r *Reconciler, opt controller.Options) error {
+	if opt.MaxConcurrentReconciles == 0 {
+		opt.MaxConcurrentReconciles = k8s.ControllerMaxConcurrentReconciles
+	}
+	if opt.RateLimiter == nil {
+		opt.RateLimiter = ratelimiter.NewRateLimiter()
+	}
+
 	obj := &iamv1beta1.IAMAuditConfig{}
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter(), SkipNameValidation: &skipNameValidation}).
+		WithOptions(opt).
 		WatchesRawSource(source.TypedChannel(r.immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)

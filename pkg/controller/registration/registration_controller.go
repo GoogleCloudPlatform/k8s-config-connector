@@ -301,13 +301,13 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		}
 
 		// register the parent controller for all supported resources.
-		if resConfig, err := resourceconfig.LoadConfig().GetControllersForGVK(gvk); err != nil {
+		if resourceConfig, err := resourceconfig.LoadConfig().GetControllersForGVK(gvk); err != nil {
 			logger.Error(fmt.Errorf("unrecognized CRD: %v", crd.Spec.Names.Kind), "skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
 			return nil, nil
 		} else {
 			reconcilers := &parent.Reconcilers{}
 			var err error
-			for _, reconcilerType := range resConfig.SupportedControllers {
+			for _, reconcilerType := range resourceConfig.SupportedControllers {
 				switch reconcilerType {
 				case k8s.ReconcilerTypeIAMPartialPolicy:
 					reconciler, err := partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, nil, nil, r.defaulters, r.jitterGenerator, cds.DependencyTracker)
@@ -353,7 +353,10 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				}
 			}
 			r.reconcilers[gvk] = reconcilers
-			if err := parent.Add(r.mgr, gvk, reconcilers, config.SkipNameValidation); err != nil {
+			opt := crcontroller.Options{
+				SkipNameValidation: &config.SkipNameValidation,
+			}
+			if err := parent.Add(r.mgr, gvk, reconcilers, opt); err != nil {
 				return nil, fmt.Errorf("error adding parent controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		}
