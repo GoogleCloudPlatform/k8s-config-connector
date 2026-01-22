@@ -42,7 +42,7 @@ type AlloyDBBackupSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef *parent.ProjectRef `json:"projectRef"`
 
-	/* Immutable. Optional. The backupId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
