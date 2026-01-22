@@ -97,7 +97,7 @@ type Experiments struct {
 
 	// ResourceSettings allows specifying which resources to enable or disable in this namespace.
 	// +optional
-	ResourceSettings []ResourceSettings `json:"resourceSettings,omitempty"`
+	ResourceSettings []ResourceSetting `json:"resourceSettings,omitempty"`
 }
 
 type StateIntoSpecValue string

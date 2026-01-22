@@ -78,10 +78,10 @@ type CCExperiments struct {
 
 	// ResourceSettings allows specifying which resources to enable or disable.
 	// +optional
-	ResourceSettings []ResourceSettings `json:"resourceSettings,omitempty"`
+	ResourceSettings []ResourceSetting `json:"resourceSettings,omitempty"`
 }
 
-type ResourceSettings struct {
+type ResourceSetting struct {
 	// Group is the API group of the resource.
 	// +required
 	Group string `json:"group"`
