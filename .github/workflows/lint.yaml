@@ -27,6 +27,9 @@ on:
       - "**.md"
       - pkg/clients/generated
       - config/tests
+  merge_group:
+    types: [checks_requested]
+    branches: [ "master" ]
 permissions: read-all
 jobs:
   lint:

@@ -24,6 +24,9 @@ on:
       - "go.mod"
       - "go.sum"
       - "vendor/**" # if we ever use vendor we can target the paths too
+  merge_group:
+    types: [checks_requested]
+    branches: [ "master" ]
 jobs:
   license-lint:
     name: "license-lint"
