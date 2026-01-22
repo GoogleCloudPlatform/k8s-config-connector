@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -26,7 +27,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+func init() {
+	refsv1beta1.Register(&DatasetRef{})
+}
+
 var _ refsv1beta1.Ref = &DatasetRef{}
+var _ refsv1beta1.ExternalRef = &DatasetRef{}
 
 // DatasetRef defines the resource reference to BigQueryDataset, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -104,4 +110,12 @@ func (r *DatasetRef) NormalizedExternal(ctx context.Context, reader client.Reade
 		return "", err
 	}
 	return r.External, nil
+}
+
+func (r *DatasetRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &DatasetIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
