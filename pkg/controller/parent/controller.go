@@ -73,7 +73,7 @@ type ParentReconciler struct {
 	reconcilers Reconcilers
 }
 
-func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcilers) error {
+func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcilers, skipNameValidation bool) error {
 	controllerName := fmt.Sprintf("%v-parent-controller", strings.ToLower(gvk.Kind))
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(gvk)
@@ -97,7 +97,7 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcil
 		Named(controllerName).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicates...)).
 		WatchesRawSource(source.TypedChannel(immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
+		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter(), SkipNameValidation: &skipNameValidation}).
 		Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new parent controller: %w", err)

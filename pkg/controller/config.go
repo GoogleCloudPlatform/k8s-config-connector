@@ -33,4 +33,5 @@ type Deps struct {
 	Defaulters        []k8s.Defaulter
 	JitterGen         jitter.Generator
 	DependencyTracker *gcpwatch.DependencyTracker
+	SkipNameValidation bool
 }

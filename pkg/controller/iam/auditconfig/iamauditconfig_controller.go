@@ -79,7 +79,7 @@ func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 	if err != nil {
 		return err
 	}
-	return add(mgr, reconciler)
+	return add(mgr, reconciler, deps.SkipNameValidation)
 }
 
 func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter, jg jitter.Generator) (*Reconciler, error) {
@@ -101,12 +101,12 @@ func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *s
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler.
-func add(mgr manager.Manager, r *Reconciler) error {
+func add(mgr manager.Manager, r *Reconciler, skipNameValidation bool) error {
 	obj := &iamv1beta1.IAMAuditConfig{}
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
+		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter(), SkipNameValidation: &skipNameValidation}).
 		WatchesRawSource(source.TypedChannel(r.immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)

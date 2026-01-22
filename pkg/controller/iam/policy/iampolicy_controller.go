@@ -82,7 +82,7 @@ func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 	if err != nil {
 		return err
 	}
-	return add(mgr, reconciler)
+	return add(mgr, reconciler, deps.SkipNameValidation)
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
@@ -108,12 +108,12 @@ func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *s
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler.
-func add(mgr manager.Manager, r *ReconcileIAMPolicy) error {
+func add(mgr manager.Manager, r *ReconcileIAMPolicy, skipNameValidation bool) error {
 	obj := &iamv1beta1.IAMPolicy{}
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
+		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter(), SkipNameValidation: &skipNameValidation}).
 		WatchesRawSource(source.TypedChannel(r.immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
