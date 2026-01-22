@@ -15,26 +15,35 @@
 //go:build integration
 // +build integration
 
-package kccmanager
+package kccmanager_test
 
 import (
 	"context"
+	"fmt"
+	"math/rand"
 	"testing"
+	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
-	testk8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/k8s"
-	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/wait"
+	"sigs.k8s.io/controller-runtime/pkg/cache"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/config"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/metrics/server"
 )
 
 func TestResourceExclusion(t *testing.T) {
 	ctx := context.Background()
-	mgr, stop := testmain.StartTestManager(t, ctx)
-	defer stop()
-
-	c := mgr.GetClient()
+	// Use the config from the existing manager started in TestMain
+	restConfig := clusterModeManager.GetConfig()
+	c := clusterModeManager.GetClient()
+	skipNameValidation := true
 
 	// 1. Cluster Mode Exclusion
 	t.Run("ClusterModeExclusion", func(t *testing.T) {
@@ -57,7 +66,7 @@ func TestResourceExclusion(t *testing.T) {
 		}
 		// Ensure cleanup
 		defer func() {
-			testk8s.RemoveConfigConnector(ctx, t, c)
+			c.Delete(ctx, cc)
 		}()
 
 		if err := c.Create(ctx, cc); err != nil {
@@ -65,49 +74,191 @@ func TestResourceExclusion(t *testing.T) {
 		}
 
 		// Start a new KCC manager in cluster mode
-		// We need to run it in a separate goroutine or just create it and verify controllers
-		// Since we cannot easily inspect internal state of a started manager, we can check if the controller is registered?
-		// Or easier: check if it reconciles.
-		// Construct a separate manager (simulating the kcc-manager binary)
 		cfg := kccmanager.Config{
 			ManagerOptions: manager.Options{
-				MetricsBindAddress: "0", // Disable metrics serving to avoid conflict
+				Controller: config.Controller{
+					SkipNameValidation: &skipNameValidation,
+				},
+				Metrics: server.Options{
+					BindAddress: "0",
+				},
+				HealthProbeBindAddress: "0",
 			},
 			ScopedNamespace: "", // Cluster mode
 		}
-		// Pass the shared test env config
-		kccMgr, err := kccmanager.New(ctx, mgr.GetConfig(), cfg)
+
+		kccMgr, err := kccmanager.New(ctx, restConfig, cfg)
 		if err != nil {
 			t.Fatalf("error creating kcc manager: %v", err)
 		}
 
-		// Check if controller is registered?
-		// Unfortuantely AddDefaultControllers registers them directly.
-		// We can try to use a mock or check side effects.
-		// One side effect is: if we create a PubSubTopic, it stays in Unmanaged?
-		// But in integration test, if we don't start the manager, it won't reconcile anyway.
-		// If we DO start the manager, it should reconcile if enabled.
-
-		// Let's start the manager in a go routine
 		mgrCtx, cancel := context.WithCancel(ctx)
 		defer cancel()
 		go func() {
-			if err := kccMgr.Start(mgrCtx); err != nil {
-				// It might fail if ports conflict, but we disabled metrics.
-				// Health probe might conflict.
-				t.Logf("kcc manager stopped: %v", err)
-			}
+			kccMgr.Start(mgrCtx)
 		}()
 
-		// Verify PubSubTopic is NOT reconciled
 		// Create a PubSubTopic
-		// ...
-		// Assert status is empty or condition NotReady?
-		// If controller is missing, it will do nothing. status will be empty.
+		topicName := "test-topic-exclusion-" + randomString()
+		topic := &unstructured.Unstructured{
+			Object: map[string]interface{}{
+				"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+				"kind":       "PubSubTopic",
+				"metadata": map[string]interface{}{
+					"name":      topicName,
+					"namespace": "default",
+				},
+			},
+		}
 
-		// TODO: Implement actual resource creation and check
+		if err := c.Create(ctx, topic); err != nil {
+			t.Fatalf("error creating PubSubTopic: %v", err)
+		}
+		defer c.Delete(context.Background(), topic)
+
+		// Assert status is NOT updated (controller not managing it)
+		// We wait a bit to be sure it doesn't update.
+		// If it updates, it means the controller picked it up.
+		err = wait.PollImmediate(1*time.Second, 10*time.Second, func() (bool, error) {
+			u := &unstructured.Unstructured{}
+			u.SetGroupVersionKind(topic.GroupVersionKind())
+			if err := c.Get(ctx, types.NamespacedName{Name: topicName, Namespace: "default"}, u); err != nil {
+				return false, err
+			}
+			// Check if status.conditions contains Ready
+			status, ok := u.Object["status"].(map[string]interface{})
+			if !ok {
+				return false, nil // No status, good
+			}
+			conditions, ok := status["conditions"].([]interface{})
+			if !ok {
+				return false, nil // No conditions, good
+			}
+			if len(conditions) > 0 {
+				return true, nil // Found conditions, fail
+			}
+			return false, nil
+		})
+
+		if err == nil {
+			// PollImmediate returns nil if condition returns true (meaning we FOUND conditions)
+			t.Fatalf("PubSubTopic was reconciled but expected it to be excluded")
+		}
+		// If err != nil (timeout), it means we never found conditions -> Success
 	})
 
 	// 2. Namespace Mode Exclusion
-	// ...
+	t.Run("NamespaceModeExclusion", func(t *testing.T) {
+		ns := "test-ns-" + randomString()
+		ensureNamespace(ctx, t, c, ns)
+
+		// Create ConfigConnectorContext in ns disabling PubSubTOPIC
+		ccc := &operatorv1beta1.ConfigConnectorContext{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      operatorv1beta1.ConfigConnectorContextAllowedName,
+				Namespace: ns,
+			},
+			Spec: operatorv1beta1.ConfigConnectorContextSpec{
+				Experiments: &operatorv1beta1.Experiments{
+					ResourceSettings: []operatorv1beta1.ResourceSettings{
+						{
+							Group:   "pubsub.cnrm.cloud.google.com",
+							Kind:    "PubSubTopic",
+							Enabled: false,
+						},
+					},
+				},
+			},
+		}
+		if err := c.Create(ctx, ccc); err != nil {
+			t.Fatalf("error creating ConfigConnectorContext: %v", err)
+		}
+
+		// Start Manager in Namespace Mode
+		cfg := kccmanager.Config{
+			ManagerOptions: manager.Options{
+				Controller: config.Controller{
+					SkipNameValidation: &skipNameValidation,
+				},
+				Metrics: server.Options{
+					BindAddress: "0",
+				},
+				HealthProbeBindAddress: "0",
+				Cache: cache.Options{
+					DefaultNamespaces: map[string]cache.Config{
+						ns: {},
+					},
+				},
+			},
+			ScopedNamespace: ns,
+		}
+		kccMgr, err := kccmanager.New(ctx, restConfig, cfg)
+		if err != nil {
+			t.Fatalf("error creating kcc manager: %v", err)
+		}
+
+		mgrCtx, cancel := context.WithCancel(ctx)
+		defer cancel()
+		go func() {
+			kccMgr.Start(mgrCtx)
+		}()
+
+		// Create PubSubTopic in ns
+		topicName := "test-topic-ns-exclusion-" + randomString()
+		topic := &unstructured.Unstructured{
+			Object: map[string]interface{}{
+				"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+				"kind":       "PubSubTopic",
+				"metadata": map[string]interface{}{
+					"name":      topicName,
+					"namespace": ns,
+				},
+			},
+		}
+		if err := c.Create(ctx, topic); err != nil {
+			t.Fatalf("error creating PubSubTopic: %v", err)
+		}
+		defer c.Delete(context.Background(), topic)
+
+		// Assert NO reconciliation
+		err = wait.PollImmediate(1*time.Second, 10*time.Second, func() (bool, error) {
+			u := &unstructured.Unstructured{}
+			u.SetGroupVersionKind(topic.GroupVersionKind())
+			if err := c.Get(ctx, types.NamespacedName{Name: topicName, Namespace: ns}, u); err != nil {
+				return false, err
+			}
+			status, ok := u.Object["status"].(map[string]interface{})
+			if !ok {
+				return false, nil
+			}
+			conditions, ok := status["conditions"].([]interface{})
+			if !ok {
+				return false, nil
+			}
+			if len(conditions) > 0 {
+				return true, nil
+			}
+			return false, nil
+		})
+		if err == nil {
+			t.Fatalf("PubSubTopic in excluded namespace was reconciled")
+		}
+	})
+}
+
+func ensureNamespace(ctx context.Context, t *testing.T, c client.Client, name string) {
+	t.Helper()
+	ns := &corev1.Namespace{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: name,
+		},
+	}
+	if err := c.Create(ctx, ns); err != nil {
+		t.Logf("error creating namespace %v: %v", name, err)
+	}
+}
+
+func randomString() string {
+	rand.Seed(time.Now().UnixNano())
+	return fmt.Sprintf("%d", rand.Intn(100000))
 }
