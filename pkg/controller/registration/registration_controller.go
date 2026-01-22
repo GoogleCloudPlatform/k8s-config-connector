@@ -86,7 +86,7 @@ func AddDeletionDefender(mgr manager.Manager, rd *controller.Deps) error {
 		ControllerName: "deletion-defender-registration-controller",
 	}
 
-	if err := add(mgr, &controller.Deps{}, registerDeletionDefenderController, opt); err != nil {
+	if err := add(mgr, rd, registerDeletionDefenderController, opt); err != nil {
 		return fmt.Errorf("error adding deletion-defender registration controller: %w", err)
 	}
 	return nil
@@ -105,13 +105,16 @@ func AddUnmanagedDetector(mgr manager.Manager, rd *controller.Deps) error {
 		if _, ok := k8s.IgnoredKindList[gvk.Kind]; ok {
 			return nil, nil
 		}
-		if err := unmanageddetector.Add(ctx, r.mgr, gvk); err != nil {
+		opt := crcontroller.Options{
+			SkipNameValidation: &r.SkipNameValidation,
+		}
+		if err := unmanageddetector.Add(ctx, r.mgr, gvk, opt); err != nil {
 			return nil, fmt.Errorf("error registering unmanaged detector controller for '%v': %w", gvk.Kind, err)
 		}
 		return nil, nil
 	}
 
-	if err := add(mgr, &controller.Deps{}, registerUnmanagedDetectorController, opt); err != nil {
+	if err := add(mgr, rd, registerUnmanagedDetectorController, opt); err != nil {
 		return fmt.Errorf("error adding unmanaged-detector registration controller: %w", err)
 	}
 	return nil
@@ -143,12 +146,13 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 		reconcilers:                make(map[schema.GroupVersionKind]*parent.Reconcilers),
 		immediateReconcileRequests: make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize),
 		resourceWatcherRoutines:    semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines),
+		SkipNameValidation:         rd.SkipNameValidation,
 	}
 	c, err := crcontroller.New(opts.ControllerName, mgr,
 		crcontroller.Options{
 			Reconciler:              r,
 			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
-			SkipNameValidation:      &rd.SkipNameValidation,
+			SkipNameValidation:      &r.SkipNameValidation,
 		})
 	if err != nil {
 		return err
@@ -180,6 +184,8 @@ type ReconcileRegistration struct {
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 
 	mu sync.Mutex
+
+	SkipNameValidation bool
 }
 
 type controllerContext struct {
@@ -369,7 +375,10 @@ func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextens
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
-	if err := deletiondefender.Add(r.mgr, crd); err != nil {
+	opt := crcontroller.Options{
+		SkipNameValidation: &r.SkipNameValidation,
+	}
+	if err := deletiondefender.Add(r.mgr, crd, opt); err != nil {
 		return nil, fmt.Errorf("error registering deletion defender controller for '%v': %w", crd.GetName(), err)
 	}
 	return nil, nil
