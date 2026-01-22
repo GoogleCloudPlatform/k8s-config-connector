@@ -148,6 +148,7 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 		crcontroller.Options{
 			Reconciler:              r,
 			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
+			SkipNameValidation:      &rd.SkipNameValidation,
 		})
 	if err != nil {
 		return err
