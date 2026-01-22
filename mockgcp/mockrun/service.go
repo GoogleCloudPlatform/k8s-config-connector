@@ -37,6 +37,7 @@ type MockService struct {
 	storage     storage.Storage
 	operations  *operations.Operations
 	v2          *RunV2
+	servicesV2  *ServicesV2
 	workerPools *workerPools
 }
 
@@ -48,6 +49,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.v2 = &RunV2{MockService: s}
+	s.servicesV2 = &ServicesV2{MockService: s}
 	s.workerPools = &workerPools{MockService: s}
 	return s
 }
@@ -59,12 +61,14 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterJobsServer(grpcServer, s.v2)
+	pb.RegisterServicesServer(grpcServer, s.servicesV2)
 	pb.RegisterWorkerPoolsServer(grpcServer, s.workerPools)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterJobsHandler,
+		pb.RegisterServicesHandler,
 		pb.RegisterWorkerPoolsHandler,
 		s.operations.RegisterOperationsPath("/v2/{prefix=**}/operations/{name}"))
 	if err != nil {
