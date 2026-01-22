@@ -242,3 +242,90 @@ func MustSetNestedField(t *testing.T, obj *unstructured.Unstructured, path strin
 		t.Fatalf("setting nested field %v: %v", path, err)
 	}
 }
+// TestPreviewRunTwice runs the preview command twice to ensure no global state issues.
+func TestPreviewRunTwice(t *testing.T) {
+	log.SetLogger(klogr.New())
+
+	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
+		assetDir, err := getKubebuilderAssetDir()
+		if err != nil {
+			t.Fatalf("getting asset dir: %v", err)
+		}
+		klog.Warningf("defaulting KUBEBUILDER_ASSETS to %v", assetDir)
+		os.Setenv("KUBEBUILDER_ASSETS", assetDir)
+	}
+
+	ctx := context.Background()
+
+	harness := create.NewHarness(ctx, t, create.WithKubeTarget("envtest"), create.WithGCPTarget("mock"))
+
+	// Create KCC objects
+	ns := &unstructured.Unstructured{}
+	ns.SetGroupVersionKind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"})
+	ns.SetName(harness.Project.ProjectID)
+	if err := harness.GetClient().Create(ctx, ns); err != nil {
+		t.Fatalf("creating object: %v", err)
+	}
+
+	cc := &unstructured.Unstructured{}
+	cc.SetGroupVersionKind(schema.GroupVersionKind{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnector"})
+	cc.SetName("configconnector.core.cnrm.cloud.google.com")
+	MustSetNestedField(t, cc, "spec.mode", "namespaced")
+	if err := harness.GetClient().Create(ctx, cc); err != nil {
+		t.Fatalf("creating object: %v", err)
+	}
+
+	ccc := &unstructured.Unstructured{}
+	ccc.SetGroupVersionKind(schema.GroupVersionKind{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnectorContext"})
+	ccc.SetName("configconnectorcontext.core.cnrm.cloud.google.com")
+	ccc.SetNamespace(ns.GetName())
+	MustSetNestedField(t, ccc, "spec.googleServiceAccount", "fake@fake.iam.gserviceaccount.com")
+	if err := harness.GetClient().Create(ctx, ccc); err != nil {
+		t.Fatalf("creating object: %v", err)
+	}
+
+	upstreamRESTConfig := harness.GetRESTConfig()
+	authorization := harness.GCPAuthorization()
+
+	runPreview := func() error {
+		recorder := NewRecorder()
+		if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig, ""); err != nil {
+			return err
+		}
+
+		preview, err := NewPreviewInstance(recorder, PreviewInstanceOptions{
+			UpstreamRESTConfig:       upstreamRESTConfig,
+			UpstreamGCPAuthorization: authorization,
+			UpstreamGCPHTTPClient:    harness.GCPHTTPClient(),
+		})
+		if err != nil {
+			return err
+		}
+
+		// Use a cancellable context for Start to allow it to finish
+		runCtx, cancel := context.WithCancel(ctx)
+		defer cancel()
+
+		return preview.Start(runCtx)
+	}
+
+	t.Log("Running preview for the first time")
+	if err := runPreview(); err != nil {
+		t.Fatalf("first run failed: %v", err)
+	}
+
+	t.Log("Running preview for the second time")
+	err := runPreview()
+	if err == nil {
+		t.Fatal("expected second run to fail, but it succeeded")
+	}
+
+	expectedErrorPart := "duplicate controller name" // The issue mentions this
+	// But verify the exact error message. The issue description says:
+	// "metrics package with error message complaining about duplicated controller name during registration"
+	// Usually "controller name ... already exists" or similar.
+
+	if !strings.Contains(err.Error(), "already exists") && !strings.Contains(err.Error(), "duplicate") && !strings.Contains(err.Error(), expectedErrorPart) {
+		t.Errorf("expected error to contain 'already exists' or 'duplicate' or '%s', got: %v", expectedErrorPart, err)
+	}
+}
