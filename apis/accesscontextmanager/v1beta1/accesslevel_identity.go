@@ -69,10 +69,12 @@ func (obj *AccessContextManagerAccessLevel) GetIdentity(ctx context.Context, rea
 	// Get desired resource ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
-	// Server-generated ID; do not fallback to name
-	// if resourceID == "" {
-	// 	resourceID = obj.GetName()
-	// }
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
 
 	var specIdentity *AccessLevelIdentity
 	if resourceID != "" {
