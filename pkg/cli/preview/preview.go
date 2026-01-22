@@ -23,6 +23,7 @@ import (
 	"golang.org/x/oauth2"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
@@ -30,7 +31,6 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -178,7 +178,7 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 	// controller-runtime keeps a global registry of metrics, and it refuses to register controllers with the same name twice.
 	// Since we can't easily reset the global metrics registry, we skip the name validation in the controller.
 	// This does mean metrics might be messed up, but for "preview" command we don't care about metrics.
-	registration.SkipControllerNameValidation = true
+	kccConfig.ManagerOptions.Controller.SkipNameValidation = ptr.To(true)
 
 	mgr, err := kccmanager.New(ctx, restConfig, kccConfig)
 	if err != nil {

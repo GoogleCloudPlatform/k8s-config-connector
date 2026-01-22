@@ -17,97 +17,191 @@ package preview
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"strings"
 	"text/tabwriter"
 
+	"k8s.io/apimachinery/pkg/runtime/schema"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
-type PreviewSummary struct {
-	totalGood int
-	totalBad  int
-	// namespace -> group -> kind -> []name
-	goodGKNN map[string]map[string]map[string][]string
-	badGKNN  map[string]map[string]map[string][]string
-	reports  map[GKNN][]string
+type ReconcileStatus int
+
+// ReconcileStatus is the status of a GKNN object after being reconciled.
+const (
+	ReconcileStatusIdle ReconcileStatus = iota
+	ReconcileStatusHealthy
+	ReconcileStatusUnhealthy
+)
+
+// reconcileStatusMap is a map of ReconcileStatus to string.
+var reconcileStatusMap = map[ReconcileStatus]string{
+	ReconcileStatusHealthy:   "RECONCILE_STATUS_HEALTHY",
+	ReconcileStatusUnhealthy: "RECONCILE_STATUS_UNHEALTHY",
 }
 
-func (r *Recorder) newPreviewSummary() *PreviewSummary {
-	summary := &PreviewSummary{
-		totalGood: 0,
-		totalBad:  0,
-		goodGKNN:  make(map[string]map[string]map[string][]string),
-		badGKNN:   make(map[string]map[string]map[string][]string),
-		reports:   make(map[GKNN][]string),
-	}
+func (s ReconcileStatus) String() string {
+	return reconcileStatusMap[s]
+}
 
-	for gknn, info := range r.objects {
-		ensureGKNNPath(summary.goodGKNN, gknn)
-		ensureGKNNPath(summary.badGKNN, gknn)
+// GKNNReconciledResult is the result of reconciling a GKNN object with a specific controller type.
+type GKNNReconciledResult struct {
+	GKNN            GKNN
+	ControllerType  k8s.ReconcilerType
+	ReconcileStatus ReconcileStatus
+	Diffs           *structuredreporting.Diff
+}
 
-		good, report := ParseEventInfo(info)
-		if good {
-			summary.totalGood++
-			summary.goodGKNN[gknn.Namespace][gknn.Group][gknn.Kind] = append(summary.goodGKNN[gknn.Namespace][gknn.Group][gknn.Kind], gknn.Name)
-		} else {
-			summary.totalBad++
-			summary.badGKNN[gknn.Namespace][gknn.Group][gknn.Kind] = append(summary.badGKNN[gknn.Namespace][gknn.Group][gknn.Kind], gknn.Name)
-			summary.reports[gknn] = report
+// FormatGKNNReconciledResult formats the GKNNReconciledResult into a string.
+func (r *GKNNReconciledResult) FormatGKNNReconciledResult() string {
+	return fmt.Sprintf("ns=\"%s\" name=\"%s\" group=\"%s\" kind=\"%s\" controller_type=\"%s\" diffs=\"%s\" reconcile_status=\"%s\"", r.GKNN.Namespace, r.GKNN.Name, r.GKNN.Group, r.GKNN.Kind, r.ControllerType, FormatFieldIDs(r.Diffs), r.ReconcileStatus.String())
+}
+
+func FormatFieldIDs(diffs *structuredreporting.Diff) string {
+	return strings.Join(diffs.FieldIDs(), ",")
+}
+
+type PreviewReport struct {
+	report map[GKNN]*GKNNReport
+}
+
+// GKNNReport is the result of reconciling a GKNN object with both default and alternative controller type.
+type GKNNReport struct {
+	DefaultResult     *GKNNReconciledResult
+	AlternativeResult *GKNNReconciledResult
+}
+
+func (r *Recorder) GenerateGKNNReconciledResults() map[GKNN]*GKNNReconciledResult {
+	result := make(map[GKNN]*GKNNReconciledResult)
+	for gknn := range r.objects {
+		result[gknn] = &GKNNReconciledResult{
+			GKNN:            gknn,
+			Diffs:           &structuredreporting.Diff{},
+			ReconcileStatus: ReconcileStatusHealthy,
+		}
+		for _, event := range r.objects[gknn].events {
+			switch event.eventType {
+			case EventTypeDiff:
+				result[gknn].Diffs.AddDiff(event.diff)
+			case EventTypeReconcileStart:
+				result[gknn].ControllerType = event.reconcilerType
+			case EventTypeReconcileEnd:
+				result[gknn].ControllerType = event.reconcilerType
+			case EventTypeKubeAction:
+				// Ignore for now
+			case EventTypeGCPAction:
+				result[gknn].ReconcileStatus = ReconcileStatusUnhealthy
+			default:
+				// Ignore for now
+			}
 		}
 	}
-	return summary
+	return result
 }
 
-func ensureGKNNPath(m map[string]map[string]map[string][]string, gknn GKNN) {
-	if _, ok := m[gknn.Namespace]; !ok {
-		m[gknn.Namespace] = make(map[string]map[string][]string)
-	}
-	if _, ok := m[gknn.Namespace][gknn.Group]; !ok {
-		m[gknn.Namespace][gknn.Group] = make(map[string][]string)
-	}
-	if _, ok := m[gknn.Namespace][gknn.Group][gknn.Kind]; !ok {
-		m[gknn.Namespace][gknn.Group][gknn.Kind] = []string{}
-	}
-}
+// NewPreviewReport creates a new PreviewReport from the given default and alternative recorders.
+func NewPreviewReport(defaultRecorder *Recorder, alternativeRecorder *Recorder) *PreviewReport {
+	defaultReconciledResults := defaultRecorder.GenerateGKNNReconciledResults()
+	alternativeReconciledResults := alternativeRecorder.GenerateGKNNReconciledResults()
 
-func ParseEventInfo(info *objectInfo) (bool, []string) {
-	good := true
-	report := []string{}
-	for _, event := range info.events {
-		switch event.eventType {
-		case EventTypeDiff:
-			report = append(report, "KRM diff detected:")
-			if event.diff != nil && event.diff.Fields != nil {
-				diffFields := []string{}
-				for _, field := range event.diff.Fields {
-					if !reflect.DeepEqual(field.Old, field.New) {
-						diffFields = append(diffFields, field.ID)
-					}
-				}
-				report = append(report, fmt.Sprintf("  Diff Fields: %s", diffFields))
-			}
-		case EventTypeReconcileStart, EventTypeReconcileEnd:
-			// fmt.Fprintf(f, "  reconcileStart %+v\n", event.object)
-
-		case EventTypeKubeAction:
-			// Ignore kubeaction for now. Mostly status update.
-
-		case EventTypeGCPAction:
-			// The method is POST but it is actually a read-only call.
-			if strings.Contains(event.gcpAction.url, "getIamPolicy") {
-				continue
-			}
-			good = false
-			report = append(report, "GCP action detected:")
-			report = append(report, fmt.Sprintf("  Method: %s", event.gcpAction.method))
-			report = append(report, fmt.Sprintf("  Url: %s", event.gcpAction.url))
-			report = append(report, fmt.Sprintf("  Object: %+v", event.gcpAction.body))
-		default:
-			good = false
+	previewReport := &PreviewReport{report: make(map[GKNN]*GKNNReport)}
+	previewReport.Initialize(defaultReconciledResults)
+	previewReport.Initialize(alternativeReconciledResults)
+	reconcilerConfig := resourceconfig.LoadConfig()
+	for gknn := range defaultReconciledResults {
+		previewReport.report[gknn].DefaultResult = defaultReconciledResults[gknn]
+	}
+	for gknn := range alternativeReconciledResults {
+		alternativeResult := alternativeReconciledResults[gknn]
+		if alternativeResult.ControllerType != reconcilerConfig[schema.GroupKind{Group: gknn.Group, Kind: gknn.Kind}].DefaultController {
+			previewReport.report[gknn].AlternativeResult = alternativeResult
 		}
 	}
-	return good, report
+
+	return previewReport
+}
+
+// Initialize the report with the given recorder.
+func (r *PreviewReport) Initialize(results map[GKNN]*GKNNReconciledResult) {
+	for gknn := range results {
+		r.report[gknn] = &GKNNReport{}
+	}
+}
+
+// ExportSummary exports a summary of the report to a file.
+func (r *PreviewReport) ExportSummary(filename string) error {
+	f, err := os.Create(filename)
+	if err != nil {
+		return fmt.Errorf("error creating file %q: %w", filename, err)
+	}
+	w := tabwriter.NewWriter(f, 0, 0, 3, ' ', 0)
+	fmt.Fprintln(w, "GROUP\tKIND\tNAMESPACE\tNAME\tDEFAULT CONTROLLER\tDEFAULT STATUS\tALTERNATIVE CONTROLLER\tALTERNATIVE STATUS")
+	for gknn, report := range r.report {
+		defaultReconciledStatus := formatReconciledStatus(report.DefaultResult)
+		defaultControllerType := formatControllerType(report.DefaultResult)
+		alternativeReconciledStatus := formatReconciledStatus(report.AlternativeResult)
+		alternativeControllerType := formatControllerType(report.AlternativeResult)
+		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", gknn.Group, gknn.Kind, gknn.Namespace, gknn.Name, defaultControllerType, defaultReconciledStatus, alternativeControllerType, alternativeReconciledStatus)
+	}
+	w.Flush()
+	return f.Close()
+}
+
+func (r *PreviewReport) ExportFailedResults(filename string) error {
+	details := r.GenerateDetailFailedResults()
+	if len(details) == 0 {
+		return nil
+	}
+	f, err := os.Create(filename)
+	if err != nil {
+		return fmt.Errorf("error creating file %q: %w", filename, err)
+	}
+	for _, detail := range details {
+		fmt.Fprintln(f, detail)
+	}
+	return f.Close()
+}
+
+func (r *PreviewReport) GenerateDetailFailedResults() []string {
+	details := []string{}
+	for _, report := range r.GetFailures() {
+		details = append(details, report.FormatGKNNReconciledResult())
+	}
+	return details
+}
+
+func (r *PreviewReport) GetFailures() []*GKNNReconciledResult {
+	result := []*GKNNReconciledResult{}
+	for _, report := range r.report {
+		defaultResult := report.DefaultResult
+		if defaultResult != nil && defaultResult.ReconcileStatus == ReconcileStatusUnhealthy {
+			result = append(result, defaultResult)
+		}
+		alternativeResult := report.AlternativeResult
+		if alternativeResult != nil && alternativeResult.ReconcileStatus == ReconcileStatusUnhealthy {
+			result = append(result, alternativeResult)
+		}
+	}
+	return result
+}
+
+func formatControllerType(result *GKNNReconciledResult) string {
+	if result == nil {
+		return "N/A"
+	}
+	return string(result.ControllerType)
+}
+
+func formatReconciledStatus(result *GKNNReconciledResult) string {
+	if result == nil {
+		return "N/A"
+	}
+	if result.ReconcileStatus == ReconcileStatusUnhealthy {
+		return "UNHEALTHY"
+	}
+	return "HEALTHY"
 }
 
 // ExportObjectsEvent writes all captured GKNN and its event to filename.
@@ -153,181 +247,4 @@ func (r *Recorder) ExportDetailObjectsEvent(filename string) error {
 		}
 	}
 	return f.Close()
-}
-
-func (r *Recorder) SummaryReport(filename string) error {
-	f, err := os.Create(filename)
-	if err != nil {
-		return fmt.Errorf("error creating file %q: %w", filename, err)
-	}
-	total := len(r.ReconciledResources)
-	reconciled := total - r.RemainResourcesCount
-	fmt.Fprintf(f, "Finish reconciled %d out of %d resouces.\n", reconciled, total)
-	summary := r.newPreviewSummary()
-	fmt.Fprintf(f, "Detect %d good and %d bad objects.\n", summary.totalGood, summary.totalBad)
-	for ns := range summary.badGKNN {
-		fmt.Fprintln(f, "-----------------------------------------------------------------")
-		fmt.Fprintf(f, "Namespace: %s\n", ns)
-		w := tabwriter.NewWriter(f, 0, 0, 3, ' ', 0)
-		fmt.Fprintln(w, "GROUP\tKIND\tGOOD\tBAD")
-		for group := range summary.badGKNN[ns] {
-			for kind := range summary.badGKNN[ns][group] {
-				fmt.Fprintf(w, "%s\t%s\t%d\t%d\n", group, kind, len(summary.goodGKNN[ns][group][kind]), len(summary.badGKNN[ns][group][kind]))
-			}
-		}
-		w.Flush()
-	}
-	if err = f.Close(); err != nil {
-		return fmt.Errorf("error closing file %q: %w", filename, err)
-	}
-
-	// Reconciled all resources and no issue detected.
-	if r.RemainResourcesCount == 0 && summary.totalBad == 0 {
-		return nil
-	}
-	detailFileName := fmt.Sprintf("%s-detail", filename)
-	detailFile, err := os.Create(detailFileName)
-	if err != nil {
-		return fmt.Errorf("error creating file %q: %w", detailFileName, err)
-	}
-	if r.RemainResourcesCount > 0 {
-		fmt.Fprintln(detailFile, "Resources that has not fully reconciled:")
-		for gknn, reconciled := range r.ReconciledResources {
-			if !reconciled {
-				fmt.Fprintf(detailFile, "Group: %s, Kind: %s, Namespace: %s, Name: %s\n", gknn.Group, gknn.Kind, gknn.Namespace, gknn.Name)
-			}
-		}
-	}
-	if summary.totalBad > 0 {
-		for ns := range summary.badGKNN {
-			for group := range summary.badGKNN[ns] {
-				for kind := range summary.badGKNN[ns][group] {
-					for _, name := range summary.badGKNN[ns][group][kind] {
-						fmt.Fprintln(detailFile, "-----------------------------------------------------------------")
-						fmt.Fprintf(detailFile, "Group: %s, Kind: %s, Namespace: %s, Name: %s\n", group, kind, ns, name)
-						for _, s := range summary.reports[GKNN{Group: group, Kind: kind, Namespace: ns, Name: name}] {
-							fmt.Fprintln(detailFile, s)
-						}
-					}
-				}
-			}
-		}
-	}
-	return detailFile.Close()
-}
-
-func (r *Recorder) GKNNPreviewResult() map[GKNN]*GKNNPreviewResult {
-	result := make(map[GKNN]*GKNNPreviewResult)
-	for gknn := range r.objects {
-		result[gknn] = &GKNNPreviewResult{
-			Group:     gknn.Group,
-			Kind:      gknn.Kind,
-			Namespace: gknn.Namespace,
-			Name:      gknn.Name,
-			Good:      true,
-		}
-		for _, event := range r.objects[gknn].events {
-			switch event.eventType {
-			case EventTypeDiff:
-				// Ignore for now
-			case EventTypeReconcileStart:
-				result[gknn].ControllerType = event.reconcilerType
-			case EventTypeReconcileEnd:
-				result[gknn].ControllerType = event.reconcilerType
-			case EventTypeKubeAction:
-				// Ignore for now
-			case EventTypeGCPAction:
-				result[gknn].Good = false
-			default:
-				// Ignore for now
-			}
-		}
-	}
-	return result
-}
-
-type GKNNPreviewResult struct {
-	Group          string
-	Kind           string
-	Namespace      string
-	Name           string
-	ControllerType k8s.ReconcilerType
-	Good           bool
-}
-
-type PreviewReport struct {
-	report map[GKNN]*GKNNReport
-}
-
-// NewPreviewReport creates a new PreviewReport from the given default and alternative recorders.
-func NewPreviewReport(defaultRecorder *Recorder, alternativeRecorder *Recorder) *PreviewReport {
-	defaultResult := defaultRecorder.GKNNPreviewResult()
-	alternativeResult := alternativeRecorder.GKNNPreviewResult()
-
-	previewReport := &PreviewReport{report: make(map[GKNN]*GKNNReport)}
-	previewReport.Initialize(defaultRecorder)
-	previewReport.Initialize(alternativeRecorder)
-
-	for gknn := range defaultResult {
-		previewReport.report[gknn] = &GKNNReport{
-			DefaultControllerType: &defaultResult[gknn].ControllerType,
-			DefaultGood:           &defaultResult[gknn].Good,
-		}
-	}
-	for gknn := range alternativeResult {
-		if alternativeResult[gknn].ControllerType != defaultResult[gknn].ControllerType {
-			previewReport.report[gknn].AlternativeControllerType = &alternativeResult[gknn].ControllerType
-			previewReport.report[gknn].AlternativeGood = &alternativeResult[gknn].Good
-		}
-	}
-	return previewReport
-}
-
-// Initialize the report with the given recorder.
-func (r *PreviewReport) Initialize(recorder *Recorder) {
-	if r.report == nil {
-		r.report = make(map[GKNN]*GKNNReport)
-	}
-	for gknn := range recorder.ReconciledResources {
-		r.report[gknn] = &GKNNReport{}
-	}
-}
-
-// Export the report to a file.
-func (r *PreviewReport) Export(filename string) error {
-	f, err := os.Create(filename)
-	if err != nil {
-		return fmt.Errorf("error creating file %q: %w", filename, err)
-	}
-	defer f.Close()
-	w := tabwriter.NewWriter(f, 0, 0, 3, ' ', 0)
-	fmt.Fprintln(w, "GROUP\tKIND\tNAMESPACE\tNAME\tDEFAULT CONTROLLER\tDEFAULT GOOD\tALTERNATIVE CONTROLLER\tALTERNATIVE GOOD")
-	for gknn, report := range r.report {
-		defaultGood := "N/A"
-		if report.DefaultGood != nil {
-			defaultGood = fmt.Sprintf("%t", *report.DefaultGood)
-		}
-		defaultControllerType := "N/A"
-		if report.DefaultControllerType != nil {
-			defaultControllerType = fmt.Sprintf("%s", *report.DefaultControllerType)
-		}
-		alternativeGood := "N/A"
-		if report.AlternativeGood != nil {
-			alternativeGood = fmt.Sprintf("%t", *report.AlternativeGood)
-		}
-		alternativeControllerType := "N/A"
-		if report.AlternativeControllerType != nil {
-			alternativeControllerType = fmt.Sprintf("%s", *report.AlternativeControllerType)
-		}
-		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", gknn.Group, gknn.Kind, gknn.Namespace, gknn.Name, defaultControllerType, defaultGood, alternativeControllerType, alternativeGood)
-	}
-	w.Flush()
-	return nil
-}
-
-type GKNNReport struct {
-	DefaultControllerType     *k8s.ReconcilerType
-	DefaultGood               *bool
-	AlternativeControllerType *k8s.ReconcilerType
-	AlternativeGood           *bool
 }

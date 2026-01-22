@@ -123,7 +123,7 @@ func getGCPAuthorization(ctx context.Context, opts *PreviewOptions) (oauth2.Toke
 func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 	log.SetLogger(klogr.New())
 	klog.Info("Starting preview tool.")
-	
+	defer klog.Flush()
 	defaultRecorder, err := runKCCManagerPreview(ctx, map[string]string{}, opts)
 	if err != nil {
 		if _, ok := err.(*TimeoutError); ok {
@@ -149,7 +149,19 @@ func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 	}
 
 	report := preview.NewPreviewReport(defaultRecorder, alternativeRecorder)
-	report.Export(generateFilename(opts.reportNamePrefix) + "-combined-result")
+	// If running as GKE job, just print the failure details.
+	if opts.inCluster {
+		for _, failure := range report.GetFailures(){
+			klog.InfoS("PreviewResult", "ns", failure.GKNN.Namespace, "name", failure.GKNN.Name, "group", failure.GKNN.Group, "kind", failure.GKNN.Kind, "controller_type", failure.ControllerType, "reconcile_status", failure.ReconcileStatus.String(), "fields", preview.FormatFieldIDs(failure.Diffs))
+		}
+		return nil
+	}
+	if opts.fullReport {
+		defaultRecorder.ExportDetailObjectsEvent(generateFilename(opts.reportNamePrefix) + "default-full-events")
+		alternativeRecorder.ExportDetailObjectsEvent(generateFilename(opts.reportNamePrefix) + "alternative-full-events")
+	}
+	report.ExportSummary(generateFilename(opts.reportNamePrefix) + "-summary")
+	report.ExportFailedResults(generateFilename(opts.reportNamePrefix) + "-failure-details")
 	return nil
 }
 
@@ -182,7 +194,6 @@ func runKCCManagerPreview(ctx context.Context, reconcilerOverride map[string]str
 		return nil, fmt.Errorf("building preview instance: %v", err)
 	}
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(opts.timeout)*time.Minute)
-	// defer printCapturedObjects(recorder, opts.reportNamePrefix, opts.fullReport)
 	defer cancel()
 
 	errChan := make(chan error, 1)
@@ -201,21 +212,6 @@ func runKCCManagerPreview(ctx context.Context, reconcilerOverride map[string]str
 	}
 	klog.Info("Preview finished successfully")
 	return recorder, nil
-}
-
-func printCapturedObjects(recorder *preview.Recorder, prefix string, full bool) error {
-	summaryFile := generateFilename(prefix)
-	if err := recorder.SummaryReport(summaryFile); err != nil {
-		return fmt.Errorf("error writing summary: %w", err)
-	}
-
-	if full {
-		outputFile := generateFilename(prefix + "-full")
-		if err := recorder.ExportDetailObjectsEvent(outputFile); err != nil {
-			return fmt.Errorf("error writing events: %w", err)
-		}
-	}
-	return nil
 }
 
 func generateFilename(prefix string) string {

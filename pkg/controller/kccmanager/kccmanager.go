@@ -374,6 +374,9 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
 	if !cfg.skipControllerRegistration {
+		if opts.Controller.SkipNameValidation != nil {
+			registration.SkipControllerNameValidation = *opts.Controller.SkipNameValidation
+		}
 		if err := registration.AddDefaultControllers(ctx, mgr, &rd, controllerConfig); err != nil {
 			return nil, fmt.Errorf("error adding registration controller: %w", err)
 		}
