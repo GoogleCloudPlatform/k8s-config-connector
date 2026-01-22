@@ -175,12 +175,6 @@ metadata:
   labels: (removed)
   name: artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1159,12 +1153,6 @@ metadata:
   labels: (removed)
   name: computesubnetworks.compute.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2059,6 +2047,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: logginglinks.logging.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: logginglogbuckets.logging.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -2483,12 +2479,6 @@ metadata:
   labels: (removed)
   name: privatecacapools.privateca.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -4344,6 +4334,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - parametermanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - privateca.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5658,6 +5660,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - parametermanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - privateca.cnrm.cloud.google.com
   resources:
   - '*'
@@ -6079,6 +6089,8 @@ spec:
         env:
         - name: CONFIG_CONNECTOR_VERSION
           value: '{{stable.latest}}'
+        - name: GOMEMLIMIT
+          value: 58MiB
         image: foobar.local/recorder:{{stable.latest}}
         imagePullPolicy: Always
         name: recorder
@@ -6216,6 +6228,9 @@ spec:
       containers:
       - command:
         - /configconnector/deletiondefender
+        env:
+        - name: GOMEMLIMIT
+          value: 920MiB
         image: foobar.local/deletiondefender:{{stable.latest}}
         imagePullPolicy: Always
         name: deletiondefender
@@ -6270,6 +6285,9 @@ spec:
       containers:
       - command:
         - /configconnector/unmanageddetector
+        env:
+        - name: GOMEMLIMIT
+          value: 920MiB
         image: foobar.local/unmanageddetector:{{stable.latest}}
         imagePullPolicy: Always
         name: unmanageddetector
