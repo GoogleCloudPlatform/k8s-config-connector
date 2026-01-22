@@ -64,6 +64,10 @@ func (i *TableIdentity) FromExternal(ref string) error {
 	return nil
 }
 
+func (i *TableIdentity) Host() string {
+	return TableIdentityFormat.Host()
+}
+
 type TableParent struct {
 	ProjectID string
 	DatasetID string

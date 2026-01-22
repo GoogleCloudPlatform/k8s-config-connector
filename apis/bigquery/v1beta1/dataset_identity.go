@@ -56,6 +56,10 @@ func (i *DatasetIdentity) FromExternal(ref string) error {
 	return nil
 }
 
+func (i *DatasetIdentity) Host() string {
+	return DatasetIdentityFormat.Host()
+}
+
 func (i *DatasetIdentity) ID() string {
 	return i.Dataset
 }
