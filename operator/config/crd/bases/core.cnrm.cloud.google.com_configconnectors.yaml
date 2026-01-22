@@ -92,6 +92,28 @@ spec:
                     - leaseName
                     - namespace
                     type: object
+                  resourceSettings:
+                    description: ResourceSettings allows specifying which resources
+                      to enable or disable.
+                    items:
+                      properties:
+                        enabled:
+                          description: |-
+                            Enabled controls whether the controller for this resource is enabled.
+                            Defaults to true.
+                          type: boolean
+                        group:
+                          description: Group is the API group of the resource.
+                          type: string
+                        kind:
+                          description: Kind is the Kind of the resource.
+                          type: string
+                      required:
+                      - enabled
+                      - group
+                      - kind
+                      type: object
+                    type: array
                 type: object
               googleServiceAccount:
                 description: |-

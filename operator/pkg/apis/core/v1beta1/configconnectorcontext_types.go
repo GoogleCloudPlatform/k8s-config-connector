@@ -94,6 +94,10 @@ type Experiments struct {
 	// e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
 	// +optional
 	ControllerOverrides map[string]k8scontrollertype.ReconcilerType `json:"controllerOverrides,omitempty"`
+
+	// ResourceSettings allows specifying which resources to enable or disable in this namespace.
+	// +optional
+	ResourceSettings []ResourceSettings `json:"resourceSettings,omitempty"`
 }
 
 type StateIntoSpecValue string
