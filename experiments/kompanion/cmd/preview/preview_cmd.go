@@ -113,44 +113,59 @@ func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 		return fmt.Errorf("error building kubeconfig: %w", err)
 	}
 	recorder := preview.NewRecorder()
-	klog.Info("Preloading the list of resources to reconcile")
-	if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig, opts.namespace); err != nil {
-		return fmt.Errorf("error preload the list of resources to reconcile: %w", err)
-	}
-	klog.Info("Successfully preload the list of resources to reconcile.")
+
 	authorization, err := getGCPAuthorization(ctx, opts)
 	if err != nil {
 		return fmt.Errorf("error building GCP authorization: %w", err)
 	}
-	preview, err := preview.NewPreviewInstance(recorder, preview.PreviewInstanceOptions{
-		UpstreamRESTConfig:       upstreamRESTConfig,
-		UpstreamGCPAuthorization: authorization,
-		UpstreamGCPHTTPClient:    nil,
-		UpstreamGCPQPS:           opts.gcpQPS,
-		UpstreamGCPBurst:         opts.gcpBurst,
-		Namespace:                opts.namespace,
-	})
-	if err != nil {
-		return fmt.Errorf("building preview instance: %v", err)
-	}
+
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(opts.timeout)*time.Minute)
 	defer printCapturedObjects(recorder, opts.reportNamePrefix, opts.fullReport)
 	defer cancel()
 
-	errChan := make(chan error, 1)
-	go func() {
-		klog.Info("Starting preview")
-		errChan <- preview.Start(ctx)
-	}()
-
-	select {
-	case err := <-errChan:
-		if err != nil {
-			return fmt.Errorf("error starting preview: %w", err)
+	passes := 2
+	for i := 0; i < passes; i++ {
+		klog.Infof("Starting pass %d of %d", i+1, passes)
+		klog.Info("Preloading the list of resources to reconcile")
+		if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig, opts.namespace); err != nil {
+			return fmt.Errorf("error preload the list of resources to reconcile: %w", err)
 		}
-	case <-ctx.Done():
-		return fmt.Errorf("timeout reached: %w", ctx.Err())
+		klog.Info("Successfully preload the list of resources to reconcile.")
+
+		previewOpts := preview.PreviewInstanceOptions{
+			UpstreamRESTConfig:       upstreamRESTConfig,
+			UpstreamGCPAuthorization: authorization,
+			UpstreamGCPHTTPClient:    nil,
+			UpstreamGCPQPS:           opts.gcpQPS,
+			UpstreamGCPBurst:         opts.gcpBurst,
+			Namespace:                opts.namespace,
+		}
+		if i > 0 {
+			previewOpts.SkipNameValidation = true
+		}
+
+		preview, err := preview.NewPreviewInstance(recorder, previewOpts)
+		if err != nil {
+			return fmt.Errorf("building preview instance: %v", err)
+		}
+
+		errChan := make(chan error, 1)
+		go func() {
+			klog.Info("Starting preview")
+			errChan <- preview.Start(ctx)
+		}()
+
+		select {
+		case err := <-errChan:
+			if err != nil {
+				return fmt.Errorf("error starting preview: %w", err)
+			}
+		case <-ctx.Done():
+			return fmt.Errorf("timeout reached: %w", ctx.Err())
+		}
+		klog.Infof("Pass %d finished successfully", i+1)
 	}
+
 	klog.Info("Preview finished successfully")
 	return nil
 }
