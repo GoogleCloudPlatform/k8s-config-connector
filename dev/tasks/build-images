@@ -43,6 +43,7 @@ export RECORDER_IMG=${IMAGE_PREFIX}recorder:${IMAGE_TAG}
 export WEBHOOK_IMG=${IMAGE_PREFIX}webhook:${IMAGE_TAG}
 export DELETION_DEFENDER_IMG=${IMAGE_PREFIX}deletiondefender:${IMAGE_TAG}
 export UNMANAGED_DETECTOR_IMG=${IMAGE_PREFIX}unmanageddetector:${IMAGE_TAG}
+export KOMPANION_IMG=${IMAGE_PREFIX}kompanion:${IMAGE_TAG}
 
 export OPERATOR_IMG=${IMAGE_PREFIX}operator:${IMAGE_TAG}
 
@@ -50,6 +51,9 @@ cd ${REPO_ROOT}
 make docker-build
 
 cd ${REPO_ROOT}/operator
+make docker-build
+
+cd ${REPO_ROOT}/experiments/kompanion
 make docker-build
 
 # Remove images that are not artifacts we would want to promote / keep
