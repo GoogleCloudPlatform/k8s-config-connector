@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"

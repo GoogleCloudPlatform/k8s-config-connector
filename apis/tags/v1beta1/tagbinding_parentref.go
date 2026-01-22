@@ -150,7 +150,7 @@ func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
 
 	idV2, ok := id.(identity.IdentityV2)
 	if !ok {
-		return "", ref, nil
+		return "", ref, fmt.Errorf("identity for kind %q does not implement IdentityV2", kind)
 	}
 
 	return idV2.Host(), ref, nil
