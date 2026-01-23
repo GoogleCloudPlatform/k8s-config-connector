@@ -20,6 +20,7 @@ import (
 	"fmt"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -97,6 +98,7 @@ func (m *TagsLocationTagBindingModel) AdapterForObject(ctx context.Context, read
 		id:                id,
 		tagBindingsClient: tagBindingsClient,
 		desired:           desired,
+		projectMapper:     m.config.ProjectMapper,
 	}, nil
 }
 
@@ -110,6 +112,8 @@ type TagsLocationTagBindingAdapter struct {
 	tagBindingsClient *api.TagBindingsClient
 	desired           *pb.TagBinding
 	actual            *pb.TagBinding
+
+	projectMapper *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &TagsLocationTagBindingAdapter{}
@@ -257,11 +261,23 @@ func (a *TagsLocationTagBindingAdapter) Delete(ctx context.Context, deleteOp *di
 
 // TODO: Make this function generic and reuse across models.
 func (a *TagsLocationTagBindingAdapter) changedFields(ctx context.Context) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+
+	actual := direct.ProtoClone(a.actual)
+	desired := direct.ProtoClone(a.desired)
+
+	// Normalize both to use project numbers in links.
+	if err := a.projectMapper.RemapLinkToProjectNumber(ctx, &actual.Parent); err != nil {
+		return nil, nil, fmt.Errorf("remapping project in actual TagBinding: %w", err)
+	}
+	if err := a.projectMapper.RemapLinkToProjectNumber(ctx, &desired.Parent); err != nil {
+		return nil, nil, fmt.Errorf("remapping project in desired TagBinding: %w", err)
+	}
+
 	// Compute the actual with only the spec fields populated.
 	var actualMasked protoreflect.Message
 	{
 		mapCtx := &direct.MapContext{}
-		actualSpec := TagsLocationTagBindingSpec_FromProto(mapCtx, a.actual)
+		actualSpec := TagsLocationTagBindingSpec_FromProto(mapCtx, actual)
 		if mapCtx.Err() != nil {
 			return nil, nil, mapCtx.Err()
 		}
@@ -273,5 +289,5 @@ func (a *TagsLocationTagBindingAdapter) changedFields(ctx context.Context) (*str
 		actualMasked = specProto.ProtoReflect()
 	}
 
-	return buildDiff(ctx, a.desired.ProtoReflect(), actualMasked)
+	return buildDiff(ctx, desired.ProtoReflect(), actualMasked)
 }
