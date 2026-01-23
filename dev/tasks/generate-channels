@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Generates the manifests in operator/channels and operator/autopilot-channels
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
+cd ${REPO_ROOT}
+
+VERSION=$(cat version/VERSION)
+export VERSION
+
+BUILD_DIR="${REPO_ROOT}/.build"
+mkdir -p "${BUILD_DIR}"
+
+WORKDIR="${BUILD_DIR}/workdir"
+rm -rf "${WORKDIR}"
+mkdir -p "${WORKDIR}"
+
+BIN_DIR="${BUILD_DIR}/bin"
+mkdir -p "${BIN_DIR}"
+
+# Install kustomize if not present
+if ! command -v kustomize &> /dev/null; then
+  echo "Installing kustomize..."
+  GOBIN=${BIN_DIR}/ go install sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
+  export PATH=${BIN_DIR}/:$PATH
+fi
+
+# Build the release bundle
+echo "Building release bundle for version ${VERSION}..."
+dev/tasks/build-release-bundle
+
+cp dist/release-bundle.tar.gz ${WORKDIR}/
+cd ${WORKDIR}
+tar xzf release-bundle.tar.gz
+
+# Update the operator manifests in the channels / autopilot-channels directory
+echo "Generating channel manifests..."
+
+for channeldir in channels autopilot-channels; do
+  mkdir -p ${REPO_ROOT}/operator/config/${channeldir}/release-bundle
+  cd ${REPO_ROOT}/operator/config/${channeldir}/release-bundle
+  tar xzf ${WORKDIR}/release-bundle.tar.gz
+
+  cd ${REPO_ROOT}/operator/config/${channeldir}
+
+  mkdir -p ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/gcp-identity
+  kustomize build --load-restrictor=LoadRestrictionsNone cluster-gcp-identity > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/gcp-identity/0-cnrm-system.yaml
+
+  mkdir -p ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/workload-identity
+  kustomize build --load-restrictor=LoadRestrictionsNone cluster-workload-identity > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/workload-identity/0-cnrm-system.yaml
+
+  mkdir -p ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/namespaced
+  kustomize build --load-restrictor=LoadRestrictionsNone namespaced-main > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/namespaced/0-cnrm-system.yaml
+  kustomize build --load-restrictor=LoadRestrictionsNone namespaced-per-namespace-components > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/namespaced/per-namespace-components.yaml
+
+  kustomize build --load-restrictor=LoadRestrictionsNone  crds > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/crds.yaml
+
+  rm -rf ${REPO_ROOT}/operator/config/${channeldir}/release-bundle
+done
+
+# Swap container registry
+for channeldir in channels autopilot-channels; do
+  find ${REPO_ROOT}/operator/${channeldir}/packages -type f -name "*.yaml" | xargs sed -i -e "s@gcr.io/cnrm-eap/@gcr.io/gke-release/@g"
+done
+
+# Add licenses
+GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${VERSION}
+GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ${REPO_ROOT}/operator/channels/packages/configconnector/${VERSION}
+
+echo "Channel manifests generated."
