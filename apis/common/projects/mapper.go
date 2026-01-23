@@ -23,6 +23,7 @@ import (
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/concurrent"
+	"k8s.io/klog/v2"
 )
 
 // ProjectMapper maps between project IDs and project numbers.
@@ -81,6 +82,52 @@ func (m *ProjectMapper) ReplaceProjectNumberWithID(ctx context.Context, projectI
 		return "", err
 	}
 	return info.projectID, nil
+}
+
+func (m *ProjectMapper) RemapLinkToProjectNumber(ctx context.Context, ptrToLink *string) error {
+	log := klog.FromContext(ctx)
+
+	if ptrToLink == nil {
+		return nil
+	}
+
+	link := *ptrToLink
+
+	prefix := ""
+	if strings.HasPrefix(link, "//") {
+		host, suffix, ok := strings.Cut(link[2:], "/")
+		if !ok {
+			return fmt.Errorf("unexpected link format: %q", link)
+		}
+		link = suffix
+		prefix = "//" + host + "/"
+	}
+
+	tokens := strings.Split(link, "/")
+	pos := 0
+	for pos < len(tokens) {
+		if tokens[pos] == "projects" && pos+1 < len(tokens) {
+			projectID := tokens[pos+1]
+			if projectID == "_" {
+				// Special case: "_" means "default project", so we skip remapping
+			} else {
+				projectNumber, err := m.LookupProjectNumber(ctx, projectID)
+				if err != nil {
+					return fmt.Errorf("error looking up project number for link %q: %w", link, err)
+				}
+				tokens[pos+1] = strconv.FormatInt(projectNumber, 10)
+				break
+			}
+		}
+		pos += 2
+	}
+
+	newLink := prefix + strings.Join(tokens, "/")
+	if newLink != *ptrToLink {
+		*ptrToLink = newLink
+		log.Info("remapped link to project number", "original", *ptrToLink, "remapped", newLink)
+	}
+	return nil
 }
 
 // LookupProjectNumber retrieves the project number for a given project ID.
