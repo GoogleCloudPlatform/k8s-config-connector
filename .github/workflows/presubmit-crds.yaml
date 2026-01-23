@@ -23,6 +23,9 @@ on:
     branches: ["master"]
     paths:
       - 'crds/**'
+  merge_group:
+    types: [checks_requested]
+    branches: [ "master" ]
 
 jobs:
   verify-crds-folder:
