@@ -3293,10 +3293,6 @@
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.timeout" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].cloudSqlInstance.instances[].external" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].cloudSqlInstance.instances[].namespace" is not set in unstructured objects
-[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].secret.defaultMode" is not set in unstructured objects
-[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].secret.items[].mode" is not set in unstructured objects
-[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].secret.items[].path" is not set in unstructured objects
-[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].secret.items[].versionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.vpcAccess.networkInterfaces[].networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.vpcAccess.networkInterfaces[].subnetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.vpcAccess.networkInterfaces[].tags[]" is not set in unstructured objects
