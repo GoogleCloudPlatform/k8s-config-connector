@@ -66,42 +66,8 @@ manifests:
 EOF
 
 
-# Build the release bundle
-VERSION=${VERSION} dev/tasks/build-release-bundle
-cp dist/release-bundle.tar.gz ${WORKDIR}/
-cd ${WORKDIR}
-tar xzf release-bundle.tar.gz
-
-
-# Update the operator manifests in the channels / autopilot-channels directory
-
-for channeldir in channels autopilot-channels; do
-  mkdir -p ${REPO_ROOT}/operator/config/${channeldir}/release-bundle
-  cd ${REPO_ROOT}/operator/config/${channeldir}/release-bundle
-  tar xzf ${WORKDIR}/release-bundle.tar.gz
-
-  cd ${REPO_ROOT}/operator/config/${channeldir}
-
-  mkdir -p ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/gcp-identity
-  kustomize build --load-restrictor=LoadRestrictionsNone cluster-gcp-identity > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/gcp-identity/0-cnrm-system.yaml
-
-  mkdir -p ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/workload-identity
-  kustomize build --load-restrictor=LoadRestrictionsNone cluster-workload-identity > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/workload-identity/0-cnrm-system.yaml
-
-  mkdir -p ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/namespaced
-  kustomize build --load-restrictor=LoadRestrictionsNone namespaced-main > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/namespaced/0-cnrm-system.yaml
-  kustomize build --load-restrictor=LoadRestrictionsNone namespaced-per-namespace-components > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/namespaced/per-namespace-components.yaml
-
-  kustomize build --load-restrictor=LoadRestrictionsNone  crds > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/crds.yaml
-
-  rm -rf ${REPO_ROOT}/operator/config/${channeldir}/release-bundle
-done
-
-# Swap container registry
-# TODO: This is only needed for release bundles that we didn't build with our scripts here (i.e. only needed for release bundles built with the legacy process)
-for channeldir in channels autopilot-channels; do
-  find ${REPO_ROOT}/operator/${channeldir}/packages -type f -name "*.yaml" | xargs sed -i -e "s@gcr.io/cnrm-eap/@gcr.io/gke-release/@g"
-done
+# Build the release bundle and generate manifests
+dev/tasks/generate-channels
 
 # Update operator RBAC.  
 cp ${REPO_ROOT}/config/installbundle/components/clusterroles/cnrm_viewer.yaml ${REPO_ROOT}/operator/config/rbac/cnrm_viewer_patch.yaml
@@ -133,14 +99,12 @@ if [[ -n "${STALE_VERSION:-}" ]]; then
 
   # Remove the STALE_VERSION package for standard and autopilot
   rm -rf ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/cluster
-  rm ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/crds.yaml
-  rm ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/namespaced/0-cnrm-system.yaml
+  rm -f ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/crds.yaml
+  rm -f ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/namespaced/0-cnrm-system.yaml
   rm -rf ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/cluster
-  rm ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/crds.yaml
-  rm ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/namespaced/0-cnrm-system.yaml
+  rm -f ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/crds.yaml
+  rm -f ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/namespaced/0-cnrm-system.yaml
 fi
 
 # Format
-GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector
-GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ${REPO_ROOT}/operator/channels/packages/configconnector
 cd ${REPO_ROOT}; make fmt
