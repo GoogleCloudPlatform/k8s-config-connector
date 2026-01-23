@@ -21,6 +21,7 @@ import (
 	"time"
 
 	"golang.org/x/oauth2"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
@@ -30,6 +31,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -46,7 +48,11 @@ type PreviewInstance struct {
 
 	// Namespace is the namespace of the cluster to preview
 	// If empty, all namespaces are previewed
+	// Namespace is the namespace of the cluster to preview
+	// If empty, all namespaces are previewed
 	Namespace string
+
+	ReconcilerOverride map[schema.GroupKind]k8s.ReconcilerType
 }
 
 // PreviewInstanceOptions are the options for creating a PreviewInstance.
@@ -74,6 +80,8 @@ type PreviewInstanceOptions struct {
 	// Namespace is the namespace of the cluster to preview
 	// If empty, all namespaces are previewed
 	Namespace string
+
+	ReconcilerOverride map[schema.GroupKind]k8s.ReconcilerType
 }
 
 // NewPreviewInstance creates a new PreviewInstance.
@@ -85,7 +93,9 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 		upstreamGCPHTTPClient = http.DefaultClient
 	}
 
-	hookKube, err := newInterceptingKubeClient(recorder, upstreamRESTConfig)
+	hookKube, err := newInterceptingKubeClient(recorder, upstreamRESTConfig, []ObjectTransformer{
+		newReconcilerOverrideTransformer(options.ReconcilerOverride),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -97,6 +107,7 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 	i.hookKube = hookKube
 	i.recorder = recorder
 	i.Namespace = options.Namespace
+	i.ReconcilerOverride = options.ReconcilerOverride
 
 	return i, nil
 }
