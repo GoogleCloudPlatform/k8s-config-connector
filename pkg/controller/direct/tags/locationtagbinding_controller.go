@@ -273,18 +273,20 @@ func (a *TagsLocationTagBindingAdapter) changedFields(ctx context.Context) (*str
 	// Compute the actual with only the spec fields populated.
 	var actualMasked protoreflect.Message
 	{
-		mapCtx := &direct.MapContext{}
-		actualSpec := TagsLocationTagBindingSpec_FromProto(mapCtx, a.actual)
-		if mapCtx.Err() != nil {
-			return nil, nil, mapCtx.Err()
+		// Normalize actual state
+		actual := direct.ProtoClone(a.actual)
+		if actual.GetParent() != "" {
+			normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, actual.GetParent())
+			if err != nil {
+				return nil, nil, fmt.Errorf("normalizing actual parent link %q: %w", actual.GetParent(), err)
+			}
+			actual.Parent = normalized
 		}
 
-		if actualSpec.ParentRef != nil && actualSpec.ParentRef.External != "" {
-			normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, actualSpec.ParentRef.External)
-			if err != nil {
-				return nil, nil, fmt.Errorf("normalizing actual parent link %q: %w", actualSpec.ParentRef.External, err)
-			}
-			actualSpec.ParentRef.External = normalized
+		mapCtx := &direct.MapContext{}
+		actualSpec := TagsLocationTagBindingSpec_FromProto(mapCtx, actual)
+		if mapCtx.Err() != nil {
+			return nil, nil, mapCtx.Err()
 		}
 
 		mapCtx = &direct.MapContext{}
