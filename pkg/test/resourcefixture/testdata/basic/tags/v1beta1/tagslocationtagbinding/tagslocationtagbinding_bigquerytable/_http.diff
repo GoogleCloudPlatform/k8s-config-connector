@@ -2,13 +2,80 @@
 < POST https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings?alt=json
 ---
 > POST https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint
+484,485c484,485
+<     "name": "tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}%2Ftables%2Fbigquerytablesample${uniqueId}/tagValues/${tagValueID}",
+<     "parent": "//bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+---
+>     "name": "tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectNumber}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}%2Ftables%2Fbigquerytablesample${uniqueId}/tagValues/${tagValueID}",
+>     "parent": "//bigquery.googleapis.com/projects/${projectNumber}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
 493c493
 < GET https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings/?alt=json&pageSize=300&parent=%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2F${datasetID}%2Ftables%2Fbigquerytablesample${uniqueId}
 ---
 > GET https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2F${datasetID}%2Ftables%2Fbigquerytablesample${uniqueId}
-519c519
+510,512c510,513
+<       "name": "tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}%2Ftables%2Fbigquerytablesample${uniqueId}/tagValues/${tagValueID}",
+<       "parent": "//bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+<       "tagValue": "tagValues/${tagValueID}"
+---
+>       "name": "tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectNumber}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}%2Ftables%2Fbigquerytablesample${uniqueId}/tagValues/${tagValueID}",
+>       "parent": "//bigquery.googleapis.com/projects/${projectNumber}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+>       "tagValue": "tagValues/${tagValueID}",
+>       "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
+519c520
 < DELETE https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2F${datasetID}%2Ftables%2Fbigquerytablesample${uniqueId}/tagValues/${tagValueID}?alt=json
 ---
-> DELETE https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fbigquery.googleapis.com%252Fprojects%252F${projectId}%252Fdatasets%252F${datasetID}%252Ftables%252Fbigquerytablesample${uniqueId}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
-521a522
-> X-Goog-Request-Params: name=tagBindings%2F%252F%252Fbigquery.googleapis.com%252Fprojects%252F${projectId}%252Fdatasets%252F${datasetID}%252Ftables%252Fbigquerytablesample${uniqueId}%2FtagValues%2F${tagValueID}
+> GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
+521a523,575
+> X-Goog-Request-Params: name=projects%2F${projectNumber}
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "etag": "abcdef0123A=",
+>   "name": "projects/${projectNumber}",
+>   "projectId": "${projectId}",
+>   "state": 1
+> }
+> 
+> ---
+> 
+> GET https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2F${datasetID}%2Ftables%2Fbigquerytablesample${uniqueId}
+> Content-Type: application/json
+> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "tagBindings": [
+>     {
+>       "name": "tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectNumber}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}%2Ftables%2Fbigquerytablesample${uniqueId}/tagValues/${tagValueID}",
+>       "parent": "//bigquery.googleapis.com/projects/${projectNumber}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+>       "tagValue": "tagValues/${tagValueID}",
+>       "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
+>     }
+>   ]
+> }
+> 
+> ---
+> 
+> DELETE https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fbigquery.googleapis.com%252Fprojects%252F${projectNumber}%252Fdatasets%252F${datasetID}%252Ftables%252Fbigquerytablesample${uniqueId}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+> X-Goog-Request-Params: name=tagBindings%2F%252F%252Fbigquery.googleapis.com%252Fprojects%252F${projectNumber}%252Fdatasets%252F${datasetID}%252Ftables%252Fbigquerytablesample${uniqueId}%2FtagValues%2F${tagValueID}
