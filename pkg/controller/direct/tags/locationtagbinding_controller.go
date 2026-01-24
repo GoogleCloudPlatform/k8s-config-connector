@@ -260,6 +260,16 @@ func (a *TagsLocationTagBindingAdapter) Delete(ctx context.Context, deleteOp *di
 
 // TODO: Make this function generic and reuse across models.
 func (a *TagsLocationTagBindingAdapter) changedFields(ctx context.Context) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	// Normalize desired state
+	desired := direct.ProtoClone(a.desired)
+	if desired.GetParent() != "" {
+		normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, desired.GetParent())
+		if err != nil {
+			return nil, nil, fmt.Errorf("normalizing desired parent link %q: %w", desired.GetParent(), err)
+		}
+		desired.Parent = normalized
+	}
+
 	// Compute the actual with only the spec fields populated.
 	var actualMasked protoreflect.Message
 	{
@@ -272,7 +282,7 @@ func (a *TagsLocationTagBindingAdapter) changedFields(ctx context.Context) (*str
 		if actualSpec.ParentRef != nil && actualSpec.ParentRef.External != "" {
 			normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, actualSpec.ParentRef.External)
 			if err != nil {
-				return nil, nil, fmt.Errorf("normalizing parent link %q: %w", actualSpec.ParentRef.External, err)
+				return nil, nil, fmt.Errorf("normalizing actual parent link %q: %w", actualSpec.ParentRef.External, err)
 			}
 			actualSpec.ParentRef.External = normalized
 		}
@@ -285,5 +295,5 @@ func (a *TagsLocationTagBindingAdapter) changedFields(ctx context.Context) (*str
 		actualMasked = specProto.ProtoReflect()
 	}
 
-	return buildDiff(ctx, a.desired.ProtoReflect(), actualMasked)
+	return buildDiff(ctx, desired.ProtoReflect(), actualMasked)
 }
