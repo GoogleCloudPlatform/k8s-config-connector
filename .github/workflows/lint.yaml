@@ -15,18 +15,7 @@
 name: linter
 on:
   push:
-    # should more or less match what we have in .golangci.yaml
-    paths-ignore:
-      - "third_party/**"
-      - "**.md"
-      - pkg/clients/generated
-      - config/tests
   pull_request:
-    paths-ignore:
-      - "third_party/**"
-      - "**.md"
-      - pkg/clients/generated
-      - config/tests
 permissions: read-all
 jobs:
   lint:
