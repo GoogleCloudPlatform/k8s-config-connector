@@ -20,6 +20,7 @@ import (
 	"fmt"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -97,6 +98,7 @@ func (m *TagsLocationTagBindingModel) AdapterForObject(ctx context.Context, read
 		id:                id,
 		tagBindingsClient: tagBindingsClient,
 		desired:           desired,
+		projectMapper:     m.config.ProjectMapper,
 	}, nil
 }
 
@@ -110,6 +112,7 @@ type TagsLocationTagBindingAdapter struct {
 	tagBindingsClient *api.TagBindingsClient
 	desired           *pb.TagBinding
 	actual            *pb.TagBinding
+	projectMapper     *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &TagsLocationTagBindingAdapter{}
@@ -265,6 +268,16 @@ func (a *TagsLocationTagBindingAdapter) changedFields(ctx context.Context) (*str
 		if mapCtx.Err() != nil {
 			return nil, nil, mapCtx.Err()
 		}
+
+		if a.projectMapper != nil && actualSpec.ParentRef != nil && actualSpec.ParentRef.External != "" {
+			normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, actualSpec.ParentRef.External)
+			if err != nil {
+				klog.Warningf("failed to normalize parent link %q: %v", actualSpec.ParentRef.External, err)
+			} else {
+				actualSpec.ParentRef.External = normalized
+			}
+		}
+
 		mapCtx = &direct.MapContext{}
 		specProto := TagsLocationTagBindingSpec_ToProto(mapCtx, actualSpec)
 		if mapCtx.Err() != nil {

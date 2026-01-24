@@ -16,6 +16,7 @@ package projects
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -67,6 +68,52 @@ func NewProjectMapper(cache *ProjectCache) *ProjectMapper {
 	return &ProjectMapper{
 		cache: cache,
 	}
+}
+
+// ReplaceProjectNumberWithIDInLink replaces the project number with the project ID in a link.
+// It assumes the link contains segments like "projects/{projectNumber}".
+func (m *ProjectMapper) ReplaceProjectNumberWithIDInLink(ctx context.Context, link string) (string, error) {
+	return replaceProjectNumberWithIDInLink(ctx, link, m.ReplaceProjectNumberWithID)
+}
+
+// projectRegexp matches "projects/" followed by one or more non-slash characters.
+var projectRegexp = regexp.MustCompile(`projects/([^/]+)`)
+
+func replaceProjectNumberWithIDInLink(ctx context.Context, link string, resolver func(context.Context, string) (string, error)) (string, error) {
+	// FindAllStringSubmatchIndex returns a slice of start/end indices for the match and submatches.
+	matches := projectRegexp.FindAllStringSubmatchIndex(link, -1)
+	if matches == nil {
+		return link, nil
+	}
+
+	var sb strings.Builder
+	lastIndex := 0
+
+	for _, match := range matches {
+		// match[0], match[1] are start/end of the full match "projects/XYZ"
+		// match[2], match[3] are start/end of the submatch "XYZ"
+
+		fullStart, fullEnd := match[0], match[1]
+		subStart, subEnd := match[2], match[3]
+
+		// Append text before the match
+		sb.WriteString(link[lastIndex:fullStart])
+
+		projectSegment := link[subStart:subEnd]
+		projectID, err := resolver(ctx, projectSegment)
+		if err != nil {
+			return "", err
+		}
+
+		sb.WriteString("projects/")
+		sb.WriteString(projectID)
+
+		lastIndex = fullEnd
+	}
+
+	sb.WriteString(link[lastIndex:])
+
+	return sb.String(), nil
 }
 
 func (m *ProjectMapper) ReplaceProjectNumberWithID(ctx context.Context, projectID string) (string, error) {
