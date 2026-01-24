@@ -16,7 +16,6 @@ package projects
 import (
 	"context"
 	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -76,44 +75,41 @@ func (m *ProjectMapper) ReplaceProjectNumberWithIDInLink(ctx context.Context, li
 	return replaceProjectNumberWithIDInLink(ctx, link, m.ReplaceProjectNumberWithID)
 }
 
-// projectRegexp matches "projects/" followed by one or more non-slash characters.
-var projectRegexp = regexp.MustCompile(`projects/([^/]+)`)
-
 func replaceProjectNumberWithIDInLink(ctx context.Context, link string, resolver func(context.Context, string) (string, error)) (string, error) {
-	// FindAllStringSubmatchIndex returns a slice of start/end indices for the match and submatches.
-	matches := projectRegexp.FindAllStringSubmatchIndex(link, -1)
-	if matches == nil {
-		return link, nil
-	}
-
-	var sb strings.Builder
-	lastIndex := 0
-
-	for _, match := range matches {
-		// match[0], match[1] are start/end of the full match "projects/XYZ"
-		// match[2], match[3] are start/end of the submatch "XYZ"
-
-		fullStart, fullEnd := match[0], match[1]
-		subStart, subEnd := match[2], match[3]
-
-		// Append text before the match
-		sb.WriteString(link[lastIndex:fullStart])
-
-		projectSegment := link[subStart:subEnd]
-		projectID, err := resolver(ctx, projectSegment)
-		if err != nil {
-			return "", err
+	// Identify if there is a prefix (e.g. //artifactregistry.googleapis.com/)
+	prefix := ""
+	path := link
+	if strings.HasPrefix(link, "//") {
+		// Find the third slash, which marks the start of the resource path
+		// e.g. //host/path...
+		parts := strings.SplitN(link[2:], "/", 2)
+		if len(parts) == 2 {
+			prefix = "//" + parts[0] + "/"
+			path = parts[1]
 		}
-
-		sb.WriteString("projects/")
-		sb.WriteString(projectID)
-
-		lastIndex = fullEnd
+	} else if strings.HasPrefix(link, "/") {
+		// Just a leading slash
+		prefix = "/"
+		path = link[1:]
 	}
 
-	sb.WriteString(link[lastIndex:])
+	segments := strings.Split(path, "/")
 
-	return sb.String(), nil
+	// Iterate over segments. We expect key/value pairs.
+	// If "projects" is a key (even index), we check the value (odd index).
+	for i := 0; i < len(segments)-1; i += 2 {
+		if segments[i] == "projects" {
+			projectSegment := segments[i+1]
+			// Check if it is a number or needs resolution
+			projectID, err := resolver(ctx, projectSegment)
+			if err != nil {
+				return "", err
+			}
+			segments[i+1] = projectID
+		}
+	}
+
+	return prefix + strings.Join(segments, "/"), nil
 }
 
 func (m *ProjectMapper) ReplaceProjectNumberWithID(ctx context.Context, projectID string) (string, error) {

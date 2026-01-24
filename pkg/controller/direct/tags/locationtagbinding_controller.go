@@ -269,13 +269,12 @@ func (a *TagsLocationTagBindingAdapter) changedFields(ctx context.Context) (*str
 			return nil, nil, mapCtx.Err()
 		}
 
-		if a.projectMapper != nil && actualSpec.ParentRef != nil && actualSpec.ParentRef.External != "" {
+		if actualSpec.ParentRef != nil && actualSpec.ParentRef.External != "" {
 			normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, actualSpec.ParentRef.External)
 			if err != nil {
-				klog.Warningf("failed to normalize parent link %q: %v", actualSpec.ParentRef.External, err)
-			} else {
-				actualSpec.ParentRef.External = normalized
+				return nil, nil, fmt.Errorf("normalizing parent link %q: %w", actualSpec.ParentRef.External, err)
 			}
+			actualSpec.ParentRef.External = normalized
 		}
 
 		mapCtx = &direct.MapContext{}

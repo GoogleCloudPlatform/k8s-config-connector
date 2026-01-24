@@ -63,6 +63,20 @@ func TestReplaceProjectNumberWithIDInLink(t *testing.T) {
 			link:     "folders/12345",
 			expected: "folders/12345",
 		},
+		{
+			name:     "projects as value",
+			link:     "organizations/12345/locations/us-central1/customConstraints/custom.projects",
+			expected: "organizations/12345/locations/us-central1/customConstraints/custom.projects",
+		},
+		{
+			name: "projects as value with slash",
+			link: "someType/projects/12345", // Here 'projects' is the value for key 'someType', and '12345' is the key for next... wait, actually key/value/key/value.
+			// someType (key) / projects (value) / 12345 (key) ...
+			// If we strictly follow key/value, then projects/12345 at start is key=projects value=12345.
+			// If link is "folders/123/projects/456", folders=key, 123=value, projects=key, 456=value.
+			// If link is "someType/projects", someType=key, projects=value.
+			expected: "someType/projects/12345",
+		},
 	}
 
 	for _, tc := range tests {
