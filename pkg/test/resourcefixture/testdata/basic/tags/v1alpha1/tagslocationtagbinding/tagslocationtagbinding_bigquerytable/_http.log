@@ -458,7 +458,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint
+POST https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -490,7 +490,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2F${datasetID}%2Ftables%2Fbigquerytablesample${uniqueId}
+GET https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings/?alt=json&pageSize=300&parent=%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2F${datasetID}%2Ftables%2Fbigquerytablesample${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -516,10 +516,9 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fbigquery.googleapis.com%252Fprojects%252F${projectId}%252Fdatasets%252F${datasetID}%252Ftables%252Fbigquerytablesample${uniqueId}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://us-east4-cloudresourcemanager.googleapis.com/v3/tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2F${datasetID}%2Ftables%2Fbigquerytablesample${uniqueId}/tagValues/${tagValueID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=tagBindings%2F%252F%252Fbigquery.googleapis.com%252Fprojects%252F${projectId}%252Fdatasets%252F${datasetID}%252Ftables%252Fbigquerytablesample${uniqueId}%2FtagValues%2F${tagValueID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
