@@ -282,10 +282,15 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 
 				// Start gradually, only running for apikeyskey and tags* fixtures initially
 				forceDirect := false
-				if strings.Contains(fixture.TestKey, "/apikeyskey/") {
+				switch fixture.GVK.Kind {
+				case "TagsTagKey", "TagsTagValue", "TagsTagBinding":
 					forceDirect = true
-				} else if strings.Contains(fixture.TestKey, "/tag") {
+				case "APIKeysKey":
 					forceDirect = true
+				case "TagsLocationTagBinding":
+					forceDirect = false
+				default:
+					forceDirect = false
 				}
 
 				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
