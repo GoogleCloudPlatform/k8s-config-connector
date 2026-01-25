@@ -8,13 +8,13 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.7
-	cloud.google.com/go/aiplatform v1.112.0
+	cloud.google.com/go/aiplatform v1.113.0
 	cloud.google.com/go/alloydb v1.20.0
 	cloud.google.com/go/analytics v0.30.1
 	cloud.google.com/go/apigateway v1.7.7
 	cloud.google.com/go/apikeys v1.2.7
 	cloud.google.com/go/apphub v0.4.0
-	cloud.google.com/go/artifactregistry v1.17.1
+	cloud.google.com/go/artifactregistry v1.19.0
 	cloud.google.com/go/asset v1.22.0
 	cloud.google.com/go/assuredworkloads v1.13.0
 	cloud.google.com/go/backupdr v1.6.0
@@ -26,7 +26,7 @@ require (
 	cloud.google.com/go/clouddms v1.8.8
 	cloud.google.com/go/cloudquotas v1.4.0
 	cloud.google.com/go/cloudtasks v1.13.7
-	cloud.google.com/go/compute v1.52.0
+	cloud.google.com/go/compute v1.53.0
 	cloud.google.com/go/configdelivery v0.1.1
 	cloud.google.com/go/datacatalog v1.26.1
 	cloud.google.com/go/dataflow v0.11.1
@@ -40,12 +40,12 @@ require (
 	cloud.google.com/go/edgecontainer v1.4.4
 	cloud.google.com/go/essentialcontacts v1.7.7
 	cloud.google.com/go/eventarc v1.18.0
-	cloud.google.com/go/firestore v1.20.0
+	cloud.google.com/go/firestore v1.21.0
 	cloud.google.com/go/gkebackup v1.8.1
 	cloud.google.com/go/gkemulticloud v1.6.0
 	cloud.google.com/go/iam v1.5.3
 	cloud.google.com/go/iap v1.11.3
-	cloud.google.com/go/kms v1.23.2
+	cloud.google.com/go/kms v1.24.0
 	cloud.google.com/go/logging v1.13.1
 	cloud.google.com/go/managedkafka v0.8.1
 	cloud.google.com/go/memorystore v0.4.0
@@ -65,12 +65,12 @@ require (
 	cloud.google.com/go/recaptchaenterprise/v2 v2.21.0
 	cloud.google.com/go/redis v1.18.3
 	cloud.google.com/go/resourcemanager v1.10.7
-	cloud.google.com/go/run v1.13.0
+	cloud.google.com/go/run v1.14.0
 	cloud.google.com/go/secretmanager v1.16.0
 	cloud.google.com/go/securesourcemanager v1.4.1
 	cloud.google.com/go/security v1.19.2
 	cloud.google.com/go/spanner v1.87.0
-	cloud.google.com/go/speech v1.28.1
+	cloud.google.com/go/speech v1.29.0
 	cloud.google.com/go/storage v1.58.0
 	cloud.google.com/go/vmwareengine v1.3.6
 	cloud.google.com/go/workflows v1.14.3
@@ -117,10 +117,10 @@ require (
 	golang.org/x/sync v0.19.0
 	golang.org/x/time v0.14.0
 	google.golang.org/api v0.258.0
-	google.golang.org/genproto v0.0.0-20250922171735-9219d122eba9
-	google.golang.org/genproto/googleapis/api v0.0.0-20251111163417-95abcf5c77ba
+	google.golang.org/genproto v0.0.0-20260122232226-8e98ce8d340d
+	google.golang.org/genproto/googleapis/api v0.0.0-20260120174246-409b4a993575
 	google.golang.org/genproto/googleapis/api/serviceusage v0.0.0-20250519155744-55703ea1f237
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20251213004720-97cd9d5aeac2
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260120174246-409b4a993575
 	google.golang.org/grpc v1.77.0
 	google.golang.org/protobuf v1.36.11
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0
@@ -173,7 +173,7 @@ require (
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/bigtable v1.41.0
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
-	cloud.google.com/go/longrunning v0.7.0
+	cloud.google.com/go/longrunning v0.8.0
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/MakeNowJust/heredoc v1.0.0 // indirect; indsirect
