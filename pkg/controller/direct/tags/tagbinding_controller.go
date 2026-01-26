@@ -55,11 +55,6 @@ type TagsTagBindingModel struct {
 }
 
 func (m *TagsTagBindingModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	tagBindingsClient, err := newTagBindingsClient(ctx, m.config)
-	if err != nil {
-		return nil, err
-	}
-
 	obj := &krm.TagsTagBinding{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -67,6 +62,18 @@ func (m *TagsTagBindingModel) AdapterForObject(ctx context.Context, reader clien
 
 	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	location := direct.ValueOf(obj.Spec.Location)
+	var tagBindingsClient *api.TagBindingsClient
+	var err error
+	if location != "" {
+		tagBindingsClient, err = newLocationTagBindingsClient(ctx, m.config, location)
+	} else {
+		tagBindingsClient, err = newTagBindingsClient(ctx, m.config)
+	}
+	if err != nil {
+		return nil, err
 	}
 
 	var id *krm.TagsTagBindingIdentity

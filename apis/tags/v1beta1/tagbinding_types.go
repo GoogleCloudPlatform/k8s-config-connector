@@ -27,6 +27,10 @@ type TagsTagBindingSpec struct {
 	// +kcc:ref=Project
 	ParentRef *TagsTagBindingParentRef `json:"parentRef"`
 
+	// The location for the resource being tagged.
+	// +optional
+	Location *string `json:"location,omitempty"`
+
 	// +kcc:ref=TagsTagValue
 	TagValueRef *TagsTagValueRef `json:"tagValueRef"`
 

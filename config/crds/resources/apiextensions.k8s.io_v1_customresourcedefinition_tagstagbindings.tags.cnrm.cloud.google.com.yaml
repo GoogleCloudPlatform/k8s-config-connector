@@ -61,6 +61,9 @@ spec:
           spec:
             description: TagsTagBindingSpec defines the desired state of TagsTagBinding
             properties:
+              location:
+                description: The location for the resource being tagged.
+                type: string
               parentRef:
                 description: ParentRef is a reference to a parent resource.
                 oneOf:
