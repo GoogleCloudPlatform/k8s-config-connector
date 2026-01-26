@@ -22,21 +22,20 @@ package tags
 
 import (
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
-	krmtagsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func TagsLocationTagBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krmtagsv1alpha1.TagsLocationTagBindingObservedState {
+func TagsLocationTagBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krm.TagsLocationTagBindingObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmtagsv1alpha1.TagsLocationTagBindingObservedState{}
+	out := &krm.TagsLocationTagBindingObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: TagValueNamespacedName
 	return out
 }
-func TagsLocationTagBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krmtagsv1alpha1.TagsLocationTagBindingObservedState) *pb.TagBinding {
+func TagsLocationTagBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TagsLocationTagBindingObservedState) *pb.TagBinding {
 	if in == nil {
 		return nil
 	}
@@ -45,11 +44,11 @@ func TagsLocationTagBindingObservedState_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: TagValueNamespacedName
 	return out
 }
-func TagsLocationTagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krmtagsv1alpha1.TagsLocationTagBindingSpec {
+func TagsLocationTagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krm.TagsLocationTagBindingSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmtagsv1alpha1.TagsLocationTagBindingSpec{}
+	out := &krm.TagsLocationTagBindingSpec{}
 	if in.GetParent() != "" {
 		out.ParentRef = &krm.TagsTagBindingParentRef{External: in.GetParent()}
 	}
@@ -59,7 +58,7 @@ func TagsLocationTagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagB
 	// MISSING: TagValueNamespacedName
 	return out
 }
-func TagsLocationTagBindingSpec_ToProto(mapCtx *direct.MapContext, in *krmtagsv1alpha1.TagsLocationTagBindingSpec) *pb.TagBinding {
+func TagsLocationTagBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.TagsLocationTagBindingSpec) *pb.TagBinding {
 	if in == nil {
 		return nil
 	}

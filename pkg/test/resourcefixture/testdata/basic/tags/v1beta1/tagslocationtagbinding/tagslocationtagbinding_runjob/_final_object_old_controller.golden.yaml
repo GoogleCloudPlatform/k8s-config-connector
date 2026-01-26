@@ -1,4 +1,4 @@
-apiVersion: tags.cnrm.cloud.google.com/v1alpha1
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsLocationTagBinding
 metadata:
   annotations:
@@ -10,14 +10,14 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: tagstagbinding-dataset-${uniqueId}
+  name: tagstagbinding-runjob-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  location: us-east4
+  location: us-central1
   parentRef:
-    external: //bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}
-    kind: BigQueryDataset
-  resourceID: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}
+    external: //run.googleapis.com/projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}
+    kind: RunJob
+  resourceID: tagBindings/%2F%2Frun.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Fjobs%2Frunjob-${uniqueId}/tagValues/${tagValueID}
   tagValueRef:
     name: tagstagvalue-${uniqueId}
 status:
@@ -27,5 +27,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  name: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}
+  name: tagBindings/%2F%2Frun.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Fjobs%2Frunjob-${uniqueId}/tagValues/${tagValueID}
   observedGeneration: 2

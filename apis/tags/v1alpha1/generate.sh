@@ -23,14 +23,13 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+# go run . generate-types \
   --service google.cloud.resourcemanager.v3 \
-  --api-version tags.cnrm.cloud.google.com/v1alpha1  \
-  --resource TagsLocationTagBinding:TagBinding
+  --api-version tags.cnrm.cloud.google.com/v1alpha1
 
-go run . generate-mapper --service google.cloud.resourcemanager.v3 --api-version tags.cnrm.cloud.google.com/v1alpha1
+# go run . generate-mapper --service google.cloud.resourcemanager.v3 --api-version tags.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/tags/
+# go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/tags/
