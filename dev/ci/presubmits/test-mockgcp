@@ -17,6 +17,11 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+function on_error() {
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/test-mockgcp' to fix.</hint_for_agent>"
+}
+trap on_error ERR
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/mockgcp
 
