@@ -47,6 +47,10 @@ type PreviewInstance struct {
 	// Namespace is the namespace of the cluster to preview
 	// If empty, all namespaces are previewed
 	Namespace string
+
+	// SkipNameValidation skips the validation of the name of the controller.
+	// This is useful when running multiple managers in the same process.
+	SkipNameValidation bool
 }
 
 // PreviewInstanceOptions are the options for creating a PreviewInstance.
@@ -74,6 +78,10 @@ type PreviewInstanceOptions struct {
 	// Namespace is the namespace of the cluster to preview
 	// If empty, all namespaces are previewed
 	Namespace string
+
+	// SkipNameValidation skips the validation of the name of the controller.
+	// This is useful when running multiple managers in the same process.
+	SkipNameValidation bool
 }
 
 // NewPreviewInstance creates a new PreviewInstance.
@@ -97,6 +105,7 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 	i.hookKube = hookKube
 	i.recorder = recorder
 	i.Namespace = options.Namespace
+	i.SkipNameValidation = options.SkipNameValidation
 
 	return i, nil
 }
@@ -151,6 +160,7 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 	// creating multiple managers for tests will fail if more than one
 	// manager tries to bind to the same port.
 	kccConfig.ManagerOptions.HealthProbeBindAddress = "0"
+	kccConfig.ManagerOptions.Controller.SkipNameValidation = &i.SkipNameValidation
 
 	// Hook kube
 	kccConfig.ManagerOptions.NewCache = i.hookKube.NewCache
