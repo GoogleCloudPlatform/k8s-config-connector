@@ -20,5 +20,6 @@
 // resource: TagsTagKey:TagKey
 // resource: TagsTagValue:TagValue
 // resource: TagsTagBinding:TagBinding
+// resource: TagsLocationTagBinding:TagBinding
 
 package v1beta1

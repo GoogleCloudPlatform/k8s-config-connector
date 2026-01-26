@@ -1,9 +1,8 @@
-apiVersion: tags.cnrm.cloud.google.com/v1alpha1
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsLocationTagBinding
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -27,5 +26,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}%2Ftables%2Fbigquerytablesample${uniqueId}/tagValues/${tagValueID}
   name: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}%2Ftables%2Fbigquerytablesample${uniqueId}/tagValues/${tagValueID}
   observedGeneration: 2

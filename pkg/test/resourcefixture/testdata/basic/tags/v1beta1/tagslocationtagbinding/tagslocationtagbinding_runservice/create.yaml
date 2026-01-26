@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: tags.cnrm.cloud.google.com/v1alpha1
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsLocationTagBinding
 metadata:
-  name: tagstagbinding-runjob-${uniqueId}
+  name: tagstagbinding-runservice-${uniqueId}
 spec:
   location: us-central1
   parentRef:
-    kind: RunJob
-    external: "//run.googleapis.com/projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}"
+    kind: RunService
+    external: "//run.googleapis.com/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}"
   tagValueRef:
     name: tagstagvalue-${uniqueId}

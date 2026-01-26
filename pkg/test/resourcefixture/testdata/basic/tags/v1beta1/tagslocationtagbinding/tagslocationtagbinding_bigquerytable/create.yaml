@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: tags.cnrm.cloud.google.com/v1alpha1
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsLocationTagBinding
 metadata:
-  name: tagstagbinding-${uniqueId}
+  name: tagstagbinding-table-${uniqueId}
 spec:
   location: us-east4
   parentRef:
-    kind: StorageBucket
-    external:  "//storage.googleapis.com/projects/_/buckets/storagebucket-${uniqueId}"
+    kind: BigQueryTable
+    external: "//bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}"
   tagValueRef:
     name: tagstagvalue-${uniqueId}

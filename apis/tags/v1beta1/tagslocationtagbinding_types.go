@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -26,14 +25,14 @@ var TagsLocationTagBindingGVK = GroupVersion.WithKind("TagsLocationTagBinding")
 // +kcc:spec:proto=google.cloud.resourcemanager.v3.TagBinding
 type TagsLocationTagBindingSpec struct {
 	// +kcc:ref=Project
-	ParentRef *v1beta1.TagsTagBindingParentRef `json:"parentRef"`
+	ParentRef *TagsTagBindingParentRef `json:"parentRef"`
 
 	// The location for the resource being tagged.
 	// +required
 	Location *string `json:"location"`
 
 	// +kcc:ref=TagsTagValue
-	TagValueRef *v1beta1.TagsTagValueRef `json:"tagValueRef"`
+	TagValueRef *TagsTagValueRef `json:"tagValueRef"`
 
 	// The service-generated name of the resource. Used for acquisition only. Leave unset to create a new
 	// resource.
@@ -72,6 +71,8 @@ type TagsLocationTagBindingObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcptagslocationtagbinding;gcptagslocationtagbindings
 // +kubebuilder:subresource:status
+// +kubebuilder:storageversion
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
