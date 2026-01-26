@@ -49,6 +49,9 @@ if [[ ! -d "${GCLOUD_DIR}" ]]; then
   # Clean up
   rm -rf "${TMP_DIR}"
   rm "${TARBALL}"
+
+  # Install alpha and beta components
+  "${GCLOUD_DIR}/bin/gcloud" components install alpha beta --quiet
 fi
 
 export PATH="${GCLOUD_DIR}/bin:${PATH}"
