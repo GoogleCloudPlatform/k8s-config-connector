@@ -180,3 +180,4 @@ experiments/mcp/**/*.egg-info
 
 # MCP eval
 experiments/**/__pycache__/
+gcloud/
