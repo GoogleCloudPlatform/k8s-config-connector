@@ -15,8 +15,10 @@
 package codegen
 
 import (
+	"bytes"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -30,6 +32,23 @@ import (
 	"k8s.io/klog/v2"
 )
 
+type outputFile struct {
+	generatorBase
+	goPackage      string
+	body           bytes.Buffer
+	fileAnnotation *annotations.FileAnnotation
+}
+
+func (o *outputFile) OutputDir() string {
+	return o.outputBaseDir
+}
+
+type validationException struct {
+	ProtoField string
+	GoField    string
+	Message    string
+}
+
 type MapperGenerator struct {
 	generatorBase
 	goPathForMessage OutputFunc
@@ -38,10 +57,13 @@ type MapperGenerator struct {
 
 	typePairs           []typePair
 	precomputedMappings map[protoreflect.FullName][]*gocode.GoStruct
+	outputFiles         map[generatedFileKey]*outputFile
 
 	generatedFileAnnotation *annotations.FileAnnotation
 
 	multiversion bool
+	validate     bool
+	exceptions   map[string][]validationException
 
 	importedPackages map[string]importedPackage
 }
@@ -51,13 +73,16 @@ type importedPackage struct {
 	goPackage string
 }
 
-func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, generatedFileAnnotation *annotations.FileAnnotation, multiversion bool) *MapperGenerator {
+func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, generatedFileAnnotation *annotations.FileAnnotation, multiversion bool, validate bool) *MapperGenerator {
 	g := &MapperGenerator{
 		goPathForMessage:        goPathForMessage,
 		precomputedMappings:     make(map[protoreflect.FullName][]*gocode.GoStruct),
 		generatedFileAnnotation: generatedFileAnnotation,
 		multiversion:            multiversion,
+		validate:                validate,
 		importedPackages:        make(map[string]importedPackage),
+		exceptions:              make(map[string][]validationException),
+		outputFiles:             make(map[generatedFileKey]*outputFile),
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
@@ -215,7 +240,13 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 			out.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
 		}
 
-		v.writeMapFunctionsForPair(&out.body, out.OutputDir(), &pair)
+
+    
+    v.importedPackages[pair.ProtoGoPackage] = importedPackage{
+			alias:     "pb",
+			goPackage: pair.ProtoGoPackage,
+		}
+		v.writeMapFunctionsForPair(&out.body, out.OutputDir(), &pair, goPackage)
 
 		for _, importedPackage := range v.importedPackages {
 			goPackage := importedPackage.goPackage
@@ -223,9 +254,43 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 		}
 	}
 
+	if v.validate {
+		outputDirs := make(map[string]string)
+		for k, v := range v.outputFiles {
+			outputDirs[k.GoPackage] = v.OutputDir()
+		}
+		for goPackage, exceptions := range v.exceptions {
+			if len(exceptions) == 0 {
+				continue
+			}
+			outputDir, ok := outputDirs[goPackage]
+			if !ok {
+				// This can happen if the package has validation errors but no file was generated (e.g. everything was up-to-date)
+				// We need to resolve the go package to a directory.
+				outputDir = filepath.Join(v.outputBaseDir, goPackage)
+			}
+
+			validationFilePath := filepath.Join(outputDir, "mapper.validation.txt")
+
+			var b bytes.Buffer
+			v.writeExceptions(&b, exceptions)
+
+			if err := ioutil.WriteFile(validationFilePath, b.Bytes(), 0644); err != nil {
+				return fmt.Errorf("writing validation file for package %q: %w", goPackage, err)
+			}
+		}
+	}
+
 	return nil
 }
-func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string, pair *typePair) {
+
+func (v *MapperGenerator) writeExceptions(out io.Writer, exceptions []validationException) {
+	for _, e := range exceptions {
+		fmt.Fprintf(out, "%s\n", e.Message)
+	}
+}
+
+func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string, pair *typePair, goPackage string) {
 	klog.V(2).InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
 	msg := pair.Proto
 	pbTypeName := protoNameForType(msg)
@@ -886,6 +951,61 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
 			}
 
+		}
+		if v.validate {
+			for _, krmField := range goType.Fields {
+				if strings.HasSuffix(krmField.Name, "Ref") && krmField.Name != "ResourceRef" {
+					switch krmField.Name {
+					case "ParentRef", "ProjectRef", "OrgRef", "FolderRef":
+						break
+					case "ExternalRef":
+						break
+					default:
+						expectedProtoGoFieldName := strings.TrimSuffix(krmField.Name, "Ref")
+
+						found := false
+						for i := 0; i < msg.Fields().Len(); i++ {
+							protoField := msg.Fields().Get(i)
+							if strings.EqualFold(goFieldName(protoField), expectedProtoGoFieldName) {
+								found = true
+								break
+							}
+						}
+
+						if !found {
+							goStruct := pair.KRMType.Name
+							version := filepath.Base(pair.KRMType.GoPackage)
+							v.exceptions[goPackage] = append(v.exceptions[goPackage], validationException{
+								ProtoField: "", // No corresponding proto field
+								GoField:    krmField.Name,
+								Message:    fmt.Sprintf("[mismatch_ref] GoStruct=%s, Version=%s: KRM field %q has no matching proto field. The KRM field should be the PascalCase of the proto field name with a \"Ref\" suffix.", goStruct, version, krmField.Name),
+							})
+						}
+					}
+				}
+				if strings.HasSuffix(krmField.Name, "Refs") {
+					expectedProtoGoFieldName := strings.TrimSuffix(krmField.Name, "Refs") + "s" // e.g. `gateways` for `GatewayRefs`
+
+					found := false
+					for i := 0; i < msg.Fields().Len(); i++ {
+						protoField := msg.Fields().Get(i)
+						if goFieldName(protoField) == expectedProtoGoFieldName {
+							found = true
+							break
+						}
+					}
+
+					if !found {
+						goStruct := pair.KRMType.Name
+						version := filepath.Base(pair.KRMType.GoPackage)
+						v.exceptions[goPackage] = append(v.exceptions[goPackage], validationException{
+							ProtoField: "", // No corresponding proto field
+							GoField:    krmField.Name,
+							Message:    fmt.Sprintf("[mismatch_ref] GoStruct=%s, Version=%s: KRM field %q has no matching proto field. The KRM field should be the PascalCase of the proto field name with a \"Refs\" suffix.", goStruct, version, krmField.Name),
+						})
+					}
+				}
+			}
 		}
 		fmt.Fprintf(out, "\treturn out\n")
 		fmt.Fprintf(out, "}\n")
