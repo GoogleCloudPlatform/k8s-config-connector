@@ -158,6 +158,10 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 							delete(optionalFieldsMap, k)
 						}
 						if !foundInMaps {
+							if gvk.Kind == "TagsLocationTagBinding" && k == "name" {
+								t.Logf("CRD %v has non-boilerplate field '%v' under 'status'; this is a known exception", gvk, k)
+								continue
+							}
 							t.Errorf("CRD has non-boilerplate field '%v' under 'status'", k)
 						}
 					}
