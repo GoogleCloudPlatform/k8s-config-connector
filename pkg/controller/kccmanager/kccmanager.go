@@ -240,7 +240,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	opts.BaseContext = func() context.Context {
 		// If listener already exists, do not add another
 		if _, exists := structuredreporting.GetListenerFromContext(ctx); !exists {
-			ctx = structuredreporting.ContextWithListener(ctx, &structuredreporting.LogFieldUpdates{})
+			return structuredreporting.ContextWithListener(ctx, &structuredreporting.LogFieldUpdates{})
 		}
 
 		return ctx

@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.142.0
+    cnrm.cloud.google.com/version: 1.143.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -116,6 +116,20 @@ spec:
                     description: The `metadata.namespace` field of a `AlloyDBCluster`
                       resource.
                     type: string
+                type: object
+              connectionPoolConfig:
+                description: Configuration for Managed Connection Pool (MCP).
+                properties:
+                  enabled:
+                    description: Optional. Whether to enable Managed Connection Pool
+                      (MCP).
+                    type: boolean
+                  flags:
+                    additionalProperties:
+                      type: string
+                    description: 'Optional. Connection Pool flags, as a list of "key":
+                      "value" pairs.'
+                    type: object
                 type: object
               databaseFlags:
                 additionalProperties:
@@ -229,7 +243,7 @@ spec:
                 properties:
                   assistiveExperiencesEnabled:
                     description: Whether assistive experiences are enabled for this
-                      AlloyDB instance. DEPRECATED - This field is no longer in use.
+                      AlloyDB instance.
                     type: boolean
                   enabled:
                     description: Observability feature status for an instance. This
@@ -259,8 +273,7 @@ spec:
                     type: boolean
                   trackClientAddress:
                     description: Track client address for an instance. If not set,
-                      default value is "off". DEPRECATED - This field is no longer
-                      in use.
+                      default value is "off".
                     type: boolean
                   trackWaitEvents:
                     description: Track wait events during query execution for an instance.
@@ -363,6 +376,15 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  connectionPoolConfig:
+                    description: Output for Managed Connection Pool (MCP).
+                    properties:
+                      poolerCount:
+                        description: Output only. The number of running poolers per
+                          instance.
+                        format: int32
+                        type: integer
+                    type: object
                   observabilityConfig:
                     description: Observability feature status for an instance.
                     properties:
@@ -490,6 +512,20 @@ spec:
                       resource.
                     type: string
                 type: object
+              connectionPoolConfig:
+                description: Configuration for Managed Connection Pool (MCP).
+                properties:
+                  enabled:
+                    description: Optional. Whether to enable Managed Connection Pool
+                      (MCP).
+                    type: boolean
+                  flags:
+                    additionalProperties:
+                      type: string
+                    description: 'Optional. Connection Pool flags, as a list of "key":
+                      "value" pairs.'
+                    type: object
+                type: object
               databaseFlags:
                 additionalProperties:
                   type: string
@@ -602,7 +638,7 @@ spec:
                 properties:
                   assistiveExperiencesEnabled:
                     description: Whether assistive experiences are enabled for this
-                      AlloyDB instance. DEPRECATED - This field is no longer in use.
+                      AlloyDB instance.
                     type: boolean
                   enabled:
                     description: Observability feature status for an instance. This
@@ -632,8 +668,7 @@ spec:
                     type: boolean
                   trackClientAddress:
                     description: Track client address for an instance. If not set,
-                      default value is "off". DEPRECATED - This field is no longer
-                      in use.
+                      default value is "off".
                     type: boolean
                   trackWaitEvents:
                     description: Track wait events during query execution for an instance.
@@ -736,6 +771,15 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  connectionPoolConfig:
+                    description: Output for Managed Connection Pool (MCP).
+                    properties:
+                      poolerCount:
+                        description: Output only. The number of running poolers per
+                          instance.
+                        format: int32
+                        type: integer
+                    type: object
                   observabilityConfig:
                     description: Observability feature status for an instance.
                     properties:

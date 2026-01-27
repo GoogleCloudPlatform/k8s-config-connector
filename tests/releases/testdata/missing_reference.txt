@@ -2,6 +2,7 @@ bigquery.cnrm.cloud.google.com/v1beta1, Kind=BigQueryRoutine
 datacatalog.cnrm.cloud.google.com/v1beta1, Kind=DataCatalogPolicyTag
 datacatalog.cnrm.cloud.google.com/v1beta1, Kind=DataCatalogTaxonomy
 logging.cnrm.cloud.google.com/v1beta1, Kind=LoggingLink
+tags.cnrm.cloud.google.com/v1beta1, Kind=TagsLocationTagBinding
 tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagBinding
 tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagKey
 tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagValue

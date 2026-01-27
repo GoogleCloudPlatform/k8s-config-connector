@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -26,6 +27,10 @@ import (
 )
 
 var RunServiceGVK = GroupVersion.WithKind("RunService")
+
+func init() {
+	refsv1beta1.Register(&RunServiceRef{})
+}
 
 var _ refsv1beta1.Ref = &RunServiceRef{}
 
@@ -68,6 +73,14 @@ func (r *RunServiceRef) ValidateExternal(ref string) error {
 		return err
 	}
 	return nil
+}
+
+func (r *RunServiceRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &RunServiceIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
 func (r *RunServiceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {

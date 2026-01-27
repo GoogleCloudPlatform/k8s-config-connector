@@ -33,9 +33,9 @@ spec:
         secret:
           secretRef:
             name: secretmanagersecret-${uniqueId}
-            defaultMode: 292 # 0444
-            items:
-              - versionRef:
-                  name: secretmanagersecretversion-${uniqueId}
-                  path: "my-secret"
-                  mode: 256 # 0400
+          defaultMode: 292 # 0444
+          items:
+            - versionRef:
+                name: secretmanagersecretversion-${uniqueId}
+              path: "my-secret"
+              mode: 256 # 0400

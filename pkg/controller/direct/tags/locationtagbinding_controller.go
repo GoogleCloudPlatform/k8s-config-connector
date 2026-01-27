@@ -20,7 +20,9 @@ import (
 	"fmt"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -96,6 +98,7 @@ func (m *TagsLocationTagBindingModel) AdapterForObject(ctx context.Context, read
 		id:                id,
 		tagBindingsClient: tagBindingsClient,
 		desired:           desired,
+		projectMapper:     m.config.ProjectMapper,
 	}, nil
 }
 
@@ -109,6 +112,7 @@ type TagsLocationTagBindingAdapter struct {
 	tagBindingsClient *api.TagBindingsClient
 	desired           *pb.TagBinding
 	actual            *pb.TagBinding
+	projectMapper     *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &TagsLocationTagBindingAdapter{}
@@ -256,14 +260,35 @@ func (a *TagsLocationTagBindingAdapter) Delete(ctx context.Context, deleteOp *di
 
 // TODO: Make this function generic and reuse across models.
 func (a *TagsLocationTagBindingAdapter) changedFields(ctx context.Context) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	// Normalize desired state
+	desired := direct.ProtoClone(a.desired)
+	if desired.GetParent() != "" {
+		normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, desired.GetParent())
+		if err != nil {
+			return nil, nil, fmt.Errorf("normalizing desired parent link %q: %w", desired.GetParent(), err)
+		}
+		desired.Parent = normalized
+	}
+
 	// Compute the actual with only the spec fields populated.
 	var actualMasked protoreflect.Message
 	{
+		// Normalize actual state
+		actual := direct.ProtoClone(a.actual)
+		if actual.GetParent() != "" {
+			normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, actual.GetParent())
+			if err != nil {
+				return nil, nil, fmt.Errorf("normalizing actual parent link %q: %w", actual.GetParent(), err)
+			}
+			actual.Parent = normalized
+		}
+
 		mapCtx := &direct.MapContext{}
-		actualSpec := TagsLocationTagBindingSpec_FromProto(mapCtx, a.actual)
+		actualSpec := TagsLocationTagBindingSpec_FromProto(mapCtx, actual)
 		if mapCtx.Err() != nil {
 			return nil, nil, mapCtx.Err()
 		}
+
 		mapCtx = &direct.MapContext{}
 		specProto := TagsLocationTagBindingSpec_ToProto(mapCtx, actualSpec)
 		if mapCtx.Err() != nil {
@@ -272,5 +297,5 @@ func (a *TagsLocationTagBindingAdapter) changedFields(ctx context.Context) (*str
 		actualMasked = specProto.ProtoReflect()
 	}
 
-	return buildDiff(ctx, a.desired.ProtoReflect(), actualMasked)
+	return buildDiff(ctx, desired.ProtoReflect(), actualMasked)
 }

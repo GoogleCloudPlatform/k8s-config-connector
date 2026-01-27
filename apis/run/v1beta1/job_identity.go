@@ -61,6 +61,10 @@ func (i *JobIdentity) ID() string {
 	return i.JobID
 }
 
+func (i *JobIdentity) Host() string {
+	return jobURL.Host()
+}
+
 // New builds a JobIdentity from the Config Connector Job object.
 func NewJobIdentity(ctx context.Context, reader client.Reader, obj *RunJob) (*JobIdentity, error) {
 
