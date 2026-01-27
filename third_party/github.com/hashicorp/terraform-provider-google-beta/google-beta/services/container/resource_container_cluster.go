@@ -1752,6 +1752,12 @@ func ResourceContainerCluster() *schema.Resource {
 							Optional:    true,
 							Description: "The workload pool to attach all Kubernetes service accounts to.",
 						},
+						"enable_k8s_tokens_via_dns": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Computed:    true,
+							Description: "Enable K8s tokens via DNS.",
+						},
 					},
 				},
 			},
@@ -5114,6 +5120,8 @@ func expandWorkloadIdentityConfig(configured interface{}) *container.WorkloadIde
 
 	config := l[0].(map[string]interface{})
 	v.WorkloadPool = config["workload_pool"].(string)
+	// TODO: Enable this when the field is available in the SDK
+	// v.EnableK8sTokensViaDNS = config["enable_k8s_tokens_via_dns"].(bool)
 
 	return v
 }
@@ -5680,6 +5688,8 @@ func flattenWorkloadIdentityConfig(c *container.WorkloadIdentityConfig, d *schem
 	return []map[string]interface{}{
 		{
 			"workload_pool": c.WorkloadPool,
+			// TODO: Enable this when the field is available in the SDK
+			// "enable_k8s_tokens_via_dns": c.EnableK8sTokensViaDNS,
 		},
 	}
 }
