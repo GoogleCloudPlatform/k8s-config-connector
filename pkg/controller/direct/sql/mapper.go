@@ -59,6 +59,6 @@ func DatabaseInstance_SQLOutOfDiskReport_SqlOutOfDiskState_ToProto(mapCtx *direc
 	if in == nil {
 		return nil
 	}
-	mapCtx.NotImplemented()
-	return nil
+	out := direct.Enum_ToProto[pb.DatabaseInstance_SqlOutOfDiskReport_SqlOutOfDiskState](mapCtx, in)
+	return &out
 }
