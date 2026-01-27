@@ -854,26 +854,8 @@ func ReplicaConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.ReplicaConf
 	out.CascadableReplica = direct.BoolValue_ToProto(mapCtx, in.CascadableReplica)
 	return out
 }
-func ReplicationCluster_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationCluster) *krm.ReplicationCluster {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ReplicationCluster{}
-	// MISSING: PsaWriteEndpoint
-	out.FailoverDrReplicaName = in.FailoverDrReplicaName
-	// MISSING: DrReplica
-	return out
-}
-func ReplicationCluster_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationCluster) *pb.ReplicationCluster {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ReplicationCluster{}
-	// MISSING: PsaWriteEndpoint
-	out.FailoverDrReplicaName = in.FailoverDrReplicaName
-	// MISSING: DrReplica
-	return out
-}
+
+/* found existing non-generated mapping function "ReplicationClusterObservedState_FromProto", skipping
 func ReplicationClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationCluster) *krm.ReplicationClusterObservedState {
 	if in == nil {
 		return nil
@@ -884,16 +866,22 @@ func ReplicationClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.DrReplica = in.DrReplica
 	return out
 }
-func ReplicationClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationClusterObservedState) *pb.ReplicationCluster {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ReplicationClusterObservedState_ToProto", skipping
+
+	func ReplicationClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationClusterObservedState) *pb.ReplicationCluster {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ReplicationCluster{}
+		out.PsaWriteEndpoint = in.PsaWriteEndpoint
+		// MISSING: FailoverDrReplicaName
+		out.DrReplica = in.DrReplica
+		return out
 	}
-	out := &pb.ReplicationCluster{}
-	out.PsaWriteEndpoint = in.PsaWriteEndpoint
-	// MISSING: FailoverDrReplicaName
-	out.DrReplica = in.DrReplica
-	return out
-}
+*/
 func SQLActiveDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.SqlActiveDirectoryConfig) *krm.SQLActiveDirectoryConfig {
 	if in == nil {
 		return nil

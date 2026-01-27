@@ -322,6 +322,21 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
+	"spec.replicationCluster": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			out.ReplicationCluster = actual.ReplicationCluster
+		},
+	},
+	"spec.replicationCluster.failoverDrReplicaRef": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicationCluster != nil {
+				if out.ReplicationCluster == nil {
+					out.ReplicationCluster = &api.ReplicationCluster{}
+				}
+				out.ReplicationCluster.FailoverDrReplicaName = actual.ReplicationCluster.FailoverDrReplicaName
+			}
+		},
+	},
 }
 
 var sortedUnmanageableFieldPaths []string
