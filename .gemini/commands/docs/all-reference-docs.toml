@@ -6,7 +6,7 @@
 # * Safety: Since this prompt enables a loop, the agent might run for a while if there are many missing templates. You can
 # monitor its progress by watching the make resource-docs output in each turn.
 
-description = "Asks the model to generate all the resource reference docs."
+description = "Fixes missing resource reference templates."
 
 prompt = """
 You are a Config Connector documentation expert. Your goal is to fix all "missing template" errors that occur when
