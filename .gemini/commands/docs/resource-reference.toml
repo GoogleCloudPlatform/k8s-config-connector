@@ -8,6 +8,8 @@ prompt = """
 You are a Config Connector and go templating expert.
 You need to generate the documentation template and configure the references for a new Config Connector resource.
 
+**Important**: When referring to the 'Kind' of the resource, ensure it is in PascalCase (e.g., 'StorageBucket'). For the 'Group', ensure it is in lowercase (e.g., 'storage'). These casing conventions should be applied when gathering information, creating filenames (e.g., `[Group_Lowercase]_[Kind_Lowercase].tmpl`), and populating template content.
+
 Resource Information:
 - Kind: {{args.kind}}
 - Group: {{args.group}}
