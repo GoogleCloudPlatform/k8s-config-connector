@@ -17,7 +17,7 @@ Please follow this iterative loop until `make resource-docs` passes successfully
 1.  **Run Build**: Execute `make resource-docs`.
 2.  **Analyze Failure**: Check the output for errors indicating a missing `.tmpl` file (e.g., "error parsing template
     files: open ...: no such file or directory"). Extract the **Group** and **Kind** from the error message.
-3.  **If no errors**: You are done. Stop.
+3.  **If no errors**: You are done. Stop. If errors found but not related to missing templates: Stop and report the error.
 4.  **Fix the Missing Template**:
     *   **Research**: Use Google Search to find the specific GCP Service details for this resource:
     *   Official Service Name (e.g., "Cloud Spanner").
