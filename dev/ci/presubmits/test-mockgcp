@@ -23,6 +23,39 @@ function on_error() {
 trap on_error ERR
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# Download and install gcloud if not already present
+GCLOUD_VERSION="546.0.0"
+GCLOUD_DIR="${REPO_ROOT}/.build/gcloud/${GCLOUD_VERSION}"
+
+if [[ ! -d "${GCLOUD_DIR}" ]]; then
+  echo "Downloading gcloud ${GCLOUD_VERSION}..."
+  mkdir -p "${REPO_ROOT}/.build/gcloud"
+  
+  # Download the tar.gz
+  TARBALL="${REPO_ROOT}/.build/gcloud/google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz"
+  if [[ ! -f "${TARBALL}" ]]; then
+    curl -L "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz" \
+      -o "${TARBALL}"
+  fi
+
+  # Expand to a temp directory
+  TMP_DIR=$(mktemp -d)
+  tar -xzf "${TARBALL}" -C "${TMP_DIR}"
+
+  # Move to the versioned directory
+  mv "${TMP_DIR}/google-cloud-sdk" "${GCLOUD_DIR}"
+
+  # Clean up
+  rm -rf "${TMP_DIR}"
+  rm "${TARBALL}"
+
+  # Install alpha and beta components
+  "${GCLOUD_DIR}/bin/gcloud" components install alpha beta --quiet
+fi
+
+export PATH="${GCLOUD_DIR}/bin:${PATH}"
+
 cd ${REPO_ROOT}/mockgcp
 
 export E2E_GCP_TARGET=mock
