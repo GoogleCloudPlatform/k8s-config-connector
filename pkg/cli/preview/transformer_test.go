@@ -71,7 +71,12 @@ func TestObjectTransformer(t *testing.T) {
 		t.Fatalf("OnListObject failed: %v", err)
 	}
 
-	// 5. Verify the object in the store is transformed
+	// 5. Verify the original object is NOT transformed (deep copy check)
+	if obj.GetAnnotations()["transformed"] == "true" {
+		t.Error("Original object was transformed; expected deep copy to prevent mutation")
+	}
+
+	// 6. Verify the object in the store is transformed
 	key := types.NamespacedName{Name: "test-pod", Namespace: "default"}
 	storedObj, ok := s.store[key]
 	if !ok {
@@ -108,7 +113,7 @@ func TestReconcilerOverrideTransformer(t *testing.T) {
 	}
 
 	// 2. Create the transformer
-	transformer := newReconcilerOverrideTransformer(overrides)
+	transformer := newReconcilerOverrideTransformer("", overrides)
 
 	// 3. Create a ConfigConnectorContext object
 	ccc := &corev1beta1.ConfigConnectorContext{}
@@ -143,4 +148,40 @@ func TestReconcilerOverrideTransformer(t *testing.T) {
 		t.Fatalf("Transformer failed on Pod: %v", err)
 	}
 	// No panic implies success
+}
+
+func TestReconcilerOverrideTransformer_Namespace(t *testing.T) {
+	// 1. Define the override map
+	overrides := map[schema.GroupKind]k8s.ReconcilerType{
+		{Kind: "StorageBucket", Group: "storage.cnrm.cloud.google.com"}: k8s.ReconcilerType("direct"),
+	}
+
+	// 2. Create the transformer with a namespace filter
+	transformer := newReconcilerOverrideTransformer("ns-1", overrides)
+
+	ctx := context.Background()
+
+	// 3. Create a CCC in the matching namespace
+	ccc1 := &corev1beta1.ConfigConnectorContext{}
+	ccc1.SetName("configconnectorcontext.core.cnrm.cloud.google.com")
+	ccc1.SetNamespace("ns-1")
+
+	if err := transformer(ctx, ccc1); err != nil {
+		t.Fatalf("Transformer failed: %v", err)
+	}
+	if ccc1.Spec.Experiments == nil || ccc1.Spec.Experiments.ControllerOverrides == nil {
+		t.Fatal("Expected overrides in ns-1")
+	}
+
+	// 4. Create a CCC in a different namespace
+	ccc2 := &corev1beta1.ConfigConnectorContext{}
+	ccc2.SetName("configconnectorcontext.core.cnrm.cloud.google.com")
+	ccc2.SetNamespace("ns-2")
+
+	if err := transformer(ctx, ccc2); err != nil {
+		t.Fatalf("Transformer failed: %v", err)
+	}
+	if ccc2.Spec.Experiments != nil {
+		t.Fatal("Did not expect overrides in ns-2")
+	}
 }
