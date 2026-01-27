@@ -96,6 +96,7 @@ type Experiments struct {
 	ControllerOverrides map[string]k8scontrollertype.ReconcilerType `json:"controllerOverrides,omitempty"`
 
 	// ResourceSettings allows specifying which resources to enable or disable in this namespace.
+	// Validation likely enforces uniqueness, but if duplicates exist, behavior is undefined.
 	// +optional
 	ResourceSettings []ResourceSetting `json:"resourceSettings,omitempty"`
 }

@@ -91,7 +91,6 @@ type ResourceSetting struct {
 	Kind string `json:"kind"`
 
 	// Enabled controls whether the controller for this resource is enabled.
-	// Defaults to true.
 	// +required
 	Enabled bool `json:"enabled"`
 }

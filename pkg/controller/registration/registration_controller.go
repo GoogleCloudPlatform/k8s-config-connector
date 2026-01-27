@@ -70,16 +70,19 @@ type RegistrationControllerOptions struct {
 
 // AddDefaultControllers creates the registration controller with the default controller factory,
 // this will dynamically create the default controllers for each CRD.
-// AddDefaultControllers creates the registration controller with the default controller factory,
-// this will dynamically create the default controllers for each CRD.
 func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *controller.Deps, controllerConfig *config.ControllerConfig, scopedNamespace string) error {
 	opt := RegistrationControllerOptions{
 		ControllerName: "registration-controller",
 	}
 
-	// Prefetch resource exclusion settings to avoid repeated API calls in the loop
-	// Use GetAPIReader() because the manager's cache is not started yet.
+	// Prefetch resource exclusion settings to avoid repeated API calls in the loop.
+	// We use mgr.GetAPIReader() because the manager's cache is not started yet.
+	// This results in a direct API call, which is acceptable for this one-time startup operation.
 	c := mgr.GetAPIReader()
+
+	// The `cccSettings` and `ccSettings` are fetched only once when `AddDefaultControllers` is called
+	// (typically at startup). This means any changes to `ConfigConnector` or `ConfigConnectorContext`
+	// resources at runtime will not be reflected until the manager process is restarted.
 	var cccSettings []operatorv1beta1.ResourceSetting
 	if scopedNamespace != "" {
 		ccc := &operatorv1beta1.ConfigConnectorContext{}
@@ -414,14 +417,14 @@ func isResourceDisabled(ctx context.Context, gvk schema.GroupVersionKind, scoped
 	if scopedNamespace != "" {
 		foundCCC, enabledCCC = getResourceSetting(cccSettings, gvk)
 		if foundCCC && enabledCCC {
-			logger.Info("ignoring enabled: true in ConfigConnectorContext because only disabling is supported", "namespace", scopedNamespace, "group", gvk.Group, "kind", gvk.Kind)
+			logger.Info("ignoring enabled: true in ConfigConnectorContext because only enabled: false is supported", "namespace", scopedNamespace, "group", gvk.Group, "kind", gvk.Kind)
 		}
 	}
 
 	// 2. Check ConfigConnector (Cluster-level) setting
 	foundCC, enabledCC := getResourceSetting(ccSettings, gvk)
 	if foundCC && enabledCC {
-		logger.Info("ignoring enabled: true in ConfigConnector because only disabling is supported", "group", gvk.Group, "kind", gvk.Kind)
+		logger.Info("ignoring enabled: true in ConfigConnector because only enabled: false is supported", "group", gvk.Group, "kind", gvk.Kind)
 	}
 
 	// 3. Resolve Precedence (Disable Only)
@@ -434,7 +437,7 @@ func isResourceDisabled(ctx context.Context, gvk schema.GroupVersionKind, scoped
 		return true
 	}
 
-	// Default: Enabled
+	// Default: Enabled: true
 	return false
 }
 
