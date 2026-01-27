@@ -1785,6 +1785,9 @@ spec:
                 description: Configuration for the use of Kubernetes Service Accounts
                   in GCP IAM policies.
                 properties:
+                  enableK8sTokensViaDns:
+                    description: Enable K8s tokens via DNS.
+                    type: boolean
                   identityNamespace:
                     description: |-
                       DEPRECATED. This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.

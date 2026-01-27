@@ -363,6 +363,7 @@
 [acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.resourceUsageExportConfig.bigqueryDestination.datasetId" should be ".spec.resourceUsageExportConfig.bigqueryDestination.datasetID"
 [acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceExternalIpsConfig" should be ".spec.serviceExternalIPsConfig"
 [acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceExternalIpsConfig.enabled" should be ".spec.serviceExternalIPsConfig.enabled"
+[acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.workloadIdentityConfig.enableK8sTokensViaDns" should be ".spec.workloadIdentityConfig.enableK8sTokensViaDNS"
 [acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".status.observedState.masterAuth.clusterCaCertificate" should be ".status.observedState.masterAuth.clusterCACertificate"
 [acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".status.servicesIpv4Cidr" should be ".status.servicesIPV4CIDR"
 [acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".status.tpuIpv4CidrBlock" should be ".status.tpuIPV4CIDRBlock"
