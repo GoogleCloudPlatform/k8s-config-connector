@@ -1375,6 +1375,7 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.securityPostureConfig.vulnerabilityMode" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceExternalIpsConfig.enabled" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.verticalPodAutoscaling.enabled" is not set in unstructured objects
+[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.workloadIdentityConfig.enableK8sTokensViaDns" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.workloadIdentityConfig.identityNamespace" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscaling.locationPolicy" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscaling.totalMaxNodeCount" is not set in unstructured objects
