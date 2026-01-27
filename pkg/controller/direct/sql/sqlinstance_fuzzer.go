@@ -65,6 +65,7 @@ func sqlInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".scheduled_maintenance")
 	f.SpecField(".satisfies_pzs")
 	f.SpecField(".out_of_disk_report")
+	f.Unimplemented_NotYetTriaged(".out_of_disk_report.sql_out_of_disk_state")
 	f.SpecField(".maintenance_version")
 	f.Unimplemented_NotYetTriaged(".sql_network_architecture")
 	f.SpecField(".replication_cluster")
