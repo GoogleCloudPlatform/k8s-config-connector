@@ -23,16 +23,35 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/testing/protocmp"
 	"google.golang.org/protobuf/types/descriptorpb"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/structpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 func protoMapToMap(m protoreflect.Map) map[string]interface{} {
 	res := make(map[string]interface{})
 	m.Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
-		res[k.String()] = v.Message().Interface()
+		if mv, ok := v.Interface().(protoreflect.Message); ok {
+			res[k.String()] = mv.Interface()
+		} else {
+			res[k.String()] = v.Interface()
+		}
 		return true
 	})
+	return res
+}
+
+func protoListToList(l protoreflect.List) []interface{} {
+	res := make([]interface{}, l.Len())
+	for i := 0; i < l.Len(); i++ {
+		v := l.Get(i)
+		if m, ok := v.Interface().(protoreflect.Message); ok {
+			res[i] = m.Interface()
+		} else {
+			res[i] = v.Interface()
+		}
+	}
 	return res
 }
 
@@ -74,6 +93,32 @@ func TestCompareProtoMessageStructuredDiff(t *testing.T) {
 			wantDiffs: []structuredreporting.DiffField{},
 		},
 		{
+			name:      "identical different memory",
+			msgA:      fooVal,
+			msgB:      &structpb.Value{Kind: &structpb.Value_StringValue{StringValue: "foo"}},
+			wantPaths: sets.Set[string]{},
+			wantDiffs: []structuredreporting.DiffField{},
+		},
+		{
+			name:      "descA vs descA",
+			msgA:      descA,
+			msgB:      descA,
+			wantPaths: sets.Set[string]{},
+			wantDiffs: []structuredreporting.DiffField{},
+		},
+		{
+			name: "descA vs descA different memory",
+			msgA: descA,
+			msgB: &descriptorpb.FieldDescriptorProto{
+				Name: stringPtr("field1"),
+				Options: &descriptorpb.FieldOptions{
+					Deprecated: boolPtr(false),
+				},
+			},
+			wantPaths: sets.Set[string]{},
+			wantDiffs: []structuredreporting.DiffField{},
+		},
+		{
 			name:      "different string value",
 			msgA:      fooVal,
 			msgB:      barVal,
@@ -97,6 +142,91 @@ func TestCompareProtoMessageStructuredDiff(t *testing.T) {
 					ID:  "options.deprecated",
 					Old: true,
 					New: false,
+				},
+			},
+		},
+		{
+			name: "list change",
+			msgA: &descriptorpb.DescriptorProto{
+				Field: []*descriptorpb.FieldDescriptorProto{descA},
+			},
+			msgB: &descriptorpb.DescriptorProto{
+				Field: []*descriptorpb.FieldDescriptorProto{descB},
+			},
+			wantPaths: sets.New("field"),
+			wantDiffs: []structuredreporting.DiffField{
+				{
+					ID:  "field",
+					Old: []interface{}{descB},
+					New: []interface{}{descA},
+				},
+			},
+		},
+		{
+			name: "list item added",
+			msgA: &descriptorpb.DescriptorProto{
+				Field: []*descriptorpb.FieldDescriptorProto{descA, descB},
+			},
+			msgB: &descriptorpb.DescriptorProto{
+				Field: []*descriptorpb.FieldDescriptorProto{descA},
+			},
+			wantPaths: sets.New("field"),
+			wantDiffs: []structuredreporting.DiffField{
+				{
+					ID:  "field",
+					Old: []interface{}{descA},
+					New: []interface{}{descA, descB},
+				},
+			},
+		},
+		{
+			name:      "timestamp change",
+			msgA:      &timestamppb.Timestamp{Seconds: 100},
+			msgB:      &timestamppb.Timestamp{Seconds: 200},
+			wantPaths: sets.New("seconds"),
+			wantDiffs: []structuredreporting.DiffField{
+				{
+					ID:  "seconds",
+					Old: int64(200),
+					New: int64(100),
+				},
+			},
+		},
+		{
+			name:      "duration change",
+			msgA:      &durationpb.Duration{Seconds: 10},
+			msgB:      &durationpb.Duration{Seconds: 20},
+			wantPaths: sets.New("seconds"),
+			wantDiffs: []structuredreporting.DiffField{
+				{
+					ID:  "seconds",
+					Old: int64(20),
+					New: int64(10),
+				},
+			},
+		},
+		{
+			name: "map change",
+			msgA: &structpb.Struct{
+				Fields: map[string]*structpb.Value{
+					"key1": fooVal,
+				},
+			},
+			msgB: &structpb.Struct{
+				Fields: map[string]*structpb.Value{
+					"key1": barVal,
+				},
+			},
+			wantPaths: sets.New("fields"),
+			wantDiffs: []structuredreporting.DiffField{
+				{
+					ID: "fields",
+					Old: map[string]interface{}{
+						"key1": barVal,
+					},
+					New: map[string]interface{}{
+						"key1": fooVal,
+					},
 				},
 			},
 		},
@@ -128,23 +258,25 @@ func TestCompareProtoMessageStructuredDiff(t *testing.T) {
 				if got.ID != d.ID {
 					t.Errorf("diff[%d].ID = %q, want %q", i, got.ID, d.ID)
 				}
-				if pm, ok := got.Old.(protoreflect.Map); ok {
-					if diff := cmp.Diff(d.Old, protoMapToMap(pm), protocmp.Transform()); diff != "" {
-						t.Errorf("diff[%d].Old mismatch (-want +got):\n%s", i, diff)
+
+				normalize := func(v interface{}) interface{} {
+					if pm, ok := v.(protoreflect.Map); ok {
+						return protoMapToMap(pm)
 					}
-				} else {
-					if diff := cmp.Diff(d.Old, got.Old, protocmp.Transform()); diff != "" {
-						t.Errorf("diff[%d].Old mismatch (-want +got):\n%s", i, diff)
+					if pl, ok := v.(protoreflect.List); ok {
+						return protoListToList(pl)
 					}
+					return v
 				}
-				if pm, ok := got.New.(protoreflect.Map); ok {
-					if diff := cmp.Diff(d.New, protoMapToMap(pm), protocmp.Transform()); diff != "" {
-						t.Errorf("diff[%d].New mismatch (-want +got):\n%s", i, diff)
-					}
-				} else {
-					if diff := cmp.Diff(d.New, got.New, protocmp.Transform()); diff != "" {
-						t.Errorf("diff[%d].New mismatch (-want +got):\n%s", i, diff)
-					}
+
+				gotOld := normalize(got.Old)
+				gotNew := normalize(got.New)
+
+				if diff := cmp.Diff(d.Old, gotOld, protocmp.Transform()); diff != "" {
+					t.Errorf("diff[%d].Old mismatch (-want +got):\n%s", i, diff)
+				}
+				if diff := cmp.Diff(d.New, gotNew, protocmp.Transform()); diff != "" {
+					t.Errorf("diff[%d].New mismatch (-want +got):\n%s", i, diff)
 				}
 			}
 		})
