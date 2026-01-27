@@ -113,6 +113,9 @@ spec:
                 type: string
               location:
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:

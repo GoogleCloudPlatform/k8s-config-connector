@@ -178,6 +178,9 @@ spec:
                 type: string
               location:
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               performanceConfig:
                 description: Optional. Data dump parallelism settings used by the
                   migration. Currently applicable only for MySQL to Cloud SQL for

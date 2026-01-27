@@ -17,17 +17,20 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var _ identity.Identity = &EnvironmentIdentity{}
 
 // EnvironmentIdentity defines the resource reference to ComposerEnvironment, which "External" field
 // holds the GCP identifier for the KRM object.
 type EnvironmentIdentity struct {
-	parent *EnvironmentParent
+	parent *parent.ProjectAndLocationParent
 	id     string
 }
 
@@ -39,79 +42,73 @@ func (i *EnvironmentIdentity) ID() string {
 	return i.id
 }
 
-func (i *EnvironmentIdentity) Parent() *EnvironmentParent {
+func (i *EnvironmentIdentity) Parent() *parent.ProjectAndLocationParent {
 	return i.parent
 }
 
-type EnvironmentParent struct {
-	ProjectID string
-	Location  string
+type environmentExternal struct {
+	Project     string
+	Location    string
+	Environment string
 }
 
-func (p *EnvironmentParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
+var environmentURLTemplate = gcpurls.Template[environmentExternal](
+	"composer.googleapis.com",
+	"projects/{project}/locations/{location}/environments/{environment}",
+)
 
-// New builds a EnvironmentIdentity from the Config Connector Environment object.
-func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *ComposerEnvironment) (*EnvironmentIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (i *EnvironmentIdentity) FromExternal(ref string) error {
+	external, matches, err := environmentURLTemplate.Parse(ref)
 	if err != nil {
+		return err
+	}
+	if !matches {
+		return fmt.Errorf("external %q does not match format %q", ref, environmentURLTemplate.CanonicalForm())
+	}
+	i.parent = &parent.ProjectAndLocationParent{
+		ProjectID: external.Project,
+		Location:  external.Location,
+	}
+	i.id = external.Environment
+	return nil
+}
+
+var _ identity.Resource = &ComposerEnvironment{}
+
+func (obj *ComposerEnvironment) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	environment := &EnvironmentIdentity{
+		parent: &parent.ProjectAndLocationParent{},
+	}
+
+	// Resolve user-configured Parent
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
+	}
+	if err := obj.Spec.ParentRef.Build(ctx, reader, obj.GetNamespace(), environment.parent); err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
+	// Get user-configured ID
+	environment.id = common.ValueOf(obj.Spec.ResourceID)
+	if environment.id == "" {
+		environment.id = obj.GetName()
 	}
-	if resourceID == "" {
+	if environment.id == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	// Validate against the ID stored in status.externalRef, if any
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseEnvironmentExternal(externalRef)
-		if err != nil {
-			return nil, err
+		statusIdentity := &EnvironmentIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, fmt.Errorf("cannot parse existing status.externalRef %q: %w", externalRef, err)
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		if statusIdentity.String() != environment.String() {
+			return nil, fmt.Errorf("existing status.externalRef %q does not match the identity resolved from spec: %q. "+
+				"The resource might have been moved or renamed in GCP, or the spec might have been changed to point to a different resource. "+
+				"Please verify the spec and the actual resource in GCP.", externalRef, environment.String())
 		}
 	}
-	return &EnvironmentIdentity{
-		parent: &EnvironmentParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
-}
-
-func ParseEnvironmentExternal(external string) (parent *EnvironmentParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "environments" {
-		return nil, "", fmt.Errorf("format of ComposerEnvironment external=%q was not known (use projects/{{projectID}}/locations/{{location}}/environments/{{environmentID}})", external)
-	}
-	parent = &EnvironmentParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return environment, nil
 }
