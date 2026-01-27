@@ -334,8 +334,8 @@ X-Xss-Protection: 0
   "done": true,
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagBinding",
-    "name": "tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}",
-    "parent": "//artifactregistry.googleapis.com/projects/${projectId}/locations/us-east1/repositories/arrepository-${uniqueId}",
+    "name": "tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}",
+    "parent": "//artifactregistry.googleapis.com/projects/${projectNumber}/locations/us-east1/repositories/arrepository-${uniqueId}",
     "tagValue": "tagValues/${tagValueID}",
     "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
   }
@@ -360,19 +360,72 @@ X-Xss-Protection: 0
 {
   "tagBindings": [
     {
-      "name": "tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}",
-      "parent": "//artifactregistry.googleapis.com/projects/${projectId}/locations/us-east1/repositories/arrepository-${uniqueId}",
-      "tagValue": "tagValues/${tagValueID}"
+      "name": "tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}",
+      "parent": "//artifactregistry.googleapis.com/projects/${projectNumber}/locations/us-east1/repositories/arrepository-${uniqueId}",
+      "tagValue": "tagValues/${tagValueID}",
+      "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
     }
   ]
 }
 
 ---
 
-DELETE https://us-east1-cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fartifactregistry.googleapis.com%252Fprojects%252F${projectId}%252Flocations%252Fus-east1%252Frepositories%252Farrepository-${uniqueId}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=tagBindings%2F%252F%252Fartifactregistry.googleapis.com%252Fprojects%252F${projectId}%252Flocations%252Fus-east1%252Frepositories%252Farrepository-${uniqueId}%2FtagValues%2F${tagValueID}
+X-Goog-Request-Params: name=projects%2F${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}",
+  "projectId": "${projectId}",
+  "state": 1
+}
+
+---
+
+GET https://us-east1-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "tagBindings": [
+    {
+      "name": "tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}",
+      "parent": "//artifactregistry.googleapis.com/projects/${projectNumber}/locations/us-east1/repositories/arrepository-${uniqueId}",
+      "tagValue": "tagValues/${tagValueID}",
+      "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
+    }
+  ]
+}
+
+---
+
+DELETE https://us-east1-cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fartifactregistry.googleapis.com%252Fprojects%252F${projectNumber}%252Flocations%252Fus-east1%252Frepositories%252Farrepository-${uniqueId}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=tagBindings%2F%252F%252Fartifactregistry.googleapis.com%252Fprojects%252F${projectNumber}%252Flocations%252Fus-east1%252Frepositories%252Farrepository-${uniqueId}%2FtagValues%2F${tagValueID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

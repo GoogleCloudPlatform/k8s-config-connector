@@ -374,7 +374,8 @@ X-Xss-Protection: 0
     {
       "name": "tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-${uniqueId}/tagValues/${tagValueID}",
       "parent": "//storage.googleapis.com/projects/_/buckets/storagebucket-${uniqueId}",
-      "tagValue": "tagValues/${tagValueID}"
+      "tagValue": "tagValues/${tagValueID}",
+      "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
     }
   ]
 }

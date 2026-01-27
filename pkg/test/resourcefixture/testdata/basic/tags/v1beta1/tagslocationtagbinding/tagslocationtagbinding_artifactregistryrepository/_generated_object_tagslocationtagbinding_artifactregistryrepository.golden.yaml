@@ -16,7 +16,7 @@ spec:
   parentRef:
     external: //artifactregistry.googleapis.com/projects/${projectId}/locations/us-east1/repositories/arrepository-${uniqueId}
     kind: ArtifactRegistryRepository
-  resourceID: tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}
+  resourceID: tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}
   tagValueRef:
     name: tagstagvalue-${uniqueId}
 status:
@@ -26,6 +26,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}
-  name: tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}
+  externalRef: tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}
+  name: tagBindings/%2F%2Fartifactregistry.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-east1%2Frepositories%2Farrepository-${uniqueId}/tagValues/${tagValueID}
   observedGeneration: 2
