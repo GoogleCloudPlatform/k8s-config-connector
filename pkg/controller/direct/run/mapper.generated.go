@@ -219,6 +219,48 @@ func Container_ToProto(mapCtx *direct.MapContext, in *krm.Container) *pb.Contain
 	// MISSING: BuildInfo
 	return out
 }
+func ContainerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.ContainerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContainerObservedState{}
+	// MISSING: Name
+	// MISSING: Image
+	// MISSING: Command
+	// MISSING: Args
+	// MISSING: Env
+	// MISSING: Resources
+	// MISSING: Ports
+	// MISSING: VolumeMounts
+	// MISSING: WorkingDir
+	// MISSING: LivenessProbe
+	// MISSING: StartupProbe
+	// MISSING: DependsOn
+	// MISSING: BaseImageURI
+	out.BuildInfo = BuildInfo_FromProto(mapCtx, in.GetBuildInfo())
+	return out
+}
+func ContainerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContainerObservedState) *pb.Container {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Container{}
+	// MISSING: Name
+	// MISSING: Image
+	// MISSING: Command
+	// MISSING: Args
+	// MISSING: Env
+	// MISSING: Resources
+	// MISSING: Ports
+	// MISSING: VolumeMounts
+	// MISSING: WorkingDir
+	// MISSING: LivenessProbe
+	// MISSING: StartupProbe
+	// MISSING: DependsOn
+	// MISSING: BaseImageURI
+	out.BuildInfo = BuildInfo_ToProto(mapCtx, in.BuildInfo)
+	return out
+}
 func ContainerPort_FromProto(mapCtx *direct.MapContext, in *pb.ContainerPort) *krm.ContainerPort {
 	if in == nil {
 		return nil
@@ -347,6 +389,30 @@ func ExecutionTemplate_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionTempl
 	out.Parallelism = direct.ValueOf(in.Parallelism)
 	out.TaskCount = direct.ValueOf(in.TaskCount)
 	out.Template = TaskTemplate_ToProto(mapCtx, in.Template)
+	return out
+}
+func ExecutionTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionTemplate) *krm.ExecutionTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionTemplateObservedState{}
+	// MISSING: Labels
+	// MISSING: Annotations
+	// MISSING: Parallelism
+	// MISSING: TaskCount
+	out.Template = TaskTemplateObservedState_FromProto(mapCtx, in.GetTemplate())
+	return out
+}
+func ExecutionTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionTemplateObservedState) *pb.ExecutionTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionTemplate{}
+	// MISSING: Labels
+	// MISSING: Annotations
+	// MISSING: Parallelism
+	// MISSING: TaskCount
+	out.Template = TaskTemplateObservedState_ToProto(mapCtx, in.Template)
 	return out
 }
 func GCSVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.GCSVolumeSource) *krm.GCSVolumeSource {
@@ -734,6 +800,40 @@ func TaskTemplate_MaxRetries_ToProto(mapCtx *direct.MapContext, in *int32) *pb.T
 		return nil
 	}
 	return &pb.TaskTemplate_MaxRetries{MaxRetries: *in}
+}
+func TaskTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TaskTemplate) *krm.TaskTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TaskTemplateObservedState{}
+	out.Containers = direct.Slice_FromProto(mapCtx, in.Containers, ContainerObservedState_FromProto)
+	// MISSING: Volumes
+	// MISSING: MaxRetries
+	// MISSING: Timeout
+	// MISSING: ServiceAccount
+	// MISSING: ExecutionEnvironment
+	// MISSING: EncryptionKey
+	// MISSING: VPCAccess
+	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
+	return out
+}
+func TaskTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TaskTemplateObservedState) *pb.TaskTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TaskTemplate{}
+	out.Containers = direct.Slice_ToProto(mapCtx, in.Containers, ContainerObservedState_ToProto)
+	// MISSING: Volumes
+	// MISSING: MaxRetries
+	// MISSING: Timeout
+	// MISSING: ServiceAccount
+	// MISSING: ExecutionEnvironment
+	// MISSING: EncryptionKey
+	// MISSING: VPCAccess
+	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
+	return out
 }
 func VPCAccess_FromProto(mapCtx *direct.MapContext, in *pb.VpcAccess) *krm.VPCAccess {
 	if in == nil {

@@ -50,6 +50,10 @@ type EntryType_Authorization struct {
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataplex.v1.Job
+type Job struct {
+}
+
 // +kcc:proto=google.cloud.dataplex.v1.Lake.MetastoreStatus
 type Lake_MetastoreStatus struct {
 	// Current state of association.
@@ -67,6 +71,10 @@ type Lake_MetastoreStatus struct {
 	// The URI of the endpoint used to access the Metastore service.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.MetastoreStatus.endpoint
 	Endpoint *string `json:"endpoint,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Task.ExecutionStatus
+type Task_ExecutionStatus struct {
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.Task.InfrastructureSpec
@@ -259,4 +267,34 @@ type Zone_ResourceSpec struct {
 	//  to be attached to the assets within this zone.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.ResourceSpec.location_type
 	LocationType *string `json:"locationType,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Task
+type TaskObservedState struct {
+	// Output only. The relative resource name of the task, of the form:
+	//  projects/{project_number}/locations/{location_id}/lakes/{lake_id}/
+	//  tasks/{task_id}.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. System generated globally unique ID for the task. This ID will
+	//  be different if the task is deleted and re-created with the same name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The time when the task was created.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the task was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Current state of the task.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Status of the latest task executions.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.execution_status
+	ExecutionStatus *Task_ExecutionStatus `json:"executionStatus,omitempty"`
 }
