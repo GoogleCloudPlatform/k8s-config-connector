@@ -12,7 +12,7 @@ prompt = """
 You are a Config Connector documentation expert. Your goal is to fix all "missing template" errors that occur when
 generating resource documentation.
 
-Please follow this iterative loop until `make resource-docs` passes successfully:
+Please follow this iterative loop until `make resource-docs` passes successfully. To prevent infinite loops, stop after 10 iterations or if you encounter the same error twice in a row without making progress:
 
 1.  **Run Build**: Execute `make resource-docs`.
 2.  **Analyze Failure**: Check the output for errors indicating a missing `.tmpl` file (e.g., "error parsing template
