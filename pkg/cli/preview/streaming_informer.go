@@ -56,9 +56,12 @@ type objects struct {
 // OnListObject is called from list, the lock should be held
 func (o *objects) OnListObject(ctx context.Context, obj Object, isInInitialList bool, eventHandlerRegistrations []*eventHandlerRegistration, objectTransformers []ObjectTransformer) error {
 	if clientObj, ok := obj.(client.Object); ok {
+		// Deep copy to avoid mutating the original object if it's shared
+		clientObj = clientObj.DeepCopyObject().(client.Object)
+		obj = clientObj
 		for _, transformer := range objectTransformers {
 			if err := transformer(ctx, clientObj); err != nil {
-				return err
+				klog.Errorf("transformer failed: %v", err)
 			}
 		}
 	}
@@ -77,9 +80,12 @@ func (o *objects) OnListObject(ctx context.Context, obj Object, isInInitialList 
 // OnWatchAdd is called from watch, the lock is not held
 func (o *objects) OnWatchAdd(ctx context.Context, obj Object, eventHandlerRegistrations []*eventHandlerRegistration, objectTransformers []ObjectTransformer) error {
 	if clientObj, ok := obj.(client.Object); ok {
+		// Deep copy to avoid mutating the original object if it's shared
+		clientObj = clientObj.DeepCopyObject().(client.Object)
+		obj = clientObj
 		for _, transformer := range objectTransformers {
 			if err := transformer(ctx, clientObj); err != nil {
-				return err
+				klog.Errorf("transformer failed: %v", err)
 			}
 		}
 	}
