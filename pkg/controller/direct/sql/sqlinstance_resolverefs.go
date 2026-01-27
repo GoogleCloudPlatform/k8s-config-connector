@@ -25,6 +25,7 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -52,6 +53,9 @@ func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQ
 		return err
 	}
 	if err := resolveSourceSQLInstanceRef(ctx, kube, obj); err != nil {
+		return err
+	}
+	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
 		return err
 	}
 	return nil
