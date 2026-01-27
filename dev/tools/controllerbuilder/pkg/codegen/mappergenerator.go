@@ -140,20 +140,7 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 		return
 	}
 	parentFile := msg.ParentFile()
-	fileOptions := parentFile.Options().(*descriptorpb.FileOptions)
-	protoGoPackage := fileOptions.GetGoPackage()
-	if ix := strings.Index(protoGoPackage, ";"); ix != -1 {
-		protoGoPackage = protoGoPackage[:ix]
-	}
-
-	// Some exceptions in our proto mapping
-	// TODO: Move to flag?  How many of these are there?
-	switch protoGoPackage {
-	case "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb":
-		protoGoPackage = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
-	case "cloud.google.com/go/bigquery/apiv2/bigquerypb":
-		protoGoPackage = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
-	}
+	protoGoPackage := GoPackageForProto(parentFile)
 
 	for _, goType := range goTypes {
 		v.typePairs = append(v.typePairs, typePair{
@@ -1179,6 +1166,18 @@ func GoPackageForProto(parentFile protoreflect.FileDescriptor) string {
 	if ix := strings.Index(protoGoPackage, ";"); ix != -1 {
 		protoGoPackage = protoGoPackage[:ix]
 	}
+
+	// Some exceptions in our proto mapping
+	// TODO: Move to flag?  How many of these are there?
+	switch protoGoPackage {
+	case "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb":
+		return "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
+	case "cloud.google.com/go/bigquery/apiv2/bigquerypb":
+		return "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
+	case "cloud.google.com/go/sql/apiv1beta4/sqlpb":
+		return "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
+	}
+
 	return protoGoPackage
 }
 
