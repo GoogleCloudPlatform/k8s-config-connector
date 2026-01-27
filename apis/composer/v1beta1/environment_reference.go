@@ -32,10 +32,10 @@ type EnvironmentRef struct {
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/environments/{{environmentID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ComposerEnvironment resource.                                                                                          │
+	// The name of a ComposerEnvironment resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ComposerEnvironment resource.                                                                                     │
+	// The namespace of a ComposerEnvironment resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 

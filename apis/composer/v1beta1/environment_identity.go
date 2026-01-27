@@ -17,11 +17,11 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -46,19 +46,30 @@ func (i *EnvironmentIdentity) Parent() *parent.ProjectAndLocationParent {
 	return i.parent
 }
 
+type environmentExternal struct {
+	Project     string
+	Location    string
+	Environment string
+}
+
+var environmentURLTemplate = gcpurls.Template[environmentExternal](
+	"composer.googleapis.com",
+	"projects/{project}/locations/{location}/environments/{environment}",
+)
+
 func (i *EnvironmentIdentity) FromExternal(ref string) error {
-	tokens := strings.Split(ref, "/environments/")
-	if len(tokens) != 2 {
-		return fmt.Errorf("format of ComposerEnvironment external=%q was not known (use projects/{{projectID}}/locations/{{location}}/environments/{{environmentID}})", ref)
-	}
-	i.parent = &parent.ProjectAndLocationParent{}
-	if err := i.parent.FromExternal(tokens[0]); err != nil {
+	external, matches, err := environmentURLTemplate.Parse(ref)
+	if err != nil {
 		return err
 	}
-	i.id = tokens[1]
-	if i.id == "" {
-		return fmt.Errorf("environmentID was empty in external=%q", ref)
+	if !matches {
+		return fmt.Errorf("external %q does not match format %q", ref, environmentURLTemplate.CanonicalForm())
 	}
+	i.parent = &parent.ProjectAndLocationParent{
+		ProjectID: external.Project,
+		Location:  external.Location,
+	}
+	i.id = external.Environment
 	return nil
 }
 
@@ -70,6 +81,9 @@ func (obj *ComposerEnvironment) GetIdentity(ctx context.Context, reader client.R
 	}
 
 	// Resolve user-configured Parent
+	if obj.Spec.ParentRef == nil {
+		return nil, fmt.Errorf("spec.parentRef is required")
+	}
 	if err := obj.Spec.ParentRef.Build(ctx, reader, obj.GetNamespace(), environment.parent); err != nil {
 		return nil, err
 	}
@@ -88,10 +102,12 @@ func (obj *ComposerEnvironment) GetIdentity(ctx context.Context, reader client.R
 	if externalRef != "" {
 		statusIdentity := &EnvironmentIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
+			return nil, fmt.Errorf("cannot parse existing status.externalRef %q: %w", externalRef, err)
 		}
 		if statusIdentity.String() != environment.String() {
-			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, environment.String())
+			return nil, fmt.Errorf("existing status.externalRef %q does not match the identity resolved from spec: %q. "+
+				"The resource might have been moved or renamed in GCP, or the spec might have been changed to point to a different resource. "+
+				"Please verify the spec and the actual resource in GCP.", externalRef, environment.String())
 		}
 	}
 	return environment, nil

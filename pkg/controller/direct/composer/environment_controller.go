@@ -76,9 +76,9 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, reader client.R
 	if err != nil {
 		return nil, err
 	}
-	id := i.(*krm.EnvironmentIdentity)
-	if err != nil {
-		return nil, err
+	id, ok := i.(*krm.EnvironmentIdentity)
+	if !ok {
+		return nil, fmt.Errorf("unexpected identity type %T", i)
 	}
 
 	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
@@ -91,7 +91,7 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, reader client.R
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	if len(desired.Labels) == 0 {
+	if desired.Labels == nil {
 		desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 	}
 	// Get composer GCP client
