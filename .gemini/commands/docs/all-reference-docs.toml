@@ -25,9 +25,9 @@ Please follow this iterative loop until `make resource-docs` passes successfully
     *   REST Resource ID (e.g., `projects.instances.databases`).
     *   REST API Documentation URL.
     *   Service Endpoint (e.g., `spanner.googleapis.com`).
-    *   **Create File**: Generate the missing `.tmpl` file at the path indicated in the error. Use the content of
-        `scripts/generate-google3-docs/resource-reference/templates/alloydb_alloydbcluster.tmpl` as a reference for the file
-        structure and variables.
+    *   **Create File**: Generate the missing `.tmpl` file at the path indicated in the error.
+        *   To find a structural reference, list the files in `scripts/generate-google3-docs/resource-reference/templates/` and use the first `.tmpl` file found.
+        *   If no local files exist, use this fallback example: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4375/files#diff-acdb22e30c0425d154167e720804c1e4672502cf6a8f8ee94bfede5ecebade93
     *   **Update TOC**: Add the new resource to `scripts/generate-google3-docs/resource-reference/_toc.yaml`. Ensure it
         is placed in the correct Service section (create the section if it's new) and strictly sorted alphabetically.
     *   **Update Overview**: Add a new row for the resource to the table in
