@@ -36,6 +36,7 @@ import (
 	"google.golang.org/genproto/googleapis/type/timeofday"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -614,6 +615,16 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		log.V(2).Info("error updating Cluster", "name", a.id, "error", err)
 		return fmt.Errorf("updating Cluster %s: %w", a.id, err)
 	}
+
+	if err := func() error {
+		status := a.desired.Status.DeepCopy()
+		now := metav1.Now()
+		status.ReconcileStart = &now
+		return updateOp.UpdateStatus(ctx, status, nil)
+	}(); err != nil {
+		return err
+	}
+
 	updated, err := op.Wait(ctx)
 	if err != nil {
 		log.V(2).Info("error waiting for Cluster update op", "name", a.id, "error", err)

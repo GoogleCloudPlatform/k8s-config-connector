@@ -784,6 +784,10 @@ spec:
                       field cannot be changed after cluster creation.
                     type: string
                 type: object
+              reconcileStart:
+                description: The time when the last update against GCP started.
+                format: date-time
+                type: string
               uid:
                 description: Output only. The system-generated UID of the resource.
                   The UID is assigned when the resource is created, and it is retained
@@ -1556,6 +1560,10 @@ spec:
                       field cannot be changed after cluster creation.
                     type: string
                 type: object
+              reconcileStart:
+                description: The time when the last update against GCP started.
+                format: date-time
+                type: string
               uid:
                 description: Output only. The system-generated UID of the resource.
                   The UID is assigned when the resource is created, and it is retained
