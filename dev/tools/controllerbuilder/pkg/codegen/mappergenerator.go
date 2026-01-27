@@ -44,6 +44,8 @@ type MapperGenerator struct {
 	multiversion bool
 
 	importedPackages map[string]importedPackage
+
+	includeSkippedOutput bool
 }
 
 type importedPackage struct {
@@ -60,6 +62,12 @@ func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, gener
 		importedPackages:        make(map[string]importedPackage),
 	}
 	g.generatorBase.init(outputBaseDir)
+	return g
+}
+
+// WithIncludeSkippedOutput sets whether to output skipped mappers as commented-out code
+func (g *MapperGenerator) WithIncludeSkippedOutput(includeSkippedOutput bool) *MapperGenerator {
+	g.includeSkippedOutput = includeSkippedOutput
 	return g
 }
 
@@ -233,8 +241,17 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		versionSpecifier = "_" + lastGoComponent(pair.KRMType.GoPackage)
 	}
 
-	if v.findFuncDeclaration(goTypeName+versionSpecifier+"_FromProto", srcDir, true) == nil {
-		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *%s.%s) *%s.%s {\n", goTypeName+versionSpecifier, pbTypeGoImport, pbTypeName, krmImportName, goTypeName)
+	funcName := goTypeName + versionSpecifier + "_FromProto"
+	exists := v.findFuncDeclaration(funcName, srcDir, true) != nil
+	if exists {
+		klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", funcName)
+	}
+
+	if !exists || v.includeSkippedOutput {
+		if exists {
+			fmt.Fprintf(out, "\n/* found existing non-generated mapping function %q, skipping\n", funcName)
+		}
+		fmt.Fprintf(out, "func %s(mapCtx *direct.MapContext, in *%s.%s) *%s.%s {\n", funcName, pbTypeGoImport, pbTypeName, krmImportName, goTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
@@ -520,12 +537,22 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		}
 		fmt.Fprintf(out, "\treturn out\n")
 		fmt.Fprintf(out, "}\n")
-	} else {
-		klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_FromProto")
+		if exists {
+			fmt.Fprintf(out, "*/\n")
+		}
 	}
 
-	if v.findFuncDeclaration(goTypeName+versionSpecifier+"_ToProto", srcDir, true) == nil {
-		fmt.Fprintf(out, "func %s_ToProto(mapCtx *direct.MapContext, in *%s.%s) *%s.%s {\n", goTypeName+versionSpecifier, krmImportName, goTypeName, pbTypeGoImport, pbTypeName)
+	funcName = goTypeName + versionSpecifier + "_ToProto"
+	exists = v.findFuncDeclaration(funcName, srcDir, true) != nil
+	if exists {
+		klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", funcName)
+	}
+
+	if !exists || v.includeSkippedOutput {
+		if exists {
+			fmt.Fprintf(out, "\n/* found existing non-generated mapping function %q, skipping\n", funcName)
+		}
+		fmt.Fprintf(out, "func %s(mapCtx *direct.MapContext, in *%s.%s) *%s.%s {\n", funcName, krmImportName, goTypeName, pbTypeGoImport, pbTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
@@ -876,8 +903,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		}
 		fmt.Fprintf(out, "\treturn out\n")
 		fmt.Fprintf(out, "}\n")
-	} else {
-		klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_ToProto")
+		if exists {
+			fmt.Fprintf(out, "*/\n")
+		}
 	}
 
 	// Generate ToProto helpers for oneof fields that are not messages
@@ -891,8 +919,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		protoFieldName := protoNameForField(protoField)
 		functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 
-		if v.findFuncDeclaration(functionName, srcDir, true) != nil {
-			continue
+		exists := v.findFuncDeclaration(functionName, srcDir, true) != nil
+		if exists {
+			klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", functionName)
 		}
 
 		krmFieldName := goFieldName(protoField)
@@ -902,36 +931,46 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			// We should not generate a helper if there is no corresponding KRM field.
 			continue
 		}
-		krmFieldType := krmField.Type
 
-		oneofWrapperTypeName := v.goPackageForProto(protoField.ParentFile()) + "." + protoNameForOneOf(protoField)
+		if !exists || v.includeSkippedOutput {
+			if exists {
+				fmt.Fprintf(out, "\n/* found existing non-generated mapping function %q, skipping\n", functionName)
+			}
+			krmFieldType := krmField.Type
 
-		fmt.Fprintf(out, "func %s(mapCtx *direct.MapContext, in %s) *%s {\n", functionName, krmFieldType, oneofWrapperTypeName)
-		fmt.Fprintf(out, "\tif in == nil {\n")
-		fmt.Fprintf(out, "\t\treturn nil\n")
-		fmt.Fprintf(out, "\t}\n")
+			oneofWrapperTypeName := v.goPackageForProto(protoField.ParentFile()) + "." + protoNameForOneOf(protoField)
 
-		switch protoField.Kind() {
-		case protoreflect.EnumKind:
-			protoEnumTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
-			fmt.Fprintf(out, "\treturn &%s{%s: direct.Enum_ToProto[%s](mapCtx, in)}\n", oneofWrapperTypeName, protoFieldName, protoEnumTypeName)
+			fmt.Fprintf(out, "func %s(mapCtx *direct.MapContext, in %s) *%s {\n", functionName, krmFieldType, oneofWrapperTypeName)
+			fmt.Fprintf(out, "\tif in == nil {\n")
+			fmt.Fprintf(out, "\t\treturn nil\n")
+			fmt.Fprintf(out, "\t}\n")
 
-		case protoreflect.BoolKind:
-			fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
+			switch protoField.Kind() {
+			case protoreflect.EnumKind:
+				protoEnumTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
+				fmt.Fprintf(out, "\treturn &%s{%s: direct.Enum_ToProto[%s](mapCtx, in)}\n", oneofWrapperTypeName, protoFieldName, protoEnumTypeName)
 
-		case protoreflect.StringKind,
-			protoreflect.FloatKind,
-			protoreflect.DoubleKind,
-			protoreflect.Int64Kind,
-			protoreflect.Int32Kind,
-			protoreflect.Uint32Kind,
-			protoreflect.Uint64Kind,
-			protoreflect.Fixed64Kind,
-			protoreflect.BytesKind:
+			case protoreflect.BoolKind:
+				fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
 
-			fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
+			case protoreflect.StringKind,
+				protoreflect.FloatKind,
+				protoreflect.DoubleKind,
+				protoreflect.Int64Kind,
+				protoreflect.Int32Kind,
+				protoreflect.Uint32Kind,
+				protoreflect.Uint64Kind,
+				protoreflect.Fixed64Kind,
+				protoreflect.BytesKind:
+
+				fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
+			}
+			fmt.Fprintf(out, "}\n")
+
+			if exists {
+				fmt.Fprintf(out, "*/\n")
+			}
 		}
-		fmt.Fprintf(out, "}\n")
 	}
 }
 

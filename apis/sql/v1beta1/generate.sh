@@ -27,11 +27,13 @@ go run . generate-types \
   --service google.cloud.sql.v1beta4 \
   --api-version sql.cnrm.cloud.google.com/v1beta1  \
   --resource SQLInstance:DatabaseInstance \
-  --skip-scaffold-files
+  --skip-scaffold-files \
+  --include-skipped-output
 
 go run . generate-mapper \
   --service google.cloud.sql.v1beta4 \
-  --api-version sql.cnrm.cloud.google.com/v1beta1
+  --api-version sql.cnrm.cloud.google.com/v1beta1 \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
