@@ -121,6 +121,10 @@ type InstancetemplateDisk struct {
 	// +optional
 	ProvisionedIops *int64 `json:"provisionedIops,omitempty"`
 
+	/* Immutable. Indicates how much throughput to provision for the disk. This sets the number of throughput mb per second that the disk can handle. Values must be greater than or equal to 1. */
+	// +optional
+	ProvisionedThroughput *int64 `json:"provisionedThroughput,omitempty"`
+
 	// +optional
 	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
 
