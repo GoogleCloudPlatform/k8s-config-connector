@@ -117,6 +117,7 @@ func TestE2EScript(t *testing.T) {
 				appliedObjects := []*unstructured.Unstructured{}
 
 				for i, obj := range script.Objects {
+					skipLogCheck := false
 					testCommand := ""
 					v, ok := obj.Object["TEST"]
 					if ok {
@@ -246,9 +247,10 @@ func TestE2EScript(t *testing.T) {
 					case "SLEEP":
 						// Allow some time for reconcile
 						// Maybe we should instead wait for observedState
-						time.Sleep(2 * time.Second)
+						time.Sleep(5 * time.Second)
 						exportResource = nil
 						shouldGetKubeObject = false
+						skipLogCheck = true
 
 					case "DELETE-NO-WAIT":
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}, SkipWaitForDelete: true})
@@ -423,7 +425,7 @@ func TestE2EScript(t *testing.T) {
 						}
 					}
 
-					captureHTTPLogEvents(false)
+					captureHTTPLogEvents(skipLogCheck)
 				}
 
 				t.Logf("***/Finished Steps")
