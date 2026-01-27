@@ -636,6 +636,9 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	// Explicitly clear ReconcileStart as the update has finished.
+	status.ReconcileStart = nil
+
 	if a.desired.Status.ExternalRef == nil {
 		// If it is the first reconciliation after switching to direct controller,
 		// or is an acquisition with update, then fill out the ExternalRef.

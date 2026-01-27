@@ -420,6 +420,10 @@ func (in *AlloyDBClusterStatus) DeepCopyInto(out *AlloyDBClusterStatus) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ReconcileStart != nil {
+		in, out := &in.ReconcileStart, &out.ReconcileStart
+		*out = (*in).DeepCopy()
+	}
 	if in.BackupSource != nil {
 		in, out := &in.BackupSource, &out.BackupSource
 		*out = make([]*BackupSourceObservedState, len(*in))
