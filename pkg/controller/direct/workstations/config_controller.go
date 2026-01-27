@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/workstations/apiv1"
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
@@ -235,6 +236,13 @@ func (a *WorkstationConfigAdapter) Update(ctx context.Context, updateOp *directb
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
+
 	req := &pb.UpdateWorkstationConfigRequest{
 		WorkstationConfig: resource,
 		UpdateMask:        &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
