@@ -2,7 +2,7 @@
 # This command will be invoked via: /docs:reference kind="AlloyDBInstance" group="alloydb"
 # Note that group may be different from kind prefix.
 
-description = "Asks the model to generate the resource reference doc template for given group and kind."
+description = "Asks the model to generate the resource reference doc template for a given group and kind."
 
 prompt = """
 You are a Config Connector and go templating expert.
