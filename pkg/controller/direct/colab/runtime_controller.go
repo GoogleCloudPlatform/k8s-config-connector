@@ -29,7 +29,6 @@ import (
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -40,6 +39,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -199,9 +199,7 @@ func (a *runtimeAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 	desiredPb.Name = a.id.String()
 
-	paths := make(sets.Set[string])
-	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -221,6 +219,12 @@ func (a *runtimeAdapter) Update(ctx context.Context, updateOp *directbase.Update
 			return updateOp.UpdateStatus(ctx, a.desired.Status, nil)
 		}
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	log.V(2).Info("ColabRuntime doesn't support update", "name", a.id)
 	return fmt.Errorf("updating ColabRuntime %s: update is not supported", a.id)
