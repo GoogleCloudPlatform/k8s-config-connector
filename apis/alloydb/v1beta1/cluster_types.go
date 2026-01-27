@@ -314,6 +314,9 @@ type AlloyDBClusterStatus struct {
 	// A unique specifier for the AlloyDBCluster resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
+	// The time when the last update against GCP started.
+	ReconcileStart *metav1.Time `json:"reconcileStart,omitempty"`
+
 	// Output only. Cluster created from backup.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.backup_source
 	BackupSource []*BackupSourceObservedState `json:"backupSource,omitempty"`
