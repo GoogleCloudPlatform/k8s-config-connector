@@ -62,6 +62,9 @@ func TestAdditionalPrinterColumns(t *testing.T) {
 	for _, crd := range crds {
 		for _, version := range crd.Spec.Versions {
 			if diff := cmp.Diff(wantColumns, version.AdditionalPrinterColumns); diff != "" {
+				// To address inconsistencies between local and CI environments,
+				// we normalize the diff output by replacing non-breaking spaces with regular spaces.
+				diff = strings.ReplaceAll(diff, "\u00a0", " ")
 				errs = append(errs, fmt.Sprintf("crd=%s version=%v: additionalPrinterColumns mismatch:\n%s", crd.Name, version.Name, diff))
 			}
 		}
