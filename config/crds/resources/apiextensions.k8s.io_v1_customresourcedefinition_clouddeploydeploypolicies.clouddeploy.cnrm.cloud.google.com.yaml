@@ -241,6 +241,11 @@ spec:
                                         format: int32
                                         type: integer
                                     type: object
+                                required:
+                                - endDate
+                                - endTime
+                                - startDate
+                                - startTime
                                 type: object
                               type: array
                             timeZone:
@@ -323,7 +328,12 @@ spec:
                                     type: object
                                 type: object
                               type: array
+                          required:
+                          - timeZone
                           type: object
+                      required:
+                      - id
+                      - timeWindows
                       type: object
                   type: object
                 type: array

@@ -136,6 +136,8 @@ spec:
                        database. For example, `CRON_TZ=America/New_York 1 * * * *`, or
                        `TZ=America/New_York 1 * * * *`.
                     type: string
+                required:
+                - enabled
                 type: object
               displayName:
                 description: Optional. User friendly display name.
@@ -180,6 +182,8 @@ spec:
                     description: Required. Immutable. The location type of the resources
                       that are allowed to be attached to the assets within this zone.
                     type: string
+                required:
+                - locationType
                 type: object
               type:
                 description: Required. Immutable. The type of the zone.

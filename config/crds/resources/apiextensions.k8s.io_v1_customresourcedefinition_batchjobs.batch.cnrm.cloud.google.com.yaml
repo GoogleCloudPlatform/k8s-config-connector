@@ -1302,7 +1302,11 @@ spec:
                                 type: object
                             type: object
                           type: array
+                      required:
+                      - runnables
                       type: object
+                  required:
+                  - taskSpec
                   type: object
                 type: array
             required:

@@ -183,6 +183,8 @@ spec:
                       or equal to -1. If set to -1, it means the value is "unlimited".
                     format: int64
                     type: integer
+                required:
+                - preferredValue
                 type: object
               quotaID:
                 description: 'Required. The id of the quota to which the quota preference

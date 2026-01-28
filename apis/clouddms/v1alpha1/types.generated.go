@@ -37,10 +37,12 @@ type ConversionWorkspaceInfo struct {
 // +kcc:proto=google.cloud.clouddms.v1.DatabaseEngineInfo
 type DatabaseEngineInfo struct {
 	// Required. Engine type.
+	// +required
 	// +kcc:proto:field=google.cloud.clouddms.v1.DatabaseEngineInfo.engine
 	Engine *string `json:"engine,omitempty"`
 
 	// Required. Engine named version, for example 12.c.1.
+	// +required
 	// +kcc:proto:field=google.cloud.clouddms.v1.DatabaseEngineInfo.version
 	Version *string `json:"version,omitempty"`
 }
