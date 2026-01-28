@@ -315,6 +315,13 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				}
 
 				createDiffs(t, ctx, fixture)
+
+				if !forceDirect && os.Getenv("E2E_GCP_TARGET") != "vcr" {
+					h := &create.Harness{T: t}
+					h.AssertGoldenFileNotFound(filepath.Join(fixture.AbsoluteSourceDir, "_http_old_controller.log"))
+					h.AssertGoldenFileNotFound(filepath.Join(fixture.AbsoluteSourceDir, "_final_object_old_controller.golden.yaml"))
+					h.AssertGoldenFileNotFound(filepath.Join(fixture.AbsoluteSourceDir, "_exported_old_controller.golden.yaml"))
+				}
 			})
 		}
 	})
@@ -325,6 +332,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 }
 
 func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.ResourceFixture) {
+	h := &create.Harness{T: t, Ctx: ctx}
 	dir := fixture.AbsoluteSourceDir
 
 	fileExists := func(p string) bool {
@@ -364,7 +372,9 @@ func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.Reso
 
 		if fileExists(oldPath) && fileExists(newPath) {
 			diff := computeDiff(oldPath, newPath)
-			test.CompareGoldenFile(t, filepath.Join(dir, "_http.diff"), diff)
+			h.CompareGoldenFile(filepath.Join(dir, "_http.diff"), diff)
+		} else {
+			h.AssertGoldenFileNotFound(filepath.Join(dir, "_http.diff"))
 		}
 	}
 
@@ -376,7 +386,9 @@ func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.Reso
 
 		if fileExists(oldPath) && fileExists(newPath) {
 			diff := computeDiff(oldPath, newPath)
-			test.CompareGoldenFile(t, filepath.Join(dir, "_final_object.diff"), diff)
+			h.CompareGoldenFile(filepath.Join(dir, "_final_object.diff"), diff)
+		} else {
+			h.AssertGoldenFileNotFound(filepath.Join(dir, "_final_object.diff"))
 		}
 	}
 
@@ -591,11 +603,18 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 								fileName = "_final_object_old_controller.golden.yaml"
 							}
 							expectedPath := filepath.Join(fixture.AbsoluteSourceDir, fileName)
-							test.CompareGoldenObject(t, expectedPath, got)
+							h.CompareGoldenObject(expectedPath, got)
 						}
 
 						// Try to export the resource (and compare against golden file)
 						exportedYAML := exportResource(h, obj, &Expectations{})
+
+						fileName := fmt.Sprintf("_generated_export_%v.golden", testName) // TODO: Including the test name creates busywork
+						if options.FallbackToOldController {
+							fileName = "_exported_old_controller.golden.yaml"
+						}
+						expectedPath := filepath.Join(fixture.AbsoluteSourceDir, fileName)
+
 						if exportedYAML != "" {
 							exportedObj := &unstructured.Unstructured{}
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
@@ -617,13 +636,9 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
 							}
 
-							fileName := fmt.Sprintf("_generated_export_%v.golden", testName) // TODO: Including the test name creates busywork
-							if options.FallbackToOldController {
-								fileName = "_exported_old_controller.golden.yaml"
-							}
-
-							expectedPath := filepath.Join(fixture.AbsoluteSourceDir, fileName)
 							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments)
+						} else {
+							h.AssertGoldenFileNotFound(expectedPath)
 						}
 					}
 				}
