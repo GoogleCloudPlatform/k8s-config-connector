@@ -26,50 +26,7 @@ cd ${REPO_ROOT}/mockgcp
 
 cd tools/patch-proto
 
-# This is an example proto patch; the maintenance_update_policy field has now been added upstream,
-# so we don't need it, but we are keeping it as a comment here for reference.
-#
-# # Use our proto patch tool to add the missing maintenanceUpdatePolicy field for alloydb
-# go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/alloydb/v1beta/resources.proto --message Cluster <<EOF
-#   // MaintenanceUpdatePolicy defines the policy for system updates.
-#   message MaintenanceUpdatePolicy {
-#     // MaintenanceWindow specifies a preferred day and time for maintenance.
-#     message MaintenanceWindow {
-#       // Preferred day of the week for maintenance, e.g. MONDAY, TUESDAY, etc.
-#       google.type.DayOfWeek day = 1;
-
-#       // Preferred time to start the maintenance operation on the specified day.
-#       // Maintenance will start within 1 hour of this time.
-#       google.type.TimeOfDay start_time = 2;
-#     }
-
-#     // Preferred windows to perform maintenance. Currently limited to 1.
-#     repeated MaintenanceWindow maintenance_windows = 1;
-#   }
-
-#   // The maintenance update policy determines when to allow or deny updates.
-#   MaintenanceUpdatePolicy maintenance_update_policy = 32;
-# EOF
-
-# Another example proto patch; the psc_config field has now been added upstream,
-# so we don't need it, but we are keeping it as a comment here for reference.
-#
-# Use our proto patch tool to add the missing pscConfig field for AlloyDB cluster.
-# go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/alloydb/v1beta/resources.proto --message Cluster <<EOF
-
-#   // PscConfig contains PSC related configuration at a cluster level.
-#   message PscConfig {
-#     // Optional. Create an instance that allows connections from Private Service
-#     // Connect endpoints to the instance.
-#     bool psc_enabled = 1 [(google.api.field_behavior) = OPTIONAL];
-#   }
-
-#   // Optional. The configuration for Private Service Connect (PSC) for the cluster.
-#   PscConfig psc_config = 31 [(google.api.field_behavior) = OPTIONAL];
-# EOF
-
 go run . --file ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/v1/service.proto --service "ProjectsServer" --mode "replace" <<EOF
-
   // Provisions a new Apigee organization with a functioning runtime. This is the standard way to create trial organizations for a free Apigee trial.
   rpc ProvisionOrganizationProject(ProvisionOrganizationProjectRequest) returns (.google.longrunning.Operation) {
     option (google.api.http) = {
@@ -78,3 +35,57 @@ go run . --file ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/v1/service.proto 
     };
   };
 EOF
+
+# SQL patches
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message BackupConfiguration --mode append <<EOF
+
+  // The tier of the backup.
+
+  optional string backup_tier = 14;
+
+EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message IpConfiguration --mode append <<EOF
+
+  // The server certificate rotation mode.
+
+  optional string server_certificate_rotation_mode = 10;
+
+EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message Settings --mode append <<EOF
+
+  // Maximum replication lag in seconds.
+
+  optional int64 replication_lag_max_seconds = 100;
+
+EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message DatabaseInstance --mode append <<EOF
+
+  // Whether to include replicas for major version upgrade.
+
+  optional bool include_replicas_for_major_version_upgrade = 56;
+
+
+
+  // Whether the instance satisfies PZI.
+
+  optional bool satisfies_pzi = 57;
+
+EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_users.proto --message User --mode append <<EOF
+
+  // The status of the user's IAM authentication.
+
+  optional string iam_status = 16;
+
+EOF
+
+
+
+# AlloyDB patches
+
+sed -i 's/map<string, string> flags = 13 \[(google.api.field_behavior) = OPTIONAL\];/map<string, string> flags = 13 [(google.api.field_behavior) = OPTIONAL];\n    int32 pooler_count = 14;/' ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/alloydb/v1beta/resources.proto

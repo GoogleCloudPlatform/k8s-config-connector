@@ -2780,7 +2780,6 @@ service OrganizationsSpacesServer {
 }
 
 service ProjectsServer {
-
   // Provisions a new Apigee organization with a functioning runtime. This is the standard way to create trial organizations for a free Apigee trial.
   rpc ProvisionOrganizationProject(ProvisionOrganizationProjectRequest) returns (.google.longrunning.Operation) {
     option (google.api.http) = {
