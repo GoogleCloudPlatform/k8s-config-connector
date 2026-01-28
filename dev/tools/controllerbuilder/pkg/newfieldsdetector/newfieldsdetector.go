@@ -60,7 +60,7 @@ func NewFieldDetector(opts *DetectorOptions) (*FieldDetector, error) {
 	pinnedProtoPath := filepath.Join(repoRoot, ".build", "googleapis.pb")
 	headProtoPath := filepath.Join(repoRoot, ".build", "googleapis_head.pb")
 
-	// generate pinned version proto. The default version is recorded in "mockgcp/git.versions".
+	// generate pinned version proto. The default version is recorded in "apis/git.versions".
 	if err := generateProto(repoRoot, pinnedProtoPath, ""); err != nil {
 		return nil, fmt.Errorf("generating pinned proto: %w", err)
 	}

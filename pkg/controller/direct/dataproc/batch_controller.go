@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -120,7 +121,7 @@ var _ directbase.Adapter = &batchAdapter{}
 
 func (a *batchAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.Info("getting dataproc batch", "name", a.id)
+	log.V(2).Info("getting dataproc batch", "name", a.id)
 
 	req := &dataprocpb.GetBatchRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetBatch(ctx, req)
@@ -137,7 +138,7 @@ func (a *batchAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *batchAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.Info("creating dataproc batch", "name", a.id)
+	log.V(2).Info("creating dataproc batch", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -164,7 +165,7 @@ func (a *batchAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	if err != nil {
 		return fmt.Errorf("dataproc batch %s waiting creation: %w", a.id.String(), err)
 	}
-	log.Info("successfully created dataproc batch in gcp", "name", a.id)
+	log.V(2).Info("successfully created dataproc batch in gcp", "name", a.id)
 
 	status := &krm.DataprocBatchStatus{}
 	status.ObservedState = DataprocBatchObservedState_FromProto(mapCtx, created)
@@ -178,7 +179,7 @@ func (a *batchAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 // DataprocBatch does not support update.
 func (a *batchAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.Info("updating dataproc batch", "name", a.id)
+	log.V(2).Info("updating dataproc batch", "name", a.id)
 
 	desiredpb := DataprocBatchSpec_ToProto(&direct.MapContext{}, &a.desired.Spec)
 	paths, err := common.CompareProtoMessage(desiredpb, a.actual, common.BasicDiff)
@@ -186,6 +187,11 @@ func (a *batchAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		return err
 	}
 	if len(paths) != 0 {
+		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+		for path := range paths {
+			report.AddField(path, nil, nil)
+		}
+		structuredreporting.ReportDiff(ctx, report)
 		log.V(2).Info("This resource does not support update", "name", a.id.String())
 		return nil
 	}
@@ -196,14 +202,14 @@ func (a *batchAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 
 func (a *batchAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.Info("deleting dataproc batch", "name", a.id)
+	log.V(2).Info("deleting dataproc batch", "name", a.id)
 
 	req := &dataprocpb.DeleteBatchRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteBatch(ctx, req)
 	if err != nil {
 		return false, fmt.Errorf("deleting dataproc batch %s: %w", a.id.String(), err)
 	}
-	log.Info("successfully deleted dataproc batch", "name", a.id)
+	log.V(2).Info("successfully deleted dataproc batch", "name", a.id)
 
 	return true, nil
 }

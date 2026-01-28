@@ -138,7 +138,7 @@ func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *direct
 
 	desired := a.desired.DeepCopy()
 
-	firewallPolicyRule := ComputeFirewallPolicyRuleSpec_ToProto(mapCtx, &desired.Spec)
+	firewallPolicyRule := ComputeFirewallPolicyRuleSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -167,7 +167,7 @@ func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *direct
 	}
 
 	status := &krm.ComputeFirewallPolicyRuleStatus{}
-	status = ComputeFirewallPolicyRuleStatus_FromProto(mapCtx, created)
+	status = ComputeFirewallPolicyRuleStatus_v1beta1_FromProto(mapCtx, created)
 
 	priority := strconv.Itoa(int(*created.Priority))
 	externalRef := a.id.Parent().String() + "/rules/" + priority
@@ -188,13 +188,15 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	firewallPolicyRule := ComputeFirewallPolicyRuleSpec_ToProto(mapCtx, &desired.Spec)
+	firewallPolicyRule := ComputeFirewallPolicyRuleSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	// The field priority should be removed from the patch request body and included as a query parameter.
-	// See API doc: https://cloud.google.com/compute/docs/reference/rest/v1/firewallPolicies/patchRule#query-parameters
-	firewallPolicyRule.Priority = nil
+
+	// Assign API output-only values
+	// todo: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4455
+	firewallPolicyRule.Kind = a.actual.Kind
+	firewallPolicyRule.RuleTupleCount = a.actual.RuleTupleCount
 
 	paths, err := common.CompareProtoMessage(firewallPolicyRule, a.actual, common.BasicDiff)
 	if err != nil {
@@ -214,6 +216,14 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 		if err != nil {
 			return fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id, err)
 		}
+
+		// The field priority should be removed from the patch request body and included as a query parameter.
+		// See API doc: https://cloud.google.com/compute/docs/reference/rest/v1/firewallPolicies/patchRule#query-parameters
+		firewallPolicyRule.Priority = nil
+
+		// Cleanup previously assigned values to output-only fields.
+		firewallPolicyRule.Kind = nil
+		firewallPolicyRule.RuleTupleCount = nil
 
 		updateReq := &computepb.PatchRuleFirewallPolicyRequest{
 			FirewallPolicyRuleResource: firewallPolicyRule,
@@ -239,7 +249,7 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 		}
 	}
 	status := &krm.ComputeFirewallPolicyRuleStatus{}
-	status = ComputeFirewallPolicyRuleStatus_FromProto(mapCtx, updated)
+	status = ComputeFirewallPolicyRuleStatus_v1beta1_FromProto(mapCtx, updated)
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -249,7 +259,7 @@ func (a *firewallPolicyRuleAdapter) Export(ctx context.Context) (*unstructured.U
 	}
 
 	mc := &direct.MapContext{}
-	spec := ComputeFirewallPolicyRuleSpec_FromProto(mc, a.actual)
+	spec := ComputeFirewallPolicyRuleSpec_v1beta1_FromProto(mc, a.actual)
 	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
 	if err != nil {
 		return nil, fmt.Errorf("error converting firewallPolicyRule spec to unstructured: %w", err)

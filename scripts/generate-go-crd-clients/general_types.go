@@ -125,7 +125,9 @@ func (g *GeneralTypes) Generate() {
 		}
 		sort.Strings(labelStrings)
 		if len(labelStrings) != 0 {
-			g.Print("// +kubebuilder:metadata:labels=" + strings.Join(labelStrings, ";"))
+			for _, label := range labelStrings {
+				g.Print("// +kubebuilder:metadata:labels=" + label)
+			}
 		}
 	}
 

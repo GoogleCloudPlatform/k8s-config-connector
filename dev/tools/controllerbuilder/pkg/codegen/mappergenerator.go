@@ -44,6 +44,8 @@ type MapperGenerator struct {
 	multiversion bool
 
 	importedPackages map[string]importedPackage
+
+	includeSkippedOutput bool
 }
 
 type importedPackage struct {
@@ -60,6 +62,12 @@ func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, gener
 		importedPackages:        make(map[string]importedPackage),
 	}
 	g.generatorBase.init(outputBaseDir)
+	return g
+}
+
+// WithIncludeSkippedOutput sets whether to output skipped mappers as commented-out code
+func (g *MapperGenerator) WithIncludeSkippedOutput(includeSkippedOutput bool) *MapperGenerator {
+	g.includeSkippedOutput = includeSkippedOutput
 	return g
 }
 
@@ -136,24 +144,11 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 	}
 	goTypes := v.findKRMStructsForProto(msg)
 	if len(goTypes) == 0 {
-		klog.Infof("no go types found for proto %v", msg.FullName())
+		klog.V(2).Infof("no go types found for proto %v", msg.FullName())
 		return
 	}
 	parentFile := msg.ParentFile()
-	fileOptions := parentFile.Options().(*descriptorpb.FileOptions)
-	protoGoPackage := fileOptions.GetGoPackage()
-	if ix := strings.Index(protoGoPackage, ";"); ix != -1 {
-		protoGoPackage = protoGoPackage[:ix]
-	}
-
-	// Some exceptions in our proto mapping
-	// TODO: Move to flag?  How many of these are there?
-	switch protoGoPackage {
-	case "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb":
-		protoGoPackage = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
-	case "cloud.google.com/go/bigquery/apiv2/bigquerypb":
-		protoGoPackage = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
-	}
+	protoGoPackage := GoPackageForProto(parentFile)
 
 	for _, goType := range goTypes {
 		v.typePairs = append(v.typePairs, typePair{
@@ -226,7 +221,7 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 	return nil
 }
 func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string, pair *typePair) {
-	klog.InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
+	klog.V(2).InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
 	msg := pair.Proto
 	pbTypeName := protoNameForType(msg)
 	pbTypeGoImport := v.goPackageForProto(msg.ParentFile())
@@ -246,8 +241,17 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		versionSpecifier = "_" + lastGoComponent(pair.KRMType.GoPackage)
 	}
 
-	if v.findFuncDeclaration(goTypeName+versionSpecifier+"_FromProto", srcDir, true) == nil {
-		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *%s.%s) *%s.%s {\n", goTypeName+versionSpecifier, pbTypeGoImport, pbTypeName, krmImportName, goTypeName)
+	funcName := goTypeName + versionSpecifier + "_FromProto"
+	exists := v.findFuncDeclaration(funcName, srcDir, true) != nil
+	if exists {
+		klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", funcName)
+	}
+
+	if !exists || v.includeSkippedOutput {
+		if exists {
+			fmt.Fprintf(out, "\n/* found existing non-generated mapping function %q, skipping\n", funcName)
+		}
+		fmt.Fprintf(out, "func %s(mapCtx *direct.MapContext, in *%s.%s) *%s.%s {\n", funcName, pbTypeGoImport, pbTypeName, krmImportName, goTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
@@ -291,7 +295,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					tokens := strings.SplitN(qualifiedTypeName, ".", 2)
 					if len(tokens) > 1 {
 						alias := v.getGoImportAlias(krmFieldRefs.GoPackage)
-						klog.Infof("getGetImportAlias(%q) => %q", krmFieldRefs.GoPackage, alias)
+						klog.V(2).Infof("getGoImportAlias(%q) => %q", krmFieldRefs.GoPackage, alias)
 						qualifiedTypeName = alias + "." + tokens[1]
 					} else if len(tokens) == 1 {
 						// In same package
@@ -448,7 +452,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				if useSliceFromProtoFunction != "" {
-					klog.Infof("Slice_FromProto krmFieldName %v, protoFieldName %v",
+					klog.V(2).Infof("Slice_FromProto krmFieldName %v, protoFieldName %v",
 						krmFieldName,
 						protoFieldName,
 					)
@@ -533,12 +537,22 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		}
 		fmt.Fprintf(out, "\treturn out\n")
 		fmt.Fprintf(out, "}\n")
-	} else {
-		klog.Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_FromProto")
+		if exists {
+			fmt.Fprintf(out, "*/\n")
+		}
 	}
 
-	if v.findFuncDeclaration(goTypeName+versionSpecifier+"_ToProto", srcDir, true) == nil {
-		fmt.Fprintf(out, "func %s_ToProto(mapCtx *direct.MapContext, in *%s.%s) *%s.%s {\n", goTypeName+versionSpecifier, krmImportName, goTypeName, pbTypeGoImport, pbTypeName)
+	funcName = goTypeName + versionSpecifier + "_ToProto"
+	exists = v.findFuncDeclaration(funcName, srcDir, true) != nil
+	if exists {
+		klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", funcName)
+	}
+
+	if !exists || v.includeSkippedOutput {
+		if exists {
+			fmt.Fprintf(out, "\n/* found existing non-generated mapping function %q, skipping\n", funcName)
+		}
+		fmt.Fprintf(out, "func %s(mapCtx *direct.MapContext, in *%s.%s) *%s.%s {\n", funcName, krmImportName, goTypeName, pbTypeGoImport, pbTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
@@ -554,7 +568,12 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				// Support refs
 				if krmFieldRef := goFields[krmFieldName+"Ref"]; krmFieldRef != nil {
 					fmt.Fprintf(out, "\tif in.%s != nil {\n", krmFieldRef.Name)
-					fmt.Fprintf(out, "\t\tout.%s = in.%s.External\n", protoFieldName, krmFieldRef.Name)
+					// KRM External field in string, but proto might be a pointer if it's optional/proto2
+					if usesPointersInProtoBinding(msg) {
+						fmt.Fprintf(out, "\t\tout.%s = &in.%s.External\n", protoFieldName, krmFieldRef.Name)
+					} else {
+						fmt.Fprintf(out, "\t\tout.%s = in.%s.External\n", protoFieldName, krmFieldRef.Name)
+					}
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
@@ -884,8 +903,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		}
 		fmt.Fprintf(out, "\treturn out\n")
 		fmt.Fprintf(out, "}\n")
-	} else {
-		klog.Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_ToProto")
+		if exists {
+			fmt.Fprintf(out, "*/\n")
+		}
 	}
 
 	// Generate ToProto helpers for oneof fields that are not messages
@@ -899,8 +919,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		protoFieldName := protoNameForField(protoField)
 		functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 
-		if v.findFuncDeclaration(functionName, srcDir, true) != nil {
-			continue
+		exists := v.findFuncDeclaration(functionName, srcDir, true) != nil
+		if exists {
+			klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", functionName)
 		}
 
 		krmFieldName := goFieldName(protoField)
@@ -910,36 +931,46 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			// We should not generate a helper if there is no corresponding KRM field.
 			continue
 		}
-		krmFieldType := krmField.Type
 
-		oneofWrapperTypeName := v.goPackageForProto(protoField.ParentFile()) + "." + protoNameForOneOf(protoField)
+		if !exists || v.includeSkippedOutput {
+			if exists {
+				fmt.Fprintf(out, "\n/* found existing non-generated mapping function %q, skipping\n", functionName)
+			}
+			krmFieldType := krmField.Type
 
-		fmt.Fprintf(out, "func %s(mapCtx *direct.MapContext, in %s) *%s {\n", functionName, krmFieldType, oneofWrapperTypeName)
-		fmt.Fprintf(out, "\tif in == nil {\n")
-		fmt.Fprintf(out, "\t\treturn nil\n")
-		fmt.Fprintf(out, "\t}\n")
+			oneofWrapperTypeName := v.goPackageForProto(protoField.ParentFile()) + "." + protoNameForOneOf(protoField)
 
-		switch protoField.Kind() {
-		case protoreflect.EnumKind:
-			protoEnumTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
-			fmt.Fprintf(out, "\treturn &%s{%s: direct.Enum_ToProto[%s](mapCtx, in)}\n", oneofWrapperTypeName, protoFieldName, protoEnumTypeName)
+			fmt.Fprintf(out, "func %s(mapCtx *direct.MapContext, in %s) *%s {\n", functionName, krmFieldType, oneofWrapperTypeName)
+			fmt.Fprintf(out, "\tif in == nil {\n")
+			fmt.Fprintf(out, "\t\treturn nil\n")
+			fmt.Fprintf(out, "\t}\n")
 
-		case protoreflect.BoolKind:
-			fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
+			switch protoField.Kind() {
+			case protoreflect.EnumKind:
+				protoEnumTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
+				fmt.Fprintf(out, "\treturn &%s{%s: direct.Enum_ToProto[%s](mapCtx, in)}\n", oneofWrapperTypeName, protoFieldName, protoEnumTypeName)
 
-		case protoreflect.StringKind,
-			protoreflect.FloatKind,
-			protoreflect.DoubleKind,
-			protoreflect.Int64Kind,
-			protoreflect.Int32Kind,
-			protoreflect.Uint32Kind,
-			protoreflect.Uint64Kind,
-			protoreflect.Fixed64Kind,
-			protoreflect.BytesKind:
+			case protoreflect.BoolKind:
+				fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
 
-			fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
+			case protoreflect.StringKind,
+				protoreflect.FloatKind,
+				protoreflect.DoubleKind,
+				protoreflect.Int64Kind,
+				protoreflect.Int32Kind,
+				protoreflect.Uint32Kind,
+				protoreflect.Uint64Kind,
+				protoreflect.Fixed64Kind,
+				protoreflect.BytesKind:
+
+				fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
+			}
+			fmt.Fprintf(out, "}\n")
+
+			if exists {
+				fmt.Fprintf(out, "*/\n")
+			}
 		}
-		fmt.Fprintf(out, "}\n")
 	}
 }
 
@@ -1174,6 +1205,18 @@ func GoPackageForProto(parentFile protoreflect.FileDescriptor) string {
 	if ix := strings.Index(protoGoPackage, ";"); ix != -1 {
 		protoGoPackage = protoGoPackage[:ix]
 	}
+
+	// Some exceptions in our proto mapping
+	// TODO: Move to flag?  How many of these are there?
+	switch protoGoPackage {
+	case "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb":
+		return "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
+	case "cloud.google.com/go/bigquery/apiv2/bigquerypb":
+		return "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
+	case "cloud.google.com/go/sql/apiv1beta4/sqlpb":
+		return "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
+	}
+
 	return protoGoPackage
 }
 
@@ -1194,4 +1237,15 @@ func (o *MapperGenerator) goPackageForProto(parentFile protoreflect.FileDescript
 func lastComponent(s string) string {
 	ix := strings.LastIndex(s, "/")
 	return s[ix+1:]
+}
+
+// usesPointersInProtoBinding returns true if the given proto message maps to a Go struct that uses pointers for scalar fields.
+func usesPointersInProtoBinding(msg protoreflect.MessageDescriptor) bool {
+	// It's not obvious which messages use pointers in Go, so we hard-code the (few) services that do.
+	switch string(msg.ParentFile().Package()) {
+	case "google.cloud.compute.v1":
+		return true
+	default:
+		return false
+	}
 }

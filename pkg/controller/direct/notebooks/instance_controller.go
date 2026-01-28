@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/notebooks/apiv1"
 
@@ -177,6 +178,13 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
+
 	var updated *notebookspb.Instance
 	if paths.Has("metadata") {
 		req := &notebookspb.UpdateInstanceMetadataItemsRequest{

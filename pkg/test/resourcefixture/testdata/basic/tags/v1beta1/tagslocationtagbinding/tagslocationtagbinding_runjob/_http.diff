@@ -1,0 +1,81 @@
+392c392
+< POST https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings?alt=json
+---
+> POST https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint
+415,416c415,416
+<     "name": "tagBindings/%2F%2Frun.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Fjobs%2Frunjob-${uniqueId}/tagValues/${tagValueID}",
+<     "parent": "//run.googleapis.com/projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+---
+>     "name": "tagBindings/%2F%2Frun.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-central1%2Fjobs%2Frunjob-${uniqueId}/tagValues/${tagValueID}",
+>     "parent": "//run.googleapis.com/projects/${projectNumber}/locations/us-central1/jobs/runjob-${uniqueId}",
+424c424
+< GET https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings/?alt=json&pageSize=300&parent=%2F%2Frun.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Fjobs%2F${jobID}
+---
+> GET https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Frun.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Fjobs%2F${jobID}
+441,443c441,444
+<       "name": "tagBindings/%2F%2Frun.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Fjobs%2Frunjob-${uniqueId}/tagValues/${tagValueID}",
+<       "parent": "//run.googleapis.com/projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+<       "tagValue": "tagValues/${tagValueID}"
+---
+>       "name": "tagBindings/%2F%2Frun.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-central1%2Fjobs%2Frunjob-${uniqueId}/tagValues/${tagValueID}",
+>       "parent": "//run.googleapis.com/projects/${projectNumber}/locations/us-central1/jobs/runjob-${uniqueId}",
+>       "tagValue": "tagValues/${tagValueID}",
+>       "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
+450c451
+< DELETE https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings/%2F%2Frun.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Fjobs%2F${jobID}/tagValues/${tagValueID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
+452a454,506
+> X-Goog-Request-Params: name=projects%2F${projectNumber}
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "etag": "abcdef0123A=",
+>   "name": "projects/${projectNumber}",
+>   "projectId": "${projectId}",
+>   "state": 1
+> }
+> 
+> ---
+> 
+> GET https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Frun.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Fjobs%2F${jobID}
+> Content-Type: application/json
+> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "tagBindings": [
+>     {
+>       "name": "tagBindings/%2F%2Frun.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-central1%2Fjobs%2Frunjob-${uniqueId}/tagValues/${tagValueID}",
+>       "parent": "//run.googleapis.com/projects/${projectNumber}/locations/us-central1/jobs/runjob-${uniqueId}",
+>       "tagValue": "tagValues/${tagValueID}",
+>       "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
+>     }
+>   ]
+> }
+> 
+> ---
+> 
+> DELETE https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Frun.googleapis.com%252Fprojects%252F${projectNumber}%252Flocations%252Fus-central1%252Fjobs%252F${jobID}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+> X-Goog-Request-Params: name=tagBindings%2F%252F%252Frun.googleapis.com%252Fprojects%252F${projectNumber}%252Flocations%252Fus-central1%252Fjobs%252F${jobID}%2FtagValues%2F${tagValueID}

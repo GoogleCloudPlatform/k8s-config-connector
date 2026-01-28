@@ -1,0 +1,11 @@
+6d5
+<     cnrm.cloud.google.com/state-into-spec: absent
+20c19
+<   resourceID: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}
+---
+>   resourceID: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectNumber}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}
+30c29,30
+<   name: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}
+---
+>   externalRef: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectNumber}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}
+>   name: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectNumber}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}

@@ -16,7 +16,6 @@ package httptogrpc
 
 import (
 	"net/http"
-	"strings"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/grpc"
@@ -45,8 +44,7 @@ func (m *grpcMux) AddOperationsPath(httpPath string, conn *grpc.ClientConn) {
 			return false
 		}
 
-		urlPath := r.URL.Path
-		tokens := strings.Split(strings.TrimPrefix(urlPath, "/"), "/")
+		tokens := tokenizeURLPath(r.URL)
 
 		vals, ok := getMatcher.Match(tokens)
 		if !ok {

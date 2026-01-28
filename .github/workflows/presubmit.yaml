@@ -21,14 +21,8 @@ name: Presubmit
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    paths-ignore:
-      - "**.md"
-      - "experiments/**"
   push:
     branches: ["master"]
-    paths-ignore:
-      - "**.md"
-      - "experiments/**"
   merge_group:
     types: [checks_requested]
     branches: [ "master" ]
@@ -54,57 +48,15 @@ jobs:
           COMMIT_HEAD: ${{ github.event.pull_request.head.sha }}
           COMMIT_CNT: ${{ github.event.pull_request.commits }}
           BASE_COMMIT: ${{ github.event.pull_request.base.sha }}
-  unit-tests:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
-      - name: "Set up Cloud SDK"
-        uses: 'google-github-actions/setup-gcloud@v2'
-        with:
-          version: '546.0.0'
-          install_components: 'alpha,beta'
-      - name: "Run unit tests"
-        run: |
-          ./scripts/github-actions/ga-unit-test.sh
-      - name: "Upload test result"
-        uses: actions/upload-artifact@v4
-        if: '!cancelled()'
-        with:
-          name: unittest_result
-          path: unittest_result.json
-          retention-days: 5
 
-
-  tests-e2e-fixtures-vcr:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run vcr tests"
-        run: |
-          ./scripts/github-actions/tests-e2e-fixtures-vcr.sh
 
   build-images:
     runs-on: ubuntu-22.04
     timeout-minutes: 60
     steps:
-      - name: Free up disk space
-        run: |
-          echo "Before cleanup:"
-          df -h /
-          sudo rm -rf /opt/hostedtoolcache/*  # remove pre-installed tool versions
-          sudo rm -rf /usr/share/dotnet
-          sudo docker system prune -af || true
-          echo "After cleanup:"
-          df -h /
       - uses: actions/checkout@v4
+      - name: Free up disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
       - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
           go-version-file: 'go.mod'

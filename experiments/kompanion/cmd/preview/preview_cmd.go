@@ -31,8 +31,8 @@ import (
 )
 
 const (
-	kubeconfigFlag     = "kubeconfig"
-	timeoutFlag        = "timeout"
+	kubeconfigFlag = "kubeconfig"
+	timeoutFlag    = "timeout"
 
 	reportNamePrefixFlag = "report-prefix"
 	defaultScope         = "https://www.googleapis.com/auth/cloud-platform"
@@ -53,6 +53,7 @@ type PreviewOptions struct {
 	gcpQPS           float64
 	gcpBurst         int
 	namespace        string
+	inCluster        bool
 }
 
 func BuildPreviewCmd() *cobra.Command {
@@ -74,11 +75,15 @@ func BuildPreviewCmd() *cobra.Command {
 	cmd.Flags().Float64VarP(&opts.gcpQPS, "gcpQPS", "q", 5.0, "Maximum qps for GCP API requests, per service. Default to 5.0. Set gcpQPS to 0 to disable rate limiting.")
 	cmd.Flags().IntVarP(&opts.gcpBurst, "gcpBurst", "b", 5, "Maximum burst for GCP API requests, per service. Default to 5. Set gcpQPS to 0 to disable rate limiting.")
 	cmd.Flags().StringVarP(&opts.namespace, "namespace", "n", "", "Namespace to preview. If not specified, all namespaces will be previewed.")
+	cmd.Flags().BoolVarP(&opts.inCluster, "in-cluster", "", false, "Run in GKE cluster.")
 	return cmd
 }
 
 func getRESTConfig(ctx context.Context, opts *PreviewOptions) (*rest.Config, error) {
 	// TODO: Add rate limiting.
+	if opts.inCluster {
+		return rest.InClusterConfig()
+	}
 	var loadingRules clientcmd.ClientConfigLoader
 	if opts.kubeconfig != "" {
 		loadingRules = &clientcmd.ClientConfigLoadingRules{ExplicitPath: opts.kubeconfig}

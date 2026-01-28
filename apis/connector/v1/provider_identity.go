@@ -17,27 +17,48 @@ package v1
 import (
 	"fmt"
 	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 )
 
 // Based on google/cloud/connectors/v1/provider.proto
 
+var ProviderIdentityFormat = gcpurls.Template[ProviderIdentity]("connectors.googleapis.com", "projects/{project}/locations/{location}/providers/{provider}")
+
 // ProviderIdentity defines the resource reference to Provider, which "External" field
 // holds the GCP identifier for the KRM object.
 type ProviderIdentity struct {
-	parent *ProviderParent
-	id     string
+	Project  string
+	Location string
+	Provider string
 }
 
 func (i *ProviderIdentity) String() string {
-	return i.parent.String() + "/providers/" + i.id
+	return ProviderIdentityFormat.ToString(*i)
 }
 
 func (i *ProviderIdentity) ID() string {
-	return i.id
+	return i.Provider
 }
 
 func (i *ProviderIdentity) Parent() *ProviderParent {
-	return i.parent
+	return &ProviderParent{
+		ProjectID: i.Project,
+		Location:  i.Location,
+	}
+}
+
+func (i *ProviderIdentity) FromExternal(ref string) error {
+	parsed, match, err := ProviderIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of Provider external=%q was not known (use %s): %w", ref, ProviderIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of Provider external=%q was not known (use %s)", ref, ProviderIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
 }
 
 // ProviderParent defines the Provider's parent type.

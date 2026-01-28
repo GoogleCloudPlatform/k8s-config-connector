@@ -166,7 +166,7 @@ func (a *JobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Job", "name", a.id)
 	req := &runpb.CreateJobRequest{
-		Parent: a.id.Parent().String(),
+		Parent: fmt.Sprintf("projects/%s/locations/%s", a.id.ProjectID, a.id.Location),
 		Job:    a.desired,
 		JobId:  a.id.ID(),
 	}
@@ -264,8 +264,8 @@ func (a *JobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = &a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.ProjectID}
+	obj.Spec.Location = &a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

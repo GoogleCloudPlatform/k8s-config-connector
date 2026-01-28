@@ -1,0 +1,30 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: testresources.example.com
+spec:
+  group: example.com
+  names:
+    kind: TestResource
+    plural: testresources
+    singular: testresource
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              field1:
+                type: string
+              field2:
+                type: integer
+              field3:
+                type: array
+                items:
+                  type: string
+    served: true
+    storage: true

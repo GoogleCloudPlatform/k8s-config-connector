@@ -17,30 +17,55 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var _ identity.Identity = &DatasetIdentity{}
+
+var (
+	DatasetIdentityFormat = gcpurls.Template[DatasetIdentity]("bigquery.googleapis.com", "projects/{project}/datasets/{dataset}")
 )
 
 // DatasetIdentity defines the resource reference to BigQueryDataset, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type DatasetIdentity struct {
-	parent *DatasetParent
-	id     string
+	Project string
+	Dataset string
 }
 
 func (i *DatasetIdentity) String() string {
-	return i.parent.String() + "/datasets/" + i.id
+	return DatasetIdentityFormat.ToString(*i)
+}
+
+func (i *DatasetIdentity) FromExternal(ref string) error {
+	parsed, match, err := DatasetIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of BigQueryDataset external=%q was not known (use %s): %w", ref, DatasetIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of BigQueryDataset external=%q was not known (use %s)", ref, DatasetIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *DatasetIdentity) Host() string {
+	return DatasetIdentityFormat.Host()
 }
 
 func (i *DatasetIdentity) ID() string {
-	return i.id
+	return i.Dataset
 }
 
 func (i *DatasetIdentity) Parent() *DatasetParent {
-	return i.parent
+	return &DatasetParent{ProjectID: i.Project}
 }
 
 type DatasetParent struct {
@@ -80,37 +105,29 @@ func NewDatasetIdentity(ctx context.Context, reader client.Reader, obj *BigQuery
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseDatasetExternal(externalRef)
-		if err != nil {
+		actualIdentity := &DatasetIdentity{}
+		if err := actualIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actualIdentity.Project != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.Project, projectID)
 		}
-		if actualResourceID != resourceID {
+		if actualIdentity.Dataset != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+				resourceID, actualIdentity.Dataset)
 		}
 	}
 	return &DatasetIdentity{
-		parent: &DatasetParent{
-			ProjectID: projectID,
-		},
-		id: resourceID,
+		Project: projectID,
+		Dataset: resourceID,
 	}, nil
 }
 
+// Deprecated: prefer FromExternal
 func ParseDatasetExternal(external string) (parent *DatasetParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "datasets" {
-		return nil, "", fmt.Errorf("format of BigQueryDataset external=%q was not known (use projects/<projectId>/datasets/<datasetID>)", external)
+	id := &DatasetIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		return nil, "", err
 	}
-	parent = &DatasetParent{
-		ProjectID: tokens[1],
-	}
-
-	resourceID = tokens[3]
-
-	return parent, resourceID, nil
+	return id.Parent(), id.ID(), nil
 }

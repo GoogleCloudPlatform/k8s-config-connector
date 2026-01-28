@@ -77,10 +77,31 @@ func (c *ControllerConfig) Init(ctx context.Context) error {
 	return nil
 }
 
-func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
+type RESTClientOption func(o *restClientOptions)
+
+type restClientOptions struct {
+	defaultQuotaProject string
+}
+
+func WithDefaultQuotaProject(project string) RESTClientOption {
+	return func(o *restClientOptions) {
+		o.defaultQuotaProject = project
+	}
+}
+
+func (c *ControllerConfig) RESTClientOptions(options ...RESTClientOption) ([]option.ClientOption, error) {
+	var restClientOptions restClientOptions
+	for _, option := range options {
+		option(&restClientOptions)
+	}
+
 	quotaProject := ""
 	if c.UserProjectOverride && c.BillingProject != "" {
 		quotaProject = c.BillingProject
+	}
+
+	if restClientOptions.defaultQuotaProject != "" && quotaProject == "" {
+		quotaProject = restClientOptions.defaultQuotaProject
 	}
 
 	var opts []option.ClientOption

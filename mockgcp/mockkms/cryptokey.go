@@ -110,6 +110,36 @@ func (r *kmsServer) CreateCryptoKey(ctx context.Context, req *pb.CreateCryptoKey
 	return obj, nil
 }
 
+func (r *kmsServer) UpdateCryptoKey(ctx context.Context, req *pb.UpdateCryptoKeyRequest) (*pb.CryptoKey, error) {
+	name, err := r.parseCryptoKeyName(req.GetCryptoKey().GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.CryptoKey{}
+	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	updateMask := req.GetUpdateMask()
+	for _, path := range updateMask.Paths {
+		switch path {
+		case "labels":
+			obj.Labels = req.GetCryptoKey().GetLabels()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
+		}
+	}
+
+	if err := r.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
 func (r *kmsServer) populateDefaultsForCryptoKey(name *CryptoKeyName, obj *pb.CryptoKey) {
 	if obj.DestroyScheduledDuration == nil {
 		obj.DestroyScheduledDuration = durationpb.New(time.Hour * 24 * 30)

@@ -20,6 +20,8 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
+
 go run . generate-types \
   --service google.cloud.run.v2 \
   --api-version run.cnrm.cloud.google.com/v1beta1 \

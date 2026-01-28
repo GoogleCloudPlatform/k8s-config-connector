@@ -313,7 +313,7 @@ kms.cnrm.cloud.google.com,KMSKeyHandle,True,True,False,Direct
 kms.cnrm.cloud.google.com,KMSKeyRingImportJob,True,False,False,Terraform
 kms.cnrm.cloud.google.com,KMSKeyRing,False,True,False,Terraform
 kms.cnrm.cloud.google.com,KMSSecretCiphertext,True,False,False,Terraform
-logging.cnrm.cloud.google.com,LoggingLink,True,False,False,Direct
+logging.cnrm.cloud.google.com,LoggingLink,True,True,False,Direct
 logging.cnrm.cloud.google.com,LoggingLogBucket,False,True,False,DCL
 logging.cnrm.cloud.google.com,LoggingLogExclusion,False,True,False,DCL
 logging.cnrm.cloud.google.com,LoggingLogMetric,False,True,False,Direct
@@ -323,7 +323,7 @@ managedkafka.cnrm.cloud.google.com,ManagedKafkaCluster,True,True,False,Direct
 managedkafka.cnrm.cloud.google.com,ManagedKafkaConsumerGroup,True,False,False,Direct
 managedkafka.cnrm.cloud.google.com,ManagedKafkaTopic,True,True,False,Direct
 memcache.cnrm.cloud.google.com,MemcacheInstance,False,True,False,Terraform
-memorystore.cnrm.cloud.google.com,MemorystoreInstance,True,False,False,Direct
+memorystore.cnrm.cloud.google.com,MemorystoreInstance,True,True,False,Direct
 metastore.cnrm.cloud.google.com,MetastoreBackup,True,True,False,Direct
 metastore.cnrm.cloud.google.com,MetastoreFederation,True,False,False,Direct
 metastore.cnrm.cloud.google.com,MetastoreService,True,False,False,Direct
@@ -366,6 +366,7 @@ osconfig.cnrm.cloud.google.com,OSConfigGuestPolicy,False,True,False,DCL
 osconfig.cnrm.cloud.google.com,OSConfigOSPolicyAssignment,False,True,False,DCL
 osconfig.cnrm.cloud.google.com,OSConfigPatchDeployment,True,False,False,Terraform
 oslogin.cnrm.cloud.google.com,OSLoginSSHPublicKey,True,False,False,Terraform
+parametermanager.cnrm.cloud.google.com,ParameterManagerParameter,True,False,False,Direct
 privateca.cnrm.cloud.google.com,PrivateCACAPool,False,True,False,DCL
 privateca.cnrm.cloud.google.com,PrivateCACertificateAuthority,False,True,False,DCL
 privateca.cnrm.cloud.google.com,PrivateCACertificate,False,True,False,DCL
@@ -423,7 +424,7 @@ storage.cnrm.cloud.google.com,StorageManagedFolder,True,False,False,Direct
 storage.cnrm.cloud.google.com,StorageNotification,False,True,False,Terraform
 storagetransfer.cnrm.cloud.google.com,StorageTransferAgentPool,True,False,False,Terraform
 storagetransfer.cnrm.cloud.google.com,StorageTransferJob,False,True,False,Terraform
-tags.cnrm.cloud.google.com,TagsLocationTagBinding,True,False,False,Terraform
+tags.cnrm.cloud.google.com,TagsLocationTagBinding,True,True,False,Terraform
 tags.cnrm.cloud.google.com,TagsTagBinding,False,True,False,Terraform
 tags.cnrm.cloud.google.com,TagsTagKey,False,True,False,Terraform
 tags.cnrm.cloud.google.com,TagsTagValue,False,True,False,Terraform

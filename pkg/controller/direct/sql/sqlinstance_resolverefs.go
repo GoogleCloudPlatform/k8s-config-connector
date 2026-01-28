@@ -240,10 +240,10 @@ func resolveAuditLogBucketRef(ctx context.Context, kube client.Reader, obj *krm.
 	}
 
 	ref := obj.Spec.Settings.SqlServerAuditConfig.BucketRef
-	external, err := ref.NormalizedExternal(ctx, kube, obj.GetNamespace())
-	if err != nil {
+	if err := ref.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
 		return err
 	}
+	external := ref.External
 
 	// refine external to the API required format
 	tokens := strings.Split(external, "/")

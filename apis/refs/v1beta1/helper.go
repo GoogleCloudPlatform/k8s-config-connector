@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	"fmt"
+	"reflect"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
@@ -40,4 +41,38 @@ func GetLocation(u *unstructured.Unstructured) (string, error) {
 		return "", fmt.Errorf("spec.location not set in %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
 	}
 	return location, nil
+}
+
+// SetRefFields sets the Name, Namespace and External fields on a Ref using reflection.
+// It returns an error if a field exists but cannot be set, or if the field is missing and a non-empty value is provided.
+func SetRefFields(ref Ref, name, namespace, external string) error {
+	val := reflect.ValueOf(ref).Elem()
+
+	if f := val.FieldByName("Name"); f.IsValid() {
+		if !f.CanSet() {
+			return fmt.Errorf("cannot set Name field")
+		}
+		f.SetString(name)
+	} else if name != "" {
+		return fmt.Errorf("field Name not found in type %T", ref)
+	}
+
+	if f := val.FieldByName("Namespace"); f.IsValid() {
+		if !f.CanSet() {
+			return fmt.Errorf("cannot set Namespace field")
+		}
+		f.SetString(namespace)
+	} else if namespace != "" {
+		return fmt.Errorf("field Namespace not found in type %T", ref)
+	}
+
+	if f := val.FieldByName("External"); f.IsValid() {
+		if !f.CanSet() {
+			return fmt.Errorf("cannot set External field")
+		}
+		f.SetString(external)
+	} else if external != "" {
+		return fmt.Errorf("field External not found in type %T", ref)
+	}
+	return nil
 }

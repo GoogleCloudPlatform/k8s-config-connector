@@ -82,6 +82,10 @@ spec:
                     description: 'Allowed value: string of the format `//cloudresourcemanager.googleapis.com/projects/{{value}}`,
                       where {{value}} is the `number` field of a `Project` resource.'
                     type: string
+                  kind:
+                    description: Kind to which we are binding the tag.  Defaults to
+                      Project if not specified.
+                    type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string

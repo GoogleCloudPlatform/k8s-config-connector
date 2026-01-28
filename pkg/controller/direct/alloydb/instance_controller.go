@@ -392,6 +392,16 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		log.V(2).Info("'spec.availabilityType' field is updated (-old +new)", cmp.Diff(actual.AvailabilityType, desired.AvailabilityType))
 		updatePaths = append(updatePaths, "availability_type")
 	}
+	if desired.ConnectionPoolConfig != nil {
+		if desired.ConnectionPoolConfig.Enabled != nil && !reflect.DeepEqual(actual.ConnectionPoolConfig.Enabled, desired.ConnectionPoolConfig.Enabled) {
+			log.V(2).Info("'spec.connectionPoolConfig.enabled' field is updated (-old +new)", cmp.Diff(actual.ConnectionPoolConfig.Enabled, desired.ConnectionPoolConfig.Enabled))
+			updatePaths = append(updatePaths, "connection_pool_config.enabled")
+		}
+		if desired.ConnectionPoolConfig.Flags != nil && !reflect.DeepEqual(actual.ConnectionPoolConfig.Flags, desired.ConnectionPoolConfig.Flags) {
+			log.V(2).Info("'spec.connectionPoolConfig.flags' field is updated (-old +new)", cmp.Diff(actual.ConnectionPoolConfig.Flags, desired.ConnectionPoolConfig.Flags))
+			updatePaths = append(updatePaths, "connection_pool_config.flags")
+		}
+	}
 	// TODO: Test "copied" behavior for read pool
 	// TODO: Test "overridden" behavior for read pool
 	// Default value of databaseFlags is unknown for a read instance unless we
@@ -473,6 +483,7 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		if path, changed := boolPtrChanged(actualObs.TrackActiveQueries, desiredObs.TrackActiveQueries, "observability_config.track_active_queries", log); changed {
 			updatePaths = append(updatePaths, path)
 		}
+		// TrackClientAcddress is in v1beta but is not in v1
 		if path, changed := boolPtrChanged(actualObs.TrackClientAddress, desiredObs.TrackClientAddress, "observability_config.track_client_address", log); changed {
 			updatePaths = append(updatePaths, path)
 		}

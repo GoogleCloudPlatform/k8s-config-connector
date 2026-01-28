@@ -30,6 +30,8 @@ GOLANGCI_LINT_VERSION := v2.7.1
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
 DOCKER_BUILD := DOCKER_BUILDKIT=1 docker build
 
+KUSTOMIZE=go run sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
+
 CRD_OUTPUT_TMP := config/crds/tmp
 CRD_OUTPUT_STAGING := config/crds/tmp/staging
 CRD_OUTPUT_FINAL := config/crds/resources
@@ -78,8 +80,8 @@ manifests: generate
 	# add kustomize patches on all CRDs
 	mkdir config/crds/resources
 	cp config/crds/kustomization.yaml kustomization.yaml
-	kustomize edit add resource config/crds/tmp_resources/*.yaml
-	kustomize build -o config/crds/resources
+	$(KUSTOMIZE) edit add resource config/crds/tmp_resources/*.yaml
+	$(KUSTOMIZE) build -o config/crds/resources
 	rm -rf config/crds/tmp_resources
 	rm kustomization.yaml
 
@@ -104,6 +106,7 @@ fmt:
 	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache \
 	-ignore ".build/**" -ignore "vendor/**" -ignore "third_party/**" \
 	-ignore "config/crds/**" -ignore "config/cloudcodesnippets/**" \
+	-ignore "crds/**" \
 	-ignore "**/*.html" -ignore "config/installbundle/components/clusterroles/cnrm_admin.yaml" \
 	-ignore "config/installbundle/components/clusterroles/cnrm_viewer.yaml" \
 	-ignore "operator/channels/**" \
@@ -144,6 +147,7 @@ generate-including-dcl:
 # Generate code
 .PHONY: generate
 generate:
+	dev/tasks/generate-all
 	go generate ./pkg/apis/...
 	make -C operator generate
 	make fmt
@@ -216,7 +220,7 @@ CONTROLLER_GEN=docker run --rm -v $(shell pwd):/wkdir kcc-tooling controller-gen
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 .PHONY: deploy
 deploy: manifests install
-	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	$(KUSTOMIZE) build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 # Install CRDs into a cluster
 .PHONY: install
@@ -227,13 +231,13 @@ install: manifests
 # faster than "make deploy". It is useful if you only want to quickly apply code change in controller
 .PHONY: deploy-controller
 deploy-controller: docker-build docker-push
-	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	$(KUSTOMIZE) build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 # Deploy controller only, this will skip CRD install in the configured K8s and usually runs much
 # faster than "make deploy". It is useful if you only want to quickly apply code change in controller
 .PHONY: deploy-controller-autopilot
 deploy-controller-autopilot: docker-build docker-push
-	kustomize build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	$(KUSTOMIZE) build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 # Generate CRD go clients
 .PHONY: generate-go-client
@@ -319,25 +323,25 @@ operator-manager-bin:
 all-manifests: crd-manifests rbac-manifests build-operator-manifests
 	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/standard/crds.yaml
 	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/standard/rbac.yaml
-	kustomize build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
+	$(KUSTOMIZE) build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
 	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/autopilot/crds.yaml
 	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/autopilot/rbac.yaml
-	kustomize build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
+	$(KUSTOMIZE) build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
 
 
 # Build kcc manifests for standard GKE clusters
 .PHONY: config-connector-manifests-standard
 config-connector-manifests-standard: build-operator-manifests
-	kustomize build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
+	$(KUSTOMIZE) build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
 
 # Build kcc manifests for autopilot clusters
 .PHONY: config-connector-manifests-autopilot
 config-connector-manifests-autopilot: build-operator-manifests
-	kustomize build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
+	$(KUSTOMIZE) build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
 
 .PHONY: build-operator-manifests
 build-operator-manifests:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases	
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
 	make -C operator docker-build
 
 .PHONY: push-operator-manifest
@@ -354,14 +358,14 @@ clean-release-manifests:
 	rm config/installbundle/release-manifests/autopilot/manifests.yaml
 
 .PHONY: deploy-kcc-standard
-deploy-kcc-standard: docker-build docker-push config-connector-manifests-standard push-operator-manifest 
+deploy-kcc-standard: docker-build docker-push config-connector-manifests-standard push-operator-manifest
 	kubectl apply -f config/installbundle/release-manifests/standard/manifests.yaml ${CONTEXT_FLAG}
-	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	$(KUSTOMIZE) build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 .PHONY: deploy-kcc-autopilot
 deploy-kcc-autopilot: docker-build docker-push config-connector-manifests-autopilot push-operator-manifest
 	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml ${CONTEXT_FLAG}
-	kustomize build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	$(KUSTOMIZE) build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 .PHONY: powertool-tests
 powertool-tests:
@@ -391,10 +395,4 @@ operator-e2e-tests:
 	export TEST_BILLING_ACCOUNT_ID=${BILLING_ACCOUNT}
 	cd operator/tests/e2e/ && go test --project-id=${PROJECT_ID}
 
-# Generate Go types for direct resources specified in the config files located under `dev/tools/controllerbuilder/config`.
-.PHONY: generate-types
-generate-types:
-	cd dev/tools/controllerbuilder && \
-	./generate-proto.sh && \
-	find config -name "*.yaml" -type f | xargs -I {} go run . generate-types --config {}
-	dev/tasks/fix-gofmt 
+

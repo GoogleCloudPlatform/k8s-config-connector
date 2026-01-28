@@ -23,7 +23,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # We share the version with mockgcp, which is maybe a boundary violation, but is convenient.
 # (It would be confusing if these were out of sync!)
-DEFAULT_GOOGLE_API_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/mockgcp/git.versions | awk '{print $2}')
+DEFAULT_GOOGLE_API_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/apis/git.versions | awk '{print $2}')
 
 # Take googleapi version as parameter, default to version from git.versions.
 # Use "HEAD" to get the latest from remote.
@@ -31,6 +31,7 @@ GOOGLEAPI_VERSION=${1:-$DEFAULT_GOOGLE_API_VERSION}
 
 # Take output path as parameter, default to .build/googleapis.pb
 OUTPUT_PATH=${2:-"${REPO_ROOT}/.build/googleapis.pb"}
+
 
 THIRD_PARTY=${REPO_ROOT}/.build/third_party
 mkdir -p ${THIRD_PARTY}/
@@ -40,13 +41,25 @@ if [ ! -d "googleapis" ]; then
     git clone https://github.com/googleapis/googleapis.git
 fi
 
-cd googleapis
-git fetch
-if [ "${GOOGLEAPI_VERSION}" = "HEAD" ]; then
-    git reset --hard origin/master
-else
-    git reset --hard ${GOOGLEAPI_VERSION}
+if [ "${GOOGLEAPI_VERSION}" == "HEAD" ]; then
+    echo "Fetching latest googleapis for HEAD version"
+    # Get latest version from https://github.com/googleapis/googleapis.git
+    GOOGLEAPI_VERSION=$(git ls-remote https://github.com/googleapis/googleapis.git refs/heads/master | awk '{print $1}')
 fi
+
+VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
+
+cd googleapis
+
+# Fetch only if we don't have the SHA locally
+if ! git cat-file -e ${GOOGLEAPI_VERSION}^{commit} 2> /dev/null; then
+    echo "Fetching googleapis git objects to find version ${GOOGLEAPI_VERSION}"
+    git fetch origin ${GOOGLEAPI_VERSION}
+fi
+
+# Reset to the desired version
+git reset --hard ${GOOGLEAPI_VERSION}
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
@@ -62,6 +75,12 @@ else
     fi
 fi
 
+
+if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
+    echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
+    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+    exit 0
+fi
 
 protoc --include_imports --include_source_info \
     --experimental_allow_proto3_optional \
@@ -89,9 +108,12 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/monitoring/v3/*.proto \
     ${THIRD_PARTY}/googleapis/google/monitoring/dashboard/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/devtools/cloudbuild/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/devtools/artifactregistry/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/spanner/admin/instance/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/spanner/admin/database/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/storage/control/v2/*.proto \
     ${THIRD_PARTY}/googleapis/google/pubsub/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1/*.proto \
-    -o ${OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
+    -o ${VERSIONED_OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
+
+cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"

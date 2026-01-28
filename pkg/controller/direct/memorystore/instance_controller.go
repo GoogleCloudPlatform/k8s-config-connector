@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"reflect"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -108,17 +108,17 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 					}
 				}
 			}
-			if connection.PscConnection != nil {
-				userConnection := connection.PscConnection
-				if userConnection.NetworkRef != nil {
-					if err := userConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
-						return err
-					}
-				}
-				if err := refs.ResolveComputeServiceAttachment(ctx, reader, obj.GetNamespace(), userConnection.ServiceAttachmentRef); err != nil {
-					return err
-				}
-			}
+			// if connection.PscConnection != nil {
+			// 	userConnection := connection.PscConnection
+			// 	if userConnection.NetworkRef != nil {
+			// 		if err := userConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
+			// 			return err
+			// 		}
+			// 	}
+			// 	if err := refs.ResolveComputeServiceAttachment(ctx, reader, obj.GetNamespace(), userConnection.ServiceAttachmentRef); err != nil {
+			// 		return err
+			// 	}
+			// }
 		}
 	}
 	return nil

@@ -15,18 +15,7 @@
 name: linter
 on:
   push:
-    # should more or less match what we have in .golangci.yaml
-    paths-ignore:
-      - "third_party/**"
-      - "**.md"
-      - pkg/clients/generated
-      - config/tests
   pull_request:
-    paths-ignore:
-      - "third_party/**"
-      - "**.md"
-      - pkg/clients/generated
-      - config/tests
 permissions: read-all
 jobs:
   lint:
@@ -38,6 +27,8 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Free disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
       - name: Set up Go
         uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
