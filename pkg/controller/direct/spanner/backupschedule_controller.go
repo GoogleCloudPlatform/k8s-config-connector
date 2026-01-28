@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/spanner/admin/database/apiv1"
 	spannerbackupschedulespb "cloud.google.com/go/spanner/admin/database/apiv1/databasepb"
@@ -172,6 +173,14 @@ func (a *BackupScheduleAdapter) Update(ctx context.Context, updateOp *directbase
 	if err != nil {
 		return err
 	}
+	// Remove output only fields from paths
+	paths = paths.Delete(outputOnlyFields...)
+
+	// Check default-on-empty fields
+	if desiredPb.EncryptionConfig == nil {
+		paths = paths.Delete(defaultOnEmptyFields...)
+	}
+
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.SpannerBackupScheduleStatus{}
@@ -181,13 +190,12 @@ func (a *BackupScheduleAdapter) Update(ctx context.Context, updateOp *directbase
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
-	// Remove output only fields from paths
-	paths = paths.Delete(outputOnlyFields...)
 
-	// Check default-on-empty fields
-	if desiredPb.EncryptionConfig == nil {
-		paths = paths.Delete(defaultOnEmptyFields...)
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
 	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
