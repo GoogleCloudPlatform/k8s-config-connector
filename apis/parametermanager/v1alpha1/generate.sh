@@ -24,7 +24,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.parametermanager.v1 \
   --api-version parametermanager.cnrm.cloud.google.com/v1alpha1  \
-  --resource ParameterManagerParameter:Parameter
+  --resource ParameterManagerParameter:Parameter \
+  --resource ParameterManagerParameterVersion:ParameterVersion
 
 # Generate the mapper functions that convert between the KCC structs and the GCP proto structs
 go run . generate-mapper \
