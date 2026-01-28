@@ -62,14 +62,14 @@ func TestAdditionalPrinterColumns(t *testing.T) {
 	for _, crd := range crds {
 		for _, version := range crd.Spec.Versions {
 			if diff := cmp.Diff(wantColumns, version.AdditionalPrinterColumns); diff != "" {
-				errs = append(errs, fmt.Sprintf("crd=%s version=%v: additionalPrinterColumns mismatch", crd.Name, version.Name))
+				errs = append(errs, fmt.Sprintf("crd=%s version=%v: additionalPrinterColumns mismatch:\n%s", crd.Name, version.Name, diff))
 			}
 		}
 	}
 
 	sort.Strings(errs)
 
-	want := strings.Join(errs, "\n")
+	want := strings.Join(errs, "---\n")
 	if want != "" {
 		want += "\n"
 	}
