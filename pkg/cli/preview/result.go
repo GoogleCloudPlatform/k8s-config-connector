@@ -161,7 +161,7 @@ func (r *Recorder) SummaryReport(filename string) error {
 	total := len(r.ReconciledResources)
 	reconciled := total - r.RemainResourcesCount
 	fmt.Fprintf(f, "Finish reconciled %d out of %d resouces.\n", reconciled, total)
-	summary := r.newPreviewSummary()
+	summary := r.getOrCreateSummary()
 	fmt.Fprintf(f, "Detect %d good and %d bad objects.\n", summary.totalGood, summary.totalBad)
 	for ns := range summary.badGKNN {
 		fmt.Fprintln(f, "-----------------------------------------------------------------")
