@@ -16,6 +16,7 @@ package preview
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"time"
 
@@ -53,6 +54,7 @@ type PreviewOptions struct {
 	gcpQPS           float64
 	gcpBurst         int
 	namespace        string
+	verbose          int
 	inCluster        bool
 }
 
@@ -75,6 +77,7 @@ func BuildPreviewCmd() *cobra.Command {
 	cmd.Flags().Float64VarP(&opts.gcpQPS, "gcpQPS", "q", 5.0, "Maximum qps for GCP API requests, per service. Default to 5.0. Set gcpQPS to 0 to disable rate limiting.")
 	cmd.Flags().IntVarP(&opts.gcpBurst, "gcpBurst", "b", 5, "Maximum burst for GCP API requests, per service. Default to 5. Set gcpQPS to 0 to disable rate limiting.")
 	cmd.Flags().StringVarP(&opts.namespace, "namespace", "n", "", "Namespace to preview. If not specified, all namespaces will be previewed.")
+	cmd.Flags().IntVarP(&opts.verbose, "verbose", "v", 0, "Log verbosity level")
 	cmd.Flags().BoolVarP(&opts.inCluster, "in-cluster", "", false, "Run in GKE cluster.")
 	return cmd
 }
@@ -106,18 +109,28 @@ func getGCPAuthorization(ctx context.Context, opts *PreviewOptions) (oauth2.Toke
 }
 
 func RunPreview(ctx context.Context, opts *PreviewOptions) error {
+	// Use a custom FlagSet for klog to avoid conflicts with global flag.CommandLine
+	klogFlags := flag.NewFlagSet("klog", flag.ExitOnError)
+	klog.InitFlags(klogFlags)
+	if err := klogFlags.Set("v", fmt.Sprintf("%d", opts.verbose)); err != nil {
+		fmt.Printf("Failed to set -v flag: %v\n", err)
+	}
+	if err := klogFlags.Set("alsologtostderr", "true"); err != nil {
+		fmt.Printf("Failed to set -alsologtostderr flag: %v\n", err)
+	}
 	log.SetLogger(klogr.New())
-	klog.Info("Starting preview tool.")
+	defer klog.Flush()
+	
+	klog.V(0).Info("Starting preview tool.")
 	upstreamRESTConfig, err := getRESTConfig(ctx, opts)
 	if err != nil {
 		return fmt.Errorf("error building kubeconfig: %w", err)
 	}
 	recorder := preview.NewRecorder()
-	klog.Info("Preloading the list of resources to reconcile")
 	if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig, opts.namespace); err != nil {
 		return fmt.Errorf("error preload the list of resources to reconcile: %w", err)
 	}
-	klog.Info("Successfully preload the list of resources to reconcile.")
+	
 	authorization, err := getGCPAuthorization(ctx, opts)
 	if err != nil {
 		return fmt.Errorf("error building GCP authorization: %w", err)
@@ -134,12 +147,12 @@ func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 		return fmt.Errorf("building preview instance: %v", err)
 	}
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(opts.timeout)*time.Minute)
-	defer printCapturedObjects(recorder, opts.reportNamePrefix, opts.fullReport)
 	defer cancel()
+	defer printCapturedObjects(recorder, opts)
 
 	errChan := make(chan error, 1)
 	go func() {
-		klog.Info("Starting preview")
+		klog.V(0).Info("Starting preview")
 		errChan <- preview.Start(ctx)
 	}()
 
@@ -151,20 +164,20 @@ func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 	case <-ctx.Done():
 		return fmt.Errorf("timeout reached: %w", ctx.Err())
 	}
-	klog.Info("Preview finished successfully")
+	klog.V(0).Info("Preview finished successfully")
 	return nil
 }
 
-func printCapturedObjects(recorder *preview.Recorder, prefix string, full bool) error {
+func printCapturedObjects(recorder *preview.Recorder, opts *PreviewOptions) error {
 	now := time.Now()
 	timestamp := now.Format("20060102-150405.000")
-	summaryFile := fmt.Sprintf("%s-%s", prefix, timestamp)
+	summaryFile := fmt.Sprintf("%s-%s", opts.reportNamePrefix, timestamp)
 	if err := recorder.SummaryReport(summaryFile); err != nil {
 		return fmt.Errorf("error writing summary: %w", err)
 	}
 
-	if full {
-		outputFile := fmt.Sprintf("%s-%s-full", prefix, timestamp)
+	if opts.fullReport {
+		outputFile := fmt.Sprintf("%s-%s-full", opts.reportNamePrefix, timestamp)
 		if err := recorder.ExportDetailObjectsEvent(outputFile); err != nil {
 			return fmt.Errorf("error writing events: %w", err)
 		}
