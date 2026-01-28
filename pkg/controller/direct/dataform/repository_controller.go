@@ -267,6 +267,16 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		updateMask.Paths = append(updateMask.Paths, "set_authenticated_user_admin")
 	}
 
+	if direct.ValueOf(a.desired.Spec.DisplayName) != a.actual.DisplayName {
+		updateMask.Paths = append(updateMask.Paths, "display_name")
+	}
+
+	if a.desired.Spec.ServiceAccountRef != nil {
+		if !reflect.DeepEqual(a.desired.Spec.ServiceAccountRef.External, a.actual.ServiceAccount) {
+			updateMask.Paths = append(updateMask.Paths, "service_account")
+		}
+	}
+
 	desired := a.desired.DeepCopy()
 	mapCtx := &direct.MapContext{}
 	resource := DataformRepositorySpec_ToProto(mapCtx, &desired.Spec)

@@ -1,7 +1,5 @@
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -16,17 +14,193 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Secret [projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}] not found.",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?%24alt=json%3Benum-encoding%3Dint&secretId=secretmanagersecret-${uniqueId}
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "df-sa1-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "Dataform SA 1"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dataform SA 1",
+  "email": "df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dataform SA 1",
+  "email": "df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "df-sa2-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "Dataform SA 2"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dataform SA 2",
+  "email": "df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dataform SA 2",
+  "email": "df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/df-secret-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Secret [projects/${projectNumber}/secrets/df-secret-${uniqueId}] not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=df-secret-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -55,7 +229,7 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}",
   "replication": {
     "automatic": {}
   }
@@ -63,15 +237,42 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}:addVersion?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/df-secret-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "parent": "projects/${projectId}/secrets/secretmanagersecret-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}",
+  "replication": {
+    "automatic": {}
+  }
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}:addVersion?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
   "payload": {
-    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE="
+    "data": "dG9rZW4tdjE="
   }
 }
 
@@ -88,19 +289,303 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1",
   "replicationStatus": {
     "automatic": {}
   },
-  "state": 1
+  "state": "ENABLED"
 }
 
 ---
 
-GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:enable?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdataformrepository-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:access?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1",
+  "payload": {
+    "data": "dG9rZW4tdjE=",
+    "dataCrc32c": "3113634025"
+  }
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:access?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1",
+  "payload": {
+    "data": "dG9rZW4tdjE=",
+    "dataCrc32c": "3113634025"
+  }
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}:addVersion?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "payload": {
+    "data": "dG9rZW4tdjI="
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:enable?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:access?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2",
+  "payload": {
+    "data": "dG9rZW4tdjI=",
+    "dataCrc32c": "2865150749"
+  }
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:access?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2",
+  "payload": {
+    "data": "dG9rZW4tdjI=",
+    "dataCrc32c": "2865150749"
+  }
+}
+
+---
+
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 404 Not Found
 Content-Type: application/json
@@ -108,91 +593,27 @@ Content-Type: application/json
 {
   "code": 5,
   "details": [],
-  "message": "repository \"projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}\" not found"
+  "message": "repository \"projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}\" not found"
 }
 
 ---
 
-POST https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=dataformrepository-${uniqueId}
+POST https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=df-full-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
 
 {
+  "displayName": "Initial Display Name",
   "gitRemoteSettings": {
-    "authenticationTokenSecretVersion": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
-    "defaultBranch": "main",
-    "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector"
-  }
-}
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "displayName": "",
-  "gitRemoteSettings": {
-    "authenticationTokenSecretVersion": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
-    "defaultBranch": "main",
-    "sshAuthenticationConfig": null,
-    "tokenStatus": "TOKEN_STATUS_UNSPECIFIED",
-    "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector"
-  },
-  "labels": {},
-  "name": "projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}",
-  "npmrcEnvironmentVariablesSecretVersion": "",
-  "serviceAccount": "",
-  "setAuthenticatedUserAdmin": false,
-  "workspaceCompilationOverrides": null
-}
-
----
-
-GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdataformrepository-${uniqueId}
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "displayName": "",
-  "gitRemoteSettings": {
-    "authenticationTokenSecretVersion": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
-    "defaultBranch": "main",
-    "sshAuthenticationConfig": null,
-    "tokenStatus": "TOKEN_STATUS_UNSPECIFIED",
-    "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector"
-  },
-  "labels": {},
-  "name": "projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}",
-  "npmrcEnvironmentVariablesSecretVersion": "",
-  "serviceAccount": "",
-  "setAuthenticatedUserAdmin": false,
-  "workspaceCompilationOverrides": null
-}
-
----
-
-PATCH https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=gitRemoteSettings%2CworkspaceCompilationOverrides
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: repository.name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdataformrepository-${uniqueId}
-
-{
-  "gitRemoteSettings": {
-    "authenticationTokenSecretVersion": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
     "defaultBranch": "main",
     "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector"
   },
-  "name": "projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}",
+  "serviceAccount": "df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
   "workspaceCompilationOverrides": {
-    "defaultDatabase": "database",
-    "schemaSuffix": "_suffix",
-    "tablePrefix": "prefix_"
+    "defaultDatabase": "db1",
+    "schemaSuffix": "s1",
+    "tablePrefix": "p1"
   }
 }
 
@@ -201,64 +622,144 @@ Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
-  "displayName": "",
+  "displayName": "Initial Display Name",
   "gitRemoteSettings": {
-    "authenticationTokenSecretVersion": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+    "authenticationTokenSecretVersion": "",
     "defaultBranch": "main",
     "sshAuthenticationConfig": null,
     "tokenStatus": "TOKEN_STATUS_UNSPECIFIED",
     "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector"
   },
   "labels": {},
-  "name": "projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}",
   "npmrcEnvironmentVariablesSecretVersion": "",
-  "serviceAccount": "",
+  "serviceAccount": "df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
   "setAuthenticatedUserAdmin": false,
   "workspaceCompilationOverrides": {
-    "defaultDatabase": "database",
-    "schemaSuffix": "_suffix",
-    "tablePrefix": "prefix_"
+    "defaultDatabase": "db1",
+    "schemaSuffix": "s1",
+    "tablePrefix": "p1"
   }
 }
 
 ---
 
-GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdataformrepository-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 200 OK
 Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
-  "displayName": "",
+  "displayName": "Initial Display Name",
   "gitRemoteSettings": {
-    "authenticationTokenSecretVersion": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+    "authenticationTokenSecretVersion": "",
     "defaultBranch": "main",
     "sshAuthenticationConfig": null,
     "tokenStatus": "TOKEN_STATUS_UNSPECIFIED",
     "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector"
   },
   "labels": {},
-  "name": "projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}",
   "npmrcEnvironmentVariablesSecretVersion": "",
-  "serviceAccount": "",
+  "serviceAccount": "df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
   "setAuthenticatedUserAdmin": false,
   "workspaceCompilationOverrides": {
-    "defaultDatabase": "database",
-    "schemaSuffix": "_suffix",
-    "tablePrefix": "prefix_"
+    "defaultDatabase": "db1",
+    "schemaSuffix": "s1",
+    "tablePrefix": "p1"
   }
 }
 
 ---
 
-DELETE https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=gitRemoteSettings%2CworkspaceCompilationOverrides%2CsetAuthenticatedUserAdmin%2CdisplayName%2CserviceAccount
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdataformrepository-${uniqueId}
+X-Goog-Request-Params: repository.name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
+
+{
+  "displayName": "Updated Display Name",
+  "gitRemoteSettings": {
+    "defaultBranch": "master",
+    "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+  },
+  "name": "projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}",
+  "serviceAccount": "df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "setAuthenticatedUserAdmin": true,
+  "workspaceCompilationOverrides": {
+    "defaultDatabase": "db2",
+    "schemaSuffix": "s2",
+    "tablePrefix": "p2"
+  }
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "displayName": "Updated Display Name",
+  "gitRemoteSettings": {
+    "authenticationTokenSecretVersion": "",
+    "defaultBranch": "master",
+    "sshAuthenticationConfig": null,
+    "tokenStatus": "TOKEN_STATUS_UNSPECIFIED",
+    "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+  },
+  "labels": {},
+  "name": "projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}",
+  "npmrcEnvironmentVariablesSecretVersion": "",
+  "serviceAccount": "df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "setAuthenticatedUserAdmin": true,
+  "workspaceCompilationOverrides": {
+    "defaultDatabase": "db2",
+    "schemaSuffix": "s2",
+    "tablePrefix": "p2"
+  }
+}
+
+---
+
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "displayName": "Updated Display Name",
+  "gitRemoteSettings": {
+    "authenticationTokenSecretVersion": "",
+    "defaultBranch": "master",
+    "sshAuthenticationConfig": null,
+    "tokenStatus": "TOKEN_STATUS_UNSPECIFIED",
+    "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
+  },
+  "labels": {},
+  "name": "projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}",
+  "npmrcEnvironmentVariablesSecretVersion": "",
+  "serviceAccount": "df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "setAuthenticatedUserAdmin": true,
+  "workspaceCompilationOverrides": {
+    "defaultDatabase": "db2",
+    "schemaSuffix": "s2",
+    "tablePrefix": "p2"
+  }
+}
+
+---
+
+DELETE https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 200 OK
 Content-Type: application/json
@@ -269,10 +770,9 @@ Grpc-Metadata-X-Http-Code: 204
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}/versions/1?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}%2Fversions%2F1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -287,24 +787,42 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2",
   "replicationStatus": {
     "automatic": {}
   },
-  "state": 1
+  "state": "ENABLED"
 }
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}/versions/1:destroy?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:access?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}%2Fversions%2F1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/secrets/secretmanagersecret-${uniqueId}/versions/1"
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2",
+  "payload": {
+    "data": "dG9rZW4tdjI=",
+    "dataCrc32c": "2865150749"
+  }
 }
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:destroy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -320,19 +838,95 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "destroyTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2",
   "replicationStatus": {
     "automatic": {}
   },
-  "state": 3
+  "state": "DESTROYED"
 }
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:access?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1",
+  "payload": {
+    "data": "dG9rZW4tdjE=",
+    "dataCrc32c": "3113634025"
+  }
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:destroy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "DESTROYED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/df-secret-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -351,7 +945,7 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
+  "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}",
   "replication": {
     "automatic": {}
   }
@@ -359,10 +953,93 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/df-secret-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dataform SA 2",
+  "email": "df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Dataform SA 1",
+  "email": "df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

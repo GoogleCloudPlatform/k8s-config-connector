@@ -87,12 +87,18 @@ func (r *RepositoryV1Beta1) UpdateRepository(ctx context.Context, request *pb.Up
 	updateMask := request.GetUpdateMask()
 	for _, path := range updateMask.Paths {
 		switch path {
-		case "npmrcEnvironmentVariablesSecretVersion":
+		case "npmrc_environment_variables_secret_version", "npmrcEnvironmentVariablesSecretVersion":
 			obj.NpmrcEnvironmentVariablesSecretVersion = request.GetRepository().GetNpmrcEnvironmentVariablesSecretVersion()
-		case "gitRemoteSettings":
+		case "git_remote_settings", "gitRemoteSettings":
 			obj.GitRemoteSettings = request.GetRepository().GetGitRemoteSettings()
-		case "workspaceCompilationOverrides":
+		case "workspace_compilation_overrides", "workspaceCompilationOverrides":
 			obj.WorkspaceCompilationOverrides = request.GetRepository().GetWorkspaceCompilationOverrides()
+		case "service_account", "serviceAccount":
+			obj.ServiceAccount = request.GetRepository().GetServiceAccount()
+		case "display_name", "displayName":
+			obj.DisplayName = request.GetRepository().GetDisplayName()
+		case "set_authenticated_user_admin", "setAuthenticatedUserAdmin":
+			obj.SetAuthenticatedUserAdmin = request.GetRepository().GetSetAuthenticatedUserAdmin()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 		}
