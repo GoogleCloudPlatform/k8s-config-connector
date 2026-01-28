@@ -61,7 +61,7 @@ type WorkstationClusterSpec struct {
 	//  associated with this workstation cluster will be created. Must be part of
 	//  the subnetwork specified for this workstation cluster.
 	// +required
-	SubnetworkRef refs.ComputeSubnetworkRef `json:"subnetworkRef"`
+	SubnetworkRef computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef"`
 
 	// Optional. Configuration for private workstation cluster.
 	PrivateClusterConfig *WorkstationCluster_PrivateClusterConfig `json:"privateClusterConfig,omitempty"`

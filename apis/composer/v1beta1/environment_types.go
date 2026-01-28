@@ -372,7 +372,7 @@ type NodeConfig struct {
 	//  and the subnetwork must belong to the enclosing environment's project and
 	//  location.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NodeConfig.subnetwork
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	// Optional. The disk size in GB used for node VMs. Minimum size is 30GB.
 	//  If unspecified, defaults to 100GB. Cannot be updated.
@@ -507,7 +507,7 @@ type PrivateEnvironmentConfig struct {
 	//  and the PSC endpoint in the Customer Project will use an IP address from
 	//  this subnetwork.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig.cloud_composer_connection_subnetwork
-	CloudComposerConnectionSubnetworkRef *refs.ComputeSubnetworkRef `json:"cloudComposerConnectionSubnetworkRef,omitempty"`
+	CloudComposerConnectionSubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"cloudComposerConnectionSubnetworkRef,omitempty"`
 
 	// Optional. Configuration for the network connections configuration in the
 	//  environment.

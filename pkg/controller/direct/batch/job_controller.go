@@ -96,7 +96,6 @@ func (m *jobModel) AdapterForObject(ctx context.Context, reader client.Reader, u
 		return nil, err
 	}
 
-	// TODO: The ComputeNetworkRef and ComputeSubnetworkRef misses normalization.
 	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, err
 	}

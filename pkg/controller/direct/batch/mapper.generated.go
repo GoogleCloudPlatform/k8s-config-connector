@@ -25,7 +25,6 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -174,7 +173,7 @@ func AllocationPolicy_NetworkInterface_FromProto(mapCtx *direct.MapContext, in *
 		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.NoExternalIPAddress = direct.LazyPtr(in.GetNoExternalIpAddress())
 	return out

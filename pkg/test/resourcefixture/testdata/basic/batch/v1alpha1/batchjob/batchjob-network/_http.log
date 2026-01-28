@@ -341,7 +341,8 @@ X-Goog-User-Project: ${projectId}
     "network": {
       "networkInterfaces": [
         {
-          "network": "projects/${projectId}/global/networks/${networkID}"
+          "network": "projects/${projectId}/global/networks/${networkID}",
+          "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
         }
       ]
     }

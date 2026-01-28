@@ -62,7 +62,7 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		}
 	}
 
-	if subnetworkRef, ok := v.(*refs.ComputeSubnetworkRef); ok {
+	if subnetworkRef, ok := v.(*computev1beta1.ComputeSubnetworkRef); ok {
 		resolved, err := RefineComputeSubnetworkRef(r.ctx, r.kube, r.src, subnetworkRef)
 		if err != nil {
 			return err
@@ -70,7 +70,7 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		*subnetworkRef = *resolved
 	}
 
-	if subnetworkRefs, ok := v.([]refs.ComputeSubnetworkRef); ok {
+	if subnetworkRefs, ok := v.([]computev1beta1.ComputeSubnetworkRef); ok {
 		for i := range subnetworkRefs {
 			subnetworkRef := &subnetworkRefs[i]
 			resolved, err := RefineComputeSubnetworkRef(r.ctx, r.kube, r.src, subnetworkRef)
@@ -90,14 +90,14 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 //	Expected to be of the form "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK"
 //	or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in a Shared VPC network,
 //	you must use the complete URL.
-func RefineComputeSubnetworkRef(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeSubnetworkRef) (*refs.ComputeSubnetworkRef, error) {
+func RefineComputeSubnetworkRef(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeSubnetworkRef) (*computev1beta1.ComputeSubnetworkRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
 	// Use common ComputeSubnetwork resolver
 	if ref.External == "" {
 		var err error
-		ref, err = refs.ResolveComputeSubnetwork(ctx, reader, src, ref)
+		err = ref.Normalize(ctx, reader, src.GetNamespace())
 		if err != nil {
 			return nil, err
 		}
@@ -106,7 +106,7 @@ func RefineComputeSubnetworkRef(ctx context.Context, reader client.Reader, src c
 	// Validate non-shared-VPC network format. This is not allowed in the common ComputeSubnetwork resolver
 	tokens := strings.Split(ref.External, "/")
 	if len(tokens) == 4 && tokens[0] == "regions" && tokens[2] == "subnetworks" {
-		return &refs.ComputeSubnetworkRef{
+		return &computev1beta1.ComputeSubnetworkRef{
 			External: ref.External,
 		}, nil
 	}
@@ -116,7 +116,7 @@ func RefineComputeSubnetworkRef(ctx context.Context, reader client.Reader, src c
 	ref.External = strings.TrimPrefix(ref.External, fullURLPrefix)
 	tokens = strings.Split(ref.External, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "subnetworks" {
-		return &refs.ComputeSubnetworkRef{
+		return &computev1beta1.ComputeSubnetworkRef{
 			External: fullURLPrefix + "projects/" + tokens[1] + "/regions/" + tokens[3] + "/subnetworks/" + tokens[5],
 		}, nil
 	}
