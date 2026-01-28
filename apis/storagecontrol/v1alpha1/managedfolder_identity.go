@@ -32,7 +32,7 @@ type ManagedFolderIdentity struct {
 }
 
 func (i *ManagedFolderIdentity) String() string {
-	return i.parent.String() + "/managedfolders/" + i.id
+	return i.parent.String() + "/managedFolders/" + i.id
 }
 
 func (i *ManagedFolderIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewManagedFolderIdentity(ctx context.Context, reader client.Reader, obj *St
 
 func ParseManagedFolderExternal(external string) (parent *ManagedFolderParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "buckets" || tokens[4] != "managedfolders" {
-		return nil, "", fmt.Errorf("format of StorageManagedFolder external=%q was not known (use projects/{{projectID}}/buckets/{{bucket}}/managedfolders/{{managedfolderID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "buckets" || tokens[4] != "managedFolders" {
+		return nil, "", fmt.Errorf("format of StorageManagedFolder external=%q was not known (use projects/{{projectID}}/buckets/{{bucket}}/managedFolders/{{managedfolderID}})", external)
 	}
 	parent = &ManagedFolderParent{
 		ProjectID:  tokens[1],
