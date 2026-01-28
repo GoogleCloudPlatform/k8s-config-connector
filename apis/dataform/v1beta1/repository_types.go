@@ -134,9 +134,16 @@ type DataformRepositoryStatus struct {
 	ObservedState *DataformRepositoryObservedState `json:"observedState,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataform.v1beta1.DataEncryptionState
+type DataEncryptionState struct {
+	// +optional
+	KmsKeyVersionName *string `json:"kmsKeyVersionName,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.dataform.v1beta1.Repository
 type DataformRepositoryObservedState struct {
-	// DataEncryptionState is output only! But not part of the proto yet.
+	// +optional
+	DataEncryptionState *DataEncryptionState `json:"dataEncryptionState,omitempty"`
 }
 
 // +genclient

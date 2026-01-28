@@ -621,6 +621,12 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  dataEncryptionState:
+                    properties:
+                      kmsKeyVersionName:
+                        type: string
+                    type: object
                 type: object
             type: object
         required:

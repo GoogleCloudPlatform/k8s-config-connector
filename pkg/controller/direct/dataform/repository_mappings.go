@@ -145,3 +145,15 @@ func RepositoryWorkspaceCompilationOverrides_ToProto(mapCtx *direct.MapContext, 
 	out.TablePrefix = direct.ValueOf(in.TablePrefix)
 	return out
 }
+
+func DataformRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.DataformRepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataformRepositoryObservedState{}
+	if in.DataEncryptionState != nil {
+		out.DataEncryptionState = &krm.DataEncryptionState{}
+		out.DataEncryptionState.KmsKeyVersionName = direct.LazyPtr(in.DataEncryptionState.KmsKeyVersionName)
+	}
+	return out
+}
