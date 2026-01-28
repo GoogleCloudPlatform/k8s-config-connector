@@ -309,7 +309,7 @@ func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, e
 		return "SQLSERVER_2019_EXPRESS_CU26.R20240501.00_05", nil
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2022_EXPRESS:
-		return "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05", nil
+		return "SQLSERVER_2022_EXPRESS_CU19_GDR.R20251019.02_03", nil
 
 	case pb.SqlDatabaseVersion_POSTGRES_9_6:
 		return "POSTGRES_9_6_24.R20250302.00_31", nil
@@ -484,7 +484,7 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		}
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2022_EXPRESS:
-		obj.DatabaseInstalledVersion = "SQLSERVER_2022_EXPRESS_CU12_GDR"
+		obj.DatabaseInstalledVersion = "SQLSERVER_2022_EXPRESS_CU19_GDR"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				MajorVersion: asRef("SQLSERVER_2022_STANDARD"),
@@ -719,15 +719,32 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 			settings.AvailabilityType = pb.SqlAvailabilityType_ZONAL
 		}
 
-		// A few fields not yet exported in the proto
-		// 	if settings.BackupConfiguration.BackupTier == nil {
-		// 		settings.BackupConfiguration.BackupTier = pb.BackupConfiguration_STANDARD
-		// 	}
+		if settings.BackupConfiguration.BackupTier == nil {
+			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
+		}
 		// 	if settings.BackupConfiguration.BackupLogEnabled == nil {
 		// 		settings.BackupConfiguration.BackupLogEnabled = asRef(true)
 		// 	}
 	}
 
+	if isSqlServer(obj) {
+		if settings.BackupConfiguration.BackupTier == nil {
+			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
+		}
+		if settings.IpConfiguration.ServerCertificateRotationMode == nil {
+			settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
+		}
+		if settings.ReplicationLagMaxSeconds == nil {
+			settings.ReplicationLagMaxSeconds = PtrTo(int64(31536000))
+		}
+		if obj.IncludeReplicasForMajorVersionUpgrade == nil {
+			obj.IncludeReplicasForMajorVersionUpgrade = PtrTo(false)
+		}
+	}
+
+	if obj.SatisfiesPzi == nil {
+		obj.SatisfiesPzi = PtrTo(true)
+	}
 }
 
 func isMysql(obj *pb.DatabaseInstance) bool {
