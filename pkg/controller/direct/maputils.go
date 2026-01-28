@@ -23,16 +23,20 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/googleapis/gax-go/v2/apierror"
 	grpcCode "google.golang.org/grpc/codes"
 	grpcStatus "google.golang.org/grpc/status"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/klog/v2"
+
+	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 )
 
 type MapContext struct {
@@ -578,4 +582,57 @@ func Struct_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Stru
 		return nil
 	}
 	return s
+}
+
+func Status_FromProto(mapCtx *MapContext, in *statuspb.Status) *common.Status {
+	if in == nil {
+		return nil
+	}
+	out := &common.Status{}
+	out.Code = LazyPtr(in.GetCode())
+	out.Message = LazyPtr(in.GetMessage())
+
+	if len(in.Details) == 0 {
+		return out
+	}
+	detailsOut := make([]common.Any, 0, len(in.Details))
+	for _, d := range in.Details {
+		if d == nil {
+			continue
+		}
+		dOut := common.Any{
+			TypeURL: LazyPtr(d.TypeUrl),
+			Value:   ByteSliceToStringPtr(mapCtx, d.Value),
+		}
+		detailsOut = append(detailsOut, dOut)
+	}
+	if len(detailsOut) > 0 {
+		out.Details = detailsOut
+	}
+	return out
+}
+
+func Status_ToProto(mapCtx *MapContext, in *common.Status) *statuspb.Status {
+	if in == nil {
+		return nil
+	}
+	out := &statuspb.Status{}
+	out.Code = ValueOf(in.Code)
+	out.Message = ValueOf(in.Message)
+
+	if len(in.Details) == 0 {
+		return out
+	}
+	detailsOut := make([]*anypb.Any, 0, len(in.Details))
+	for _, d := range in.Details {
+		dOut := &anypb.Any{
+			TypeUrl: ValueOf(d.TypeURL),
+			Value:   StringPtrToByteSlice(mapCtx, d.Value),
+		}
+		detailsOut = append(detailsOut, dOut)
+	}
+	if len(detailsOut) > 0 {
+		out.Details = detailsOut
+	}
+	return out
 }

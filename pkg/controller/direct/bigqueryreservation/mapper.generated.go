@@ -80,7 +80,7 @@ func Reservation_ReplicationStatusObservedState_FromProto(mapCtx *direct.MapCont
 		return nil
 	}
 	out := &krm.Reservation_ReplicationStatusObservedState{}
-	out.Error = Status_FromProto(mapCtx, in.GetError())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
 	out.LastErrorTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastErrorTime())
 	out.LastReplicationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastReplicationTime())
 	return out
@@ -90,7 +90,7 @@ func Reservation_ReplicationStatusObservedState_ToProto(mapCtx *direct.MapContex
 		return nil
 	}
 	out := &pb.Reservation_ReplicationStatus{}
-	out.Error = Status_ToProto(mapCtx, in.Error)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
 	out.LastErrorTime = direct.StringTimestamp_ToProto(mapCtx, in.LastErrorTime)
 	out.LastReplicationTime = direct.StringTimestamp_ToProto(mapCtx, in.LastReplicationTime)
 	return out
