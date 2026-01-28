@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/workflows/apiv1"
 
@@ -65,19 +66,18 @@ func (m *modelWorkflowsWorkflow) client(ctx context.Context) (*gcp.Client, error
 	return gcpClient, err
 }
 
-func (a *WorkflowsWorkflowAdapter) normalizeReference(ctx context.Context) error {
-	obj := a.desired
-	if obj.Spec.ServiceAccountRef != nil {
-		if err := obj.Spec.ServiceAccountRef.Resolve(ctx, a.reader, obj); err != nil {
+func normalizeReference(ctx context.Context, reader client.Reader, src client.Object, spec *krm.WorkflowsWorkflowSpec) error {
+	if spec.ServiceAccountRef != nil {
+		if err := spec.ServiceAccountRef.Resolve(ctx, reader, src); err != nil {
 			return err
 		}
 	}
-	if obj.Spec.KMSCryptoKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.KMSCryptoKeyRef)
+	if spec.CryptoKeyNameRef != nil {
+		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src, spec.CryptoKeyNameRef)
 		if err != nil {
 			return err
 		}
-		obj.Spec.KMSCryptoKeyRef = kmsKeyRef
+		spec.CryptoKeyNameRef = kmsKeyRef
 	}
 	return nil
 }
@@ -92,6 +92,18 @@ func (m *modelWorkflowsWorkflow) AdapterForObject(ctx context.Context, reader cl
 	if err != nil {
 		return nil, err
 	}
+	if err := normalizeReference(ctx, reader, u, &obj.Spec); err != nil {
+		return nil, err
+	}
+
+	mapCtx := &direct.MapContext{}
+	copied := obj.DeepCopy()
+	desired := WorkflowsWorkflowSpec_ToProto(mapCtx, &copied.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
 	// Get workflows GCP client
 	gcpClient, err := m.client(ctx)
@@ -101,8 +113,7 @@ func (m *modelWorkflowsWorkflow) AdapterForObject(ctx context.Context, reader cl
 	return &WorkflowsWorkflowAdapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   obj,
-		reader:    reader,
+		desired:   desired,
 	}, nil
 }
 
@@ -114,7 +125,7 @@ func (m *modelWorkflowsWorkflow) AdapterForURL(ctx context.Context, url string) 
 type WorkflowsWorkflowAdapter struct {
 	id        *krm.WorkflowsWorkflowIdentity
 	gcpClient *gcp.Client
-	desired   *krm.WorkflowsWorkflow
+	desired   *workflowspb.Workflow
 	actual    *workflowspb.Workflow
 	reader    client.Reader
 }
@@ -147,24 +158,12 @@ func (a *WorkflowsWorkflowAdapter) Create(ctx context.Context, createOp *directb
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Workflow", "name", a.id)
 
-	if err := a.normalizeReference(ctx); err != nil {
-		return err
-	}
-
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-
-	resource := WorkflowsWorkflowSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = a.id.String()
+	a.desired.Name = a.id.String()
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &workflowspb.CreateWorkflowRequest{
 		Parent:     a.id.Parent().String(),
-		Workflow:   resource,
+		Workflow:   a.desired,
 		WorkflowId: a.id.ID(),
 	}
 	op, err := a.gcpClient.CreateWorkflow(ctx, req)
@@ -177,6 +176,7 @@ func (a *WorkflowsWorkflowAdapter) Create(ctx context.Context, createOp *directb
 	}
 	log.V(2).Info("successfully created Workflow", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.WorkflowsWorkflowStatus{}
 	status.ObservedState = WorkflowsWorkflowObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -191,42 +191,32 @@ func (a *WorkflowsWorkflowAdapter) Update(ctx context.Context, updateOp *directb
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Workflow", "name", a.id)
 
-	if err := a.normalizeReference(ctx); err != nil {
-		return err
-	}
-
-	mapCtx := &direct.MapContext{}
-	desiredPb := WorkflowsWorkflowSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	paths := []string{}
-	if !reflect.DeepEqual(desiredPb.Description, a.actual.Description) {
+	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
 		paths = append(paths, "description")
 	}
 
-	if !reflect.DeepEqual(desiredPb.Labels, a.actual.Labels) {
+	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
 		paths = append(paths, "labels")
 	}
 
-	if !reflect.DeepEqual(desiredPb.ServiceAccount, a.actual.ServiceAccount) {
+	if !reflect.DeepEqual(a.desired.ServiceAccount, a.actual.ServiceAccount) {
 		paths = append(paths, "service_account")
 	}
 
-	if !reflect.DeepEqual(desiredPb.SourceCode, a.actual.SourceCode) {
+	if !reflect.DeepEqual(a.desired.SourceCode, a.actual.SourceCode) {
 		paths = append(paths, "source_contents")
 	}
 
-	if !reflect.DeepEqual(desiredPb.CryptoKeyName, a.actual.CryptoKeyName) {
+	if !reflect.DeepEqual(a.desired.CryptoKeyName, a.actual.CryptoKeyName) {
 		paths = append(paths, "crypto_key_name")
 	}
 
-	if !reflect.DeepEqual(desiredPb.CallLogLevel, a.actual.CallLogLevel) {
+	if !reflect.DeepEqual(a.desired.CallLogLevel, a.actual.CallLogLevel) {
 		paths = append(paths, "call_log_level")
 	}
 
-	if !reflect.DeepEqual(desiredPb.UserEnvVars, a.actual.UserEnvVars) {
+	if !reflect.DeepEqual(a.desired.UserEnvVars, a.actual.UserEnvVars) {
 		paths = append(paths, "user_env_vars")
 	}
 
@@ -237,11 +227,11 @@ func (a *WorkflowsWorkflowAdapter) Update(ctx context.Context, updateOp *directb
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: paths,
 	}
-	desiredPb.Name = a.id.String()
+	a.desired.Name = a.id.String()
 
 	req := &workflowspb.UpdateWorkflowRequest{
 		UpdateMask: updateMask,
-		Workflow:   desiredPb,
+		Workflow:   a.desired,
 	}
 	op, err := a.gcpClient.UpdateWorkflow(ctx, req)
 	if err != nil {
@@ -253,6 +243,7 @@ func (a *WorkflowsWorkflowAdapter) Update(ctx context.Context, updateOp *directb
 	}
 	log.V(2).Info("successfully updated Workflow", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.WorkflowsWorkflowStatus{}
 	status.ObservedState = WorkflowsWorkflowObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
