@@ -1,0 +1,12 @@
+apiVersion: parametermanager.cnrm.cloud.google.com/v1alpha1
+kind: ParameterManagerParameter
+metadata:
+  labels:
+    label-one: value-one
+  name: parametermanagerparameter-basic-${uniqueId}
+spec:
+  resourceID: parametermanagerparameter-basic-${uniqueId}
+  projectRef:
+    external: projects/${projectId}
+  location: global
+  format: JSON

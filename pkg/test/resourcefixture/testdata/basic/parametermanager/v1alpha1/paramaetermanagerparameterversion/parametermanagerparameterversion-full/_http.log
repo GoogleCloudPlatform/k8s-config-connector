@@ -1,0 +1,286 @@
+GET https://parametermanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fparameters%2Fparametermanagerparameter-full-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://parametermanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/parameters?%24alt=json%3Benum-encoding%3Dint&parameterId=parametermanagerparameter-full-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "format": 2,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "format": 2,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}",
+  "policyMember": {
+    "iamPolicyUidPrincipal": "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://parametermanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fparameters%2Fparametermanagerparameter-full-${uniqueId}%2Fversions%2Fparametermanagerparameterversion-full-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}' was not found.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}' was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://parametermanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions?%24alt=json%3Benum-encoding%3Dint&parameterVersionId=parametermanagerparameterversion-full-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Fparameters%2Fparametermanagerparameter-full-${uniqueId}
+
+{
+  "payload": {
+    "data": "a2V5OgogICAgdmFsdWU="
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}",
+  "payload": {
+    "data": "a2V5OgogICAgdmFsdWU="
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://parametermanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fparameters%2Fparametermanagerparameter-full-${uniqueId}%2Fversions%2Fparametermanagerparameterversion-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}",
+  "payload": {
+    "data": "a2V5OgogICAgdmFsdWU="
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://parametermanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=disabled
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parameter_version.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fparameters%2Fparametermanagerparameter-full-${uniqueId}%2Fversions%2Fparametermanagerparameterversion-full-${uniqueId}
+
+{
+  "disabled": true,
+  "name": "projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}",
+  "payload": {
+    "data": "a2V5OgogICAgdmFsdWU="
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "disabled": true,
+  "name": "projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://parametermanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fparameters%2Fparametermanagerparameter-full-${uniqueId}%2Fversions%2Fparametermanagerparameterversion-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "disabled": true,
+  "name": "projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://parametermanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}/versions/parametermanagerparameterversion-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fparameters%2Fparametermanagerparameter-full-${uniqueId}%2Fversions%2Fparametermanagerparameterversion-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://parametermanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fparameters%2Fparametermanagerparameter-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "format": 2,
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}",
+  "policyMember": {
+    "iamPolicyUidPrincipal": "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://parametermanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/parameters/parametermanagerparameter-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fparameters%2Fparametermanagerparameter-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
