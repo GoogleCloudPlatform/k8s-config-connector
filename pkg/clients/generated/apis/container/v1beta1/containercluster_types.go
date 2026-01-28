@@ -569,6 +569,12 @@ type ClusterMonitoringConfig struct {
 	ManagedPrometheus *ClusterManagedPrometheus `json:"managedPrometheus,omitempty"`
 }
 
+type ClusterNetworkConfig struct {
+	/* Whether FQDN Network Policy is enabled on this cluster. This requires NetworkPolicy to be enabled. */
+	// +optional
+	EnableFqdnNetworkPolicy *bool `json:"enableFqdnNetworkPolicy,omitempty"`
+}
+
 type ClusterNetworkPolicy struct {
 	/* Whether network policy is enabled on the cluster. */
 	Enabled bool `json:"enabled"`
@@ -1187,6 +1193,10 @@ type ContainerClusterSpec struct {
 	/* The monitoring service that the cluster should write metrics to. Automatically send metrics from pods in the cluster to the Google Cloud Monitoring API. VM metrics will be collected by Google Compute Engine regardless of this setting Available options include monitoring.googleapis.com(Legacy Stackdriver), monitoring.googleapis.com/kubernetes(Stackdriver Kubernetes Engine Monitoring), and none. Defaults to monitoring.googleapis.com/kubernetes. */
 	// +optional
 	MonitoringService *string `json:"monitoringService,omitempty"`
+
+	/* Configuration for NetworkConfig. */
+	// +optional
+	NetworkConfig *ClusterNetworkConfig `json:"networkConfig,omitempty"`
 
 	/* Configuration options for the NetworkPolicy feature. */
 	// +optional
