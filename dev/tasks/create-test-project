@@ -52,6 +52,7 @@ gcloud beta billing projects link --billing-account=${BILLING_ACCOUNT_ID} "${GCP
 echo "Setting default project to ${GCP_PROJECT_ID}"
 gcloud config set project "${GCP_PROJECT_ID}"
 
+# Enable services in batches of 20 to avoid "Number of services must not exceed the maximum batch size (20)" error.
 gcloud services enable \
   alloydb.googleapis.com \
   analyticshub.googleapis.com \
@@ -72,7 +73,9 @@ gcloud services enable \
   filestore.googleapis.com \
   firestore.googleapis.com \
   iam.googleapis.com \
-  logging.googleapis.com \
+  logging.googleapis.com
+
+gcloud services enable \
   memcache.googleapis.com \
   monitoring.googleapis.com \
   pubsub.googleapis.com \
