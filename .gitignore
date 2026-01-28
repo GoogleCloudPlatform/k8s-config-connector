@@ -180,3 +180,5 @@ experiments/mcp/**/*.egg-info
 
 # MCP eval
 experiments/**/__pycache__/
+operator/channels/packages/configconnector
+operator/autopilot-channels/packages/configconnector
