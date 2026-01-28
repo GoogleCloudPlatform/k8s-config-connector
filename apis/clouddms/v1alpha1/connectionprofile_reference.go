@@ -25,8 +25,6 @@ import (
 
 var _ refsv1beta1.Ref = &CloudDMSConnectionProfileRef{}
 
-var CloudDMSConnectionProfileGVK = GroupVersion.WithKind("CloudDMSConnectionProfile")
-
 // CloudDMSConnectionProfileRef is a reference to a CloudDMSConnectionProfile resource.
 type CloudDMSConnectionProfileRef struct {
 	// A reference to an externally managed CloudDMSConnectionProfile resource.
