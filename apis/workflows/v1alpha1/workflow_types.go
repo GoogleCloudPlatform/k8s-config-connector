@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -22,28 +23,10 @@ import (
 
 var WorkflowsWorkflowGVK = GroupVersion.WithKind("WorkflowsWorkflow")
 
-type WorkflowsWorkflow_StateError struct {
-	// Provides specifics about the error.
-	Details *string `json:"details,omitempty"`
-
-	// The type of this state error.
-	Type *string `json:"type,omitempty"`
-}
-
-type Parent struct {
-	// +required
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
-	// Immutable.
-	// +required
-	Location string `json:"location"`
-}
-
 // WorkflowsWorkflowSpec defines the desired state of Workflow
 // +kcc:spec:proto=google.cloud.workflows.v1.Workflow
 type WorkflowsWorkflowSpec struct {
-	Parent `json:",inline"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// Description of the workflow provided by the user.
 	// Must be at most 1000 unicode characters long.
@@ -54,7 +37,7 @@ type WorkflowsWorkflowSpec struct {
 	// than 63 characters and can only contain lowercase letters, numeric
 	// characters, underscores, and dashes. Label keys must start with a letter.
 	// International characters are allowed.
-	Labels map[string]string `json:"labels,omitempty"`
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// The service account associated with the latest workflow version.
 	// This service account represents the identity of the workflow and determines
@@ -73,7 +56,7 @@ type WorkflowsWorkflowSpec struct {
 	// If not provided, data associated with the workflow will not be
 	// CMEK-encrypted.
 	// +optional
-	KMSCryptoKeyRef *refs.KMSCryptoKeyRef `json:"kmsCryptoKeyRef,omitempty"`
+	CryptoKeyNameRef *refs.KMSCryptoKeyRef `json:"kmsCryptoKeyRef,omitempty"`
 
 	// Optional. Describes the level of platform logging to apply to calls and
 	// call responses during executions of this workflow. If both the workflow and
@@ -88,6 +71,16 @@ type WorkflowsWorkflowSpec struct {
 	// “WORKFLOWS".
 	// +optional
 	UserEnvVars map[string]string `json:"userEnvVars,omitempty"`
+
+	// Optional. Describes the execution history level to apply to this workflow.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.execution_history_level
+	ExecutionHistoryLevel *string `json:"executionHistoryLevel,omitempty"`
+
+	// Optional. Input only. Immutable. Tags associated with this workflow.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.tags
+	// This is the ResourceManager TagValue whose key-value pairs will be <tag namespace>/<tag key name>.
+	// The TagKey, TagValue and TagBinding are under migration to the direct approach.
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// The Workflow name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -109,36 +102,64 @@ type WorkflowsWorkflowStatus struct {
 	ObservedState *WorkflowsWorkflowObservedState `json:"observedState,omitempty"`
 }
 
-// WorkflowsWorkflowObservedState is the state of the Workflow resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.workflows.v1.Workflow
 type WorkflowsWorkflowObservedState struct {
-	// State of the workflow deployment.
+	// Output only. State of the workflow deployment.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.state
 	State *string `json:"state,omitempty"`
 
-	// The revision of the workflow.
-	// A new revision of a workflow is created as a result of updating the
-	// following properties of a workflow:
-	// - service_account
-	// - source_content
-	// The format is "000001-a4d", where the first six characters define
-	// the zero-padded revision ordinal number. They are followed by a hyphen and
-	// three hexadecimal random characters.
-	RevisionId *string `json:"revisionId,omitempty"`
+	// Output only. The revision of the workflow.
+	//  A new revision of a workflow is created as a result of updating the
+	//  following properties of a workflow:
+	//
+	//  - [Service account][google.cloud.workflows.v1.Workflow.service_account]
+	//  - [Workflow code to be
+	//  executed][google.cloud.workflows.v1.Workflow.source_contents]
+	//
+	//  The format is "000001-a4d", where the first six characters define
+	//  the zero-padded revision ordinal number. They are followed by a hyphen and
+	//  three hexadecimal random characters.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.revision_id
+	RevisionID *string `json:"revisionID,omitempty"`
 
-	// The timestamp for when the workflow was created.
+	// Output only. The timestamp for when the workflow was created.
+	//  This is a workflow-wide field and is not tied to a specific revision.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// The timestamp for when the workflow was last updated.
+	// Output only. The timestamp for when the workflow was last updated.
+	//  This is a workflow-wide field and is not tied to a specific revision.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
-	//  The timestamp for the latest revision of the workflow's
-	// creation.
+	// Output only. The timestamp for the latest revision of the workflow's
+	//  creation.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.revision_create_time
 	RevisionCreateTime *string `json:"revisionCreateTime,omitempty"`
 
-	// Error regarding the state of the workflow. For example, this
-	// field will have error details if the execution data is unavailable due to
-	// revoked KMS key permissions.
-	StateError *WorkflowsWorkflow_StateError `json:"stateError,omitempty"`
+	// Output only. Error regarding the state of the workflow. For example, this
+	//  field will have error details if the execution data is unavailable due to
+	//  revoked KMS key permissions.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.state_error
+	StateError *Workflow_StateError `json:"stateError,omitempty"`
+
+	// Output only. A list of all KMS crypto keys used to encrypt or decrypt the
+	//  data associated with the workflow.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.all_kms_keys
+	AllKMSKeys []string `json:"allKMSKeys,omitempty"`
+
+	// Output only. A list of all KMS crypto key versions used to encrypt or
+	//  decrypt the data associated with the workflow.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.all_kms_keys_versions
+	AllKMSKeysVersions []string `json:"allKMSKeysVersions,omitempty"`
+
+	// Output only. The resource name of a KMS crypto key version used to encrypt
+	//  or decrypt the data associated with the workflow.
+	//
+	//  Format:
+	//  projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}/cryptoKeyVersions/{cryptoKeyVersion}
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.crypto_key_version
+	CryptoKeyVersion *string `json:"cryptoKeyVersion,omitempty"`
 }
 
 // +genclient

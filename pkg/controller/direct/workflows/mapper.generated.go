@@ -12,115 +12,121 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: workflows.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.workflows.v1
+
 package workflows
 
 import (
 	pb "cloud.google.com/go/workflows/apiv1/workflowspb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func WorkflowsWorkflowStateError_FromProto(mapCtx *direct.MapContext, in *pb.Workflow_StateError) *krm.WorkflowsWorkflow_StateError {
+func Workflow_StateError_FromProto(mapCtx *direct.MapContext, in *pb.Workflow_StateError) *krm.Workflow_StateError {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WorkflowsWorkflow_StateError{
-		Details: direct.LazyPtr(in.GetDetails()),
-		Type:    direct.LazyPtr(in.GetType().String()),
-	}
+	out := &krm.Workflow_StateError{}
+	out.Details = direct.LazyPtr(in.GetDetails())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	return out
 }
-
-func WorkflowsWorkflowStateError_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflow_StateError) *pb.Workflow_StateError {
+func Workflow_StateError_ToProto(mapCtx *direct.MapContext, in *krm.Workflow_StateError) *pb.Workflow_StateError {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Workflow_StateError{
-		Details: direct.ValueOf(in.Details),
-		Type:    direct.Enum_ToProto[pb.Workflow_StateError_Type](mapCtx, in.Type),
-	}
+	out := &pb.Workflow_StateError{}
+	out.Details = direct.ValueOf(in.Details)
+	out.Type = direct.Enum_ToProto[pb.Workflow_StateError_Type](mapCtx, in.Type)
 	return out
 }
-
 func WorkflowsWorkflowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workflow) *krm.WorkflowsWorkflowObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.WorkflowsWorkflowObservedState{}
+	// MISSING: Name
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.RevisionId = direct.LazyPtr(in.GetRevisionId())
+	out.RevisionID = direct.LazyPtr(in.GetRevisionId())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
-	out.StateError = WorkflowsWorkflowStateError_FromProto(mapCtx, in.GetStateError())
+	// MISSING: Labels
+	out.StateError = Workflow_StateError_FromProto(mapCtx, in.GetStateError())
+	out.AllKMSKeys = in.AllKmsKeys
+	out.AllKMSKeysVersions = in.AllKmsKeysVersions
+	out.CryptoKeyVersion = direct.LazyPtr(in.GetCryptoKeyVersion())
 	return out
 }
-
 func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflowObservedState) *pb.Workflow {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Workflow{}
+	// MISSING: Name
 	out.State = direct.Enum_ToProto[pb.Workflow_State](mapCtx, in.State)
-	out.RevisionId = direct.ValueOf(in.RevisionId)
+	out.RevisionId = direct.ValueOf(in.RevisionID)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
-	out.StateError = WorkflowsWorkflowStateError_ToProto(mapCtx, in.StateError)
+	// MISSING: Labels
+	out.StateError = Workflow_StateError_ToProto(mapCtx, in.StateError)
+	out.AllKmsKeys = in.AllKMSKeys
+	out.AllKmsKeysVersions = in.AllKMSKeysVersions
+	out.CryptoKeyVersion = direct.ValueOf(in.CryptoKeyVersion)
 	return out
 }
-
 func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow) *krm.WorkflowsWorkflowSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.WorkflowsWorkflowSpec{}
+	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &refs.IAMServiceAccountRef{External: in.GetServiceAccount()}
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
 	}
 	out.SourceContents = direct.LazyPtr(in.GetSourceContents())
 	if in.GetCryptoKeyName() != "" {
-		out.KMSCryptoKeyRef = &refs.KMSCryptoKeyRef{External: in.GetCryptoKeyName()}
+		out.CryptoKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetCryptoKeyName()}
 	}
 	out.CallLogLevel = direct.Enum_FromProto(mapCtx, in.GetCallLogLevel())
-	out.UserEnvVars = in.GetUserEnvVars()
+	out.UserEnvVars = in.UserEnvVars
+	out.ExecutionHistoryLevel = direct.Enum_FromProto(mapCtx, in.GetExecutionHistoryLevel())
+	out.Tags = in.Tags
 	return out
-}
-
-func WorkflowsWorkflowSpec_SourceContents_ToProto(mapCtx *direct.MapContext, in *string) *pb.Workflow_SourceContents {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Workflow_SourceContents{
-		SourceContents: direct.ValueOf(in),
-	}
-	return out
-
 }
 func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflowSpec) *pb.Workflow {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Workflow{}
+	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	if in.ServiceAccountRef != nil {
 		out.ServiceAccount = in.ServiceAccountRef.External
 	}
 	if oneof := WorkflowsWorkflowSpec_SourceContents_ToProto(mapCtx, in.SourceContents); oneof != nil {
 		out.SourceCode = oneof
 	}
-	if in.KMSCryptoKeyRef != nil {
-		out.CryptoKeyName = in.KMSCryptoKeyRef.External
+	if in.CryptoKeyNameRef != nil {
+		out.CryptoKeyName = in.CryptoKeyNameRef.External
 	}
-
-	if in.CallLogLevel != nil {
-		out.CallLogLevel = direct.Enum_ToProto[pb.Workflow_CallLogLevel](mapCtx, in.CallLogLevel)
-	}
-
+	out.CallLogLevel = direct.Enum_ToProto[pb.Workflow_CallLogLevel](mapCtx, in.CallLogLevel)
 	out.UserEnvVars = in.UserEnvVars
+	out.ExecutionHistoryLevel = direct.Enum_ToProto[pb.ExecutionHistoryLevel](mapCtx, in.ExecutionHistoryLevel)
+	out.Tags = in.Tags
 	return out
+}
+func WorkflowsWorkflowSpec_SourceContents_ToProto(mapCtx *direct.MapContext, in *string) *pb.Workflow_SourceContents {
+	if in == nil {
+		return nil
+	}
+	return &pb.Workflow_SourceContents{SourceContents: *in}
 }
