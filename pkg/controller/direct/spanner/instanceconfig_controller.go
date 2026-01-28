@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -100,7 +101,7 @@ var _ directbase.Adapter = &instanceConfigAdapter{}
 
 func (a *instanceConfigAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.Info("getting spanner instance config", "name", a.id)
+	log.V(2).Info("getting spanner instance config", "name", a.id)
 
 	req := &instancepb.GetInstanceConfigRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetInstanceConfig(ctx, req)
@@ -117,7 +118,7 @@ func (a *instanceConfigAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *instanceConfigAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.Info("creating spanner instance config", "name", a.id)
+	log.V(2).Info("creating spanner instance config", "name", a.id)
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
@@ -141,7 +142,7 @@ func (a *instanceConfigAdapter) Create(ctx context.Context, createOp *directbase
 	if err != nil {
 		return fmt.Errorf("spanner instance config %s waiting creation: %w", a.id.String(), err)
 	}
-	log.Info("successfully created spanner instance config in gcp", "name", a.id)
+	log.V(2).Info("successfully created spanner instance config in gcp", "name", a.id)
 
 	status := &krm.SpannerInstanceConfigStatus{}
 	status.ObservedState = SpannerInstanceConfigObservedState_FromProto(mapCtx, created)
@@ -152,7 +153,7 @@ func (a *instanceConfigAdapter) Create(ctx context.Context, createOp *directbase
 // SpannerInstanceConfig supports update.
 func (a *instanceConfigAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.Info("updating spanner instance config", "name", a.id)
+	log.V(2).Info("updating spanner instance config", "name", a.id)
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
@@ -161,17 +162,22 @@ func (a *instanceConfigAdapter) Update(ctx context.Context, updateOp *directbase
 
 	// Check the spec for changes
 	// Only display_name and labels can be updated.
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, resource.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, resource.Labels)
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 	if len(updateMask.Paths) == 0 {
-		log.Info("no field to update", "name", a.id)
+		log.V(2).Info("no field to update", "name", a.id)
 		return nil
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	// Update
 	req := &instancepb.UpdateInstanceConfigRequest{
@@ -186,7 +192,7 @@ func (a *instanceConfigAdapter) Update(ctx context.Context, updateOp *directbase
 	if err != nil {
 		return fmt.Errorf("updating spanner instance config %s: %w", a.id.String(), err)
 	}
-	log.Info("successfully updated spanner instance config in gcp", "name", a.id)
+	log.V(2).Info("successfully updated spanner instance config in gcp", "name", a.id)
 
 	// Update status
 	status := &krm.SpannerInstanceConfigStatus{}
@@ -199,7 +205,7 @@ func (a *instanceConfigAdapter) Update(ctx context.Context, updateOp *directbase
 
 func (a *instanceConfigAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.Info("deleting spanner instance config", "name", a.id)
+	log.V(2).Info("deleting spanner instance config", "name", a.id)
 
 	req := &instancepb.DeleteInstanceConfigRequest{
 		Name: a.id.String(),
@@ -212,12 +218,12 @@ func (a *instanceConfigAdapter) Delete(ctx context.Context, deleteOp *directbase
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.Info("skipping delete for non-existent spanner instance config, assuming it was already deleted", "name", a.id)
+			log.V(2).Info("skipping delete for non-existent spanner instance config, assuming it was already deleted", "name", a.id)
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting spanner instance config %s: %w", a.id.String(), err)
 	}
-	log.Info("successfully deleted spanner instance config", "name", a.id)
+	log.V(2).Info("successfully deleted spanner instance config", "name", a.id)
 
 	return true, nil
 }
