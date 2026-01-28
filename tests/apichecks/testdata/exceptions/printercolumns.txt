@@ -1,0 +1,573 @@
+crd=cloudbuildworkerpools.cloudbuild.cnrm.cloud.google.com version=v1alpha1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=cloudbuildworkerpools.cloudbuild.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition{
+  	{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 	{
+- 		Name:        "Ready",
+- 		Type:        "string",
+- 		Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 		JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 	},
+- 	{
+- 		Name:        "Status",
+- 		Type:        "string",
+- 		Description: "The reason for the value in 'Ready'",
+- 		JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 	},
+- 	{
+- 		Name:        "Status Age",
+- 		Type:        "date",
+- 		Description: "The last transition time for the value in 'Status'",
+- 		JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 	},
+  }
+---
+crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition{
+  	{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+  	{
+- 		Name:   "Ready",
++ 		Name:   "Healthy",
+  		Type:   "string",
+  		Format: "",
+  		Description: strings.Join({
+  			"When '",
+- 			"True',",
++ 			"true'",
+  			" the most recent reconcile of the ",
+- 			"resource",
++ 			"ConfigConnectorContext object",
+  			" succeeded",
+  		}, ""),
+  		Priority: 0,
+- 		JSONPath: ".status.conditions[?(@.type=='Ready')].status",
++ 		JSONPath: ".status.healthy",
+  	},
+- 	{
+- 		Name:        "Status",
+- 		Type:        "string",
+- 		Description: "The reason for the value in 'Ready'",
+- 		JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 	},
+- 	{
+- 		Name:        "Status Age",
+- 		Type:        "date",
+- 		Description: "The last transition time for the value in 'Status'",
+- 		JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 	},
+  }
+---
+crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition{
+  	{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+  	{
+- 		Name:   "Ready",
++ 		Name:   "Healthy",
+  		Type:   "string",
+  		Format: "",
+  		Description: strings.Join({
+  			"When '",
+- 			"True',",
++ 			"true'",
+  			" the most recent reconcile of the ",
+- 			"resource",
++ 			"ConfigConnector object",
+  			" succeeded",
+  		}, ""),
+  		Priority: 0,
+- 		JSONPath: ".status.conditions[?(@.type=='Ready')].status",
++ 		JSONPath: ".status.healthy",
+  	},
+- 	{
+- 		Name:        "Status",
+- 		Type:        "string",
+- 		Description: "The reason for the value in 'Ready'",
+- 		JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 	},
+- 	{
+- 		Name:        "Status Age",
+- 		Type:        "date",
+- 		Description: "The last transition time for the value in 'Status'",
+- 		JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 	},
+  }
+---
+crd=controllerreconcilers.customize.core.cnrm.cloud.google.com version=v1alpha1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=controllerreconcilers.customize.core.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=controllerresources.customize.core.cnrm.cloud.google.com version=v1alpha1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=controllerresources.customize.core.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=iamauditconfigs.iam.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition{
+  	{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+  	{
+  		Name:   "Ready",
+  		Type:   "string",
+  		Format: "",
+  		Description: strings.Join({
+  			"When 'True'",
+- 			",",
+  			" the most recent reconcile of the resource succeeded",
+  		}, ""),
+  		Priority: 0,
+  		JSONPath: ".status.conditions[?(@.type=='Ready')].status",
+  	},
+  	{Name: "Status", Type: "string", Description: "The reason for the value in 'Ready'", JSONPath: ".status.conditions[?(@.type=='Ready')].reason"},
+  	{
+  		Name:        "Status Age",
+  		Type:        "date",
+  		Format:      "",
+- 		Description: "The last transition time for the value in 'Status'",
++ 		Description: "",
+  		Priority:    0,
+  		JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+  	},
+  }
+---
+crd=iampartialpolicies.iam.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition{
+  	{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+  	{
+  		Name:   "Ready",
+  		Type:   "string",
+  		Format: "",
+  		Description: strings.Join({
+  			"When 'True'",
+- 			",",
+  			" the most recent reconcile of the resource succeeded",
+  		}, ""),
+  		Priority: 0,
+  		JSONPath: ".status.conditions[?(@.type=='Ready')].status",
+  	},
+  	{Name: "Status", Type: "string", Description: "The reason for the value in 'Ready'", JSONPath: ".status.conditions[?(@.type=='Ready')].reason"},
+  	{
+  		Name:        "Status Age",
+  		Type:        "date",
+  		Format:      "",
+- 		Description: "The last transition time for the value in 'Status'",
++ 		Description: "",
+  		Priority:    0,
+  		JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+  	},
+  }
+---
+crd=iampolicies.iam.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition{
+  	{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+  	{
+  		Name:   "Ready",
+  		Type:   "string",
+  		Format: "",
+  		Description: strings.Join({
+  			"When 'True'",
+- 			",",
+  			" the most recent reconcile of the resource succeeded",
+  		}, ""),
+  		Priority: 0,
+  		JSONPath: ".status.conditions[?(@.type=='Ready')].status",
+  	},
+  	{Name: "Status", Type: "string", Description: "The reason for the value in 'Ready'", JSONPath: ".status.conditions[?(@.type=='Ready')].reason"},
+  	{
+  		Name:        "Status Age",
+  		Type:        "date",
+  		Format:      "",
+- 		Description: "The last transition time for the value in 'Status'",
++ 		Description: "",
+  		Priority:    0,
+  		JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+  	},
+  }
+---
+crd=iampolicymembers.iam.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition{
+  	{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+  	{
+  		Name:   "Ready",
+  		Type:   "string",
+  		Format: "",
+  		Description: strings.Join({
+  			"When 'True'",
+- 			",",
+  			" the most recent reconcile of the resource succeeded",
+  		}, ""),
+  		Priority: 0,
+  		JSONPath: ".status.conditions[?(@.type=='Ready')].status",
+  	},
+  	{Name: "Status", Type: "string", Description: "The reason for the value in 'Ready'", JSONPath: ".status.conditions[?(@.type=='Ready')].reason"},
+  	{
+  		Name:        "Status Age",
+  		Type:        "date",
+  		Format:      "",
+- 		Description: "The last transition time for the value in 'Status'",
++ 		Description: "",
+  		Priority:    0,
+  		JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+  	},
+  }
+---
+crd=mutatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com version=v1alpha1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=mutatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=namespacedcontrollerreconcilers.customize.core.cnrm.cloud.google.com version=v1alpha1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=namespacedcontrollerreconcilers.customize.core.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=namespacedcontrollerresources.customize.core.cnrm.cloud.google.com version=v1alpha1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=namespacedcontrollerresources.customize.core.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=networkconnectivityserviceconnectionpolicies.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition{
+- 	{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+  	{Name: "Ready", Type: "string", Description: "When 'True', the most recent reconcile of the resource succeeded", JSONPath: ".status.conditions[?(@.type=='Ready')].status"},
+  	{Name: "Status", Type: "string", Description: "The reason for the value in 'Ready'", JSONPath: ".status.conditions[?(@.type=='Ready')].reason"},
+  	{Name: "Status Age", Type: "date", Description: "The last transition time for the value in 'Status'", JSONPath: ".status.conditions[?(@.type=='Ready')].lastTransitionTime"},
+  }
+---
+crd=validatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com version=v1alpha1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+---
+crd=validatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch:
+  []v1.CustomResourceColumnDefinition(
+- 	{
+- 		{Name: "Age", Type: "date", JSONPath: ".metadata.creationTimestamp"},
+- 		{
+- 			Name:        "Ready",
+- 			Type:        "string",
+- 			Description: "When 'True', the most recent reconcile of the resource succeeded",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].status",
+- 		},
+- 		{
+- 			Name:        "Status",
+- 			Type:        "string",
+- 			Description: "The reason for the value in 'Ready'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].reason",
+- 		},
+- 		{
+- 			Name:        "Status Age",
+- 			Type:        "date",
+- 			Description: "The last transition time for the value in 'Status'",
+- 			JSONPath:    ".status.conditions[?(@.type=='Ready')].lastTransitionTime",
+- 		},
+- 	},
++ 	nil,
+  )
+
