@@ -89,6 +89,24 @@ type UrlmapCorsPolicy struct {
 	MaxAge *int64 `json:"maxAge,omitempty"`
 }
 
+type UrlmapDefaultCustomErrorResponsePolicy struct {
+	/* Specifies rules for how to respond to errors. */
+	// +optional
+	ErrorResponseRules []UrlmapErrorResponseRules `json:"errorResponseRules,omitempty"`
+
+	/* The full or partial URL to the BackendBucket resource that contains the custom error content. Examples are:
+	- https://www.googleapis.com/compute/v1/projects/project/global/backendBuckets/myBackendBucket
+	- compute/v1/projects/project/global/backendBuckets/myBackendBucket
+	- global/backendBuckets/myBackendBucket
+
+	If errorService is not specified at lower levels like pathMatcher, pathRule and routeRule, an errorService specified at a higher level in the UrlMap will be used.
+	If UrlMap.defaultCustomErrorResponsePolicy contains one or more errorResponseRules[], it must specify errorService.
+	If load balancer cannot reach the backendBucket, a simple Not Found Error will be returned, with the original response code (or overrideResponseCode if configured).
+	errorService is not supported for internal or regional HTTP/HTTPS load balancers. */
+	// +optional
+	ErrorServiceRef *v1alpha1.ResourceRef `json:"errorServiceRef,omitempty"`
+}
+
 type UrlmapDefaultRouteAction struct {
 	/* The specification for allowing client side cross-origin requests. Please see
 	[W3C Recommendation for Cross Origin Resource Sharing](https://www.w3.org/TR/cors/). */
@@ -207,6 +225,24 @@ type UrlmapDelay struct {
 	100.0 inclusive. */
 	// +optional
 	Percentage *float64 `json:"percentage,omitempty"`
+}
+
+type UrlmapErrorResponseRules struct {
+	/* Valid values include:
+	* A number between 400 and 599: For example 401 or 503, in which case the load balancer applies the policy if the error code exactly matches this value.
+	* 5xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 500 to 599.
+	* 4xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 400 to 499.
+	Values must be unique within matchResponseCodes and across all errorResponseRules of CustomErrorResponsePolicy. */
+	// +optional
+	MatchResponseCodes []string `json:"matchResponseCodes,omitempty"`
+
+	/* The HTTP status code to use for this CustomErrorResponsePolicy. */
+	// +optional
+	OverrideResponseCode *int64 `json:"overrideResponseCode,omitempty"`
+
+	/* The path to the custom error content. */
+	// +optional
+	Path *string `json:"path,omitempty"`
 }
 
 type UrlmapFaultInjectionPolicy struct {
@@ -882,6 +918,10 @@ type UrlmapWeightedBackendServices struct {
 }
 
 type ComputeURLMapSpec struct {
+	/* defaultCustomErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendServiceor BackendBucket responds with an error. */
+	// +optional
+	DefaultCustomErrorResponsePolicy *UrlmapDefaultCustomErrorResponsePolicy `json:"defaultCustomErrorResponsePolicy,omitempty"`
+
 	/* defaultRouteAction takes effect when none of the hostRules match. The load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend. If defaultRouteAction specifies any weightedBackendServices, defaultService must not be set. Conversely if defaultService is set, defaultRouteAction cannot contain any weightedBackendServices.
 	Only one of defaultRouteAction or defaultUrlRedirect must be set.
 	URL maps for Classic external HTTP(S) load balancers only support the urlRewrite action within defaultRouteAction.
