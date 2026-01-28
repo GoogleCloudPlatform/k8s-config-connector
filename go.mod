@@ -45,7 +45,7 @@ require (
 	cloud.google.com/go/gkemulticloud v1.6.0
 	cloud.google.com/go/iam v1.5.3
 	cloud.google.com/go/iap v1.11.3
-	cloud.google.com/go/kms v1.23.2
+	cloud.google.com/go/kms v1.25.0
 	cloud.google.com/go/logging v1.13.1
 	cloud.google.com/go/managedkafka v0.8.1
 	cloud.google.com/go/memorystore v0.4.0
