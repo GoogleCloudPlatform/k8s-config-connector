@@ -78,6 +78,13 @@ type AutokeyConfig struct {
 	//  key project field will clear the configuration.
 	KeyProject *refs.ProjectRef `json:"keyProject,omitempty"`
 
+	// Optional. How Cloud KMS Autokey determines which key project to use when
+	//  provisioning CMEK keys. For folder-scope configs, supported values are
+	//  `DEDICATED_KEY_PROJECT`, `RESOURCE_PROJECT`, and `DISABLED`. For
+	//  project-scope configs, supported values are `RESOURCE_PROJECT` and
+	//  `DISABLED`.
+	KeyProjectResolutionMode *string `json:"keyProjectResolutionMode,omitempty"`
+
 	// Output only. The state for the AutokeyConfig.
 	State *string `json:"state,omitempty"`
 }

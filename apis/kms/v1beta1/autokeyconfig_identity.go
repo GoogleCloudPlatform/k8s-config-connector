@@ -37,44 +37,75 @@ func (r *KMSAutokeyConfigIdentity) Parent() *KMSAutokeyConfigParent {
 }
 
 type KMSAutokeyConfigParent struct {
-	FolderID string
+	FolderID  string
+	ProjectID string
 }
 
 func (p *KMSAutokeyConfigParent) String() string {
-	return "folders/" + p.FolderID
+	switch {
+	case p.FolderID != "":
+		return "folders/" + p.FolderID
+	case p.ProjectID != "":
+		return "projects/" + p.ProjectID
+	default:
+		return ""
+	}
 }
 
 func NewAutokeyConfigIdentity(ctx context.Context, reader client.Reader, obj *KMSAutokeyConfig) (*KMSAutokeyConfigIdentity, error) {
-	// Get Parent
-	folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
+	hasFolder := obj.Spec.FolderRef != nil
+	hasProject := obj.Spec.ProjectRef != nil
 
-	if err != nil {
-		return nil, err
+	if !hasFolder && !hasProject {
+		return nil, fmt.Errorf("one of spec.folderRef or spec.projectRef must be specified")
 	}
-	folderID := folderRef.FolderID
+	if hasFolder && hasProject {
+		return nil, fmt.Errorf("spec.folderRef and spec.projectRef are mutually exclusive")
+	}
+
+	parent := &KMSAutokeyConfigParent{}
+	if hasFolder {
+		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
+		if err != nil {
+			return nil, err
+		}
+		parent.FolderID = folderRef.FolderID
+	} else {
+		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+		if err != nil {
+			return nil, err
+		}
+		parent.ProjectID = projectRef.ProjectID
+	}
+
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		actualIdentity, err := ParseKMSAutokeyConfigExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		if actualIdentity.parent.FolderID != folderID {
-			return nil, fmt.Errorf("spec.folderRef changed, expect %s, got %s", actualIdentity.parent.FolderID, folderID)
+		if actualIdentity.parent.String() != parent.String() {
+			return nil, fmt.Errorf("parent reference changed, expect %s, got %s", actualIdentity.parent.String(), parent.String())
 		}
 	}
 
 	return &KMSAutokeyConfigIdentity{
-		parent: &KMSAutokeyConfigParent{FolderID: folderID},
+		parent: parent,
 	}, nil
 }
 
 func ParseKMSAutokeyConfigExternal(external string) (parent *KMSAutokeyConfigIdentity, err error) {
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 3 || tokens[0] != "folders" || tokens[2] != "autokeyConfig" {
-		return nil, fmt.Errorf("format of KMSAutokeyConfig external=%q was not known (use folders/<folderID>/autokeyConfig)", external)
+	if len(tokens) != 3 || tokens[2] != "autokeyConfig" {
+		return nil, fmt.Errorf("format of KMSAutokeyConfig external=%q was not known (use folders/<folderID>/autokeyConfig or projects/<projectID>/autokeyConfig)", external)
 	}
-	return &KMSAutokeyConfigIdentity{parent: &KMSAutokeyConfigParent{
-		FolderID: tokens[1],
-	}}, nil
+	switch tokens[0] {
+	case "folders":
+		return &KMSAutokeyConfigIdentity{parent: &KMSAutokeyConfigParent{FolderID: tokens[1]}}, nil
+	case "projects":
+		return &KMSAutokeyConfigIdentity{parent: &KMSAutokeyConfigParent{ProjectID: tokens[1]}}, nil
+	default:
+		return nil, fmt.Errorf("format of KMSAutokeyConfig external=%q was not known (use folders/<folderID>/autokeyConfig or projects/<projectID>/autokeyConfig)", external)
+	}
 }
