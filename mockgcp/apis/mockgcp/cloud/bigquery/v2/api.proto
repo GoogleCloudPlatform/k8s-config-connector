@@ -1,17 +1,3 @@
-// Copyright 2025 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 syntax = "proto2";
 package mockgcp.cloud.bigquery.v2;
 import "google/api/annotations.proto";
@@ -543,32 +529,36 @@ message BigQueryModelTraining {
 
 // Information related to a Bigtable column.
 message BigtableColumn {
-  // Optional. The encoding of the values when the type is not STRING. Acceptable encoding values are: TEXT - indicates values are alphanumeric text strings. BINARY - indicates values are encoded using HBase Bytes.toBytes family of functions. 'encoding' can also be set at the column family level. However, the setting at this level takes precedence if 'encoding' is set at both levels.
+  // Optional. The encoding of the values when the type is not STRING. Acceptable encoding values are: TEXT - indicates values are alphanumeric text strings. BINARY - indicates values are encoded using HBase Bytes.toBytes family of functions. PROTO_BINARY - indicates values are encoded using serialized proto messages. This can only be used in combination with JSON type. 'encoding' can also be set at the column family level. However, the setting at this level takes precedence if 'encoding' is set at both levels.
   optional string encoding = 1 [json_name="encoding"];
   // Optional. If the qualifier is not a valid BigQuery field identifier i.e. does not match a-zA-Z*, a valid identifier must be provided as the column field name and is used as field name in queries.
   optional string field_name = 2 [json_name="fieldName"];
   // Optional. If this is set, only the latest version of value in this column are exposed. 'onlyReadLatest' can also be set at the column family level. However, the setting at this level takes precedence if 'onlyReadLatest' is set at both levels.
   optional bool only_read_latest = 3 [json_name="onlyReadLatest"];
+  // Optional. Protobuf-specific configurations, only takes effect when the encoding is PROTO_BINARY.
+  optional BigtableProtoConfig proto_config = 4 [json_name="protoConfig"];
   // [Required] Qualifier of the column. Columns in the parent column family that has this exact qualifier are exposed as `.` field. If the qualifier is valid UTF-8 string, it can be specified in the qualifier_string field. Otherwise, a base-64 encoded value must be set to qualifier_encoded. The column field name is the same as the column qualifier. However, if the qualifier is not a valid BigQuery field identifier i.e. does not match a-zA-Z*, a valid identifier must be provided as field_name.
-  optional bytes qualifier_encoded = 4 [json_name="qualifierEncoded"];
+  optional bytes qualifier_encoded = 5 [json_name="qualifierEncoded"];
   // Qualifier string.
-  optional string qualifier_string = 5 [json_name="qualifierString"];
+  optional string qualifier_string = 6 [json_name="qualifierString"];
   // Optional. The type to convert the value in cells of this column. The values are expected to be encoded using HBase Bytes.toBytes function when using the BINARY encoding value. Following BigQuery types are allowed (case-sensitive): * BYTES * STRING * INTEGER * FLOAT * BOOLEAN * JSON Default type is BYTES. 'type' can also be set at the column family level. However, the setting at this level takes precedence if 'type' is set at both levels.
-  optional string type = 6 [json_name="type"];
+  optional string type = 7 [json_name="type"];
 }
 
 // Information related to a Bigtable column family.
 message BigtableColumnFamily {
   // Optional. Lists of columns that should be exposed as individual fields as opposed to a list of (column name, value) pairs. All columns whose qualifier matches a qualifier in this list can be accessed as `.`. Other columns can be accessed as a list through the `.Column` field.
   repeated BigtableColumn columns = 1 [json_name="columns"];
-  // Optional. The encoding of the values when the type is not STRING. Acceptable encoding values are: TEXT - indicates values are alphanumeric text strings. BINARY - indicates values are encoded using HBase Bytes.toBytes family of functions. This can be overridden for a specific column by listing that column in 'columns' and specifying an encoding for it.
+  // Optional. The encoding of the values when the type is not STRING. Acceptable encoding values are: TEXT - indicates values are alphanumeric text strings. BINARY - indicates values are encoded using HBase Bytes.toBytes family of functions. PROTO_BINARY - indicates values are encoded using serialized proto messages. This can only be used in combination with JSON type. This can be overridden for a specific column by listing that column in 'columns' and specifying an encoding for it.
   optional string encoding = 2 [json_name="encoding"];
   // Identifier of the column family.
   optional string family_id = 3 [json_name="familyId"];
   // Optional. If this is set only the latest version of value are exposed for all columns in this column family. This can be overridden for a specific column by listing that column in 'columns' and specifying a different setting for that column.
   optional bool only_read_latest = 4 [json_name="onlyReadLatest"];
+  // Optional. Protobuf-specific configurations, only takes effect when the encoding is PROTO_BINARY.
+  optional BigtableProtoConfig proto_config = 5 [json_name="protoConfig"];
   // Optional. The type to convert the value in cells of this column family. The values are expected to be encoded using HBase Bytes.toBytes function when using the BINARY encoding value. Following BigQuery types are allowed (case-sensitive): * BYTES * STRING * INTEGER * FLOAT * BOOLEAN * JSON Default type is BYTES. This can be overridden for a specific column by listing that column in 'columns' and specifying a type for it.
-  optional string type = 5 [json_name="type"];
+  optional string type = 6 [json_name="type"];
 }
 
 // Options specific to Google Cloud Bigtable data sources.
@@ -581,6 +571,14 @@ message BigtableOptions {
   optional bool output_column_families_as_json = 3 [json_name="outputColumnFamiliesAsJson"];
   // Optional. If field is true, then the rowkey column families will be read and converted to string. Otherwise they are read with BYTES type values and users need to manually cast them with CAST if necessary. The default value is false.
   optional bool read_rowkey_as_string = 4 [json_name="readRowkeyAsString"];
+}
+
+// Information related to a Bigtable protobuf column.
+message BigtableProtoConfig {
+  // Optional. The fully qualified proto message name of the protobuf. In the format of "foo.bar.Message".
+  optional string proto_message_name = 1 [json_name="protoMessageName"];
+  // Optional. The ID of the Bigtable SchemaBundle resource associated with this protobuf. The ID should be referred to within the parent table, e.g., `foo` rather than `projects/{project}/instances/{instance}/tables/{table}/schemaBundles/foo`. See [more details on Bigtable SchemaBundles](https://docs.cloud.google.com/bigtable/docs/create-manage-protobuf-schemas).
+  optional string schema_bundle_id = 2 [json_name="schemaBundleId"];
 }
 
 // Evaluation metrics for binary classification/classifier models.
@@ -1428,11 +1426,11 @@ message HparamTuningTrial {
 
 // Statistics related to Incremental Query Results. Populated as part of JobStatistics2. This feature is not yet available.
 message IncrementalResultStats {
-  // Reason why incremental query results are/were not written by the query.
+  // Output only. Reason why incremental query results are/were not written by the query.
   optional string disabled_reason = 1 [json_name="disabledReason"];
-  // The time at which the result table's contents were modified. May be absent if no results have been written or the query has completed.
+  // Output only. The time at which the result table's contents were modified. May be absent if no results have been written or the query has completed.
   optional .google.protobuf.Timestamp result_set_last_modify_time = 2 [json_name="resultSetLastModifyTime"];
-  // The time at which the result table's contents were completely replaced. May be absent if no results have been written or the query has completed.
+  // Output only. The time at which the result table's contents were completely replaced. May be absent if no results have been written or the query has completed.
   optional .google.protobuf.Timestamp result_set_last_replace_time = 3 [json_name="resultSetLastReplaceTime"];
 }
 
@@ -1742,7 +1740,7 @@ message JobConfigurationQuery {
   map<string, ExternalDataConfiguration> table_definitions = 22 [json_name="tableDefinitions"];
   // Time-based partitioning specification for the destination table. Only one of timePartitioning and rangePartitioning should be specified.
   optional TimePartitioning time_partitioning = 23 [json_name="timePartitioning"];
-  // Optional. Specifies whether to use BigQuery's legacy SQL dialect for this query. The default value is true. If set to false, the query will use BigQuery's GoogleSQL: https://cloud.google.com/bigquery/sql-reference/ When useLegacySql is set to false, the value of flattenResults is ignored; query will be run as if flattenResults is false.
+  // Optional. Specifies whether to use BigQuery's legacy SQL dialect for this query. The default value is true. If set to false, the query uses BigQuery's [GoogleSQL](https://docs.cloud.google.com/bigquery/docs/introduction-sql). When useLegacySql is set to false, the value of flattenResults is ignored; query will be run as if flattenResults is false.
   optional bool use_legacy_sql = 24 [json_name="useLegacySql"];
   // Optional. Whether to look for the result in the query cache. The query cache is a best-effort cache that will be flushed whenever tables in the query are modified. Moreover, the query cache is only available when a query does not have a destination table specified. The default value is true.
   optional bool use_query_cache = 25 [json_name="useQueryCache"];
@@ -2448,7 +2446,7 @@ message QueryRequest {
   optional string reservation = 21 [json_name="reservation"];
   // Optional. Optional: Specifies the maximum amount of time, in milliseconds, that the client is willing to wait for the query to complete. By default, this limit is 10 seconds (10,000 milliseconds). If the query is complete, the jobComplete field in the response is true. If the query has not yet completed, jobComplete is false. You can request a longer timeout period in the timeoutMs field. However, the call is not guaranteed to wait for the specified timeout; it typically returns after around 200 seconds (200,000 milliseconds), even if the query is not complete. If jobComplete is false, you can continue to wait for the query to complete by calling the getQueryResults method until the jobComplete field in the getQueryResults response is true.
   optional uint32 timeout_ms = 22 [json_name="timeoutMs"];
-  // Specifies whether to use BigQuery's legacy SQL dialect for this query. The default value is true. If set to false, the query will use BigQuery's GoogleSQL: https://cloud.google.com/bigquery/sql-reference/ When useLegacySql is set to false, the value of flattenResults is ignored; query will be run as if flattenResults is false.
+  // Specifies whether to use BigQuery's legacy SQL dialect for this query. The default value is true. If set to false, the query uses BigQuery's [GoogleSQL](https://docs.cloud.google.com/bigquery/docs/introduction-sql). When useLegacySql is set to false, the value of flattenResults is ignored; query will be run as if flattenResults is false.
   optional bool use_legacy_sql = 23 [json_name="useLegacySql"];
   // Optional. Whether to look for the result in the query cache. The query cache is a best-effort cache that will be flushed whenever tables in the query are modified. The default value is true.
   optional bool use_query_cache = 24 [json_name="useQueryCache"];
@@ -3562,7 +3560,7 @@ message ViewDefinition {
   optional string query = 3 [json_name="query"];
   // True if the column names are explicitly specified. For example by using the 'CREATE VIEW v(c1, c2) AS ...' syntax. Can only be set for GoogleSQL views.
   optional bool use_explicit_column_names = 4 [json_name="useExplicitColumnNames"];
-  // Specifies whether to use BigQuery's legacy SQL for this view. The default value is true. If set to false, the view will use BigQuery's GoogleSQL: https://cloud.google.com/bigquery/sql-reference/ Queries and views that reference this view must use the same flag value. A wrapper is used here because the default value is True.
+  // Specifies whether to use BigQuery's legacy SQL for this view. The default value is true. If set to false, the view uses BigQuery's [GoogleSQL](https://docs.cloud.google.com/bigquery/docs/introduction-sql). Queries and views that reference this view must use the same flag value. A wrapper is used here because the default value is True.
   optional bool use_legacy_sql = 5 [json_name="useLegacySql"];
   // Describes user-defined function resources used in the query.
   repeated UserDefinedFunctionResource user_defined_function_resources = 6 [json_name="userDefinedFunctionResources"];

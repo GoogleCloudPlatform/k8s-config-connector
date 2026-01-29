@@ -1,17 +1,3 @@
-// Copyright 2025 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 syntax = "proto3";
 package mockgcp.cloud.apigee.v1;
 import "google/api/annotations.proto";
@@ -196,6 +182,46 @@ service OrganizationsAnalyticsDatastoresServer {
     option (google.api.http) = {
       put: "/v1/{name=organizations/*/analytics/datastores/*}"
       body: "organizations_analytics_datastore"
+    };
+  };
+}
+
+service OrganizationsApimServiceExtensionsServer {
+
+  // Creates an APIM ServiceExtension in an organization.
+  rpc CreateOrganizationsApimServiceExtension(CreateOrganizationsApimServiceExtensionRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=organizations/*}/apimServiceExtensions"
+      body: "organizations_apim_service_extension"
+    };
+  };
+
+  // Deletes APIM service extension from an organization.
+  rpc DeleteOrganizationsApimServiceExtension(DeleteOrganizationsApimServiceExtensionRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=organizations/*/apimServiceExtensions/*}"
+    };
+  };
+
+  // Gets APIM service extension details.
+  rpc GetOrganizationsApimServiceExtension(GetOrganizationsApimServiceExtensionRequest) returns (GoogleCloudApigeeV1ApimServiceExtension) {
+    option (google.api.http) = {
+      get: "/v1/{name=organizations/*/apimServiceExtensions/*}"
+    };
+  };
+
+  // Lists all APIM service extensions in an organization.
+  rpc ListOrganizationsApimServiceExtensions(ListOrganizationsApimServiceExtensionsRequest) returns (GoogleCloudApigeeV1ListApimServiceExtensionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=organizations/*}/apimServiceExtensions"
+    };
+  };
+
+  // Updates an APIM service extension in an organization.
+  rpc PatchOrganizationsApimServiceExtension(PatchOrganizationsApimServiceExtensionRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=organizations/*/apimServiceExtensions/*}"
+      body: "organizations_apim_service_extension"
     };
   };
 }
@@ -528,6 +554,20 @@ service OrganizationsAppgroupsServer {
     };
   };
 
+  // Gets the account balance for the AppGroup.
+  rpc GetBalanceOrganizationsAppgroup(GetBalanceOrganizationsAppgroupRequest) returns (GoogleCloudApigeeV1AppGroupBalance) {
+    option (google.api.http) = {
+      get: "/v1/{name=organizations/*/appgroups/*/balance}"
+    };
+  };
+
+  // Gets the monetization configuration for the AppGroup.
+  rpc GetMonetizationConfigOrganizationsAppgroup(GetMonetizationConfigOrganizationsAppgroupRequest) returns (GoogleCloudApigeeV1AppGroupMonetizationConfig) {
+    option (google.api.http) = {
+      get: "/v1/{name=organizations/*/appgroups/*/monetizationConfig}"
+    };
+  };
+
   // Lists all AppGroups in an organization. A maximum of 1000 AppGroups are returned in the response if PageSize is not specified, or if the PageSize is greater than 1000.
   rpc ListOrganizationsAppgroups(ListOrganizationsAppgroupsRequest) returns (GoogleCloudApigeeV1ListAppGroupsResponse) {
     option (google.api.http) = {
@@ -539,6 +579,14 @@ service OrganizationsAppgroupsServer {
   rpc UpdateOrganizationsAppgroup(UpdateOrganizationsAppgroupRequest) returns (GoogleCloudApigeeV1AppGroup) {
     option (google.api.http) = {
       put: "/v1/{name=organizations/*/appgroups/*}"
+      body: "organizations_appgroup"
+    };
+  };
+
+  // Updates the monetization configuration for the AppGroup.
+  rpc UpdateMonetizationConfigOrganizationsAppgroup(UpdateMonetizationConfigOrganizationsAppgroupRequest) returns (GoogleCloudApigeeV1AppGroupMonetizationConfig) {
+    option (google.api.http) = {
+      put: "/v1/{name=organizations/*/appgroups/*/monetizationConfig}"
       body: "organizations_appgroup"
     };
   };
@@ -630,6 +678,58 @@ service OrganizationsAppgroupsAppsKeysApiproductsServer {
   rpc UpdateAppGroupAppKeyApiProductOrganizationsAppgroupsAppsKeysApiproduct(UpdateAppGroupAppKeyApiProductOrganizationsAppgroupsAppsKeysApiproductRequest) returns (GoogleProtobufEmpty) {
     option (google.api.http) = {
       post: "/v1/{name=organizations/*/appgroups/*/apps/*/keys/*/apiproducts/*}"
+    };
+  };
+}
+
+service OrganizationsAppgroupsBalanceServer {
+
+  // Adjust the prepaid balance for the AppGroup. This API will be used in scenarios where the AppGroup has been under-charged or over-charged.
+  rpc AdjustOrganizationsAppgroupsBalance(AdjustOrganizationsAppgroupsBalanceRequest) returns (GoogleCloudApigeeV1AppGroupBalance) {
+    option (google.api.http) = {
+      post: "/v1/{name=organizations/*/appgroups/*/balance}:adjust"
+      body: "organizations_appgroups_balance"
+    };
+  };
+
+  // Credits the account balance for the AppGroup.
+  rpc CreditOrganizationsAppgroupsBalance(CreditOrganizationsAppgroupsBalanceRequest) returns (GoogleCloudApigeeV1AppGroupBalance) {
+    option (google.api.http) = {
+      post: "/v1/{name=organizations/*/appgroups/*/balance}:credit"
+      body: "organizations_appgroups_balance"
+    };
+  };
+}
+
+service OrganizationsAppgroupsSubscriptionsServer {
+
+  // Creates a subscription to an API product. 
+  rpc CreateOrganizationsAppgroupsSubscription(CreateOrganizationsAppgroupsSubscriptionRequest) returns (GoogleCloudApigeeV1AppGroupSubscription) {
+    option (google.api.http) = {
+      post: "/v1/{parent=organizations/*/appgroups/*}/subscriptions"
+      body: "organizations_appgroups_subscription"
+    };
+  };
+
+  // Expires an API product subscription immediately.
+  rpc ExpireOrganizationsAppgroupsSubscription(ExpireOrganizationsAppgroupsSubscriptionRequest) returns (GoogleCloudApigeeV1AppGroupSubscription) {
+    option (google.api.http) = {
+      post: "/v1/{name=organizations/*/appgroups/*/subscriptions/*}:expire"
+      body: "organizations_appgroups_subscription"
+    };
+  };
+
+  // Get an api product subscription for an appgroup.
+  rpc GetOrganizationsAppgroupsSubscription(GetOrganizationsAppgroupsSubscriptionRequest) returns (GoogleCloudApigeeV1AppGroupSubscription) {
+    option (google.api.http) = {
+      get: "/v1/{name=organizations/*/appgroups/*/subscriptions/*}"
+    };
+  };
+
+  // List all api product subscriptions for an appgroup.
+  rpc ListOrganizationsAppgroupsSubscriptions(ListOrganizationsAppgroupsSubscriptionsRequest) returns (GoogleCloudApigeeV1ListAppGroupSubscriptionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=organizations/*/appgroups/*}/subscriptions"
     };
   };
 }
@@ -2959,6 +3059,12 @@ message GoogleCloudApigeeV1AddonsConfig {
   GoogleCloudApigeeV1MonetizationConfig monetization_config = 6 [json_name="monetizationConfig"];
 }
 
+// Request for AdjustAppGroupBalance.
+message GoogleCloudApigeeV1AdjustAppGroupBalanceRequest {
+  // Required. * A positive value of `adjustment` means that that the API provider wants to adjust the balance for an under-charged AppGroup i.e. the balance of the AppGroup will decrease. * A negative value of `adjustment` is not supported. Use credit balance API instead.
+  GoogleTypeMoney adjustment = 1 [json_name="adjustment"];
+}
+
 // Request for AdjustDeveloperBalance.
 message GoogleCloudApigeeV1AdjustDeveloperBalanceRequest {
   // * A positive value of `adjustment` means that that the API provider wants to adjust the balance for an under-charged developer i.e. the balance of the developer will decrease. * A negative value of `adjustment` means that that the API provider wants to adjust the balance for an over-charged developer i.e. the balance of the developer will increase. NOTE: An adjustment cannot increase the balance of the developer beyond the balance as of the most recent credit. For example, if a developer's balance is updated to be $100, and they spend $10, a negative adjustment can only increase the balance of the developer to $100.
@@ -3079,10 +3185,12 @@ message GoogleCloudApigeeV1ApiDoc {
 
 // The documentation for a catalog item.
 message GoogleCloudApigeeV1ApiDocDocumentation {
+  // Optional. AsyncAPI Specification documentation.
+  GoogleCloudApigeeV1AsyncApiDocumentation async_api_documentation = 1 [json_name="asyncApiDocumentation"];
   // Optional. GraphQL documentation.
-  GoogleCloudApigeeV1GraphqlDocumentation graphql_documentation = 1 [json_name="graphqlDocumentation"];
+  GoogleCloudApigeeV1GraphqlDocumentation graphql_documentation = 2 [json_name="graphqlDocumentation"];
   // Optional. OpenAPI Specification documentation.
-  GoogleCloudApigeeV1OASDocumentation oas_documentation = 2 [json_name="oasDocumentation"];
+  GoogleCloudApigeeV1OASDocumentation oas_documentation = 3 [json_name="oasDocumentation"];
 }
 
 // The catalog item documentation wrapped with response status, error_code, etc.
@@ -3265,6 +3373,50 @@ message GoogleCloudApigeeV1ApiSecurityRuntimeConfig {
   .google.protobuf.Timestamp update_time = 5 [json_name="updateTime"];
 }
 
+// APIM Service Extension is a resource under an Apigee Organization that is used to create APIM Service Extension to route traffic to existing X instances.
+message GoogleCloudApigeeV1ApimServiceExtension {
+  // Output only. The time that this resource was created on the server.
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Required. Name of the proxy deployed in the Apigee X instance.
+  string extension_processor = 2 [json_name="extensionProcessor"];
+  // Optional. List of extensions that are part of the service extension. Refer to https://cloud.google.com/service-extensions/docs/quotas#limits for any limits.
+  repeated GoogleCloudApigeeV1ApimServiceExtensionExtension extensions = 3 [json_name="extensions"];
+  // Required. Name of the Google Cloud LB forwarding rule. Format: projects/{project}/regions/{region}/forwardingRules/{forwarding_rule} projects/{project}/global/forwardingRules/{forwarding_rule}
+  string lb_forwarding_rule = 4 [json_name="lbForwardingRule"];
+  // Identifier. unique name of the APIM service extension. The name must conform with RFC-1034, is restricted to lower-cased letters, numbers and hyphens, and can have a maximum length of 63 characters. Additionally, the first character must be a letter and the last a letter or a number.
+  string name = 5 [json_name="name"];
+  // Required. The network where the forwarding rule is created. Format: projects/{project}/global/networks/{network}
+  string network = 6 [json_name="network"];
+  // Required. List of network configurations for the APIM service extension.
+  repeated GoogleCloudApigeeV1ApimServiceExtensionNetworkConfig network_configs = 7 [json_name="networkConfigs"];
+  // Output only. State of the APIM service extension. Values other than `ACTIVE` mean the resource is not ready to use.
+  string state = 8 [json_name="state"];
+  // Output only. The time that this resource was updated on the server.
+  .google.protobuf.Timestamp update_time = 9 [json_name="updateTime"];
+}
+
+// Extension configuration for Apigee extension processor service extension.
+message GoogleCloudApigeeV1ApimServiceExtensionExtension {
+  // Optional. Whether this request should fail open.
+  bool fail_open = 1 [json_name="failOpen"];
+  // Required. One of the hostnames of Apigee EnvGroup where the proxy is deployed. This hostname (i.e FDQN) will be used to route traffic from the specified forwarding rule to the environment in Apigee X instance where the proxy is deployed for handling extension traffic. Format: ^([a-zA-Z0-9. _-])+$
+  string hostname = 2 [json_name="hostname"];
+  // Optional. Match Condition for CEL expression. Refer to https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference for more details.
+  string match_condition = 3 [json_name="matchCondition"];
+  // Required. Name of the `LbTrafficExtension` resource. The name must conform with RFC-1034, is restricted to lower-cased letters, numbers and hyphens, and can have a maximum length of 63 characters. Additionally, the first character must be a letter and the last a letter or a number.
+  string name = 4 [json_name="name"];
+  // Optional. Supported events for the Service Extension. If not specified, all events are supported.
+  repeated string supported_events = 5 [json_name="supportedEvents"];
+}
+
+// Network configuration for the APIM service extension.
+message GoogleCloudApigeeV1ApimServiceExtensionNetworkConfig {
+  // Required. The region for the PSC NEG.
+  string region = 1 [json_name="region"];
+  // Required. The subnet for the PSC NEG. Format: projects/{project}/regions/{region}/subnetworks/{subnet}
+  string subnet = 2 [json_name="subnet"];
+}
+
 message GoogleCloudApigeeV1App {
   // List of API products associated with the app.
   repeated GoogleCloudApigeeV1ApiProductRef api_products = 1 [json_name="apiProducts"];
@@ -3312,14 +3464,16 @@ message GoogleCloudApigeeV1AppGroup {
   int64 created_at = 5 [json_name="createdAt"];
   // app group name displayed in the UI
   string display_name = 6 [json_name="displayName"];
+  // Optional. Email of the AppGroup.
+  string email = 7 [json_name="email"];
   // Output only. Modified time as milliseconds since epoch.
-  int64 last_modified_at = 7 [json_name="lastModifiedAt"];
+  int64 last_modified_at = 8 [json_name="lastModifiedAt"];
   // Immutable. Name of the AppGroup. Characters you can use in the name are restricted to: A-Z0-9._\-$ %.
-  string name = 8 [json_name="name"];
+  string name = 9 [json_name="name"];
   // Immutable. the org the app group is created
-  string organization = 9 [json_name="organization"];
+  string organization = 10 [json_name="organization"];
   // Valid values are `active` or `inactive`. Note that the status of the AppGroup should be updated via UpdateAppGroupRequest by setting the action as `active` or `inactive`.
-  string status = 10 [json_name="status"];
+  string status = 11 [json_name="status"];
 }
 
 // Response for [GetAppGroupApp].[AppGroupApps.GetAppGroupApp], [CreateAppGroupAppRequest].[AppGroupApp.CreateAppGroupAppRequest] and [DeleteAppGroupApp].[AppGroupApp.DeleteAppGroupApp]
@@ -3372,6 +3526,42 @@ message GoogleCloudApigeeV1AppGroupAppKey {
   string status = 9 [json_name="status"];
 }
 
+// AppGroupBalance for the AppGroup.
+message GoogleCloudApigeeV1AppGroupBalance {
+  // Output only. List of all wallets. Each individual wallet stores the account balance for a particular currency.
+  repeated GoogleCloudApigeeV1AppGroupBalanceWallet wallets = 1 [json_name="wallets"];
+}
+
+// Wallet used to manage an account balance for a particular currency.
+message GoogleCloudApigeeV1AppGroupBalanceWallet {
+  // Current remaining balance of the AppGroup for a particular currency.
+  GoogleTypeMoney balance = 1 [json_name="balance"];
+  // Output only. Time at which the AppGroup last added credit to the account in milliseconds since epoch.
+  int64 last_credit_time = 2 [json_name="lastCreditTime"];
+}
+
+// Monetization configuration for the AppGroup.
+message GoogleCloudApigeeV1AppGroupMonetizationConfig {
+  // Required. Billing type.
+  string billing_type = 1 [json_name="billingType"];
+}
+
+// AppGroup Subscription details.
+message GoogleCloudApigeeV1AppGroupSubscription {
+  // Required. Name of the API product for which the appgroup is purchasing a subscription.
+  string apiproduct = 1 [json_name="apiproduct"];
+  // Output only. Time when the API product subscription was created in milliseconds since epoch.
+  int64 created_at = 2 [json_name="createdAt"];
+  // Output only. Time when the API product subscription ends in milliseconds since epoch.
+  int64 end_time = 3 [json_name="endTime"];
+  // Output only. Time when the API product subscription was last modified in milliseconds since epoch.
+  int64 last_modified_at = 4 [json_name="lastModifiedAt"];
+  // Output only. Name of the API product subscription.
+  string name = 5 [json_name="name"];
+  // Output only. Time when the API product subscription starts in milliseconds since epoch.
+  int64 start_time = 6 [json_name="startTime"];
+}
+
 // Archive Deployment information.
 message GoogleCloudApigeeV1ArchiveDeployment {
   // Output only. The time at which the Archive Deployment was created in milliseconds since the epoch.
@@ -3386,6 +3576,12 @@ message GoogleCloudApigeeV1ArchiveDeployment {
   string operation = 5 [json_name="operation"];
   // Output only. The time at which the Archive Deployment was updated in milliseconds since the epoch.
   int64 updated_at = 6 [json_name="updatedAt"];
+}
+
+// AsyncAPI Specification documentation for a catalog item.
+message GoogleCloudApigeeV1AsyncApiDocumentation {
+  // Required. The documentation file contents for the AsyncAPI Specification. JSON and YAML file formats are supported.
+  GoogleCloudApigeeV1DocumentationFile spec = 1 [json_name="spec"];
 }
 
 message GoogleCloudApigeeV1AsyncQuery {
@@ -3659,6 +3855,14 @@ message GoogleCloudApigeeV1Credential {
   repeated string scopes = 7 [json_name="scopes"];
   // Status of the credential. Valid values include `approved` or `revoked`.
   string status = 8 [json_name="status"];
+}
+
+// Request for CreditAppGroupBalance.
+message GoogleCloudApigeeV1CreditAppGroupBalanceRequest {
+  // Required. The amount of money to be credited. The wallet corresponding to the currency specified within `transaction_amount` will be updated. For example, if you specified `currency_code` within `transaction_amount` as "USD", then the amount would be added to the wallet which has the "USD" currency or if no such wallet exists, a new wallet will be created with the "USD" currency.
+  GoogleTypeMoney transaction_amount = 1 [json_name="transactionAmount"];
+  // Required. Each transaction_id uniquely identifies a credit balance request. If multiple requests are received with the same transaction_id, only one of them will be considered.
+  string transaction_id = 2 [json_name="transactionId"];
 }
 
 // Request for CreditDeveloperBalance.
@@ -4313,6 +4517,10 @@ message GoogleCloudApigeeV1EnvironmentGroupConfig {
   string uid = 7 [json_name="uid"];
 }
 
+// Request for ExpireAppGroupSubscription.
+message GoogleCloudApigeeV1ExpireAppGroupSubscriptionRequest {
+}
+
 // Request for ExpireDeveloperSubscription.
 message GoogleCloudApigeeV1ExpireDeveloperSubscriptionRequest {
 }
@@ -4658,11 +4866,27 @@ message GoogleCloudApigeeV1ListApiProxiesResponse {
   repeated GoogleCloudApigeeV1ApiProxy proxies = 1 [json_name="proxies"];
 }
 
+// Response for list service extensions.
+message GoogleCloudApigeeV1ListApimServiceExtensionsResponse {
+  // service extension in a given organization.
+  repeated GoogleCloudApigeeV1ApimServiceExtension apim_service_extensions = 1 [json_name="apimServiceExtensions"];
+  // Page token that you can include in an `ListApimServiceExtensions` request to retrieve the next page. If omitted, no subsequent pages exist.
+  string next_page_token = 2 [json_name="nextPageToken"];
+}
+
 // Response for ListAppGroupApps
 message GoogleCloudApigeeV1ListAppGroupAppsResponse {
   // List of AppGroup apps and their credentials.
   repeated GoogleCloudApigeeV1AppGroupApp app_group_apps = 1 [json_name="appGroupApps"];
   // Token that can be sent as `next_page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// Response for ListAppGroupSubscriptions.
+message GoogleCloudApigeeV1ListAppGroupSubscriptionsResponse {
+  // The list of subscriptions for an AppGroup.
+  repeated GoogleCloudApigeeV1AppGroupSubscription app_group_subscriptions = 1 [json_name="appGroupSubscriptions"];
+  // Value that can be sent as `pageToken` to retrieve the next page of content. If this field is omitted, there are no subsequent pages.
   string next_page_token = 2 [json_name="nextPageToken"];
 }
 
@@ -5150,48 +5374,50 @@ message GoogleCloudApigeeV1Organization {
   string authorized_network = 7 [json_name="authorizedNetwork"];
   // Optional. Billing type of the Apigee organization. See [Apigee pricing](https://cloud.google.com/apigee/pricing).
   string billing_type = 8 [json_name="billingType"];
-  // Output only. Base64-encoded public certificate for the root CA of the Apigee organization. Valid only when [RuntimeType](#RuntimeType) is `CLOUD`.
+  // Output only. Deprecated: Use `ca_certificates` instead. Base64-encoded public certificate for the root CA of the Apigee organization. Valid only when [RuntimeType](#RuntimeType) is `CLOUD`.
   bytes ca_certificate = 9 [json_name="caCertificate"];
+  // Output only. Base64-encoded public certificates for the root CA of the Apigee organization. Valid only when [RuntimeType](#RuntimeType) is `CLOUD`. Multiple certificates are used to support certificate rotation.
+  repeated bytes ca_certificates = 10 [json_name="caCertificates"];
   // Optional. Cloud KMS key name used for encrypting control plane data that is stored in a multi region. Only used for the data residency region "US" or "EU". If not specified or [BillingType](#BillingType) is `EVALUATION`, a Google-Managed encryption key will be used. Format: `projects/*/locations/*/keyRings/*/cryptoKeys/*`
-  string control_plane_encryption_key_name = 10 [json_name="controlPlaneEncryptionKeyName"];
+  string control_plane_encryption_key_name = 11 [json_name="controlPlaneEncryptionKeyName"];
   // Output only. Time that the Apigee organization was created in milliseconds since epoch.
-  int64 created_at = 11 [json_name="createdAt"];
+  int64 created_at = 12 [json_name="createdAt"];
   // Not used by Apigee.
-  string customer_name = 12 [json_name="customerName"];
+  string customer_name = 13 [json_name="customerName"];
   // Optional. Description of the Apigee organization.
-  string description = 13 [json_name="description"];
+  string description = 14 [json_name="description"];
   // Optional. Flag that specifies whether the VPC Peering through Private Google Access should be disabled between the consumer network and Apigee. Valid only when RuntimeType is set to CLOUD. Required if an authorizedNetwork on the consumer project is not provided, in which case the flag should be set to true. The value must be set before the creation of any Apigee runtime instance and can be updated only when there are no runtime instances. **Note:** Apigee will be deprecating the vpc peering model that requires you to provide 'authorizedNetwork', by making the non-peering model as the default way of provisioning Apigee organization in future. So, this will be a temporary flag to enable the transition. Not supported for Apigee hybrid.
-  bool disable_vpc_peering = 14 [json_name="disableVpcPeering"];
+  bool disable_vpc_peering = 15 [json_name="disableVpcPeering"];
   // Optional. Display name for the Apigee organization. Unused, but reserved for future use.
-  string display_name = 15 [json_name="displayName"];
+  string display_name = 16 [json_name="displayName"];
   // Output only. List of environments in the Apigee organization.
-  repeated string environments = 16 [json_name="environments"];
+  repeated string environments = 17 [json_name="environments"];
   // Output only. Time that the Apigee organization is scheduled for deletion.
-  int64 expires_at = 17 [json_name="expiresAt"];
+  int64 expires_at = 18 [json_name="expiresAt"];
   // Output only. Time that the Apigee organization was last modified in milliseconds since epoch.
-  int64 last_modified_at = 18 [json_name="lastModifiedAt"];
+  int64 last_modified_at = 19 [json_name="lastModifiedAt"];
   // Output only. Name of the Apigee organization.
-  string name = 19 [json_name="name"];
+  string name = 20 [json_name="name"];
   // Optional. Flag that specifies if internet egress is restricted for VPC Service Controls. Valid only when runtime_type is `CLOUD` and disable_vpc_peering is `true`.
-  bool network_egress_restricted = 20 [json_name="networkEgressRestricted"];
+  bool network_egress_restricted = 21 [json_name="networkEgressRestricted"];
   // Optional. Configuration for the Portals settings.
-  bool portal_disabled = 21 [json_name="portalDisabled"];
+  bool portal_disabled = 22 [json_name="portalDisabled"];
   // Output only. Project ID associated with the Apigee organization.
-  string project_id = 22 [json_name="projectId"];
+  string project_id = 23 [json_name="projectId"];
   // Optional. Properties defined in the Apigee organization profile.
-  GoogleCloudApigeeV1Properties properties = 23 [json_name="properties"];
+  GoogleCloudApigeeV1Properties properties = 24 [json_name="properties"];
   // Optional. Cloud KMS key name used for encrypting the data that is stored and replicated across runtime instances. Update is not allowed after the organization is created. If not specified or [RuntimeType](#RuntimeType) is `TRIAL`, a Google-Managed encryption key will be used. For example: "projects/foo/locations/us/keyRings/bar/cryptoKeys/baz". **Note:** Not supported for Apigee hybrid.
-  string runtime_database_encryption_key_name = 24 [json_name="runtimeDatabaseEncryptionKeyName"];
+  string runtime_database_encryption_key_name = 25 [json_name="runtimeDatabaseEncryptionKeyName"];
   // Required. Runtime type of the Apigee organization based on the Apigee subscription purchased.
-  string runtime_type = 25 [json_name="runtimeType"];
+  string runtime_type = 26 [json_name="runtimeType"];
   // Output only. State of the organization. Values other than ACTIVE means the resource is not ready to use.
-  string state = 26 [json_name="state"];
+  string state = 27 [json_name="state"];
   // Output only. Subscription plan that the customer has purchased. Output only.
-  string subscription_plan = 27 [json_name="subscriptionPlan"];
+  string subscription_plan = 28 [json_name="subscriptionPlan"];
   // Output only. DEPRECATED: This will eventually be replaced by BillingType. Subscription type of the Apigee organization. Valid values include trial (free, limited, and for evaluation purposes only) or paid (full subscription has been purchased). See [Apigee pricing](https://cloud.google.com/apigee/pricing/).
-  string subscription_type = 28 [json_name="subscriptionType"];
+  string subscription_type = 29 [json_name="subscriptionType"];
   // Not used by Apigee.
-  string type = 29 [json_name="type"];
+  string type = 30 [json_name="type"];
 }
 
 message GoogleCloudApigeeV1OrganizationProjectMapping {
@@ -6769,6 +6995,33 @@ message UpdateOrganizationsAnalyticsDatastoreRequest {
   GoogleCloudApigeeV1Datastore organizations_analytics_datastore = 2;
 }
 
+message CreateOrganizationsApimServiceExtensionRequest {
+  string apim_service_extension_id = 1;
+  string parent = 2;
+  GoogleCloudApigeeV1ApimServiceExtension organizations_apim_service_extension = 3;
+}
+
+message DeleteOrganizationsApimServiceExtensionRequest {
+  string name = 1;
+}
+
+message GetOrganizationsApimServiceExtensionRequest {
+  string name = 1;
+}
+
+message ListOrganizationsApimServiceExtensionsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
+}
+
+message PatchOrganizationsApimServiceExtensionRequest {
+  bool allow_missing = 1;
+  string name = 2;
+  string update_mask = 3;
+  GoogleCloudApigeeV1ApimServiceExtension organizations_apim_service_extension = 4;
+}
+
 message AttributesOrganizationsApiproductRequest {
   string name = 1;
   GoogleCloudApigeeV1Attributes organizations_apiproduct = 2;
@@ -6970,6 +7223,14 @@ message GetOrganizationsAppgroupRequest {
   string name = 1;
 }
 
+message GetBalanceOrganizationsAppgroupRequest {
+  string name = 1;
+}
+
+message GetMonetizationConfigOrganizationsAppgroupRequest {
+  string name = 1;
+}
+
 message ListOrganizationsAppgroupsRequest {
   string filter = 1;
   int32 page_size = 2;
@@ -6981,6 +7242,11 @@ message UpdateOrganizationsAppgroupRequest {
   string action = 1;
   string name = 2;
   GoogleCloudApigeeV1AppGroup organizations_appgroup = 3;
+}
+
+message UpdateMonetizationConfigOrganizationsAppgroupRequest {
+  string name = 1;
+  GoogleCloudApigeeV1AppGroupMonetizationConfig organizations_appgroup = 2;
 }
 
 message CreateOrganizationsAppgroupsAppRequest {
@@ -7033,6 +7299,36 @@ message DeleteOrganizationsAppgroupsAppsKeysApiproductRequest {
 message UpdateAppGroupAppKeyApiProductOrganizationsAppgroupsAppsKeysApiproductRequest {
   string action = 1;
   string name = 2;
+}
+
+message AdjustOrganizationsAppgroupsBalanceRequest {
+  string name = 1;
+  GoogleCloudApigeeV1AdjustAppGroupBalanceRequest organizations_appgroups_balance = 2;
+}
+
+message CreditOrganizationsAppgroupsBalanceRequest {
+  string name = 1;
+  GoogleCloudApigeeV1CreditAppGroupBalanceRequest organizations_appgroups_balance = 2;
+}
+
+message CreateOrganizationsAppgroupsSubscriptionRequest {
+  string parent = 1;
+  GoogleCloudApigeeV1AppGroupSubscription organizations_appgroups_subscription = 2;
+}
+
+message ExpireOrganizationsAppgroupsSubscriptionRequest {
+  string name = 1;
+  GoogleCloudApigeeV1ExpireAppGroupSubscriptionRequest organizations_appgroups_subscription = 2;
+}
+
+message GetOrganizationsAppgroupsSubscriptionRequest {
+  string name = 1;
+}
+
+message ListOrganizationsAppgroupsSubscriptionsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
 }
 
 message GetOrganizationsAppRequest {

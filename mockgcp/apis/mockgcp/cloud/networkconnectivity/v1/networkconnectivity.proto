@@ -1,17 +1,3 @@
-// Copyright 2025 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 syntax = "proto3";
 package mockgcp.cloud.networkconnectivity.v1;
 import "google/api/annotations.proto";
@@ -45,6 +31,38 @@ service ProjectsLocationsServer {
   rpc ListProjectsLocations(ListProjectsLocationsRequest) returns (ListLocationsResponse) {
     option (google.api.http) = {
       get: "/v1/{name=projects/*}/locations"
+    };
+  };
+}
+
+service ProjectsLocationsAutomatedDnsRecordsServer {
+
+  // Creates a new AutomatedDnsRecord in a given project and location.
+  rpc CreateProjectsLocationsAutomatedDnsRecord(CreateProjectsLocationsAutomatedDnsRecordRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/automatedDnsRecords"
+      body: "projects_locations_automated_dns_record"
+    };
+  };
+
+  // Deletes a single AutomatedDnsRecord.
+  rpc DeleteProjectsLocationsAutomatedDnsRecord(DeleteProjectsLocationsAutomatedDnsRecordRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/automatedDnsRecords/*}"
+    };
+  };
+
+  // Gets details of a single AutomatedDnsRecord.
+  rpc GetProjectsLocationsAutomatedDnsRecord(GetProjectsLocationsAutomatedDnsRecordRequest) returns (AutomatedDnsRecord) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/automatedDnsRecords/*}"
+    };
+  };
+
+  // Lists AutomatedDnsRecords in a given project and location.
+  rpc ListProjectsLocationsAutomatedDnsRecords(ListProjectsLocationsAutomatedDnsRecordsRequest) returns (ListAutomatedDnsRecordsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/automatedDnsRecords"
     };
   };
 }
@@ -638,14 +656,16 @@ message AutoAccept {
 
 // Information for the automatically created subnetwork and its associated IR.
 message AutoCreatedSubnetworkInfo {
+  // Output only. Indicates whether the subnetwork is delinked from the Service Connection Policy. Only set if the subnetwork mode is AUTO_CREATED during creation.
+  bool delinked = 1 [json_name="delinked"];
   // Output only. URI of the automatically created Internal Range. Only set if the subnetwork mode is AUTO_CREATED during creation.
-  string internal_range = 1 [json_name="internalRange"];
+  string internal_range = 2 [json_name="internalRange"];
   // Output only. URI of the automatically created Internal Range reference. Only set if the subnetwork mode is AUTO_CREATED during creation.
-  string internal_range_ref = 2 [json_name="internalRangeRef"];
+  string internal_range_ref = 3 [json_name="internalRangeRef"];
   // Output only. URI of the automatically created subnetwork. Only set if the subnetwork mode is AUTO_CREATED during creation.
-  string subnetwork = 3 [json_name="subnetwork"];
+  string subnetwork = 4 [json_name="subnetwork"];
   // Output only. URI of the automatically created subnetwork reference. Only set if the subnetwork mode is AUTO_CREATED during creation.
-  string subnetwork_ref = 4 [json_name="subnetworkRef"];
+  string subnetwork_ref = 5 [json_name="subnetworkRef"];
 }
 
 // The specification for automatically creating a DNS record.
@@ -656,6 +676,46 @@ message AutomatedDnsCreationSpec {
   string hostname = 2 [json_name="hostname"];
   // Optional. The Time To Live for the DNS record, in seconds. If not provided, a default of 30 seconds will be used.
   .google.protobuf.Duration ttl = 3 [json_name="ttl"];
+}
+
+// Represents a DNS record managed by the AutomatedDnsRecord API.
+message AutomatedDnsRecord {
+  // Required. Immutable. The full resource path of the consumer network this AutomatedDnsRecord is visible to. Example: "projects/{projectNumOrId}/global/networks/{networkName}".
+  string consumer_network = 1 [json_name="consumerNetwork"];
+  // Output only. The timestamp of when the record was created.
+  .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // Required. Immutable. The creation mode of the AutomatedDnsRecord. This field is immutable.
+  string creation_mode = 3 [json_name="creationMode"];
+  // Output only. The current settings for this record as identified by (`hostname`, `dns_suffix`, `type`) in Cloud DNS. The `current_config` field reflects the actual settings of the DNS record in Cloud DNS based on the `hostname`, `dns_suffix`, and `type`. * **Absence:** If `current_config` is unset, it means a DNS record with the specified `hostname`, `dns_suffix`, and `type` does not currently exist in Cloud DNS. This could be because the `AutomatedDnsRecord` has never been successfully programmed, has been deleted, or there was an error during provisioning. * **Presence:** If `current_config` is present: * It can be different from the `original_config`. This can happen due to several reasons: * Out-of-band changes: A consumer might have directly modified the DNS record in Cloud DNS. * `OVERWRITE` operations from other `AutomatedDnsRecord` resources: Another `AutomatedDnsRecord` with the same identifying attributes (`hostname`, `dns_suffix`, `type`) but a different configuration might have overwritten the record using `insert_mode: OVERWRITE`. Therefore, the presence of `current_config` indicates that a corresponding DNS record exists, but its values (TTL and RRData) might not always align with the `original_config` of the AutomatedDnsRecord.
+  Config current_config = 4 [json_name="currentConfig"];
+  // A human-readable description of the record.
+  string description = 5 [json_name="description"];
+  // Required. Immutable. The dns suffix for this record to use in longest-suffix matching. Requires a trailing dot. Example: "example.com."
+  string dns_suffix = 6 [json_name="dnsSuffix"];
+  // Output only. DnsZone is the DNS zone managed by automation. Format: projects/{project}/managedZones/{managedZone}
+  string dns_zone = 7 [json_name="dnsZone"];
+  // Optional. The etag is computed by the server, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding.
+  string etag = 8 [json_name="etag"];
+  // Output only. The FQDN created by combining the hostname and dns suffix. Should include a trailing dot.
+  string fqdn = 9 [json_name="fqdn"];
+  // Required. Immutable. The hostname for the DNS record. This value will be prepended to the `dns_suffix` to create the full domain name (FQDN) for the record. For example, if `hostname` is "corp.db" and `dns_suffix` is "example.com.", the resulting record will be "corp.db.example.com.". Should not include a trailing dot.
+  string hostname = 10 [json_name="hostname"];
+  // Optional. User-defined labels.
+  map<string, string> labels = 11 [json_name="labels"];
+  // Immutable. Identifier. The name of an AutomatedDnsRecord. Format: projects/{project}/locations/{location}/automatedDnsRecords/{automated_dns_record} See: https://google.aip.dev/122#fields-representing-resource-names
+  string name = 12 [json_name="name"];
+  // Required. Immutable. The configuration settings used to create this DNS record. These settings define the desired state of the record as specified by the producer.
+  Config original_config = 13 [json_name="originalConfig"];
+  // Required. Immutable. The identifier of a supported record type.
+  string record_type = 14 [json_name="recordType"];
+  // Required. Immutable. The service class identifier which authorizes this AutomatedDnsRecord. Any API calls targeting this AutomatedDnsRecord must have `networkconnectivity.serviceclasses.use` IAM permission for the provided service class.
+  string service_class = 15 [json_name="serviceClass"];
+  // Output only. The current operational state of this AutomatedDnsRecord as managed by Service Connectivity Automation.
+  string state = 16 [json_name="state"];
+  // Output only. A human-readable message providing more context about the current state, such as an error description if the state is `FAILED_DEPROGRAMMING`.
+  string state_details = 17 [json_name="stateDetails"];
+  // Output only. The timestamp of when the record was updated.
+  .google.protobuf.Timestamp update_time = 18 [json_name="updateTime"];
 }
 
 // Associates `members`, or principals, with a `role`.
@@ -686,6 +746,14 @@ message CheckConsumerConfigResponse {
   repeated string errors = 1 [json_name="errors"];
 }
 
+// Defines the configuration of a DNS record.
+message Config {
+  // Required. The list of resource record data strings. The content and format of these strings depend on the AutomatedDnsRecord.type. For many common record types, this list may contain multiple strings. As defined in RFC 1035 (section 5) and RFC 1034 (section 3.6.1) -- see examples. Examples: A record: ["192.0.2.1"] or ["192.0.2.1", "192.0.2.2"] TXT record: ["This is a text record"] CNAME record: ["target.example.com."] AAAA record: ["::1"] or ["2001:0db8:85a3:0000:0000:8a2e:0370:7334", "2001:0db8:85a3:0000:0000:8a2e:0370:7335"]
+  repeated string rrdatas = 1 [json_name="rrdatas"];
+  // Required. Number of seconds that this DNS record can be cached by resolvers.
+  .google.protobuf.Duration ttl = 2 [json_name="ttl"];
+}
+
 // Allow the producer to specify which consumers can connect to it.
 message ConsumerPscConfig {
   // Required. The project ID or project number of the consumer project. This project is the one that the consumer uses to interact with the producer instance. From the perspective of a consumer who's created a producer instance, this is the project of the producer instance. Format: 'projects/' Eg. 'projects/consumer-project' or 'projects/1234'
@@ -702,7 +770,7 @@ message ConsumerPscConfig {
   map<string, string> producer_instance_metadata = 6 [json_name="producerInstanceMetadata"];
   // The consumer project where PSC connections are allowed to be created in.
   string project = 7 [json_name="project"];
-  // Output only. A map to store mapping between customer vip and target service attachment. Only service attachment with producer specified ip addresses are stored here.
+  // Optional. A map to store mapping between customer vip and target service attachment. This field can be used to specify a static IP address for a PSC connection.
   map<string, string> service_attachment_ip_address_map = 8 [json_name="serviceAttachmentIpAddressMap"];
   // Output only. Overall state of PSC Connections management for this consumer psc config.
   string state = 9 [json_name="state"];
@@ -924,7 +992,7 @@ message InterconnectAttachment {
 message InternalRange {
   // Optional. Range auto-allocation options, may be set only when auto-allocation is selected by not setting ip_cidr_range (and setting prefix_length).
   AllocationOptions allocation_options = 1 [json_name="allocationOptions"];
-  // Time when the internal range was created.
+  // Output only. Time when the internal range was created.
   .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
   // Optional. A description of this resource.
   string description = 3 [json_name="description"];
@@ -950,7 +1018,7 @@ message InternalRange {
   int32 prefix_length = 13 [json_name="prefixLength"];
   // Optional. Can be set to narrow down or pick a different address space while searching for a free range. If not set, defaults to the ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"] address space (for auto-mode networks, the "10.0.0.0/9" range is used instead of "10.0.0.0/8"). This can be used to target the search in other rfc-1918 address spaces like "172.16.0.0/12" and "192.168.0.0/16" or non-rfc-1918 address spaces used in the VPC.
   repeated string target_cidr_range = 14 [json_name="targetCidrRange"];
-  // Time when the internal range was updated.
+  // Output only. Time when the internal range was updated.
   .google.protobuf.Timestamp update_time = 15 [json_name="updateTime"];
   // Optional. The type of usage set for this InternalRange.
   string usage = 16 [json_name="usage"];
@@ -981,9 +1049,9 @@ message LinkedProducerVpcNetwork {
   string peering = 4 [json_name="peering"];
   // Output only. The URI of the Producer VPC.
   string producer_network = 5 [json_name="producerNetwork"];
-  // Output only. The proposed exclude export IP ranges waiting for hub administration's approval.
+  // Output only. The proposed exclude export IP ranges waiting for hub administrator's approval.
   repeated string proposed_exclude_export_ranges = 6 [json_name="proposedExcludeExportRanges"];
-  // Output only. The proposed include export IP ranges waiting for hub administration's approval.
+  // Output only. The proposed include export IP ranges waiting for hub administrator's approval.
   repeated string proposed_include_export_ranges = 7 [json_name="proposedIncludeExportRanges"];
   // Output only. The Service Consumer Network spoke.
   string service_consumer_vpc_spoke = 8 [json_name="serviceConsumerVpcSpoke"];
@@ -1009,9 +1077,9 @@ message LinkedVpcNetwork {
   repeated string include_export_ranges = 2 [json_name="includeExportRanges"];
   // Output only. The list of Producer VPC spokes that this VPC spoke is a service consumer VPC spoke for. These producer VPCs are connected through VPC peering to this spoke's backing VPC network. Because they are directly connected through VPC peering, NCC export filters do not apply between the service consumer VPC spoke and any of its producer VPC spokes. This VPC spoke cannot be deleted as long as any of these producer VPC spokes are connected to the NCC Hub.
   repeated string producer_vpc_spokes = 3 [json_name="producerVpcSpokes"];
-  // Output only. The proposed exclude export IP ranges waiting for hub administration's approval.
+  // Output only. The proposed exclude export IP ranges waiting for hub administrator's approval.
   repeated string proposed_exclude_export_ranges = 4 [json_name="proposedExcludeExportRanges"];
-  // Output only. The proposed include export IP ranges waiting for hub administration's approval.
+  // Output only. The proposed include export IP ranges waiting for hub administrator's approval.
   repeated string proposed_include_export_ranges = 5 [json_name="proposedIncludeExportRanges"];
   // Required. The URI of the VPC network resource.
   string uri = 6 [json_name="uri"];
@@ -1027,6 +1095,16 @@ message LinkedVpnTunnels {
   repeated string uris = 3 [json_name="uris"];
   // Output only. The VPC network where these VPN tunnels are located.
   string vpc_network = 4 [json_name="vpcNetwork"];
+}
+
+// Response for ListAutomatedDnsRecords.
+message ListAutomatedDnsRecordsResponse {
+  // AutomatedDnsRecords to be returned.
+  repeated AutomatedDnsRecord automated_dns_records = 1 [json_name="automatedDnsRecords"];
+  // The next pagination token in the List response. It should be used as page_token for the following request. An empty value means no more result.
+  string next_page_token = 2 [json_name="nextPageToken"];
+  // Locations that could not be reached.
+  repeated string unreachable = 3 [json_name="unreachable"];
 }
 
 // Response message to list `Destination` resources.
@@ -1689,7 +1767,7 @@ message Spoke {
   string description = 2 [json_name="description"];
   // Optional. This checksum is computed by the server based on the value of other fields, and may be sent on update and delete requests to ensure the client has an up-to-date value before proceeding.
   string etag = 3 [json_name="etag"];
-  // Optional. The list of fields waiting for hub administration's approval.
+  // Optional. The list of fields waiting for hub administrator's approval.
   repeated string field_paths_pending_update = 4 [json_name="fieldPathsPendingUpdate"];
   // Optional. The name of the group that this spoke is associated with.
   string group = 5 [json_name="group"];
@@ -1763,7 +1841,7 @@ message StateMetadata {
   string state = 2 [json_name="state"];
 }
 
-// The reason a spoke is inactive.
+// The reason for the current state of the spoke.
 message StateReason {
   // The code associated with this reason.
   string code = 1 [json_name="code"];
@@ -1822,6 +1900,33 @@ message ListProjectsLocationsRequest {
   string name = 3;
   int32 page_size = 4;
   string page_token = 5;
+}
+
+message CreateProjectsLocationsAutomatedDnsRecordRequest {
+  string automated_dns_record_id = 1;
+  string insert_mode = 2;
+  string parent = 3;
+  string request_id = 4;
+  AutomatedDnsRecord projects_locations_automated_dns_record = 5;
+}
+
+message DeleteProjectsLocationsAutomatedDnsRecordRequest {
+  string delete_mode = 1;
+  string etag = 2;
+  string name = 3;
+  string request_id = 4;
+}
+
+message GetProjectsLocationsAutomatedDnsRecordRequest {
+  string name = 1;
+}
+
+message ListProjectsLocationsAutomatedDnsRecordsRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
 }
 
 message AcceptSpokeProjectsLocationsGlobalHubRequest {
