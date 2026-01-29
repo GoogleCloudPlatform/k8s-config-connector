@@ -66,6 +66,11 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		// Apply client side GCP default Edition is ENTERPRISE.
 		out.Settings.Edition = "ENTERPRISE"
 	}
+	if in.Spec.Settings.InsightsConfig != nil {
+		if in.Spec.Settings.InsightsConfig.QueryPlansPerMinute == nil {
+			out.Settings.InsightsConfig.QueryPlansPerMinute = 5
+		}
+	}
 
 	if in.Spec.Settings.IpConfiguration == nil {
 		// GCP default IpConfiguration.
