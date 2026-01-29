@@ -32,6 +32,7 @@ var membershipURL = gcpurls.Template[GKEHubMembershipIdentity](
 
 // GKEHubMembershipIdentity defines the resource reference to GKEHubMembership, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type GKEHubMembershipIdentity struct {
 	ProjectID    string
 	Location     string
