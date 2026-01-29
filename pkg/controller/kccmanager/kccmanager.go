@@ -101,6 +101,9 @@ type Config struct {
 	// Configure manager to participate in leader election if MultiClusterLease is enabled.
 	MultiClusterLease bool
 
+	// DebugStructuredDiffReporting enables enhanced structured diff reporting.
+	DebugStructuredDiffReporting bool
+
 	// used for smoke testing only; options not meant to be used in production.
 	testConfig
 }
@@ -240,7 +243,11 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	opts.BaseContext = func() context.Context {
 		// If listener already exists, do not add another
 		if _, exists := structuredreporting.GetListenerFromContext(ctx); !exists {
-			return structuredreporting.ContextWithListener(ctx, &structuredreporting.LogFieldUpdates{})
+			if cfg.DebugStructuredDiffReporting {
+				return structuredreporting.ContextWithListener(ctx, &structuredreporting.DebugLogListener{})
+			} else {
+				return structuredreporting.ContextWithListener(ctx, &structuredreporting.LogFieldUpdates{})
+			}
 		}
 
 		return ctx
