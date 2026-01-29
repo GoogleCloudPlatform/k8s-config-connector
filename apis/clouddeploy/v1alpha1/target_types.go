@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
 	containerkrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
@@ -228,7 +229,7 @@ type ExecutionConfig struct {
 	//  If this optional field is unspecified, the default Cloud Build pool will be
 	//  used.
 	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.worker_pool
-	WorkerPool *string `json:"workerPool,omitempty"`
+	WorkerPoolRef *cloudbuildv1beta1.CloudBuildWorkerPoolRef `json:"workerPoolRef,omitempty"`
 
 	// Optional. Google service account to use for execution. If unspecified,
 	//  the project execution service account
@@ -260,7 +261,7 @@ type PrivatePool struct {
 	// Required. Resource name of the Cloud Build worker pool to use. The format
 	//  is `projects/{project}/locations/{location}/workerPools/{pool}`.
 	// +kcc:proto:field=google.cloud.deploy.v1.PrivatePool.worker_pool
-	WorkerPool *string `json:"workerPool,omitempty"`
+	WorkerPoolRef *cloudbuildv1beta1.CloudBuildWorkerPoolRef `json:"workerPoolRef,omitempty"`
 
 	// Optional. Google service account to use for execution. If unspecified,
 	//  the project execution service account
