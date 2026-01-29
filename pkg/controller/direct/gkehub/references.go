@@ -37,20 +37,6 @@ type Feature struct {
 
 // resolveMembershipRef returns a membership that has membershipId as "projects/*/locations/*/memberships/{membershipId}".
 func resolveMembershipRef(ctx context.Context, reader client.Reader, obj *krm.GKEHubFeatureMembership, projectID string) (*Membership, error) {
-	// Use the library function to normalize the reference.
-	// defaultNamespace := obj.GetNamespace()
-	// err := obj.Spec.MembershipRef.Normalize(ctx, reader, defaultNamespace)
-	// But wait, the generated code for GKEHubFeatureMembership might not call Normalize automatically?
-	// The controller is responsible for calling it.
-
-	// We need to call Normalize on the reference.
-	// However, the MembershipRef struct in GKEHubFeatureMembershipSpec is a struct, not a pointer?
-	// Let's check featuremembership_types.go: it claims "MembershipRef MembershipRef `json:"membershipRef"`" (Lines 372).
-	// So it is a value.
-
-	// We make a copy to normalize it without modifying the original object in memory validation loop (though controller usually can modify if it updates).
-	// Actually, we just want the external ID.
-
 	ref := &obj.Spec.MembershipRef
 	if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
