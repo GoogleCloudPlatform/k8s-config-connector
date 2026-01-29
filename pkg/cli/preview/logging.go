@@ -92,11 +92,7 @@ func (w *stdLogFilter) Write(p []byte) (n int, err error) {
 		return len(p), nil
 	}
 	// Standard log package usually formats as "2026/01/29 00:00:00 [DEBUG] ..."
-	if strings.Contains(msg, " [DEBUG] ") || strings.Contains(msg, " [INFO] ") {
-		return len(p), nil
-	}
-	// Also handle cases where there is no timestamp (e.g. log.SetFlags(0))
-	if strings.HasPrefix(msg, "[DEBUG]") || strings.HasPrefix(msg, "[INFO]") {
+	if strings.Contains(msg, "[DEBUG]") || strings.Contains(msg, "[INFO]") {
 		return len(p), nil
 	}
 	return w.sink.Write(p)
