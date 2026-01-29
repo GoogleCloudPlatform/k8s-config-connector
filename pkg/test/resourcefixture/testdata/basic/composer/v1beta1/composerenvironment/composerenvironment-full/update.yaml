@@ -1,0 +1,36 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: composer.cnrm.cloud.google.com/v1beta1
+kind: ComposerEnvironment
+metadata:
+  name: composerenvironment-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  config:
+    environmentSize: "ENVIRONMENT_SIZE_LARGE" # Updated
+    nodeConfig:
+      serviceAccountRef:
+        name: gsa-${uniqueId}
+      composerInternalIPv4CIDRBlock: "100.64.128.0/20"
+    softwareConfig:
+      imageVersion: composer-3-airflow-2.10.5-build.19 # Updated
+      webServerPluginsMode: "PLUGINS_ENABLED"
+      airflowConfigOverrides:
+        webserver-rbac_user_registration_role: Viewer
+    privateEnvironmentConfig:
+      enablePrivateEnvironment: false # Updated
+      enablePrivateBuildsOnly: false # Updated
