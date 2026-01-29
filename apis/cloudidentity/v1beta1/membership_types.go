@@ -53,7 +53,7 @@ type CloudIdentityMembershipStatus struct {
 	commonv1alpha1.CommonStatus `json:",inline"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	// ObservedState *CloudIdentityMembershipObservedState `json:"observedState,omitempty"`
+	ObservedState *CloudIdentityMembershipObservedState `json:"observedState,omitempty"`
 
 	// Output only. The time when the `Membership` was created.
 	// +kcc:proto:field=google.apps.cloudidentity.groups.v1beta1.Membership.create_time
@@ -94,10 +94,11 @@ type CloudIdentityMembershipObservedState struct {
 	// Type
 	// DeliverySetting
 
-	// The state output field is in a list
-	// .spec.[]roles.restrictionEvaluations.memberRestrictionEvaluationstate
-	// Not sure if we need to build an array copying everything from the spec here.
-	// []MembershipMemberRestrictionEvaluation.State
+	// Duplicate Roles field into to ObservedState because
+	// .spec.[]roles.restrictionEvaluations.memberRestrictionEvaluation.state is output-only
+
+	// The `MembershipRole`s that apply to the `Membership`.
+	Roles []MembershipRoles `json:"roles,omitempty"`
 }
 
 // +kcc:proto=google.apps.cloudidentity.groups.v1beta1.ExpiryDetail
