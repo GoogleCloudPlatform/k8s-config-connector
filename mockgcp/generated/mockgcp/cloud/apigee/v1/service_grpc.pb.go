@@ -1105,6 +1105,247 @@ var OrganizationsAnalyticsDatastoresServer_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "mockgcp/cloud/apigee/v1/service.proto",
 }
 
+// OrganizationsApimServiceExtensionsServerClient is the client API for OrganizationsApimServiceExtensionsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type OrganizationsApimServiceExtensionsServerClient interface {
+	// Creates an APIM ServiceExtension in an organization.
+	CreateOrganizationsApimServiceExtension(ctx context.Context, in *CreateOrganizationsApimServiceExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes APIM service extension from an organization.
+	DeleteOrganizationsApimServiceExtension(ctx context.Context, in *DeleteOrganizationsApimServiceExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Gets APIM service extension details.
+	GetOrganizationsApimServiceExtension(ctx context.Context, in *GetOrganizationsApimServiceExtensionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApimServiceExtension, error)
+	// Lists all APIM service extensions in an organization.
+	ListOrganizationsApimServiceExtensions(ctx context.Context, in *ListOrganizationsApimServiceExtensionsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListApimServiceExtensionsResponse, error)
+	// Updates an APIM service extension in an organization.
+	PatchOrganizationsApimServiceExtension(ctx context.Context, in *PatchOrganizationsApimServiceExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+}
+
+type organizationsApimServiceExtensionsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewOrganizationsApimServiceExtensionsServerClient(cc grpc.ClientConnInterface) OrganizationsApimServiceExtensionsServerClient {
+	return &organizationsApimServiceExtensionsServerClient{cc}
+}
+
+func (c *organizationsApimServiceExtensionsServerClient) CreateOrganizationsApimServiceExtension(ctx context.Context, in *CreateOrganizationsApimServiceExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/CreateOrganizationsApimServiceExtension", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsApimServiceExtensionsServerClient) DeleteOrganizationsApimServiceExtension(ctx context.Context, in *DeleteOrganizationsApimServiceExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/DeleteOrganizationsApimServiceExtension", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsApimServiceExtensionsServerClient) GetOrganizationsApimServiceExtension(ctx context.Context, in *GetOrganizationsApimServiceExtensionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApimServiceExtension, error) {
+	out := new(GoogleCloudApigeeV1ApimServiceExtension)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/GetOrganizationsApimServiceExtension", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsApimServiceExtensionsServerClient) ListOrganizationsApimServiceExtensions(ctx context.Context, in *ListOrganizationsApimServiceExtensionsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListApimServiceExtensionsResponse, error) {
+	out := new(GoogleCloudApigeeV1ListApimServiceExtensionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/ListOrganizationsApimServiceExtensions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsApimServiceExtensionsServerClient) PatchOrganizationsApimServiceExtension(ctx context.Context, in *PatchOrganizationsApimServiceExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/PatchOrganizationsApimServiceExtension", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// OrganizationsApimServiceExtensionsServerServer is the server API for OrganizationsApimServiceExtensionsServer service.
+// All implementations must embed UnimplementedOrganizationsApimServiceExtensionsServerServer
+// for forward compatibility
+type OrganizationsApimServiceExtensionsServerServer interface {
+	// Creates an APIM ServiceExtension in an organization.
+	CreateOrganizationsApimServiceExtension(context.Context, *CreateOrganizationsApimServiceExtensionRequest) (*longrunningpb.Operation, error)
+	// Deletes APIM service extension from an organization.
+	DeleteOrganizationsApimServiceExtension(context.Context, *DeleteOrganizationsApimServiceExtensionRequest) (*longrunningpb.Operation, error)
+	// Gets APIM service extension details.
+	GetOrganizationsApimServiceExtension(context.Context, *GetOrganizationsApimServiceExtensionRequest) (*GoogleCloudApigeeV1ApimServiceExtension, error)
+	// Lists all APIM service extensions in an organization.
+	ListOrganizationsApimServiceExtensions(context.Context, *ListOrganizationsApimServiceExtensionsRequest) (*GoogleCloudApigeeV1ListApimServiceExtensionsResponse, error)
+	// Updates an APIM service extension in an organization.
+	PatchOrganizationsApimServiceExtension(context.Context, *PatchOrganizationsApimServiceExtensionRequest) (*longrunningpb.Operation, error)
+	mustEmbedUnimplementedOrganizationsApimServiceExtensionsServerServer()
+}
+
+// UnimplementedOrganizationsApimServiceExtensionsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedOrganizationsApimServiceExtensionsServerServer struct {
+}
+
+func (UnimplementedOrganizationsApimServiceExtensionsServerServer) CreateOrganizationsApimServiceExtension(context.Context, *CreateOrganizationsApimServiceExtensionRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOrganizationsApimServiceExtension not implemented")
+}
+func (UnimplementedOrganizationsApimServiceExtensionsServerServer) DeleteOrganizationsApimServiceExtension(context.Context, *DeleteOrganizationsApimServiceExtensionRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrganizationsApimServiceExtension not implemented")
+}
+func (UnimplementedOrganizationsApimServiceExtensionsServerServer) GetOrganizationsApimServiceExtension(context.Context, *GetOrganizationsApimServiceExtensionRequest) (*GoogleCloudApigeeV1ApimServiceExtension, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrganizationsApimServiceExtension not implemented")
+}
+func (UnimplementedOrganizationsApimServiceExtensionsServerServer) ListOrganizationsApimServiceExtensions(context.Context, *ListOrganizationsApimServiceExtensionsRequest) (*GoogleCloudApigeeV1ListApimServiceExtensionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsApimServiceExtensions not implemented")
+}
+func (UnimplementedOrganizationsApimServiceExtensionsServerServer) PatchOrganizationsApimServiceExtension(context.Context, *PatchOrganizationsApimServiceExtensionRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchOrganizationsApimServiceExtension not implemented")
+}
+func (UnimplementedOrganizationsApimServiceExtensionsServerServer) mustEmbedUnimplementedOrganizationsApimServiceExtensionsServerServer() {
+}
+
+// UnsafeOrganizationsApimServiceExtensionsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OrganizationsApimServiceExtensionsServerServer will
+// result in compilation errors.
+type UnsafeOrganizationsApimServiceExtensionsServerServer interface {
+	mustEmbedUnimplementedOrganizationsApimServiceExtensionsServerServer()
+}
+
+func RegisterOrganizationsApimServiceExtensionsServerServer(s grpc.ServiceRegistrar, srv OrganizationsApimServiceExtensionsServerServer) {
+	s.RegisterService(&OrganizationsApimServiceExtensionsServer_ServiceDesc, srv)
+}
+
+func _OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateOrganizationsApimServiceExtensionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsApimServiceExtensionsServerServer).CreateOrganizationsApimServiceExtension(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/CreateOrganizationsApimServiceExtension",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsApimServiceExtensionsServerServer).CreateOrganizationsApimServiceExtension(ctx, req.(*CreateOrganizationsApimServiceExtensionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsApimServiceExtensionsServer_DeleteOrganizationsApimServiceExtension_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteOrganizationsApimServiceExtensionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsApimServiceExtensionsServerServer).DeleteOrganizationsApimServiceExtension(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/DeleteOrganizationsApimServiceExtension",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsApimServiceExtensionsServerServer).DeleteOrganizationsApimServiceExtension(ctx, req.(*DeleteOrganizationsApimServiceExtensionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsApimServiceExtensionsServer_GetOrganizationsApimServiceExtension_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrganizationsApimServiceExtensionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsApimServiceExtensionsServerServer).GetOrganizationsApimServiceExtension(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/GetOrganizationsApimServiceExtension",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsApimServiceExtensionsServerServer).GetOrganizationsApimServiceExtension(ctx, req.(*GetOrganizationsApimServiceExtensionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListOrganizationsApimServiceExtensionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsApimServiceExtensionsServerServer).ListOrganizationsApimServiceExtensions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/ListOrganizationsApimServiceExtensions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsApimServiceExtensionsServerServer).ListOrganizationsApimServiceExtensions(ctx, req.(*ListOrganizationsApimServiceExtensionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchOrganizationsApimServiceExtensionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsApimServiceExtensionsServerServer).PatchOrganizationsApimServiceExtension(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer/PatchOrganizationsApimServiceExtension",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsApimServiceExtensionsServerServer).PatchOrganizationsApimServiceExtension(ctx, req.(*PatchOrganizationsApimServiceExtensionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// OrganizationsApimServiceExtensionsServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsApimServiceExtensionsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var OrganizationsApimServiceExtensionsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.apigee.v1.OrganizationsApimServiceExtensionsServer",
+	HandlerType: (*OrganizationsApimServiceExtensionsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateOrganizationsApimServiceExtension",
+			Handler:    _OrganizationsApimServiceExtensionsServer_CreateOrganizationsApimServiceExtension_Handler,
+		},
+		{
+			MethodName: "DeleteOrganizationsApimServiceExtension",
+			Handler:    _OrganizationsApimServiceExtensionsServer_DeleteOrganizationsApimServiceExtension_Handler,
+		},
+		{
+			MethodName: "GetOrganizationsApimServiceExtension",
+			Handler:    _OrganizationsApimServiceExtensionsServer_GetOrganizationsApimServiceExtension_Handler,
+		},
+		{
+			MethodName: "ListOrganizationsApimServiceExtensions",
+			Handler:    _OrganizationsApimServiceExtensionsServer_ListOrganizationsApimServiceExtensions_Handler,
+		},
+		{
+			MethodName: "PatchOrganizationsApimServiceExtension",
+			Handler:    _OrganizationsApimServiceExtensionsServer_PatchOrganizationsApimServiceExtension_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/apigee/v1/service.proto",
+}
+
 // OrganizationsApiproductsServerClient is the client API for OrganizationsApiproductsServer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
@@ -2955,10 +3196,16 @@ type OrganizationsAppgroupsServerClient interface {
 	DeleteOrganizationsAppgroup(ctx context.Context, in *DeleteOrganizationsAppgroupRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroup, error)
 	// Returns the AppGroup details for the provided AppGroup name in the request URI.
 	GetOrganizationsAppgroup(ctx context.Context, in *GetOrganizationsAppgroupRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroup, error)
+	// Gets the account balance for the AppGroup.
+	GetBalanceOrganizationsAppgroup(ctx context.Context, in *GetBalanceOrganizationsAppgroupRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupBalance, error)
+	// Gets the monetization configuration for the AppGroup.
+	GetMonetizationConfigOrganizationsAppgroup(ctx context.Context, in *GetMonetizationConfigOrganizationsAppgroupRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupMonetizationConfig, error)
 	// Lists all AppGroups in an organization. A maximum of 1000 AppGroups are returned in the response if PageSize is not specified, or if the PageSize is greater than 1000.
 	ListOrganizationsAppgroups(ctx context.Context, in *ListOrganizationsAppgroupsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListAppGroupsResponse, error)
 	// Updates an AppGroup. This API replaces the existing AppGroup details with those specified in the request. Include or exclude any existing details that you want to retain or delete, respectively. Note that the state of the AppGroup should be updated using `action`, and not via AppGroup.
 	UpdateOrganizationsAppgroup(ctx context.Context, in *UpdateOrganizationsAppgroupRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroup, error)
+	// Updates the monetization configuration for the AppGroup.
+	UpdateMonetizationConfigOrganizationsAppgroup(ctx context.Context, in *UpdateMonetizationConfigOrganizationsAppgroupRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupMonetizationConfig, error)
 }
 
 type organizationsAppgroupsServerClient struct {
@@ -2996,6 +3243,24 @@ func (c *organizationsAppgroupsServerClient) GetOrganizationsAppgroup(ctx contex
 	return out, nil
 }
 
+func (c *organizationsAppgroupsServerClient) GetBalanceOrganizationsAppgroup(ctx context.Context, in *GetBalanceOrganizationsAppgroupRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupBalance, error) {
+	out := new(GoogleCloudApigeeV1AppGroupBalance)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/GetBalanceOrganizationsAppgroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsAppgroupsServerClient) GetMonetizationConfigOrganizationsAppgroup(ctx context.Context, in *GetMonetizationConfigOrganizationsAppgroupRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupMonetizationConfig, error) {
+	out := new(GoogleCloudApigeeV1AppGroupMonetizationConfig)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/GetMonetizationConfigOrganizationsAppgroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *organizationsAppgroupsServerClient) ListOrganizationsAppgroups(ctx context.Context, in *ListOrganizationsAppgroupsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListAppGroupsResponse, error) {
 	out := new(GoogleCloudApigeeV1ListAppGroupsResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/ListOrganizationsAppgroups", in, out, opts...)
@@ -3014,6 +3279,15 @@ func (c *organizationsAppgroupsServerClient) UpdateOrganizationsAppgroup(ctx con
 	return out, nil
 }
 
+func (c *organizationsAppgroupsServerClient) UpdateMonetizationConfigOrganizationsAppgroup(ctx context.Context, in *UpdateMonetizationConfigOrganizationsAppgroupRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupMonetizationConfig, error) {
+	out := new(GoogleCloudApigeeV1AppGroupMonetizationConfig)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/UpdateMonetizationConfigOrganizationsAppgroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrganizationsAppgroupsServerServer is the server API for OrganizationsAppgroupsServer service.
 // All implementations must embed UnimplementedOrganizationsAppgroupsServerServer
 // for forward compatibility
@@ -3024,10 +3298,16 @@ type OrganizationsAppgroupsServerServer interface {
 	DeleteOrganizationsAppgroup(context.Context, *DeleteOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroup, error)
 	// Returns the AppGroup details for the provided AppGroup name in the request URI.
 	GetOrganizationsAppgroup(context.Context, *GetOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroup, error)
+	// Gets the account balance for the AppGroup.
+	GetBalanceOrganizationsAppgroup(context.Context, *GetBalanceOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroupBalance, error)
+	// Gets the monetization configuration for the AppGroup.
+	GetMonetizationConfigOrganizationsAppgroup(context.Context, *GetMonetizationConfigOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroupMonetizationConfig, error)
 	// Lists all AppGroups in an organization. A maximum of 1000 AppGroups are returned in the response if PageSize is not specified, or if the PageSize is greater than 1000.
 	ListOrganizationsAppgroups(context.Context, *ListOrganizationsAppgroupsRequest) (*GoogleCloudApigeeV1ListAppGroupsResponse, error)
 	// Updates an AppGroup. This API replaces the existing AppGroup details with those specified in the request. Include or exclude any existing details that you want to retain or delete, respectively. Note that the state of the AppGroup should be updated using `action`, and not via AppGroup.
 	UpdateOrganizationsAppgroup(context.Context, *UpdateOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroup, error)
+	// Updates the monetization configuration for the AppGroup.
+	UpdateMonetizationConfigOrganizationsAppgroup(context.Context, *UpdateMonetizationConfigOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroupMonetizationConfig, error)
 	mustEmbedUnimplementedOrganizationsAppgroupsServerServer()
 }
 
@@ -3044,11 +3324,20 @@ func (UnimplementedOrganizationsAppgroupsServerServer) DeleteOrganizationsAppgro
 func (UnimplementedOrganizationsAppgroupsServerServer) GetOrganizationsAppgroup(context.Context, *GetOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroup, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOrganizationsAppgroup not implemented")
 }
+func (UnimplementedOrganizationsAppgroupsServerServer) GetBalanceOrganizationsAppgroup(context.Context, *GetBalanceOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroupBalance, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBalanceOrganizationsAppgroup not implemented")
+}
+func (UnimplementedOrganizationsAppgroupsServerServer) GetMonetizationConfigOrganizationsAppgroup(context.Context, *GetMonetizationConfigOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroupMonetizationConfig, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMonetizationConfigOrganizationsAppgroup not implemented")
+}
 func (UnimplementedOrganizationsAppgroupsServerServer) ListOrganizationsAppgroups(context.Context, *ListOrganizationsAppgroupsRequest) (*GoogleCloudApigeeV1ListAppGroupsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsAppgroups not implemented")
 }
 func (UnimplementedOrganizationsAppgroupsServerServer) UpdateOrganizationsAppgroup(context.Context, *UpdateOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroup, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateOrganizationsAppgroup not implemented")
+}
+func (UnimplementedOrganizationsAppgroupsServerServer) UpdateMonetizationConfigOrganizationsAppgroup(context.Context, *UpdateMonetizationConfigOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroupMonetizationConfig, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMonetizationConfigOrganizationsAppgroup not implemented")
 }
 func (UnimplementedOrganizationsAppgroupsServerServer) mustEmbedUnimplementedOrganizationsAppgroupsServerServer() {
 }
@@ -3118,6 +3407,42 @@ func _OrganizationsAppgroupsServer_GetOrganizationsAppgroup_Handler(srv interfac
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrganizationsAppgroupsServer_GetBalanceOrganizationsAppgroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBalanceOrganizationsAppgroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsAppgroupsServerServer).GetBalanceOrganizationsAppgroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/GetBalanceOrganizationsAppgroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsAppgroupsServerServer).GetBalanceOrganizationsAppgroup(ctx, req.(*GetBalanceOrganizationsAppgroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsAppgroupsServer_GetMonetizationConfigOrganizationsAppgroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMonetizationConfigOrganizationsAppgroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsAppgroupsServerServer).GetMonetizationConfigOrganizationsAppgroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/GetMonetizationConfigOrganizationsAppgroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsAppgroupsServerServer).GetMonetizationConfigOrganizationsAppgroup(ctx, req.(*GetMonetizationConfigOrganizationsAppgroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _OrganizationsAppgroupsServer_ListOrganizationsAppgroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListOrganizationsAppgroupsRequest)
 	if err := dec(in); err != nil {
@@ -3154,6 +3479,24 @@ func _OrganizationsAppgroupsServer_UpdateOrganizationsAppgroup_Handler(srv inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrganizationsAppgroupsServer_UpdateMonetizationConfigOrganizationsAppgroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMonetizationConfigOrganizationsAppgroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsAppgroupsServerServer).UpdateMonetizationConfigOrganizationsAppgroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsServer/UpdateMonetizationConfigOrganizationsAppgroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsAppgroupsServerServer).UpdateMonetizationConfigOrganizationsAppgroup(ctx, req.(*UpdateMonetizationConfigOrganizationsAppgroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrganizationsAppgroupsServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsAppgroupsServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -3174,12 +3517,24 @@ var OrganizationsAppgroupsServer_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _OrganizationsAppgroupsServer_GetOrganizationsAppgroup_Handler,
 		},
 		{
+			MethodName: "GetBalanceOrganizationsAppgroup",
+			Handler:    _OrganizationsAppgroupsServer_GetBalanceOrganizationsAppgroup_Handler,
+		},
+		{
+			MethodName: "GetMonetizationConfigOrganizationsAppgroup",
+			Handler:    _OrganizationsAppgroupsServer_GetMonetizationConfigOrganizationsAppgroup_Handler,
+		},
+		{
 			MethodName: "ListOrganizationsAppgroups",
 			Handler:    _OrganizationsAppgroupsServer_ListOrganizationsAppgroups_Handler,
 		},
 		{
 			MethodName: "UpdateOrganizationsAppgroup",
 			Handler:    _OrganizationsAppgroupsServer_UpdateOrganizationsAppgroup_Handler,
+		},
+		{
+			MethodName: "UpdateMonetizationConfigOrganizationsAppgroup",
+			Handler:    _OrganizationsAppgroupsServer_UpdateMonetizationConfigOrganizationsAppgroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -3751,6 +4106,336 @@ var OrganizationsAppgroupsAppsKeysApiproductsServer_ServiceDesc = grpc.ServiceDe
 		{
 			MethodName: "UpdateAppGroupAppKeyApiProductOrganizationsAppgroupsAppsKeysApiproduct",
 			Handler:    _OrganizationsAppgroupsAppsKeysApiproductsServer_UpdateAppGroupAppKeyApiProductOrganizationsAppgroupsAppsKeysApiproduct_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/apigee/v1/service.proto",
+}
+
+// OrganizationsAppgroupsBalanceServerClient is the client API for OrganizationsAppgroupsBalanceServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type OrganizationsAppgroupsBalanceServerClient interface {
+	// Adjust the prepaid balance for the AppGroup. This API will be used in scenarios where the AppGroup has been under-charged or over-charged.
+	AdjustOrganizationsAppgroupsBalance(ctx context.Context, in *AdjustOrganizationsAppgroupsBalanceRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupBalance, error)
+	// Credits the account balance for the AppGroup.
+	CreditOrganizationsAppgroupsBalance(ctx context.Context, in *CreditOrganizationsAppgroupsBalanceRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupBalance, error)
+}
+
+type organizationsAppgroupsBalanceServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewOrganizationsAppgroupsBalanceServerClient(cc grpc.ClientConnInterface) OrganizationsAppgroupsBalanceServerClient {
+	return &organizationsAppgroupsBalanceServerClient{cc}
+}
+
+func (c *organizationsAppgroupsBalanceServerClient) AdjustOrganizationsAppgroupsBalance(ctx context.Context, in *AdjustOrganizationsAppgroupsBalanceRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupBalance, error) {
+	out := new(GoogleCloudApigeeV1AppGroupBalance)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsBalanceServer/AdjustOrganizationsAppgroupsBalance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsAppgroupsBalanceServerClient) CreditOrganizationsAppgroupsBalance(ctx context.Context, in *CreditOrganizationsAppgroupsBalanceRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupBalance, error) {
+	out := new(GoogleCloudApigeeV1AppGroupBalance)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsBalanceServer/CreditOrganizationsAppgroupsBalance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// OrganizationsAppgroupsBalanceServerServer is the server API for OrganizationsAppgroupsBalanceServer service.
+// All implementations must embed UnimplementedOrganizationsAppgroupsBalanceServerServer
+// for forward compatibility
+type OrganizationsAppgroupsBalanceServerServer interface {
+	// Adjust the prepaid balance for the AppGroup. This API will be used in scenarios where the AppGroup has been under-charged or over-charged.
+	AdjustOrganizationsAppgroupsBalance(context.Context, *AdjustOrganizationsAppgroupsBalanceRequest) (*GoogleCloudApigeeV1AppGroupBalance, error)
+	// Credits the account balance for the AppGroup.
+	CreditOrganizationsAppgroupsBalance(context.Context, *CreditOrganizationsAppgroupsBalanceRequest) (*GoogleCloudApigeeV1AppGroupBalance, error)
+	mustEmbedUnimplementedOrganizationsAppgroupsBalanceServerServer()
+}
+
+// UnimplementedOrganizationsAppgroupsBalanceServerServer must be embedded to have forward compatible implementations.
+type UnimplementedOrganizationsAppgroupsBalanceServerServer struct {
+}
+
+func (UnimplementedOrganizationsAppgroupsBalanceServerServer) AdjustOrganizationsAppgroupsBalance(context.Context, *AdjustOrganizationsAppgroupsBalanceRequest) (*GoogleCloudApigeeV1AppGroupBalance, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AdjustOrganizationsAppgroupsBalance not implemented")
+}
+func (UnimplementedOrganizationsAppgroupsBalanceServerServer) CreditOrganizationsAppgroupsBalance(context.Context, *CreditOrganizationsAppgroupsBalanceRequest) (*GoogleCloudApigeeV1AppGroupBalance, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreditOrganizationsAppgroupsBalance not implemented")
+}
+func (UnimplementedOrganizationsAppgroupsBalanceServerServer) mustEmbedUnimplementedOrganizationsAppgroupsBalanceServerServer() {
+}
+
+// UnsafeOrganizationsAppgroupsBalanceServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OrganizationsAppgroupsBalanceServerServer will
+// result in compilation errors.
+type UnsafeOrganizationsAppgroupsBalanceServerServer interface {
+	mustEmbedUnimplementedOrganizationsAppgroupsBalanceServerServer()
+}
+
+func RegisterOrganizationsAppgroupsBalanceServerServer(s grpc.ServiceRegistrar, srv OrganizationsAppgroupsBalanceServerServer) {
+	s.RegisterService(&OrganizationsAppgroupsBalanceServer_ServiceDesc, srv)
+}
+
+func _OrganizationsAppgroupsBalanceServer_AdjustOrganizationsAppgroupsBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdjustOrganizationsAppgroupsBalanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsAppgroupsBalanceServerServer).AdjustOrganizationsAppgroupsBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsBalanceServer/AdjustOrganizationsAppgroupsBalance",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsAppgroupsBalanceServerServer).AdjustOrganizationsAppgroupsBalance(ctx, req.(*AdjustOrganizationsAppgroupsBalanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsAppgroupsBalanceServer_CreditOrganizationsAppgroupsBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreditOrganizationsAppgroupsBalanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsAppgroupsBalanceServerServer).CreditOrganizationsAppgroupsBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsBalanceServer/CreditOrganizationsAppgroupsBalance",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsAppgroupsBalanceServerServer).CreditOrganizationsAppgroupsBalance(ctx, req.(*CreditOrganizationsAppgroupsBalanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// OrganizationsAppgroupsBalanceServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsAppgroupsBalanceServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var OrganizationsAppgroupsBalanceServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.apigee.v1.OrganizationsAppgroupsBalanceServer",
+	HandlerType: (*OrganizationsAppgroupsBalanceServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "AdjustOrganizationsAppgroupsBalance",
+			Handler:    _OrganizationsAppgroupsBalanceServer_AdjustOrganizationsAppgroupsBalance_Handler,
+		},
+		{
+			MethodName: "CreditOrganizationsAppgroupsBalance",
+			Handler:    _OrganizationsAppgroupsBalanceServer_CreditOrganizationsAppgroupsBalance_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/apigee/v1/service.proto",
+}
+
+// OrganizationsAppgroupsSubscriptionsServerClient is the client API for OrganizationsAppgroupsSubscriptionsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type OrganizationsAppgroupsSubscriptionsServerClient interface {
+	// Creates a subscription to an API product.
+	CreateOrganizationsAppgroupsSubscription(ctx context.Context, in *CreateOrganizationsAppgroupsSubscriptionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupSubscription, error)
+	// Expires an API product subscription immediately.
+	ExpireOrganizationsAppgroupsSubscription(ctx context.Context, in *ExpireOrganizationsAppgroupsSubscriptionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupSubscription, error)
+	// Get an api product subscription for an appgroup.
+	GetOrganizationsAppgroupsSubscription(ctx context.Context, in *GetOrganizationsAppgroupsSubscriptionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupSubscription, error)
+	// List all api product subscriptions for an appgroup.
+	ListOrganizationsAppgroupsSubscriptions(ctx context.Context, in *ListOrganizationsAppgroupsSubscriptionsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListAppGroupSubscriptionsResponse, error)
+}
+
+type organizationsAppgroupsSubscriptionsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewOrganizationsAppgroupsSubscriptionsServerClient(cc grpc.ClientConnInterface) OrganizationsAppgroupsSubscriptionsServerClient {
+	return &organizationsAppgroupsSubscriptionsServerClient{cc}
+}
+
+func (c *organizationsAppgroupsSubscriptionsServerClient) CreateOrganizationsAppgroupsSubscription(ctx context.Context, in *CreateOrganizationsAppgroupsSubscriptionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupSubscription, error) {
+	out := new(GoogleCloudApigeeV1AppGroupSubscription)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/CreateOrganizationsAppgroupsSubscription", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsAppgroupsSubscriptionsServerClient) ExpireOrganizationsAppgroupsSubscription(ctx context.Context, in *ExpireOrganizationsAppgroupsSubscriptionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupSubscription, error) {
+	out := new(GoogleCloudApigeeV1AppGroupSubscription)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/ExpireOrganizationsAppgroupsSubscription", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsAppgroupsSubscriptionsServerClient) GetOrganizationsAppgroupsSubscription(ctx context.Context, in *GetOrganizationsAppgroupsSubscriptionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupSubscription, error) {
+	out := new(GoogleCloudApigeeV1AppGroupSubscription)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/GetOrganizationsAppgroupsSubscription", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsAppgroupsSubscriptionsServerClient) ListOrganizationsAppgroupsSubscriptions(ctx context.Context, in *ListOrganizationsAppgroupsSubscriptionsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListAppGroupSubscriptionsResponse, error) {
+	out := new(GoogleCloudApigeeV1ListAppGroupSubscriptionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/ListOrganizationsAppgroupsSubscriptions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// OrganizationsAppgroupsSubscriptionsServerServer is the server API for OrganizationsAppgroupsSubscriptionsServer service.
+// All implementations must embed UnimplementedOrganizationsAppgroupsSubscriptionsServerServer
+// for forward compatibility
+type OrganizationsAppgroupsSubscriptionsServerServer interface {
+	// Creates a subscription to an API product.
+	CreateOrganizationsAppgroupsSubscription(context.Context, *CreateOrganizationsAppgroupsSubscriptionRequest) (*GoogleCloudApigeeV1AppGroupSubscription, error)
+	// Expires an API product subscription immediately.
+	ExpireOrganizationsAppgroupsSubscription(context.Context, *ExpireOrganizationsAppgroupsSubscriptionRequest) (*GoogleCloudApigeeV1AppGroupSubscription, error)
+	// Get an api product subscription for an appgroup.
+	GetOrganizationsAppgroupsSubscription(context.Context, *GetOrganizationsAppgroupsSubscriptionRequest) (*GoogleCloudApigeeV1AppGroupSubscription, error)
+	// List all api product subscriptions for an appgroup.
+	ListOrganizationsAppgroupsSubscriptions(context.Context, *ListOrganizationsAppgroupsSubscriptionsRequest) (*GoogleCloudApigeeV1ListAppGroupSubscriptionsResponse, error)
+	mustEmbedUnimplementedOrganizationsAppgroupsSubscriptionsServerServer()
+}
+
+// UnimplementedOrganizationsAppgroupsSubscriptionsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedOrganizationsAppgroupsSubscriptionsServerServer struct {
+}
+
+func (UnimplementedOrganizationsAppgroupsSubscriptionsServerServer) CreateOrganizationsAppgroupsSubscription(context.Context, *CreateOrganizationsAppgroupsSubscriptionRequest) (*GoogleCloudApigeeV1AppGroupSubscription, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOrganizationsAppgroupsSubscription not implemented")
+}
+func (UnimplementedOrganizationsAppgroupsSubscriptionsServerServer) ExpireOrganizationsAppgroupsSubscription(context.Context, *ExpireOrganizationsAppgroupsSubscriptionRequest) (*GoogleCloudApigeeV1AppGroupSubscription, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExpireOrganizationsAppgroupsSubscription not implemented")
+}
+func (UnimplementedOrganizationsAppgroupsSubscriptionsServerServer) GetOrganizationsAppgroupsSubscription(context.Context, *GetOrganizationsAppgroupsSubscriptionRequest) (*GoogleCloudApigeeV1AppGroupSubscription, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrganizationsAppgroupsSubscription not implemented")
+}
+func (UnimplementedOrganizationsAppgroupsSubscriptionsServerServer) ListOrganizationsAppgroupsSubscriptions(context.Context, *ListOrganizationsAppgroupsSubscriptionsRequest) (*GoogleCloudApigeeV1ListAppGroupSubscriptionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsAppgroupsSubscriptions not implemented")
+}
+func (UnimplementedOrganizationsAppgroupsSubscriptionsServerServer) mustEmbedUnimplementedOrganizationsAppgroupsSubscriptionsServerServer() {
+}
+
+// UnsafeOrganizationsAppgroupsSubscriptionsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OrganizationsAppgroupsSubscriptionsServerServer will
+// result in compilation errors.
+type UnsafeOrganizationsAppgroupsSubscriptionsServerServer interface {
+	mustEmbedUnimplementedOrganizationsAppgroupsSubscriptionsServerServer()
+}
+
+func RegisterOrganizationsAppgroupsSubscriptionsServerServer(s grpc.ServiceRegistrar, srv OrganizationsAppgroupsSubscriptionsServerServer) {
+	s.RegisterService(&OrganizationsAppgroupsSubscriptionsServer_ServiceDesc, srv)
+}
+
+func _OrganizationsAppgroupsSubscriptionsServer_CreateOrganizationsAppgroupsSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateOrganizationsAppgroupsSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsAppgroupsSubscriptionsServerServer).CreateOrganizationsAppgroupsSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/CreateOrganizationsAppgroupsSubscription",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsAppgroupsSubscriptionsServerServer).CreateOrganizationsAppgroupsSubscription(ctx, req.(*CreateOrganizationsAppgroupsSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsAppgroupsSubscriptionsServer_ExpireOrganizationsAppgroupsSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExpireOrganizationsAppgroupsSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsAppgroupsSubscriptionsServerServer).ExpireOrganizationsAppgroupsSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/ExpireOrganizationsAppgroupsSubscription",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsAppgroupsSubscriptionsServerServer).ExpireOrganizationsAppgroupsSubscription(ctx, req.(*ExpireOrganizationsAppgroupsSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsAppgroupsSubscriptionsServer_GetOrganizationsAppgroupsSubscription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrganizationsAppgroupsSubscriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsAppgroupsSubscriptionsServerServer).GetOrganizationsAppgroupsSubscription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/GetOrganizationsAppgroupsSubscription",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsAppgroupsSubscriptionsServerServer).GetOrganizationsAppgroupsSubscription(ctx, req.(*GetOrganizationsAppgroupsSubscriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListOrganizationsAppgroupsSubscriptionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsAppgroupsSubscriptionsServerServer).ListOrganizationsAppgroupsSubscriptions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer/ListOrganizationsAppgroupsSubscriptions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsAppgroupsSubscriptionsServerServer).ListOrganizationsAppgroupsSubscriptions(ctx, req.(*ListOrganizationsAppgroupsSubscriptionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// OrganizationsAppgroupsSubscriptionsServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsAppgroupsSubscriptionsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var OrganizationsAppgroupsSubscriptionsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.apigee.v1.OrganizationsAppgroupsSubscriptionsServer",
+	HandlerType: (*OrganizationsAppgroupsSubscriptionsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateOrganizationsAppgroupsSubscription",
+			Handler:    _OrganizationsAppgroupsSubscriptionsServer_CreateOrganizationsAppgroupsSubscription_Handler,
+		},
+		{
+			MethodName: "ExpireOrganizationsAppgroupsSubscription",
+			Handler:    _OrganizationsAppgroupsSubscriptionsServer_ExpireOrganizationsAppgroupsSubscription_Handler,
+		},
+		{
+			MethodName: "GetOrganizationsAppgroupsSubscription",
+			Handler:    _OrganizationsAppgroupsSubscriptionsServer_GetOrganizationsAppgroupsSubscription_Handler,
+		},
+		{
+			MethodName: "ListOrganizationsAppgroupsSubscriptions",
+			Handler:    _OrganizationsAppgroupsSubscriptionsServer_ListOrganizationsAppgroupsSubscriptions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
