@@ -264,6 +264,13 @@ kind: AppengineInstance
 protopath: google.appengine.v1beta.Instance
 validated: null
 ---
+service: appengine
+package: google.appengine.v1
+proto: DomainMapping
+kind: AppengineDomainMapping
+protopath: google.appengine.v1.DomainMapping
+validated: null
+---
 service: bigtable
 package: google.bigtable.admin.v2
 proto: Instance
