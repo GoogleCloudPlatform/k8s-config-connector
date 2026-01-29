@@ -94,6 +94,7 @@
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeliveryPipeline                     | True         | True        | False  | Direct     |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeployPolicy                         | True         | False       | False  | Direct     |
 | clouddms.cnrm.cloud.google.com                | CloudDMSConversionWorkspace                     | True         | False       | False  | Direct     |
+| clouddms.cnrm.cloud.google.com                | CloudDMSMappingRule                             | True         | False       | False  | Direct     |
 | clouddms.cnrm.cloud.google.com                | CloudDMSMigrationJob                            | True         | False       | False  | Direct     |
 | clouddms.cnrm.cloud.google.com                | CloudDMSPrivateConnection                       | True         | False       | False  | Direct     |
 | cloudfunctions2.cnrm.cloud.google.com         | CloudFunctions2Function                         | True         | False       | False  | Terraform  |
