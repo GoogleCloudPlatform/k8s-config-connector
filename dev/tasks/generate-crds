@@ -17,7 +17,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
+REPO_ROOT="$(pwd)"
 cd ${REPO_ROOT}
 
 if [[ -n ${SKIP_GENERATE_CRDS:-} ]]; then
