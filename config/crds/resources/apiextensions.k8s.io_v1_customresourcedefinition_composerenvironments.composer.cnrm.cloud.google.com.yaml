@@ -992,14 +992,12 @@ spec:
                    size.
                 type: object
               location:
-                description: Immutable. The name of the location where the Environment
-                  will be created. Required.
                 type: string
                 x-kubernetes-validations:
                 - message: Location is immutable.
                   rule: self == oldSelf
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -2170,14 +2168,12 @@ spec:
                    size.
                 type: object
               location:
-                description: Immutable. The name of the location where the Environment
-                  will be created. Required.
                 type: string
                 x-kubernetes-validations:
                 - message: Location is immutable.
                   rule: self == oldSelf
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
