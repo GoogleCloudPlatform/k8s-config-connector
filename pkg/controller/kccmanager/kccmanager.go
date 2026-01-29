@@ -101,6 +101,10 @@ type Config struct {
 	// Configure manager to participate in leader election if MultiClusterLease is enabled.
 	MultiClusterLease bool
 
+	// ScopedNamespace is the namespace that the manager is scoped to.
+	// If empty, the manager is cluster-scoped.
+	ScopedNamespace string
+
 	// used for smoke testing only; options not meant to be used in production.
 	testConfig
 }
@@ -374,7 +378,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
 	if !cfg.skipControllerRegistration {
-		if err := registration.AddDefaultControllers(ctx, mgr, &rd, controllerConfig); err != nil {
+		if err := registration.AddDefaultControllers(ctx, mgr, &rd, controllerConfig, cfg.ScopedNamespace); err != nil {
 			return nil, fmt.Errorf("error adding registration controller: %w", err)
 		}
 	}

@@ -76,6 +76,28 @@ spec:
                       The format for the entries should follow the format as Kind.group :
                       e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
                     type: object
+                  resourceSettings:
+                    description: |-
+                      ResourceSettings allows specifying which resources to enable or disable in this namespace.
+                      Validation likely enforces uniqueness, but if duplicates exist, behavior is undefined.
+                    items:
+                      properties:
+                        enabled:
+                          description: Enabled controls whether the controller for
+                            this resource is enabled.
+                          type: boolean
+                        group:
+                          description: Group is the API group of the resource.
+                          type: string
+                        kind:
+                          description: Kind is the Kind of the resource.
+                          type: string
+                      required:
+                      - enabled
+                      - group
+                      - kind
+                      type: object
+                    type: array
                 type: object
               googleServiceAccount:
                 description: |-
