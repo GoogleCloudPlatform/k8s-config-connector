@@ -16,6 +16,7 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
     cnrm.cloud.google.com/disable-on-destroy: "false"
   name: compute.googleapis.com
@@ -28,6 +29,7 @@ kind: ComputeNetwork
 metadata:
   name: default
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/deletion-policy: "abandon"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
@@ -38,6 +40,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computesubnetwork-${uniqueId}
 spec:
@@ -52,6 +55,7 @@ kind: ComputeSubnetwork
 metadata:
   name: default
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/deletion-policy: "abandon"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
@@ -65,6 +69,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computebackendservice-${uniqueId}
 spec:
@@ -77,6 +82,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computeforwardingrule-${uniqueId}
 spec:
@@ -94,6 +100,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeServiceAttachment
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computeserviceattachment-${uniqueId}
 spec:
   projectRef:

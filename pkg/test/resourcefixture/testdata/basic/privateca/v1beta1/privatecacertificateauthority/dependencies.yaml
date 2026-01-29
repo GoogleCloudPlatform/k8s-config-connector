@@ -23,6 +23,7 @@ metadata:
   # with a PrivateCACertificateAuthority in 'DELETED' status cannot be deleted
   # itself, we abandon this resource on deletion.
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:

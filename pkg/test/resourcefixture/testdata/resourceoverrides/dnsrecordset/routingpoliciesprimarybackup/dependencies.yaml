@@ -17,6 +17,7 @@ kind: ComputeNetwork
 metadata:
   name: default
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: "${projectId}"
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
@@ -27,6 +28,7 @@ kind: ComputeSubnetwork
 metadata:
   name: default
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: "${projectId}"
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
@@ -40,6 +42,7 @@ kind: ComputeSubnetwork
 metadata:
   name: computesubnetwork-proxy-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: "${projectId}"
 spec:
   ipCidrRange: 10.3.0.0/26
@@ -53,6 +56,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: "${projectId}"
   name: computeaddress-${uniqueId}
 spec:
@@ -67,6 +71,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeHealthCheck
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computehealthcheck-${uniqueId}
 spec:
@@ -78,6 +83,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeInstanceGroup
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computeinstancegroup-${uniqueId}
 spec:
@@ -89,6 +95,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computebackendservice-${uniqueId}
 spec:
@@ -108,6 +115,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeURLMap
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computeurlmap-${uniqueId}
 spec:
@@ -120,6 +128,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetHTTPProxy
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computetargethttpproxy-${uniqueId}
 spec:
@@ -131,6 +140,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computeforwardingrule-${uniqueId}
 spec:
@@ -154,6 +164,7 @@ apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: dnsmanagedzone-${uniqueId}
 spec:

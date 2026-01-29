@@ -16,6 +16,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
   name: default
 spec:
@@ -24,6 +25,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeHealthCheck
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computehealthcheck-${uniqueId}
 spec:
   checkIntervalSec: 10
@@ -34,6 +37,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computebackendservice-${uniqueId}
 spec:
   healthChecks:
@@ -45,6 +50,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeURLMap
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computeurlmap-${uniqueId}
 spec:
   defaultService:
@@ -55,6 +62,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetHTTPProxy
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computetargethttpproxy-${uniqueId}
 spec:
   description: "test description"
@@ -65,6 +74,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetHTTPProxy
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computetargethttpproxy-2-${uniqueId}
 spec:
   description: "other test description"
