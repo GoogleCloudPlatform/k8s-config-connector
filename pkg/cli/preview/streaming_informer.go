@@ -163,7 +163,7 @@ func (i *streamingInformer) runOnce(ctx context.Context) error {
 		objects:                   &i.objects,
 		eventHandlerRegistrations: i.eventHandlerRegistrations,
 		objectTransformers:        i.objectTransformers,
-		ctx:                       ctx,
+
 	}
 	watchOptions := WatchOptions{
 		ResourceVersion:     listMetadata.ResourceVersion,
@@ -228,17 +228,17 @@ func (i *listListener) OnListEnd() {
 }
 
 type watchListener struct {
+
 	objects                   *objects
 	eventHandlerRegistrations []*eventHandlerRegistration
 	objectTransformers        []ObjectTransformer
-	ctx                       context.Context
 }
 
 // OnWatchEvent is called when a watch event occurs.
-func (i *watchListener) OnWatchEvent(eventType string, obj Object) error {
+func (i *watchListener) OnWatchEvent(ctx context.Context, eventType string, obj Object) error {
 	switch eventType {
 	case "ADDED":
-		return i.objects.OnWatchAdd(i.ctx, obj, i.eventHandlerRegistrations, i.objectTransformers)
+		return i.objects.OnWatchAdd(ctx, obj, i.eventHandlerRegistrations, i.objectTransformers)
 	case "BOOKMARK":
 		klog.Infof("BOOKMARK %+v", obj)
 		return nil

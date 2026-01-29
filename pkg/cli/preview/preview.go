@@ -21,7 +21,6 @@ import (
 	"time"
 
 	"golang.org/x/oauth2"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
@@ -31,7 +30,6 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -52,7 +50,7 @@ type PreviewInstance struct {
 	// If empty, all namespaces are previewed
 	Namespace string
 
-	ReconcilerOverride map[schema.GroupKind]k8s.ReconcilerType
+	ObjectTransformers []ObjectTransformer
 }
 
 // PreviewInstanceOptions are the options for creating a PreviewInstance.
@@ -81,7 +79,8 @@ type PreviewInstanceOptions struct {
 	// If empty, all namespaces are previewed
 	Namespace string
 
-	ReconcilerOverride map[schema.GroupKind]k8s.ReconcilerType
+	// ObjectTransformers are the transformers to apply to objects
+	ObjectTransformers []ObjectTransformer
 }
 
 // NewPreviewInstance creates a new PreviewInstance.
@@ -93,9 +92,7 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 		upstreamGCPHTTPClient = http.DefaultClient
 	}
 
-	hookKube, err := newInterceptingKubeClient(recorder, upstreamRESTConfig, []ObjectTransformer{
-		newReconcilerOverrideTransformer(options.Namespace, options.ReconcilerOverride),
-	})
+	hookKube, err := newInterceptingKubeClient(recorder, upstreamRESTConfig, options.ObjectTransformers)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +104,7 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 	i.hookKube = hookKube
 	i.recorder = recorder
 	i.Namespace = options.Namespace
-	i.ReconcilerOverride = options.ReconcilerOverride
+	i.ObjectTransformers = options.ObjectTransformers
 
 	return i, nil
 }
