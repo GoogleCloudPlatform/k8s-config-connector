@@ -59,7 +59,8 @@ func (s *filterSink) Info(level int, msg string, args ...any) {
 	if s.IgnoreMessages.Has(msg) {
 		return
 	}
-	if strings.Contains(msg, "[DEBUG]") || strings.Contains(msg, "[INFO]") {
+	// Only filter if it looks like a structured log from an upstream library (DCL/TF)
+	if strings.HasPrefix(msg, "[DEBUG]") || strings.HasPrefix(msg, "[INFO]") {
 		return
 	}
 	s.sink.Info(level, msg, args...)
@@ -76,6 +77,7 @@ func (s *filterSink) WithName(name string) logr.LogSink {
 }
 
 func (s *filterSink) Error(err error, msg string, args ...any) {
+	s.sink.Error(err, msg, args...)
 }
 
 var installStandardLogFilterOnce sync.Once
@@ -89,7 +91,12 @@ func (w *stdLogFilter) Write(p []byte) (n int, err error) {
 	if strings.Contains(msg, "Authenticating using configured Google JSON 'access_token'...") {
 		return len(p), nil
 	}
-	if strings.Contains(msg, "[DEBUG]") || strings.Contains(msg, "[INFO]") {
+	// Standard log package usually formats as "2026/01/29 00:00:00 [DEBUG] ..."
+	if strings.Contains(msg, " [DEBUG] ") || strings.Contains(msg, " [INFO] ") {
+		return len(p), nil
+	}
+	// Also handle cases where there is no timestamp (e.g. log.SetFlags(0))
+	if strings.HasPrefix(msg, "[DEBUG]") || strings.HasPrefix(msg, "[INFO]") {
 		return len(p), nil
 	}
 	return w.sink.Write(p)

@@ -185,9 +185,13 @@ func (c *interceptingGCPClient) RoundTrip(req *http.Request) (*http.Response, er
 		}
 		response, err := c.upstreamGCPClient.Do(req)
 		if response != nil {
-			log.V(2).Info("forwarded request", "req.method", req.Method, "req.url", req.URL, "response.status", response.Status)
+			level := 2
+			if response.StatusCode >= 400 {
+				level = 0
+			}
+			log.V(level).Info("forwarded request", "req.method", req.Method, "req.url", req.URL, "response.status", response.Status)
 		} else if err != nil {
-			log.V(2).Error(err, "error forwarding request", "req.method", req.Method, "req.url", req.URL)
+			log.V(0).Error(err, "error forwarding request", "req.method", req.Method, "req.url", req.URL)
 		}
 
 		return response, err
