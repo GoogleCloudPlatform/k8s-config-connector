@@ -82,6 +82,10 @@ if [ "${MSG}" = "${EXPECTED_CRDS}" ]; then
 else
   echo "ERROR: Expected commit message '${EXPECTED_CRDS}' at ${CURRENT_REF}, but found '${MSG}'"
   echo "The release PR must include an '${EXPECTED_CRDS}' commit."
+  echo "Please check manually if the version bump is valid."
+  echo "If it is valid, you can create the tag manually:"
+  echo "  git tag v${VERSION}"
+  echo "  git push origin v${VERSION}"
   exit 1
 fi
 
@@ -90,6 +94,10 @@ EXPECTED_RELEASE="Release ${VERSION}"
 if [ "${MSG}" != "${EXPECTED_RELEASE}" ]; then
   echo "ERROR: Expected commit message '${EXPECTED_RELEASE}' at ${CURRENT_REF} (derived from HEAD), but found '${MSG}'"
   echo "The release PR must typically start with a 'Release ${VERSION}' commit, optionally followed by CRD updates and/or golden file updates."
+  echo "Please check manually if the version bump is valid."
+  echo "If it is valid, you can create the tag manually:"
+  echo "  git tag v${VERSION}"
+  echo "  git push origin v${VERSION}"
   exit 1
 fi
 
@@ -123,7 +131,7 @@ echo "Creating annotated tag v${VERSION} for commit ${COMMIT_HASH}"
 git tag -a "v${VERSION}" -m "Release ${VERSION}" "${COMMIT_HASH}"
 
 # 7. Push the tag to the OSS remote.
-echo "Pushing tag v${VERSION} to origin."
-git push origin "v${VERSION}"
+echo "Pushing tag v${VERSION} to upstream."
+git push upstream "v${VERSION}"
 
 echo "--- Successfully processed release branch ${RELEASE_BRANCH} and tag v${VERSION} ---"
