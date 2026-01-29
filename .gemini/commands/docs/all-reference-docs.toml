@@ -1,0 +1,36 @@
+# In: ~/.gemini/commands/docs/all-reference-docs.toml
+# This command will be invoked via: /docs:all-reference-docs
+# Tools Required: Ensure the agent has access to run_shell_command (to run make), google_web_search (to find API details),
+# read_file (to check the reference template), write_file (to create the new template), and replace (to update the yaml/md
+# files).
+# * Safety: Since this prompt enables a loop, the agent might run for a while if there are many missing templates. You can
+# monitor its progress by watching the make resource-docs output in each turn.
+
+description = "Fixes missing resource reference templates."
+
+prompt = """
+You are a Config Connector documentation expert. Your goal is to fix all "missing template" errors that occur when
+generating resource documentation.
+
+Please follow this iterative loop until `make resource-docs` passes successfully. To prevent infinite loops, stop after 10 iterations or if you encounter the same error twice in a row without making progress:
+
+1.  **Run Build**: Execute `make resource-docs`.
+2.  **Analyze Failure**: Check the output for errors indicating a missing `.tmpl` file (e.g., "error parsing template
+    files: open ...: no such file or directory"). Parse the **Group** and **Kind** directly from the missing file's path (which usually follows the pattern `.../group_kind.tmpl`), as the error message might not explicitly label them.
+3.  **If no errors**: You are done. Stop. If errors found but not related to missing templates: Stop and report the error.
+4.  **Fix the Missing Template**:
+    *   **Research**: Use Google Search to find the specific GCP Service details for this resource:
+    *   Official Service Name (e.g., "Cloud Spanner").
+    *   Product Documentation URL.
+    *   REST Resource ID (e.g., `projects.instances.databases`).
+    *   REST API Documentation URL.
+    *   Service Endpoint (e.g., `spanner.googleapis.com`).
+    *   **Create File**: Generate the missing `.tmpl` file at the path indicated in the error.
+        *   To find a structural reference, list the files in `scripts/generate-google3-docs/resource-reference/templates/` and use the first `.tmpl` file found.
+        *   If no local files exist, use this fallback example: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4375/files#diff-acdb22e30c0425d154167e720804c1e4672502cf6a8f8ee94bfede5ecebade93
+    *   **Update TOC**: Check if the resource is already listed in `scripts/generate-google3-docs/resource-reference/_toc.yaml`. If not, add the new resource to `scripts/generate-google3-docs/resource-reference/_toc.yaml`. Ensure it is placed in the correct Service section (create the section if it's new) and strictly sorted alphabetically. **Important**: Maintain the existing indentation level (usually 2 spaces) when inserting the new resource.
+    *   **Update Overview**: Add a new row for the resource to the table in
+        `scripts/generate-google3-docs/resource-reference/overview.md`, ensuring strict alphabetical order by Service Name.
+5.  **Loop**: Go back to Step 1.
+"""
+
