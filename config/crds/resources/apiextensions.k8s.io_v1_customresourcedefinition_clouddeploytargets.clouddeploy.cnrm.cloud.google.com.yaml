@@ -59,13 +59,6 @@ spec:
           spec:
             description: CloudDeployTargetSpec defines the desired state of CloudDeployTarget
             properties:
-              annotations:
-                additionalProperties:
-                  type: string
-                description: Optional. User annotations. These attributes can only
-                  be set and used by the user, and not by Cloud Deploy. See https://google.aip.dev/128#annotations
-                  for more details such as format and size limitations.
-                type: object
               anthosCluster:
                 description: Information specifying an Anthos Cluster.
                 properties:
@@ -183,12 +176,38 @@ spec:
                             If unspecified, a default bucket located in the same region
                             will be used.
                           type: string
-                        serviceAccount:
+                        serviceAccountRef:
                           description: Optional. Google service account to use for
                             execution. If unspecified, the project execution service
                             account (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com)
                             will be used.
-                          type: string
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: The `email` field of an `IAMServiceAccount`
+                                resource.
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
                       type: object
                     executionTimeout:
                       description: Optional. Execution timeout for a Cloud Build Execution.
@@ -205,22 +224,73 @@ spec:
                             If unspecified, a default bucket located in the same region
                             will be used.
                           type: string
-                        serviceAccount:
+                        serviceAccountRef:
                           description: Optional. Google service account to use for
                             execution. If unspecified, the project execution service
                             account (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com)
                             will be used.
-                          type: string
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: The `email` field of an `IAMServiceAccount`
+                                resource.
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
                         workerPool:
                           description: Required. Resource name of the Cloud Build
                             worker pool to use. The format is `projects/{project}/locations/{location}/workerPools/{pool}`.
                           type: string
                       type: object
-                    serviceAccount:
+                    serviceAccountRef:
                       description: Optional. Google service account to use for execution.
                         If unspecified, the project execution service account (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com)
                         is used.
-                      type: string
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: The `email` field of an `IAMServiceAccount`
+                            resource.
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
                     usages:
                       description: Required. Usages when this configuration should
                         be applied.

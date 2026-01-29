@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	containerkrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -39,7 +40,7 @@ type CloudDeployTargetSpec struct {
 	// the user, and not by Cloud Deploy. See
 	// https://google.aip.dev/128#annotations for more details such as format and
 	// size limitations.
-	Annotations map[string]string `json:"annotations,omitempty"`
+	// Annotations map[string]string `json:"annotations,omitempty"`
 
 	// Optional. Labels are attributes that can be set and used by both the
 	// user and by Cloud Deploy. Labels must meet the following constraints:
@@ -82,7 +83,7 @@ type CloudDeployTargetSpec struct {
 	// `RENDER` and `DEPLOY` `ExecutionEnvironmentUsage` values.
 	// When no configurations are specified, execution will use the default
 	// specified in `DefaultPool`.
-	ExecutionConfigs []*ExecutionConfig `json:"executionConfigs,omitempty"`
+	ExecutionConfigs []ExecutionConfig `json:"executionConfigs,omitempty"`
 
 	// Optional. The deploy parameters to use for this target.
 	DeployParameters map[string]string `json:"deployParameters,omitempty"`
@@ -190,4 +191,94 @@ type GKECluster struct {
 	//  that both `dns_endpoint` and `internal_ip` cannot be set to true.
 	// +kcc:proto:field=google.cloud.deploy.v1.GkeCluster.dns_endpoint
 	DNSEndpoint *bool `json:"dnsEndpoint,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.DefaultPool
+type DefaultPool struct {
+	// Optional. Google service account to use for execution. If unspecified,
+	//  the project execution service account
+	//  (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) will be used.
+	// +kcc:proto:field=google.cloud.deploy.v1.DefaultPool.service_account
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
+
+	// Optional. Cloud Storage location where execution outputs should be stored.
+	//  This can either be a bucket ("gs://my-bucket") or a path within a bucket
+	//  ("gs://my-bucket/my-dir").
+	//  If unspecified, a default bucket located in the same region will be used.
+	// +kcc:proto:field=google.cloud.deploy.v1.DefaultPool.artifact_storage
+	ArtifactStorage *string `json:"artifactStorage,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.ExecutionConfig
+type ExecutionConfig struct {
+	// Required. Usages when this configuration should be applied.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.usages
+	Usages []string `json:"usages,omitempty"`
+
+	// Optional. Use default Cloud Build pool.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.default_pool
+	DefaultPool *DefaultPool `json:"defaultPool,omitempty"`
+
+	// Optional. Use private Cloud Build pool.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.private_pool
+	PrivatePool *PrivatePool `json:"privatePool,omitempty"`
+
+	// Optional. The resource name of the `WorkerPool`, with the format
+	//  `projects/{project}/locations/{location}/workerPools/{worker_pool}`.
+	//  If this optional field is unspecified, the default Cloud Build pool will be
+	//  used.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.worker_pool
+	WorkerPool *string `json:"workerPool,omitempty"`
+
+	// Optional. Google service account to use for execution. If unspecified,
+	//  the project execution service account
+	//  (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) is used.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.service_account
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
+
+	// Optional. Cloud Storage location in which to store execution outputs. This
+	//  can either be a bucket ("gs://my-bucket") or a path within a bucket
+	//  ("gs://my-bucket/my-dir").
+	//  If unspecified, a default bucket located in the same region will be used.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.artifact_storage
+	ArtifactStorage *string `json:"artifactStorage,omitempty"`
+
+	// Optional. Execution timeout for a Cloud Build Execution. This must be
+	//  between 10m and 24h in seconds format. If unspecified, a default timeout of
+	//  1h is used.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.execution_timeout
+	ExecutionTimeout *string `json:"executionTimeout,omitempty"`
+
+	// Optional. If true, additional logging will be enabled when running builds
+	//  in this execution environment.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.verbose
+	Verbose *bool `json:"verbose,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.PrivatePool
+type PrivatePool struct {
+	// Required. Resource name of the Cloud Build worker pool to use. The format
+	//  is `projects/{project}/locations/{location}/workerPools/{pool}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.PrivatePool.worker_pool
+	WorkerPool *string `json:"workerPool,omitempty"`
+
+	// Optional. Google service account to use for execution. If unspecified,
+	//  the project execution service account
+	//  (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) will be used.
+	// +kcc:proto:field=google.cloud.deploy.v1.PrivatePool.service_account
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
+
+	// Optional. Cloud Storage location where execution outputs should be stored.
+	//  This can either be a bucket ("gs://my-bucket") or a path within a bucket
+	//  ("gs://my-bucket/my-dir").
+	//  If unspecified, a default bucket located in the same region will be used.
+	// +kcc:proto:field=google.cloud.deploy.v1.PrivatePool.artifact_storage
+	ArtifactStorage *string `json:"artifactStorage,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.MultiTarget
+type MultiTarget struct {
+	// Required. The target_ids of this multiTarget.
+	// +kcc:proto:field=google.cloud.deploy.v1.MultiTarget.target_ids
+	TargetIDs []string `json:"targetIds,omitempty"`
 }

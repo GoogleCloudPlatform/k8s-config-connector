@@ -22,8 +22,10 @@ package clouddeploy
 
 import (
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
+	krmcloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
 	krmclouddeployv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
@@ -269,7 +271,9 @@ func DefaultPool_FromProto(mapCtx *direct.MapContext, in *pb.DefaultPool) *krm.D
 		return nil
 	}
 	out := &krm.DefaultPool{}
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.ArtifactStorage = direct.LazyPtr(in.GetArtifactStorage())
 	return out
 }
@@ -278,7 +282,9 @@ func DefaultPool_ToProto(mapCtx *direct.MapContext, in *krm.DefaultPool) *pb.Def
 		return nil
 	}
 	out := &pb.DefaultPool{}
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	out.ArtifactStorage = direct.ValueOf(in.ArtifactStorage)
 	return out
 }
@@ -459,7 +465,9 @@ func ExecutionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionConfig
 	out.DefaultPool = DefaultPool_FromProto(mapCtx, in.GetDefaultPool())
 	out.PrivatePool = PrivatePool_FromProto(mapCtx, in.GetPrivatePool())
 	out.WorkerPool = direct.LazyPtr(in.GetWorkerPool())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.ArtifactStorage = direct.LazyPtr(in.GetArtifactStorage())
 	out.ExecutionTimeout = direct.StringDuration_FromProto(mapCtx, in.GetExecutionTimeout())
 	out.Verbose = direct.LazyPtr(in.GetVerbose())
@@ -478,7 +486,9 @@ func ExecutionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionConfig)
 		out.ExecutionEnvironment = &pb.ExecutionConfig_PrivatePool{PrivatePool: oneof}
 	}
 	out.WorkerPool = direct.ValueOf(in.WorkerPool)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	out.ArtifactStorage = direct.ValueOf(in.ArtifactStorage)
 	out.ExecutionTimeout = direct.StringDuration_ToProto(mapCtx, in.ExecutionTimeout)
 	out.Verbose = direct.ValueOf(in.Verbose)
@@ -574,22 +584,6 @@ func KubernetesConfig_ServiceNetworking_ToProto(mapCtx *direct.MapContext, in *k
 	out.Deployment = direct.ValueOf(in.Deployment)
 	out.DisablePodOverprovisioning = direct.ValueOf(in.DisablePodOverprovisioning)
 	out.PodSelectorLabel = direct.ValueOf(in.PodSelectorLabel)
-	return out
-}
-func MultiTarget_FromProto(mapCtx *direct.MapContext, in *pb.MultiTarget) *krm.MultiTarget {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MultiTarget{}
-	out.TargetIds = in.TargetIds
-	return out
-}
-func MultiTarget_ToProto(mapCtx *direct.MapContext, in *krm.MultiTarget) *pb.MultiTarget {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MultiTarget{}
-	out.TargetIds = in.TargetIds
 	return out
 }
 func OneTimeWindow_FromProto(mapCtx *direct.MapContext, in *pb.OneTimeWindow) *krm.OneTimeWindow {
@@ -708,7 +702,9 @@ func PrivatePool_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePool) *krm.P
 	}
 	out := &krm.PrivatePool{}
 	out.WorkerPool = direct.LazyPtr(in.GetWorkerPool())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.ArtifactStorage = direct.LazyPtr(in.GetArtifactStorage())
 	return out
 }
@@ -718,7 +714,9 @@ func PrivatePool_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePool) *pb.Pri
 	}
 	out := &pb.PrivatePool{}
 	out.WorkerPool = direct.ValueOf(in.WorkerPool)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	out.ArtifactStorage = direct.ValueOf(in.ArtifactStorage)
 	return out
 }
@@ -833,7 +831,9 @@ func SkaffoldModules_SkaffoldGcbRepoSource_FromProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &krm.SkaffoldModules_SkaffoldGcbRepoSource{}
-	out.Repository = direct.LazyPtr(in.GetRepository())
+	if in.GetRepository() != "" {
+		out.RepositoryRef = &krmcloudbuildv1alpha1.RepositoryRef{External: in.GetRepository()}
+	}
 	out.Path = direct.LazyPtr(in.GetPath())
 	out.Ref = direct.LazyPtr(in.GetRef())
 	return out
@@ -843,7 +843,9 @@ func SkaffoldModules_SkaffoldGcbRepoSource_ToProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &pb.SkaffoldModules_SkaffoldGCBRepoSource{}
-	out.Repository = direct.ValueOf(in.Repository)
+	if in.RepositoryRef != nil {
+		out.Repository = in.RepositoryRef.External
+	}
 	out.Path = direct.ValueOf(in.Path)
 	out.Ref = direct.ValueOf(in.Ref)
 	return out

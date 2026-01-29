@@ -27,7 +27,7 @@ func CloudDeployTargetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Target) *
 	}
 	out := &krm.CloudDeployTargetSpec{}
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Annotations = in.Annotations
+	//out.Annotations = in.Annotations
 	//out.Labels = in.Labels
 	out.RequireApproval = direct.LazyPtr(in.GetRequireApproval())
 	out.Gke = GKECluster_FromProto(mapCtx, in.GetGke())
@@ -47,9 +47,11 @@ func CloudDeployTargetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Target) *
 	// as a slice of values ([]krm.ExecutionConfig) instead of a slice of pointers
 	// ([]*krm.ExecutionConfig), causing a type mismatch.
 	if in.ExecutionConfigs != nil {
-		out.ExecutionConfigs = make([]*krm.ExecutionConfig, len(in.ExecutionConfigs))
+		out.ExecutionConfigs = make([]krm.ExecutionConfig, len(in.ExecutionConfigs))
 		for i, v := range in.ExecutionConfigs {
-			out.ExecutionConfigs[i] = ExecutionConfig_FromProto(mapCtx, v)
+			if val := ExecutionConfig_FromProto(mapCtx, v); val != nil {
+				out.ExecutionConfigs[i] = *val
+			}
 		}
 	}
 
@@ -62,7 +64,7 @@ func CloudDeployTargetSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudDeplo
 	}
 	out := &pb.Target{}
 	out.Description = direct.ValueOf(in.Description)
-	out.Annotations = in.Annotations
+	//out.Annotations = in.Annotations
 	//out.Labels = in.Labels
 	out.RequireApproval = direct.ValueOf(in.RequireApproval)
 	if oneof := GKECluster_ToProto(mapCtx, in.Gke); oneof != nil {
@@ -95,8 +97,8 @@ func CloudDeployTargetSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudDeplo
 	// ([]*pb.ExecutionConfig), causing a type mismatch.
 	if in.ExecutionConfigs != nil {
 		out.ExecutionConfigs = make([]*pb.ExecutionConfig, len(in.ExecutionConfigs))
-		for i, v := range in.ExecutionConfigs {
-			out.ExecutionConfigs[i] = ExecutionConfig_ToProto(mapCtx, v)
+		for i := range in.ExecutionConfigs {
+			out.ExecutionConfigs[i] = ExecutionConfig_ToProto(mapCtx, &in.ExecutionConfigs[i])
 		}
 	}
 	out.DeployParameters = in.DeployParameters
@@ -169,5 +171,22 @@ func GKECluster_ToProto(mapCtx *direct.MapContext, in *krm.GKECluster) *pb.GkeCl
 	out.InternalIp = direct.ValueOf(in.InternalIP)
 	out.ProxyUrl = direct.ValueOf(in.ProxyURL)
 	out.DnsEndpoint = direct.ValueOf(in.DNSEndpoint)
+	return out
+}
+
+func MultiTarget_FromProto(mapCtx *direct.MapContext, in *pb.MultiTarget) *krm.MultiTarget {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MultiTarget{}
+	out.TargetIDs = in.TargetIds
+	return out
+}
+func MultiTarget_ToProto(mapCtx *direct.MapContext, in *krm.MultiTarget) *pb.MultiTarget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MultiTarget{}
+	out.TargetIds = in.TargetIDs
 	return out
 }

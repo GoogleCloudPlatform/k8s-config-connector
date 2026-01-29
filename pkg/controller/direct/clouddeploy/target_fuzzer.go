@@ -53,6 +53,7 @@ func cloudDeployTargetFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_LabelsAnnotations(".labels")
+	f.Unimplemented_LabelsAnnotations(".annotations")
 
 	return f
 }

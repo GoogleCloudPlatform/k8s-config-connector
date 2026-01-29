@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	cloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -23,7 +24,7 @@ import (
 var CustomTargetTypeGVK = GroupVersion.WithKind("DeployCustomTargetType")
 
 // CustomTargetTypeSpec defines the desired state of DeployCustomTargetType
-// +kcc:proto=google.cloud.deploy.v1.CustomTargetType
+// +kcc:spec:proto=google.cloud.deploy.v1.CustomTargetType
 type CustomTargetTypeSpec struct {
 	// The DeployCustomTargetType name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -92,7 +93,7 @@ type CustomTargetTypeStatus struct {
 }
 
 // CustomTargetTypeObservedState is the state of the DeployCustomTargetType resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.deploy.v1.CustomTargetType
+// +kcc:observedstate:proto=google.cloud.deploy.v1.CustomTargetType
 type CustomTargetTypeObservedState struct {
 	// Output only. Resource id of the `CustomTargetType`.
 	// +kcc:proto:field=google.cloud.deploy.v1.CustomTargetType.custom_target_type_id
@@ -143,4 +144,22 @@ type DeployCustomTargetTypeList struct {
 
 func init() {
 	SchemeBuilder.Register(&DeployCustomTargetType{}, &DeployCustomTargetTypeList{})
+}
+
+// +kcc:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource
+type SkaffoldModules_SkaffoldGcbRepoSource struct {
+	// Required. Name of the Cloud Build V2 RepositoryRef.
+	//  Format is
+	//  projects/{project}/locations/{location}/connections/{connection}/repositories/{repository}.
+	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.repository
+	RepositoryRef *cloudbuildv1alpha1.RepositoryRef `json:"repositoryRef,omitempty"`
+
+	// Optional. Relative path from the repository root to the Skaffold Config
+	//  file.
+	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.path
+	Path *string `json:"path,omitempty"`
+
+	// Optional. Branch or tag to use when cloning the repository.
+	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.ref
+	Ref *string `json:"ref,omitempty"`
 }

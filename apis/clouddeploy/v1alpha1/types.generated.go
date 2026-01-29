@@ -77,22 +77,6 @@ type CustomTargetSkaffoldActions struct {
 	IncludeSkaffoldModules []SkaffoldModules `json:"includeSkaffoldModules,omitempty"`
 }
 
-// +kcc:proto=google.cloud.deploy.v1.DefaultPool
-type DefaultPool struct {
-	// Optional. Google service account to use for execution. If unspecified,
-	//  the project execution service account
-	//  (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) will be used.
-	// +kcc:proto:field=google.cloud.deploy.v1.DefaultPool.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
-
-	// Optional. Cloud Storage location where execution outputs should be stored.
-	//  This can either be a bucket ("gs://my-bucket") or a path within a bucket
-	//  ("gs://my-bucket/my-dir").
-	//  If unspecified, a default bucket located in the same region will be used.
-	// +kcc:proto:field=google.cloud.deploy.v1.DefaultPool.artifact_storage
-	ArtifactStorage *string `json:"artifactStorage,omitempty"`
-}
-
 // +kcc:proto=google.cloud.deploy.v1.DeliveryPipelineAttribute
 type DeliveryPipelineAttribute struct {
 	// Optional. ID of the `DeliveryPipeline`. The value of this field could be
@@ -119,59 +103,6 @@ type DeployPolicyResourceSelector struct {
 	Target *TargetAttribute `json:"target,omitempty"`
 }
 
-// +kcc:proto=google.cloud.deploy.v1.ExecutionConfig
-type ExecutionConfig struct {
-	// Required. Usages when this configuration should be applied.
-	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.usages
-	Usages []string `json:"usages,omitempty"`
-
-	// Optional. Use default Cloud Build pool.
-	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.default_pool
-	DefaultPool *DefaultPool `json:"defaultPool,omitempty"`
-
-	// Optional. Use private Cloud Build pool.
-	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.private_pool
-	PrivatePool *PrivatePool `json:"privatePool,omitempty"`
-
-	// Optional. The resource name of the `WorkerPool`, with the format
-	//  `projects/{project}/locations/{location}/workerPools/{worker_pool}`.
-	//  If this optional field is unspecified, the default Cloud Build pool will be
-	//  used.
-	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.worker_pool
-	WorkerPool *string `json:"workerPool,omitempty"`
-
-	// Optional. Google service account to use for execution. If unspecified,
-	//  the project execution service account
-	//  (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) is used.
-	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
-
-	// Optional. Cloud Storage location in which to store execution outputs. This
-	//  can either be a bucket ("gs://my-bucket") or a path within a bucket
-	//  ("gs://my-bucket/my-dir").
-	//  If unspecified, a default bucket located in the same region will be used.
-	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.artifact_storage
-	ArtifactStorage *string `json:"artifactStorage,omitempty"`
-
-	// Optional. Execution timeout for a Cloud Build Execution. This must be
-	//  between 10m and 24h in seconds format. If unspecified, a default timeout of
-	//  1h is used.
-	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.execution_timeout
-	ExecutionTimeout *string `json:"executionTimeout,omitempty"`
-
-	// Optional. If true, additional logging will be enabled when running builds
-	//  in this execution environment.
-	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.verbose
-	Verbose *bool `json:"verbose,omitempty"`
-}
-
-// +kcc:proto=google.cloud.deploy.v1.MultiTarget
-type MultiTarget struct {
-	// Required. The target_ids of this multiTarget.
-	// +kcc:proto:field=google.cloud.deploy.v1.MultiTarget.target_ids
-	TargetIds []string `json:"targetIds,omitempty"`
-}
-
 // +kcc:proto=google.cloud.deploy.v1.OneTimeWindow
 type OneTimeWindow struct {
 	// Required. Start date.
@@ -196,27 +127,6 @@ type PolicyRule struct {
 	// Optional. Rollout restrictions.
 	// +kcc:proto:field=google.cloud.deploy.v1.PolicyRule.rollout_restriction
 	RolloutRestriction *RolloutRestriction `json:"rolloutRestriction,omitempty"`
-}
-
-// +kcc:proto=google.cloud.deploy.v1.PrivatePool
-type PrivatePool struct {
-	// Required. Resource name of the Cloud Build worker pool to use. The format
-	//  is `projects/{project}/locations/{location}/workerPools/{pool}`.
-	// +kcc:proto:field=google.cloud.deploy.v1.PrivatePool.worker_pool
-	WorkerPool *string `json:"workerPool,omitempty"`
-
-	// Optional. Google service account to use for execution. If unspecified,
-	//  the project execution service account
-	//  (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) will be used.
-	// +kcc:proto:field=google.cloud.deploy.v1.PrivatePool.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
-
-	// Optional. Cloud Storage location where execution outputs should be stored.
-	//  This can either be a bucket ("gs://my-bucket") or a path within a bucket
-	//  ("gs://my-bucket/my-dir").
-	//  If unspecified, a default bucket located in the same region will be used.
-	// +kcc:proto:field=google.cloud.deploy.v1.PrivatePool.artifact_storage
-	ArtifactStorage *string `json:"artifactStorage,omitempty"`
 }
 
 // +kcc:proto=google.cloud.deploy.v1.RolloutRestriction
@@ -259,24 +169,6 @@ type SkaffoldModules struct {
 	//  modules.
 	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.google_cloud_build_repo
 	GoogleCloudBuildRepo *SkaffoldModules_SkaffoldGcbRepoSource `json:"googleCloudBuildRepo,omitempty"`
-}
-
-// +kcc:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource
-type SkaffoldModules_SkaffoldGcbRepoSource struct {
-	// Required. Name of the Cloud Build V2 Repository.
-	//  Format is
-	//  projects/{project}/locations/{location}/connections/{connection}/repositories/{repository}.
-	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.repository
-	Repository *string `json:"repository,omitempty"`
-
-	// Optional. Relative path from the repository root to the Skaffold Config
-	//  file.
-	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.path
-	Path *string `json:"path,omitempty"`
-
-	// Optional. Branch or tag to use when cloning the repository.
-	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.ref
-	Ref *string `json:"ref,omitempty"`
 }
 
 // +kcc:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCSSource
