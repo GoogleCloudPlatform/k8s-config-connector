@@ -90,16 +90,8 @@ func (r *GKEHubMembershipRef) Normalize(ctx context.Context, reader client.Reade
 			return ""
 		}
 
-		// Handle project ID format (strip "projects/" prefix if present, as NewMembershipIdentity expects it?)
-		// Actually, NewMembershipIdentity uses ParentIdentity which formats as "projects/%s".
-		// If project is "projects/foo", ParentIdentity string becomes "projects/projects/foo".
-		// We need to be careful. GetProjectID helper in refsv1beta1/helper.go?
-		// No, I don't see GetProjectID in the list_dir output or helper.go view.
-		// I must implement it inline or use a known helper.
-		// "projectref.go" might have helpers but they are likely private or specific.
-		// Let's implement basic stripping.
-
-		// strip "projects/" prefix
+		// The project ID might be in the format "projects/my-project".
+		// We need to strip the "projects/" prefix because GKEHubMembershipIdentity expects the raw project ID.
 		if len(project) > 9 && project[:9] == "projects/" {
 			project = project[9:]
 		}
