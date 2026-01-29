@@ -62,7 +62,9 @@ func TestAdditionalPrinterColumns(t *testing.T) {
 	for _, crd := range crds {
 		for _, version := range crd.Spec.Versions {
 			if diff := cmp.Diff(wantColumns, version.AdditionalPrinterColumns); diff != "" {
-				errs = append(errs, fmt.Sprintf("crd=%s version=%v: additionalPrinterColumns mismatch:\n%s", crd.Name, version.Name, diff))
+				// We don't include the diff because cmp.Diff is randomized.
+				// See https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/6355
+				errs = append(errs, fmt.Sprintf("crd=%s version=%v: additionalPrinterColumns mismatch\n", crd.Name, version.Name))
 			}
 		}
 	}
