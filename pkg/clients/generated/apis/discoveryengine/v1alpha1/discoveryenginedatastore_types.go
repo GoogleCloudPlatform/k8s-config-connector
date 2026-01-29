@@ -78,7 +78,7 @@ type DiscoveryEngineDataStoreSpec struct {
 	/* The ID of the project in which the resource belongs. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. The DiscoveryEngineDataStore name. If not given, the metadata.name will be used. */
+	/* The DiscoveryEngineDataStore name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 

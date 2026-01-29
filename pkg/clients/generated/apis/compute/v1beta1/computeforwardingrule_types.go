@@ -382,9 +382,7 @@ type ComputeForwardingRuleStatus struct {
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 
-	/* The internal fully qualified service name for this Forwarding Rule.
-
-	This field is only used for INTERNAL load balancing. */
+	/* The internal fully qualified service name for this Forwarding Rule. This field is only used for INTERNAL load balancing. */
 	// +optional
 	ServiceName *string `json:"serviceName,omitempty"`
 }

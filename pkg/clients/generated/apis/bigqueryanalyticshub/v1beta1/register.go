@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(BigQueryAnalyticsHubDataExchange{}).Name(),
 	}
 
+	BigQueryAnalyticsHubListingGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BigQueryAnalyticsHubListing{}).Name(),
+	}
+
 	bigqueryanalyticshubAPIVersion = SchemeGroupVersion.String()
 )

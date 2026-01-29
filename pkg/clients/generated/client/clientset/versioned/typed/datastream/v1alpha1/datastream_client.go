@@ -33,6 +33,7 @@ type DatastreamV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	DatastreamConnectionProfilesGetter
 	DatastreamPrivateConnectionsGetter
+	DatastreamRoutesGetter
 	DatastreamStreamsGetter
 }
 
@@ -47,6 +48,10 @@ func (c *DatastreamV1alpha1Client) DatastreamConnectionProfiles(namespace string
 
 func (c *DatastreamV1alpha1Client) DatastreamPrivateConnections(namespace string) DatastreamPrivateConnectionInterface {
 	return newDatastreamPrivateConnections(c, namespace)
+}
+
+func (c *DatastreamV1alpha1Client) DatastreamRoutes(namespace string) DatastreamRouteInterface {
+	return newDatastreamRoutes(c, namespace)
 }
 
 func (c *DatastreamV1alpha1Client) DatastreamStreams(namespace string) DatastreamStreamInterface {

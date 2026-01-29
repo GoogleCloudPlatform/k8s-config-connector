@@ -78,7 +78,7 @@ type GuestpolicyArtifacts struct {
 	// +optional
 	Gcs *GuestpolicyGcs `json:"gcs,omitempty"`
 
-	/* Required. ID of the artifact, which the installation and update steps of this recipe can reference. Artifacts in a recipe cannot have the same id. */
+	/* Required. Id of the artifact, which the installation and update steps of this recipe can reference. Artifacts in a recipe cannot have the same id. */
 	// +optional
 	Id *string `json:"id,omitempty"`
 

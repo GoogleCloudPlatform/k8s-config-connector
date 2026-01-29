@@ -23,44 +23,54 @@ package fake
 
 import (
 	clientset "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned"
-	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1"
-	fakeaccesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1/fake"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
 	fakeaccesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1/fake"
+	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1"
+	fakeaiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1/fake"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
 	fakealloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1/fake"
-	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1"
-	fakeapigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1/fake"
-	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
-	fakeapigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1/fake"
+	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analytics/v1alpha1"
+	fakeanalyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analytics/v1alpha1/fake"
+	apigatewayv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1beta1"
+	fakeapigatewayv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1beta1/fake"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
 	fakeapigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1/fake"
 	apikeysv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apikeys/v1alpha1"
 	fakeapikeysv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apikeys/v1alpha1/fake"
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1"
 	fakeappenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1/fake"
+	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1beta1"
+	fakeapphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apphub/v1beta1/fake"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
 	fakeartifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1/fake"
+	assetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/asset/v1beta1"
+	fakeassetv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/asset/v1beta1/fake"
+	assuredworkloadsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/assuredworkloads/v1alpha1"
+	fakeassuredworkloadsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/assuredworkloads/v1alpha1/fake"
+	backupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1beta1"
+	fakebackupdrv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/backupdr/v1beta1/fake"
+	batchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/batch/v1alpha1"
+	fakebatchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/batch/v1alpha1/fake"
 	beyondcorpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/beyondcorp/v1alpha1"
 	fakebeyondcorpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/beyondcorp/v1alpha1/fake"
-	bigqueryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1alpha1"
-	fakebigqueryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1alpha1/fake"
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1beta1"
 	fakebigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquery/v1beta1/fake"
-	bigqueryanalyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1alpha1"
-	fakebigqueryanalyticshubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1alpha1/fake"
 	bigqueryanalyticshubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1beta1"
 	fakebigqueryanalyticshubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryanalyticshub/v1beta1/fake"
+	bigquerybiglakev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerybiglake/v1beta1"
+	fakebigquerybiglakev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerybiglake/v1beta1/fake"
 	bigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1beta1"
 	fakebigqueryconnectionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1beta1/fake"
 	bigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1"
 	fakebigquerydatapolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatapolicy/v1alpha1/fake"
 	bigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1"
 	fakebigquerydatatransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigquerydatatransfer/v1beta1/fake"
-	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1alpha1"
-	fakebigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1alpha1/fake"
+	bigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1beta1"
+	fakebigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryreservation/v1beta1/fake"
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1"
 	fakebigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1/fake"
+	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billing/v1alpha1"
+	fakebillingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billing/v1alpha1/fake"
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1"
 	fakebillingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1/fake"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
@@ -71,6 +81,10 @@ import (
 	fakecloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudasset/v1alpha1/fake"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1beta1"
 	fakecloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1beta1/fake"
+	clouddeployv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddeploy/v1beta1"
+	fakeclouddeployv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddeploy/v1beta1/fake"
+	clouddmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddms/v1alpha1"
+	fakeclouddmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/clouddms/v1alpha1/fake"
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions/v1beta1"
 	fakecloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions/v1beta1/fake"
 	cloudfunctions2v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions2/v1alpha1"
@@ -81,26 +95,28 @@ import (
 	fakecloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1beta1/fake"
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1"
 	fakecloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1/fake"
+	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1"
+	fakecloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1/fake"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	fakecloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1/fake"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
 	fakecloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1/fake"
-	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1alpha1"
-	fakecomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1alpha1/fake"
+	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/colab/v1alpha1"
+	fakecolabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/colab/v1alpha1/fake"
+	composerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/composer/v1beta1"
+	fakecomposerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/composer/v1beta1/fake"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
 	fakecomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1/fake"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1"
 	fakeconfigcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1/fake"
+	configdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1"
+	fakeconfigdeliveryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configdelivery/v1alpha1/fake"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1"
 	fakecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1/fake"
-	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1alpha1"
-	fakecontaineranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1alpha1/fake"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1beta1"
 	fakecontaineranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1beta1/fake"
 	containerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containerattached/v1beta1"
 	fakecontainerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containerattached/v1beta1/fake"
-	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
-	fakedatacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1/fake"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
 	fakedatacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1/fake"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
@@ -109,6 +125,8 @@ import (
 	fakedataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataform/v1beta1/fake"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
 	fakedatafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1/fake"
+	dataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataplex/v1alpha1"
+	fakedataplexv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataplex/v1alpha1/fake"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1"
 	fakedataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1/fake"
 	datastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datastore/v1alpha1"
@@ -125,22 +143,18 @@ import (
 	fakediscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/discoveryengine/v1alpha1/fake"
 	dlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1"
 	fakedlpv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dlp/v1beta1/fake"
-	dnsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1alpha1"
-	fakednsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1alpha1/fake"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1"
 	fakednsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1/fake"
-	documentaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/documentai/v1alpha1"
-	fakedocumentaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/documentai/v1alpha1/fake"
+	documentaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/documentai/v1beta1"
+	fakedocumentaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/documentai/v1beta1/fake"
 	edgecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgecontainer/v1beta1"
 	fakeedgecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgecontainer/v1beta1/fake"
 	edgenetworkv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgenetwork/v1beta1"
 	fakeedgenetworkv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgenetwork/v1beta1/fake"
-	essentialcontactsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/essentialcontacts/v1alpha1"
-	fakeessentialcontactsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/essentialcontacts/v1alpha1/fake"
+	essentialcontactsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/essentialcontacts/v1beta1"
+	fakeessentialcontactsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/essentialcontacts/v1beta1/fake"
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1"
 	fakeeventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1/fake"
-	filestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1alpha1"
-	fakefilestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1alpha1/fake"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1beta1"
 	fakefilestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1beta1/fake"
 	firebasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebase/v1alpha1"
@@ -151,8 +165,6 @@ import (
 	fakefirebasehostingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasehosting/v1alpha1/fake"
 	firebasestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasestorage/v1alpha1"
 	fakefirebasestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firebasestorage/v1alpha1/fake"
-	firestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1alpha1"
-	fakefirestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1alpha1/fake"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1"
 	fakefirestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1/fake"
 	gkebackupv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkebackup/v1alpha1"
@@ -165,54 +177,52 @@ import (
 	fakeiamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1beta1/fake"
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iap/v1beta1"
 	fakeiapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iap/v1beta1/fake"
-	identityplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/identityplatform/v1alpha1"
-	fakeidentityplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/identityplatform/v1alpha1/fake"
 	identityplatformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/identityplatform/v1beta1"
 	fakeidentityplatformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/identityplatform/v1beta1/fake"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/k8s/v1alpha1"
 	fakek8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/k8s/v1alpha1/fake"
-	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1"
-	fakekmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1/fake"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1"
 	fakekmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1/fake"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1"
 	fakeloggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1/fake"
+	managedkafkav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1beta1"
+	fakemanagedkafkav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1beta1/fake"
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1"
 	fakememcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1/fake"
+	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1"
+	fakememorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1/fake"
+	metastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1"
+	fakemetastorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/metastore/v1beta1/fake"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1"
 	fakemlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1/fake"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1"
 	fakemonitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1/fake"
-	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1alpha1"
-	fakenetworkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1alpha1/fake"
+	netappv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/netapp/v1alpha1"
+	fakenetappv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/netapp/v1alpha1/fake"
 	networkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1beta1"
 	fakenetworkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1beta1/fake"
 	networkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkmanagement/v1alpha1"
 	fakenetworkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkmanagement/v1alpha1/fake"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1beta1"
 	fakenetworksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1beta1/fake"
-	networkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1alpha1"
-	fakenetworkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1alpha1/fake"
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1beta1"
 	fakenetworkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1beta1/fake"
-	notebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha1"
-	fakenotebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha1/fake"
-	orgpolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1alpha1"
-	fakeorgpolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1alpha1/fake"
-	osconfigv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1alpha1"
-	fakeosconfigv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1alpha1/fake"
+	notebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1"
+	fakenotebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1/fake"
+	orgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1beta1"
+	fakeorgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1beta1/fake"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1beta1"
 	fakeosconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1beta1/fake"
 	osloginv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oslogin/v1alpha1"
 	fakeosloginv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oslogin/v1alpha1/fake"
+	parametermanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/parametermanager/v1alpha1"
+	fakeparametermanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/parametermanager/v1alpha1/fake"
 	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privateca/v1beta1"
 	fakeprivatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privateca/v1beta1/fake"
 	privilegedaccessmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privilegedaccessmanager/v1beta1"
 	fakeprivilegedaccessmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privilegedaccessmanager/v1beta1/fake"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsub/v1beta1"
 	fakepubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsub/v1beta1/fake"
-	pubsublitev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1alpha1"
-	fakepubsublitev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1alpha1/fake"
 	pubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1beta1"
 	fakepubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1beta1/fake"
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
@@ -225,48 +235,42 @@ import (
 	fakerunv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/run/v1beta1/fake"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1"
 	fakesecretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1/fake"
-	securesourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1alpha1"
-	fakesecuresourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1alpha1/fake"
+	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1beta1"
+	fakesecuresourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1beta1/fake"
 	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1"
 	fakesecuritycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1/fake"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicedirectory/v1beta1"
 	fakeservicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicedirectory/v1beta1/fake"
 	servicenetworkingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicenetworking/v1beta1"
 	fakeservicenetworkingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicenetworking/v1beta1/fake"
-	serviceusagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/serviceusage/v1alpha1"
-	fakeserviceusagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/serviceusage/v1alpha1/fake"
 	serviceusagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/serviceusage/v1beta1"
 	fakeserviceusagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/serviceusage/v1beta1/fake"
 	sourcerepov1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sourcerepo/v1beta1"
 	fakesourcerepov1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sourcerepo/v1beta1/fake"
 	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/spanner/v1beta1"
 	fakespannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/spanner/v1beta1/fake"
+	speechv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/speech/v1beta1"
+	fakespeechv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/speech/v1beta1/fake"
 	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sql/v1beta1"
 	fakesqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sql/v1beta1/fake"
-	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1alpha1"
-	fakestoragev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1alpha1/fake"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1"
 	fakestoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1/fake"
-	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1alpha1"
-	fakestoragetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1alpha1/fake"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1beta1"
 	fakestoragetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1beta1/fake"
-	tagsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1alpha1"
-	faketagsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1alpha1/fake"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
 	faketagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1/fake"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
 	faketpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1/fake"
-	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
-	fakevertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1/fake"
 	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1"
 	fakevertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1/fake"
+	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1beta1"
+	fakevmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1beta1/fake"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1"
 	fakevpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1/fake"
+	workflowexecutionsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflowexecutions/v1alpha1"
+	fakeworkflowexecutionsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflowexecutions/v1alpha1/fake"
 	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1"
 	fakeworkflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1/fake"
-	workstationsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1alpha1"
-	fakeworkstationsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1alpha1/fake"
 	workstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1beta1"
 	fakeworkstationsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1beta1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -331,9 +335,9 @@ func (c *Clientset) AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.Ac
 	return &fakeaccesscontextmanagerv1beta1.FakeAccesscontextmanagerV1beta1{Fake: &c.Fake}
 }
 
-// AccesscontextmanagerV1alpha1 retrieves the AccesscontextmanagerV1alpha1Client
-func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Interface {
-	return &fakeaccesscontextmanagerv1alpha1.FakeAccesscontextmanagerV1alpha1{Fake: &c.Fake}
+// AiplatformV1alpha1 retrieves the AiplatformV1alpha1Client
+func (c *Clientset) AiplatformV1alpha1() aiplatformv1alpha1.AiplatformV1alpha1Interface {
+	return &fakeaiplatformv1alpha1.FakeAiplatformV1alpha1{Fake: &c.Fake}
 }
 
 // AlloydbV1beta1 retrieves the AlloydbV1beta1Client
@@ -341,14 +345,14 @@ func (c *Clientset) AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface {
 	return &fakealloydbv1beta1.FakeAlloydbV1beta1{Fake: &c.Fake}
 }
 
-// ApigatewayV1alpha1 retrieves the ApigatewayV1alpha1Client
-func (c *Clientset) ApigatewayV1alpha1() apigatewayv1alpha1.ApigatewayV1alpha1Interface {
-	return &fakeapigatewayv1alpha1.FakeApigatewayV1alpha1{Fake: &c.Fake}
+// AnalyticsV1alpha1 retrieves the AnalyticsV1alpha1Client
+func (c *Clientset) AnalyticsV1alpha1() analyticsv1alpha1.AnalyticsV1alpha1Interface {
+	return &fakeanalyticsv1alpha1.FakeAnalyticsV1alpha1{Fake: &c.Fake}
 }
 
-// ApigeeV1alpha1 retrieves the ApigeeV1alpha1Client
-func (c *Clientset) ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface {
-	return &fakeapigeev1alpha1.FakeApigeeV1alpha1{Fake: &c.Fake}
+// ApigatewayV1beta1 retrieves the ApigatewayV1beta1Client
+func (c *Clientset) ApigatewayV1beta1() apigatewayv1beta1.ApigatewayV1beta1Interface {
+	return &fakeapigatewayv1beta1.FakeApigatewayV1beta1{Fake: &c.Fake}
 }
 
 // ApigeeV1beta1 retrieves the ApigeeV1beta1Client
@@ -366,9 +370,34 @@ func (c *Clientset) AppengineV1alpha1() appenginev1alpha1.AppengineV1alpha1Inter
 	return &fakeappenginev1alpha1.FakeAppengineV1alpha1{Fake: &c.Fake}
 }
 
+// ApphubV1beta1 retrieves the ApphubV1beta1Client
+func (c *Clientset) ApphubV1beta1() apphubv1beta1.ApphubV1beta1Interface {
+	return &fakeapphubv1beta1.FakeApphubV1beta1{Fake: &c.Fake}
+}
+
 // ArtifactregistryV1beta1 retrieves the ArtifactregistryV1beta1Client
 func (c *Clientset) ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface {
 	return &fakeartifactregistryv1beta1.FakeArtifactregistryV1beta1{Fake: &c.Fake}
+}
+
+// AssetV1beta1 retrieves the AssetV1beta1Client
+func (c *Clientset) AssetV1beta1() assetv1beta1.AssetV1beta1Interface {
+	return &fakeassetv1beta1.FakeAssetV1beta1{Fake: &c.Fake}
+}
+
+// AssuredworkloadsV1alpha1 retrieves the AssuredworkloadsV1alpha1Client
+func (c *Clientset) AssuredworkloadsV1alpha1() assuredworkloadsv1alpha1.AssuredworkloadsV1alpha1Interface {
+	return &fakeassuredworkloadsv1alpha1.FakeAssuredworkloadsV1alpha1{Fake: &c.Fake}
+}
+
+// BackupdrV1beta1 retrieves the BackupdrV1beta1Client
+func (c *Clientset) BackupdrV1beta1() backupdrv1beta1.BackupdrV1beta1Interface {
+	return &fakebackupdrv1beta1.FakeBackupdrV1beta1{Fake: &c.Fake}
+}
+
+// BatchV1alpha1 retrieves the BatchV1alpha1Client
+func (c *Clientset) BatchV1alpha1() batchv1alpha1.BatchV1alpha1Interface {
+	return &fakebatchv1alpha1.FakeBatchV1alpha1{Fake: &c.Fake}
 }
 
 // BeyondcorpV1alpha1 retrieves the BeyondcorpV1alpha1Client
@@ -376,24 +405,19 @@ func (c *Clientset) BeyondcorpV1alpha1() beyondcorpv1alpha1.BeyondcorpV1alpha1In
 	return &fakebeyondcorpv1alpha1.FakeBeyondcorpV1alpha1{Fake: &c.Fake}
 }
 
-// BigqueryV1alpha1 retrieves the BigqueryV1alpha1Client
-func (c *Clientset) BigqueryV1alpha1() bigqueryv1alpha1.BigqueryV1alpha1Interface {
-	return &fakebigqueryv1alpha1.FakeBigqueryV1alpha1{Fake: &c.Fake}
-}
-
 // BigqueryV1beta1 retrieves the BigqueryV1beta1Client
 func (c *Clientset) BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface {
 	return &fakebigqueryv1beta1.FakeBigqueryV1beta1{Fake: &c.Fake}
 }
 
-// BigqueryanalyticshubV1alpha1 retrieves the BigqueryanalyticshubV1alpha1Client
-func (c *Clientset) BigqueryanalyticshubV1alpha1() bigqueryanalyticshubv1alpha1.BigqueryanalyticshubV1alpha1Interface {
-	return &fakebigqueryanalyticshubv1alpha1.FakeBigqueryanalyticshubV1alpha1{Fake: &c.Fake}
-}
-
 // BigqueryanalyticshubV1beta1 retrieves the BigqueryanalyticshubV1beta1Client
 func (c *Clientset) BigqueryanalyticshubV1beta1() bigqueryanalyticshubv1beta1.BigqueryanalyticshubV1beta1Interface {
 	return &fakebigqueryanalyticshubv1beta1.FakeBigqueryanalyticshubV1beta1{Fake: &c.Fake}
+}
+
+// BigquerybiglakeV1beta1 retrieves the BigquerybiglakeV1beta1Client
+func (c *Clientset) BigquerybiglakeV1beta1() bigquerybiglakev1beta1.BigquerybiglakeV1beta1Interface {
+	return &fakebigquerybiglakev1beta1.FakeBigquerybiglakeV1beta1{Fake: &c.Fake}
 }
 
 // BigqueryconnectionV1beta1 retrieves the BigqueryconnectionV1beta1Client
@@ -411,14 +435,19 @@ func (c *Clientset) BigquerydatatransferV1beta1() bigquerydatatransferv1beta1.Bi
 	return &fakebigquerydatatransferv1beta1.FakeBigquerydatatransferV1beta1{Fake: &c.Fake}
 }
 
-// BigqueryreservationV1alpha1 retrieves the BigqueryreservationV1alpha1Client
-func (c *Clientset) BigqueryreservationV1alpha1() bigqueryreservationv1alpha1.BigqueryreservationV1alpha1Interface {
-	return &fakebigqueryreservationv1alpha1.FakeBigqueryreservationV1alpha1{Fake: &c.Fake}
+// BigqueryreservationV1beta1 retrieves the BigqueryreservationV1beta1Client
+func (c *Clientset) BigqueryreservationV1beta1() bigqueryreservationv1beta1.BigqueryreservationV1beta1Interface {
+	return &fakebigqueryreservationv1beta1.FakeBigqueryreservationV1beta1{Fake: &c.Fake}
 }
 
 // BigtableV1beta1 retrieves the BigtableV1beta1Client
 func (c *Clientset) BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface {
 	return &fakebigtablev1beta1.FakeBigtableV1beta1{Fake: &c.Fake}
+}
+
+// BillingV1alpha1 retrieves the BillingV1alpha1Client
+func (c *Clientset) BillingV1alpha1() billingv1alpha1.BillingV1alpha1Interface {
+	return &fakebillingv1alpha1.FakeBillingV1alpha1{Fake: &c.Fake}
 }
 
 // BillingbudgetsV1beta1 retrieves the BillingbudgetsV1beta1Client
@@ -446,6 +475,16 @@ func (c *Clientset) CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Inter
 	return &fakecloudbuildv1beta1.FakeCloudbuildV1beta1{Fake: &c.Fake}
 }
 
+// ClouddeployV1beta1 retrieves the ClouddeployV1beta1Client
+func (c *Clientset) ClouddeployV1beta1() clouddeployv1beta1.ClouddeployV1beta1Interface {
+	return &fakeclouddeployv1beta1.FakeClouddeployV1beta1{Fake: &c.Fake}
+}
+
+// ClouddmsV1alpha1 retrieves the ClouddmsV1alpha1Client
+func (c *Clientset) ClouddmsV1alpha1() clouddmsv1alpha1.ClouddmsV1alpha1Interface {
+	return &fakeclouddmsv1alpha1.FakeClouddmsV1alpha1{Fake: &c.Fake}
+}
+
 // CloudfunctionsV1beta1 retrieves the CloudfunctionsV1beta1Client
 func (c *Clientset) CloudfunctionsV1beta1() cloudfunctionsv1beta1.CloudfunctionsV1beta1Interface {
 	return &fakecloudfunctionsv1beta1.FakeCloudfunctionsV1beta1{Fake: &c.Fake}
@@ -471,6 +510,11 @@ func (c *Clientset) CloudiotV1alpha1() cloudiotv1alpha1.CloudiotV1alpha1Interfac
 	return &fakecloudiotv1alpha1.FakeCloudiotV1alpha1{Fake: &c.Fake}
 }
 
+// CloudquotaV1beta1 retrieves the CloudquotaV1beta1Client
+func (c *Clientset) CloudquotaV1beta1() cloudquotav1beta1.CloudquotaV1beta1Interface {
+	return &fakecloudquotav1beta1.FakeCloudquotaV1beta1{Fake: &c.Fake}
+}
+
 // CloudschedulerV1beta1 retrieves the CloudschedulerV1beta1Client
 func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface {
 	return &fakecloudschedulerv1beta1.FakeCloudschedulerV1beta1{Fake: &c.Fake}
@@ -481,9 +525,14 @@ func (c *Clientset) CloudtasksV1alpha1() cloudtasksv1alpha1.CloudtasksV1alpha1In
 	return &fakecloudtasksv1alpha1.FakeCloudtasksV1alpha1{Fake: &c.Fake}
 }
 
-// ComputeV1alpha1 retrieves the ComputeV1alpha1Client
-func (c *Clientset) ComputeV1alpha1() computev1alpha1.ComputeV1alpha1Interface {
-	return &fakecomputev1alpha1.FakeComputeV1alpha1{Fake: &c.Fake}
+// ColabV1alpha1 retrieves the ColabV1alpha1Client
+func (c *Clientset) ColabV1alpha1() colabv1alpha1.ColabV1alpha1Interface {
+	return &fakecolabv1alpha1.FakeColabV1alpha1{Fake: &c.Fake}
+}
+
+// ComposerV1beta1 retrieves the ComposerV1beta1Client
+func (c *Clientset) ComposerV1beta1() composerv1beta1.ComposerV1beta1Interface {
+	return &fakecomposerv1beta1.FakeComposerV1beta1{Fake: &c.Fake}
 }
 
 // ComputeV1beta1 retrieves the ComputeV1beta1Client
@@ -496,14 +545,14 @@ func (c *Clientset) ConfigcontrollerV1beta1() configcontrollerv1beta1.Configcont
 	return &fakeconfigcontrollerv1beta1.FakeConfigcontrollerV1beta1{Fake: &c.Fake}
 }
 
+// ConfigdeliveryV1alpha1 retrieves the ConfigdeliveryV1alpha1Client
+func (c *Clientset) ConfigdeliveryV1alpha1() configdeliveryv1alpha1.ConfigdeliveryV1alpha1Interface {
+	return &fakeconfigdeliveryv1alpha1.FakeConfigdeliveryV1alpha1{Fake: &c.Fake}
+}
+
 // ContainerV1beta1 retrieves the ContainerV1beta1Client
 func (c *Clientset) ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface {
 	return &fakecontainerv1beta1.FakeContainerV1beta1{Fake: &c.Fake}
-}
-
-// ContaineranalysisV1alpha1 retrieves the ContaineranalysisV1alpha1Client
-func (c *Clientset) ContaineranalysisV1alpha1() containeranalysisv1alpha1.ContaineranalysisV1alpha1Interface {
-	return &fakecontaineranalysisv1alpha1.FakeContaineranalysisV1alpha1{Fake: &c.Fake}
 }
 
 // ContaineranalysisV1beta1 retrieves the ContaineranalysisV1beta1Client
@@ -514,11 +563,6 @@ func (c *Clientset) ContaineranalysisV1beta1() containeranalysisv1beta1.Containe
 // ContainerattachedV1beta1 retrieves the ContainerattachedV1beta1Client
 func (c *Clientset) ContainerattachedV1beta1() containerattachedv1beta1.ContainerattachedV1beta1Interface {
 	return &fakecontainerattachedv1beta1.FakeContainerattachedV1beta1{Fake: &c.Fake}
-}
-
-// DatacatalogV1alpha1 retrieves the DatacatalogV1alpha1Client
-func (c *Clientset) DatacatalogV1alpha1() datacatalogv1alpha1.DatacatalogV1alpha1Interface {
-	return &fakedatacatalogv1alpha1.FakeDatacatalogV1alpha1{Fake: &c.Fake}
 }
 
 // DatacatalogV1beta1 retrieves the DatacatalogV1beta1Client
@@ -539,6 +583,11 @@ func (c *Clientset) DataformV1beta1() dataformv1beta1.DataformV1beta1Interface {
 // DatafusionV1beta1 retrieves the DatafusionV1beta1Client
 func (c *Clientset) DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface {
 	return &fakedatafusionv1beta1.FakeDatafusionV1beta1{Fake: &c.Fake}
+}
+
+// DataplexV1alpha1 retrieves the DataplexV1alpha1Client
+func (c *Clientset) DataplexV1alpha1() dataplexv1alpha1.DataplexV1alpha1Interface {
+	return &fakedataplexv1alpha1.FakeDataplexV1alpha1{Fake: &c.Fake}
 }
 
 // DataprocV1beta1 retrieves the DataprocV1beta1Client
@@ -581,19 +630,14 @@ func (c *Clientset) DlpV1beta1() dlpv1beta1.DlpV1beta1Interface {
 	return &fakedlpv1beta1.FakeDlpV1beta1{Fake: &c.Fake}
 }
 
-// DnsV1alpha1 retrieves the DnsV1alpha1Client
-func (c *Clientset) DnsV1alpha1() dnsv1alpha1.DnsV1alpha1Interface {
-	return &fakednsv1alpha1.FakeDnsV1alpha1{Fake: &c.Fake}
-}
-
 // DnsV1beta1 retrieves the DnsV1beta1Client
 func (c *Clientset) DnsV1beta1() dnsv1beta1.DnsV1beta1Interface {
 	return &fakednsv1beta1.FakeDnsV1beta1{Fake: &c.Fake}
 }
 
-// DocumentaiV1alpha1 retrieves the DocumentaiV1alpha1Client
-func (c *Clientset) DocumentaiV1alpha1() documentaiv1alpha1.DocumentaiV1alpha1Interface {
-	return &fakedocumentaiv1alpha1.FakeDocumentaiV1alpha1{Fake: &c.Fake}
+// DocumentaiV1beta1 retrieves the DocumentaiV1beta1Client
+func (c *Clientset) DocumentaiV1beta1() documentaiv1beta1.DocumentaiV1beta1Interface {
+	return &fakedocumentaiv1beta1.FakeDocumentaiV1beta1{Fake: &c.Fake}
 }
 
 // EdgecontainerV1beta1 retrieves the EdgecontainerV1beta1Client
@@ -606,19 +650,14 @@ func (c *Clientset) EdgenetworkV1beta1() edgenetworkv1beta1.EdgenetworkV1beta1In
 	return &fakeedgenetworkv1beta1.FakeEdgenetworkV1beta1{Fake: &c.Fake}
 }
 
-// EssentialcontactsV1alpha1 retrieves the EssentialcontactsV1alpha1Client
-func (c *Clientset) EssentialcontactsV1alpha1() essentialcontactsv1alpha1.EssentialcontactsV1alpha1Interface {
-	return &fakeessentialcontactsv1alpha1.FakeEssentialcontactsV1alpha1{Fake: &c.Fake}
+// EssentialcontactsV1beta1 retrieves the EssentialcontactsV1beta1Client
+func (c *Clientset) EssentialcontactsV1beta1() essentialcontactsv1beta1.EssentialcontactsV1beta1Interface {
+	return &fakeessentialcontactsv1beta1.FakeEssentialcontactsV1beta1{Fake: &c.Fake}
 }
 
 // EventarcV1beta1 retrieves the EventarcV1beta1Client
 func (c *Clientset) EventarcV1beta1() eventarcv1beta1.EventarcV1beta1Interface {
 	return &fakeeventarcv1beta1.FakeEventarcV1beta1{Fake: &c.Fake}
-}
-
-// FilestoreV1alpha1 retrieves the FilestoreV1alpha1Client
-func (c *Clientset) FilestoreV1alpha1() filestorev1alpha1.FilestoreV1alpha1Interface {
-	return &fakefilestorev1alpha1.FakeFilestoreV1alpha1{Fake: &c.Fake}
 }
 
 // FilestoreV1beta1 retrieves the FilestoreV1beta1Client
@@ -644,11 +683,6 @@ func (c *Clientset) FirebasehostingV1alpha1() firebasehostingv1alpha1.Firebaseho
 // FirebasestorageV1alpha1 retrieves the FirebasestorageV1alpha1Client
 func (c *Clientset) FirebasestorageV1alpha1() firebasestoragev1alpha1.FirebasestorageV1alpha1Interface {
 	return &fakefirebasestoragev1alpha1.FakeFirebasestorageV1alpha1{Fake: &c.Fake}
-}
-
-// FirestoreV1alpha1 retrieves the FirestoreV1alpha1Client
-func (c *Clientset) FirestoreV1alpha1() firestorev1alpha1.FirestoreV1alpha1Interface {
-	return &fakefirestorev1alpha1.FakeFirestoreV1alpha1{Fake: &c.Fake}
 }
 
 // FirestoreV1beta1 retrieves the FirestoreV1beta1Client
@@ -681,11 +715,6 @@ func (c *Clientset) IapV1beta1() iapv1beta1.IapV1beta1Interface {
 	return &fakeiapv1beta1.FakeIapV1beta1{Fake: &c.Fake}
 }
 
-// IdentityplatformV1alpha1 retrieves the IdentityplatformV1alpha1Client
-func (c *Clientset) IdentityplatformV1alpha1() identityplatformv1alpha1.IdentityplatformV1alpha1Interface {
-	return &fakeidentityplatformv1alpha1.FakeIdentityplatformV1alpha1{Fake: &c.Fake}
-}
-
 // IdentityplatformV1beta1 retrieves the IdentityplatformV1beta1Client
 func (c *Clientset) IdentityplatformV1beta1() identityplatformv1beta1.IdentityplatformV1beta1Interface {
 	return &fakeidentityplatformv1beta1.FakeIdentityplatformV1beta1{Fake: &c.Fake}
@@ -694,11 +723,6 @@ func (c *Clientset) IdentityplatformV1beta1() identityplatformv1beta1.Identitypl
 // K8sV1alpha1 retrieves the K8sV1alpha1Client
 func (c *Clientset) K8sV1alpha1() k8sv1alpha1.K8sV1alpha1Interface {
 	return &fakek8sv1alpha1.FakeK8sV1alpha1{Fake: &c.Fake}
-}
-
-// KmsV1alpha1 retrieves the KmsV1alpha1Client
-func (c *Clientset) KmsV1alpha1() kmsv1alpha1.KmsV1alpha1Interface {
-	return &fakekmsv1alpha1.FakeKmsV1alpha1{Fake: &c.Fake}
 }
 
 // KmsV1beta1 retrieves the KmsV1beta1Client
@@ -711,9 +735,24 @@ func (c *Clientset) LoggingV1beta1() loggingv1beta1.LoggingV1beta1Interface {
 	return &fakeloggingv1beta1.FakeLoggingV1beta1{Fake: &c.Fake}
 }
 
+// ManagedkafkaV1beta1 retrieves the ManagedkafkaV1beta1Client
+func (c *Clientset) ManagedkafkaV1beta1() managedkafkav1beta1.ManagedkafkaV1beta1Interface {
+	return &fakemanagedkafkav1beta1.FakeManagedkafkaV1beta1{Fake: &c.Fake}
+}
+
 // MemcacheV1beta1 retrieves the MemcacheV1beta1Client
 func (c *Clientset) MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface {
 	return &fakememcachev1beta1.FakeMemcacheV1beta1{Fake: &c.Fake}
+}
+
+// MemorystoreV1beta1 retrieves the MemorystoreV1beta1Client
+func (c *Clientset) MemorystoreV1beta1() memorystorev1beta1.MemorystoreV1beta1Interface {
+	return &fakememorystorev1beta1.FakeMemorystoreV1beta1{Fake: &c.Fake}
+}
+
+// MetastoreV1beta1 retrieves the MetastoreV1beta1Client
+func (c *Clientset) MetastoreV1beta1() metastorev1beta1.MetastoreV1beta1Interface {
+	return &fakemetastorev1beta1.FakeMetastoreV1beta1{Fake: &c.Fake}
 }
 
 // MlengineV1alpha1 retrieves the MlengineV1alpha1Client
@@ -726,9 +765,9 @@ func (c *Clientset) MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Inter
 	return &fakemonitoringv1beta1.FakeMonitoringV1beta1{Fake: &c.Fake}
 }
 
-// NetworkconnectivityV1alpha1 retrieves the NetworkconnectivityV1alpha1Client
-func (c *Clientset) NetworkconnectivityV1alpha1() networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Interface {
-	return &fakenetworkconnectivityv1alpha1.FakeNetworkconnectivityV1alpha1{Fake: &c.Fake}
+// NetappV1alpha1 retrieves the NetappV1alpha1Client
+func (c *Clientset) NetappV1alpha1() netappv1alpha1.NetappV1alpha1Interface {
+	return &fakenetappv1alpha1.FakeNetappV1alpha1{Fake: &c.Fake}
 }
 
 // NetworkconnectivityV1beta1 retrieves the NetworkconnectivityV1beta1Client
@@ -746,29 +785,19 @@ func (c *Clientset) NetworksecurityV1beta1() networksecurityv1beta1.Networksecur
 	return &fakenetworksecurityv1beta1.FakeNetworksecurityV1beta1{Fake: &c.Fake}
 }
 
-// NetworkservicesV1alpha1 retrieves the NetworkservicesV1alpha1Client
-func (c *Clientset) NetworkservicesV1alpha1() networkservicesv1alpha1.NetworkservicesV1alpha1Interface {
-	return &fakenetworkservicesv1alpha1.FakeNetworkservicesV1alpha1{Fake: &c.Fake}
-}
-
 // NetworkservicesV1beta1 retrieves the NetworkservicesV1beta1Client
 func (c *Clientset) NetworkservicesV1beta1() networkservicesv1beta1.NetworkservicesV1beta1Interface {
 	return &fakenetworkservicesv1beta1.FakeNetworkservicesV1beta1{Fake: &c.Fake}
 }
 
-// NotebooksV1alpha1 retrieves the NotebooksV1alpha1Client
-func (c *Clientset) NotebooksV1alpha1() notebooksv1alpha1.NotebooksV1alpha1Interface {
-	return &fakenotebooksv1alpha1.FakeNotebooksV1alpha1{Fake: &c.Fake}
+// NotebooksV1beta1 retrieves the NotebooksV1beta1Client
+func (c *Clientset) NotebooksV1beta1() notebooksv1beta1.NotebooksV1beta1Interface {
+	return &fakenotebooksv1beta1.FakeNotebooksV1beta1{Fake: &c.Fake}
 }
 
-// OrgpolicyV1alpha1 retrieves the OrgpolicyV1alpha1Client
-func (c *Clientset) OrgpolicyV1alpha1() orgpolicyv1alpha1.OrgpolicyV1alpha1Interface {
-	return &fakeorgpolicyv1alpha1.FakeOrgpolicyV1alpha1{Fake: &c.Fake}
-}
-
-// OsconfigV1alpha1 retrieves the OsconfigV1alpha1Client
-func (c *Clientset) OsconfigV1alpha1() osconfigv1alpha1.OsconfigV1alpha1Interface {
-	return &fakeosconfigv1alpha1.FakeOsconfigV1alpha1{Fake: &c.Fake}
+// OrgpolicyV1beta1 retrieves the OrgpolicyV1beta1Client
+func (c *Clientset) OrgpolicyV1beta1() orgpolicyv1beta1.OrgpolicyV1beta1Interface {
+	return &fakeorgpolicyv1beta1.FakeOrgpolicyV1beta1{Fake: &c.Fake}
 }
 
 // OsconfigV1beta1 retrieves the OsconfigV1beta1Client
@@ -779,6 +808,11 @@ func (c *Clientset) OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface {
 // OsloginV1alpha1 retrieves the OsloginV1alpha1Client
 func (c *Clientset) OsloginV1alpha1() osloginv1alpha1.OsloginV1alpha1Interface {
 	return &fakeosloginv1alpha1.FakeOsloginV1alpha1{Fake: &c.Fake}
+}
+
+// ParametermanagerV1alpha1 retrieves the ParametermanagerV1alpha1Client
+func (c *Clientset) ParametermanagerV1alpha1() parametermanagerv1alpha1.ParametermanagerV1alpha1Interface {
+	return &fakeparametermanagerv1alpha1.FakeParametermanagerV1alpha1{Fake: &c.Fake}
 }
 
 // PrivatecaV1beta1 retrieves the PrivatecaV1beta1Client
@@ -794,11 +828,6 @@ func (c *Clientset) PrivilegedaccessmanagerV1beta1() privilegedaccessmanagerv1be
 // PubsubV1beta1 retrieves the PubsubV1beta1Client
 func (c *Clientset) PubsubV1beta1() pubsubv1beta1.PubsubV1beta1Interface {
 	return &fakepubsubv1beta1.FakePubsubV1beta1{Fake: &c.Fake}
-}
-
-// PubsubliteV1alpha1 retrieves the PubsubliteV1alpha1Client
-func (c *Clientset) PubsubliteV1alpha1() pubsublitev1alpha1.PubsubliteV1alpha1Interface {
-	return &fakepubsublitev1alpha1.FakePubsubliteV1alpha1{Fake: &c.Fake}
 }
 
 // PubsubliteV1beta1 retrieves the PubsubliteV1beta1Client
@@ -831,9 +860,9 @@ func (c *Clientset) SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1b
 	return &fakesecretmanagerv1beta1.FakeSecretmanagerV1beta1{Fake: &c.Fake}
 }
 
-// SecuresourcemanagerV1alpha1 retrieves the SecuresourcemanagerV1alpha1Client
-func (c *Clientset) SecuresourcemanagerV1alpha1() securesourcemanagerv1alpha1.SecuresourcemanagerV1alpha1Interface {
-	return &fakesecuresourcemanagerv1alpha1.FakeSecuresourcemanagerV1alpha1{Fake: &c.Fake}
+// SecuresourcemanagerV1beta1 retrieves the SecuresourcemanagerV1beta1Client
+func (c *Clientset) SecuresourcemanagerV1beta1() securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Interface {
+	return &fakesecuresourcemanagerv1beta1.FakeSecuresourcemanagerV1beta1{Fake: &c.Fake}
 }
 
 // SecuritycenterV1alpha1 retrieves the SecuritycenterV1alpha1Client
@@ -851,11 +880,6 @@ func (c *Clientset) ServicenetworkingV1beta1() servicenetworkingv1beta1.Servicen
 	return &fakeservicenetworkingv1beta1.FakeServicenetworkingV1beta1{Fake: &c.Fake}
 }
 
-// ServiceusageV1alpha1 retrieves the ServiceusageV1alpha1Client
-func (c *Clientset) ServiceusageV1alpha1() serviceusagev1alpha1.ServiceusageV1alpha1Interface {
-	return &fakeserviceusagev1alpha1.FakeServiceusageV1alpha1{Fake: &c.Fake}
-}
-
 // ServiceusageV1beta1 retrieves the ServiceusageV1beta1Client
 func (c *Clientset) ServiceusageV1beta1() serviceusagev1beta1.ServiceusageV1beta1Interface {
 	return &fakeserviceusagev1beta1.FakeServiceusageV1beta1{Fake: &c.Fake}
@@ -871,14 +895,14 @@ func (c *Clientset) SpannerV1beta1() spannerv1beta1.SpannerV1beta1Interface {
 	return &fakespannerv1beta1.FakeSpannerV1beta1{Fake: &c.Fake}
 }
 
+// SpeechV1beta1 retrieves the SpeechV1beta1Client
+func (c *Clientset) SpeechV1beta1() speechv1beta1.SpeechV1beta1Interface {
+	return &fakespeechv1beta1.FakeSpeechV1beta1{Fake: &c.Fake}
+}
+
 // SqlV1beta1 retrieves the SqlV1beta1Client
 func (c *Clientset) SqlV1beta1() sqlv1beta1.SqlV1beta1Interface {
 	return &fakesqlv1beta1.FakeSqlV1beta1{Fake: &c.Fake}
-}
-
-// StorageV1alpha1 retrieves the StorageV1alpha1Client
-func (c *Clientset) StorageV1alpha1() storagev1alpha1.StorageV1alpha1Interface {
-	return &fakestoragev1alpha1.FakeStorageV1alpha1{Fake: &c.Fake}
 }
 
 // StorageV1beta1 retrieves the StorageV1beta1Client
@@ -886,19 +910,9 @@ func (c *Clientset) StorageV1beta1() storagev1beta1.StorageV1beta1Interface {
 	return &fakestoragev1beta1.FakeStorageV1beta1{Fake: &c.Fake}
 }
 
-// StoragetransferV1alpha1 retrieves the StoragetransferV1alpha1Client
-func (c *Clientset) StoragetransferV1alpha1() storagetransferv1alpha1.StoragetransferV1alpha1Interface {
-	return &fakestoragetransferv1alpha1.FakeStoragetransferV1alpha1{Fake: &c.Fake}
-}
-
 // StoragetransferV1beta1 retrieves the StoragetransferV1beta1Client
 func (c *Clientset) StoragetransferV1beta1() storagetransferv1beta1.StoragetransferV1beta1Interface {
 	return &fakestoragetransferv1beta1.FakeStoragetransferV1beta1{Fake: &c.Fake}
-}
-
-// TagsV1alpha1 retrieves the TagsV1alpha1Client
-func (c *Clientset) TagsV1alpha1() tagsv1alpha1.TagsV1alpha1Interface {
-	return &faketagsv1alpha1.FakeTagsV1alpha1{Fake: &c.Fake}
 }
 
 // TagsV1beta1 retrieves the TagsV1beta1Client
@@ -911,14 +925,14 @@ func (c *Clientset) TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface {
 	return &faketpuv1alpha1.FakeTpuV1alpha1{Fake: &c.Fake}
 }
 
-// VertexaiV1alpha1 retrieves the VertexaiV1alpha1Client
-func (c *Clientset) VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interface {
-	return &fakevertexaiv1alpha1.FakeVertexaiV1alpha1{Fake: &c.Fake}
-}
-
 // VertexaiV1beta1 retrieves the VertexaiV1beta1Client
 func (c *Clientset) VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface {
 	return &fakevertexaiv1beta1.FakeVertexaiV1beta1{Fake: &c.Fake}
+}
+
+// VmwareengineV1beta1 retrieves the VmwareengineV1beta1Client
+func (c *Clientset) VmwareengineV1beta1() vmwareenginev1beta1.VmwareengineV1beta1Interface {
+	return &fakevmwareenginev1beta1.FakeVmwareengineV1beta1{Fake: &c.Fake}
 }
 
 // VpcaccessV1beta1 retrieves the VpcaccessV1beta1Client
@@ -926,14 +940,14 @@ func (c *Clientset) VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interfac
 	return &fakevpcaccessv1beta1.FakeVpcaccessV1beta1{Fake: &c.Fake}
 }
 
+// WorkflowexecutionsV1alpha1 retrieves the WorkflowexecutionsV1alpha1Client
+func (c *Clientset) WorkflowexecutionsV1alpha1() workflowexecutionsv1alpha1.WorkflowexecutionsV1alpha1Interface {
+	return &fakeworkflowexecutionsv1alpha1.FakeWorkflowexecutionsV1alpha1{Fake: &c.Fake}
+}
+
 // WorkflowsV1alpha1 retrieves the WorkflowsV1alpha1Client
 func (c *Clientset) WorkflowsV1alpha1() workflowsv1alpha1.WorkflowsV1alpha1Interface {
 	return &fakeworkflowsv1alpha1.FakeWorkflowsV1alpha1{Fake: &c.Fake}
-}
-
-// WorkstationsV1alpha1 retrieves the WorkstationsV1alpha1Client
-func (c *Clientset) WorkstationsV1alpha1() workstationsv1alpha1.WorkstationsV1alpha1Interface {
-	return &fakeworkstationsv1alpha1.FakeWorkstationsV1alpha1{Fake: &c.Fake}
 }
 
 // WorkstationsV1beta1 retrieves the WorkstationsV1beta1Client

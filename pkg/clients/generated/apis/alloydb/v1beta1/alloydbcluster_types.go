@@ -36,19 +36,20 @@ import (
 )
 
 type ClusterAutomatedBackupPolicy struct {
-	/* The length of the time window during which a backup can be taken. If a backup does not succeed within this time window, it will be canceled and considered failed.
+	/* The length of the time window during which a backup can be
+	taken. If a backup does not succeed within this time window, it will be
+	canceled and considered failed.
 
-	The backup window must be at least 5 minutes long. There is no upper bound on the window. If not set, it will default to 1 hour.
-
-	A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
+	The backup window must be at least 5 minutes long. There is no upper bound
+	on the window. If not set, it defaults to 1 hour. */
 	// +optional
 	BackupWindow *string `json:"backupWindow,omitempty"`
 
-	/* Whether automated backups are enabled. */
+	/* Whether automated automated backups are enabled. If not set, defaults to true. */
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`
 
-	/* EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key). */
+	/* Optional. The encryption config can be specified to encrypt the backups with a customer-managed encryption key (CMEK). When this field is not specified, the backup will use the cluster's encryption config. */
 	// +optional
 	EncryptionConfig *ClusterEncryptionConfig `json:"encryptionConfig,omitempty"`
 
@@ -56,15 +57,18 @@ type ClusterAutomatedBackupPolicy struct {
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
-	/* The location where the backup will be stored. Currently, the only supported option is to store the backup in the same region as the cluster. */
+	/* The location where the backup will be stored. Currently, the only supported
+	option is to store the backup in the same region as the cluster.
+
+	If empty, defaults to the region of the cluster. */
 	// +optional
 	Location *string `json:"location,omitempty"`
 
-	/* Quantity-based Backup retention policy to retain recent backups. Conflicts with 'time_based_retention', both can't be set together. */
+	/* Quantity-based Backup retention policy to retain recent backups. */
 	// +optional
 	QuantityBasedRetention *ClusterQuantityBasedRetention `json:"quantityBasedRetention,omitempty"`
 
-	/* Time-based Backup retention policy. Conflicts with 'quantity_based_retention', both can't be set together. */
+	/* Time-based Backup retention policy. */
 	// +optional
 	TimeBasedRetention *ClusterTimeBasedRetention `json:"timeBasedRetention,omitempty"`
 
@@ -74,23 +78,21 @@ type ClusterAutomatedBackupPolicy struct {
 }
 
 type ClusterContinuousBackupConfig struct {
-	/* Whether continuous backup recovery is enabled. If not set, defaults to true. */
+	/* Whether ContinuousBackup is enabled. */
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`
 
-	/* EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key). */
+	/* The encryption config can be specified to encrypt the backups with a customer-managed encryption key (CMEK). When this field is not specified, the backup will use the cluster's encryption config. */
 	// +optional
 	EncryptionConfig *ClusterEncryptionConfig `json:"encryptionConfig,omitempty"`
 
-	/* The numbers of days that are eligible to restore from using PITR. To support the entire recovery window, backups and logs are retained for one day more than the recovery window.
-
-	If not set, defaults to 14 days. */
+	/* The number of days that are eligible to restore from using PITR. To support the entire recovery window, backups and logs are retained for one day more than the recovery window. If not set, defaults to 14 days. */
 	// +optional
-	RecoveryWindowDays *int64 `json:"recoveryWindowDays,omitempty"`
+	RecoveryWindowDays *int32 `json:"recoveryWindowDays,omitempty"`
 }
 
 type ClusterEncryptionConfig struct {
-	/* (Optional) The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]. */
+	/* The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME] */
 	// +optional
 	KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
 }
@@ -111,7 +113,7 @@ type ClusterMaintenanceUpdatePolicy struct {
 }
 
 type ClusterMaintenanceWindows struct {
-	/* Preferred day of the week for maintenance, e.g. MONDAY, TUESDAY, etc. Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]. */
+	/* Preferred day of the week for maintenance, e.g. MONDAY, TUESDAY, etc. */
 	Day string `json:"day"`
 
 	/* Preferred time to start the maintenance operation on the specified day. Maintenance will start within 1 hour of this time. */
@@ -119,14 +121,11 @@ type ClusterMaintenanceWindows struct {
 }
 
 type ClusterNetworkConfig struct {
-	/* The name of the allocated IP range for the private IP AlloyDB cluster. For example: "google-managed-services-default".
-	If set, the instance IPs for this cluster will be created in the allocated range. */
+	/* Optional. Name of the allocated IP range for the private IP AlloyDB cluster, for example: "google-managed-services-default". If set, the instance IPs for this cluster will be created in the allocated range. The range name must comply with RFC 1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`. Field name is intended to be consistent with Cloud SQL. */
 	// +optional
 	AllocatedIpRange *string `json:"allocatedIpRange,omitempty"`
 
-	/* (Required) The relative resource name of the VPC network on which
-	the instance can be accessed. It is specified in the following form:
-	projects/{project}/global/networks/{network_id}. */
+	/* The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`. This is required to create a cluster. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 }
@@ -144,11 +143,11 @@ type ClusterPassword struct {
 type ClusterQuantityBasedRetention struct {
 	/* The number of backups to retain. */
 	// +optional
-	Count *int64 `json:"count,omitempty"`
+	Count *int32 `json:"count,omitempty"`
 }
 
 type ClusterRestoreBackupSource struct {
-	/* (Required) The name of the backup that this cluster is restored from. */
+	/* Required. The name of the backup resource with the format: * projects/{project}/locations/{region}/backups/{backup_id} */
 	BackupNameRef v1alpha1.ResourceRef `json:"backupNameRef"`
 }
 
@@ -161,49 +160,48 @@ type ClusterRestoreContinuousBackupSource struct {
 }
 
 type ClusterSecondaryConfig struct {
-	/* Name of the primary cluster must be in the format
-	'projects/{project}/locations/{location}/clusters/{cluster_id}' */
+	/* The name of the primary cluster name with the format: * projects/{project}/locations/{region}/clusters/{cluster_id} */
 	PrimaryClusterNameRef v1alpha1.ResourceRef `json:"primaryClusterNameRef"`
 }
 
 type ClusterStartTime struct {
-	/* Hours of day in 24 hour format. Should be from 0 to 23. */
-	Hours int64 `json:"hours"`
-
-	/* Minutes of hour of day. Currently, only the value 0 is supported. */
+	/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
 	// +optional
-	Minutes *int64 `json:"minutes,omitempty"`
+	Hours *int32 `json:"hours,omitempty"`
 
-	/* Fractions of seconds in nanoseconds. Currently, only the value 0 is supported. */
+	/* Minutes of hour of day. Must be from 0 to 59. */
 	// +optional
-	Nanos *int64 `json:"nanos,omitempty"`
+	Minutes *int32 `json:"minutes,omitempty"`
 
-	/* Seconds of minutes of the time. Currently, only the value 0 is supported. */
+	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
 	// +optional
-	Seconds *int64 `json:"seconds,omitempty"`
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	/* Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds. */
+	// +optional
+	Seconds *int32 `json:"seconds,omitempty"`
 }
 
 type ClusterStartTimes struct {
 	/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
 	// +optional
-	Hours *int64 `json:"hours,omitempty"`
+	Hours *int32 `json:"hours,omitempty"`
 
-	/* Minutes of hour of day. Currently, only the value 0 is supported. */
+	/* Minutes of hour of day. Must be from 0 to 59. */
 	// +optional
-	Minutes *int64 `json:"minutes,omitempty"`
+	Minutes *int32 `json:"minutes,omitempty"`
 
-	/* Fractions of seconds in nanoseconds. Currently, only the value 0 is supported. */
+	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
 	// +optional
-	Nanos *int64 `json:"nanos,omitempty"`
+	Nanos *int32 `json:"nanos,omitempty"`
 
-	/* Seconds of minutes of the time. Currently, only the value 0 is supported. */
+	/* Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds. */
 	// +optional
-	Seconds *int64 `json:"seconds,omitempty"`
+	Seconds *int32 `json:"seconds,omitempty"`
 }
 
 type ClusterTimeBasedRetention struct {
-	/* The retention period.
-	A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
+	/* The retention period. */
 	// +optional
 	RetentionPeriod *string `json:"retentionPeriod,omitempty"`
 }
@@ -215,16 +213,29 @@ type ClusterValueFrom struct {
 }
 
 type ClusterWeeklySchedule struct {
-	/* The days of the week to perform a backup. At least one day of the week must be provided. Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]. */
+	/* The days of the week to perform a backup.
+
+	If this field is left empty, the default of every day of the week is
+	used. */
 	// +optional
 	DaysOfWeek []string `json:"daysOfWeek,omitempty"`
 
-	/* The times during the day to start a backup. At least one start time must be provided. The start times are assumed to be in UTC and to be an exact hour (e.g., 04:00:00). */
+	/* The times during the day to start a backup. The start times are assumed
+	to be in UTC and to be an exact hour (e.g., 04:00:00).
+
+	If no start times are provided, a single fixed start time is chosen
+	arbitrarily. */
 	StartTimes []ClusterStartTimes `json:"startTimes"`
 }
 
 type AlloyDBClusterSpec struct {
-	/* The automated backup policy for this cluster. AutomatedBackupPolicy is disabled by default. */
+	/* The automated backup policy for this cluster.
+
+	If no policy is provided then the default policy will be used. If backups
+	are supported for the cluster, the default policy takes one backup a day,
+	has a backup window of 1 hour, and retains backups for 14 days.
+	For more information on the defaults, consult the
+	documentation for the message type. */
 	// +optional
 	AutomatedBackupPolicy *ClusterAutomatedBackupPolicy `json:"automatedBackupPolicy,omitempty"`
 
@@ -232,15 +243,15 @@ type AlloyDBClusterSpec struct {
 	// +optional
 	ClusterType *string `json:"clusterType,omitempty"`
 
-	/* The continuous backup config for this cluster.
-
-	If no policy is provided then the default policy will be used. The default policy takes one backup a day and retains backups for 14 days. */
+	/* Optional. Continuous backup configuration for this cluster. */
 	// +optional
 	ContinuousBackupConfig *ClusterContinuousBackupConfig `json:"continuousBackupConfig,omitempty"`
 
-	/* Policy to determine if the cluster should be deleted forcefully.
-	Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster.
-	Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance. */
+	/* Optional. The database engine major version. This is an optional field and it is populated at the Cluster creation time. If a database version is not supplied at cluster creation time, then a default database version will be used. */
+	// +optional
+	DatabaseVersion *string `json:"databaseVersion,omitempty"`
+
+	/* Policy to determine if the cluster should be deleted forcefully. Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster. Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance. */
 	// +optional
 	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
 
@@ -248,47 +259,44 @@ type AlloyDBClusterSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key). */
+	/* Optional. The encryption config can be specified to encrypt the data disks and other persistent data resources of a cluster with a customer-managed encryption key (CMEK). When this field is not specified, the cluster will then use default encryption scheme to protect the user data. */
 	// +optional
 	EncryptionConfig *ClusterEncryptionConfig `json:"encryptionConfig,omitempty"`
 
-	/* Initial user to setup during cluster creation. */
+	/* Input only. Initial user to setup during cluster creation. Required. If used in `RestoreCluster` this is ignored. */
 	// +optional
 	InitialUser *ClusterInitialUser `json:"initialUser,omitempty"`
 
 	/* Immutable. The location where the alloydb cluster should reside. */
 	Location string `json:"location"`
 
-	/* MaintenanceUpdatePolicy defines the policy for system updates. */
+	/* Optional. The maintenance update policy determines when to allow or deny updates. */
 	// +optional
 	MaintenanceUpdatePolicy *ClusterMaintenanceUpdatePolicy `json:"maintenanceUpdatePolicy,omitempty"`
 
-	/* Metadata related to network configuration. */
 	// +optional
 	NetworkConfig *ClusterNetworkConfig `json:"networkConfig,omitempty"`
 
-	/* (Required) The relative resource name of the VPC network on which
-	the instance can be accessed. It is specified in the following form:
-	projects/{project}/global/networks/{network_id}. */
+	/* The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project}/global/networks/{network_id}`. This is required to create a cluster. Deprecated, use network_config.network instead. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The clusterId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The AlloyDBCluster name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The source when restoring from a backup. Conflicts with 'restore_continuous_backup_source', both can't be set together. */
+	/* Immutable. The source when restoring from a backup. Conflicts with 'restoreContinuousBackupSource', both can't be set together. */
 	// +optional
 	RestoreBackupSource *ClusterRestoreBackupSource `json:"restoreBackupSource,omitempty"`
 
-	/* Immutable. The source when restoring via point in time recovery (PITR). Conflicts with 'restore_backup_source', both can't be set together. */
+	/* Immutable. The source when restoring via point in time recovery (PITR). Conflicts with 'restoreBackupSource', both can't be set together. */
 	// +optional
 	RestoreContinuousBackupSource *ClusterRestoreContinuousBackupSource `json:"restoreContinuousBackupSource,omitempty"`
 
-	/* Configuration of the secondary cluster for Cross Region Replication. This should be set if and only if the cluster is of type SECONDARY. */
+	/* Cross Region replication config specific to SECONDARY cluster. */
 	// +optional
 	SecondaryConfig *ClusterSecondaryConfig `json:"secondaryConfig,omitempty"`
 }
@@ -300,11 +308,11 @@ type ClusterBackupSourceStatus struct {
 }
 
 type ClusterContinuousBackupInfoStatus struct {
-	/* The earliest restorable time that can be restored to. Output only field. */
+	/* Output only. The earliest restorable time that can be restored to. Output only field. */
 	// +optional
 	EarliestRestorableTime *string `json:"earliestRestorableTime,omitempty"`
 
-	/* When ContinuousBackup was most recently enabled. Set to null if ContinuousBackup is not enabled. */
+	/* Output only. When ContinuousBackup was most recently enabled. Set to null if ContinuousBackup is not enabled. */
 	// +optional
 	EnabledTime *string `json:"enabledTime,omitempty"`
 
@@ -312,7 +320,7 @@ type ClusterContinuousBackupInfoStatus struct {
 	// +optional
 	EncryptionInfo []ClusterEncryptionInfoStatus `json:"encryptionInfo,omitempty"`
 
-	/* Days of the week on which a continuous backup is taken. Output only field. Ignored if passed into the request. */
+	/* Output only. Days of the week on which a continuous backup is taken. Output only field. Ignored if passed into the request. */
 	// +optional
 	Schedule []string `json:"schedule,omitempty"`
 }
@@ -328,34 +336,38 @@ type ClusterEncryptionInfoStatus struct {
 }
 
 type ClusterMigrationSourceStatus struct {
-	/* The host and port of the on-premises instance in host:port format. */
+	/* Output only. The host and port of the on-premises instance in host:port format */
 	// +optional
 	HostPort *string `json:"hostPort,omitempty"`
 
-	/* Place holder for the external source identifier(e.g DMS job name) that created the cluster. */
+	/* Output only. Place holder for the external source identifier(e.g DMS job name) that created the cluster. */
 	// +optional
 	ReferenceId *string `json:"referenceId,omitempty"`
 
-	/* Type of migration source. */
+	/* Output only. Type of migration source. */
 	// +optional
 	SourceType *string `json:"sourceType,omitempty"`
 }
 
 type ClusterObservedStateStatus struct {
-	/* The type of cluster. If not set, defaults to PRIMARY. Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"]. */
+	/* Output only. The type of the cluster. This is an output-only field and it's populated at the Cluster creation time or the Cluster promotion time. The cluster type is determined by which RPC was used to create the cluster (i.e. `CreateCluster` vs. `CreateSecondaryCluster` */
 	// +optional
 	ClusterType *string `json:"clusterType,omitempty"`
+
+	/* The database engine major version. This is an output-only field and it's populated at the Cluster creation time. This field cannot be changed after cluster creation. */
+	// +optional
+	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 }
 
 type AlloyDBClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AlloyDBCluster's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Cluster created from backup. */
+	/* Output only. Cluster created from backup. */
 	// +optional
 	BackupSource []ClusterBackupSourceStatus `json:"backupSource,omitempty"`
 
-	/* ContinuousBackupInfo describes the continuous backup properties of a cluster. */
+	/* Output only. Continuous backup properties for this cluster. */
 	// +optional
 	ContinuousBackupInfo []ClusterContinuousBackupInfoStatus `json:"continuousBackupInfo,omitempty"`
 
@@ -363,15 +375,19 @@ type AlloyDBClusterStatus struct {
 	// +optional
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 
-	/* EncryptionInfo describes the encryption information of a cluster or a backup. */
+	/* Output only. The encryption information for the cluster. */
 	// +optional
 	EncryptionInfo []ClusterEncryptionInfoStatus `json:"encryptionInfo,omitempty"`
 
-	/* Cluster created via DMS migration. */
+	/* A unique specifier for the AlloyDBCluster resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	/* Output only. Cluster created via DMS migration. */
 	// +optional
 	MigrationSource []ClusterMigrationSourceStatus `json:"migrationSource,omitempty"`
 
-	/* The name of the cluster resource. */
+	/* Output only. The name of the cluster resource with the format: * projects/{project}/locations/{region}/clusters/{cluster_id} where the cluster ID segment should satisfy the regex expression `[a-z0-9-]+`. For more details see https://google.aip.dev/122. The prefix of the cluster resource name is the name of the parent resource: * projects/{project}/locations/{region} */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
@@ -379,11 +395,11 @@ type AlloyDBClusterStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The observed state of the underlying GCP resource. */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
 	ObservedState *ClusterObservedStateStatus `json:"observedState,omitempty"`
 
-	/* The system-generated UID of the resource. */
+	/* Output only. The system-generated UID of the resource. The UID is assigned when the resource is created, and it is retained until it is deleted. */
 	// +optional
 	Uid *string `json:"uid,omitempty"`
 }
