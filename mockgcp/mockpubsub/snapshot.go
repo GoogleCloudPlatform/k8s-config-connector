@@ -28,7 +28,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -42,7 +41,7 @@ func (s *subscriberService) GetSnapshot(ctx context.Context, req *pb.GetSnapshot
 	fqn := name.String()
 
 	obj := &pb.Snapshot{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	if err := s.snapshots.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource not found (resource=%s).", name.Snapshot)
 		}
@@ -68,7 +67,7 @@ func (s *subscriberService) CreateSnapshot(ctx context.Context, req *pb.CreateSn
 		Labels:     req.Labels,
 	}
 
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+	if err := s.snapshots.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
@@ -90,14 +89,14 @@ func (s *subscriberService) UpdateSnapshot(ctx context.Context, req *pb.UpdateSn
 	}
 
 	obj := &pb.Snapshot{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	if err := s.snapshots.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	// Mask should be applied here
 	proto.Merge(obj, req.Snapshot)
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	if err := s.snapshots.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
@@ -113,7 +112,7 @@ func (s *subscriberService) DeleteSnapshot(ctx context.Context, req *pb.DeleteSn
 	fqn := name.String()
 
 	deleted := &pb.Snapshot{}
-	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+	if err := s.snapshots.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
 	}
 
@@ -123,14 +122,9 @@ func (s *subscriberService) DeleteSnapshot(ctx context.Context, req *pb.DeleteSn
 func (s *subscriberService) ListSnapshots(ctx context.Context, req *pb.ListSnapshotsRequest) (*pb.ListSnapshotsResponse, error) {
 	prefix := req.GetProject() + "/snapshots/"
 	list := make([]*pb.Snapshot, 0)
-	snapshotKind := (&pb.Snapshot{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, snapshotKind, storage.ListOptions{
+	if err := s.snapshots.List(ctx, storage.ListOptions{
 		Prefix: prefix,
-	}, func(obj protoreflect.ProtoMessage) error {
-		snapshot, ok := obj.(*pb.Snapshot)
-		if !ok {
-			return status.Errorf(codes.Internal, "unexpected type %T in ListSnapshots", obj)
-		}
+	}, func(snapshot *pb.Snapshot) error {
 		if strings.HasPrefix(snapshot.Name, prefix) {
 			list = append(list, snapshot)
 		}
