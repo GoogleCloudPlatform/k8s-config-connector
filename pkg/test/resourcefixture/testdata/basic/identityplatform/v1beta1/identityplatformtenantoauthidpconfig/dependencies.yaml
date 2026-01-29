@@ -16,6 +16,7 @@ apiVersion: identityplatform.cnrm.cloud.google.com/v1beta1
 kind: IdentityPlatformTenant
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     # You must use the Google Cloud Console to enable multi-tenancy prior to using this resource.
     # The following project has been enabled with multi-tenancy feature.
     cnrm.cloud.google.com/project-id: ${IDENTITY_PLATFORM_TEST_PROJECT}
@@ -33,6 +34,8 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: secret-${uniqueId}
 stringData:
   clientSecret: "secret"

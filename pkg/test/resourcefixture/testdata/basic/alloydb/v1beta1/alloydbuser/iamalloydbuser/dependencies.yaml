@@ -15,6 +15,8 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computenetwork-${uniqueId}
 spec:
   autoCreateSubnetworks: false
@@ -22,6 +24,8 @@ spec:
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: alloydbcluster-${uniqueId}
 spec:
   initialUser:
@@ -37,6 +41,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computeaddress-${uniqueId}
 spec:
   location: global
@@ -49,6 +55,8 @@ spec:
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: servicenetworkingconnection-${uniqueId}
 spec:
   networkRef:
@@ -60,6 +68,8 @@ spec:
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: alloydbinstance-${uniqueId}
 spec:
   clusterRef:

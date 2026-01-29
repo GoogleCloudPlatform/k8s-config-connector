@@ -70,7 +70,6 @@ gcloud services enable \
   dataflow.googleapis.com \
   discoveryengine.googleapis.com \
   eventarc.googleapis.com \
-  filestore.googleapis.com \
   firestore.googleapis.com \
   iam.googleapis.com \
   logging.googleapis.com

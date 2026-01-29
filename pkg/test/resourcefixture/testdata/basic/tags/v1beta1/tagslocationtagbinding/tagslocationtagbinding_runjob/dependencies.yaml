@@ -3,6 +3,7 @@ kind: RunJob
 metadata:
   name: runjob-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
   launchStage: "GA"
@@ -17,6 +18,8 @@ spec:
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsTagKey
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: tagstagkey-${uniqueId}
 spec:
   description: For keyname resources.
@@ -26,6 +29,8 @@ spec:
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsTagValue
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: tagstagvalue-${uniqueId}
 spec:
   description: For valuename resources.

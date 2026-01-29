@@ -39,6 +39,10 @@ We are not yet switching the controller to direct, so we want the same labels; t
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 ```
 
+If `dev/tasks/diff-crds` reports fields added in the new CRD that were not in the old CRD (e.g., `+ spec.location=string`, `+ spec.projectRef...`), you should remove them from the Go struct to maintain strict compatibility, or comment them out. For `projectRef`, if the old CRD did not have it (implicit via namespace), do not add it.
+
+If fields have different names (e.g. `exclusion` vs `exclusions`), you should rename the field in your Go struct to match the old CRD (json tag), and implement a manual mapper function to convert between the KRM type and the Proto type. You may need to remove `+kcc:proto` annotations from the struct to prevent auto-generation of mappers and conflicts.
+
 ## Creating a Fuzz-Test
 
 For a resource migration, we do not require a fuzz-test initially.
