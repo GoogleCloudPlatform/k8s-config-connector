@@ -45,6 +45,7 @@ def main():
     run_and_verify_no_changes(["dev/tasks/generate-crds"])
     run_and_verify_no_changes(["dev/tasks/generate-resource-report"])
     run_and_verify_no_changes(["dev/tasks/generate_static_config.py"])
+    run_and_verify_no_changes(["dev/tasks/verify-crds-folder.sh"])
 
 if __name__ == "__main__":
     main()
