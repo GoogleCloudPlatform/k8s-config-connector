@@ -412,6 +412,9 @@ spec:
                     description: Whether node auto-provisioning is enabled. Resource
                       limits for cpu and memory must be defined to enable node auto-provisioning.
                     type: boolean
+                  enableDefaultComputeClass:
+                    description: Enable the default compute class for the cluster.
+                    type: boolean
                   resourceLimits:
                     description: Global constraints for machine resources in the cluster.
                       Configuring the cpu and memory types is required if node auto-provisioning

@@ -208,6 +208,10 @@ type ClusterClusterAutoscaling struct {
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`
 
+	/* Enables default compute class. */
+	// +optional
+	EnableDefaultComputeClass *bool `json:"enableDefaultComputeClass,omitempty"`
+
 	/* Global constraints for machine resources in the cluster. Configuring the cpu and memory types is required if node auto-provisioning is enabled. These limits will apply to node pool autoscaling in addition to node auto-provisioning. */
 	// +optional
 	ResourceLimits []ClusterResourceLimits `json:"resourceLimits,omitempty"`

@@ -384,6 +384,11 @@ func (in *ClusterClusterAutoscaling) DeepCopyInto(out *ClusterClusterAutoscaling
 		*out = new(bool)
 		**out = **in
 	}
+	if in.EnableDefaultComputeClass != nil {
+		in, out := &in.EnableDefaultComputeClass, &out.EnableDefaultComputeClass
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ResourceLimits != nil {
 		in, out := &in.ResourceLimits, &out.ResourceLimits
 		*out = make([]ClusterResourceLimits, len(*in))
