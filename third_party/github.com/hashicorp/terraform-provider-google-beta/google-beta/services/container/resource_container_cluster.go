@@ -745,6 +745,22 @@ func ResourceContainerCluster() *schema.Resource {
 							ValidateFunc:     validation.StringInSlice([]string{"BALANCED", "OPTIMIZE_UTILIZATION"}, false),
 							Description:      `Configuration options for the Autoscaling profile feature, which lets you choose whether the cluster autoscaler should optimize for resource utilization or resource availability when deciding to remove nodes from a cluster. Can be BALANCED or OPTIMIZE_UTILIZATION. Defaults to BALANCED.`,
 						},
+						"default_compute_class_config": {
+							Type:             schema.TypeList,
+							Optional:         true,
+							DiffSuppressFunc: DefaultComputeClassConfigDiffSuppress,
+							MaxItems:         1,
+							Description:      "Default compute class is a configuration for default compute class.",
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"enabled": {
+										Type:        schema.TypeBool,
+										Optional:    true,
+										Description: "Enables default compute class.",
+									},
+								},
+							},
+						},
 					},
 				},
 			},
@@ -2166,17 +2182,17 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		ClusterTelemetry: expandClusterTelemetry(d.Get("cluster_telemetry")),
 		EnableTpu:        d.Get("enable_tpu").(bool),
 		NetworkConfig: &container.NetworkConfig{
-			EnableIntraNodeVisibility: d.Get("enable_intranode_visibility").(bool),
-			DefaultSnatStatus:         expandDefaultSnatStatus(d.Get("default_snat_status")),
-			DatapathProvider:          d.Get("datapath_provider").(string),
-			PrivateIpv6GoogleAccess:   d.Get("private_ipv6_google_access").(string),
-			EnableL4ilbSubsetting:     d.Get("enable_l4_ilb_subsetting").(bool),
-			DnsConfig:                 expandDnsConfig(d.Get("dns_config")),
-			GatewayApiConfig:          expandGatewayApiConfig(d.Get("gateway_api_config")),
-			EnableMultiNetworking:     d.Get("enable_multi_networking").(bool),
+			EnableIntraNodeVisibility:            d.Get("enable_intranode_visibility").(bool),
+			DefaultSnatStatus:                    expandDefaultSnatStatus(d.Get("default_snat_status")),
+			DatapathProvider:                     d.Get("datapath_provider").(string),
+			PrivateIpv6GoogleAccess:              d.Get("private_ipv6_google_access").(string),
+			EnableL4ilbSubsetting:                d.Get("enable_l4_ilb_subsetting").(bool),
+			DnsConfig:                            expandDnsConfig(d.Get("dns_config")),
+			GatewayApiConfig:                     expandGatewayApiConfig(d.Get("gateway_api_config")),
+			EnableMultiNetworking:                d.Get("enable_multi_networking").(bool),
 			EnableCiliumClusterwideNetworkPolicy: d.Get("enable_cilium_clusterwide_network_policy").(bool),
-			EnableFqdnNetworkPolicy:   d.Get("enable_fqdn_network_policy").(bool),
-			DefaultEnablePrivateNodes: expandDefaultEnablePrivateNodes(d),
+			EnableFqdnNetworkPolicy:              d.Get("enable_fqdn_network_policy").(bool),
+			DefaultEnablePrivateNodes:            expandDefaultEnablePrivateNodes(d),
 		},
 		MasterAuth:           expandMasterAuth(d.Get("master_auth")),
 		NotificationConfig:   expandNotificationConfig(d.Get("notification_config")),
@@ -3146,7 +3162,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		req := &container.UpdateClusterRequest{
 			Update: &container.ClusterUpdate{
 				DesiredEnableCiliumClusterwideNetworkPolicy: enabled,
-				ForceSendFields:                             []string{"DesiredEnableCiliumClusterwideNetworkPolicy"},
+				ForceSendFields: []string{"DesiredEnableCiliumClusterwideNetworkPolicy"},
 			},
 		}
 		updateF := updateFunc(req, "updating cilium clusterwide network policy")
@@ -4560,7 +4576,19 @@ func expandClusterAutoscaling(configured interface{}, d *schema.ResourceData) *c
 		EnableNodeAutoprovisioning:       config["enabled"].(bool),
 		ResourceLimits:                   resourceLimits,
 		AutoscalingProfile:               config["autoscaling_profile"].(string),
+		DefaultComputeClassConfig:        expandDefaultComputeClassConfig(config["default_compute_class_config"], d),
 		AutoprovisioningNodePoolDefaults: expandAutoProvisioningDefaults(config["auto_provisioning_defaults"], d),
+	}
+}
+
+func expandDefaultComputeClassConfig(configured interface{}, d *schema.ResourceData) *container.DefaultComputeClassConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return &container.DefaultComputeClassConfig{}
+	}
+	config := l[0].(map[string]interface{})
+	return &container.DefaultComputeClassConfig{
+		Enabled: config["enabled"].(bool),
 	}
 }
 
@@ -5854,8 +5882,21 @@ func flattenClusterAutoscaling(a *container.ClusterAutoscaling) []map[string]int
 		r["enabled"] = false
 	}
 	r["autoscaling_profile"] = a.AutoscalingProfile
+	if a.DefaultComputeClassConfig != nil {
+		r["default_compute_class_config"] = flattenDefaultComputeClassConfig(a.DefaultComputeClassConfig)
+	}
 
 	return []map[string]interface{}{r}
+}
+
+func flattenDefaultComputeClassConfig(c *container.DefaultComputeClassConfig) []map[string]interface{} {
+	result := []map[string]interface{}{}
+	if c != nil {
+		result = append(result, map[string]interface{}{
+			"enabled": c.Enabled,
+		})
+	}
+	return result
 }
 
 func flattenAutoProvisioningDefaults(a *container.AutoprovisioningNodePoolDefaults) []map[string]interface{} {
@@ -6343,6 +6384,18 @@ func BinaryAuthorizationDiffSuppress(k, old, new string, r *schema.ResourceData)
 	if k == "binary_authorization.#" && old == "1" && new == "0" {
 		o, _ := r.GetChange("binary_authorization.0.enabled")
 		if !o.(bool) && !r.HasChange("binary_authorization.0.evaluation_mode") {
+			return true
+		}
+	}
+
+	return false
+}
+
+func DefaultComputeClassConfigDiffSuppress(k, old, new string, r *schema.ResourceData) bool {
+	// An empty config is equivalent to a config with enabled set to false.
+	if k == "default_compute_class_config.#" && old == "1" && new == "0" {
+		o, _ := r.GetChange("default_compute_class_config.0.enabled")
+		if !o.(bool) {
 			return true
 		}
 	}
