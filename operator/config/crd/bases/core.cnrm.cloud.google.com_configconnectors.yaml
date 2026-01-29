@@ -98,9 +98,8 @@ spec:
                     items:
                       properties:
                         enabled:
-                          description: |-
-                            Enabled controls whether the controller for this resource is enabled.
-                            Defaults to true.
+                          description: Enabled controls whether the controller for
+                            this resource is enabled.
                           type: boolean
                         group:
                           description: Group is the API group of the resource.
