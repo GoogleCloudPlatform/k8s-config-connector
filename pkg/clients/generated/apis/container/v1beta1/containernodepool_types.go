@@ -60,8 +60,13 @@ type NodepoolAdditionalPodNetworkConfigs struct {
 }
 
 type NodepoolAdvancedMachineFeatures struct {
+	/* Immutable. Whether or not to enable nested virtualization (defaults to false). */
+	// +optional
+	EnableNestedVirtualization *bool `json:"enableNestedVirtualization,omitempty"`
+
 	/* Immutable. The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed. */
-	ThreadsPerCore int64 `json:"threadsPerCore"`
+	// +optional
+	ThreadsPerCore *int64 `json:"threadsPerCore,omitempty"`
 }
 
 type NodepoolAutoscaling struct {

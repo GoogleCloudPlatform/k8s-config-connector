@@ -170,7 +170,7 @@ type ContainerAttachedClusterSpec struct {
 	/* The ID of the project in which the resource belongs. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable, Optional. The ContainerAttachedCluster name. If not given, the metadata.name will be used. */
+	/* Optional. The ContainerAttachedCluster name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }

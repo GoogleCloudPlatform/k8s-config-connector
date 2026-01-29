@@ -36,58 +36,54 @@ import (
 )
 
 type WorkflowsWorkflowSpec struct {
-	/* The KMS key used to encrypt workflow and execution data.
-
-	Format: projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}. */
+	/* Optional. Describes the level of platform logging to apply to calls and call responses during executions of this workflow. If both the workflow and the execution specify a logging level, the execution level takes precedence. */
 	// +optional
-	CryptoKeyName *string `json:"cryptoKeyName,omitempty"`
+	CallLogLevel *string `json:"callLogLevel,omitempty"`
 
 	/* Description of the workflow provided by the user. Must be at most 1000 unicode characters long. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. */
+	/* Optional. The resource name of a KMS crypto key used to encrypt or decrypt the data associated with the workflow. If not provided, data associated with the workflow will not be CMEK-encrypted. */
 	// +optional
-	NamePrefix *string `json:"namePrefix,omitempty"`
+	KmsCryptoKeyRef *v1alpha1.ResourceRef `json:"kmsCryptoKeyRef,omitempty"`
 
-	/* The project that this resource belongs to. */
+	/* Labels associated with this workflow. Labels can contain at most 64 entries. Keys and values can be no longer than 63 characters and can only contain lowercase letters, numeric characters, underscores, and dashes. Label keys must start with a letter. International characters are allowed. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	/* Immutable. */
+	Location string `json:"location"`
+
+	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. The region of the workflow. */
-	Region string `json:"region"`
-
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The Workflow name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Name of the service account associated with the latest workflow version. This service
-	account represents the identity of the workflow and determines what permissions the workflow has.
-	Format: projects/{project}/serviceAccounts/{account} or {account}.
-	Using - as a wildcard for the {project} or not providing one at all will infer the project from the account.
-	The {account} value can be the email address or the unique_id of the service account.
-	If not provided, workflow will use the project's default service account.
-	Modifying this field for an existing workflow results in a new workflow revision. */
+	/* The service account associated with the latest workflow version. This service account represents the identity of the workflow and determines what permissions the workflow has. If not provided, workflow will use the project's default service account. Modifying this field for an existing workflow results in a new workflow revision. */
 	// +optional
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/* Workflow code to be executed. The size limit is 32KB. */
+	/* Required. Workflow code to be executed. The size limit is 128KB. */
+	SourceContents string `json:"sourceContents"`
+
+	/* Optional.User-defined environment variables associated with this workflow revision. This map has a maximum length of 20. Each string can take up to 40KiB. Keys cannot be empty strings and cannot start with “GOOGLE” or “WORKFLOWS". */
 	// +optional
-	SourceContents *string `json:"sourceContents,omitempty"`
+	UserEnvVars map[string]string `json:"userEnvVars,omitempty"`
 }
 
-type WorkflowsWorkflowStatus struct {
-	/* Conditions represent the latest available observations of the
-	   WorkflowsWorkflow's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The timestamp of when the workflow was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+type WorkflowObservedStateStatus struct {
+	/* The timestamp for when the workflow was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	/* The timestamp for the latest revision of the workflow's creation. */
 	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	RevisionCreateTime *string `json:"revisionCreateTime,omitempty"`
 
-	/* The revision of the workflow. A new one is generated if the service account or source contents is changed. */
+	/* The revision of the workflow. A new revision of a workflow is created as a result of updating the following properties of a workflow: - service_account - source_content The format is "000001-a4d", where the first six characters define the zero-padded revision ordinal number. They are followed by a hyphen and three hexadecimal random characters. */
 	// +optional
 	RevisionId *string `json:"revisionId,omitempty"`
 
@@ -95,9 +91,40 @@ type WorkflowsWorkflowStatus struct {
 	// +optional
 	State *string `json:"state,omitempty"`
 
-	/* The timestamp of when the workflow was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+	/* Error regarding the state of the workflow. For example, this field will have error details if the execution data is unavailable due to revoked KMS key permissions. */
+	// +optional
+	StateError *WorkflowStateErrorStatus `json:"stateError,omitempty"`
+
+	/* The timestamp for when the workflow was last updated. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type WorkflowStateErrorStatus struct {
+	/* Provides specifics about the error. */
+	// +optional
+	Details *string `json:"details,omitempty"`
+
+	/* The type of this state error. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type WorkflowsWorkflowStatus struct {
+	/* Conditions represent the latest available observations of the
+	   WorkflowsWorkflow's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the Workflow resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *WorkflowObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
@@ -105,9 +132,7 @@ type WorkflowsWorkflowStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpworkflowsworkflow;gcpworkflowsworkflows
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

@@ -31,6 +31,7 @@ import (
 
 type LoggingV1beta1Interface interface {
 	RESTClient() rest.Interface
+	LoggingLinksGetter
 	LoggingLogBucketsGetter
 	LoggingLogExclusionsGetter
 	LoggingLogMetricsGetter
@@ -41,6 +42,10 @@ type LoggingV1beta1Interface interface {
 // LoggingV1beta1Client is used to interact with features provided by the logging.cnrm.cloud.google.com group.
 type LoggingV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *LoggingV1beta1Client) LoggingLinks(namespace string) LoggingLinkInterface {
+	return newLoggingLinks(c, namespace)
 }
 
 func (c *LoggingV1beta1Client) LoggingLogBuckets(namespace string) LoggingLogBucketInterface {

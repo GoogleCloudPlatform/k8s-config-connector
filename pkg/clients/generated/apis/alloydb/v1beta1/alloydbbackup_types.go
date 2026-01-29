@@ -90,6 +90,10 @@ type AlloyDBBackupStatus struct {
 	// +optional
 	Etag *string `json:"etag,omitempty"`
 
+	/* A unique specifier for the AlloyDBBackup resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* Output only. The name of the backup resource with the format: * projects/{project}/locations/{region}/backups/{backupId}. */
 	// +optional
 	Name *string `json:"name,omitempty"`

@@ -34,7 +34,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/klog/v2"
 )
 
 var handwrittenIAMTypes = []string{
@@ -234,7 +233,7 @@ func findAndReplaceInStructField(old, new string, fields []*fieldProperties) {
 
 func findAndReplaceInNestedFields(old, new string, fieldMap map[string][]*fieldProperties) {
 	for name, children := range fieldMap {
-		if name == old {
+		if name == old && old != new {
 			fieldMap[new] = children
 			delete(fieldMap, old)
 		}
@@ -473,6 +472,9 @@ func isMapOrSliceType(t string) bool {
 	if strings.HasPrefix(t, "map[string]") {
 		return true
 	}
+	if t == "apiextensionsv1.JSON" {
+		return true
+	}
 	return false
 }
 
@@ -497,11 +499,13 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 			// The default is int64 (and not int, we don't want the schema to vary across architectures)
 			return "int64"
 		default:
-			klog.Fatalf("unhandled case in formatType: %+v", desc)
+			log.Fatalf("unhandled case in formatType: %+v", desc)
 			return ""
 		}
 	case "float", "number":
 		return "float64"
+	case "schemaless":
+		return "apiextensionsv1.JSON"
 	case "object":
 		if isSec {
 			return "v1alpha1.SecretKeyRef"
@@ -535,6 +539,8 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 			var goType string
 			if valueType == "object" {
 				goType = strings.Title(desc.ShortName)
+			} else if valueType == "" {
+				goType = "apiextensionsv1.JSON"
 			} else {
 				goType = formatToGoLiteral(valueType)
 			}

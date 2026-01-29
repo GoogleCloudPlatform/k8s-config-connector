@@ -36,18 +36,14 @@ import (
 )
 
 type DataCatalogPolicyTagSpec struct {
-	/* Description of this policy tag. It must: contain only unicode characters, tabs,
-	newlines, carriage returns and page breaks; and be at most 2000 bytes long when
-	encoded in UTF-8. If not set, defaults to an empty description.
-	If not set, defaults to an empty description. */
+	/* Description of this policy tag. It must: contain only unicode characters, tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes long when encoded in UTF-8. If not set, defaults to an empty description. If not set, defaults to an empty description. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* User defined name of this policy tag. It must: be unique within the parent
-	taxonomy; contain only unicode letters, numbers, underscores, dashes and spaces;
-	not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8. */
+	/* User defined name of this policy tag. It must: be unique within the parent taxonomy; contain only unicode letters, numbers, underscores, dashes and spaces; not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8. */
 	DisplayName string `json:"displayName"`
 
+	/* PolicyTagRef defines the resource reference to DataCatalogPolicyTag, which "External" field holds the GCP identifier for the KRM object. */
 	// +optional
 	ParentPolicyTagRef *v1alpha1.ResourceRef `json:"parentPolicyTagRef,omitempty"`
 
@@ -55,7 +51,11 @@ type DataCatalogPolicyTagSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* TaxonomyRef defines the resource reference to DataCatalogTaxonomy, which "External" field holds the GCP identifier for the KRM object. */
 	TaxonomyRef v1alpha1.ResourceRef `json:"taxonomyRef"`
+}
+
+type PolicytagObservedStateStatus struct {
 }
 
 type DataCatalogPolicyTagStatus struct {
@@ -66,14 +66,21 @@ type DataCatalogPolicyTagStatus struct {
 	// +optional
 	ChildPolicyTags []string `json:"childPolicyTags,omitempty"`
 
-	/* Resource name of this policy tag, whose format is:
-	"projects/{project}/locations/{region}/taxonomies/{taxonomy}/policyTags/{policytag}". */
+	/* A unique specifier for the DataCatalogPolicyTag resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	/* Resource name of this policy tag, whose format is: "projects/{project}/locations/{region}/taxonomies/{taxonomy}/policyTags/{policytag}". */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *PolicytagObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
@@ -81,7 +88,6 @@ type DataCatalogPolicyTagStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatacatalogpolicytag;gcpdatacatalogpolicytags
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"

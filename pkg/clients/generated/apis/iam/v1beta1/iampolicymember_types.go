@@ -45,7 +45,7 @@ type PolicymemberCondition struct {
 }
 
 type PolicymemberMemberFrom struct {
-	/* BigQueryConnectionConnection whose service account is to be bound to the role. Use the Type field to specifie the connection type. For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`. For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`. For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`. */
+	/* BigQueryConnectionConnection whose service account is to be bound to the role. Use the Type field to specify the connection type. For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`. For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`. For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`. */
 	// +optional
 	BigQueryConnectionConnectionRef *v1alpha1.IAMResourceRef `json:"bigQueryConnectionConnectionRef,omitempty"`
 
@@ -79,7 +79,7 @@ type IAMPolicyMemberSpec struct {
 	// +optional
 	MemberFrom *PolicymemberMemberFrom `json:"memberFrom,omitempty"`
 
-	/* Immutable. Required. The GCP resource to set the IAM policy on. */
+	/* Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...) */
 	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
 
 	/* Immutable. Required. The role for which the Member will be bound. */

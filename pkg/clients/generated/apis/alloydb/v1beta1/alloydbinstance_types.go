@@ -36,35 +36,105 @@ import (
 )
 
 type InstanceAuthorizedExternalNetworks struct {
-	/* CIDR range for one authorized network of the instance. */
+	/* CIDR range for one authorzied network of the instance. */
 	// +optional
 	CidrRange *string `json:"cidrRange,omitempty"`
+}
+
+type InstanceConnectionPoolConfig struct {
+	/* Optional. Whether to enable Managed Connection Pool (MCP). */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* Optional. Connection Pool flags, as a list of "key": "value" pairs. */
+	// +optional
+	Flags map[string]string `json:"flags,omitempty"`
 }
 
 type InstanceMachineConfig struct {
 	/* The number of CPU's in the VM instance. */
 	// +optional
-	CpuCount *int64 `json:"cpuCount,omitempty"`
+	CpuCount *int32 `json:"cpuCount,omitempty"`
+
+	/* Machine type of the VM instance. E.g. "n2-highmem-4", "n2-highmem-8", "c4a-highmem-4-lssd". cpu_count must match the number of vCPUs in the machine type. */
+	// +optional
+	MachineType *string `json:"machineType,omitempty"`
 }
 
 type InstanceNetworkConfig struct {
-	/* A list of external networks authorized to access this instance. This field is only allowed to be set when 'enable_public_ip' is set to true. */
+	/* Optional. A list of external network authorized to access this instance. This field is only allowed to be set when 'enablePublicIp' is set to true. */
 	// +optional
 	AuthorizedExternalNetworks []InstanceAuthorizedExternalNetworks `json:"authorizedExternalNetworks,omitempty"`
 
-	/* Enabling outbound public ip for the instance. */
+	/* Optional. Enabling an outbound public IP address to support a database server sending requests out into the internet. */
 	// +optional
 	EnableOutboundPublicIp *bool `json:"enableOutboundPublicIp,omitempty"`
 
-	/* Enabling public ip for the instance. If a user wishes to disable this, please also clear the list of the authorized external networks set on the same instance. */
+	/* Optional. Enabling public ip for the instance. If a user wishes to disable this, please also clear the list of the authorized external networks set on the same instance. */
 	// +optional
 	EnablePublicIp *bool `json:"enablePublicIp,omitempty"`
+}
+
+type InstanceObservabilityConfig struct {
+	/* Whether assistive experiences are enabled for this AlloyDB instance. */
+	// +optional
+	AssistiveExperiencesEnabled *bool `json:"assistiveExperiencesEnabled,omitempty"`
+
+	/* Observability feature status for an instance. This flag is turned "off" by default. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* Query string length. The default value is 10k. */
+	// +optional
+	MaxQueryStringLength *int32 `json:"maxQueryStringLength,omitempty"`
+
+	/* Preserve comments in query string for an instance. This flag is turned "off" by default. */
+	// +optional
+	PreserveComments *bool `json:"preserveComments,omitempty"`
+
+	/* Number of query execution plans captured by Insights per minute for all queries combined. The default value is 200. Any integer between 0 to 200 is considered valid. */
+	// +optional
+	QueryPlansPerMinute *int32 `json:"queryPlansPerMinute,omitempty"`
+
+	/* Record application tags for an instance. This flag is turned "off" by default. */
+	// +optional
+	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
+
+	/* Track actively running queries on the instance. If not set, this flag is "off" by default. */
+	// +optional
+	TrackActiveQueries *bool `json:"trackActiveQueries,omitempty"`
+
+	/* Track client address for an instance. If not set, default value is "off". */
+	// +optional
+	TrackClientAddress *bool `json:"trackClientAddress,omitempty"`
+
+	/* Track wait events during query execution for an instance. This flag is turned "on" by default but tracking is enabled only after observability enabled flag is also turned on. */
+	// +optional
+	TrackWaitEvents *bool `json:"trackWaitEvents,omitempty"`
+}
+
+type InstanceQueryInsightsConfig struct {
+	/* Number of query execution plans captured by Insights per minute for all queries combined. The default value is 5. Any integer between 0 and 20 is considered valid. */
+	// +optional
+	QueryPlansPerMinute *int32 `json:"queryPlansPerMinute,omitempty"`
+
+	/* Query string length. The default value is 1024. Any integer between 256 and 4500 is considered valid. */
+	// +optional
+	QueryStringLength *int32 `json:"queryStringLength,omitempty"`
+
+	/* Record application tags for an instance. This flag is turned "on" by default. */
+	// +optional
+	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
+
+	/* Record client address for an instance. Client address is PII information. This flag is turned "on" by default. */
+	// +optional
+	RecordClientAddress *bool `json:"recordClientAddress,omitempty"`
 }
 
 type InstanceReadPoolConfig struct {
 	/* Read capacity, i.e. number of nodes in a read pool instance. */
 	// +optional
-	NodeCount *int64 `json:"nodeCount,omitempty"`
+	NodeCount *int32 `json:"nodeCount,omitempty"`
 }
 
 type AlloyDBInstanceSpec struct {
@@ -72,16 +142,21 @@ type AlloyDBInstanceSpec struct {
 	// +optional
 	Annotations map[string]string `json:"annotations,omitempty"`
 
-	/* 'Availability type of an Instance. Defaults to REGIONAL for both primary and read instances.
-	Note that primary and read instances can have different availability types.
-	Only READ_POOL instance supports ZONAL type. Users can't specify the zone for READ_POOL instance.
-	Zone is automatically chosen from the list of zones in the region specified.
-	Read pool of size 1 can only have zonal availability. Read pools with node count of 2 or more
-	can have regional availability (nodes are present in 2 or more zones in a region).' Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"]. */
+	/* Availability type of an Instance. If empty, defaults to REGIONAL for primary instances.
+
+	For read pools, availabilityType is always UNSPECIFIED. Instances in the
+	read pools are evenly distributed across available zones within the region
+	(i.e. read pools with more than one node will have a node in at least two zones).
+	Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"]. */
 	// +optional
 	AvailabilityType *string `json:"availabilityType,omitempty"`
 
+	/* The AlloyDBInstance cluster that this resource belongs to. */
 	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+
+	/* Configuration for Managed Connection Pool (MCP). */
+	// +optional
+	ConnectionPoolConfig *InstanceConnectionPoolConfig `json:"connectionPoolConfig,omitempty"`
 
 	/* Database flags. Set at instance level. * They are copied from primary instance on read instance creation. * Read instances can set new or override existing flags that are relevant for reads, e.g. for enabling columnar cache on a read instance. Flags set on read instance may or may not be present on primary. */
 	// +optional
@@ -95,13 +170,13 @@ type AlloyDBInstanceSpec struct {
 	// +optional
 	GceZone *string `json:"gceZone,omitempty"`
 
-	/* We recommend that you use `instanceTypeRef` instead.
-	The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY] */
+	/* Not recommended. We recommend that you use `instanceTypeRef` instead. The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY] */
 	// +optional
 	InstanceType *string `json:"instanceType,omitempty"`
 
 	/* The type of instance.
 	Possible values: ["PRIMARY", "READ_POOL", "SECONDARY"]
+
 	For PRIMARY and SECONDARY instances, set the value to refer to the name of the associated cluster.
 	This is recommended because the instance type of primary and secondary instances is tied to the cluster type of the associated cluster.
 	If the secondary cluster is promoted to primary cluster, then the associated secondary instance also becomes primary instance.
@@ -125,13 +200,41 @@ type AlloyDBInstanceSpec struct {
 	// +optional
 	NetworkConfig *InstanceNetworkConfig `json:"networkConfig,omitempty"`
 
+	// +optional
+	ObservabilityConfig *InstanceObservabilityConfig `json:"observabilityConfig,omitempty"`
+
+	// +optional
+	QueryInsightsConfig *InstanceQueryInsightsConfig `json:"queryInsightsConfig,omitempty"`
+
 	/* Read pool specific config. If the instance type is READ_POOL, this configuration must be provided. */
 	// +optional
 	ReadPoolConfig *InstanceReadPoolConfig `json:"readPoolConfig,omitempty"`
 
-	/* Immutable. Optional. The instanceId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* Optional. The instanceId of the resource. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type InstanceConnectionPoolConfigStatus struct {
+	/* Output only. The number of running poolers per instance. */
+	// +optional
+	PoolerCount *int32 `json:"poolerCount,omitempty"`
+}
+
+type InstanceObservabilityConfigStatus struct {
+	/* Output only. Track wait event types during query execution for an instance. This flag is turned "on" by default but tracking is enabled only after observability enabled flag is also turned on. This is read-only flag and only modifiable by internal API. */
+	// +optional
+	TrackWaitEventTypes *bool `json:"trackWaitEventTypes,omitempty"`
+}
+
+type InstanceObservedStateStatus struct {
+	/* Output for Managed Connection Pool (MCP). */
+	// +optional
+	ConnectionPoolConfig *InstanceConnectionPoolConfigStatus `json:"connectionPoolConfig,omitempty"`
+
+	/* Observability feature status for an instance. */
+	// +optional
+	ObservabilityConfig *InstanceObservabilityConfigStatus `json:"observabilityConfig,omitempty"`
 }
 
 type AlloyDBInstanceStatus struct {
@@ -141,6 +244,10 @@ type AlloyDBInstanceStatus struct {
 	/* Time the Instance was created in UTC. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
+
+	/* A unique specifier for the AlloyDBInstance resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* The IP address for the Instance. This is the connection endpoint for an end-user application. */
 	// +optional
@@ -154,9 +261,11 @@ type AlloyDBInstanceStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The outbound public IP addresses for the instance. This is available ONLY when
-	networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used
-	for outbound connections. */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *InstanceObservedStateStatus `json:"observedState,omitempty"`
+
+	/* The outbound public IP addresses for the instance. This is available ONLY when networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used for outbound connections. */
 	// +optional
 	OutboundPublicIpAddresses []string `json:"outboundPublicIpAddresses,omitempty"`
 
@@ -188,7 +297,6 @@ type AlloyDBInstanceStatus struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
