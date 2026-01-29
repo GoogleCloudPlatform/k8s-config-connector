@@ -76,6 +76,21 @@ spec:
                       The format for the entries should follow the format as Kind.group :
                       e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
                     type: object
+                  reconcileControls:
+                    additionalProperties:
+                      properties:
+                        maxConcurrentReconciles:
+                          description: |-
+                            MaxConcurrentReconciles specifies the maximum number of concurrent reconciliations
+                            for the controller of the resource kind.
+                          type: integer
+                      type: object
+                    description: |-
+                      ReconcileControls allows specifying the reconciliation configuration for a given
+                      resource kind within this namespace.
+                      The format for the entries should follow the format as Kind.group :
+                      e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: { "maxConcurrentReconciles": 50 }
+                    type: object
                 type: object
               googleServiceAccount:
                 description: |-

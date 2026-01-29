@@ -73,7 +73,7 @@ type ParentReconciler struct {
 	reconcilers Reconcilers
 }
 
-func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcilers) error {
+func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcilers, opts controller.Options) error {
 	controllerName := fmt.Sprintf("%v-parent-controller", strings.ToLower(gvk.Kind))
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(gvk)
@@ -91,13 +91,20 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcil
 			Custom: reconcilers.Custom,
 		},
 	}
+	
+	if opts.MaxConcurrentReconciles == 0 {
+		opts.MaxConcurrentReconciles = k8s.ControllerMaxConcurrentReconciles
+	}
+	if opts.RateLimiter == nil {
+		opts.RateLimiter = ratelimiter.NewRateLimiter()
+	}
 
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicates...)).
 		WatchesRawSource(source.TypedChannel(immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
+		WithOptions(opts).
 		Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new parent controller: %w", err)

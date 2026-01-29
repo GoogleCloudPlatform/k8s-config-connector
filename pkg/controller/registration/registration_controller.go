@@ -16,11 +16,13 @@ package registration
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"sync"
 	"time"
 
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
@@ -247,12 +249,18 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 }
 
 func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig) registrationFunc { //nolint:revive
+	reconcileConfig := make(map[string]operatorv1beta1.ReconcileControl)
+	if config.ResourceReconcileConfig != "" {
+		if err := json.Unmarshal([]byte(config.ResourceReconcileConfig), &reconcileConfig); err != nil {
+			crlog.FromContext(ctx).Error(err, "error unmarshalling resource reconcile config")
+		}
+	}
 	return func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-		return registerDefaultController(ctx, r, config, crd, gvk)
+		return registerDefaultController(ctx, r, config, crd, gvk, reconcileConfig)
 	}
 }
 
-func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind, reconcileConfig map[string]operatorv1beta1.ReconcileControl) (k8s.SchemaReferenceUpdater, error) {
 	logger := crlog.FromContext(ctx)
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
@@ -352,7 +360,14 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				}
 			}
 			r.reconcilers[gvk] = reconcilers
-			if err := parent.Add(r.mgr, gvk, reconcilers); err != nil {
+			opts := crcontroller.Options{}
+			if ctrlConfig, ok := reconcileConfig[gvk.GroupKind().String()]; ok {
+				if ctrlConfig.MaxConcurrentReconciles != nil {
+					opts.MaxConcurrentReconciles = *ctrlConfig.MaxConcurrentReconciles
+				}
+			}
+
+			if err := parent.Add(r.mgr, gvk, reconcilers, opts); err != nil {
 				return nil, fmt.Errorf("error adding parent controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		}
