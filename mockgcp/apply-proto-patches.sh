@@ -88,4 +88,11 @@ EOF
 
 # AlloyDB patches
 
-sed -i 's/map<string, string> flags = 13 \[(google.api.field_behavior) = OPTIONAL\];/map<string, string> flags = 13 [(google.api.field_behavior) = OPTIONAL];\n    int32 pooler_count = 14;/' ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/alloydb/v1beta/resources.proto
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/alloydb/v1beta/resources.proto --message ConnectionPoolConfig --mode append <<EOF
+
+  // The number of pooler instances.
+
+  int32 pooler_count = 14;
+
+EOF
+
