@@ -72,7 +72,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, deps 
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %w", err)
 	}
-	logger.Info("added a controller for service-account-key-to-secret")
+	logger.V(1).Info("added a controller for service-account-key-to-secret")
 	return nil
 }
 
