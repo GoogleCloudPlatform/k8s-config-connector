@@ -394,6 +394,18 @@ type InstanceSettings struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 }
 
+type ReplicationCluster struct {
+	/* Optional. If the instance is a primary instance, then this field identifies the disaster recovery (DR) replica. A DR replica is an optional configuration for Enterprise Plus edition instances. If the instance is a read replica, then the field is not set. Set this field to a replica name to designate a DR replica for a primary instance. Remove the replica name to remove the DR replica designation. */
+	// +optional
+	FailoverDrReplicaRef *refsv1beta1.SQLInstanceRef `json:"failoverDrReplicaRef,omitempty"`
+}
+
+type SQLInstanceObservedState struct {
+	/* The configuration for the replication cluster. */
+	// +optional
+	ReplicationCluster *ReplicationClusterObservedState `json:"replicationCluster,omitempty"`
+}
+
 type InstanceSqlServerAuditConfig struct {
 	/* The name of the destination bucket (e.g., gs://mybucket). */
 	// +optional
@@ -464,6 +476,10 @@ type SQLInstanceSpec struct {
 	/* The configuration for replication. */
 	// +optional
 	ReplicaConfiguration *InstanceReplicaConfiguration `json:"replicaConfiguration,omitempty"`
+
+	/* The configuration for the replication cluster. */
+	// +optional
+	ReplicationCluster *ReplicationCluster `json:"replicationCluster,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -539,6 +555,10 @@ type SQLInstanceStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the resource. */
+	// +optional
+	ObservedState *SQLInstanceObservedState `json:"observedState,omitempty"`
 
 	// +optional
 	PrivateIpAddress *string `json:"privateIpAddress,omitempty"`
