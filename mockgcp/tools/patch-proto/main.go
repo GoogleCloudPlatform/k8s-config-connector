@@ -276,7 +276,7 @@ func (x *patchProto) VisitService(depth int, node *sitter.Node) {
 		}
 	}
 
-	if serviceName.Content(x.Source) == x.Name {
+	if serviceName != nil && serviceName.Content(x.Source) == x.Name {
 		serviceBodyStart := node.Child(serviceBodyIdx)
 		lastChild := node.Child(childCount - 1)
 
