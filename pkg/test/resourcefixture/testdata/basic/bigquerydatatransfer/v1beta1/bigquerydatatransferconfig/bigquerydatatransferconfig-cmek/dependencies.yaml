@@ -15,6 +15,8 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: gsa-${uniqueId}
 spec:
   displayName: "Test GSA for big query data transfer config"
@@ -22,6 +24,8 @@ spec:
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: kmscryptokey-${uniqueId}
 spec:
   location: us-central1
@@ -29,6 +33,8 @@ spec:
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: kmscryptokey-${uniqueId}
 spec:
   keyRingRef:
@@ -39,6 +45,7 @@ kind: ServiceIdentity
 metadata:
   name: serviceidentity-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
@@ -48,6 +55,8 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: iampolicy-${uniqueId}
 spec:
   resourceRef:

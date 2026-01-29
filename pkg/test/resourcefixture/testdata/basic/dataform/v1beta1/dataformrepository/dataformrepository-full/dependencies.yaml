@@ -15,6 +15,8 @@
 apiVersion: v1
 kind: Secret
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: secret-${uniqueId}
 data:
   secretData: SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=
@@ -24,6 +26,7 @@ kind: SecretManagerSecret
 metadata:
   name: secretmanagersecret-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
     alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
@@ -34,6 +37,7 @@ apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecretVersion
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
     alpha.cnrm.cloud.google.com/reconciler: direct
   name: secretmanagersecretversion-${uniqueId}

@@ -15,6 +15,8 @@
 apiVersion: v1
 kind: Secret
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: secret-${uniqueId}
 stringData:
   sharedSecret: "a secret message"
@@ -23,6 +25,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
     cnrm.cloud.google.com/deletion-policy: "abandon"
   name: default
@@ -32,6 +35,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetVPNGateway
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computetargetvpngateway-${uniqueId}
 spec:
   description: a test target vpn gateway
@@ -42,6 +47,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computeaddress-${uniqueId}
   labels:
     label-one: "value-one"
@@ -52,6 +59,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   labels:
     label-one: "value-one"
   name: computeforwardingrule1-${uniqueId}
@@ -69,6 +78,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   labels:
     label-one: "value-one"
   name: computeforwardingrule2-${uniqueId}
@@ -87,6 +98,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   labels:
     label-one: "value-one"
   name: computeforwardingrule3-${uniqueId}

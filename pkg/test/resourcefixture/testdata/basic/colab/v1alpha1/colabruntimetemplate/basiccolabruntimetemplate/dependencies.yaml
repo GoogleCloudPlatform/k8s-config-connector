@@ -2,6 +2,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
     cnrm.cloud.google.com/deletion-policy: "abandon"
@@ -14,6 +15,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
     cnrm.cloud.google.com/deletion-policy: "abandon"

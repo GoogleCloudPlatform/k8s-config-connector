@@ -16,6 +16,8 @@
 apiVersion: orgpolicy.cnrm.cloud.google.com/v1beta1
 kind: OrgPolicyCustomConstraint
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: custom.orgpolicypolicy${uniqueId}
 spec:
   organizationRef:

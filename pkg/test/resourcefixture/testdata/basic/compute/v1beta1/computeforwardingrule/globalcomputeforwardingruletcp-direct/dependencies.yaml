@@ -15,6 +15,8 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computeaddress-${uniqueId}
 spec:
   description: a test global address
@@ -23,6 +25,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeHealthCheck
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computehealthcheck-${uniqueId}
 spec:
   checkIntervalSec: 10
@@ -33,6 +37,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computebackendservice-${uniqueId}
 spec:
   healthChecks:
@@ -45,6 +51,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetTCPProxy
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computetargettcpproxy-${uniqueId}
 spec:
@@ -57,6 +64,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetTCPProxy
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computetargettcpproxy2-${uniqueId}
 spec:

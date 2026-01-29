@@ -14,6 +14,8 @@
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: bigquerydataset${uniqueId} # "-" is not supported in dataset ID
 spec:
   location: us-central1
@@ -23,6 +25,7 @@ kind: BigQueryTable
 metadata:
   name: bigquerytable${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   friendlyName: bigquerytable-sample
@@ -39,6 +42,7 @@ apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: pubsubtopic-${uniqueId}
 ---
@@ -46,6 +50,7 @@ apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: pubsubtopic-${uniqueId}-2
 ---
@@ -53,6 +58,7 @@ apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSubscription
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: pubsubsubscription-${uniqueId}
 spec:
@@ -67,6 +73,7 @@ kind: PubSubSubscription
 metadata:
   name: pubsubsubscription-${uniqueId}-2
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   ackDeadlineSeconds: 20
@@ -79,6 +86,8 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: gsa-${uniqueId}
 spec:
   displayName: "Test GSA for big query data transfer config"
