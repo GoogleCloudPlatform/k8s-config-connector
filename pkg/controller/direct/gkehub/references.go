@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -38,62 +37,26 @@ type Feature struct {
 
 // resolveMembershipRef returns a membership that has membershipId as "projects/*/locations/*/memberships/{membershipId}".
 func resolveMembershipRef(ctx context.Context, reader client.Reader, obj *krm.GKEHubFeatureMembership, projectID string) (*Membership, error) {
-	name := obj.Spec.MembershipRef.Name
-	namespace := obj.Spec.MembershipRef.Namespace
-	external := obj.Spec.MembershipRef.External
+	// Use the library function to normalize the reference.
+	// defaultNamespace := obj.GetNamespace()
+	// err := obj.Spec.MembershipRef.Normalize(ctx, reader, defaultNamespace)
+	// But wait, the generated code for GKEHubFeatureMembership might not call Normalize automatically?
+	// The controller is responsible for calling it.
 
-	if external != "" {
-		if name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on membership reference")
-		}
+	// We need to call Normalize on the reference.
+	// However, the MembershipRef struct in GKEHubFeatureMembershipSpec is a struct, not a pointer?
+	// Let's check featuremembership_types.go: it claims "MembershipRef MembershipRef `json:"membershipRef"`" (Lines 372).
+	// So it is a value.
 
-		tokens := strings.Split(external, "/")
-		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "memberships" {
-			return &Membership{id: external}, nil
-		}
-		return nil, fmt.Errorf("format of membership external=%q was not known (use projects/*/locations/*/memberships/{membershipId})", external)
-	}
+	// We make a copy to normalize it without modifying the original object in memory validation loop (though controller usually can modify if it updates).
+	// Actually, we just want the external ID.
 
-	if name == "" {
-		return nil, fmt.Errorf("must specify either name or external on membership reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: namespace,
-		Name:      name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = obj.GetNamespace()
+	ref := &obj.Spec.MembershipRef
+	if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
 	}
 
-	membership := &unstructured.Unstructured{}
-	membership.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "gkehub.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "GKEHubMembership",
-	})
-	if err := reader.Get(ctx, key, membership); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced %v not found", key)
-		}
-		return nil, fmt.Errorf("error reading referenced membership %v: %w", key, err)
-	}
-
-	membershipName, _, err := unstructured.NestedString(membership.Object, "spec", "resourceID")
-	if err != nil {
-		return nil, fmt.Errorf("reading spec.resourceID from membership %v: %w", key, err)
-	}
-	if membershipName == "" {
-		membershipName = membership.GetName()
-	}
-	membershipLocation := direct.ValueOf(obj.Spec.MembershipLocation)
-	if membershipLocation == "" {
-		// membership location should default to global if not set.
-		membershipLocation = "global"
-	}
-	return &Membership{
-		id: fmt.Sprintf("projects/%s/locations/%s/memberships/%s", projectID, membershipLocation, membershipName),
-	}, nil
+	return &Membership{id: ref.External}, nil
 }
 
 // resolveFeatureRef returns a feature that has featureID as "projects/*/locations/*/features/{featureId}".

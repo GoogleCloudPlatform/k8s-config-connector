@@ -369,7 +369,7 @@ type GKEHubFeatureMembershipSpec struct {
 	MembershipLocation *string `json:"membershipLocation,omitempty"`
 
 	/* Immutable. */
-	MembershipRef MembershipRef `json:"membershipRef"`
+	MembershipRef GKEHubMembershipRef `json:"membershipRef"`
 
 	/* Manage Mesh Features */
 	// +optional
