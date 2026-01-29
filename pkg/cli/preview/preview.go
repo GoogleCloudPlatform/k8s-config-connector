@@ -23,6 +23,7 @@ import (
 	"golang.org/x/oauth2"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
@@ -47,6 +48,8 @@ type PreviewInstance struct {
 	// Namespace is the namespace of the cluster to preview
 	// If empty, all namespaces are previewed
 	Namespace string
+
+	ReconcilerOverride map[string]string
 }
 
 // PreviewInstanceOptions are the options for creating a PreviewInstance.
@@ -74,6 +77,8 @@ type PreviewInstanceOptions struct {
 	// Namespace is the namespace of the cluster to preview
 	// If empty, all namespaces are previewed
 	Namespace string
+
+	ReconcilerOverride map[string]string
 }
 
 // NewPreviewInstance creates a new PreviewInstance.
@@ -85,7 +90,7 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 		upstreamGCPHTTPClient = http.DefaultClient
 	}
 
-	hookKube, err := newInterceptingKubeClient(recorder, upstreamRESTConfig)
+	hookKube, err := newInterceptingKubeClient(recorder, upstreamRESTConfig, options.ReconcilerOverride)
 	if err != nil {
 		return nil, err
 	}
@@ -97,6 +102,7 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 	i.hookKube = hookKube
 	i.recorder = recorder
 	i.Namespace = options.Namespace
+	i.ReconcilerOverride = options.ReconcilerOverride
 
 	return i, nil
 }
@@ -167,6 +173,12 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 	kccConfig.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
 	kccConfig.HTTPClient = gcpHTTPClient
 	kccConfig.GCPAccessToken = "dummytoken" // Use a fake token as a failsafe against requests "leaking" to real GCP
+
+	// When we run the preview command, we might start multiple managers sequentially (e.g. for different passes).
+	// controller-runtime keeps a global registry of metrics, and it refuses to register controllers with the same name twice.
+	// Since we can't easily reset the global metrics registry, we skip the name validation in the controller.
+	// This does mean metrics might be messed up, but for "preview" command we don't care about metrics.
+	kccConfig.ManagerOptions.Controller.SkipNameValidation = ptr.To(true)
 
 	mgr, err := kccmanager.New(ctx, restConfig, kccConfig)
 	if err != nil {

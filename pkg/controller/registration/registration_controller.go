@@ -63,14 +63,21 @@ const serviceAccountKeyAPIGroup = "iam.cnrm.cloud.google.com"
 const serviceAccountKeyKind = "IAMServiceAccountKey"
 
 type RegistrationControllerOptions struct {
-	ControllerName string
+	ControllerName     string
+	SkipNameValidation bool
 }
+
+// SkipControllerNameValidation allows skipping the controller name validation
+// in controller-runtime. This is useful when running multiple managers in the same process
+// (e.g. in preview mode or tests) to avoid "controller name already exists" errors.
+var SkipControllerNameValidation bool
 
 // AddDefaultControllers creates the registration controller with the default controller factory,
 // this will dynamically create the default controllers for each CRD.
 func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *controller.Deps, controllerConfig *config.ControllerConfig) error {
 	opt := RegistrationControllerOptions{
-		ControllerName: "registration-controller",
+		ControllerName:     "registration-controller",
+		SkipNameValidation: SkipControllerNameValidation,
 	}
 	if err := add(mgr, rd,
 		registerDefaultControllers(ctx, controllerConfig), opt); err != nil {
@@ -83,7 +90,8 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 // this will dynamically create the deletion-defender controller bound to each CRD.
 func AddDeletionDefender(mgr manager.Manager, rd *controller.Deps) error {
 	opt := RegistrationControllerOptions{
-		ControllerName: "deletion-defender-registration-controller",
+		ControllerName:     "deletion-defender-registration-controller",
+		SkipNameValidation: SkipControllerNameValidation,
 	}
 
 	if err := add(mgr, &controller.Deps{}, registerDeletionDefenderController, opt); err != nil {
@@ -96,7 +104,8 @@ func AddDeletionDefender(mgr manager.Manager, rd *controller.Deps) error {
 // this will dynamically create the unmanaged-detector controller bound to each CRD.
 func AddUnmanagedDetector(mgr manager.Manager, rd *controller.Deps) error {
 	opt := RegistrationControllerOptions{
-		ControllerName: "unmanaged-detector-registration-controller",
+		ControllerName:     "unmanaged-detector-registration-controller",
+		SkipNameValidation: SkipControllerNameValidation,
 	}
 
 	registerUnmanagedDetectorController := func(r *ReconcileRegistration, _ *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
@@ -148,6 +157,7 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 		crcontroller.Options{
 			Reconciler:              r,
 			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
+			SkipNameValidation:      &opts.SkipNameValidation,
 		})
 	if err != nil {
 		return err
@@ -350,6 +360,9 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 						return nil, fmt.Errorf("error creating new direct reconciler: %w", err)
 					}
 				}
+			}
+			if SkipControllerNameValidation {
+				parent.SkipControllerNameValidation = SkipControllerNameValidation
 			}
 			r.reconcilers[gvk] = reconcilers
 			if err := parent.Add(r.mgr, gvk, reconcilers); err != nil {
