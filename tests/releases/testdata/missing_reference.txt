@@ -5,4 +5,4 @@ logging.cnrm.cloud.google.com/v1beta1, Kind=LoggingLink
 tags.cnrm.cloud.google.com/v1beta1, Kind=TagsLocationTagBinding
 tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagBinding
 tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagKey
-tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagValue
+tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagValueorgpolicy.cnrm.cloud.google.com/v1beta1, Kind=OrgPolicyPolicy
