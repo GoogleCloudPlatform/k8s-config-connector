@@ -90,9 +90,13 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 			if !errors.IsNotFound(err) {
 				return fmt.Errorf("error getting ConfigConnectorContext in %q: %w", scopedNamespace, err)
 			}
+			fmt.Printf("ConfigConnectorContext not found in %s\n", scopedNamespace)
 		} else if ccc.Spec.Experiments != nil {
 			cccSettings = ccc.Spec.Experiments.ResourceSettings
+			fmt.Printf("Found CCC Settings in %s: %v\n", scopedNamespace, cccSettings)
 		}
+	} else {
+		fmt.Println("scopedNamespace is empty")
 	}
 
 	var ccSettings []operatorv1beta1.ResourceSetting
