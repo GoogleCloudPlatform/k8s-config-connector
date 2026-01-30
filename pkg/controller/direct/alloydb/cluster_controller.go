@@ -22,11 +22,13 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
 	computev1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	gcp "cloud.google.com/go/alloydb/apiv1beta"
 	alloydbpb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
@@ -350,6 +352,15 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 				return mapCtx.Err()
 			}
 
+			readyCondition := &v1alpha1.Condition{
+				Type:    v1alpha1.ReadyConditionType,
+				Status:  corev1.ConditionFalse,
+				Reason:  k8s.Creating,
+				Message: k8s.CreatingMessage,
+			}
+			if err := createOp.UpdateStatus(ctx, &krm.AlloyDBClusterStatus{}, readyCondition); err != nil {
+				log.Error(err, "error updating status to Creating")
+			}
 			createOp.RecordUpdatingEvent()
 			req.Source = &alloydbpb.RestoreClusterRequest_BackupSource{
 				BackupSource: backupSource,
@@ -372,6 +383,15 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 				return mapCtx.Err()
 			}
 
+			readyCondition := &v1alpha1.Condition{
+				Type:    v1alpha1.ReadyConditionType,
+				Status:  corev1.ConditionFalse,
+				Reason:  k8s.Creating,
+				Message: k8s.CreatingMessage,
+			}
+			if err := createOp.UpdateStatus(ctx, &krm.AlloyDBClusterStatus{}, readyCondition); err != nil {
+				log.Error(err, "error updating status to Creating")
+			}
 			createOp.RecordUpdatingEvent()
 			req.Source = &alloydbpb.RestoreClusterRequest_ContinuousBackupSource{
 				ContinuousBackupSource: continuousBackupSource,
@@ -396,6 +416,15 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 			return fmt.Errorf("cannot create secondary cluster %s without secondaryConfig", a.id)
 		}
 
+		readyCondition := &v1alpha1.Condition{
+			Type:    v1alpha1.ReadyConditionType,
+			Status:  corev1.ConditionFalse,
+			Reason:  k8s.Creating,
+			Message: k8s.CreatingMessage,
+		}
+		if err := createOp.UpdateStatus(ctx, &krm.AlloyDBClusterStatus{}, readyCondition); err != nil {
+			log.Error(err, "error updating status to Creating")
+		}
 		createOp.RecordUpdatingEvent()
 		req := &alloydbpb.CreateSecondaryClusterRequest{
 			Parent:    a.id.Parent().String(),
@@ -418,6 +447,15 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 			return fmt.Errorf("cannot create primary cluster %s with secondaryConfig", a.id)
 		}
 
+		readyCondition := &v1alpha1.Condition{
+			Type:    v1alpha1.ReadyConditionType,
+			Status:  corev1.ConditionFalse,
+			Reason:  k8s.Creating,
+			Message: k8s.CreatingMessage,
+		}
+		if err := createOp.UpdateStatus(ctx, &krm.AlloyDBClusterStatus{}, readyCondition); err != nil {
+			log.Error(err, "error updating status to Creating")
+		}
 		createOp.RecordUpdatingEvent()
 		req := &alloydbpb.CreateClusterRequest{
 			Parent:    a.id.Parent().String(),
@@ -446,7 +484,13 @@ func (a *ClusterAdapter) updateStatus(ctx context.Context, mapCtx *direct.MapCon
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return createOp.UpdateStatus(ctx, status, nil)
+	readyCondition := &v1alpha1.Condition{
+		Type:    v1alpha1.ReadyConditionType,
+		Status:  corev1.ConditionTrue,
+		Reason:  k8s.UpToDate,
+		Message: k8s.UpToDateMessage,
+	}
+	return createOp.UpdateStatus(ctx, status, readyCondition)
 }
 
 func (a *ClusterAdapter) resolveGCPDefaults(desired *alloydbpb.Cluster, actual *alloydbpb.Cluster) {
@@ -604,6 +648,25 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		Paths: sets.List(topLevelFieldPaths),
 	}
 
+	// Set the Updating status
+	firstField := ""
+	if len(paths) > 0 {
+		firstField = toKRMPath(sets.List(paths)[0])
+	}
+	readyCondition := &v1alpha1.Condition{
+		Type:    v1alpha1.ReadyConditionType,
+		Status:  corev1.ConditionFalse,
+		Reason:  k8s.Updating,
+		Message: fmt.Sprintf("Updating resource (first field path: %s)", firstField),
+	}
+	statusBefore := AlloyDBClusterStatus_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	if err := updateOp.UpdateStatus(ctx, statusBefore, readyCondition); err != nil {
+		log.Error(err, "error updating status to Updating")
+	}
+
 	updateOp.RecordUpdatingEvent()
 	req := &alloydbpb.UpdateClusterRequest{
 		UpdateMask: updateMask,
@@ -630,7 +693,31 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		// or is an acquisition with update, then fill out the ExternalRef.
 		status.ExternalRef = direct.LazyPtr(a.id.String())
 	}
-	return updateOp.UpdateStatus(ctx, status, nil)
+	readyCondition = &v1alpha1.Condition{
+		Type:    v1alpha1.ReadyConditionType,
+		Status:  corev1.ConditionTrue,
+		Reason:  k8s.UpToDate,
+		Message: k8s.UpToDateMessage,
+	}
+	return updateOp.UpdateStatus(ctx, status, readyCondition)
+}
+
+func toKRMPath(path string) string {
+	tokens := strings.Split(path, ".")
+	for i, token := range tokens {
+		tokens[i] = toCamelCase(token)
+	}
+	return "spec." + strings.Join(tokens, ".")
+}
+
+func toCamelCase(s string) string {
+	tokens := strings.Split(s, "_")
+	for i := 1; i < len(tokens); i++ {
+		if len(tokens[i]) > 0 {
+			tokens[i] = strings.ToUpper(tokens[i][:1]) + tokens[i][1:]
+		}
+	}
+	return strings.Join(tokens, "")
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
