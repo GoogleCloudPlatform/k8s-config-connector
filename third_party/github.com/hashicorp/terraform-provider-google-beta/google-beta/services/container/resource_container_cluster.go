@@ -4584,7 +4584,7 @@ func expandClusterAutoscaling(configured interface{}, d *schema.ResourceData) *c
 func expandDefaultComputeClassConfig(configured interface{}, d *schema.ResourceData) *container.DefaultComputeClassConfig {
 	l := configured.([]interface{})
 	if len(l) == 0 || l[0] == nil {
-		return &container.DefaultComputeClassConfig{}
+		return nil
 	}
 	config := l[0].(map[string]interface{})
 	return &container.DefaultComputeClassConfig{
