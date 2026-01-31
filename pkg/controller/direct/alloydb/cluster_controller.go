@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	gcp "cloud.google.com/go/alloydb/apiv1beta"
@@ -311,25 +312,25 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 
 	// 1. Resolve reference fields.
 	if err := a.normalizeReferences(ctx); err != nil {
-		return fmt.Errorf("normalizing reference for creation: %w", err)
+		return a.recordCreateError(ctx, createOp, fmt.Errorf("normalizing reference for creation: %w", err))
 	}
 	// 2. Resolve secret field.
 	if err := a.resolveInitialUserPasswordField(ctx); err != nil {
-		return err
+		return a.recordCreateError(ctx, createOp, err)
 	}
 	// 3. Set default fields that were set by the Terraform library for compatibility.
 	a.resolveKRMDefaultsForCreate()
 	// 4. Validate mutually-exclusive fields.
 	if a.desired.Spec.RestoreBackupSource != nil && a.desired.Spec.RestoreContinuousBackupSource != nil {
-		return fmt.Errorf("only one of 'spec.restoreBackupSource' " +
+		return a.recordCreateError(ctx, createOp, fmt.Errorf("only one of 'spec.restoreBackupSource' " +
 			"and 'spec.restoreContinuousBackupSource' can be configured: " +
-			"both are configured")
+			"both are configured"))
 	}
 
 	desired := a.desired.DeepCopy()
 	resource := AlloyDBClusterSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+		return a.recordCreateError(ctx, createOp, mapCtx.Err())
 	}
 
 	// 5. Handle labels.
@@ -349,7 +350,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		if desired.Spec.RestoreBackupSource != nil {
 			backupSource := BackupSource_ToProto(mapCtx, desired.Spec.RestoreBackupSource)
 			if mapCtx.Err() != nil {
-				return mapCtx.Err()
+				return a.recordCreateError(ctx, createOp, mapCtx.Err())
 			}
 
 			readyCondition := &v1alpha1.Condition{
@@ -380,7 +381,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		} else if desired.Spec.RestoreContinuousBackupSource != nil {
 			continuousBackupSource := ContinuousBackupSource_ToProto(mapCtx, desired.Spec.RestoreContinuousBackupSource)
 			if mapCtx.Err() != nil {
-				return mapCtx.Err()
+				return a.recordCreateError(ctx, createOp, mapCtx.Err())
 			}
 
 			readyCondition := &v1alpha1.Condition{
@@ -413,7 +414,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 
 	if resource.ClusterType == alloydbpb.Cluster_SECONDARY {
 		if resource.SecondaryConfig == nil {
-			return fmt.Errorf("cannot create secondary cluster %s without secondaryConfig", a.id)
+			return a.recordCreateError(ctx, createOp, fmt.Errorf("cannot create secondary cluster %s without secondaryConfig", a.id))
 		}
 
 		readyCondition := &v1alpha1.Condition{
@@ -444,7 +445,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		log.V(2).Info("successfully created secondary Cluster", "name", a.id)
 	} else {
 		if resource.SecondaryConfig != nil {
-			return fmt.Errorf("cannot create primary cluster %s with secondaryConfig", a.id)
+			return a.recordCreateError(ctx, createOp, fmt.Errorf("cannot create primary cluster %s with secondaryConfig", a.id))
 		}
 
 		readyCondition := &v1alpha1.Condition{
@@ -563,24 +564,24 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	// TODO: Check immutability for optional and immutable fields.
 	// 1. Resolve reference fields.
 	if err := a.normalizeReferences(ctx); err != nil {
-		return fmt.Errorf("normalizing reference for update: %w", err)
+		return a.recordUpdateError(ctx, updateOp, mapCtx, "", fmt.Errorf("normalizing reference for update: %w", err))
 	}
 	// 2. Resolve secret field.
 	if err := a.resolveInitialUserPasswordField(ctx); err != nil {
-		return err
+		return a.recordUpdateError(ctx, updateOp, mapCtx, "", err)
 	}
 	// 3. Set default fields that were set in the actual state.
 	a.resolveKRMDefaultsForUpdate()
 	// 4. Validate mutually-exclusive fields.
 	if a.desired.Spec.RestoreBackupSource != nil && a.desired.Spec.RestoreContinuousBackupSource != nil {
-		return fmt.Errorf("only one of 'spec.restoreBackupSource' " +
+		return a.recordUpdateError(ctx, updateOp, mapCtx, "", fmt.Errorf("only one of 'spec.restoreBackupSource' " +
 			"and 'spec.restoreContinuousBackupSource' can be configured: " +
-			"both are configured")
+			"both are configured"))
 	}
 
 	desiredPb := AlloyDBClusterSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+		return a.recordUpdateError(ctx, updateOp, mapCtx, "", mapCtx.Err())
 	}
 
 	// 5. Handle labels.
@@ -596,14 +597,14 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	// TODO(b/443107538): Remove the immutability check after API handles it properly
 	// Also add the major version upgrade support
 	if a.desired.Spec.DatabaseVersion != nil && a.actual.DatabaseVersion != alloydbpb.DatabaseVersion_DATABASE_VERSION_UNSPECIFIED && *a.desired.Spec.DatabaseVersion != a.actual.DatabaseVersion.String() {
-		return fmt.Errorf("field 'spec.databaseVersion' is immutable and cannot be updated from %q to %q", a.actual.DatabaseVersion, *a.desired.Spec.DatabaseVersion)
+		return a.recordUpdateError(ctx, updateOp, mapCtx, "", fmt.Errorf("field 'spec.databaseVersion' is immutable and cannot be updated from %q to %q", a.actual.DatabaseVersion, *a.desired.Spec.DatabaseVersion))
 	}
 	// 7. Handle default values for fields not yet supported in KRM types.
 	a.resolveGCPDefaults(desiredPb, a.actual)
 
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
-		return err
+		return a.recordUpdateError(ctx, updateOp, mapCtx, "", err)
 	}
 
 	// TODO: Figure out how to keep the network immutable.
@@ -629,7 +630,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 			// and ObservedState.
 			status := AlloyDBClusterStatus_FromProto(mapCtx, a.actual)
 			if mapCtx.Err() != nil {
-				return mapCtx.Err()
+				return a.recordUpdateError(ctx, updateOp, mapCtx, "", mapCtx.Err())
 			}
 			status.ExternalRef = direct.LazyPtr(a.id.String())
 			readyCondition := &v1alpha1.Condition{
@@ -667,7 +668,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 	statusBefore := AlloyDBClusterStatus_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+		return a.recordUpdateError(ctx, updateOp, mapCtx, firstField, mapCtx.Err())
 	}
 	if err := updateOp.UpdateStatus(ctx, statusBefore, readyCondition); err != nil {
 		log.Error(err, "error updating status to Updating")
@@ -730,11 +731,20 @@ func (a *ClusterAdapter) recordUpdateError(ctx context.Context, updateOp *direct
 	if err == nil {
 		return nil
 	}
+	if _, _, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(err); ok {
+		if !updateOp.HasSetReadyCondition {
+			return err
+		}
+	}
+	message := fmt.Sprintf("Failed to update resource: %v", err)
+	if firstField != "" {
+		message = fmt.Sprintf("Failed to update resource (first field path: %s): %v", firstField, err)
+	}
 	readyCondition := &v1alpha1.Condition{
 		Type:    v1alpha1.ReadyConditionType,
 		Status:  corev1.ConditionFalse,
 		Reason:  k8s.UpdateFailure,
-		Message: fmt.Sprintf("Failed to update resource (first field path: %s): %v", firstField, err),
+		Message: message,
 	}
 	status := AlloyDBClusterStatus_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
@@ -749,6 +759,11 @@ func (a *ClusterAdapter) recordUpdateError(ctx context.Context, updateOp *direct
 func (a *ClusterAdapter) recordCreateError(ctx context.Context, createOp *directbase.CreateOperation, err error) error {
 	if err == nil {
 		return nil
+	}
+	if _, _, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(err); ok {
+		if !createOp.HasSetReadyCondition {
+			return err
+		}
 	}
 	readyCondition := &v1alpha1.Condition{
 		Type:    v1alpha1.ReadyConditionType,
