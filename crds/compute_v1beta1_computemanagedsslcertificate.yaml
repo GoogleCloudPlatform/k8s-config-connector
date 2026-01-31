@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: computemanagedsslcertificates.compute.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: compute.cnrm.cloud.google.com
   names:
     categories:

@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: filestoreinstances.filestore.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: filestore.cnrm.cloud.google.com
   names:
     categories:

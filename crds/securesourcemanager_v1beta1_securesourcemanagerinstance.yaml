@@ -10,6 +10,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: securesourcemanagerinstances.securesourcemanager.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: securesourcemanager.cnrm.cloud.google.com
   names:
     categories:

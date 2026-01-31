@@ -11,6 +11,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: cloudidentitymemberships.cloudidentity.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: cloudidentity.cnrm.cloud.google.com
   names:
     categories:

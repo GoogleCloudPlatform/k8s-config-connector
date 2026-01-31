@@ -11,6 +11,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: cloudbuildworkerpools.cloudbuild.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: cloudbuild.cnrm.cloud.google.com
   names:
     categories:

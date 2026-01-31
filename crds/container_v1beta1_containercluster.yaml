@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: containerclusters.container.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: container.cnrm.cloud.google.com
   names:
     categories:

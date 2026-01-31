@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: binaryauthorization.cnrm.cloud.google.com
   names:
     categories:

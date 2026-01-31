@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: osconfigguestpolicies.osconfig.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: osconfig.cnrm.cloud.google.com
   names:
     categories:

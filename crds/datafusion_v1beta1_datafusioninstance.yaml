@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: datafusioninstances.datafusion.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: datafusion.cnrm.cloud.google.com
   names:
     categories:

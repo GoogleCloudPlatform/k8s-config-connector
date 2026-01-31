@@ -10,6 +10,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: networkservicesservicebindings.networkservices.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: networkservices.cnrm.cloud.google.com
   names:
     categories:

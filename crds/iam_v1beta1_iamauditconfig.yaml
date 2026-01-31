@@ -10,6 +10,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: iamauditconfigs.iam.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: iam.cnrm.cloud.google.com
   names:
     categories:

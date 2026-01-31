@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: eventarctriggers.eventarc.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: eventarc.cnrm.cloud.google.com
   names:
     categories:

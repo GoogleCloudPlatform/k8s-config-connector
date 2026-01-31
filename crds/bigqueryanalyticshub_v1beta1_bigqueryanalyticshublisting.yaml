@@ -10,6 +10,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: bigqueryanalyticshublistings.bigqueryanalyticshub.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: bigqueryanalyticshub.cnrm.cloud.google.com
   names:
     categories:

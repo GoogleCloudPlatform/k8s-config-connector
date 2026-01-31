@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: logginglogsinks.logging.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: logging.cnrm.cloud.google.com
   names:
     categories:

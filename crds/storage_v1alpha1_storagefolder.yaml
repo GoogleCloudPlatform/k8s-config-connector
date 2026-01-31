@@ -10,6 +10,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: storagefolders.storage.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: storage.cnrm.cloud.google.com
   names:
     categories:

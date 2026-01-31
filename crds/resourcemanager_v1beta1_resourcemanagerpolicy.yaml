@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: resourcemanager.cnrm.cloud.google.com
   names:
     categories:

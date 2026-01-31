@@ -10,6 +10,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: storageanywherecaches.storage.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: storage.cnrm.cloud.google.com
   names:
     categories:

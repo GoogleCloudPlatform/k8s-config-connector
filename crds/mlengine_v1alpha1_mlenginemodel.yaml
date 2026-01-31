@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: mlenginemodels.mlengine.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: mlengine.cnrm.cloud.google.com
   names:
     categories:

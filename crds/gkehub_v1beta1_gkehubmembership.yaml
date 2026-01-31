@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: gkehubmemberships.gkehub.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: gkehub.cnrm.cloud.google.com
   names:
     categories:

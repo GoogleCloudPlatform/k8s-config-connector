@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: edgecontainer.cnrm.cloud.google.com
   names:
     categories:

@@ -10,6 +10,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: bigqueryconnection.cnrm.cloud.google.com
   names:
     categories:

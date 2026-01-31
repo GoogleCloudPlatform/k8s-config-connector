@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: monitoringalertpolicies.monitoring.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: monitoring.cnrm.cloud.google.com
   names:
     categories:

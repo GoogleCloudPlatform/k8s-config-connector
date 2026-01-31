@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: computeinstancegroupmanagers.compute.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: compute.cnrm.cloud.google.com
   names:
     categories:

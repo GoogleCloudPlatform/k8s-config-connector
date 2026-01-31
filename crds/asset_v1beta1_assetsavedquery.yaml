@@ -10,6 +10,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: assetsavedqueries.asset.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: asset.cnrm.cloud.google.com
   names:
     categories:

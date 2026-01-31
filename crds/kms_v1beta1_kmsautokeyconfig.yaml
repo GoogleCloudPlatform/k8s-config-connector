@@ -11,6 +11,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: kmsautokeyconfigs.kms.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: kms.cnrm.cloud.google.com
   names:
     categories:

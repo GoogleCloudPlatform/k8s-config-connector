@@ -10,6 +10,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: netappbackuppolicies.netapp.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: netapp.cnrm.cloud.google.com
   names:
     categories:

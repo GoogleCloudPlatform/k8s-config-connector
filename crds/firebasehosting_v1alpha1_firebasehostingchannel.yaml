@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: firebasehostingchannels.firebasehosting.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: firebasehosting.cnrm.cloud.google.com
   names:
     categories:

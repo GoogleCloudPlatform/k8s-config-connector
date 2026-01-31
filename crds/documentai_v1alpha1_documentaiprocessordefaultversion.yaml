@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: documentaiprocessordefaultversions.documentai.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: documentai.cnrm.cloud.google.com
   names:
     categories:

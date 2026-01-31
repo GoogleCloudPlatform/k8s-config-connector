@@ -10,6 +10,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: configdeliveryresourcebundles.configdelivery.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: configdelivery.cnrm.cloud.google.com
   names:
     categories:

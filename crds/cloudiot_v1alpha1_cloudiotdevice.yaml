@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: cloudiotdevices.cloudiot.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: cloudiot.cnrm.cloud.google.com
   names:
     categories:

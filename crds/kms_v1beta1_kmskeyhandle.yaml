@@ -11,6 +11,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: kmskeyhandles.kms.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: kms.cnrm.cloud.google.com
   names:
     categories:

@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: iapbrands.iap.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: iap.cnrm.cloud.google.com
   names:
     categories:

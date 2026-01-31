@@ -11,6 +11,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: dataformrepositories.dataform.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: dataform.cnrm.cloud.google.com
   names:
     categories:

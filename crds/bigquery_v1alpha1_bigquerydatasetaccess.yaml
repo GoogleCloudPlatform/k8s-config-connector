@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: bigquery.cnrm.cloud.google.com
   names:
     categories:

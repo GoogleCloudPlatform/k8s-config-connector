@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: dlpinspecttemplates.dlp.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: dlp.cnrm.cloud.google.com
   names:
     categories:

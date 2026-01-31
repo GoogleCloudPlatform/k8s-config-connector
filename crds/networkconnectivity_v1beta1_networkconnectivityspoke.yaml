@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: networkconnectivity.cnrm.cloud.google.com
   names:
     categories:

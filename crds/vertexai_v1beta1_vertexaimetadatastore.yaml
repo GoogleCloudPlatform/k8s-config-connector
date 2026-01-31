@@ -11,6 +11,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: vertexaimetadatastores.vertexai.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: vertexai.cnrm.cloud.google.com
   names:
     categories:

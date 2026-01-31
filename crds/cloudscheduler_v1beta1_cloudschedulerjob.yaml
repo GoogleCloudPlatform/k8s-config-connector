@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: cloudschedulerjobs.cloudscheduler.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: cloudscheduler.cnrm.cloud.google.com
   names:
     categories:

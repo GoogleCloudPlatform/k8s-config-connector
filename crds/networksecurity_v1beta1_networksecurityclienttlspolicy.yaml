@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: networksecurity.cnrm.cloud.google.com
   names:
     categories:

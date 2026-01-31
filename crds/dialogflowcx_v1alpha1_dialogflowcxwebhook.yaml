@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/tf2crd: "true"
   name: dialogflowcxwebhooks.dialogflowcx.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: dialogflowcx.cnrm.cloud.google.com
   names:
     categories:
