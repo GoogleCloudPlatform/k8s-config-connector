@@ -58,7 +58,7 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1b
 
   // Maximum replication lag in seconds.
 
-  optional int64 replication_lag_max_seconds = 100;
+  optional int32 replication_lag_max_seconds = 100;
 
 EOF
 
