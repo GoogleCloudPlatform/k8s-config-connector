@@ -735,7 +735,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 			settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
 		}
 		if settings.ReplicationLagMaxSeconds == nil {
-			settings.ReplicationLagMaxSeconds = PtrTo(int64(31536000))
+			settings.ReplicationLagMaxSeconds = PtrTo(int32(31536000))
 		}
 		if obj.IncludeReplicasForMajorVersionUpgrade == nil {
 			obj.IncludeReplicasForMajorVersionUpgrade = PtrTo(false)
