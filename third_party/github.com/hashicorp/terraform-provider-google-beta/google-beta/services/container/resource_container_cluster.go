@@ -748,14 +748,14 @@ func ResourceContainerCluster() *schema.Resource {
 						"default_compute_class_config": {
 							Type:             schema.TypeList,
 							Optional:         true,
-							DiffSuppressFunc: DefaultComputeClassConfigDiffSuppress,
+							DiffSuppressFunc: defaultComputeClassConfigDiffSuppress,
 							MaxItems:         1,
 							Description:      "Default compute class is a configuration for default compute class.",
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"enabled": {
 										Type:        schema.TypeBool,
-										Optional:    true,
+										Required:    true,
 										Description: "Enables default compute class.",
 									},
 								},
@@ -6391,10 +6391,10 @@ func BinaryAuthorizationDiffSuppress(k, old, new string, r *schema.ResourceData)
 	return false
 }
 
-func DefaultComputeClassConfigDiffSuppress(k, old, new string, r *schema.ResourceData) bool {
+func defaultComputeClassConfigDiffSuppress(k, old, new string, r *schema.ResourceData) bool {
 	// An empty config is equivalent to a config with enabled set to false.
-	if k == "default_compute_class_config.#" && old == "1" && new == "0" {
-		o, _ := r.GetChange("default_compute_class_config.0.enabled")
+	if k == "cluster_autoscaling.0.default_compute_class_config.#" && old == "1" && new == "0" {
+		o, _ := r.GetChange("cluster_autoscaling.0.default_compute_class_config.0.enabled")
 		if !o.(bool) {
 			return true
 		}
