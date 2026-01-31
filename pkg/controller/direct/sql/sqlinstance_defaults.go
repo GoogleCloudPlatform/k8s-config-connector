@@ -22,6 +22,12 @@ import (
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
+const (
+	// DefaultQueryPlansPerMinute is the default value for QueryPlansPerMinute.
+	// https://docs.cloud.google.com/sql/docs/mysql/admin-api/rest/v1/instances#insightsconfig
+	DefaultQueryPlansPerMinute = 5
+)
+
 func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance, fieldMetadata map[string]*FieldMetadata) {
 	// Stage 1: Apply all client-side defaults as if no fields are unmanaged.
 	if in.Spec.InstanceType == nil {
@@ -68,7 +74,7 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 	}
 	if in.Spec.Settings.InsightsConfig != nil {
 		if in.Spec.Settings.InsightsConfig.QueryPlansPerMinute == nil {
-			out.Settings.InsightsConfig.QueryPlansPerMinute = 5
+			out.Settings.InsightsConfig.QueryPlansPerMinute = DefaultQueryPlansPerMinute
 		}
 	}
 
