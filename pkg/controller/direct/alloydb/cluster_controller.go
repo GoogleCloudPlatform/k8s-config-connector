@@ -322,8 +322,8 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 	a.resolveKRMDefaultsForCreate()
 	// 4. Validate mutually-exclusive fields.
 	if a.desired.Spec.RestoreBackupSource != nil && a.desired.Spec.RestoreContinuousBackupSource != nil {
-		return a.recordCreateError(ctx, createOp, fmt.Errorf("only one of 'spec.restoreBackupSource' " +
-			"and 'spec.restoreContinuousBackupSource' can be configured: " +
+		return a.recordCreateError(ctx, createOp, fmt.Errorf("only one of 'spec.restoreBackupSource' "+
+			"and 'spec.restoreContinuousBackupSource' can be configured: "+
 			"both are configured"))
 	}
 
@@ -574,8 +574,8 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	a.resolveKRMDefaultsForUpdate()
 	// 4. Validate mutually-exclusive fields.
 	if a.desired.Spec.RestoreBackupSource != nil && a.desired.Spec.RestoreContinuousBackupSource != nil {
-		return a.recordUpdateError(ctx, updateOp, mapCtx, "", fmt.Errorf("only one of 'spec.restoreBackupSource' " +
-			"and 'spec.restoreContinuousBackupSource' can be configured: " +
+		return a.recordUpdateError(ctx, updateOp, mapCtx, "", fmt.Errorf("only one of 'spec.restoreBackupSource' "+
+			"and 'spec.restoreContinuousBackupSource' can be configured: "+
 			"both are configured"))
 	}
 
