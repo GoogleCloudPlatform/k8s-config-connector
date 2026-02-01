@@ -153,6 +153,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-replica-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-east1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -174,6 +175,7 @@ X-Xss-Protection: 0
         "retainedBackups": 15,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "binaryLogEnabled": true,
       "enabled": true,
       "kind": "sql#backupConfiguration",
@@ -324,6 +326,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-replica-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "root",
@@ -534,6 +537,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-primary-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-primary-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -555,6 +559,7 @@ X-Xss-Protection: 0
         "retainedBackups": 15,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "binaryLogEnabled": true,
       "enabled": true,
       "kind": "sql#backupConfiguration",
@@ -705,6 +710,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-primary-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "root",
@@ -788,6 +794,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-primary-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-primary-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -809,6 +816,7 @@ X-Xss-Protection: 0
         "retainedBackups": 15,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "binaryLogEnabled": true,
       "enabled": true,
       "kind": "sql#backupConfiguration",
@@ -1087,6 +1095,7 @@ X-Xss-Protection: 0
   "project": "${projectId}",
   "region": "us-central1",
   "replicationCluster": {},
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-primary-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1108,6 +1117,7 @@ X-Xss-Protection: 0
         "retainedBackups": 15,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "binaryLogEnabled": true,
       "enabled": true,
       "kind": "sql#backupConfiguration",
@@ -1337,6 +1347,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-replica-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-east1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1358,6 +1369,7 @@ X-Xss-Protection: 0
         "retainedBackups": 15,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "binaryLogEnabled": true,
       "enabled": true,
       "kind": "sql#backupConfiguration",
