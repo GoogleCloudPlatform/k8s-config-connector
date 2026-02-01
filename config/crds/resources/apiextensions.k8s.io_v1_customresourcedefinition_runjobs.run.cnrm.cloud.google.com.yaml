@@ -681,6 +681,51 @@ spec:
                                     Info in Kubernetes: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir'
                                   type: string
                               type: object
+                            gcs:
+                              description: Persistent storage backed by a Google Cloud
+                                Storage bucket.
+                              properties:
+                                bucketRef:
+                                  description: Cloud Storage Bucket name.
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: A reference to an externally-managed
+                                        StorageBucket resource.
+                                      type: string
+                                    name:
+                                      description: The name of a StorageBucket resource.
+                                      type: string
+                                    namespace:
+                                      description: The namespace of a StorageBucket
+                                        resource.
+                                      type: string
+                                  type: object
+                                mountOptions:
+                                  description: A list of additional flags to pass
+                                    to the gcsfuse CLI. Options should be specified
+                                    without the leading "--".
+                                  items:
+                                    type: string
+                                  type: array
+                                readOnly:
+                                  description: If true, the volume will be mounted
+                                    as read only for all mounts.
+                                  type: boolean
+                              type: object
                             name:
                               description: Required. Volume's name.
                               type: string
