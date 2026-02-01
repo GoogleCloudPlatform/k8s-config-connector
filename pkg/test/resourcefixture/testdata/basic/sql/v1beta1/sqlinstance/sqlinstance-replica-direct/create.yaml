@@ -23,6 +23,12 @@ spec:
   instanceType: READ_REPLICA_INSTANCE
   masterInstanceRef:
     name: sqlinstance-master-direct-${uniqueId}
+  replicaConfiguration:
+    password:
+      valueFrom:
+        secretKeyRef:
+          key: password
+          name: secret-${uniqueId}
   region: us-central1
   settings:
     # Location preference is not actually a required field. However, setting it for tests
