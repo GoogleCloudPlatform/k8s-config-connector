@@ -120,6 +120,32 @@ type InstanceDenyMaintenancePeriod struct {
 	Time string `json:"time"`
 }
 
+type InstanceGeminiConfig struct {
+	/* Whether Active Query is enabled. */
+	// +optional
+	ActiveQueryEnabled *bool `json:"activeQueryEnabled,omitempty"`
+
+	/* Whether the instance is entitled to Gemini features. */
+	// +optional
+	Entitled *bool `json:"entitled,omitempty"`
+
+	/* Whether Flag Recommender is enabled. */
+	// +optional
+	FlagRecommenderEnabled *bool `json:"flagRecommenderEnabled,omitempty"`
+
+	/* Whether Google Vacuum Management is enabled. */
+	// +optional
+	GoogleVacuumMgmtEnabled *bool `json:"googleVacuumMgmtEnabled,omitempty"`
+
+	/* Whether Index Advisor is enabled. */
+	// +optional
+	IndexAdvisorEnabled *bool `json:"indexAdvisorEnabled,omitempty"`
+
+	/* Whether OOM session cancel is enabled. */
+	// +optional
+	OomSessionCancelEnabled *bool `json:"oomSessionCancelEnabled,omitempty"`
+}
+
 type InstanceInsightsConfig struct {
 	/* True if Query Insights feature is enabled. */
 	// +optional
@@ -457,6 +483,13 @@ type SQLInstanceSpec struct {
 
 	// +optional
 	EncryptionKMSCryptoKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
+
+	// +optional
+	GeminiConfig *InstanceGeminiConfig `json:"geminiConfig,omitempty"`
+
+	/* Input only. Determines whether an in-place major version upgrade of replicas happens when an in-place major version upgrade of a primary instance is initiated. */
+	// +optional
+	IncludeReplicasForMajorVersionUpgrade *bool `json:"includeReplicasForMajorVersionUpgrade,omitempty"`
 
 	/* The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED', 'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'. */
 	// +optional

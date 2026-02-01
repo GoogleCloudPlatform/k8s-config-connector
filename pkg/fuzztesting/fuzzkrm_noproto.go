@@ -46,6 +46,25 @@ type KRMTypedFuzzer_NoProto[APIType any, SpecType any, StatusType any] struct {
 	UnimplementedFields sets.Set[string]
 	SpecFields          sets.Set[string]
 	StatusFields        sets.Set[string]
+
+	FilterSpec   func(in APIType)
+	FilterStatus func(in APIType)
+}
+
+// SpecField marks the specified fieldPath as round-tripping to/from the Spec
+func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) SpecField(fieldPath string) {
+	f.SpecFields.Insert(fieldPath)
+}
+
+// StatusField marks the specified fieldPath as round-tripping to/from the Status
+func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) StatusField(fieldPath string) {
+	f.StatusFields.Insert(fieldPath)
+}
+
+// Unimplemented_NotYetTriaged marks the specified fieldPath as not round-tripped,
+// and should be used for fields that are added by the service and where we haven't decided whether or not to implement them.
+func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) Unimplemented_NotYetTriaged(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
 }
 
 type KRMFuzzer_NoProto interface {
@@ -74,6 +93,7 @@ func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) FuzzSpec(t *test
 	fuzzer := NewFuzzTest_NoProto(f.APIType, f.SpecFromAPI, f.SpecToAPI)
 	fuzzer.IgnoreFields = f.StatusFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
+	fuzzer.Filter = f.FilterSpec
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -81,6 +101,7 @@ func (f *KRMTypedFuzzer_NoProto[APIType, SpecType, StatusType]) FuzzStatus(t *te
 	fuzzer := NewFuzzTest_NoProto(f.APIType, f.StatusFromAPI, f.StatusToAPI)
 	fuzzer.IgnoreFields = f.SpecFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
+	fuzzer.Filter = f.FilterStatus
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -111,6 +132,8 @@ type FuzzTest_NoProto[APIType any, KRMType any] struct {
 
 	UnimplementedFields sets.Set[string]
 	IgnoreFields        sets.Set[string]
+
+	Filter func(in APIType)
 }
 
 func NewFuzzTest_NoProto[APIType any, KRMType any](apiType APIType, fromAPI func(ctx *direct.MapContext, in APIType) *KRMType, toAPI func(ctx *direct.MapContext, in *KRMType) APIType) *FuzzTest_NoProto[APIType, KRMType] {
@@ -131,10 +154,14 @@ func (f *FuzzTest_NoProto[APIType, KRMType]) Fuzz(t *testing.T, seed int64) {
 	ignoreFields = ignoreFields.Union(f.UnimplementedFields)
 
 	overrides := map[string]fuzz.OverrideFiller{}
+	zeroOverrides := map[string]fuzz.OverrideFiller{}
 
 	for ignoreField := range ignoreFields {
 		overrides[ignoreField] = func(t *testing.T, fieldName string, field reflect.Value) {
-			// Do nothing for ignored fields
+			// Do nothing for ignored fields during random fill
+		}
+		zeroOverrides[ignoreField] = func(t *testing.T, fieldName string, field reflect.Value) {
+			field.Set(reflect.Zero(field.Type()))
 		}
 	}
 
@@ -142,6 +169,10 @@ func (f *FuzzTest_NoProto[APIType, KRMType]) Fuzz(t *testing.T, seed int64) {
 
 	p1 := reflect.New(reflect.ValueOf(f.APIType).Type().Elem()).Interface().(APIType)
 	filler.Fill(t, p1)
+
+	if f.Filter != nil {
+		f.Filter(p1)
+	}
 
 	ctx := &direct.MapContext{}
 	krm := f.FromAPI(ctx, p1)
@@ -155,6 +186,10 @@ func (f *FuzzTest_NoProto[APIType, KRMType]) Fuzz(t *testing.T, seed int64) {
 		t.Logf("p1 = %v", p1)
 		t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 	}
+
+	zeroFiller := fuzz.NewZeroFiller(&fuzz.FillerConfig{FieldOverrides: zeroOverrides})
+	zeroFiller.Fill(t, p1)
+	zeroFiller.Fill(t, p2)
 
 	if diff := cmp.Diff(p1, p2); diff != "" {
 		t.Logf("p1 = %v", p1)
