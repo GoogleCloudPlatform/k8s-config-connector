@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,11 +25,12 @@ trap on_error ERR
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
+. ${REPO_ROOT}/dev/tasks/install-gcloud
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
 echo "Running unit tests..."
 # A dummy default project id is required for a few unit test cases
-gcloud config set project foobar
+gcloud config set project foobar --quiet
 
 GITHUB_ACTION=1 \
 make test
