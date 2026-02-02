@@ -15,12 +15,14 @@
 package sql
 
 import (
+	"math/rand"
 	"testing"
 )
 
 func TestSQLInstanceLegacyFuzzer(t *testing.T) {
 	fuzzer := sqlInstanceLegacyFuzzer()
-	for i := int64(0); i < 100; i++ {
-		fuzzer.FuzzSpec(t, i)
+	for i := int64(0); i < 1000; i++ {
+		seed := rand.Int63()
+		fuzzer.FuzzSpec(t, seed)
 	}
 }
