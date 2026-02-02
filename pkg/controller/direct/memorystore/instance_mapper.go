@@ -323,7 +323,7 @@ func PersistenceConfig_RdbConfig_ToProto(mapCtx *direct.MapContext, in *krmv1bet
 }
 func PscAttachmentDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscAttachmentDetail) *krmv1beta1.PscAttachmentDetailObservedState {
 	if in == nil {
-			return nil
+		return nil
 	}
 	out := &krmv1beta1.PscAttachmentDetailObservedState{}
 	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
@@ -332,7 +332,7 @@ func PscAttachmentDetailObservedState_FromProto(mapCtx *direct.MapContext, in *p
 }
 func PscAttachmentDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscAttachmentDetailObservedState) *pb.PscAttachmentDetail {
 	if in == nil {
-			return nil
+		return nil
 	}
 	out := &pb.PscAttachmentDetail{}
 	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
