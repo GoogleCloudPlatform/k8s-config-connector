@@ -120,15 +120,22 @@ type testConfig struct {
 	suppressExitOnLeadershipLoss bool
 }
 
-func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme *runtime.Scheme, explicitConfig *operatorv1beta1.MultiClusterLeaseSpec, existOnLeadershipLoss bool) (*leaderelection.LeaderElectionConfig, *operatorv1beta1.MultiClusterLeaseSpec, error) {
+func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme *runtime.Scheme, explicitConfig *operatorv1beta1.MultiClusterLeaseSpec, existOnLeadershipLoss bool, kubeClient crclient.Client) (*leaderelection.LeaderElectionConfig, *operatorv1beta1.MultiClusterLeaseSpec, error) {
 	var leaseSpec *operatorv1beta1.MultiClusterLeaseSpec
+
+	// Helper to get client
+	getClient := func() (crclient.Client, error) {
+		if kubeClient != nil {
+			return kubeClient, nil
+		}
+		return crclient.New(restConfig, crclient.Options{Scheme: scheme})
+	}
 
 	if explicitConfig != nil {
 		klog.Infof("using explicit multi-cluster lease config")
 		leaseSpec = explicitConfig
-	} else {
 		// Create a temporary client to read the ConfigConnector object for leader election config.
-		c, err := crclient.New(restConfig, crclient.Options{Scheme: scheme})
+		c, err := getClient()
 		if err != nil {
 			return nil, nil, fmt.Errorf("error creating temporary client: %w", err)
 		}
@@ -151,7 +158,7 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 
 	if leaseSpec != nil {
 		// Create a new client for the lock to ensure it uses the correct configuration
-		c, err := crclient.New(restConfig, crclient.Options{Scheme: scheme})
+		c, err := getClient()
 		if err != nil {
 			return nil, nil, fmt.Errorf("error creating client for lock: %w", err)
 		}
@@ -224,9 +231,11 @@ func (m *leaderElectionManager) Start(ctx context.Context) error {
 			m.fatal("error running manager: %v", err)
 		}
 	}
-	leaderelection.RunOrDie(ctx, *m.leConfig)
+	runOrDie(ctx, *m.leConfig)
 	return nil
 }
+
+var runOrDie = leaderelection.RunOrDie
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
 // API server associated with the rest.Config argument. The controllers are:
@@ -260,7 +269,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	var leConfig *leaderelection.LeaderElectionConfig
 	var mclConfig *operatorv1beta1.MultiClusterLeaseSpec
 	if cfg.MultiClusterLease {
-		leConfig, mclConfig, err = setUpMultiClusterLease(ctx, restConfig, opts.Scheme, cfg.multiClusterLeaseConfig, !cfg.suppressExitOnLeadershipLoss)
+		leConfig, mclConfig, err = setUpMultiClusterLease(ctx, restConfig, opts.Scheme, cfg.multiClusterLeaseConfig, !cfg.suppressExitOnLeadershipLoss, nil)
 		if err != nil {
 			return nil, fmt.Errorf("error setting up multi-cluster leader election: %w", err)
 		}
