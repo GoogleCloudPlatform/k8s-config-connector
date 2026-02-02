@@ -476,6 +476,40 @@ spec:
                 properties:
                   googleAPIsBundle:
                     type: string
+                  memorystoreInstanceServiceAttachmentRef:
+                    oneOf:
+                    - not:
+                        required:
+                        - serviceAttachmentExternal
+                      required:
+                      - memorystoreInstanceName
+                    - not:
+                        anyOf:
+                        - required:
+                          - memorystoreInstanceName
+                        - required:
+                          - memorystoreInstanceNamespace
+                      required:
+                      - serviceAttachmentExternal
+                    properties:
+                      serviceAttachmentExternal:
+                        description: The ComputeServiceAttachment selflink in the
+                          form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
+                          when not managed by Config Connector.
+                        type: string
+                      memorystoreInstanceName:
+                        description: The `name` field of a `MemorystoreInstance`
+                          resource.
+                        type: string
+                      memorystoreInstanceNamespace:
+                        description: The `namespace` field of a `MemorystoreInstance`
+                          resource.
+                        type: string
+                      memorystoreInstanceServiceAttachmentIndex:
+                        description: The `index` for the slice `MemorystoreInstance.pscAttachmentDetails[]`
+                          resource.
+                        type: integer
+                    type: object
                   serviceAttachmentRef:
                     oneOf:
                     - not:

@@ -140,6 +140,10 @@ type MemorystoreInstanceObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.node_config
 	NodeConfig *NodeConfigObservedState `json:"nodeConfig,omitempty"`
 
+	// Output only. Service attachment details to configure PSC connections.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.psc_attachment_details
+	PscAttachmentDetails []PscAttachmentDetailObservedState `json:"pscAttachmentDetails,omitempty"`
+
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints
 	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
@@ -334,6 +338,17 @@ type NodeConfigObservedState struct {
 	// Output only. Memory size in GB of the node.
 	// +kcc:proto:field=google.cloud.memorystore.v1.NodeConfig.size_gb
 	SizeGB *float64 `json:"sizeGB,omitempty"`
+}
+
+type PscAttachmentDetailObservedState struct {
+	// Output only. Service attachment URI which your self-created PscConnection should use as
+	//  target.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PscAttachmentDetail.service_attachment
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+
+	// Output only. Type of Psc endpoint.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PscAttachmentDetail.connection_type
+	ConnectionType *string `json:"connectionType,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.PscAutoConnection

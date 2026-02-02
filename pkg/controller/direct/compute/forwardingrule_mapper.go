@@ -230,6 +230,12 @@ func ComputeForwardingRuleSpec_Target_ToProto(mapCtx *direct.MapContext, in *krm
 	if oneof := in.GoogleAPIsBundle; oneof != nil {
 		out = in.GoogleAPIsBundle
 	}
+	if oneof := in.MemorystoreInstanceServiceAttachmentRef; oneof != nil {
+		if oneof.ServiceAttachmentExternal == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", oneof.MemorystoreInstanceName)
+		}
+		out = direct.LazyPtr(oneof.ServiceAttachmentExternal)
+	}
 	if oneof := in.ServiceAttachmentRef; oneof != nil {
 		if oneof.External == "" {
 			mapCtx.Errorf("reference %s was not pre-resolved", oneof.Name)
