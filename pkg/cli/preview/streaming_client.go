@@ -307,7 +307,7 @@ func (r *lineSplitReader) Read(p []byte) (int, error) {
 		}
 
 		r.buffer = r.buffer[:n]
-		klog.V(2).Infof("buffer is %v", string(r.buffer))
+		klog.V(4).Infof("buffer is %v", string(r.buffer))
 	}
 
 	// Only return up to the newline
@@ -324,7 +324,7 @@ func (r *lineSplitReader) Read(p []byte) (int, error) {
 		// release the buffer (maybe a sync pool would be faster)
 		r.buffer = nil
 	}
-	klog.V(2).Infof("returning %v", string(p[:n]))
+	klog.V(4).Infof("returning %v", string(p[:n]))
 
 	// If we sent a newline, pretend this is EOF
 	if nl != -1 && n == nl+1 {

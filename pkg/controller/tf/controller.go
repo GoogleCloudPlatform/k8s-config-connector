@@ -185,7 +185,7 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 
 	if err := r.Get(ctx, req.NamespacedName, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			r.logger.V(1).Info("resource not found in API server; finishing reconcile", "resource", req.NamespacedName)
+			r.logger.V(2).Info("resource not found in API server; finishing reconcile", "resource", req.NamespacedName)
 			return reconcile.Result{}, nil
 		}
 		return reconcile.Result{}, err
@@ -199,7 +199,7 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 		return reconcile.Result{}, err
 	}
 	if skip {
-		r.logger.V(1).Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", req.NamespacedName)
+		r.logger.V(2).Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", req.NamespacedName)
 		return reconcile.Result{}, nil
 	}
 
@@ -232,7 +232,7 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 	am := resourceactuation.DecideActuationMode(cc, ccc)
 	switch am {
 	case v1beta1.Reconciling:
-		r.logger.V(1).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", req.NamespacedName)
+		r.logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", req.NamespacedName)
 	case v1beta1.Paused:
 		jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.schemaRef.GVK, u)
 		if err != nil {
@@ -246,7 +246,7 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 			}
 		}
 
-		r.logger.V(1).Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", req.NamespacedName, "time to next reconciliation", jitteredPeriod)
+		r.logger.V(2).Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", req.NamespacedName, "time to next reconciliation", jitteredPeriod)
 		return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 	default:
 		return reconcile.Result{}, fmt.Errorf("unknown actuation mode %v", am)
@@ -274,7 +274,7 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 	if err != nil {
 		return reconcile.Result{}, err
 	}
-	r.logger.V(1).Info("successfully finished reconcile", "resource", k8s.GetNamespacedName(resource), "time to next reconciliation", jitteredPeriod)
+	r.logger.V(2).Info("successfully finished reconcile", "resource", k8s.GetNamespacedName(resource), "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
@@ -387,7 +387,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 		return false, err
 	}
 	if diff.Empty() {
-		r.logger.V(1).Info("underlying resource already up to date", "resource", k8s.GetNamespacedName(krmResource))
+		r.logger.V(2).Info("underlying resource already up to date", "resource", k8s.GetNamespacedName(krmResource))
 		return false, r.handleUpToDate(ctx, krmResource, liveState, secretVersions)
 	}
 
@@ -413,7 +413,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 		structuredreporting.ReportDiff(ctx, report)
 	}
 
-	r.logger.V(1).Info("creating/updating underlying resource", "resource", k8s.GetNamespacedName(krmResource))
+	r.logger.V(2).Info("creating/updating underlying resource", "resource", k8s.GetNamespacedName(krmResource))
 	if err := r.HandleUpdating(ctx, &krmResource.Resource); err != nil {
 		return false, err
 	}
