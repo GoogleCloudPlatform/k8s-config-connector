@@ -58,9 +58,25 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     endpoints:
     - connections:
-      - pscAutoConnection: {}
+      - pscAutoConnection:
+          connectionType: CONNECTION_TYPE_DISCOVERY
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-07f3452b-4cf7-41f0-a051-63c07cf16a82
+          ipAddress: 10.128.0.2
+          port: 6379
+          pscConnectionID: "154031778112208898"
+          serviceAttachment: projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa
+      - pscAutoConnection:
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-224332a9-b6fd-4238-9f1d-368e317dccd6
+          ipAddress: 10.128.0.3
+          port: 6379
+          pscConnectionID: "154031778112208899"
+          serviceAttachment: projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa-2
     nodeConfig:
       sizeGB: 6.5
+    pscAttachmentDetails:
+    - connectionType: CONNECTION_TYPE_DISCOVERY
+      serviceAttachment: projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa
+    - serviceAttachment: projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa-2
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"

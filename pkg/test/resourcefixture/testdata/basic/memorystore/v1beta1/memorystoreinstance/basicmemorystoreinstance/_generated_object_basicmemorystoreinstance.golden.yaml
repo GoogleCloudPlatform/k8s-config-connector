@@ -27,6 +27,10 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     nodeConfig:
       sizeGB: 13
+    pscAttachmentDetails:
+    - connectionType: CONNECTION_TYPE_DISCOVERY
+      serviceAttachment: projects/1025394618854/regions/us-central1/serviceAttachments/gcp-memorystore-auto-i05ae2453f1b16c3-psc-sa
+    - serviceAttachment: projects/1025394618854/regions/us-central1/serviceAttachments/gcp-memorystore-auto-i05ae2453f1b16c3-psc-sa-2
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"

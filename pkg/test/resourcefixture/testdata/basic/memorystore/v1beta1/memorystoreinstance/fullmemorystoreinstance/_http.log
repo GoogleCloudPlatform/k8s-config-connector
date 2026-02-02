@@ -119,6 +119,10 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
@@ -244,7 +248,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -314,10 +320,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "create"
   },
@@ -346,6 +354,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "create"
   },
@@ -418,10 +427,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "update"
   },
@@ -450,6 +461,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "update"
   },
@@ -577,22 +589,24 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://memorystore.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/operations/${operationID}
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -611,22 +625,47 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": true,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20251030_01_00",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "endpoints": [
       {
         "connections": [
           {
             "pscAutoConnection": {
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-07f3452b-4cf7-41f0-a051-63c07cf16a82",
+              "ipAddress": "10.128.0.2",
               "network": "projects/${projectId}/global/networks/${networkID}",
-              "projectId": "${projectId}"
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208898",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-224332a9-b6fd-4238-9f1d-368e317dccd6",
+              "ipAddress": "10.128.0.3",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208899",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa-2"
             }
           }
         ]
@@ -636,10 +675,6 @@ X-Xss-Protection: 0
       "maxmemory-policy": "volatile-ttl"
     },
     "engineVersion": "VALKEY_7_2",
-    "labels": {
-      "key1": "val1",
-      "key2": "val2"
-    },
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "nodeConfig": {
@@ -652,11 +687,22 @@ X-Xss-Protection: 0
       },
       "mode": "AOF"
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 2,
+    "satisfiesPzi": false,
     "shardCount": 6,
     "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
     "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -683,15 +729,39 @@ X-Xss-Protection: 0
 
 {
   "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": true,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20251030_01_00",
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
   "endpoints": [
     {
       "connections": [
         {
           "pscAutoConnection": {
+            "connectionType": 1,
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-07f3452b-4cf7-41f0-a051-63c07cf16a82",
+            "ipAddress": "10.128.0.2",
             "network": "projects/${projectId}/global/networks/${networkID}",
-            "projectId": "${projectId}"
+            "port": 6379,
+            "projectId": "${projectId}",
+            "pscConnectionId": "154031778112208898",
+            "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa"
+          }
+        },
+        {
+          "pscAutoConnection": {
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-224332a9-b6fd-4238-9f1d-368e317dccd6",
+            "ipAddress": "10.128.0.3",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "port": 6379,
+            "projectId": "${projectId}",
+            "pscConnectionId": "154031778112208899",
+            "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa-2"
           }
         }
       ]
@@ -717,11 +787,22 @@ X-Xss-Protection: 0
     },
     "mode": 3
   },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    },
+    {
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    }
+  ],
   "replicaCount": 2,
+  "satisfiesPzi": false,
   "shardCount": 6,
-  "state": 1,
+  "state": 2,
   "transitEncryptionMode": 2,
   "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
   "zoneDistributionConfig": {
     "mode": 2,
     "zone": "us-central1-b"
@@ -790,10 +871,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -824,6 +907,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -831,15 +915,39 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": true,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20251030_01_00",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "endpoints": [
       {
         "connections": [
           {
             "pscAutoConnection": {
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-07f3452b-4cf7-41f0-a051-63c07cf16a82",
+              "ipAddress": "10.128.0.2",
               "network": "projects/${projectId}/global/networks/${networkID}",
-              "projectId": "${projectId}"
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208898",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-224332a9-b6fd-4238-9f1d-368e317dccd6",
+              "ipAddress": "10.128.0.3",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208899",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa-2"
             }
           }
         ]
@@ -849,10 +957,6 @@ X-Xss-Protection: 0
       "maxmemory-policy": "volatile-ttl"
     },
     "engineVersion": "VALKEY_7_2",
-    "labels": {
-      "key1": "val1",
-      "key2": "val2"
-    },
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "nodeConfig": {
@@ -865,7 +969,17 @@ X-Xss-Protection: 0
       },
       "mode": "AOF"
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
+    "satisfiesPzi": false,
     "shardCount": 6,
     "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
@@ -940,10 +1054,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -974,6 +1090,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -981,15 +1098,39 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": true,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20251030_01_00",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "endpoints": [
       {
         "connections": [
           {
             "pscAutoConnection": {
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-07f3452b-4cf7-41f0-a051-63c07cf16a82",
+              "ipAddress": "10.128.0.2",
               "network": "projects/${projectId}/global/networks/${networkID}",
-              "projectId": "${projectId}"
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208898",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-224332a9-b6fd-4238-9f1d-368e317dccd6",
+              "ipAddress": "10.128.0.3",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208899",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa-2"
             }
           }
         ]
@@ -999,10 +1140,6 @@ X-Xss-Protection: 0
       "maxmemory-policy": "volatile-ttl"
     },
     "engineVersion": "VALKEY_7_2",
-    "labels": {
-      "key1": "val1",
-      "key2": "val2"
-    },
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "nodeConfig": {
@@ -1015,7 +1152,17 @@ X-Xss-Protection: 0
       },
       "mode": "AOF"
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
+    "satisfiesPzi": false,
     "shardCount": 12,
     "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
@@ -1090,10 +1237,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -1124,6 +1273,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -1131,15 +1281,39 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20251030_01_00",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "endpoints": [
       {
         "connections": [
           {
             "pscAutoConnection": {
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-07f3452b-4cf7-41f0-a051-63c07cf16a82",
+              "ipAddress": "10.128.0.2",
               "network": "projects/${projectId}/global/networks/${networkID}",
-              "projectId": "${projectId}"
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208898",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-224332a9-b6fd-4238-9f1d-368e317dccd6",
+              "ipAddress": "10.128.0.3",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208899",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa-2"
             }
           }
         ]
@@ -1149,10 +1323,6 @@ X-Xss-Protection: 0
       "maxmemory-policy": "volatile-ttl"
     },
     "engineVersion": "VALKEY_7_2",
-    "labels": {
-      "key1": "val1",
-      "key2": "val2"
-    },
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "nodeConfig": {
@@ -1165,7 +1335,17 @@ X-Xss-Protection: 0
       },
       "mode": "AOF"
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
+    "satisfiesPzi": false,
     "shardCount": 12,
     "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
@@ -1240,10 +1420,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -1274,6 +1456,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -1281,15 +1464,39 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20251030_01_00",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "endpoints": [
       {
         "connections": [
           {
             "pscAutoConnection": {
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-07f3452b-4cf7-41f0-a051-63c07cf16a82",
+              "ipAddress": "10.128.0.2",
               "network": "projects/${projectId}/global/networks/${networkID}",
-              "projectId": "${projectId}"
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208898",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-224332a9-b6fd-4238-9f1d-368e317dccd6",
+              "ipAddress": "10.128.0.3",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208899",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa-2"
             }
           }
         ]
@@ -1299,10 +1506,6 @@ X-Xss-Protection: 0
       "maxmemory-policy": "volatile-ttl"
     },
     "engineVersion": "VALKEY_7_2",
-    "labels": {
-      "key1": "val1",
-      "key2": "val2"
-    },
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "nodeConfig": {
@@ -1316,7 +1519,17 @@ X-Xss-Protection: 0
         "rdbSnapshotStartTime": "2029-10-02T15:01:23Z"
       }
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
+    "satisfiesPzi": false,
     "shardCount": 12,
     "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
@@ -1391,10 +1604,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -1425,6 +1640,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -1432,15 +1648,39 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20251030_01_00",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "endpoints": [
       {
         "connections": [
           {
             "pscAutoConnection": {
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-07f3452b-4cf7-41f0-a051-63c07cf16a82",
+              "ipAddress": "10.128.0.2",
               "network": "projects/${projectId}/global/networks/${networkID}",
-              "projectId": "${projectId}"
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208898",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-224332a9-b6fd-4238-9f1d-368e317dccd6",
+              "ipAddress": "10.128.0.3",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208899",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa-2"
             }
           }
         ]
@@ -1451,10 +1691,6 @@ X-Xss-Protection: 0
       "maxmemory-policy": "volatile-ttl"
     },
     "engineVersion": "VALKEY_7_2",
-    "labels": {
-      "key1": "val1",
-      "key2": "val2"
-    },
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "nodeConfig": {
@@ -1468,7 +1704,17 @@ X-Xss-Protection: 0
         "rdbSnapshotStartTime": "2029-10-02T15:01:23Z"
       }
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
+    "satisfiesPzi": false,
     "shardCount": 12,
     "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
@@ -1543,10 +1789,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -1577,6 +1825,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -1584,15 +1833,39 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20251030_01_00",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "endpoints": [
       {
         "connections": [
           {
             "pscAutoConnection": {
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-07f3452b-4cf7-41f0-a051-63c07cf16a82",
+              "ipAddress": "10.128.0.2",
               "network": "projects/${projectId}/global/networks/${networkID}",
-              "projectId": "${projectId}"
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208898",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-224332a9-b6fd-4238-9f1d-368e317dccd6",
+              "ipAddress": "10.128.0.3",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208899",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa-2"
             }
           }
         ]
@@ -1603,10 +1876,6 @@ X-Xss-Protection: 0
       "maxmemory-policy": "volatile-ttl"
     },
     "engineVersion": "VALKEY_7_2",
-    "labels": {
-      "key1": "val1",
-      "key2": "val2"
-    },
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "nodeConfig": {
@@ -1620,7 +1889,17 @@ X-Xss-Protection: 0
         "rdbSnapshotStartTime": "2029-10-02T15:01:23Z"
       }
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
+    "satisfiesPzi": false,
     "shardCount": 12,
     "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
@@ -1695,10 +1974,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -1729,6 +2010,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "update"
   },
@@ -1736,15 +2018,39 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20251030_01_00",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
     "endpoints": [
       {
         "connections": [
           {
             "pscAutoConnection": {
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-07f3452b-4cf7-41f0-a051-63c07cf16a82",
+              "ipAddress": "10.128.0.2",
               "network": "projects/${projectId}/global/networks/${networkID}",
-              "projectId": "${projectId}"
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208898",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-224332a9-b6fd-4238-9f1d-368e317dccd6",
+              "ipAddress": "10.128.0.3",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "154031778112208899",
+              "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa-2"
             }
           }
         ]
@@ -1755,11 +2061,6 @@ X-Xss-Protection: 0
       "maxmemory-policy": "volatile-ttl"
     },
     "engineVersion": "VALKEY_7_2",
-    "labels": {
-      "key1": "val1",
-      "key2": "val2",
-      "keyx": "valx"
-    },
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "nodeConfig": {
@@ -1773,7 +2074,17 @@ X-Xss-Protection: 0
         "rdbSnapshotStartTime": "2029-10-02T15:01:23Z"
       }
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
+    "satisfiesPzi": false,
     "shardCount": 12,
     "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
@@ -1805,15 +2116,39 @@ X-Xss-Protection: 0
 
 {
   "authorizationMode": 2,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20251030_01_00",
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
   "endpoints": [
     {
       "connections": [
         {
           "pscAutoConnection": {
+            "connectionType": 1,
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-07f3452b-4cf7-41f0-a051-63c07cf16a82",
+            "ipAddress": "10.128.0.2",
             "network": "projects/${projectId}/global/networks/${networkID}",
-            "projectId": "${projectId}"
+            "port": 6379,
+            "projectId": "${projectId}",
+            "pscConnectionId": "154031778112208898",
+            "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa"
+          }
+        },
+        {
+          "pscAutoConnection": {
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-224332a9-b6fd-4238-9f1d-368e317dccd6",
+            "ipAddress": "10.128.0.3",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "port": 6379,
+            "projectId": "${projectId}",
+            "pscConnectionId": "154031778112208899",
+            "serviceAttachment": "projects/53866614360/regions/us-central1/serviceAttachments/gcp-memorystore-auto-df8566711a6400d4-psc-sa-2"
           }
         }
       ]
@@ -1842,11 +2177,22 @@ X-Xss-Protection: 0
       "rdbSnapshotStartTime": "2029-10-02T15:01:23Z"
     }
   },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    },
+    {
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    }
+  ],
   "replicaCount": 1,
+  "satisfiesPzi": false,
   "shardCount": 12,
-  "state": 3,
+  "state": 2,
   "transitEncryptionMode": 2,
   "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
   "zoneDistributionConfig": {
     "mode": 2,
     "zone": "us-central1-b"
@@ -1871,10 +2217,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "delete"
   },
@@ -1905,6 +2253,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}",
     "verb": "delete"
   },
@@ -1961,10 +2310,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "delete"
   },
@@ -1993,6 +2344,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "delete"
   },
@@ -2019,7 +2371,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -2126,6 +2480,489 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": {
+    "errors": [
+      {
+        "code": "RESOURCE_IN_USE_BY_ANOTHER_RESOURCE",
+        "message": "The network resource 'projects/${projectId}/global/networks/${networkID}' is already being used by 'projects/${projectId}/global/firewalls/${networkID}-odm2l5xrgkhkgaqqdwsg4qbt'"
+      }
+    ]
+  },
+  "httpErrorMessage": "BAD REQUEST",
+  "httpErrorStatusCode": 400,
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": {
+    "errors": [
+      {
+        "code": "RESOURCE_IN_USE_BY_ANOTHER_RESOURCE",
+        "message": "The network resource 'projects/${projectId}/global/networks/${networkID}' is already being used by 'projects/${projectId}/global/firewalls/${networkID}-odm2l5xrgkhkgaqqdwsg4qbt'"
+      }
+    ]
+  },
+  "httpErrorMessage": "BAD REQUEST",
+  "httpErrorStatusCode": 400,
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": {
+    "errors": [
+      {
+        "code": "RESOURCE_IN_USE_BY_ANOTHER_RESOURCE",
+        "message": "The network resource 'projects/${projectId}/global/networks/${networkID}' is already being used by 'projects/${projectId}/global/firewalls/${networkID}-odm2l5xrgkhkgaqqdwsg4qbt'"
+      }
+    ]
+  },
+  "httpErrorMessage": "BAD REQUEST",
+  "httpErrorStatusCode": 400,
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "error": {
+    "errors": [
+      {
+        "code": "RESOURCE_IN_USE_BY_ANOTHER_RESOURCE",
+        "message": "The network resource 'projects/${projectId}/global/networks/${networkID}' is already being used by 'projects/${projectId}/global/firewalls/${networkID}-odm2l5xrgkhkgaqqdwsg4qbt'"
+      }
+    ]
+  },
+  "httpErrorMessage": "BAD REQUEST",
+  "httpErrorStatusCode": 400,
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
