@@ -1,4 +1,4 @@
-apiVersion: orgpolicy.cnrm.cloud.google.com/v1alpha1
+apiVersion: orgpolicy.cnrm.cloud.google.com/v1beta1
 kind: OrgPolicyPolicy
 metadata:
   finalizers:
@@ -7,18 +7,14 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: custom.orgpolicypolicy-params-${uniqueId}
+  name: custom.orgpolicypolicy${uniqueId}
   namespace: ${uniqueId}
 spec:
   projectRef:
-    external: ${projectId}
+    external: projects/1070934155037
   spec:
     rules:
-    - enforce: false
-      parameters:
-        allowAll: true
-        allowedLocations:
-        - europe-west3
+    - enforce: true
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -26,7 +22,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}
+  externalRef: projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}
   observedGeneration: 2
   observedState:
     spec:

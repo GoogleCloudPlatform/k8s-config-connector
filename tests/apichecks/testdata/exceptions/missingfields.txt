@@ -3099,6 +3099,20 @@
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.vmImage.imageFamily" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.vmImage.imageName" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.vmImage.project" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.inheritFromParent" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.reset" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].condition.description" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].condition.expression" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].condition.location" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.dryRunSpec.rules[].condition.title" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.inheritFromParent" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.reset" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].condition.description" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].condition.expression" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].condition.location" is not set in unstructured objects
+[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.rules[].condition.title" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.assignment.instanceNamePrefixes[]" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.assignment.instances[].external" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.assignment.instances[].namespace" is not set in unstructured objects
