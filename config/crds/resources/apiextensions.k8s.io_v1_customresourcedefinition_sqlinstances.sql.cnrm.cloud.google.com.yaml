@@ -270,6 +270,44 @@ spec:
                       is checked during the SSL handshake.
                     type: boolean
                 type: object
+              replicationCluster:
+                description: The configuration for the replication cluster.
+                properties:
+                  failoverDrReplicaRef:
+                    description: Optional. If the instance is a primary instance,
+                      then this field identifies the disaster recovery (DR) replica.
+                      A DR replica is an optional configuration for Enterprise Plus
+                      edition instances. If the instance is a read replica, then the
+                      field is not set. Set this field to a replica name to designate
+                      a DR replica for a primary instance. Remove the replica name
+                      to remove the DR replica designation.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
+                type: object
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`
@@ -778,6 +816,30 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: The observed state of the resource.
+                properties:
+                  replicationCluster:
+                    description: The configuration for the replication cluster.
+                    properties:
+                      drReplica:
+                        description: Output only. Read-only field that indicates whether
+                          the replica is a DR replica. This field is not set if the
+                          instance is a primary instance.
+                        type: boolean
+                      psaWriteEndpoint:
+                        description: Output only. If set, it indicates this instance
+                          has a private service access (PSA) dns endpoint that is
+                          pointing to the primary instance of the cluster. If this
+                          instance is the primary, the dns should be pointing to this
+                          instance. After Switchover or Replica failover, this DNS
+                          endpoint points to the promoted instance. This is a read-only
+                          field, returned to the user as information. This field can
+                          exist even if a standalone instance does not yet have a
+                          replica, or had a DR replica that was deleted.
+                        type: string
+                    type: object
+                type: object
               privateIpAddress:
                 type: string
               pscServiceAttachmentLink:

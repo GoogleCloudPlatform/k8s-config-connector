@@ -188,20 +188,23 @@ func (x *patchProto) VisitNode(depth int, cursor *sitter.TreeCursor) {
 
 	case "message":
 		// e.g. message MyMessage { ... }
-		descend = false
 		if x.Id == ProtoIdentifierMessage {
 			x.VisitMessage(depth, cursor.CurrentNode())
 		}
+		descend = true
 
 	case "service":
 		// e.g. service MyService { ... }
-		descend = false
 		if x.Id == ProtoIdentifierService {
 			x.VisitService(depth, cursor.CurrentNode())
 		}
+		descend = true
 
 	default:
-		x.Errors = append(x.Errors, fmt.Errorf("unknown top-level node %q", protobuf.GetLanguage().SymbolName(node.Symbol())))
+		if depth == 0 {
+			x.Errors = append(x.Errors, fmt.Errorf("unknown top-level node %q", protobuf.GetLanguage().SymbolName(node.Symbol())))
+		}
+		descend = true
 	}
 
 	if descend {
@@ -273,7 +276,7 @@ func (x *patchProto) VisitService(depth int, node *sitter.Node) {
 		}
 	}
 
-	if serviceName.Content(x.Source) == x.Name {
+	if serviceName != nil && serviceName.Content(x.Source) == x.Name {
 		serviceBodyStart := node.Child(serviceBodyIdx)
 		lastChild := node.Child(childCount - 1)
 

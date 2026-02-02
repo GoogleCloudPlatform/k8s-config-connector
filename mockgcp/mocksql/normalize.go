@@ -44,6 +44,9 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			if ipAddress.Type == "PRIVATE" {
 				replacements.ReplaceStringValue(ipAddress.IPAddress, "10.1.2.3")
 			}
+			if ipAddress.Type == "PRIMARY" {
+				replacements.ReplaceStringValue(ipAddress.IPAddress, "10.10.10.10")
+			}
 		}
 	}
 }
