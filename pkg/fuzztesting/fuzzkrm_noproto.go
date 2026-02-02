@@ -158,9 +158,10 @@ func (f *FuzzTest_NoProto[APIType, KRMType]) Fuzz(t *testing.T, seed int64) {
 
 	for ignoreField := range ignoreFields {
 		overrides[ignoreField] = func(t *testing.T, fieldName string, field reflect.Value) {
-			// Do nothing for ignored fields during random fill
+			// skip filling ignored fields during random fill
 		}
 		zeroOverrides[ignoreField] = func(t *testing.T, fieldName string, field reflect.Value) {
+			// zero out ignored fields after mapping - needed for e.g. ForceSendFields
 			field.Set(reflect.Zero(field.Type()))
 		}
 	}
@@ -187,7 +188,7 @@ func (f *FuzzTest_NoProto[APIType, KRMType]) Fuzz(t *testing.T, seed int64) {
 		t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 	}
 
-	zeroFiller := fuzz.NewZeroFiller(&fuzz.FillerConfig{FieldOverrides: zeroOverrides})
+	zeroFiller := fuzz.NewClearNonProtoFields(&fuzz.FillerConfig{FieldOverrides: zeroOverrides})
 	zeroFiller.Fill(t, p1)
 	zeroFiller.Fill(t, p2)
 
