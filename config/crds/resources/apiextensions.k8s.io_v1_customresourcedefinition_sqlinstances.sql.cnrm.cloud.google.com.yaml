@@ -153,32 +153,6 @@ spec:
                     description: The `namespace` of a `KMSCryptoKey` resource.
                     type: string
                 type: object
-              geminiConfig:
-                properties:
-                  activeQueryEnabled:
-                    description: Whether Active Query is enabled.
-                    type: boolean
-                  entitled:
-                    description: Whether the instance is entitled to Gemini features.
-                    type: boolean
-                  flagRecommenderEnabled:
-                    description: Whether Flag Recommender is enabled.
-                    type: boolean
-                  googleVacuumMgmtEnabled:
-                    description: Whether Google Vacuum Management is enabled.
-                    type: boolean
-                  indexAdvisorEnabled:
-                    description: Whether Index Advisor is enabled.
-                    type: boolean
-                  oomSessionCancelEnabled:
-                    description: Whether OOM session cancel is enabled.
-                    type: boolean
-                type: object
-              includeReplicasForMajorVersionUpgrade:
-                description: Input only. Determines whether an in-place major version
-                  upgrade of replicas happens when an in-place major version upgrade
-                  of a primary instance is initiated.
-                type: boolean
               instanceType:
                 description: The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED',
                   'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'.
