@@ -39,14 +39,12 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, actual *api.DatabaseInstance, fiel
 	}
 
 	out := &api.DatabaseInstance{
-		DatabaseVersion:                       direct.ValueOf(in.Spec.DatabaseVersion),
-		DiskEncryptionConfiguration:           InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in.Spec.EncryptionKMSCryptoKeyRef),
-		GeminiConfig:                          InstanceGeminiConfigKRMToGCP(in.Spec.GeminiConfig),
-		IncludeReplicasForMajorVersionUpgrade: direct.ValueOf(in.Spec.IncludeReplicasForMajorVersionUpgrade),
-		InstanceType:                          direct.ValueOf(in.Spec.InstanceType),
-		Kind:                                  "sql#instance",
-		MaintenanceVersion:                    direct.ValueOf(in.Spec.MaintenanceVersion),
-		MasterInstanceName:                    InstanceMasterInstanceRefKRMToGCP(in.Spec.MasterInstanceRef),
+		DatabaseVersion:             direct.ValueOf(in.Spec.DatabaseVersion),
+		DiskEncryptionConfiguration: InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in.Spec.EncryptionKMSCryptoKeyRef),
+		InstanceType:                direct.ValueOf(in.Spec.InstanceType),
+		Kind:                        "sql#instance",
+		MaintenanceVersion:          direct.ValueOf(in.Spec.MaintenanceVersion),
+		MasterInstanceName:          InstanceMasterInstanceRefKRMToGCP(in.Spec.MasterInstanceRef),
 		// MaxDiskSize is not supported in KRM API.
 		Name: direct.ValueOf(in.Spec.ResourceID),
 		// OnPremisesConfiguration is not supported in KRM API.
@@ -75,39 +73,6 @@ func InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in *refs.KMSCryptoKeyRef) *api.Di
 		KmsKeyName: in.External,
 	}
 
-	return out
-}
-
-func InstanceGeminiConfigKRMToGCP(in *krm.InstanceGeminiConfig) *api.GeminiInstanceConfig {
-	if in == nil {
-		return nil
-	}
-	out := &api.GeminiInstanceConfig{
-		ActiveQueryEnabled:      direct.ValueOf(in.ActiveQueryEnabled),
-		Entitled:                direct.ValueOf(in.Entitled),
-		FlagRecommenderEnabled:  direct.ValueOf(in.FlagRecommenderEnabled),
-		GoogleVacuumMgmtEnabled: direct.ValueOf(in.GoogleVacuumMgmtEnabled),
-		IndexAdvisorEnabled:     direct.ValueOf(in.IndexAdvisorEnabled),
-		OomSessionCancelEnabled: direct.ValueOf(in.OomSessionCancelEnabled),
-	}
-	if in.ActiveQueryEnabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "ActiveQueryEnabled")
-	}
-	if in.Entitled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "Entitled")
-	}
-	if in.FlagRecommenderEnabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "FlagRecommenderEnabled")
-	}
-	if in.GoogleVacuumMgmtEnabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "GoogleVacuumMgmtEnabled")
-	}
-	if in.IndexAdvisorEnabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "IndexAdvisorEnabled")
-	}
-	if in.OomSessionCancelEnabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "OomSessionCancelEnabled")
-	}
 	return out
 }
 
@@ -684,13 +649,11 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 			Labels: in.Settings.UserLabels,
 		},
 		Spec: krm.SQLInstanceSpec{
-			DatabaseVersion:                       direct.LazyPtr(in.DatabaseVersion),
-			EncryptionKMSCryptoKeyRef:             InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in.DiskEncryptionConfiguration),
-			GeminiConfig:                          InstanceGeminiConfigGCPToKRM(in.GeminiConfig),
-			IncludeReplicasForMajorVersionUpgrade: direct.PtrTo(in.IncludeReplicasForMajorVersionUpgrade),
-			InstanceType:                          direct.LazyPtr(in.InstanceType),
-			MaintenanceVersion:                    direct.LazyPtr(in.MaintenanceVersion),
-			MasterInstanceRef:                     InstanceMasterInstanceRefGCPToKRM(in.MasterInstanceName),
+			DatabaseVersion:           direct.LazyPtr(in.DatabaseVersion),
+			EncryptionKMSCryptoKeyRef: InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in.DiskEncryptionConfiguration),
+			InstanceType:              direct.LazyPtr(in.InstanceType),
+			MaintenanceVersion:        direct.LazyPtr(in.MaintenanceVersion),
+			MasterInstanceRef:         InstanceMasterInstanceRefGCPToKRM(in.MasterInstanceName),
 			// MaxDiskSize is not supported in KRM API.
 			ResourceID: direct.LazyPtr(in.Name),
 			// OnPremisesConfiguration is not supported in KRM API.
@@ -716,21 +679,6 @@ func InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in *api.DiskEncryptionConfigurati
 		External: in.KmsKeyName,
 	}
 
-	return out
-}
-
-func InstanceGeminiConfigGCPToKRM(in *api.GeminiInstanceConfig) *krm.InstanceGeminiConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.InstanceGeminiConfig{
-		ActiveQueryEnabled:      direct.PtrTo(in.ActiveQueryEnabled),
-		Entitled:                direct.PtrTo(in.Entitled),
-		FlagRecommenderEnabled:  direct.PtrTo(in.FlagRecommenderEnabled),
-		GoogleVacuumMgmtEnabled: direct.PtrTo(in.GoogleVacuumMgmtEnabled),
-		IndexAdvisorEnabled:     direct.PtrTo(in.IndexAdvisorEnabled),
-		OomSessionCancelEnabled: direct.PtrTo(in.OomSessionCancelEnabled),
-	}
 	return out
 }
 
