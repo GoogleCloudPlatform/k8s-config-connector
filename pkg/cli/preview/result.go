@@ -132,6 +132,11 @@ func (r *Recorder) ExportDetailObjectsEvent(filename string) error {
 			switch event.eventType {
 			case EventTypeDiff:
 				fmt.Fprintf(f, "  diff %+v\n", event.diff)
+				for _, field := range event.diff.Fields {
+					fmt.Fprintf(f, "  field %s\n", field.ID)
+					fmt.Fprintf(f, "    old %+v\n", field.Old)
+					fmt.Fprintf(f, "    new %+v\n", field.New)
+				}
 
 			case EventTypeReconcileStart:
 				fmt.Fprintf(f, "  reconcileStart %+v\n", event.object)
