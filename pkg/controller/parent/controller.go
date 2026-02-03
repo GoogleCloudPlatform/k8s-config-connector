@@ -64,6 +64,11 @@ type CustomReconciler struct {
 	Reconciler reconcile.Reconciler
 }
 
+// SkipControllerNameValidation allows skipping the controller name validation
+// in controller-runtime. This is useful when running multiple managers in the same process
+// (e.g. in preview mode or tests) to avoid "controller name already exists" errors.
+var SkipControllerNameValidation bool
+
 // ParentReconciler is a top-level controller that decides which underlying
 // reconciler (TF, DCL, Direct) should be used for a given resource.
 type ParentReconciler struct {
@@ -97,7 +102,7 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcil
 		Named(controllerName).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicates...)).
 		WatchesRawSource(source.TypedChannel(immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
+		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter(), SkipNameValidation: &SkipControllerNameValidation}).
 		Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new parent controller: %w", err)
