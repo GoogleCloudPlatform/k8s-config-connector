@@ -123,6 +123,11 @@ replicaConfiguration:
   sslCipher: string
   username: string
   verifyServerCertificate: boolean
+replicationCluster:
+  failoverDrReplicaRef:
+    external: string
+    name: string
+    namespace: string
 resourceID: string
 rootPassword:
   value: string
@@ -624,6 +629,56 @@ settings:
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Immutable. True if the master's common name value is checked during the SSL handshake.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replicationCluster</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The configuration for the replication cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replicationCluster.failoverDrReplicaRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. If the instance is a primary instance, then this field identifies the disaster recovery (DR) replica. A DR replica is an optional configuration for Enterprise Plus edition instances. If the instance is a read replica, then the field is not set. Set this field to a replica name to designate a DR replica for a primary instance. Remove the replica name to remove the DR replica designation.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replicationCluster.failoverDrReplicaRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The SQLInstance selfLink, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replicationCluster.failoverDrReplicaRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` field of a `SQLInstance` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replicationCluster.failoverDrReplicaRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` field of a `SQLInstance` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1623,6 +1678,10 @@ ipAddress:
   timeToRetire: string
   type: string
 observedGeneration: integer
+observedState:
+  replicationCluster:
+    drReplica: boolean
+    psaWriteEndpoint: string
 privateIpAddress: string
 pscServiceAttachmentLink: string
 publicIpAddress: string
@@ -1774,6 +1833,34 @@ serviceAccountEmailAddress: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationCluster</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The configuration for the replication cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationCluster.drReplica</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Output only. Read-only field that indicates whether the replica is a DR replica. This field is not set if the instance is a primary instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationCluster.psaWriteEndpoint</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. If set, it indicates this instance has a private service access (PSA) dns endpoint that is pointing to the primary instance of the cluster. If this instance is the primary, the dns should be pointing to this instance. After Switchover or Replica failover, this DNS endpoint points to the promoted instance. This is a read-only field, returned to the user as information. This field can exist even if a standalone instance does not yet have a replica, or had a DR replica that was deleted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
