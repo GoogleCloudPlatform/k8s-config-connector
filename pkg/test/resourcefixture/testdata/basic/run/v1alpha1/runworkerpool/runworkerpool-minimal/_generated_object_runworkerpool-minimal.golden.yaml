@@ -1,0 +1,43 @@
+apiVersion: run.cnrm.cloud.google.com/v1alpha1
+kind: RunWorkerPool
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: runworkerpool-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated worker pool description
+  launchStage: GA
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  template:
+    containers:
+    - image: us-docker.pkg.dev/cloudrun/container/hello
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}
+  lastModifiedCookie: normalized-cookie
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    creator: test@google.com
+    etag: abcdef123456
+    lastModifier: test@google.com
+    terminalCondition:
+      lastTransitionTime: "1970-01-01T00:00:00Z"
+      state: CONDITION_SUCCEEDED
+      type: Ready
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

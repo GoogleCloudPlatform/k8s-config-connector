@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
@@ -65,8 +66,8 @@ func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorker
 
 	obj := proto.Clone(req.WorkerPool).(*pb.WorkerPool)
 	obj.Name = fqn
-	obj.CreateTime = timestamppb.Now()
-	obj.UpdateTime = timestamppb.Now()
+	obj.CreateTime = timestamppb.New(time.Unix(0, 0))
+	obj.UpdateTime = timestamppb.New(time.Unix(0, 0))
 	obj.Etag = fields.ComputeWeakEtag(obj)
 	obj.Creator = "test@google.com"
 	obj.LastModifier = "test@google.com"
@@ -85,7 +86,7 @@ func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorker
 	// Set TerminalCondition to Ready if not set (Mocking immediate success)
 	if obj.TerminalCondition == nil {
 		obj.TerminalCondition = &pb.Condition{
-			LastTransitionTime: timestamppb.Now(),
+			LastTransitionTime: obj.CreateTime,
 			State:              pb.Condition_CONDITION_SUCCEEDED,
 			Type:               "Ready",
 		}
@@ -162,7 +163,7 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 		obj.BinaryAuthorization = updated.BinaryAuthorization
 	}
 
-	obj.UpdateTime = timestamppb.Now()
+	obj.UpdateTime = timestamppb.New(time.Unix(0, 0))
 	obj.Generation++
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
