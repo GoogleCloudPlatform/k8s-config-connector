@@ -218,7 +218,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 
 	logger := log.FromContext(ctx)
 
-	logger.Info("Running reconcile", "resource", request.NamespacedName)
+	logger.V(1).Info("Running reconcile", "resource", request.NamespacedName)
 	startTime := time.Now()
 	ctx, cancel := context.WithTimeout(ctx, k8s.ReconcileDeadline)
 	defer cancel()
@@ -251,7 +251,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		return reconcile.Result{}, err
 	}
 	if skip {
-		logger.Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", request.NamespacedName)
+		logger.V(2).Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", request.NamespacedName)
 		return reconcile.Result{}, nil
 	}
 
@@ -275,7 +275,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	if err != nil {
 		return reconcile.Result{}, err
 	}
-	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", jitteredPeriod)
+	logger.V(2).Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
@@ -292,7 +292,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 	case v1beta1.Reconciling:
 		logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", r.NamespacedName)
 	case v1beta1.Paused:
-		logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
+		logger.V(2).Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
 
 		// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling
 		if u.GetDeletionTimestamp().IsZero() {

@@ -202,7 +202,7 @@ func (i *watchListener) OnWatchEvent(eventType string, obj Object) error {
 		i.objects.OnWatchAdd(obj, i.eventHandlerRegistrations)
 		return nil
 	case "BOOKMARK":
-		klog.Infof("BOOKMARK %+v", obj)
+		klog.V(2).Infof("BOOKMARK %+v", obj)
 		return nil
 	default:
 		return fmt.Errorf("unknown event type: %q", eventType)
