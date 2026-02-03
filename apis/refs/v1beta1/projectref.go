@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -196,44 +197,53 @@ func ResolveProject(ctx context.Context, reader client.Reader, otherNamespace st
 	}, nil
 }
 
-func ResolveProjectID(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (string, error) {
-	projectRefExternal, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "external")
+func ResolveProjectID(ctx context.Context, reader client.Reader, obj runtime.Object) (string, error) {
+	u, ok := obj.(*unstructured.Unstructured)
+	if !ok {
+		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+		if err != nil {
+			return "", fmt.Errorf("cannot convert to unstructured: %w", err)
+		}
+		u = &unstructured.Unstructured{Object: m}
+	}
+
+	projectRefExternal, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
 	if projectRefExternal != "" {
 		projectRef := ProjectRef{
 			External: projectRefExternal,
 		}
 
-		project, err := ResolveProject(ctx, reader, obj.GetNamespace(), &projectRef)
+		project, err := ResolveProject(ctx, reader, u.GetNamespace(), &projectRef)
 		if err != nil {
-			return "", fmt.Errorf("cannot parse projectRef.external %q in %v %v/%v: %w", projectRefExternal, obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
+			return "", fmt.Errorf("cannot parse projectRef.external %q in %v %v/%v: %w", projectRefExternal, u.GetKind(), u.GetNamespace(), u.GetName(), err)
 		}
 		return project.ProjectID, nil
 	}
 
-	projectRefName, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "name")
+	projectRefName, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "name")
 	if projectRefName != "" {
-		projectRefNamespace, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "namespace")
+		projectRefNamespace, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "namespace")
 
 		projectRef := ProjectRef{
 			Name:      projectRefName,
 			Namespace: projectRefNamespace,
 		}
 		if projectRef.Namespace == "" {
-			projectRef.Namespace = obj.GetNamespace()
+			projectRef.Namespace = u.GetNamespace()
 		}
 
-		project, err := ResolveProject(ctx, reader, obj.GetNamespace(), &projectRef)
+		project, err := ResolveProject(ctx, reader, u.GetNamespace(), &projectRef)
 		if err != nil {
-			return "", fmt.Errorf("cannot parse projectRef in %v %v/%v: %w", obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
+			return "", fmt.Errorf("cannot parse projectRef in %v %v/%v: %w", u.GetKind(), u.GetNamespace(), u.GetName(), err)
 		}
 		return project.ProjectID, nil
 	}
 
-	if projectID := obj.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
+	if projectID := u.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
 		return projectID, nil
 	}
 
-	return "", fmt.Errorf("cannot find project id for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
+	return "", fmt.Errorf("cannot find project id for %v %v/%v", u.GetKind(), u.GetNamespace(), u.GetName())
 }
 
 func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
