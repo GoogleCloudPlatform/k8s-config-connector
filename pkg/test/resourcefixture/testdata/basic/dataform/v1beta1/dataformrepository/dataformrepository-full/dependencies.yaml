@@ -17,6 +17,7 @@ kind: IAMServiceAccount
 metadata:
   name: df-sa1-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   displayName: Dataform SA 1
@@ -26,6 +27,7 @@ kind: IAMServiceAccount
 metadata:
   name: df-sa2-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   displayName: Dataform SA 2
@@ -35,6 +37,7 @@ kind: SecretManagerSecret
 metadata:
   name: df-secret-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   replication:
@@ -45,6 +48,7 @@ kind: SecretManagerSecretVersion
 metadata:
   name: df-secret-v1-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   secretRef:
@@ -57,6 +61,7 @@ kind: SecretManagerSecretVersion
 metadata:
   name: df-secret-v2-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   secretRef:

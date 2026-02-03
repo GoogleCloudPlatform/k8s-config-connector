@@ -126,6 +126,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 
 	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, api)
+	typeGenerator.WithIncludeSkippedOutput(o.GenerateOptions.IncludeSkippedOutput)
 
 	resourceAnnotations := make([]string, 0, len(o.Resources))
 	for _, resource := range o.Resources {

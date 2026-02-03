@@ -1072,6 +1072,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Project"}:
 
 			case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
+			case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunService"}:
 
 			case schema.GroupKind{Group: "pubsublite.cnrm.cloud.google.com", Kind: "PubSubLiteReservation"}:
 			case schema.GroupKind{Group: "pubsublite.cnrm.cloud.google.com", Kind: "PubSubLiteSubscription"}:
@@ -1257,6 +1258,27 @@ func (h *Harness) NoExtraGoldenFiles(glob string) {
 			}
 		}
 	}
+}
+
+func (h *Harness) AssertGoldenFileNotFound(path string) {
+	if _, err := os.Stat(path); err == nil {
+		h.Errorf("FAIL: found extra golden file %q", path)
+		if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+			if err := os.Remove(path); err != nil {
+				h.Errorf("error removing extra file %q", path)
+			}
+		}
+	}
+}
+
+func (h *Harness) CompareGoldenObject(p string, got []byte) {
+	abs, err := filepath.Abs(p)
+	if err != nil {
+		h.Fatalf("error converting path %q to absolute path: %v", p, err)
+	}
+	h.goldenFiles = append(h.goldenFiles, abs)
+
+	test.CompareGoldenObject(h.T, p, got)
 }
 
 func (h *Harness) CompareGoldenFile(p string, got string, normalizers ...func(s string) string) {

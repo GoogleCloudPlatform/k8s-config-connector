@@ -15,6 +15,8 @@
 apiVersion: firestore.cnrm.cloud.google.com/v1beta1
 kind: FirestoreDatabase
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: firestoredatabase-full-${uniqueId}
 spec:
   projectRef:

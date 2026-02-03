@@ -322,6 +322,21 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
+	"spec.replicationCluster": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			out.ReplicationCluster = actual.ReplicationCluster
+		},
+	},
+	"spec.replicationCluster.failoverDrReplicaRef": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicationCluster != nil {
+				if out.ReplicationCluster == nil {
+					out.ReplicationCluster = &api.ReplicationCluster{}
+				}
+				out.ReplicationCluster.FailoverDrReplicaName = actual.ReplicationCluster.FailoverDrReplicaName
+			}
+		},
+	},
 }
 
 var sortedUnmanageableFieldPaths []string
@@ -583,7 +598,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		}
 
 		{
-			report := &structuredreporting.Diff{}
+			report := &structuredreporting.Diff{Object: u}
 			report.AddField(".databaseVersion", a.actual.DatabaseVersion, a.desired.Spec.DatabaseVersion)
 			structuredreporting.ReportDiff(ctx, report)
 		}
@@ -640,7 +655,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			}
 
 			{
-				report := &structuredreporting.Diff{}
+				report := &structuredreporting.Diff{Object: u}
 				report.AddField(".settings.edition", actualEdition, desiredEdition)
 				structuredreporting.ReportDiff(ctx, report)
 			}
@@ -676,7 +691,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		}
 
 		{
-			report := &structuredreporting.Diff{}
+			report := &structuredreporting.Diff{Object: u}
 			report.AddField(".maintenanceVersion", a.actual.MaintenanceVersion, a.desired.Spec.MaintenanceVersion)
 			structuredreporting.ReportDiff(ctx, report)
 		}
@@ -707,6 +722,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	if instanceDiff := DiffInstances(desiredGCP, a.actual); instanceDiff.HasDiff() {
 		updateOp.RecordUpdatingEvent()
+		instanceDiff.Object = u
 
 		{
 			structuredreporting.ReportDiff(ctx, instanceDiff)

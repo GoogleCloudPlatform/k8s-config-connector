@@ -1,6 +1,8 @@
 apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
 kind: NetworkSecurityClientTLSPolicy
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: networksecurityclienttlspolicy-${uniqueId}
 spec:
   clientCertificate:

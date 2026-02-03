@@ -17,12 +17,8 @@ name: Presubmit CRDs
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    paths:
-      - 'crds/**'
   push:
-    branches: ["master"]
-    paths:
-      - 'crds/**'
+    branches: ["master", "release-*"]
 
 jobs:
   verify-crds-folder:
