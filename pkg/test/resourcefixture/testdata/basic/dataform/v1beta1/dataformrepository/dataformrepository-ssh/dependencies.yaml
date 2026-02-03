@@ -12,30 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMServiceAccount
-metadata:
-  name: df-sa1-${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-    cnrm.cloud.google.com/project-id: ${projectId}
-spec:
-  displayName: Dataform SA 1
----
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMServiceAccount
-metadata:
-  name: df-sa2-${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-    cnrm.cloud.google.com/project-id: ${projectId}
-spec:
-  displayName: Dataform SA 2
----
 apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecret
 metadata:
-  name: df-secret-${uniqueId}
+  name: df-ssh-secret-${uniqueId}
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
@@ -46,25 +26,12 @@ spec:
 apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecretVersion
 metadata:
-  name: df-secret-v1-${uniqueId}
+  name: df-ssh-key-${uniqueId}
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   secretRef:
-    name: df-secret-${uniqueId}
+    name: df-ssh-secret-${uniqueId}
   secretData:
-    value: "token-v1"
----
-apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
-kind: SecretManagerSecretVersion
-metadata:
-  name: df-secret-v2-${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-    cnrm.cloud.google.com/project-id: ${projectId}
-spec:
-  secretRef:
-    name: df-secret-${uniqueId}
-  secretData:
-    value: "token-v2"
+    value: "private-ssh-key-content"

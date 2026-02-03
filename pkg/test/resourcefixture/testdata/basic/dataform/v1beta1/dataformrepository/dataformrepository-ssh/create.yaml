@@ -15,25 +15,18 @@
 apiVersion: dataform.cnrm.cloud.google.com/v1beta1
 kind: DataformRepository
 metadata:
-  name: df-full-${uniqueId}
+  name: df-ssh-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   projectRef:
     external: ${projectId}
   region: us-west2
-  displayName: "Updated Display Name"
   gitRemoteSettings:
-    url: "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
-    defaultBranch: "master"
-    authenticationTokenSecretVersionRef:
-      name: df-secret-v2-${uniqueId}
-  workspaceCompilationOverrides:
-    defaultDatabase: "db2"
-    schemaSuffix: "s2"
-    tablePrefix: "p2"
-  setAuthenticatedUserAdmin: true
-  serviceAccountRef:
-    name: df-sa2-${uniqueId}
-  npmrcEnvironmentVariablesSecretVersionRef:
-    name: df-secret-v2-${uniqueId}
+    url: "git@github.com:GoogleCloudPlatform/k8s-config-connector.git"
+    defaultBranch: "main"
+    sshAuthenticationConfig:
+      hostPublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2l..."
+      userPrivateKeySecretVersionRef:
+        name: df-ssh-key-${uniqueId}
