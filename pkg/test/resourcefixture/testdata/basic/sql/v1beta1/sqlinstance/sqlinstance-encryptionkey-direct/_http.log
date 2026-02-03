@@ -1012,8 +1012,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "availabilityType": "REGIONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 5,
-        "retentionUnit": "COUNT"
+        "retainedBackups": 5
       },
       "enabled": true,
       "kind": "sql#backupConfiguration",
@@ -1446,8 +1445,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "availabilityType": "REGIONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 5,
-        "retentionUnit": "COUNT"
+        "retainedBackups": 5
       },
       "enabled": true,
       "kind": "sql#backupConfiguration",

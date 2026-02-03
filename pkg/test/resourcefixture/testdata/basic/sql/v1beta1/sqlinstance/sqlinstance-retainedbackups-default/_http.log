@@ -558,7 +558,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 7,
+        "retainedBackups": 4,
         "retentionUnit": "COUNT"
       },
       "binaryLogEnabled": true,
@@ -707,7 +707,7 @@ X-Xss-Protection: 0
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 7,
+        "retainedBackups": 4,
         "retentionUnit": "COUNT"
       },
       "binaryLogEnabled": true,
