@@ -8,10 +8,10 @@ name assigned in KCC.
 ## Regular Resources (User-Specified resourceID):
 
 By default, KCC uses the value in `metadata.name` of the YAML as the name/ID for
-the resource in Google Cloud. We can optionally use s`pec.resourceID` to specify
+the resource in Google Cloud. We can optionally use `spec.resourceID` to specify
 a Google Cloud resource name that is different from the Kubernetes
 `metadata.name`. If `spec.resourceID` is set, it takes precedence.
-`spec.resourceID` is totally optional here and won't affect the reconciliation.
+`spec.resourceID` is totally optional here. If `spec.resourceID` is unset, it defaults to `metadata.name`.
 
 ## Resources with Service-Generated Resource IDs:
 
@@ -29,6 +29,6 @@ reconciliation operation.
 
 ## Notes
 
-Both resources kinds(regular and service-generated ID), if `spec.resourceID` is
-unset, with legacy controller, we write it back. Today with direct controller,
+For both resources kinds(regular and service-generated ID), if `spec.resourceID` is
+unset, with the legacy controller, we write it back. Today with direct controller,
 we write the full resource url including resourceID to `status.externalRef`.

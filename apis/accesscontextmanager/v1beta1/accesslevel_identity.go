@@ -69,6 +69,7 @@ func (obj *AccessContextManagerAccessLevel) GetIdentity(ctx context.Context, rea
 	// Get desired resource ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
+	// If spec.resourceID is not provided, fall back to metadata.name
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
