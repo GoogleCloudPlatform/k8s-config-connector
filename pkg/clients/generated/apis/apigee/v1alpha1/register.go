@@ -59,6 +59,36 @@ var (
 		Kind:    reflect.TypeOf(ApigeeAddonsConfig{}).Name(),
 	}
 
+	ApigeeEndpointAttachmentGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ApigeeEndpointAttachment{}).Name(),
+	}
+
+	ApigeeEnvgroupGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ApigeeEnvgroup{}).Name(),
+	}
+
+	ApigeeEnvgroupAttachmentGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ApigeeEnvgroupAttachment{}).Name(),
+	}
+
+	ApigeeInstanceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ApigeeInstance{}).Name(),
+	}
+
+	ApigeeInstanceAttachmentGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ApigeeInstanceAttachment{}).Name(),
+	}
+
 	ApigeeNATAddressGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

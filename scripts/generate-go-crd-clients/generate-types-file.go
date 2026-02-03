@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog/v2"
 )
 
 var handwrittenIAMTypes = []string{
@@ -277,10 +278,6 @@ func constructResourceDefinitions(crdsPath, crdFile string) []*resourceDefinitio
 
 	var resources []*resourceDefinition
 	for _, versionName := range versionNames.List() {
-		// Don't generate alpha version if we have a beta
-		if versionName == "v1alpha1" && versionNames.Has("v1beta1") {
-			continue
-		}
 		crdVersionDefinition := k8s.GetCRDVersionDefinition(crd, versionName)
 
 		r := &resourceDefinition{}
@@ -499,7 +496,7 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 			// The default is int64 (and not int, we don't want the schema to vary across architectures)
 			return "int64"
 		default:
-			log.Fatalf("unhandled case in formatType: %+v", desc)
+			klog.Fatalf("unhandled case in formatType: %+v", desc)
 			return ""
 		}
 	case "float", "number":

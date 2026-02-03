@@ -65,5 +65,11 @@ var (
 		Kind:    reflect.TypeOf(BigLakeDatabase{}).Name(),
 	}
 
+	BigLakeTableGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BigLakeTable{}).Name(),
+	}
+
 	bigquerybiglakeAPIVersion = SchemeGroupVersion.String()
 )

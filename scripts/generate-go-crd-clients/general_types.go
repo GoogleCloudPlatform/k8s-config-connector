@@ -51,6 +51,9 @@ func (g *GeneralTypes) Generate() {
 	g.Print("metav1 \"k8s.io/apimachinery/pkg/apis/meta/v1\"")
 	g.Print("apiextensionsv1 \"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1\"")
 	g.Print(")")
+	g.Print("")
+	g.Print("var _ = apiextensionsv1.JSON{}")
+	g.Print("")
 
 	for _, structName := range sortedKeys(g.SpecNestedStructs) {
 		fields := g.SpecNestedStructs[structName]

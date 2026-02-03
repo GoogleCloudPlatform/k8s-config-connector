@@ -36,6 +36,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var _ = apiextensionsv1.JSON{}
+
 type FirestoreDocumentSpec struct {
 	/* Collection is the identity of the firestore collection in which to create the document. */
 	// +optional

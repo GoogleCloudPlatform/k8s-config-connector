@@ -53,10 +53,22 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
+	ManagedKafkaClusterGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ManagedKafkaCluster{}).Name(),
+	}
+
 	ManagedKafkaConsumerGroupGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(ManagedKafkaConsumerGroup{}).Name(),
+	}
+
+	ManagedKafkaTopicGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ManagedKafkaTopic{}).Name(),
 	}
 
 	managedkafkaAPIVersion = SchemeGroupVersion.String()

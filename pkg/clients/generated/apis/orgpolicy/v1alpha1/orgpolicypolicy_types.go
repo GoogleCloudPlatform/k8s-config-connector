@@ -36,6 +36,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var _ = apiextensionsv1.JSON{}
+
 type PolicyCondition struct {
 	/* Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI. */
 	// +optional
