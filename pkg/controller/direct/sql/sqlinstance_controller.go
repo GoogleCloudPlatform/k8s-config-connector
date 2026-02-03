@@ -403,6 +403,13 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, err
 	}
 
+	if obj.Spec.Settings.Edition != nil {
+		edition := *obj.Spec.Settings.Edition
+		if edition != "ENTERPRISE" && edition != "ENTERPRISE_PLUS" {
+			return nil, fmt.Errorf("unrecognized value for spec.settings.edition: %s, supported values are ENTERPRISE and ENTERPRISE_PLUS", edition)
+		}
+	}
+
 	adapter := &sqlInstanceAdapter{
 		projectID:           projectID,
 		resourceID:          resourceID,
