@@ -61,7 +61,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "insightsConfig": {
-      "queryInsightsEnabled": true
+      "queryInsightsEnabled": true,
+      "queryPlansPerMinute": 5
     },
     "ipConfiguration": {
       "ipv4Enabled": true,
@@ -221,7 +222,8 @@ X-Xss-Protection: 0
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "insightsConfig": {
-      "queryInsightsEnabled": true
+      "queryInsightsEnabled": true,
+      "queryPlansPerMinute": 5
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
@@ -370,7 +372,8 @@ X-Xss-Protection: 0
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "insightsConfig": {
-      "queryInsightsEnabled": true
+      "queryInsightsEnabled": true,
+      "queryPlansPerMinute": 5
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
