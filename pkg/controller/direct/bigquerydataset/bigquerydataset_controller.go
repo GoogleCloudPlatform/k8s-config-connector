@@ -75,12 +75,13 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewDatasetIdentity(ctx, reader, obj)
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := identity.(*krm.DatasetIdentity)
 
-	projectID := id.Parent().ProjectID
+	projectID := id.Project
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project ID")
 	}
@@ -117,7 +118,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting BigQueryDataset", "name", a.id.String())
 
-	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
 	datasetpb, err := dsHandler.Metadata(ctx)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -150,12 +151,12 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		}
 		desiredDataset.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
 	}
-	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
 
 	if err := dsHandler.Create(ctx, desiredDataset); err != nil {
-		return fmt.Errorf("Error creating Dataset %s: %w", a.id.ID(), err)
+		return fmt.Errorf("Error creating Dataset %s: %w", a.id.Dataset, err)
 	}
-	log.V(2).Info("successfully created Dataset", "name", a.id.ID())
+	log.V(2).Info("successfully created Dataset", "name", a.id.Dataset)
 
 	// The bigquery go client Create() does not return the created dataset.
 	// Fetching the dataset metadata
@@ -164,7 +165,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		if direct.IsNotFound(err) {
 			return nil
 		}
-		return fmt.Errorf("Error getting the created BigQueryDataset %q: %w", a.id.ID(), err)
+		return fmt.Errorf("Error getting the created BigQueryDataset %q: %w", a.id.Dataset, err)
 	}
 	status := &krm.BigQueryDatasetStatus{}
 	status = BigQueryDatasetStatus_FromProto(mapCtx, createdMetadata)
@@ -274,7 +275,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	datasetMetadataToUpdate.SetLabel("managed-by-cnrm", "true")
 	// Call update
-	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
 	updated, err := dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
 	if err != nil {
 		return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
@@ -302,7 +303,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 		return nil, mapCtx.Err()
 	}
 
-	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Parent().ProjectID}
+	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -316,20 +317,20 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Dataset", "name", a.id.String())
 
-	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
 	annotations := deleteOp.GetUnstructured().GetAnnotations()
 
 	// Support the existing annotation on delete.
 	if annotations["cnrm.cloud.google.com/delete-contents-on-destroy"] == "true" {
 		if err := dsHandler.DeleteWithContents(ctx); err != nil {
-			return false, fmt.Errorf("deleting Dataset %s: %w", a.id.ID(), err)
+			return false, fmt.Errorf("deleting Dataset %s: %w", a.id.Dataset, err)
 		}
 	} else {
 		if err := dsHandler.Delete(ctx); err != nil {
-			return false, fmt.Errorf("deleting Dataset %s: %w", a.id.ID(), err)
+			return false, fmt.Errorf("deleting Dataset %s: %w", a.id.Dataset, err)
 		}
 	}
-	log.V(2).Info("successfully deleted Dataset", "name", a.id.ID())
+	log.V(2).Info("successfully deleted Dataset", "name", a.id.Dataset)
 
 	return true, nil
 }

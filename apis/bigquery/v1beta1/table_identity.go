@@ -83,12 +83,13 @@ func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigQueryTa
 		return nil, err
 	}
 	datasetExternalRef := obj.Spec.DatasetRef.External
-	datasetParent, dataset, err := ParseDatasetExternal(datasetExternalRef)
-	if err != nil {
+	datasetID := &DatasetIdentity{}
+	if err := datasetID.FromExternal(datasetExternalRef); err != nil {
 		return nil, err
 	}
 
-	projectID := datasetParent.ProjectID
+	projectID := datasetID.Project
+	dataset := datasetID.Dataset
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -107,7 +108,7 @@ func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigQueryTa
 		if err := actualIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualIdentity.Project != datasetParent.ProjectID {
+		if actualIdentity.Project != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.Project, projectID)
 		}
 		if actualIdentity.Dataset != dataset {
