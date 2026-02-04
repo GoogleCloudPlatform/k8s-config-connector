@@ -6,7 +6,10 @@ Content-Type: application/json
 
 {
   "format": "JSON",
-  "kmsKey": "projects/${projectId}/locations/global/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}"
+  "kmsKey": "projects/${projectId}/locations/global/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}",
+  "labels": {
+    "key": "value"
+  }
 }
 
 200 OK
@@ -51,6 +54,9 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "format": "JSON",
   "kmsKey": "projects/${projectId}/locations/global/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}",
+  "labels": {
+    "key": "value"
+  },
   "name": "projects/${projectId}/locations/global/parameters/test-${uniqueId}",
   "policyMember": {
     "iamPolicyUidPrincipal": "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
@@ -60,7 +66,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://parametermanager.googleapis.com/v1/projects/${projectId}/locations/global/parameters/test-${uniqueId}?alt=json&updateMask=kmsKey
+PATCH https://parametermanager.googleapis.com/v1/projects/${projectId}/locations/global/parameters/test-${uniqueId}?alt=json&updateMask=kmsKey%2Clabels
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -70,6 +76,9 @@ Content-Type: application/json
   "createTime": "2024-04-01T12:34:56.123456Z",
   "format": "JSON",
   "kmsKey": "projects/${projectId}/locations/global/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key2-${uniqueId}",
+  "labels": {
+    "key": "value2"
+  },
   "name": "projects/${projectId}/locations/global/parameters/test-${uniqueId}",
   "policyMember": {
     "iamPolicyUidPrincipal": "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
