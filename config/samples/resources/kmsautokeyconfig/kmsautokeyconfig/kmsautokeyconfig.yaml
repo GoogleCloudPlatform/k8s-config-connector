@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# This sample demonstrates how to configure KMS Autokey for a folder.
+# It sets up automatic key creation for resources in the specified folder,
+# using the specified project for key storage.
+# Note: AutokeyConfig is a singleton per folder; only one can exist.
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSAutokeyConfig
 metadata:
   name: kmsautokeyconfig-sample
 spec:
   folderRef:
-    # Replace "${TEST_FOLDER_ID}" with the numeric ID for your folder on which you want to configure autokey.
+    # Replace "${FOLDER_ID?}" with the numeric ID for your folder on which you want to configure autokey.
     external: folders/${FOLDER_ID?}
   keyProject:
     # Replace ${PROJECT_ID?} with your kms project ID where kms keys will be automatically created.
-    external: "${PROJECT_ID?}"
+    external: projects/${PROJECT_ID?}
