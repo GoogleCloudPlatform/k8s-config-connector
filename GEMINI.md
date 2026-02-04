@@ -16,6 +16,13 @@ We have a large and growing test-suite, containing KCC yaml for descibing GCP re
 We have a mock layer for GCP, so that we can run this test suite without requiring a real GCP account; this lets us inject faults and can be much faster for slow resources.
 We can then also run these tests hermetically, which is very handy for running tests against github - we do not need a GCP account.
 
+# Copyright headers
+
+The year is 2026.
+New files should be marked "Copyright 2026 Google LLC" with the Apache 2 License header.
+Do not change the copyright header on existing files.
+Generated files do not need a copyright header (and it's easier not to include one because of the year problem).
+
 # GCP Projects and Namespaces
 
 KCC can manage resources in multiple GCP projects.  Typically a platform team will run KCC in a central "platfrom" cluster,
@@ -63,7 +70,7 @@ The controller will call `RegisterModel` using a KRM containing the resource nam
 
 # Resource Status
 
-Config Connector updates the "status" field to reflect the current state of the resource. To check if a resource is ready, 
+Config Connector updates the "status" field to reflect the current state of the resource. To check if a resource is ready,
 inspect its "status.condition":
 
 1. Ready: The resource is successfully reconciled when "status.condition.status" is set to "True" and "status.condition.reason" is "UpToDate".
@@ -75,9 +82,9 @@ on the resource's status.
 
 # Resource References
 
-In Config Connector, a resource reference is a mechanism for defining dependencies between resources within Kubernetes configuration. 
+In Config Connector, a resource reference is a mechanism for defining dependencies between resources within Kubernetes configuration.
 This simplifies management by allowing one resource to point to other resources, which Config Connector then resolves its dependencies
-automatically. 
+automatically.
 
 To specify resource references in the primary resource's yaml configuration Spec, the reference field's name is the
 referenced resource's short name followed by "Ref" suffix. For example:
@@ -114,8 +121,8 @@ We use a lot of golden testing.  We have a set of test fixtures rooted in `pkg/t
 but we have not been 100% consistent on this.
 
 Within a test directory, we typically have `create.yaml` which describes the primary resource that we are testing.  We have `update.yaml`, which describes an
-update to make to that primary resource. If the primary resource's configuration contains reference fields, we need a `dependencies.yaml`, which contains 
-all dependency resources that are referenced by the primary resource. We create the resources in `dependencies.yaml`, then the resource in `create.yaml`, 
+update to make to that primary resource. If the primary resource's configuration contains reference fields, we need a `dependencies.yaml`, which contains
+all dependency resources that are referenced by the primary resource. We create the resources in `dependencies.yaml`, then the resource in `create.yaml`,
 then we run `update.yaml`. We expect the resources to become "ready" at each step of the test.
 
 We capture the logs from the HTTP (and GRPC) traffic to GCP APIs.  This is compared against the "golden traffic" in the `_http.log` file.  We do
