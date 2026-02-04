@@ -729,6 +729,21 @@ spec:
                             name:
                               description: Required. Volume's name.
                               type: string
+                            nfs:
+                              description: For NFS Voumes, contains the path to the
+                                nfs Volume
+                              properties:
+                                path:
+                                  description: Path that is exported by the NFS server.
+                                  type: string
+                                readOnly:
+                                  description: If true, the volume will be mounted
+                                    as read only for all mounts.
+                                  type: boolean
+                                server:
+                                  description: Hostname or IP address of the NFS server
+                                  type: string
+                              type: object
                             secret:
                               description: Secret represents a secret that should
                                 populate this volume.
