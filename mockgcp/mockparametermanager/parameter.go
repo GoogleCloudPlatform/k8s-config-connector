@@ -54,7 +54,7 @@ func (s *ParameterManagerV1) CreateParameter(ctx context.Context, req *pb.Create
 	obj := proto.Clone(req.Parameter).(*pb.Parameter)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
-	obj.UpdateTime = timestamppb.Now()
+	obj.UpdateTime = obj.CreateTime
 	obj.PolicyMember = &iampb.ResourcePolicyMember{}
 	obj.PolicyMember.IamPolicyUidPrincipal = "placeholder value"
 
@@ -98,6 +98,7 @@ func (s *ParameterManagerV1) UpdateParameter(ctx context.Context, req *pb.Update
 
 	updated := proto.Clone(existing).(*pb.Parameter)
 	updated.Name = name.String()
+	updated.UpdateTime = timestamppb.Now()
 
 	// Required. The update mask applies to the resource.
 	paths := req.GetUpdateMask().GetPaths()
