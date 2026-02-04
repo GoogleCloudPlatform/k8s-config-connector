@@ -35,16 +35,6 @@ type ParameterManagerV1 struct {
 	pb.UnimplementedParameterManagerServer
 }
 
-func (s *MockService) parseKey(key string, input string) (string, error) {
-	parts := strings.Split(input, "/")
-	for i, part := range parts {
-		if part == key && i+1 < len(parts) {
-			return parts[i+1], nil
-		}
-	}
-	return "", nil
-}
-
 // Creates a new [Parameter][google.cloud.parametermanager.v1.Parameter].
 func (s *ParameterManagerV1) CreateParameter(ctx context.Context, req *pb.CreateParameterRequest) (*pb.Parameter, error) {
 	parameterID := req.ParameterId
@@ -52,30 +42,13 @@ func (s *ParameterManagerV1) CreateParameter(ctx context.Context, req *pb.Create
 		return nil, status.Errorf(codes.InvalidArgument, "ParameterId is required")
 	}
 
-	projectStr, err := s.parseKey("projects", req.Parent)
+	reqParameterName := req.Parent + "/parameters/" + parameterID
+
+	name, err := s.parseParameterName(reqParameterName)
 	if err != nil {
 		return nil, err
 	}
 
-	parent, err := projects.ParseProjectIDOrNumber(projectStr)
-	if err != nil {
-		return nil, err
-	}
-	project, err := s.Projects.GetProject(parent)
-	if err != nil {
-		return nil, err
-	}
-
-	location, err := s.parseKey("locations", req.Parent)
-	if err != nil {
-		return nil, err
-	}
-
-	name := parameterName{
-		Project:       project,
-		Location:      location,
-		ParameterName: parameterID,
-	}
 	fqn := name.String()
 
 	obj := proto.Clone(req.Parameter).(*pb.Parameter)
@@ -111,11 +84,6 @@ func (s *ParameterManagerV1) GetParameter(ctx context.Context, req *pb.GetParame
 	return &parameter, nil
 }
 
-// ProtoClone is a type-safe wrapper around proto.Clone
-func ProtoClone[T proto.Message](t T) T {
-	return proto.Clone(t).(T)
-}
-
 // Update metadata for a given [Parameter][google.cloud.parametermanager.v1.Parameter].
 func (s *ParameterManagerV1) UpdateParameter(ctx context.Context, req *pb.UpdateParameterRequest) (*pb.Parameter, error) {
 	name, err := s.parseParameterName(req.Parameter.Name)
@@ -128,7 +96,7 @@ func (s *ParameterManagerV1) UpdateParameter(ctx context.Context, req *pb.Update
 		return nil, err
 	}
 
-	updated := ProtoClone(existing)
+	updated := proto.Clone(existing).(*pb.Parameter)
 	updated.Name = name.String()
 
 	// Required. The update mask applies to the resource.
@@ -207,6 +175,10 @@ func (s *MockService) parseParameterName(name string) (*parameterName, error) {
 
 		return name, nil
 	} else {
-		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+		return nil, status.Errorf(
+			codes.InvalidArgument,
+			"name %q is not valid. expected format is projects/<projectID>/locations/<location>/parameters/<parameterName>",
+			name
+		)
 	}
 }

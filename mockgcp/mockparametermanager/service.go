@@ -40,7 +40,7 @@ type MockService struct {
 }
 
 // New creates a mockParameterManager
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -50,7 +50,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"parametermanager.googleapis.com"}
+	return []string{"parametermanager.googleapis.com", "parametermanager.us-central1.rep.googleapis.com:443"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
@@ -63,6 +63,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	)
 	if err != nil {
 		return nil, err
+	}
+
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
 	}
 
 	return mux, nil
