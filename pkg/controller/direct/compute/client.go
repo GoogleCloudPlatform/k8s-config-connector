@@ -117,3 +117,27 @@ func (m *gcpClient) newRegionalTargetTcpProxiesClient(ctx context.Context) (*com
 	}
 	return client, err
 }
+
+func (m *gcpClient) urlMapsClient(ctx context.Context) (*compute.UrlMapsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewUrlMapsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute UrlMapsClient client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) regionUrlMapsClient(ctx context.Context) (*compute.RegionUrlMapsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewRegionUrlMapsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute RegionUrlMapsClient client: %w", err)
+	}
+	return client, err
+}
