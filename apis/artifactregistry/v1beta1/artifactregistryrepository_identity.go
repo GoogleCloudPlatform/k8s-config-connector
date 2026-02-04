@@ -20,6 +20,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -59,55 +60,50 @@ func (i *ArtifactRegistryRepositoryIdentity) Host() string {
 	return ArtifactRegistryRepositoryIdentityFormat.Host()
 }
 
-func (obj *ArtifactRegistryRepository) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+func getIdentityFromArtifactRegistryRepositorySpec(ctx context.Context, reader client.Reader, obj client.Object) (*ArtifactRegistryRepositoryIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Get Location
-	location := obj.Spec.Location
-	if location == "" {
-		return nil, fmt.Errorf("cannot resolve location")
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Get Project
-	projectID := obj.GetAnnotations()["cnrm.cloud.google.com/project-id"]
-	if projectID == "" {
-		projectID = obj.GetNamespace()
-	}
-	if projectID == "" {
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	// Use approved External
-	// Status.Name matches the google.devtools.artifactregistry.v1.Repository.name field, which is the full resource name.
-	externalRef := common.ValueOf(obj.Status.Name)
-	if externalRef != "" {
-		// Validate desired with actual
-		actualIdentity := &ArtifactRegistryRepositoryIdentity{}
-		if err := actualIdentity.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
-		if actualIdentity.Project != projectID {
-			return nil, fmt.Errorf("project changed, expect %s, got %s", actualIdentity.Project, projectID)
-		}
-		if actualIdentity.Location != location {
-			return nil, fmt.Errorf("location changed, expect %s, got %s", actualIdentity.Location, location)
-		}
-		if actualIdentity.Repository != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualIdentity.Repository)
-		}
-	}
-
-	return &ArtifactRegistryRepositoryIdentity{
+	identity := &ArtifactRegistryRepositoryIdentity{
 		Project:    projectID,
 		Location:   location,
 		Repository: resourceID,
-	}, nil
+	}
+	return identity, nil
+}
+
+func (obj *ArtifactRegistryRepository) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromArtifactRegistryRepositorySpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
+	// NOTE: ArtifactRegistryRepository does not yet support status.externalRef, but we parse `name` instead
+	externalRef := common.ValueOf(obj.Status.Name)
+	if externalRef != "" {
+		// Validate desired with actual
+		statusIdentity := &ArtifactRegistryRepositoryIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change ArtifactRegistryRepository identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
 }
