@@ -65,11 +65,5 @@ var (
 		Kind:    reflect.TypeOf(DocumentAIProcessorDefaultVersion{}).Name(),
 	}
 
-	DocumentAIProcessorVersionGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DocumentAIProcessorVersion{}).Name(),
-	}
-
 	documentaiAPIVersion = SchemeGroupVersion.String()
 )

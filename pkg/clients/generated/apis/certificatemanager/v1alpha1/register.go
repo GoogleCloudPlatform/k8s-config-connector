@@ -53,34 +53,10 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	CertificateManagerCertificateGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CertificateManagerCertificate{}).Name(),
-	}
-
 	CertificateManagerCertificateIssuanceConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(CertificateManagerCertificateIssuanceConfig{}).Name(),
-	}
-
-	CertificateManagerCertificateMapGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CertificateManagerCertificateMap{}).Name(),
-	}
-
-	CertificateManagerCertificateMapEntryGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CertificateManagerCertificateMapEntry{}).Name(),
-	}
-
-	CertificateManagerDNSAuthorizationGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(CertificateManagerDNSAuthorization{}).Name(),
 	}
 
 	certificatemanagerAPIVersion = SchemeGroupVersion.String()

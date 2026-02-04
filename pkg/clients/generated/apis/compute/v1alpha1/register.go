@@ -107,12 +107,6 @@ var (
 		Kind:    reflect.TypeOf(ComputeMachineImage{}).Name(),
 	}
 
-	ComputeManagedSSLCertificateGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ComputeManagedSSLCertificate{}).Name(),
-	}
-
 	ComputeNetworkAttachmentGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

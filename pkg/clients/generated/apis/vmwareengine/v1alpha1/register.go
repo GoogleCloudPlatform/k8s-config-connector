@@ -59,12 +59,6 @@ var (
 		Kind:    reflect.TypeOf(VMwareEngineExternalAccessRule{}).Name(),
 	}
 
-	VMwareEngineExternalAddressGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VMwareEngineExternalAddress{}).Name(),
-	}
-
 	VMwareEngineNetworkGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

@@ -18,7 +18,6 @@ import (
 	"fmt"
 	"html/template"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"path"
@@ -65,6 +64,8 @@ type resourceDefinition struct {
 
 	CRD     *apiextensions.CustomResourceDefinition
 	Version *apiextensions.CustomResourceDefinitionVersion
+
+	VersionNames []string
 }
 
 type svkMap struct {
@@ -80,11 +81,11 @@ func main() {
 	crdsDir := repo.GetCRDsPath()
 	crdsPath, err := filepath.Abs(crdsDir)
 	if err != nil {
-		log.Fatalf("error getting the absolute representation of path for directory '%v': %v", crdsDir, err)
+		klog.Fatalf("error getting the absolute representation of path for directory '%v': %v", crdsDir, err)
 	}
 	crdFiles, err := ioutil.ReadDir(crdsPath)
 	if err != nil {
-		log.Fatalf("error reading directory '%v': %v", crdsPath, err)
+		klog.Fatalf("error reading directory '%v': %v", crdsPath, err)
 	}
 
 	for _, crdFile := range crdFiles {
@@ -111,10 +112,10 @@ func main() {
 	// clear out all generated types files
 	typesDir := repo.GetTypesGeneratedApisPath()
 	if err := os.RemoveAll(typesDir); err != nil {
-		log.Fatalf("error deleting dir %v: %v", typesDir, err)
+		klog.Fatalf("error deleting dir %v: %v", typesDir, err)
 	}
 	if err := os.MkdirAll(typesDir, 0700); err != nil {
-		log.Fatalf("error recreating dir %v: %v", typesDir, err)
+		klog.Fatalf("error recreating dir %v: %v", typesDir, err)
 	}
 
 	// template execution
@@ -135,7 +136,7 @@ func main() {
 			gen.resourceDefinition = rd
 			gen.Generate()
 			if err := gen.WriteToFile(path.Join(serviceVersionDir, typesFileName)); err != nil {
-				log.Fatalf("error creating %s_types.go file: %v", rd.Kind, err)
+				klog.Fatalf("error creating %s_types.go file: %v", rd.Kind, err)
 			}
 		}
 		// executeTemplateWithResourceDefinition(f, typesTemplateFile, rd)
@@ -143,7 +144,7 @@ func main() {
 		// create doc.go file per service/version directory
 		f, err := os.Create(path.Join(serviceVersionDir, "doc.go"))
 		if err != nil {
-			log.Fatalf("error creating %v doc.go file: %v", serviceVersionString, err)
+			klog.Fatalf("error creating %v doc.go file: %v", serviceVersionString, err)
 		}
 		docTemplateFile := path.Join(typesTemplateDir, "doc.go.tmpl")
 		executeTemplateWithResourceDefinition(f, docTemplateFile, rd)
@@ -151,7 +152,7 @@ func main() {
 		// create group.go file per service directory
 		f, err = os.Create(path.Join(serviceDir, "group.go"))
 		if err != nil {
-			log.Fatalf("error creating %v group.go file: %v", rd.Service, err)
+			klog.Fatalf("error creating %v group.go file: %v", rd.Service, err)
 		}
 		groupTemplateFile := path.Join(typesTemplateDir, "group.go.tmpl")
 		executeTemplateWithResourceDefinition(f, groupTemplateFile, rd)
@@ -163,7 +164,7 @@ func main() {
 		serviceVersionDir := path.Join(typesDir, registerInfo.Service, registerInfo.Version)
 		f, err := os.Create(path.Join(serviceVersionDir, "register.go"))
 		if err != nil {
-			log.Fatalf("error creating %v register.go file: %v", registerInfo.Service, err)
+			klog.Fatalf("error creating %v register.go file: %v", registerInfo.Service, err)
 		}
 		registerTemplateFile := path.Join(typesTemplateDir, "register.go.tmpl")
 		executeTemplateWithResourceDefinition(f, registerTemplateFile, registerInfo)
@@ -174,7 +175,7 @@ func main() {
 	k8sDir := path.Join(repo.GetClientGenerationPath(), "k8s")
 	cmd := exec.Command("cp", "-r", k8sDir, typesDir)
 	if err := cmd.Run(); err != nil {
-		log.Fatalf("Error executing 'cp' command: %v", err)
+		klog.Fatalf("Error executing 'cp' command: %v", err)
 	}
 }
 
@@ -246,17 +247,17 @@ func findAndReplaceInNestedFields(old, new string, fieldMap map[string][]*fieldP
 func executeTemplateWithResourceDefinition(file *os.File, filePath string, r interface{}) {
 	tmpl, err := template.ParseFiles(filePath)
 	if err != nil {
-		log.Fatalf("parsing template file failed: %v", err)
+		klog.Fatalf("parsing template file failed: %v", err)
 	}
 	if err := tmpl.Execute(file, r); err != nil {
-		log.Fatalf("template execution failed: %v", err)
+		klog.Fatalf("template execution failed: %v", err)
 	}
 }
 
 func checkAndCreateFolder(dir string) {
 	if _, err := os.Stat(dir); err != nil {
 		if err := os.Mkdir(dir, 0700); err != nil {
-			log.Fatalf("error creating folder %v: %v", dir, err)
+			klog.Fatalf("error creating folder %v: %v", dir, err)
 		}
 	}
 }
@@ -264,11 +265,11 @@ func checkAndCreateFolder(dir string) {
 func constructResourceDefinitions(crdsPath, crdFile string) []*resourceDefinition {
 	crdFilePath, err := filepath.Abs(path.Join(crdsPath, crdFile))
 	if err != nil {
-		log.Fatalf("error getting the absolute representation of path for directory '%v': %v", crdFile, err)
+		klog.Fatalf("error getting the absolute representation of path for directory '%v': %v", crdFile, err)
 	}
 	crd, err := crdloader.FileToCRD(crdFilePath)
 	if err != nil {
-		log.Fatalf("error loading crd from filepath %v: %v", crdFilePath, err)
+		klog.Fatalf("error loading crd from filepath %v: %v", crdFilePath, err)
 	}
 
 	versionNames := sets.NewString()
@@ -278,18 +279,23 @@ func constructResourceDefinitions(crdsPath, crdFile string) []*resourceDefinitio
 
 	var resources []*resourceDefinition
 	for _, versionName := range versionNames.List() {
+		// Don't generate alpha version if we have a beta
+		if versionName == "v1alpha1" && versionNames.Has("v1beta1") {
+			continue
+		}
 		crdVersionDefinition := k8s.GetCRDVersionDefinition(crd, versionName)
 
 		r := &resourceDefinition{}
 		r.CRD = crd
 		r.Name = crd.Spec.Names.Kind
 		if err = buildFieldProperties(r, crd, crdVersionDefinition.Name); err != nil {
-			log.Fatalf("error building field properties for %v: %v", r.Name, err)
+			klog.Fatalf("error building field properties for %v: %v", r.Name, err)
 		}
 		r.Service = strings.TrimSuffix(crd.Spec.Group, k8s.APIDomainSuffix)
 		r.Kind = strings.ToLower(crd.Spec.Names.Kind)
 
 		r.Version = crdVersionDefinition
+		r.VersionNames = versionNames.List()
 		resources = append(resources, r)
 	}
 	return resources

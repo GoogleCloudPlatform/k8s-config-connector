@@ -53,18 +53,6 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	VertexAIDatasetGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIDataset{}).Name(),
-	}
-
-	VertexAIEndpointGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIEndpoint{}).Name(),
-	}
-
 	VertexAIFeaturestoreGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
@@ -83,22 +71,10 @@ var (
 		Kind:    reflect.TypeOf(VertexAIFeaturestoreEntityTypeFeature{}).Name(),
 	}
 
-	VertexAIIndexGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIIndex{}).Name(),
-	}
-
 	VertexAIIndexEndpointGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(VertexAIIndexEndpoint{}).Name(),
-	}
-
-	VertexAIMetadataStoreGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIMetadataStore{}).Name(),
 	}
 
 	VertexAITensorboardGVK = schema.GroupVersionKind{

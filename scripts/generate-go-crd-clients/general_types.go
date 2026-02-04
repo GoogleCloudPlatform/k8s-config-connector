@@ -104,7 +104,16 @@ func (g *GeneralTypes) Generate() {
 	}
 	g.Print("}")
 
-	g.Print("// +genclient")
+	hasBeta := false
+	for _, v := range g.VersionNames {
+		if v == "v1beta1" {
+			hasBeta = true
+			break
+		}
+	}
+	if g.Version.Name == "v1beta1" || !hasBeta {
+		g.Print("// +genclient")
+	}
 	g.Print("// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object")
 	g.Print("// +kubebuilder:resource:categories=%s,shortName=%s",
 		strings.Join(g.CRD.Spec.Names.Categories, ";"),

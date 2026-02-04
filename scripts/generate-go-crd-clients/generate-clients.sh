@@ -44,11 +44,6 @@ for DIR in "${API_DIRS[@]}";
 do
   API_NAME=$(echo ${DIR} | cut -d'/' -f 2)
   VERSION=$(echo ${DIR} | cut -d'/' -f 3)
-  if [[ "${VERSION}" == "v1alpha1" ]]; then
-    # Skip v1alpha1 versions in the client for now to avoid compilation errors
-    # with promoted resources.
-    continue
-  fi
   API_VERSIONS+=($(echo ${DIR} | cut -d'/' -f 2,3))
 done
 

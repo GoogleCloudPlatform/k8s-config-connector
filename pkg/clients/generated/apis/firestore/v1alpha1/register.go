@@ -59,12 +59,6 @@ var (
 		Kind:    reflect.TypeOf(FirestoreBackupSchedule{}).Name(),
 	}
 
-	FirestoreDatabaseGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(FirestoreDatabase{}).Name(),
-	}
-
 	FirestoreDocumentGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
