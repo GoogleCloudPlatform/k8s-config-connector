@@ -18,10 +18,12 @@ import (
 	"context"
 	"strings"
 
+	"cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/parametermanager/v1"
@@ -78,7 +80,11 @@ func (s *ParameterManagerV1) CreateParameter(ctx context.Context, req *pb.Create
 
 	obj := proto.Clone(req.Parameter).(*pb.Parameter)
 	obj.Name = fqn
-	// obj.CreateTime = timestamppb.Now()
+	obj.CreateTime = timestamppb.Now()
+	obj.UpdateTime = timestamppb.Now()
+	obj.PolicyMember = &iampb.ResourcePolicyMember{}
+	obj.PolicyMember.IamPolicyUidPrincipal = "placeholder value"
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -97,7 +103,7 @@ func (s *ParameterManagerV1) GetParameter(ctx context.Context, req *pb.GetParame
 	fqn := name.String()
 	if err := s.storage.Get(ctx, fqn, &parameter); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Parameter [%s] not found.", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
