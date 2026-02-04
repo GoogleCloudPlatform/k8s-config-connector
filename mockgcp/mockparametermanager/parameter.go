@@ -178,7 +178,7 @@ func (s *MockService) parseParameterName(name string) (*parameterName, error) {
 		return nil, status.Errorf(
 			codes.InvalidArgument,
 			"name %q is not valid. expected format is projects/<projectID>/locations/<location>/parameters/<parameterName>",
-			name
+			name,
 		)
 	}
 }
