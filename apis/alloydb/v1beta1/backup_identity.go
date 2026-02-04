@@ -36,7 +36,7 @@ const (
 var _ identity.Identity = &BackupIdentity{}
 var _ identity.Resource = &AlloyDBBackup{}
 
-var parser = regexp.MustCompile(`((//)?alloydb.googleapis.com)?/?projects/(?P<projects>" + util.ProjectIDRegexp + ")/locations/(?P<locations>[[:alpha:]]+)/backups/(?P<backups>[[:alpha:]]+)`)
+var parser = regexp.MustCompile(`((//)?alloydb.googleapis.com)?/?projects/(?P<projects>` + util.ProjectIDRegexp + `)/locations/(?P<locations>[a-z0-9-]+)/backups/(?P<backups>[a-z0-9-]+)`)
 
 // BackupIdentity represents the identity of an alloydb backup.
 // +k8s:deepcopy-gen=false
