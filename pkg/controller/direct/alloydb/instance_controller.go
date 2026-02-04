@@ -182,17 +182,17 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	mapCtx := &direct.MapContext{}
 
 	if err := resolveInstanceType(ctx, a.reader, a.desired, false); err != nil {
-		return err
+		return createOp.RecordCreateError(ctx, &krm.AlloyDBInstanceStatus{}, err)
 	}
 
 	if err := validateConfig(&a.desired.Spec); err != nil {
-		return err
+		return createOp.RecordCreateError(ctx, &krm.AlloyDBInstanceStatus{}, err)
 	}
 
 	desired := a.desired.DeepCopy()
 	resource := AlloyDBInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+		return createOp.RecordCreateError(ctx, &krm.AlloyDBInstanceStatus{}, mapCtx.Err())
 	}
 	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
 	if resource.Labels == nil {
@@ -211,12 +211,12 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 		op, err := a.gcpClient.CreateSecondaryInstance(ctx, req)
 		if err != nil {
 			log.V(2).Info("error creating secondary instance", "name", a.id, "error", err)
-			return fmt.Errorf("creating secondary instance %s: %w", a.id, err)
+			return createOp.RecordCreateError(ctx, &krm.AlloyDBInstanceStatus{}, fmt.Errorf("creating secondary instance %s: %w", a.id, err))
 		}
 		created, err = op.Wait(ctx)
 		if err != nil {
 			log.V(2).Info("error waiting secondary instance creation", "name", a.id, "error", err)
-			return fmt.Errorf("secondary instance %s waiting creation: %w", a.id, err)
+			return createOp.RecordCreateError(ctx, &krm.AlloyDBInstanceStatus{}, fmt.Errorf("secondary instance %s waiting creation: %w", a.id, err))
 		}
 		log.V(2).Info("successfully created secondary instance", "name", a.id)
 	} else {
@@ -228,19 +228,19 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 		op, err := a.gcpClient.CreateInstance(ctx, req)
 		if err != nil {
 			log.V(2).Info("error creating instance", "name", a.id, "error", err)
-			return fmt.Errorf("creating instance %s: %w", a.id, err)
+			return createOp.RecordCreateError(ctx, &krm.AlloyDBInstanceStatus{}, fmt.Errorf("creating instance %s: %w", a.id, err))
 		}
 		created, err = op.Wait(ctx)
 		if err != nil {
 			log.V(2).Info("error waiting instance creation", "name", a.id, "error", err)
-			return fmt.Errorf("instance %s waiting creation: %w", a.id, err)
+			return createOp.RecordCreateError(ctx, &krm.AlloyDBInstanceStatus{}, fmt.Errorf("instance %s waiting creation: %w", a.id, err))
 		}
 		log.V(2).Info("successfully created instance", "name", a.id)
 	}
 
 	status := AlloyDBInstanceStatus_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+		return createOp.RecordCreateError(ctx, &krm.AlloyDBInstanceStatus{}, mapCtx.Err())
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
@@ -253,22 +253,22 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	mapCtx := &direct.MapContext{}
 
 	if err := resolveInstanceType(ctx, a.reader, a.desired, false); err != nil {
-		return err
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBInstanceStatus{}, err)
 	}
 
 	if err := validateConfig(&a.desired.Spec); err != nil {
-		return err
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBInstanceStatus{}, err)
 	}
 
 	parsedActual := AlloyDBInstanceSpec_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBInstanceStatus{}, mapCtx.Err())
 	}
 
 	// TODO: Change to CompareProtoMessage once we support all the files in the instance pb.
 	updatePaths, err := compareInstance(ctx, parsedActual, &a.desired.Spec)
 	if err != nil {
-		return err
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBInstanceStatus{}, err)
 	}
 	desiredLabels := label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
 	if desiredLabels == nil {
@@ -288,7 +288,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 			// and ObservedState.
 			status := AlloyDBInstanceStatus_FromProto(mapCtx, a.actual)
 			if mapCtx.Err() != nil {
-				return mapCtx.Err()
+				return updateOp.RecordUpdateError(ctx, &krm.AlloyDBInstanceStatus{}, mapCtx.Err())
 			}
 			status.ExternalRef = direct.LazyPtr(a.id.String())
 			return updateOp.UpdateStatus(ctx, status, nil)
@@ -308,18 +308,18 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	op, err := a.gcpClient.UpdateInstance(ctx, req)
 	if err != nil {
 		log.V(2).Info("error updating instance", "name", a.id, "error", err)
-		return fmt.Errorf("updating instance %s: %w", a.id, err)
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBInstanceStatus{}, fmt.Errorf("updating instance %s: %w", a.id, err))
 	}
 	updated, err := op.Wait(ctx)
 	if err != nil {
 		log.V(2).Info("error waiting instance update", "name", a.id, "error", err)
-		return fmt.Errorf("instance %s waiting update: %w", a.id, err)
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBInstanceStatus{}, fmt.Errorf("instance %s waiting update: %w", a.id, err))
 	}
 	log.V(2).Info("successfully updated instance", "name", a.id)
 
 	status := AlloyDBInstanceStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBInstanceStatus{}, mapCtx.Err())
 	}
 	if a.desired.Status.ExternalRef == nil {
 		// If it is the first reconciliation after switching to direct controller,

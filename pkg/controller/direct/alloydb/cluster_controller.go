@@ -312,17 +312,17 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 
 	// 1. Resolve reference fields.
 	if err := a.normalizeReferences(ctx); err != nil {
-		return a.recordCreateError(ctx, createOp, fmt.Errorf("normalizing reference for creation: %w", err))
+		return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("normalizing reference for creation: %w", err))
 	}
 	// 2. Resolve secret field.
 	if err := a.resolveInitialUserPasswordField(ctx); err != nil {
-		return a.recordCreateError(ctx, createOp, err)
+		return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, err)
 	}
 	// 3. Set default fields that were set by the Terraform library for compatibility.
 	a.resolveKRMDefaultsForCreate()
 	// 4. Validate mutually-exclusive fields.
 	if a.desired.Spec.RestoreBackupSource != nil && a.desired.Spec.RestoreContinuousBackupSource != nil {
-		return a.recordCreateError(ctx, createOp, fmt.Errorf("only one of 'spec.restoreBackupSource' "+
+		return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("only one of 'spec.restoreBackupSource' "+
 			"and 'spec.restoreContinuousBackupSource' can be configured: "+
 			"both are configured"))
 	}
@@ -330,7 +330,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 	desired := a.desired.DeepCopy()
 	resource := AlloyDBClusterSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
-		return a.recordCreateError(ctx, createOp, mapCtx.Err())
+		return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, mapCtx.Err())
 	}
 
 	// 5. Handle labels.
@@ -350,7 +350,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		if desired.Spec.RestoreBackupSource != nil {
 			backupSource := BackupSource_ToProto(mapCtx, desired.Spec.RestoreBackupSource)
 			if mapCtx.Err() != nil {
-				return a.recordCreateError(ctx, createOp, mapCtx.Err())
+				return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, mapCtx.Err())
 			}
 
 			readyCondition := &v1alpha1.Condition{
@@ -369,19 +369,19 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 			op, err := a.gcpClient.RestoreCluster(ctx, req)
 			if err != nil {
 				log.V(2).Info("error creating Cluster based on a backup source", "name", a.id, "error", err)
-				return a.recordCreateError(ctx, createOp, fmt.Errorf("creating Cluster  %s based on a backup source: %w", a.id, err))
+				return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("creating Cluster  %s based on a backup source: %w", a.id, err))
 			}
 			created, err = op.Wait(ctx)
 			if err != nil {
 				log.V(2).Info("error waiting for op creating Cluster based on a backup source", "name", a.id, "error", err)
-				return a.recordCreateError(ctx, createOp, fmt.Errorf("waiting for op creating Cluster %s based on a backup source: %w", a.id, err))
+				return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("waiting for op creating Cluster %s based on a backup source: %w", a.id, err))
 			}
 			log.V(2).Info("successfully creating Cluster based on a backup source", "name", a.id)
 
 		} else if desired.Spec.RestoreContinuousBackupSource != nil {
 			continuousBackupSource := ContinuousBackupSource_ToProto(mapCtx, desired.Spec.RestoreContinuousBackupSource)
 			if mapCtx.Err() != nil {
-				return a.recordCreateError(ctx, createOp, mapCtx.Err())
+				return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, mapCtx.Err())
 			}
 
 			readyCondition := &v1alpha1.Condition{
@@ -400,12 +400,12 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 			op, err := a.gcpClient.RestoreCluster(ctx, req)
 			if err != nil {
 				log.V(2).Info("error creating Cluster based on a source cluster", "name", a.id, "error", err)
-				return a.recordCreateError(ctx, createOp, fmt.Errorf("creating Cluster %s based on a source cluster: %w", a.id, err))
+				return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("creating Cluster %s based on a source cluster: %w", a.id, err))
 			}
 			created, err = op.Wait(ctx)
 			if err != nil {
 				log.V(2).Info("error waiting for op creating Cluster based on a source cluster", "name", a.id, "error", err)
-				return a.recordCreateError(ctx, createOp, fmt.Errorf("waiting for op creating Cluster %s based on a source cluster: %w", a.id, err))
+				return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("waiting for op creating Cluster %s based on a source cluster: %w", a.id, err))
 			}
 			log.V(2).Info("successfully creating Cluster based on a source cluster", "name", a.id)
 		}
@@ -414,7 +414,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 
 	if resource.ClusterType == alloydbpb.Cluster_SECONDARY {
 		if resource.SecondaryConfig == nil {
-			return a.recordCreateError(ctx, createOp, fmt.Errorf("cannot create secondary cluster %s without secondaryConfig", a.id))
+			return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("cannot create secondary cluster %s without secondaryConfig", a.id))
 		}
 
 		readyCondition := &v1alpha1.Condition{
@@ -435,17 +435,17 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		op, err := a.gcpClient.CreateSecondaryCluster(ctx, req)
 		if err != nil {
 			log.V(2).Info("error creating secondary Cluster", "name", a.id, "error", err)
-			return a.recordCreateError(ctx, createOp, fmt.Errorf("creating secondary Cluster %s: %w", a.id, err))
+			return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("creating secondary Cluster %s: %w", a.id, err))
 		}
 		created, err = op.Wait(ctx)
 		if err != nil {
 			log.V(2).Info("error waiting for secondary Cluster creation op", "name", a.id, "error", err)
-			return a.recordCreateError(ctx, createOp, fmt.Errorf("secondary Cluster %s waiting creation: %w", a.id, err))
+			return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("secondary Cluster %s waiting creation: %w", a.id, err))
 		}
 		log.V(2).Info("successfully created secondary Cluster", "name", a.id)
 	} else {
 		if resource.SecondaryConfig != nil {
-			return a.recordCreateError(ctx, createOp, fmt.Errorf("cannot create primary cluster %s with secondaryConfig", a.id))
+			return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("cannot create primary cluster %s with secondaryConfig", a.id))
 		}
 
 		readyCondition := &v1alpha1.Condition{
@@ -466,13 +466,13 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		op, err := a.gcpClient.CreateCluster(ctx, req)
 		if err != nil {
 			log.V(2).Info("error creating primary Cluster", "name", a.id, "error", err)
-			return a.recordCreateError(ctx, createOp, fmt.Errorf("creating primary Cluster %s: %w", a.id, err))
+			return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("creating primary Cluster %s: %w", a.id, err))
 		}
 
 		created, err = op.Wait(ctx)
 		if err != nil {
 			log.V(2).Info("error waiting for primary Cluster creation op", "name", a.id, "error", err)
-			return a.recordCreateError(ctx, createOp, fmt.Errorf("primary Cluster %s waiting creation: %w", a.id, err))
+			return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("primary Cluster %s waiting creation: %w", a.id, err))
 		}
 		log.V(2).Info("successfully created Cluster", "name", a.id)
 	}
@@ -482,7 +482,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 func (a *ClusterAdapter) updateStatus(ctx context.Context, mapCtx *direct.MapContext, createOp *directbase.CreateOperation, reconciledCluster *alloydbpb.Cluster) error {
 	status := AlloyDBClusterStatus_FromProto(mapCtx, reconciledCluster)
 	if mapCtx.Err() != nil {
-		return a.recordCreateError(ctx, createOp, mapCtx.Err())
+		return createOp.RecordCreateError(ctx, &krm.AlloyDBClusterStatus{}, mapCtx.Err())
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	readyCondition := &v1alpha1.Condition{
@@ -564,24 +564,24 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	// TODO: Check immutability for optional and immutable fields.
 	// 1. Resolve reference fields.
 	if err := a.normalizeReferences(ctx); err != nil {
-		return a.recordUpdateError(ctx, updateOp, mapCtx, "", fmt.Errorf("normalizing reference for update: %w", err))
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("normalizing reference for update: %w", err))
 	}
 	// 2. Resolve secret field.
 	if err := a.resolveInitialUserPasswordField(ctx); err != nil {
-		return a.recordUpdateError(ctx, updateOp, mapCtx, "", err)
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBClusterStatus{}, err)
 	}
 	// 3. Set default fields that were set in the actual state.
 	a.resolveKRMDefaultsForUpdate()
 	// 4. Validate mutually-exclusive fields.
 	if a.desired.Spec.RestoreBackupSource != nil && a.desired.Spec.RestoreContinuousBackupSource != nil {
-		return a.recordUpdateError(ctx, updateOp, mapCtx, "", fmt.Errorf("only one of 'spec.restoreBackupSource' "+
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("only one of 'spec.restoreBackupSource' "+
 			"and 'spec.restoreContinuousBackupSource' can be configured: "+
 			"both are configured"))
 	}
 
 	desiredPb := AlloyDBClusterSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
-		return a.recordUpdateError(ctx, updateOp, mapCtx, "", mapCtx.Err())
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBClusterStatus{}, mapCtx.Err())
 	}
 
 	// 5. Handle labels.
@@ -597,14 +597,14 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	// TODO(b/443107538): Remove the immutability check after API handles it properly
 	// Also add the major version upgrade support
 	if a.desired.Spec.DatabaseVersion != nil && a.actual.DatabaseVersion != alloydbpb.DatabaseVersion_DATABASE_VERSION_UNSPECIFIED && *a.desired.Spec.DatabaseVersion != a.actual.DatabaseVersion.String() {
-		return a.recordUpdateError(ctx, updateOp, mapCtx, "", fmt.Errorf("field 'spec.databaseVersion' is immutable and cannot be updated from %q to %q", a.actual.DatabaseVersion, *a.desired.Spec.DatabaseVersion))
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBClusterStatus{}, fmt.Errorf("field 'spec.databaseVersion' is immutable and cannot be updated from %q to %q", a.actual.DatabaseVersion, *a.desired.Spec.DatabaseVersion))
 	}
 	// 7. Handle default values for fields not yet supported in KRM types.
 	a.resolveGCPDefaults(desiredPb, a.actual)
 
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
-		return a.recordUpdateError(ctx, updateOp, mapCtx, "", err)
+		return updateOp.RecordUpdateError(ctx, &krm.AlloyDBClusterStatus{}, err)
 	}
 
 	// TODO: Figure out how to keep the network immutable.
@@ -630,7 +630,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 			// and ObservedState.
 			status := AlloyDBClusterStatus_FromProto(mapCtx, a.actual)
 			if mapCtx.Err() != nil {
-				return a.recordUpdateError(ctx, updateOp, mapCtx, "", mapCtx.Err())
+				return updateOp.RecordUpdateError(ctx, &krm.AlloyDBClusterStatus{}, mapCtx.Err())
 			}
 			status.ExternalRef = direct.LazyPtr(a.id.String())
 			readyCondition := &v1alpha1.Condition{
@@ -668,7 +668,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 	statusBefore := AlloyDBClusterStatus_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
-		return a.recordUpdateError(ctx, updateOp, mapCtx, firstField, mapCtx.Err())
+		return updateOp.RecordUpdateError(ctx, statusBefore, mapCtx.Err(), fmt.Sprintf("Failed to update resource (first field path: %s): %v", firstField, mapCtx.Err()))
 	}
 	if err := updateOp.UpdateStatus(ctx, statusBefore, readyCondition); err != nil {
 		log.Error(err, "error updating status to Updating")
@@ -682,18 +682,18 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	op, err := a.gcpClient.UpdateCluster(ctx, req)
 	if err != nil {
 		log.V(2).Info("error updating Cluster", "name", a.id, "error", err)
-		return a.recordUpdateError(ctx, updateOp, mapCtx, firstField, fmt.Errorf("updating Cluster %s: %w", a.id, err))
+		return updateOp.RecordUpdateError(ctx, statusBefore, fmt.Errorf("updating Cluster %s: %w", a.id, err), fmt.Sprintf("Failed to update resource (first field path: %s): %v", firstField, err))
 	}
 	updated, err := op.Wait(ctx)
 	if err != nil {
 		log.V(2).Info("error waiting for Cluster update op", "name", a.id, "error", err)
-		return a.recordUpdateError(ctx, updateOp, mapCtx, firstField, fmt.Errorf("Cluster %s waiting update: %w", a.id.String(), err))
+		return updateOp.RecordUpdateError(ctx, statusBefore, fmt.Errorf("Cluster %s waiting update: %w", a.id.String(), err), fmt.Sprintf("Failed to update resource (first field path: %s): %v", firstField, err))
 	}
 	log.V(2).Info("successfully updated Cluster", "name", a.id)
 
 	status := AlloyDBClusterStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
-		return a.recordUpdateError(ctx, updateOp, mapCtx, firstField, mapCtx.Err())
+		return updateOp.RecordUpdateError(ctx, statusBefore, mapCtx.Err(), fmt.Sprintf("Failed to update resource (first field path: %s): %v", firstField, mapCtx.Err()))
 	}
 	if a.desired.Status.ExternalRef == nil {
 		// If it is the first reconciliation after switching to direct controller,
@@ -725,56 +725,6 @@ func toCamelCase(s string) string {
 		}
 	}
 	return strings.Join(tokens, "")
-}
-
-func (a *ClusterAdapter) recordUpdateError(ctx context.Context, updateOp *directbase.UpdateOperation, mapCtx *direct.MapContext, firstField string, err error) error {
-	if err == nil {
-		return nil
-	}
-	if _, _, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(err); ok {
-		if !updateOp.HasSetReadyCondition {
-			return err
-		}
-	}
-	message := fmt.Sprintf("Failed to update resource: %v", err)
-	if firstField != "" {
-		message = fmt.Sprintf("Failed to update resource (first field path: %s): %v", firstField, err)
-	}
-	readyCondition := &v1alpha1.Condition{
-		Type:    v1alpha1.ReadyConditionType,
-		Status:  corev1.ConditionFalse,
-		Reason:  k8s.UpdateFailure,
-		Message: message,
-	}
-	status := AlloyDBClusterStatus_FromProto(mapCtx, a.actual)
-	if mapCtx.Err() != nil {
-		status = &krm.AlloyDBClusterStatus{}
-	}
-	if err2 := updateOp.UpdateStatus(ctx, status, readyCondition); err2 != nil {
-		klog.FromContext(ctx).Error(err2, "error updating status to UpdateFailure")
-	}
-	return err
-}
-
-func (a *ClusterAdapter) recordCreateError(ctx context.Context, createOp *directbase.CreateOperation, err error) error {
-	if err == nil {
-		return nil
-	}
-	if _, _, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(err); ok {
-		if !createOp.HasSetReadyCondition {
-			return err
-		}
-	}
-	readyCondition := &v1alpha1.Condition{
-		Type:    v1alpha1.ReadyConditionType,
-		Status:  corev1.ConditionFalse,
-		Reason:  k8s.CreateFailed,
-		Message: fmt.Sprintf("Failed to create resource: %v", err),
-	}
-	if err2 := createOp.UpdateStatus(ctx, &krm.AlloyDBClusterStatus{}, readyCondition); err2 != nil {
-		klog.FromContext(ctx).Error(err2, "error updating status to CreateFailed")
-	}
-	return err
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.

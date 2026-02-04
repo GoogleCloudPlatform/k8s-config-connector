@@ -437,24 +437,6 @@ func (m *sqlInstanceModel) AdapterForURL(ctx context.Context, url string) (direc
 	return nil, nil
 }
 
-func (a *sqlInstanceAdapter) Find(ctx context.Context) (bool, error) {
-	if a.resourceID == "" {
-		return false, nil
-	}
-
-	instance, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
-	if err != nil {
-		return false, nil
-	}
-
-	a.actual = instance
-
-	log := klog.FromContext(ctx)
-	log.V(2).Info("found SQLInstance", "actual", a.actual)
-
-	return true, nil
-}
-
 func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 
@@ -462,14 +444,17 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("creating SQLInstance", "desired", a.desired)
 
 	if a.projectID == "" {
-		return fmt.Errorf("project is empty")
+		return createOp.RecordCreateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("project is empty"))
 	}
 	if a.resourceID == "" {
-		return fmt.Errorf("resourceID is empty")
+		return createOp.RecordCreateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("resourceID is empty"))
 	}
 
 	if a.desired.Spec.CloneSource != nil {
-		return a.cloneInstance(ctx, u, log)
+		if err := a.cloneInstance(ctx, u, log); err != nil {
+			return createOp.RecordCreateError(ctx, &krm.SQLInstanceStatus{}, err)
+		}
+		return nil
 	} else {
 		// if the maitenance version is provided on CREATE, we need to break up the operation between
 		// a create and a patch with the maintenance version
@@ -480,7 +465,7 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		}
 
 		if err := a.insertInstance(ctx, u, log); err != nil {
-			return err
+			return createOp.RecordCreateError(ctx, &krm.SQLInstanceStatus{}, err)
 		}
 
 		if maintenanceVersion != "" {
@@ -490,15 +475,15 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.Cr
 
 			op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newMaintDb).Context(ctx).Do()
 			if err != nil {
-				return fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.resourceID, err)
+				return createOp.RecordCreateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.resourceID, err))
 			}
 			if err := a.pollForLROCompletion(ctx, op, "maintenanceVersion patch"); err != nil {
-				return err
+				return createOp.RecordCreateError(ctx, &krm.SQLInstanceStatus{}, err)
 			}
 
 			updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 			if err != nil {
-				return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+				return createOp.RecordCreateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err))
 			}
 
 			log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
@@ -531,7 +516,7 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.
 
 	status, err := SQLInstanceStatusGCPToKRM(created)
 	if err != nil {
-		return fmt.Errorf("updating SQLInstance status failed: %w", err)
+		return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("updating SQLInstance status failed: %w", err))
 	}
 	return setStatus(u, status)
 }
@@ -580,7 +565,7 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured
 
 	status, err := SQLInstanceStatusGCPToKRM(created)
 	if err != nil {
-		return fmt.Errorf("updating SQLInstance status failed: %w", err)
+		return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("updating SQLInstance status failed: %w", err))
 	}
 	return setStatus(u, status)
 }
@@ -605,7 +590,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newVersionDb).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("patching SQLInstance %s version failed: %w", a.resourceID, err)
+			return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("patching SQLInstance %s version failed: %w", a.resourceID, err))
 		}
 		if err := a.pollForLROCompletion(ctx, op, "version patch"); err != nil {
 			return err
@@ -613,7 +598,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+			return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err))
 		}
 
 		log.V(2).Info("instance version updated", "op", op, "instance", updated)
@@ -662,15 +647,15 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 			op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newEditionDb).Context(ctx).Do()
 			if err != nil {
-				return fmt.Errorf("patching SQLInstance %s edition failed: %w", a.resourceID, err)
+				return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("patching SQLInstance %s edition failed: %w", a.resourceID, err))
 			}
 			if err := a.pollForLROCompletion(ctx, op, "edition patch"); err != nil {
-				return err
+				return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, err)
 			}
 
 			updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 			if err != nil {
-				return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+				return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err))
 			}
 
 			log.V(2).Info("instance edition updated", "op", op, "instance", updated)
@@ -698,15 +683,15 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newMaintDb).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.resourceID, err)
+			return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.resourceID, err))
 		}
 		if err := a.pollForLROCompletion(ctx, op, "maintenanceVersion patch"); err != nil {
-			return err
+			return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, err)
 		}
 
 		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+			return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err))
 		}
 
 		log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
@@ -729,15 +714,15 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 		op, err := a.sqlInstancesClient.Update(a.projectID, desiredGCP.Name, desiredGCP).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("updating SQLInstance %s failed: %w", desiredGCP.Name, err)
+			return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("updating SQLInstance %s failed: %w", desiredGCP.Name, err))
 		}
 		if err := a.pollForLROCompletion(ctx, op, "update"); err != nil {
-			return err
+			return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, err)
 		}
 
 		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s failed: %w", desiredGCP.Name, err)
+			return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("getting SQLInstance %s failed: %w", desiredGCP.Name, err))
 		}
 
 		log.V(2).Info("instance updated", "op", op, "instance", updated)
@@ -746,7 +731,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	status, err := SQLInstanceStatusGCPToKRM(instanceForStatus)
 	if err != nil {
-		return fmt.Errorf("updating SQLInstance status failed: %w", err)
+		return updateOp.RecordUpdateError(ctx, &krm.SQLInstanceStatus{}, fmt.Errorf("updating SQLInstance status failed: %w", err))
 	}
 	return setStatus(u, status)
 }
