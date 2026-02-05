@@ -20,6 +20,7 @@ RECORDER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/recorder:${SHORT_SHA}
 WEBHOOK_IMG ?= gcr.io/${PROJECT_ID}/cnrm/webhook:${SHORT_SHA}
 DELETION_DEFENDER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/deletiondefender:${SHORT_SHA}
 UNMANAGED_DETECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/unmanageddetector:${SHORT_SHA}
+CONFIG_CONNECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/config-connector-cli:${SHORT_SHA}
 # Detects the location of the user golangci-lint cache.
 GOLANGCI_LINT_CACHE := /tmp/golangci-lint
 # When updating this, make sure to update the corresponding action in
@@ -154,7 +155,7 @@ generate:
 
 # Build the docker images
 .PHONY: docker-build
-docker-build: docker-build-manager docker-build-recorder docker-build-webhook docker-build-deletiondefender docker-build-unmanageddetector
+docker-build: docker-build-manager docker-build-recorder docker-build-webhook docker-build-deletiondefender docker-build-unmanageddetector docker-build-config-connector
 
 # build all the binaries into the builder docker image
 .PHONY: docker-build-builder
@@ -199,6 +200,10 @@ docker-build-unmanageddetector: docker-build-builder
 	cp config/installbundle/components/unmanageddetector/unmanageddetector_image_patch_template.yaml config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${UNMANAGED_DETECTOR_IMG}"'@' ./config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
 
+.PHONY: docker-build-config-connector
+docker-build-config-connector: docker-build-builder
+	$(DOCKER_BUILD) -t ${CONFIG_CONNECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/config-connector/Dockerfile
+
 # Push the docker image
 .PHONY: docker-push
 docker-push:
@@ -207,6 +212,7 @@ docker-push:
 	docker push ${WEBHOOK_IMG}
 	docker push ${DELETION_DEFENDER_IMG}
 	docker push ${UNMANAGED_DETECTOR_IMG}
+	docker push ${CONFIG_CONNECTOR_IMG}
 
 __tooling-image:
 	docker buildx build build/tooling \
