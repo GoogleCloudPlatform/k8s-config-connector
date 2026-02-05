@@ -26,6 +26,7 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	krmsecretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+	krmsqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	krmvpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -104,7 +105,7 @@ func CloudSQLInstance_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlInstan
 
 	if v := in.GetInstances(); len(v) != 0 {
 		for i := range v {
-			out.InstanceRefs = append(out.InstanceRefs, &refsv1beta1.SQLInstanceRef{External: v[i]})
+			out.InstanceRefs = append(out.InstanceRefs, &krmsqlv1beta1.SQLInstanceRef{External: v[i]})
 		}
 	}
 

@@ -16,6 +16,7 @@ package sql
 
 import (
 	"fmt"
+	"strings"
 
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
@@ -77,14 +78,22 @@ func InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in *refs.KMSCryptoKeyRef) *api.Di
 	return out
 }
 
-func InstanceMasterInstanceRefKRMToGCP(in *refs.SQLInstanceRef) string {
+func InstanceMasterInstanceRefKRMToGCP(in *krm.SQLInstanceRef) string {
 	if in == nil {
 		return ""
 	}
 
-	out := in.External
+	return SQLInstanceExternalToProjectInstance(in.External)
+}
 
-	return out
+func SQLInstanceExternalToProjectInstance(external string) string {
+	// Convert from projects/{project}/instances/{instance} to {project}:{instance} if needed
+	id := &krm.SQLInstanceIdentity{}
+	if err := id.FromExternal(external); err == nil {
+		return fmt.Sprintf("%s:%s", id.Project, id.Instance)
+	}
+
+	return external
 }
 
 func InstanceReplicationClusterKRMToGCP(in *krm.ReplicationCluster) *api.ReplicationCluster {
@@ -106,7 +115,7 @@ func ReplicationCluster_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationCl
 	}
 	out := &pb.ReplicationCluster{}
 	if in.FailoverDrReplicaRef != nil {
-		out.FailoverDrReplicaName = direct.LazyPtr(in.FailoverDrReplicaRef.External)
+		out.FailoverDrReplicaName = direct.LazyPtr(SQLInstanceExternalToProjectInstance(in.FailoverDrReplicaRef.External))
 	}
 	return out
 }
@@ -684,13 +693,13 @@ func InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in *api.DiskEncryptionConfigurati
 	return out
 }
 
-func InstanceMasterInstanceRefGCPToKRM(in string) *refs.SQLInstanceRef {
+func InstanceMasterInstanceRefGCPToKRM(in string) *krm.SQLInstanceRef {
 	if in == "" {
 		return nil
 	}
 
-	out := &refs.SQLInstanceRef{
-		External: in,
+	out := &krm.SQLInstanceRef{
+		External: SQLInstanceProjectInstanceToExternal(in),
 	}
 
 	return out
@@ -750,13 +759,25 @@ func InstanceReplicationClusterGCPToKRM(in *api.ReplicationCluster) *krm.Replica
 	return ReplicationCluster_FromProto(nil, proto)
 }
 
+func SQLInstanceProjectInstanceToExternal(projectInstance string) string {
+	if projectInstance == "" {
+		return ""
+	}
+	// projectInstance is project:instance
+	tokens := strings.Split(projectInstance, ":")
+	if len(tokens) == 2 {
+		return fmt.Sprintf("projects/%s/instances/%s", tokens[0], tokens[1])
+	}
+	return projectInstance
+}
+
 func ReplicationCluster_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationCluster) *krm.ReplicationCluster {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ReplicationCluster{}
 	if in.FailoverDrReplicaName != nil {
-		out.FailoverDrReplicaRef = &refs.SQLInstanceRef{External: *in.FailoverDrReplicaName}
+		out.FailoverDrReplicaRef = &krm.SQLInstanceRef{External: SQLInstanceProjectInstanceToExternal(*in.FailoverDrReplicaName)}
 	}
 	return out
 }

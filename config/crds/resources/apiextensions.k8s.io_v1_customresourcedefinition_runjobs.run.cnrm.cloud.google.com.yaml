@@ -628,8 +628,11 @@ spec:
                                     names, as can be found in https://console.cloud.google.com/sql/instances.
                                     Visit https://cloud.google.com/sql/docs/mysql/connect-run
                                     for more information on how to connect Cloud SQL
-                                    and Cloud Run. Format: {project}:{location}:{instance}'
+                                    and Cloud Run. Format: projects/{{projectID}}/instances/{{instanceID}}'
                                   items:
+                                    description: SQLInstanceRef defines the resource
+                                      reference to SQLInstance, which "External" field
+                                      holds the GCP identifier for the KRM object.
                                     oneOf:
                                     - not:
                                         required:
@@ -646,15 +649,15 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: The SQLInstance selfLink, when
-                                          not managed by Config Connector.
+                                        description: A reference to an externally
+                                          managed SQLInstance resource. Should be
+                                          in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
                                         type: string
                                       name:
-                                        description: The `name` field of a `SQLInstance`
-                                          resource.
+                                        description: The name of a SQLInstance resource.
                                         type: string
                                       namespace:
-                                        description: The `namespace` field of a `SQLInstance`
+                                        description: The namespace of a SQLInstance
                                           resource.
                                         type: string
                                     type: object
