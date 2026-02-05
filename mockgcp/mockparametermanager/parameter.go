@@ -62,6 +62,7 @@ func (s *ParameterManagerV1) CreateParameter(ctx context.Context, req *pb.Create
 		return nil, err
 	}
 
+	obj.Labels = nil // Post response does not include labels
 	return obj, nil
 }
 
@@ -123,6 +124,7 @@ func (s *ParameterManagerV1) UpdateParameter(ctx context.Context, req *pb.Update
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
+	updated.Labels = nil // Patch response does not include labels
 	return updated, nil
 }
 
