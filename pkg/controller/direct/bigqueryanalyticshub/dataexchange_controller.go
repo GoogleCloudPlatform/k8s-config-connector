@@ -38,12 +38,11 @@ import (
 )
 
 const (
-	ctrlName      = "bigqueryanalyticshub-dataexchange-controller"
-	serviceDomain = "//bigqueryanalyticshub.googleapis.com"
+	ctrlName = "bigqueryanalyticshub-dataexchange-controller"
 )
 
 func init() {
-	registry.RegisterModel(krm.DataExchangeGVK, NewModel)
+	registry.RegisterModel(krm.BigQueryAnalyticsHubDataExchangeGVK, NewModel)
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -75,59 +74,18 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Get ResourceID
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
 
-	// Get location
-	location := obj.Spec.Location
-
-	var id *DataExchangeIdentity
-	externalRef := direct.ValueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id = BuildID(projectID, location, resourceID)
-	} else {
-		id, err = asID(externalRef)
-		if err != nil {
-			return nil, err
-		}
-
-		if id.Parent.Project != projectID {
-			return nil, fmt.Errorf("DataExchange %s/%s has spec.projectRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Project, projectID)
-		}
-		if id.Parent.Location != location {
-			return nil, fmt.Errorf("DataExchange %s/%s has spec.location changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.Parent.Location, location)
-		}
-		if id.DataExchange != resourceID {
-			return nil, fmt.Errorf("DataExchange  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.DataExchange, resourceID)
-		}
-	}
-
-	// TODO(kcc): GetGCPClient as interface method.
 	// Get bigqueryanalyticshub GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return &Adapter{
-		id:        id,
+		id:        id.(*krm.BigQueryAnalyticsHubDataExchangeIdentity),
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
@@ -139,7 +97,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id        *DataExchangeIdentity
+	id        *krm.BigQueryAnalyticsHubDataExchangeIdentity
 	gcpClient *gcp.Client
 	desired   *krm.BigQueryAnalyticsHubDataExchange
 	actual    *bigqueryanalyticshubpb.DataExchange
@@ -149,15 +107,15 @@ var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting DataExchange", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("getting DataExchange", "name", a.id.String())
 
-	req := &bigqueryanalyticshubpb.GetDataExchangeRequest{Name: a.id.FullyQualifiedName()}
+	req := &bigqueryanalyticshubpb.GetDataExchangeRequest{Name: a.id.String()}
 	dataexchangepb, err := a.gcpClient.GetDataExchange(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting DataExchange %q: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("getting DataExchange %q: %w", a.id.String(), err)
 	}
 
 	a.actual = dataexchangepb
@@ -168,7 +126,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	u := createOp.GetUnstructured()
 
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating DataExchange", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("creating DataExchange", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -177,23 +135,24 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return mapCtx.Err()
 	}
 
+	parent := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
 	req := &bigqueryanalyticshubpb.CreateDataExchangeRequest{
-		Parent:         a.id.Parent.String(),
-		DataExchangeId: a.desired.GetName(),
+		Parent:         parent,
+		DataExchangeId: a.id.DataExchange,
 		DataExchange:   resource,
 	}
 	created, err := a.gcpClient.CreateDataExchange(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating DataExchange %s id %s: %w", a.id.FullyQualifiedName(), resource.GetName(), err)
+		return fmt.Errorf("creating DataExchange %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully created DataExchange", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully created DataExchange", "name", a.id.String())
 
 	status := &krm.BigQueryAnalyticsHubDataExchangeStatus{}
 	status.ObservedState = BigQueryAnalyticsHubDataExchangeObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	externalRef := a.id.FullyQualifiedName()
+	externalRef := a.id.String()
 	status.ExternalRef = &externalRef
 	return setStatus(u, status)
 }
@@ -202,7 +161,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	u := updateOp.GetUnstructured()
 
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating DataExchange", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("updating DataExchange", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	// TODO(kcc): Autogen "func immutable()" for each field
@@ -242,9 +201,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	updated, err := a.gcpClient.UpdateDataExchange(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating DataExchange %s: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("updating DataExchange %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully updated DataExchange", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully updated DataExchange", "name", a.id.String())
 
 	status := &krm.BigQueryAnalyticsHubDataExchangeStatus{}
 	status.ObservedState = BigQueryAnalyticsHubDataExchangeObservedState_FromProto(mapCtx, updated)
@@ -267,8 +226,8 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 		return nil, mapCtx.Err()
 	}
 
-	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Parent.Project}
-	obj.Spec.Location = a.id.Parent.Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -280,14 +239,14 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting DataExchange", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("deleting DataExchange", "name", a.id.String())
 
-	req := &bigqueryanalyticshubpb.DeleteDataExchangeRequest{Name: a.id.FullyQualifiedName()}
+	req := &bigqueryanalyticshubpb.DeleteDataExchangeRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteDataExchange(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting DataExchange %s: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("deleting DataExchange %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully deleted DataExchange", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully deleted DataExchange", "name", a.id.String())
 
 	return true, nil
 }

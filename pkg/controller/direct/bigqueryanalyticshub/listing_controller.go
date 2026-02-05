@@ -74,17 +74,7 @@ func (m *modelListing) AdapterForObject(ctx context.Context, reader client.Reade
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Get Project
-	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
-	id, err := krm.NewBigQueryAnalyticsHubListingRef(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -93,12 +83,12 @@ func (m *modelListing) AdapterForObject(ctx context.Context, reader client.Reade
 		return nil, err
 	}
 	// Get bigqueryanalyticshub GCP client
-	gcpClient, err := m.client(ctx, projectID)
+	gcpClient, err := m.client(ctx, id.(*krm.BigQueryAnalyticsHubListingIdentity).Project)
 	if err != nil {
 		return nil, err
 	}
 	return &ListingAdapter{
-		id:        id,
+		id:        id.(*krm.BigQueryAnalyticsHubListingIdentity),
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
@@ -130,7 +120,7 @@ func (m *modelListing) AdapterForURL(ctx context.Context, url string) (directbas
 }
 
 type ListingAdapter struct {
-	id        *krm.BigQueryAnalyticsHubListingRef
+	id        *krm.BigQueryAnalyticsHubListingIdentity
 	gcpClient *gcp.Client
 	desired   *krm.BigQueryAnalyticsHubListing
 	actual    *bigqueryanalyticshubpb.Listing
@@ -140,15 +130,15 @@ var _ directbase.Adapter = &ListingAdapter{}
 
 func (a *ListingAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting Listing", "name", a.id.External)
+	log.V(2).Info("getting Listing", "name", a.id.String())
 
-	req := &bigqueryanalyticshubpb.GetListingRequest{Name: a.id.External}
+	req := &bigqueryanalyticshubpb.GetListingRequest{Name: a.id.String()}
 	listingpb, err := a.gcpClient.GetListing(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting Listing %q: %w", a.id.External, err)
+		return false, fmt.Errorf("getting Listing %q: %w", a.id.String(), err)
 	}
 
 	a.actual = listingpb
@@ -157,7 +147,7 @@ func (a *ListingAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *ListingAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating Listing", "name", a.id.External)
+	log.V(2).Info("creating Listing", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -166,35 +156,32 @@ func (a *ListingAdapter) Create(ctx context.Context, createOp *directbase.Create
 		return mapCtx.Err()
 	}
 
-	parent, err := a.id.Parent()
-	if err != nil {
-		return err
-	}
-
+	parent := fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s", a.id.Project, a.id.Location, a.id.DataExchange)
 	req := &bigqueryanalyticshubpb.CreateListingRequest{
-		Parent:    parent.String(),
+		Parent:    parent,
 		Listing:   resource,
 		ListingId: a.desired.GetName(),
 	}
 	created, err := a.gcpClient.CreateListing(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating Listing %s: %w", a.id.External, err)
+		return fmt.Errorf("creating Listing %s: %w", a.id.String(), err)
 	}
 
-	log.V(2).Info("successfully created Listing", "name", a.id.External)
+	log.V(2).Info("successfully created Listing", "name", a.id.String())
 
 	status := &krm.BigQueryAnalyticsHubListingStatus{}
 	status.ObservedState = BigQueryAnalyticsHubListingObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = &a.id.External
+	externalRef := a.id.String()
+	status.ExternalRef = &externalRef
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating Listing", "name", a.id.External)
+	log.V(2).Info("updating Listing", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -203,7 +190,7 @@ func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return mapCtx.Err()
 	}
 
-	resource.Name = a.id.External
+	resource.Name = a.id.String()
 
 	updateMask := &fieldmaskpb.FieldMask{}
 	if a.desired.Spec.DisplayName != nil && !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
@@ -265,7 +252,7 @@ func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 
 	if len(updateMask.Paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.External)
+		log.V(2).Info("no field needs update", "name", a.id.String())
 		return nil
 	}
 
@@ -275,10 +262,10 @@ func (a *ListingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 	updated, err := a.gcpClient.UpdateListing(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating Listing %s: %w", a.id.External, err)
+		return fmt.Errorf("updating Listing %s: %w", a.id.String(), err)
 	}
 
-	log.V(2).Info("successfully updated Listing", "name", a.id.External)
+	log.V(2).Info("successfully updated Listing", "name", a.id.String())
 
 	status := &krm.BigQueryAnalyticsHubListingStatus{}
 	status.ObservedState = BigQueryAnalyticsHubListingObservedState_FromProto(mapCtx, updated)
@@ -301,13 +288,8 @@ func (a *ListingAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-
-	parent, err := a.id.Parent()
-	if err != nil {
-		return nil, err
-	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: parent.String()}
-	obj.Spec.Location = parent.Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -319,14 +301,14 @@ func (a *ListingAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 // Delete implements the Adapter interface.
 func (a *ListingAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting Listing", "name", a.id.External)
+	log.V(2).Info("deleting Listing", "name", a.id.String())
 
-	req := &bigqueryanalyticshubpb.DeleteListingRequest{Name: a.id.External}
+	req := &bigqueryanalyticshubpb.DeleteListingRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteListing(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting Listing %s: %w", a.id.External, err)
+		return false, fmt.Errorf("deleting Listing %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully deleted Listing", "name", a.id.External)
+	log.V(2).Info("successfully deleted Listing", "name", a.id.String())
 
 	return true, nil
 }
