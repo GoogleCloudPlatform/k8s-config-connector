@@ -140,9 +140,13 @@ type MemorystoreInstanceObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.node_config
 	NodeConfig *NodeConfigObservedState `json:"nodeConfig,omitempty"`
 
-	// Optional. Endpoints for the instance.
+	// Optional. Endpoints for the instance.``
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints
 	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
+
+	// Output only. The backup collection full resource name.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.backup_collection
+	BackupCollection *string `json:"backupCollection,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
