@@ -132,18 +132,18 @@ func (rf *ClearNonProtoFields) Fill(t *testing.T, obj interface{}) {
 }
 
 func (rf *ClearNonProtoFields) fillWithClear(t *testing.T, fieldName string, field reflect.Value) {
-	if rf.fieldOverrides != nil {
-		if override, ok := rf.fieldOverrides[fieldName]; ok {
-			override(t, fieldName, field)
-			return
-		}
-	}
-
 	if field.Kind() == reflect.Ptr {
 		if !field.IsNil() {
 			rf.fillWithClear(t, fieldName, field.Elem())
 		}
 		return
+	}
+
+	if rf.fieldOverrides != nil {
+		if override, ok := rf.fieldOverrides[fieldName]; ok {
+			override(t, fieldName, field)
+			return
+		}
 	}
 
 	switch field.Kind() {
