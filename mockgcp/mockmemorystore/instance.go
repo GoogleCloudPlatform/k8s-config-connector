@@ -390,3 +390,148 @@ func (s *instanceServer) parseNetworkName(name string) (*networkName, error) {
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
+
+type backupName struct {
+	ProjectID        string
+	Location         string
+	BackupCollection string
+	Name             string
+}
+
+func (b *backupName) String() string {
+	return "projects/" + b.ProjectID + "/locations/" + b.Location + "/backupCollections/" + b.BackupCollection + "/backups/" + b.Name
+}
+
+// parseBackupName parses a string into an instance name.
+// The expected form is `projects/*/locations/*/backupCollections/*/backups/*`.
+func (r *instanceServer) parseBackupName(name string) (*backupName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "backupCollections" && tokens[6] == "backups" {
+		project, err := r.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &backupName{
+			ProjectID:        project.ID,
+			Location:         tokens[3],
+			BackupCollection: tokens[5],
+			Name:             tokens[7],
+		}
+
+		return name, nil
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+func (r *instanceServer) GetBackup(ctx context.Context, req *pb.GetBackupRequest) (*pb.Backup, error) {
+	name, err := r.parseBackupName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Backup{}
+	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	retObj := proto.Clone(obj).(*pb.Backup)
+	return retObj, nil
+}
+
+func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInstanceRequest) (*longrunning.Operation, error) {
+	name, err := r.parseInstanceName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	now := time.Now()
+
+	obj := &pb.Instance{}
+	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	backupObj := &pb.Backup{
+		Name:          *obj.BackupCollection + "/backups/" + *req.BackupId,
+		CreateTime:    timestamppb.New(now),
+		Instance:      obj.Name,
+		InstanceUid:   obj.Uid,
+		EngineVersion: obj.EngineVersion,
+		ReplicaCount:  *obj.ReplicaCount,
+		NodeType:      obj.NodeType,
+		ShardCount:    obj.ShardCount,
+		BackupType:    pb.Backup_ON_DEMAND,
+		State:         pb.Backup_CREATING,
+		Uid:           fmt.Sprintf("%x", time.Now().UnixNano()),
+	}
+
+	if err := r.storage.Create(ctx, backupObj.Name, backupObj); err != nil {
+		return nil, err
+	}
+
+	metadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(now),
+		Target:     backupObj.Name,
+		Verb:       "create",
+	}
+
+	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+
+		retObj := proto.Clone(obj).(*pb.Backup)
+		retObj.State = pb.Backup_ACTIVE
+		return retObj, nil
+	})
+}
+
+func (r *instanceServer) DeleteBackup(ctx context.Context, req *pb.DeleteBackupRequest) (*longrunning.Operation, error) {
+	name, err := r.parseBackupName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+	fqn := req.Name
+
+	now := time.Now()
+
+	obj := &pb.Backup{}
+
+	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	deletedObj := &pb.Backup{}
+	if err := r.storage.Delete(ctx, fqn, deletedObj); err != nil {
+		return nil, err
+	}
+
+	metadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "delete",
+	}
+
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.ProjectID, name.Location)
+	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		return &emptypb.Empty{}, nil
+	})
+}
