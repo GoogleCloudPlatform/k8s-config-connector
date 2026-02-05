@@ -4,14 +4,16 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
   name: composerenvironment-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  labels:
-    test: "true"
+  config:
+    nodeConfig:
+      serviceAccountRef:
+        name: gsa-${uniqueId}
   location: us-central1
   projectRef:
     external: ${projectId}
@@ -23,16 +25,13 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}
-  observedGeneration: 2
+  observedGeneration: 1
   observedState:
     config:
-      airflowBYOIDURI: https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com
-      airflowURI: https://123456qwert-dot-us-central1.composer.googleusercontent.com
-      dagGCSPrefix: gs://us-central1-test-123456-asdfg-bucket/dags
-      gkeCluster: projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke
+      airflowURI: https://{uuid}-dot-{location}.composer.googleusercontent.com
+      dagGCSPrefix: gs://us-central1-composerenviron-{uniqueId}-bucket/dags
       privateEnvironmentConfig:
         privateClusterConfig: {}
     createTime: "1970-01-01T00:00:00Z"
-    state: RUNNING
     updateTime: "1970-01-01T00:00:00Z"
     uuid: test-uuid

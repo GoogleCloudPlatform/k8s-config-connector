@@ -20,6 +20,7 @@ import (
 
 	gcp "cloud.google.com/go/orchestration/airflow/service/apiv1"
 	composerpb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -27,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -70,11 +72,28 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, reader client.R
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewEnvironmentIdentity(ctx, reader, obj)
+	i, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+	id := i.(*krm.EnvironmentIdentity)
 	if err != nil {
 		return nil, err
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, err
+	}
+
+	mapCtx := &direct.MapContext{}
+	copied := obj.DeepCopy()
+	desired := ComposerEnvironmentSpec_ToProto(mapCtx, &copied.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	if len(desired.Labels) == 0 {
+		desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+	}
 	// Get composer GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -83,19 +102,31 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, reader client.R
 	return &EnvironmentAdapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desired,
 	}, nil
 }
 
 func (m *modelEnvironment) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	i := &krm.EnvironmentIdentity{}
+	if err := i.FromExternal(url); err != nil {
+		return nil, fmt.Errorf("error parsing url: %w", err)
+	}
+
+	// Get composer GCP client
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &EnvironmentAdapter{
+		id:        i,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type EnvironmentAdapter struct {
 	id        *krm.EnvironmentIdentity
 	gcpClient *gcp.EnvironmentsClient
-	desired   *krm.ComposerEnvironment
+	desired   *composerpb.Environment
 	actual    *composerpb.Environment
 }
 
@@ -126,18 +157,11 @@ func (a *EnvironmentAdapter) Find(ctx context.Context) (bool, error) {
 func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Environment", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = a.id.String()
-
+	a.desired.Name = a.id.String()
 	req := &composerpb.CreateEnvironmentRequest{
 		Parent:      a.id.Parent().String(),
-		Environment: resource,
+		Environment: a.desired,
 	}
 	op, err := a.gcpClient.CreateEnvironment(ctx, req)
 	if err != nil {
@@ -149,6 +173,7 @@ func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 	log.V(2).Info("successfully created Environment", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.ComposerEnvironmentStatus{}
 	status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -162,16 +187,11 @@ func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.Cr
 func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Environment", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	desiredPb.Name = a.id.String()
-	populateDefaultsForEnvironment(desiredPb, a.actual)
+	a.desired.Name = a.id.String()
+	populateDefaultsForEnvironment(a.desired, a.actual)
 
-	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(a.desired, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -196,7 +216,7 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	req := &composerpb.UpdateEnvironmentRequest{
 		Name:        a.id.String(),
 		UpdateMask:  updateMask,
-		Environment: desiredPb,
+		Environment: a.desired,
 	}
 	op, err := a.gcpClient.UpdateEnvironment(ctx, req)
 	if err != nil {
@@ -208,6 +228,7 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 	log.V(2).Info("successfully updated Environment", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.ComposerEnvironmentStatus{}
 	status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
@@ -229,8 +250,10 @@ func (a *EnvironmentAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ParentRef = &parent.ProjectAndLocationRef{
+		ProjectRef: &refs.ProjectRef{External: a.id.Parent().ProjectID},
+		Location:   a.id.Parent().Location,
+	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
