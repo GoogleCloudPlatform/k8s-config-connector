@@ -69,6 +69,9 @@ spec:
                 type: string
               location:
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               metastore:
                 description: Optional. Settings to manage lake and Dataproc Metastore
                   service instance association.
