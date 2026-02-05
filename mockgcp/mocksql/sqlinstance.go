@@ -720,7 +720,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		}
 
 		if settings.BackupConfiguration.BackupTier == nil {
-			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
+			settings.BackupConfiguration.BackupTier = pb.BackupConfiguration_STANDARD.Enum()
 		}
 		// 	if settings.BackupConfiguration.BackupLogEnabled == nil {
 		// 		settings.BackupConfiguration.BackupLogEnabled = asRef(true)
@@ -729,21 +729,21 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 
 	if isSqlServer(obj) {
 		if settings.BackupConfiguration.BackupTier == nil {
-			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
+			settings.BackupConfiguration.BackupTier = pb.BackupConfiguration_STANDARD.Enum()
 		}
 		if settings.IpConfiguration.ServerCertificateRotationMode == nil {
-			settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
+			settings.IpConfiguration.ServerCertificateRotationMode = pb.IpConfiguration_SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED.Enum()
 		}
 		if settings.ReplicationLagMaxSeconds == nil {
-			settings.ReplicationLagMaxSeconds = PtrTo(int32(31536000))
+			settings.ReplicationLagMaxSeconds = wrapperspb.Int32(31536000)
 		}
 		if obj.IncludeReplicasForMajorVersionUpgrade == nil {
-			obj.IncludeReplicasForMajorVersionUpgrade = PtrTo(false)
+			obj.IncludeReplicasForMajorVersionUpgrade = wrapperspb.Bool(false)
 		}
 	}
 
 	if obj.SatisfiesPzi == nil {
-		obj.SatisfiesPzi = PtrTo(true)
+		obj.SatisfiesPzi = wrapperspb.Bool(true)
 	}
 }
 

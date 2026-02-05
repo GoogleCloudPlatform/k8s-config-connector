@@ -36,7 +36,7 @@ type ClusterManagerClient interface {
 	// network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks).
 	//
 	// One firewall is added for the cluster. After cluster creation,
-	// the Kubelet creates routes for each node to allow the containers
+	// the kubelet creates routes for each node to allow the containers
 	// on that node to communicate with all other instances in the
 	// cluster.
 	//
@@ -131,6 +131,9 @@ type ClusterManagerClient interface {
 	FetchClusterUpgradeInfo(ctx context.Context, in *FetchClusterUpgradeInfoRequest, opts ...grpc.CallOption) (*ClusterUpgradeInfo, error)
 	// Fetch upgrade information of a specific nodepool.
 	FetchNodePoolUpgradeInfo(ctx context.Context, in *FetchNodePoolUpgradeInfoRequest, opts ...grpc.CallOption) (*NodePoolUpgradeInfo, error)
+	// CompleteControlPlaneUpgrade completes the rollback-safe upgrade by
+	// performing the step two upgrade for a specific cluster.
+	CompleteControlPlaneUpgrade(ctx context.Context, in *CompleteControlPlaneUpgradeRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type clusterManagerClient struct {
@@ -475,6 +478,15 @@ func (c *clusterManagerClient) FetchNodePoolUpgradeInfo(ctx context.Context, in 
 	return out, nil
 }
 
+func (c *clusterManagerClient) CompleteControlPlaneUpgrade(ctx context.Context, in *CompleteControlPlaneUpgradeRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.container.v1beta1.ClusterManager/CompleteControlPlaneUpgrade", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClusterManagerServer is the server API for ClusterManager service.
 // All implementations must embed UnimplementedClusterManagerServer
 // for forward compatibility
@@ -492,7 +504,7 @@ type ClusterManagerServer interface {
 	// network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks).
 	//
 	// One firewall is added for the cluster. After cluster creation,
-	// the Kubelet creates routes for each node to allow the containers
+	// the kubelet creates routes for each node to allow the containers
 	// on that node to communicate with all other instances in the
 	// cluster.
 	//
@@ -587,6 +599,9 @@ type ClusterManagerServer interface {
 	FetchClusterUpgradeInfo(context.Context, *FetchClusterUpgradeInfoRequest) (*ClusterUpgradeInfo, error)
 	// Fetch upgrade information of a specific nodepool.
 	FetchNodePoolUpgradeInfo(context.Context, *FetchNodePoolUpgradeInfoRequest) (*NodePoolUpgradeInfo, error)
+	// CompleteControlPlaneUpgrade completes the rollback-safe upgrade by
+	// performing the step two upgrade for a specific cluster.
+	CompleteControlPlaneUpgrade(context.Context, *CompleteControlPlaneUpgradeRequest) (*Operation, error)
 	mustEmbedUnimplementedClusterManagerServer()
 }
 
@@ -704,6 +719,9 @@ func (UnimplementedClusterManagerServer) FetchClusterUpgradeInfo(context.Context
 }
 func (UnimplementedClusterManagerServer) FetchNodePoolUpgradeInfo(context.Context, *FetchNodePoolUpgradeInfoRequest) (*NodePoolUpgradeInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FetchNodePoolUpgradeInfo not implemented")
+}
+func (UnimplementedClusterManagerServer) CompleteControlPlaneUpgrade(context.Context, *CompleteControlPlaneUpgradeRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CompleteControlPlaneUpgrade not implemented")
 }
 func (UnimplementedClusterManagerServer) mustEmbedUnimplementedClusterManagerServer() {}
 
@@ -1384,6 +1402,24 @@ func _ClusterManager_FetchNodePoolUpgradeInfo_Handler(srv interface{}, ctx conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClusterManager_CompleteControlPlaneUpgrade_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CompleteControlPlaneUpgradeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClusterManagerServer).CompleteControlPlaneUpgrade(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.container.v1beta1.ClusterManager/CompleteControlPlaneUpgrade",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClusterManagerServer).CompleteControlPlaneUpgrade(ctx, req.(*CompleteControlPlaneUpgradeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClusterManager_ServiceDesc is the grpc.ServiceDesc for ClusterManager service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1538,6 +1574,10 @@ var ClusterManager_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FetchNodePoolUpgradeInfo",
 			Handler:    _ClusterManager_FetchNodePoolUpgradeInfo_Handler,
+		},
+		{
+			MethodName: "CompleteControlPlaneUpgrade",
+			Handler:    _ClusterManager_CompleteControlPlaneUpgrade_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
