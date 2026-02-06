@@ -652,6 +652,15 @@ X-Xss-Protection: 0
       },
       "mode": "AOF"
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 2,
     "shardCount": 6,
     "state": "ACTIVE",
@@ -717,6 +726,15 @@ X-Xss-Protection: 0
     },
     "mode": 3
   },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    },
+    {
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    }
+  ],
   "replicaCount": 2,
   "shardCount": 6,
   "state": 1,
@@ -865,6 +883,15 @@ X-Xss-Protection: 0
       },
       "mode": "AOF"
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
     "shardCount": 6,
     "state": "ACTIVE",
@@ -1015,6 +1042,15 @@ X-Xss-Protection: 0
       },
       "mode": "AOF"
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
     "shardCount": 12,
     "state": "ACTIVE",
@@ -1165,6 +1201,15 @@ X-Xss-Protection: 0
       },
       "mode": "AOF"
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
     "shardCount": 12,
     "state": "ACTIVE",
@@ -1316,6 +1361,15 @@ X-Xss-Protection: 0
         "rdbSnapshotStartTime": "2029-10-02T15:01:23Z"
       }
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
     "shardCount": 12,
     "state": "ACTIVE",
@@ -1468,6 +1522,15 @@ X-Xss-Protection: 0
         "rdbSnapshotStartTime": "2029-10-02T15:01:23Z"
       }
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
     "shardCount": 12,
     "state": "ACTIVE",
@@ -1620,6 +1683,15 @@ X-Xss-Protection: 0
         "rdbSnapshotStartTime": "2029-10-02T15:01:23Z"
       }
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
     "shardCount": 12,
     "state": "ACTIVE",
@@ -1773,6 +1845,15 @@ X-Xss-Protection: 0
         "rdbSnapshotStartTime": "2029-10-02T15:01:23Z"
       }
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 1,
     "shardCount": 12,
     "state": "ACTIVE",
@@ -1842,6 +1923,15 @@ X-Xss-Protection: 0
       "rdbSnapshotStartTime": "2029-10-02T15:01:23Z"
     }
   },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    },
+    {
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    }
+  ],
   "replicaCount": 1,
   "shardCount": 12,
   "state": 3,

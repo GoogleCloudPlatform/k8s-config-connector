@@ -96,6 +96,15 @@ X-Xss-Protection: 0
     "persistenceConfig": {
       "mode": "DISABLED"
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 0,
     "shardCount": 3,
     "state": "ACTIVE",
@@ -138,6 +147,15 @@ X-Xss-Protection: 0
   "persistenceConfig": {
     "mode": 1
   },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    },
+    {
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    }
+  ],
   "replicaCount": 0,
   "shardCount": 3,
   "state": 1,
@@ -224,6 +242,15 @@ X-Xss-Protection: 0
     "persistenceConfig": {
       "mode": "DISABLED"
     },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
     "replicaCount": 0,
     "shardCount": 10,
     "state": "ACTIVE",
@@ -267,6 +294,15 @@ X-Xss-Protection: 0
   "persistenceConfig": {
     "mode": 1
   },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    },
+    {
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    }
+  ],
   "replicaCount": 0,
   "shardCount": 10,
   "state": 3,

@@ -476,6 +476,17 @@ spec:
                 properties:
                   googleAPIsBundle:
                     type: string
+                  memorystoreInstanceServiceAttachmentRef:
+                    properties:
+                      memorystoreInstanceName:
+                        type: string
+                      memorystoreInstanceNamespace:
+                        type: string
+                      memorystoreInstanceServiceAttachmentIndex:
+                        type: integer
+                      serviceAttachmentExternal:
+                        type: string
+                    type: object
                   serviceAttachmentRef:
                     oneOf:
                     - not:

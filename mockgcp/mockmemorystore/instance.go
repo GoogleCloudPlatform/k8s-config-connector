@@ -199,6 +199,21 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.EngineVersion == "" {
 		obj.EngineVersion = "VALKEY_7_2"
 	}
+	if obj.PscAttachmentDetails == nil {
+		connectionTypes := []pb.ConnectionType{pb.ConnectionType_CONNECTION_TYPE_DISCOVERY, pb.ConnectionType_CONNECTION_TYPE_UNSPECIFIED}
+		if obj.Mode != pb.Instance_CLUSTER {
+			connectionTypes = []pb.ConnectionType{pb.ConnectionType_CONNECTION_TYPE_PRIMARY, pb.ConnectionType_CONNECTION_TYPE_READER}
+		}
+		obj.PscAttachmentDetails = make([]*pb.PscAttachmentDetail, 0, 2)
+		obj.PscAttachmentDetails = append(obj.PscAttachmentDetails, &pb.PscAttachmentDetail{
+			ConnectionType:    connectionTypes[0],
+			ServiceAttachment: "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment",
+		})
+		obj.PscAttachmentDetails = append(obj.PscAttachmentDetails, &pb.PscAttachmentDetail{
+			ConnectionType:    connectionTypes[1],
+			ServiceAttachment: "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment-2",
+		})
+	}
 	return nil
 }
 
