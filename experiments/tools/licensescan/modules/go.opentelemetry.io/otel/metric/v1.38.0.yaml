@@ -13,4 +13,4 @@
 # limitations under the License.
 
 # https://pkg.go.dev/go.opentelemetry.io/otel/metric@v1.38.0
-license: Apache-2.0, BSD-3-Clause
+license: Apache-2.0
