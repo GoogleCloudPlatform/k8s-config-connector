@@ -71,19 +71,19 @@ This document outlines the automated steps to prepare a new release for KCC.
 
 ## PHASE 4: GENERATE RELEASE SUMMARY
 
-**Description:** Analyze the three release commits to create a detailed summary for the pull request body. This process filters out noisy changes like simple version bumps to highlight the most important changes.
+**Description:** Analyze the release commits to create a detailed summary for the pull request body. This process filters out noisy changes like simple version bumps to highlight the most important changes.
 
 **Actions:**
 
 1.  **Get Commit Information:**
-    *   Run the following command to get the hash and subject of the last three commits and save them to `commits.log`:
+    *   Run the following command to get the hash and subject of the last few commits and save them to `commits.log`:
         ```bash
         git log -n 3 --pretty="format:%H %s" > commits.log
         ```
-    *   Inspect `commits.log` to identify the commit hashes for the "Release", "Update alpha CRDs", and "Update golden files" commits.
+    *   Inspect `commits.log` to identify the commit hashes for the "Release" and (if present) "Update golden files" commits.
 
 2.  **Generate and Filter Diffs:**
-    *   For each of the three commits, perform the following steps. Replace `<commit_hash>` with the hash of the commit and `<commit_name>` with a descriptive name (e.g., `release`, `crd_update`, `golden_file_update`).
+    *   For each of the relevant commits, perform the following steps. Replace `<commit_hash>` with the hash of the commit and `<commit_name>` with a descriptive name (e.g., `release`, `golden_file_update`).
 
     *   **Generate Raw Diff:**
         ```bash
@@ -95,7 +95,7 @@ This document outlines the automated steps to prepare a new release for KCC.
         ```bash
         cat <commit_name>_diff.txt | perl -pe 'BEGIN{$/="\ndiff --git "} s/^.*//s if !grep {/^[+-]/ && !/---|\+\+\+/ && !/cnrm\.cloud\.google\.com\/version/} split/\n/' > <commit_name>_filtered_diff.txt
         ```
-        *   After running this for all three commits, you will have three filtered diff files (e.g., `release_filtered_diff.txt`, `crd_update_filtered_diff.txt`, `golden_file_update_filtered_diff.txt`).
+        *   After running this for the commits, you will have filtered diff files (e.g., `release_filtered_diff.txt`, `golden_file_update_filtered_diff.txt`).
 
 3.  **Assemble `release-summary.md`:**
     *   Create a new file named `release-summary.md`.
