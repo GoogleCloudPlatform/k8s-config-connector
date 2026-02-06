@@ -21,6 +21,8 @@
 
 package v1beta1
 
+type StorageAnywhereCacheExpansion interface{}
+
 type StorageBucketExpansion interface{}
 
 type StorageBucketAccessControlExpansion interface{}

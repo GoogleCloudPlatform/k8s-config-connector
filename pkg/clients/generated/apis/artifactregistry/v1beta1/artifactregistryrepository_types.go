@@ -36,7 +36,7 @@ import (
 )
 
 type RepositoryCleanupPolicies struct {
-	/* Policy action. Possible values: ["DELETE", "KEEP"]. */
+	/* Policy action. */
 	// +optional
 	Action *string `json:"action,omitempty"`
 
@@ -44,10 +44,11 @@ type RepositoryCleanupPolicies struct {
 	// +optional
 	Condition *RepositoryCondition `json:"condition,omitempty"`
 
-	Id string `json:"id"`
+	/* The user-provided ID of the cleanup policy. */
+	// +optional
+	Id *string `json:"id,omitempty"`
 
-	/* Policy condition for retaining a minimum number of versions. May only be
-	specified with a Keep action. */
+	/* Policy condition for retaining a minimum number of versions. May only be specified with a Keep action. */
 	// +optional
 	MostRecentVersions *RepositoryMostRecentVersions `json:"mostRecentVersions,omitempty"`
 }
@@ -69,7 +70,7 @@ type RepositoryCondition struct {
 	// +optional
 	TagPrefixes []string `json:"tagPrefixes,omitempty"`
 
-	/* Match versions by tag status. Default value: "ANY" Possible values: ["TAGGED", "UNTAGGED", "ANY"]. */
+	/* Match versions by tag status. */
 	// +optional
 	TagState *string `json:"tagState,omitempty"`
 
@@ -85,24 +86,23 @@ type RepositoryDockerConfig struct {
 }
 
 type RepositoryDockerRepository struct {
-	/* Immutable. Address of the remote repository. Default value: "DOCKER_HUB" Possible values: ["DOCKER_HUB"]. */
+	/* One of the publicly available Docker repositories supported by Artifact Registry. */
 	// +optional
 	PublicRepository *string `json:"publicRepository,omitempty"`
 }
 
 type RepositoryMavenConfig struct {
-	/* Immutable. The repository with this flag will allow publishing the same
-	snapshot versions. */
+	/* The repository with this flag will allow publishing the same snapshot versions. */
 	// +optional
 	AllowSnapshotOverwrites *bool `json:"allowSnapshotOverwrites,omitempty"`
 
-	/* Immutable. Version policy defines the versions that the registry will accept. Default value: "VERSION_POLICY_UNSPECIFIED" Possible values: ["VERSION_POLICY_UNSPECIFIED", "RELEASE", "SNAPSHOT"]. */
+	/* Version policy defines the versions that the registry will accept. */
 	// +optional
 	VersionPolicy *string `json:"versionPolicy,omitempty"`
 }
 
 type RepositoryMavenRepository struct {
-	/* Immutable. Address of the remote repository. Default value: "MAVEN_CENTRAL" Possible values: ["MAVEN_CENTRAL"]. */
+	/* One of the publicly available Maven repositories supported by Artifact Registry. */
 	// +optional
 	PublicRepository *string `json:"publicRepository,omitempty"`
 }
@@ -110,43 +110,43 @@ type RepositoryMavenRepository struct {
 type RepositoryMostRecentVersions struct {
 	/* Minimum number of versions to keep. */
 	// +optional
-	KeepCount *int64 `json:"keepCount,omitempty"`
+	KeepCount *int32 `json:"keepCount,omitempty"`
 
-	/* Match versions by package prefix. Applied on any prefix match. */
+	/* List of package name prefixes that will apply this rule. */
 	// +optional
 	PackageNamePrefixes []string `json:"packageNamePrefixes,omitempty"`
 }
 
 type RepositoryNpmRepository struct {
-	/* Immutable. Address of the remote repository. Default value: "NPMJS" Possible values: ["NPMJS"]. */
+	/* One of the publicly available Npm repositories supported by Artifact Registry. */
 	// +optional
 	PublicRepository *string `json:"publicRepository,omitempty"`
 }
 
 type RepositoryPythonRepository struct {
-	/* Immutable. Address of the remote repository. Default value: "PYPI" Possible values: ["PYPI"]. */
+	/* One of the publicly available Python repositories supported by Artifact Registry. */
 	// +optional
 	PublicRepository *string `json:"publicRepository,omitempty"`
 }
 
 type RepositoryRemoteRepositoryConfig struct {
-	/* Immutable. The description of the remote source. */
+	/* The description of the remote source. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Specific settings for a Docker remote repository. */
+	/* Specific settings for a Docker remote repository. */
 	// +optional
 	DockerRepository *RepositoryDockerRepository `json:"dockerRepository,omitempty"`
 
-	/* Immutable. Specific settings for a Maven remote repository. */
+	/* Specific settings for a Maven remote repository. */
 	// +optional
 	MavenRepository *RepositoryMavenRepository `json:"mavenRepository,omitempty"`
 
-	/* Immutable. Specific settings for an Npm remote repository. */
+	/* Specific settings for an Npm remote repository. */
 	// +optional
 	NpmRepository *RepositoryNpmRepository `json:"npmRepository,omitempty"`
 
-	/* Immutable. Specific settings for a Python remote repository. */
+	/* Specific settings for a Python remote repository. */
 	// +optional
 	PythonRepository *RepositoryPythonRepository `json:"pythonRepository,omitempty"`
 }
@@ -158,31 +158,25 @@ type RepositoryUpstreamPolicies struct {
 
 	/* Entries with a greater priority value take precedence in the pull order. */
 	// +optional
-	Priority *int64 `json:"priority,omitempty"`
+	Priority *int32 `json:"priority,omitempty"`
 
-	/* A reference to the repository resource, for example:
-	"projects/p1/locations/us-central1/repositories/repo1". */
+	/* A reference to the repository resource, for example: `projects/p1/locations/us-central1/repositories/repo1`. */
 	// +optional
 	RepositoryRef *v1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
 }
 
 type RepositoryVirtualRepositoryConfig struct {
-	/* Policies that configure the upstream artifacts distributed by the Virtual
-	Repository. Upstream policies cannot be set on a standard repository. */
+	/* Policies that configure the upstream artifacts distributed by the Virtual Repository. Upstream policies cannot be set on a standard repository. */
 	// +optional
 	UpstreamPolicies []RepositoryUpstreamPolicies `json:"upstreamPolicies,omitempty"`
 }
 
 type ArtifactRegistryRepositorySpec struct {
-	/* Cleanup policies for this repository. Cleanup policies indicate when
-	certain package versions can be automatically deleted.
-	Map keys are policy IDs supplied by users during policy creation. They must
-	unique within a repository and be under 128 characters in length. */
+	/* Cleanup policies for this repository. Cleanup policies indicate when certain package versions can be automatically deleted. Map keys are policy IDs supplied by users during policy creation. They must unique within a repository and be under 128 characters in length. */
 	// +optional
 	CleanupPolicies []RepositoryCleanupPolicies `json:"cleanupPolicies,omitempty"`
 
-	/* If true, the cleanup pipeline is prevented from deleting versions in this
-	repository. */
+	/* Optional. If true, the cleanup pipeline is prevented from deleting versions in this repository. */
 	// +optional
 	CleanupPolicyDryRun *bool `json:"cleanupPolicyDryRun,omitempty"`
 
@@ -194,35 +188,30 @@ type ArtifactRegistryRepositorySpec struct {
 	// +optional
 	DockerConfig *RepositoryDockerConfig `json:"dockerConfig,omitempty"`
 
-	/* Immutable. The format of packages that are stored in the repository. Supported formats
-	can be found [here](https://cloud.google.com/artifact-registry/docs/supported-formats).
-	You can only create alpha formats if you are a member of the
-	[alpha user group](https://cloud.google.com/artifact-registry/docs/supported-formats#alpha-access). */
-	Format string `json:"format"`
+	/* Optional. The format of packages that are stored in the repository. */
+	// +optional
+	Format *string `json:"format,omitempty"`
 
-	/* The customer managed encryption key that’s used to encrypt the
-	contents of the Repository. */
+	/* The Cloud KMS resource name of the customer managed encryption key that's used to encrypt the contents of the Repository. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. This value may not be changed after the Repository has been created. */
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Immutable. The name of the location this repository is located in. */
 	Location string `json:"location"`
 
-	/* MavenRepositoryConfig is maven related repository details.
-	Provides additional configuration details for repositories of the maven
-	format type. */
+	/* Maven repository config contains repository level configuration for the repositories of maven type. */
 	// +optional
 	MavenConfig *RepositoryMavenConfig `json:"mavenConfig,omitempty"`
 
-	/* Immutable. The mode configures the repository to serve artifacts from different sources. Default value: "STANDARD_REPOSITORY" Possible values: ["STANDARD_REPOSITORY", "VIRTUAL_REPOSITORY", "REMOTE_REPOSITORY"]. */
+	/* Optional. The mode of the repository. */
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
-	/* Immutable. Configuration specific for a Remote Repository. */
+	/* Configuration specific for a Remote Repository. */
 	// +optional
 	RemoteRepositoryConfig *RepositoryRemoteRepositoryConfig `json:"remoteRepositoryConfig,omitempty"`
 
-	/* Immutable. Optional. The repositoryId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The ArtifactRegistryRepository name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -235,12 +224,11 @@ type ArtifactRegistryRepositoryStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ArtifactRegistryRepository's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The time when the repository was created. */
+	/* Output only. The time when the repository was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* The name of the repository, for example:
-	"repo1". */
+	/* The name of the repository, for example: "repo1". */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
@@ -248,7 +236,7 @@ type ArtifactRegistryRepositoryStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The time when the repository was last updated. */
+	/* Output only. The time when the repository was last updated. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }

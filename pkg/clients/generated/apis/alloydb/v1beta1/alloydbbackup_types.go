@@ -59,7 +59,7 @@ type AlloyDBBackupSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The backupId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -89,6 +89,10 @@ type AlloyDBBackupStatus struct {
 	/* A hash of the resource. */
 	// +optional
 	Etag *string `json:"etag,omitempty"`
+
+	/* A unique specifier for the AlloyDBBackup resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* Output only. The name of the backup resource with the format: * projects/{project}/locations/{region}/backups/{backupId}. */
 	// +optional

@@ -319,6 +319,12 @@ type InstanceReplicaConfiguration struct {
 	VerifyServerCertificate *bool `json:"verifyServerCertificate,omitempty"`
 }
 
+type InstanceReplicationCluster struct {
+	/* Optional. If the instance is a primary instance, then this field identifies the disaster recovery (DR) replica. A DR replica is an optional configuration for Enterprise Plus edition instances. If the instance is a read replica, then the field is not set. Set this field to a replica name to designate a DR replica for a primary instance. Remove the replica name to remove the DR replica designation. */
+	// +optional
+	FailoverDrReplicaRef *v1alpha1.ResourceRef `json:"failoverDrReplicaRef,omitempty"`
+}
+
 type InstanceRootPassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional
@@ -484,6 +490,10 @@ type SQLInstanceSpec struct {
 	// +optional
 	ReplicaConfiguration *InstanceReplicaConfiguration `json:"replicaConfiguration,omitempty"`
 
+	/* The configuration for the replication cluster. */
+	// +optional
+	ReplicationCluster *InstanceReplicationCluster `json:"replicationCluster,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -505,6 +515,22 @@ type InstanceIpAddressStatus struct {
 
 	// +optional
 	Type *string `json:"type,omitempty"`
+}
+
+type InstanceObservedStateStatus struct {
+	/* The configuration for the replication cluster. */
+	// +optional
+	ReplicationCluster *InstanceReplicationClusterStatus `json:"replicationCluster,omitempty"`
+}
+
+type InstanceReplicationClusterStatus struct {
+	/* Output only. Read-only field that indicates whether the replica is a DR replica. This field is not set if the instance is a primary instance. */
+	// +optional
+	DrReplica *bool `json:"drReplica,omitempty"`
+
+	/* Output only. If set, it indicates this instance has a private service access (PSA) dns endpoint that is pointing to the primary instance of the cluster. If this instance is the primary, the dns should be pointing to this instance. After Switchover or Replica failover, this DNS endpoint points to the promoted instance. This is a read-only field, returned to the user as information. This field can exist even if a standalone instance does not yet have a replica, or had a DR replica that was deleted. */
+	// +optional
+	PsaWriteEndpoint *string `json:"psaWriteEndpoint,omitempty"`
 }
 
 type InstanceServerCaCertStatus struct {
@@ -559,6 +585,10 @@ type SQLInstanceStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* The observed state of the resource. */
+	// +optional
+	ObservedState *InstanceObservedStateStatus `json:"observedState,omitempty"`
+
 	// +optional
 	PrivateIpAddress *string `json:"privateIpAddress,omitempty"`
 
@@ -588,7 +618,6 @@ type SQLInstanceStatus struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

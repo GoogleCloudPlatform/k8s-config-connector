@@ -36,62 +36,94 @@ import (
 )
 
 type PrivateconnectionVpcPeeringConfig struct {
-	/* Immutable. A free subnet for peering. (CIDR of /29). */
-	Subnet string `json:"subnet"`
+	/* Required. Fully qualified name of the VPC that Datastream will peer to. Format: `projects/{project}/global/{networks}/{name}` */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Immutable. Fully qualified name of the VPC that Datastream will peer to.
-	Format: projects/{project}/global/{networks}/{name}. */
-	Vpc string `json:"vpc"`
+	/* Required. A free subnet for peering. (CIDR of /29) */
+	// +optional
+	Subnet *string `json:"subnet,omitempty"`
 }
 
 type DatastreamPrivateConnectionSpec struct {
-	/* Immutable. Display name. */
-	DisplayName string `json:"displayName"`
+	/* Required. Display name. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Immutable. The name of the location this private connection is located in. */
+	/* Labels. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	/* Immutable. */
 	Location string `json:"location"`
 
-	/* The project that this resource belongs to. */
+	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The privateConnectionId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The DatastreamPrivateConnection name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The VPC Peering configuration is used to create VPC peering
-	between Datastream and the consumer's VPC. */
-	VpcPeeringConfig PrivateconnectionVpcPeeringConfig `json:"vpcPeeringConfig"`
+	/* VPC Peering Config. */
+	// +optional
+	VpcPeeringConfig *PrivateconnectionVpcPeeringConfig `json:"vpcPeeringConfig,omitempty"`
 }
 
 type PrivateconnectionErrorStatus struct {
-	/* A list of messages that carry the error details. */
+	/* Additional information about the error. */
 	// +optional
 	Details map[string]string `json:"details,omitempty"`
+
+	/* The time when the error occurred. */
+	// +optional
+	ErrorTime *string `json:"errorTime,omitempty"`
+
+	/* A unique identifier for this specific error, allowing it to be traced throughout the system in logs and API responses. */
+	// +optional
+	ErrorUUID *string `json:"errorUUID,omitempty"`
 
 	/* A message containing more information about the error that occurred. */
 	// +optional
 	Message *string `json:"message,omitempty"`
+
+	/* A title that explains the reason for the error. */
+	// +optional
+	Reason *string `json:"reason,omitempty"`
+}
+
+type PrivateconnectionObservedStateStatus struct {
+	/* Output only. The create time of the resource. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. In case of error, the details of the error in a user-friendly format. */
+	// +optional
+	Error *PrivateconnectionErrorStatus `json:"error,omitempty"`
+
+	/* Output only. The state of the Private Connection. */
+	// +optional
+	State *string `json:"state,omitempty"`
+
+	/* Output only. The update time of the resource. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type DatastreamPrivateConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DatastreamPrivateConnection's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The PrivateConnection error in case of failure. */
+	/* A unique specifier for the DatastreamPrivateConnection resource in GCP. */
 	// +optional
-	Error []PrivateconnectionErrorStatus `json:"error,omitempty"`
-
-	/* The resource's name. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* State of the PrivateConnection. */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	State *string `json:"state,omitempty"`
+	ObservedState *PrivateconnectionObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
@@ -99,9 +131,7 @@ type DatastreamPrivateConnectionStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatastreamprivateconnection;gcpdatastreamprivateconnections
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

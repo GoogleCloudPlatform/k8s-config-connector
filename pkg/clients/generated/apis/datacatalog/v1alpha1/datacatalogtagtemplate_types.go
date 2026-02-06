@@ -36,98 +36,133 @@ import (
 )
 
 type TagtemplateAllowedValues struct {
-	/* The display name of the enum value. */
+	/* Required. The display name of the enum value. Must not be an empty
+	string.
+
+	The name must contain only Unicode letters, numbers (0-9), underscores
+	(_), dashes (-), spaces ( ), and can't start or end with spaces. The
+	maximum length is 200 characters. */
 	DisplayName string `json:"displayName"`
 }
 
 type TagtemplateEnumType struct {
-	/* The set of allowed values for this enum. The display names of the
-	values must be case-insensitively unique within this set. Currently,
-	enum values can only be added to the list of allowed values. Deletion
-	and renaming of enum values are not supported.
-	Can have up to 500 allowed values. */
-	AllowedValues []TagtemplateAllowedValues `json:"allowedValues"`
+	/* The set of allowed values for this enum.
+
+	This set must not be empty and can include up to 100 allowed values.
+	The display names of the values in this set must not be empty and must
+	be case-insensitively unique within this set.
+
+	The order of items in this set is preserved. This field can be used to
+	create, remove, and reorder enum values. To rename enum values, use the
+	`RenameTagTemplateFieldEnumValue` method. */
+	// +optional
+	AllowedValues []TagtemplateAllowedValues `json:"allowedValues,omitempty"`
 }
 
 type TagtemplateFields struct {
-	/* A description for this field. */
+	/* The description for this field. Defaults to an empty string. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The display name for this field. */
+	/* The display name for this field. Defaults to an empty string.
+
+	The name must contain only Unicode letters, numbers (0-9), underscores (_),
+	dashes (-), spaces ( ), and can't start or end with spaces.
+	The maximum length is 200 characters. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	FieldId string `json:"fieldId"`
-
-	/* Whether this is a required field. Defaults to false. */
+	/* If true, this field is required. Defaults to false. */
 	// +optional
 	IsRequired *bool `json:"isRequired,omitempty"`
 
-	/* The resource name of the tag template field in URL format. Example: projects/{project_id}/locations/{location}/tagTemplates/{tagTemplateId}/fields/{field}. */
+	/* Identifier. The resource name of the tag template field in URL format.
+
+	Note: The tag template field itself might not be stored in the location
+	specified in its name.
+
+	The name must contain only letters (a-z, A-Z), numbers (0-9),
+	or underscores (_), and must start with a letter or underscore.
+	The maximum length is 64 characters. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* The order of this field with respect to other fields in this tag template.
-	A higher value indicates a more important field. The value can be negative.
-	Multiple fields can have the same order, and field orders within a tag do not have to be sequential. */
-	// +optional
-	Order *int64 `json:"order,omitempty"`
+	/* The order of this field with respect to other fields in this tag
+	template.
 
-	/* The type of value this tag field can contain. */
+	For example, a higher value can indicate a more important field.
+	The value can be negative. Multiple fields can have the same order and
+	field orders within a tag don't have to be sequential. */
+	// +optional
+	Order *int32 `json:"order,omitempty"`
+
+	/* Required. The type of value this tag field can contain. */
 	Type TagtemplateType `json:"type"`
 }
 
 type TagtemplateType struct {
-	/* Represents an enum type.
-	Exactly one of 'primitive_type' or 'enum_type' must be set. */
+	/* An enum type. */
 	// +optional
 	EnumType *TagtemplateEnumType `json:"enumType,omitempty"`
 
-	/* Represents primitive types - string, bool etc.
-	Exactly one of 'primitive_type' or 'enum_type' must be set Possible values: ["DOUBLE", "STRING", "BOOL", "TIMESTAMP"]. */
+	/* Primitive types, such as string, boolean, etc. */
 	// +optional
 	PrimitiveType *string `json:"primitiveType,omitempty"`
 }
 
 type DataCatalogTagTemplateSpec struct {
-	/* The display name for this template. */
+	/* Display name for this template. Defaults to an empty string.
+
+	The name must contain only Unicode letters, numbers (0-9), underscores (_),
+	dashes (-), spaces ( ), and can't start or end with spaces.
+	The maximum length is 200 characters. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Set of tag template field IDs and the settings for the field. This set is an exhaustive list of the allowed fields. This set must contain at least one field and at most 500 fields. The change of field_id will be resulting in re-creating of field. The change of primitive_type will be resulting in re-creating of field, however if the field is a required, you cannot update it. */
-	Fields []TagtemplateFields `json:"fields"`
-
-	/* This confirms the deletion of any possible tags using this template. Must be set to true in order to delete the tag template. */
+	/* Fields used to create a Tag */
 	// +optional
-	ForceDelete *bool `json:"forceDelete,omitempty"`
+	Fields map[string]TagtemplateFields `json:"fields,omitempty"`
 
-	/* The project that this resource belongs to. */
+	/* Indicates whether tags created with this template are public. Public tags
+	do not require tag template access to appear in
+	[ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags] API response.
+
+	Additionally, you can search for a public tag by value with a
+	simple search query in addition to using a ``tag:`` predicate. */
+	// +optional
+	IsPubliclyReadable *bool `json:"isPubliclyReadable,omitempty"`
+
+	Location string `json:"location"`
+
+	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Template location region. */
-	// +optional
-	Region *string `json:"region,omitempty"`
-
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* The DataCatalogTagTemplate name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+}
 
-	/* Immutable. The id of the tag template to create. */
-	TagTemplateId string `json:"tagTemplateId"`
+type TagtemplateObservedStateStatus struct {
+	/* Optional. Transfer status of the TagTemplate */
+	// +optional
+	DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
 }
 
 type DataCatalogTagTemplateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataCatalogTagTemplate's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The resource name of the tag template in URL format. Example: projects/{project_id}/locations/{location}/tagTemplates/{tagTemplateId}. */
+	/* A unique specifier for the DataCatalogTagTemplate resource in GCP. */
 	// +optional
-	Name *string `json:"name,omitempty"`
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *TagtemplateObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
@@ -135,9 +170,7 @@ type DataCatalogTagTemplateStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatacatalogtagtemplate;gcpdatacatalogtagtemplates
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

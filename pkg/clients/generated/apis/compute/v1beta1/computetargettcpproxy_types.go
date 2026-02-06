@@ -55,7 +55,7 @@ type ComputeTargetTCPProxySpec struct {
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
-	/* Immutable. The ComputeTargetTCPProxy name. If not given, the metadata.name will be used. */
+	/* The ComputeTargetTCPProxy name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }

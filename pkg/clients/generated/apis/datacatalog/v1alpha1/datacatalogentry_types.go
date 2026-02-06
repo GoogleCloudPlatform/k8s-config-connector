@@ -32,140 +32,949 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type EntryGcsFilesetSpec struct {
-	/* Patterns to identify a set of files in Google Cloud Storage.
-	See [Cloud Storage documentation](https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames)
-	for more information. Note that bucket wildcards are currently not supported. Examples of valid filePatterns:
-
-	* gs://bucket_name/dir/*: matches all files within bucket_name/dir directory.
-	* gs://bucket_name/dir/**: matches all files in bucket_name/dir spanning all subdirectories.
-	* gs://bucket_name/file*: matches files prefixed by file in bucket_name
-	* gs://bucket_name/??.txt: matches files with two characters followed by .txt in bucket_name
-	* gs://bucket_name/[aeiou].txt: matches files that contain a single vowel character followed by .txt in bucket_name
-	* gs://bucket_name/[a-m].txt: matches files that contain a, b, ... or m followed by .txt in bucket_name
-	* gs://bucket_name/a/* /b: matches all files in bucket_name that match a/* /b pattern, such as a/c/b, a/d/b
-	* gs://another_bucket/a.txt: matches gs://another_bucket/a.txt. */
-	FilePatterns []string `json:"filePatterns"`
-
-	/* Sample files contained in this fileset, not all files contained in this fileset are represented here. */
+type EntryAvro struct {
+	/* JSON source of the Avro schema. */
 	// +optional
-	SampleGcsFileSpecs []EntrySampleGcsFileSpecs `json:"sampleGcsFileSpecs,omitempty"`
+	Text *string `json:"text,omitempty"`
 }
 
-type EntrySampleGcsFileSpecs struct {
-	/* The full file path. */
+type EntryBigqueryConnectionSpec struct {
+	/* Specification for the BigQuery connection to a Cloud SQL instance. */
 	// +optional
-	FilePath *string `json:"filePath,omitempty"`
+	CloudSQL *EntryCloudSQL `json:"cloudSQL,omitempty"`
 
-	/* The size of the file, in bytes. */
+	/* The type of the BigQuery connection. */
 	// +optional
-	SizeBytes *int64 `json:"sizeBytes,omitempty"`
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	/* True if there are credentials attached to the BigQuery connection; false otherwise. */
+	// +optional
+	HasCredential *bool `json:"hasCredential,omitempty"`
 }
 
-type DataCatalogEntrySpec struct {
-	/* Entry description, which can consist of several sentences or paragraphs that describe entry contents. */
+type EntryBigqueryRoutineSpec struct {
+	/* Paths of the imported libraries. */
 	// +optional
-	Description *string `json:"description,omitempty"`
+	ImportedLibraries []string `json:"importedLibraries,omitempty"`
+}
 
-	/* Display information such as title and description. A short name to identify the entry,
-	for example, "Analytics Data - Jan 2011". */
+type EntryBusinessContext struct {
+	/* Contact people for the entry. */
+	// +optional
+	Contacts *EntryContacts `json:"contacts,omitempty"`
+
+	/* Entry overview fields for rich text descriptions of entries. */
+	// +optional
+	EntryOverview *EntryEntryOverview `json:"entryOverview,omitempty"`
+}
+
+type EntryCloudBigtableClusterSpecs struct {
+	/* Name of the cluster. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Immutable. The name of the entry group this entry is in. */
-	EntryGroup string `json:"entryGroup"`
-
-	/* Immutable. The id of the entry to create. */
-	EntryId string `json:"entryId"`
-
-	/* Specification that applies to a Cloud Storage fileset. This is only valid on entries of type FILESET. */
-	// +optional
-	GcsFilesetSpec *EntryGcsFilesetSpec `json:"gcsFilesetSpec,omitempty"`
-
-	/* The resource this metadata entry refers to.
-	For Google Cloud Platform resources, linkedResource is the full name of the resource.
-	For example, the linkedResource for a table resource from BigQuery is:
-	//bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId
-	Output only when Entry is of type in the EntryType enum. For entries with userSpecifiedType,
-	this field is optional and defaults to an empty string. */
+	/* A link back to the parent resource, in this case Instance. */
 	// +optional
 	LinkedResource *string `json:"linkedResource,omitempty"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* Location of the cluster, typically a Cloud zone. */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
+	/* Type of the resource. For a cluster this would be "CLUSTER". */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type EntryCloudBigtableInstanceSpec struct {
+	/* The list of clusters for the Instance. */
+	// +optional
+	CloudBigtableClusterSpecs []EntryCloudBigtableClusterSpecs `json:"cloudBigtableClusterSpecs,omitempty"`
+}
+
+type EntryCloudBigtableSystemSpec struct {
+	/* Display name of the Instance. This is user specified and different from the resource name. */
+	// +optional
+	InstanceDisplayName *string `json:"instanceDisplayName,omitempty"`
+}
+
+type EntryCloudSQL struct {
+	/* Database name. */
+	// +optional
+	Database *string `json:"database,omitempty"`
+
+	/* Cloud SQL instance ID in the format of `project:location:instance`. */
+	// +optional
+	InstanceID *string `json:"instanceID,omitempty"`
+
+	/* Type of the Cloud SQL database. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type EntryColumns struct {
+	/* Required. Name of the column.
+
+	Must be a UTF-8 string without dots (.).
+	The maximum size is 64 bytes. */
+	Column string `json:"column"`
+
+	/* Optional. Default value for the column. */
+	// +optional
+	DefaultValue *string `json:"defaultValue,omitempty"`
+
+	/* Optional. Description of the column. Default value is an empty string.
+
+	The description must be a UTF-8 string with the maximum size of 2000
+	bytes. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Optional. Garbage collection policy for the column or column family. Applies to systems like Cloud Bigtable. */
+	// +optional
+	GcRule *string `json:"gcRule,omitempty"`
+
+	/* Optional. Most important inclusion of this column. */
+	// +optional
+	HighestIndexingType *string `json:"highestIndexingType,omitempty"`
+
+	/* Looker specific column info of this column. */
+	// +optional
+	LookerColumnSpec *EntryLookerColumnSpec `json:"lookerColumnSpec,omitempty"`
+
+	/* Optional. A column's mode indicates whether values in this column are
+	required, nullable, or repeated.
+
+	Only `NULLABLE`, `REQUIRED`, and `REPEATED` values are supported.
+	Default mode is `NULLABLE`. */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
+	/* Optional. Ordinal position */
+	// +optional
+	OrdinalPosition *int32 `json:"ordinalPosition,omitempty"`
+
+	/* Optional. The subtype of the RANGE, if the type of this field is RANGE. If the type is RANGE, this field is required. Possible values for the field element type of a RANGE include: * DATE * DATETIME * TIMESTAMP */
+	// +optional
+	RangeElementType *EntryRangeElementType `json:"rangeElementType,omitempty"`
+
+	/* Optional. Schema of sub-columns. A column can have zero or more sub-columns. */
+	// +optional
+	Subcolumns *apiextensions.JSON `json:"subcolumns,omitempty"`
+
+	/* Required. Type of the column.
+
+	Must be a UTF-8 string with the maximum size of 128 bytes. */
+	Type string `json:"type"`
+}
+
+type EntryContacts struct {
+	/* The list of contact people for the entry. */
+	// +optional
+	People []EntryPeople `json:"people,omitempty"`
+}
+
+type EntryCsv struct {
+}
+
+type EntryDataFormat struct {
+	/* Schema in Avro JSON format. */
+	// +optional
+	Avro *EntryAvro `json:"avro,omitempty"`
+
+	/* Marks a CSV-encoded data source. */
+	// +optional
+	Csv *EntryCsv `json:"csv,omitempty"`
+
+	/* Marks an ORC-encoded data source. */
+	// +optional
+	Orc *EntryOrc `json:"orc,omitempty"`
+
+	/* Marks a Parquet-encoded data source. */
+	// +optional
+	Parquet *EntryParquet `json:"parquet,omitempty"`
+
+	/* Schema in protocol buffer format. */
+	// +optional
+	Protobuf *EntryProtobuf `json:"protobuf,omitempty"`
+
+	/* Schema in Thrift format. */
+	// +optional
+	Thrift *EntryThrift `json:"thrift,omitempty"`
+}
+
+type EntryDataSourceConnectionSpec struct {
+	/* Output only. Fields specific to BigQuery connections. */
+	// +optional
+	BigqueryConnectionSpec *EntryBigqueryConnectionSpec `json:"bigqueryConnectionSpec,omitempty"`
+}
+
+type EntryDatabaseTableSpec struct {
+	/* Spec what aplies to tables that are actually views. Not set for "real" tables. */
+	// +optional
+	DatabaseViewSpec *EntryDatabaseViewSpec `json:"databaseViewSpec,omitempty"`
+
+	/* Type of this table. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type EntryDatabaseViewSpec struct {
+	/* Name of a singular table this view reflects one to one. */
+	// +optional
+	BaseTable *string `json:"baseTable,omitempty"`
+
+	/* SQL query used to generate this view. */
+	// +optional
+	SqlQuery *string `json:"sqlQuery,omitempty"`
+
+	/* Type of this view. */
+	// +optional
+	ViewType *string `json:"viewType,omitempty"`
+}
+
+type EntryDataplexFileset struct {
+	/* Common Dataplex fields. */
+	// +optional
+	DataplexSpec *EntryDataplexSpec `json:"dataplexSpec,omitempty"`
+}
+
+type EntryDataplexSpec struct {
+	/* Fully qualified resource name of an asset in Dataplex, to which the underlying data source (Cloud Storage bucket or BigQuery dataset) of the entity is attached. */
+	// +optional
+	Asset *string `json:"asset,omitempty"`
+
+	/* Compression format of the data, e.g., zip, gzip etc. */
+	// +optional
+	CompressionFormat *string `json:"compressionFormat,omitempty"`
+
+	/* Format of the data. */
+	// +optional
+	DataFormat *EntryDataFormat `json:"dataFormat,omitempty"`
+
+	/* Project ID of the underlying Cloud Storage or BigQuery data. Note that this may not be the same project as the correspondingly Dataplex lake / zone / asset. */
+	// +optional
+	ProjectID *string `json:"projectID,omitempty"`
+}
+
+type EntryDatasetSpec struct {
+	/* Vertex AI Dataset specific fields */
+	// +optional
+	VertexDatasetSpec *EntryVertexDatasetSpec `json:"vertexDatasetSpec,omitempty"`
+}
+
+type EntryEntryOverview struct {
+	/* Entry overview with support for rich text.
+
+	The overview must only contain Unicode characters, and should be
+	formatted using HTML.
+	The maximum length is 10 MiB as this value holds HTML descriptions
+	including encoded images. The maximum length of the text without images
+	is 100 KiB. */
+	// +optional
+	Overview *string `json:"overview,omitempty"`
+}
+
+type EntryFeatureOnlineStoreSpec struct {
+}
+
+type EntryFilesetSpec struct {
+	/* Fields specific to a Dataplex fileset and present only in the Dataplex fileset entries. */
+	// +optional
+	DataplexFileset *EntryDataplexFileset `json:"dataplexFileset,omitempty"`
+}
+
+type EntryGcsFilesetSpec struct {
+	/* Required. Patterns to identify a set of files in Google Cloud Storage.
+
+	For more information, see [Wildcard Names]
+	(https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames).
+
+	Note: Currently, bucket wildcards are not supported.
+
+	Examples of valid `file_patterns`:
+
+	* `gs://bucket_name/dir/*`: matches all files in `bucket_name/dir`
+	directory
+	* `gs://bucket_name/dir/**`: matches all files in `bucket_name/dir`
+	and all subdirectories
+	* `gs://bucket_name/file*`: matches files prefixed by `file` in
+	`bucket_name`
+	* `gs://bucket_name/??.txt`: matches files with two characters followed by
+	`.txt` in `bucket_name`
+	* `gs://bucket_name/[aeiou].txt`: matches files that contain a single
+	vowel character followed by `.txt` in
+	`bucket_name`
+	* `gs://bucket_name/[a-m].txt`: matches files that contain `a`, `b`, ...
+	or `m` followed by `.txt` in `bucket_name`
+	* `gs://bucket_name/a/* /b`: matches all files in `bucket_name` that match
+	the `a/* /b` pattern, such as `a/c/b`, `a/d/b`
+	* `gs://another_bucket/a.txt`: matches `gs://another_bucket/a.txt`
+
+	You can combine wildcards to match complex sets of files, for example:
+
+	`gs://bucket_name/[a-m]??.j*g` */
+	FilePatterns []string `json:"filePatterns"`
+}
+
+type EntryLookerColumnSpec struct {
+	/* Looker specific column type of this column. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type EntryLookerSystemSpec struct {
+	/* Name of the parent Looker Instance. Empty if it does not exist. */
+	// +optional
+	ParentInstanceDisplayName *string `json:"parentInstanceDisplayName,omitempty"`
+
+	/* ID of the parent Looker Instance. Empty if it does not exist. Example value: `someinstance.looker.com` */
+	// +optional
+	ParentInstanceID *string `json:"parentInstanceID,omitempty"`
+
+	/* Name of the parent Model. Empty if it does not exist. */
+	// +optional
+	ParentModelDisplayName *string `json:"parentModelDisplayName,omitempty"`
+
+	/* ID of the parent Model. Empty if it does not exist. */
+	// +optional
+	ParentModelID *string `json:"parentModelID,omitempty"`
+
+	/* Name of the parent View. Empty if it does not exist. */
+	// +optional
+	ParentViewDisplayName *string `json:"parentViewDisplayName,omitempty"`
+
+	/* ID of the parent View. Empty if it does not exist. */
+	// +optional
+	ParentViewID *string `json:"parentViewID,omitempty"`
+}
+
+type EntryModelSpec struct {
+	/* Specification for vertex model resources. */
+	// +optional
+	VertexModelSpec *EntryVertexModelSpec `json:"vertexModelSpec,omitempty"`
+}
+
+type EntryOrc struct {
+}
+
+type EntryParquet struct {
+}
+
+type EntryPeople struct {
+	/* Designation of the person, for example, Data Steward. */
+	// +optional
+	Designation *string `json:"designation,omitempty"`
+
+	/* Email of the person in the format of `john.doe@xyz`, `<john.doe@xyz>`, or `John Doe<john.doe@xyz>`. */
+	// +optional
+	Email *string `json:"email,omitempty"`
+}
+
+type EntryProtobuf struct {
+	/* Protocol buffer source of the schema. */
+	// +optional
+	Text *string `json:"text,omitempty"`
+}
+
+type EntryRangeElementType struct {
+	/* Required. The type of a field element. See [ColumnSchema.type][google.cloud.datacatalog.v1.ColumnSchema.type]. */
+	Type string `json:"type"`
+}
+
+type EntryRoutineArguments struct {
+	/* Specifies whether the argument is input or output. */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
+	/* The name of the argument. A return argument of a function might not have a name. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Type of the argument. The exact value depends on the source system and the language. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type EntryRoutineSpec struct {
+	/* Fields specific for BigQuery routines. */
+	// +optional
+	BigqueryRoutineSpec *EntryBigqueryRoutineSpec `json:"bigqueryRoutineSpec,omitempty"`
+
+	/* The body of the routine. */
+	// +optional
+	DefinitionBody *string `json:"definitionBody,omitempty"`
+
+	/* The language the routine is written in. The exact value depends on the
+	source system. For BigQuery routines, possible values are:
+
+	* `SQL`
+	* `JAVASCRIPT` */
+	// +optional
+	Language *string `json:"language,omitempty"`
+
+	/* Return type of the argument. The exact value depends on the source system and the language. */
+	// +optional
+	ReturnType *string `json:"returnType,omitempty"`
+
+	/* Arguments of the routine. */
+	// +optional
+	RoutineArguments []EntryRoutineArguments `json:"routineArguments,omitempty"`
+
+	/* The type of the routine. */
+	// +optional
+	RoutineType *string `json:"routineType,omitempty"`
+}
+
+type EntrySchema struct {
+	/* The unified GoogleSQL-like schema of columns.
+
+	The overall maximum number of columns and nested columns is 10,000.
+	The maximum nested depth is 15 levels. */
+	// +optional
+	Columns []EntryColumns `json:"columns,omitempty"`
+}
+
+type EntryServiceSpec struct {
+	/* Specification that applies to Instance entries of `CLOUD_BIGTABLE` system. */
+	// +optional
+	CloudBigtableInstanceSpec *EntryCloudBigtableInstanceSpec `json:"cloudBigtableInstanceSpec,omitempty"`
+}
+
+type EntrySourceSystemTimestamps struct {
+	/* Creation timestamp of the resource within the given system. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Timestamp of the last modification of the resource or its metadata within
+	a given system.
+
+	Note: Depending on the source system, not every modification updates this
+	timestamp.
+	For example, BigQuery timestamps every metadata modification but not data
+	or permission changes. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type EntrySqlDatabaseSystemSpec struct {
+	/* Version of the database engine. */
+	// +optional
+	DatabaseVersion *string `json:"databaseVersion,omitempty"`
+
+	/* Host of the SQL database enum InstanceHost { UNDEFINED = 0; SELF_HOSTED = 1; CLOUD_SQL = 2; AMAZON_RDS = 3; AZURE_SQL = 4; } Host of the enclousing database instance. */
+	// +optional
+	InstanceHost *string `json:"instanceHost,omitempty"`
+
+	/* SQL Database Engine. enum SqlEngine { UNDEFINED = 0; MY_SQL = 1; POSTGRE_SQL = 2; SQL_SERVER = 3; } Engine of the enclosing database instance. */
+	// +optional
+	SqlEngine *string `json:"sqlEngine,omitempty"`
+}
+
+type EntryThrift struct {
+	/* Thrift IDL source of the schema. */
+	// +optional
+	Text *string `json:"text,omitempty"`
+}
+
+type EntryUsageSignal struct {
+	/* Favorite count in the source system. */
+	// +optional
+	FavoriteCount *int64 `json:"favoriteCount,omitempty"`
+
+	/* The end timestamp of the duration of usage statistics. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type EntryVertexDatasetSpec struct {
+	/* The number of DataItems in this Dataset. Only apply for non-structured Dataset. */
+	// +optional
+	DataItemCount *int64 `json:"dataItemCount,omitempty"`
+
+	/* Type of the dataset. */
+	// +optional
+	DataType *string `json:"dataType,omitempty"`
+}
+
+type EntryVertexModelSourceInfo struct {
+	/* If this Model is copy of another Model. If true then [source_type][google.cloud.datacatalog.v1.VertexModelSourceInfo.source_type] pertains to the original. */
+	// +optional
+	Copy *bool `json:"copy,omitempty"`
+
+	/* Type of the model source. */
+	// +optional
+	SourceType *string `json:"sourceType,omitempty"`
+}
+
+type EntryVertexModelSpec struct {
+	/* URI of the Docker image to be used as the custom container for serving predictions. */
+	// +optional
+	ContainerImageURI *string `json:"containerImageURI,omitempty"`
+
+	/* User provided version aliases so that a model version can be referenced via alias */
+	// +optional
+	VersionAliases []string `json:"versionAliases,omitempty"`
+
+	/* The description of this version. */
+	// +optional
+	VersionDescription *string `json:"versionDescription,omitempty"`
+
+	/* The version ID of the model. */
+	// +optional
+	VersionID *string `json:"versionID,omitempty"`
+
+	/* Source of a Vertex model. */
+	// +optional
+	VertexModelSourceInfo *EntryVertexModelSourceInfo `json:"vertexModelSourceInfo,omitempty"`
+}
+
+type DataCatalogEntrySpec struct {
+	/* Business Context of the entry. Not supported for BigQuery datasets */
+	// +optional
+	BusinessContext *EntryBusinessContext `json:"businessContext,omitempty"`
+
+	/* Specification that applies to Cloud Bigtable system. Only settable when `integrated_system` is equal to `CLOUD_BIGTABLE` */
+	// +optional
+	CloudBigtableSystemSpec *EntryCloudBigtableSystemSpec `json:"cloudBigtableSystemSpec,omitempty"`
+
+	/* Specification that applies to a data source connection. Valid only for entries with the `DATA_SOURCE_CONNECTION` type. */
+	// +optional
+	DataSourceConnectionSpec *EntryDataSourceConnectionSpec `json:"dataSourceConnectionSpec,omitempty"`
+
+	/* Specification that applies to a table resource. Valid only for entries with the `TABLE` or `EXPLORE` type. */
+	// +optional
+	DatabaseTableSpec *EntryDatabaseTableSpec `json:"databaseTableSpec,omitempty"`
+
+	/* Specification that applies to a dataset. */
+	// +optional
+	DatasetSpec *EntryDatasetSpec `json:"datasetSpec,omitempty"`
+
+	/* Entry description that can consist of several sentences or paragraphs
+	that describe entry contents.
+
+	The description must not contain Unicode non-characters as well as C0
+	and C1 control codes except tabs (HT), new lines (LF), carriage returns
+	(CR), and page breaks (FF).
+	The maximum size is 2000 bytes when encoded in UTF-8.
+	Default value is an empty string. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Display name of an entry.
+
+	The maximum size is 500 bytes when encoded in UTF-8.
+	Default value is an empty string. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Reference to the entry group that contains the entry. */
+	EntryGroupRef v1alpha1.ResourceRef `json:"entryGroupRef"`
+
+	/* FeatureonlineStore spec for Vertex AI Feature Store. */
+	// +optional
+	FeatureOnlineStoreSpec *EntryFeatureOnlineStoreSpec `json:"featureOnlineStoreSpec,omitempty"`
+
+	/* Specification that applies to a fileset resource. Valid only for entries with the `FILESET` type. */
+	// +optional
+	FilesetSpec *EntryFilesetSpec `json:"filesetSpec,omitempty"`
+
+	/* Specification that applies to a Cloud Storage fileset. Valid only for entries with the `FILESET` type. */
+	// +optional
+	GcsFilesetSpec *EntryGcsFilesetSpec `json:"gcsFilesetSpec,omitempty"`
+
+	/* Cloud labels attached to the entry.
+
+	In Data Catalog, you can create and modify labels attached only to custom
+	entries. Synced entries have unmodifiable labels that come from the source
+	system. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	/* Specification that applies to Looker sysstem. Only settable when `user_specified_system` is equal to `LOOKER` */
+	// +optional
+	LookerSystemSpec *EntryLookerSystemSpec `json:"lookerSystemSpec,omitempty"`
+
+	/* Model specification. */
+	// +optional
+	ModelSpec *EntryModelSpec `json:"modelSpec,omitempty"`
+
+	/* The DataCatalogEntry name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Schema of the entry (e.g. BigQuery, GoogleSQL, Avro schema), as a json string. An entry might not have any schema
-	attached to it. See
-	https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.entryGroups.entries#schema
-	for what fields this schema can contain. */
+	/* Specification that applies to a user-defined function or procedure. Valid only for entries with the `ROUTINE` type. */
 	// +optional
-	Schema *string `json:"schema,omitempty"`
+	RoutineSpec *EntryRoutineSpec `json:"routineSpec,omitempty"`
 
-	/* Immutable. The type of the entry. Only used for Entries with types in the EntryType enum.
-	Currently, only FILESET enum value is allowed. All other entries created through Data Catalog must use userSpecifiedType. Possible values: ["FILESET"]. */
+	/* Schema of the entry. An entry might not have any schema attached to it. */
+	// +optional
+	Schema *EntrySchema `json:"schema,omitempty"`
+
+	/* Specification that applies to a Service resource. */
+	// +optional
+	ServiceSpec *EntryServiceSpec `json:"serviceSpec,omitempty"`
+
+	/* Timestamps from the underlying resource, not from the Data Catalog
+	entry.
+
+	Output only when the entry has a system listed in the `IntegratedSystem`
+	enum. For entries with `user_specified_system`, this field is optional
+	and defaults to an empty timestamp. */
+	// +optional
+	SourceSystemTimestamps *EntrySourceSystemTimestamps `json:"sourceSystemTimestamps,omitempty"`
+
+	/* Specification that applies to a relational database system. Only settable when `user_specified_system` is equal to `SQL_DATABASE` */
+	// +optional
+	SqlDatabaseSystemSpec *EntrySqlDatabaseSystemSpec `json:"sqlDatabaseSystemSpec,omitempty"`
+
+	/* The type of the entry.
+
+	For details, see [`EntryType`](#entrytype). */
 	// +optional
 	Type *string `json:"type,omitempty"`
 
-	/* This field indicates the entry's source system that Data Catalog does not integrate with.
-	userSpecifiedSystem strings must begin with a letter or underscore and can only contain letters, numbers,
-	and underscores; are case insensitive; must be at least 1 character and at most 64 characters long. */
+	/* Resource usage statistics. */
+	// +optional
+	UsageSignal *EntryUsageSignal `json:"usageSignal,omitempty"`
+
+	/* Indicates the entry's source system that Data Catalog doesn't
+	automatically integrate with.
+
+	The `user_specified_system` string has the following limitations:
+
+	* Is case insensitive.
+	* Must begin with a letter or underscore.
+	* Can only contain letters, numbers, and underscores.
+	* Must be at least 1 character and at most 64 characters long. */
 	// +optional
 	UserSpecifiedSystem *string `json:"userSpecifiedSystem,omitempty"`
 
-	/* Entry type if it does not fit any of the input-allowed values listed in EntryType enum above.
-	When creating an entry, users should check the enum values first, if nothing matches the entry
-	to be created, then provide a custom value, for example "my_special_type".
-	userSpecifiedType strings must begin with a letter or underscore and can only contain letters,
-	numbers, and underscores; are case insensitive; must be at least 1 character and at most 64 characters long. */
+	/* Custom entry type that doesn't match any of the values allowed for input
+	and listed in the `EntryType` enum.
+
+	When creating an entry, first check the type values in the enum.
+	If there are no appropriate types for the new entry,
+	provide a custom value, for example, `my_special_type`.
+
+	The `user_specified_type` string has the following limitations:
+
+	* Is case insensitive.
+	* Must begin with a letter or underscore.
+	* Can only contain letters, numbers, and underscores.
+	* Must be at least 1 character and at most 64 characters long. */
 	// +optional
 	UserSpecifiedType *string `json:"userSpecifiedType,omitempty"`
 }
 
+type EntryAvroStatus struct {
+	/* JSON source of the Avro schema. */
+	// +optional
+	Text *string `json:"text,omitempty"`
+}
+
 type EntryBigqueryDateShardedSpecStatus struct {
-	/* The Data Catalog resource name of the dataset entry the current table belongs to, for example,
-	projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/entries/{entryId}. */
+	/* Output only. The Data Catalog resource name of the dataset entry the
+	current table belongs to. For example:
+
+	`projects/{PROJECT_ID}/locations/{LOCATION}/entrygroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}`. */
 	// +optional
 	Dataset *string `json:"dataset,omitempty"`
 
-	/* Total number of shards. */
+	/* Output only. BigQuery resource name of the latest shard. */
+	// +optional
+	LatestShardResource *string `json:"latestShardResource,omitempty"`
+
+	/* Output only. Total number of shards. */
 	// +optional
 	ShardCount *int64 `json:"shardCount,omitempty"`
 
-	/* The table name prefix of the shards. The name of any given shard is [tablePrefix]YYYYMMDD,
-	for example, for shard MyTable20180101, the tablePrefix is MyTable. */
+	/* Output only. The table name prefix of the shards.
+
+	The name of any given shard is `[table_prefix]YYYYMMDD`.
+	For example, for the `MyTable20180101` shard, the
+	`table_prefix` is `MyTable`. */
 	// +optional
 	TablePrefix *string `json:"tablePrefix,omitempty"`
 }
 
 type EntryBigqueryTableSpecStatus struct {
-	/* The table source type. */
+	/* Output only. The table source type. */
 	// +optional
 	TableSourceType *string `json:"tableSourceType,omitempty"`
 
-	/* Spec of a BigQuery table. This field should only be populated if tableSourceType is BIGQUERY_TABLE. */
+	/* Specification of a BigQuery table. Populated only if the `table_source_type` is `BIGQUERY_TABLE`. */
 	// +optional
-	TableSpec []EntryTableSpecStatus `json:"tableSpec,omitempty"`
+	TableSpec *EntryTableSpecStatus `json:"tableSpec,omitempty"`
 
-	/* Table view specification. This field should only be populated if tableSourceType is BIGQUERY_VIEW. */
+	/* Table view specification. Populated only if the `table_source_type` is `BIGQUERY_VIEW`. */
 	// +optional
-	ViewSpec []EntryViewSpecStatus `json:"viewSpec,omitempty"`
+	ViewSpec *EntryViewSpecStatus `json:"viewSpec,omitempty"`
+}
+
+type EntryCsvStatus struct {
+}
+
+type EntryDataFormatStatus struct {
+	/* Schema in Avro JSON format. */
+	// +optional
+	Avro *EntryAvroStatus `json:"avro,omitempty"`
+
+	/* Marks a CSV-encoded data source. */
+	// +optional
+	Csv *EntryCsvStatus `json:"csv,omitempty"`
+
+	/* Marks an ORC-encoded data source. */
+	// +optional
+	Orc *EntryOrcStatus `json:"orc,omitempty"`
+
+	/* Marks a Parquet-encoded data source. */
+	// +optional
+	Parquet *EntryParquetStatus `json:"parquet,omitempty"`
+
+	/* Schema in protocol buffer format. */
+	// +optional
+	Protobuf *EntryProtobufStatus `json:"protobuf,omitempty"`
+
+	/* Schema in Thrift format. */
+	// +optional
+	Thrift *EntryThriftStatus `json:"thrift,omitempty"`
+}
+
+type EntryDataSourceStatus struct {
+	/* Full name of a resource as defined by the service. For example:
+
+	`//bigquery.googleapis.com/projects/{PROJECT_ID}/locations/{LOCATION}/datasets/{DATASET_ID}/tables/{TABLE_ID}` */
+	// +optional
+	Resource *string `json:"resource,omitempty"`
+
+	/* Service that physically stores the data. */
+	// +optional
+	Service *string `json:"service,omitempty"`
+
+	/* Output only. Data Catalog entry name, if applicable. */
+	// +optional
+	SourceEntry *string `json:"sourceEntry,omitempty"`
+
+	/* Detailed properties of the underlying storage. */
+	// +optional
+	StorageProperties *EntryStoragePropertiesStatus `json:"storageProperties,omitempty"`
+}
+
+type EntryDatabaseTableSpecStatus struct {
+	/* Output only. Fields specific to a Dataplex table and present only in the Dataplex table entries. */
+	// +optional
+	DataplexTable *EntryDataplexTableStatus `json:"dataplexTable,omitempty"`
+}
+
+type EntryDataplexSpecStatus struct {
+	/* Fully qualified resource name of an asset in Dataplex, to which the underlying data source (Cloud Storage bucket or BigQuery dataset) of the entity is attached. */
+	// +optional
+	Asset *string `json:"asset,omitempty"`
+
+	/* Compression format of the data, e.g., zip, gzip etc. */
+	// +optional
+	CompressionFormat *string `json:"compressionFormat,omitempty"`
+
+	/* Format of the data. */
+	// +optional
+	DataFormat *EntryDataFormatStatus `json:"dataFormat,omitempty"`
+
+	/* Project ID of the underlying Cloud Storage or BigQuery data. Note that this may not be the same project as the correspondingly Dataplex lake / zone / asset. */
+	// +optional
+	ProjectID *string `json:"projectID,omitempty"`
+}
+
+type EntryDataplexTableStatus struct {
+	/* Common Dataplex fields. */
+	// +optional
+	DataplexSpec *EntryDataplexSpecStatus `json:"dataplexSpec,omitempty"`
+
+	/* List of external tables registered by Dataplex in other systems based on
+	the same underlying data.
+
+	External tables allow to query this data in those systems. */
+	// +optional
+	ExternalTables []EntryExternalTablesStatus `json:"externalTables,omitempty"`
+
+	/* Indicates if the table schema is managed by the user or not. */
+	// +optional
+	UserManaged *bool `json:"userManaged,omitempty"`
+}
+
+type EntryExternalTablesStatus struct {
+	/* Name of the Data Catalog entry representing the external table. */
+	// +optional
+	DataCatalogEntry *string `json:"dataCatalogEntry,omitempty"`
+
+	/* Fully qualified name (FQN) of the external table. */
+	// +optional
+	FullyQualifiedName *string `json:"fullyQualifiedName,omitempty"`
+
+	/* Google Cloud resource name of the external table. */
+	// +optional
+	GoogleCloudResource *string `json:"googleCloudResource,omitempty"`
+
+	/* Service in which the external table is registered. */
+	// +optional
+	System *string `json:"system,omitempty"`
+}
+
+type EntryFeatureOnlineStoreSpecStatus struct {
+	/* Output only. Type of underelaying storage for the FeatureOnlineStore. */
+	// +optional
+	StorageType *string `json:"storageType,omitempty"`
+}
+
+type EntryGcsFilesetSpecStatus struct {
+	/* Output only. Sample files contained in this fileset, not all files contained in this fileset are represented here. */
+	// +optional
+	SampleGCSFileSpecs []EntrySampleGCSFileSpecsStatus `json:"sampleGCSFileSpecs,omitempty"`
+}
+
+type EntryObservedStateStatus struct {
+	/* Output only. Specification for a group of BigQuery tables with
+	the `[prefix]YYYYMMDD` name pattern.
+
+	For more information, see [Introduction to partitioned tables]
+	(https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding). */
+	// +optional
+	BigqueryDateShardedSpec *EntryBigqueryDateShardedSpecStatus `json:"bigqueryDateShardedSpec,omitempty"`
+
+	/* Output only. Specification that applies to a BigQuery table. Valid only for entries with the `TABLE` type. */
+	// +optional
+	BigqueryTableSpec *EntryBigqueryTableSpecStatus `json:"bigqueryTableSpec,omitempty"`
+
+	/* Output only. Physical location of the entry. */
+	// +optional
+	DataSource *EntryDataSourceStatus `json:"dataSource,omitempty"`
+
+	/* Specification that applies to a table resource. Valid only for entries with the `TABLE` or `EXPLORE` type. */
+	// +optional
+	DatabaseTableSpec *EntryDatabaseTableSpecStatus `json:"databaseTableSpec,omitempty"`
+
+	/* FeatureonlineStore spec for Vertex AI Feature Store. */
+	// +optional
+	FeatureOnlineStoreSpec *EntryFeatureOnlineStoreSpecStatus `json:"featureOnlineStoreSpec,omitempty"`
+
+	/* Specification that applies to a Cloud Storage fileset. Valid only for entries with the `FILESET` type. */
+	// +optional
+	GcsFilesetSpec *EntryGcsFilesetSpecStatus `json:"gcsFilesetSpec,omitempty"`
+
+	/* Output only. Indicates the entry's source system that Data Catalog integrates with, such as BigQuery, Pub/Sub, or Dataproc Metastore. */
+	// +optional
+	IntegratedSystem *string `json:"integratedSystem,omitempty"`
+
+	/* The resource this metadata entry refers to.
+
+	For Google Cloud Platform resources, `linked_resource` is the
+	[Full Resource Name]
+	(https://cloud.google.com/apis/design/resource_names#full_resource_name).
+
+	Output only when the entry is one of the types in the `EntryType` enum.
+
+	For entries with a `user_specified_type`, this field is optional and
+	defaults to an empty string.
+
+	The resource string must contain only letters (a-z, A-Z), numbers (0-9),
+	underscores (_), periods (.), colons (:), slashes (/), dashes (-),
+	and hashes (#).
+	The maximum size is 200 bytes when encoded in UTF-8. */
+	// +optional
+	LinkedResource *string `json:"linkedResource,omitempty"`
+
+	/* Output only. Additional information related to the entry. Private to the current user. */
+	// +optional
+	PersonalDetails *EntryPersonalDetailsStatus `json:"personalDetails,omitempty"`
+
+	/* Resource usage statistics. */
+	// +optional
+	UsageSignal *EntryUsageSignalStatus `json:"usageSignal,omitempty"`
+}
+
+type EntryOrcStatus struct {
+}
+
+type EntryParquetStatus struct {
+}
+
+type EntryPersonalDetailsStatus struct {
+	/* Set if the entry is starred; unset otherwise. */
+	// +optional
+	StarTime *string `json:"starTime,omitempty"`
+
+	/* True if the entry is starred by the user; false otherwise. */
+	// +optional
+	Starred *bool `json:"starred,omitempty"`
+}
+
+type EntryProtobufStatus struct {
+	/* Protocol buffer source of the schema. */
+	// +optional
+	Text *string `json:"text,omitempty"`
+}
+
+type EntrySampleGCSFileSpecsStatus struct {
+	/* Required. Full file path. Example: `gs://bucket_name/a/b.txt`. */
+	FilePath string `json:"filePath"`
+}
+
+type EntryStoragePropertiesStatus struct {
+	/* Patterns to identify a set of files for this fileset.
+
+	Examples of a valid `file_pattern`:
+
+	* `gs://bucket_name/dir/*`: matches all files in the `bucket_name/dir`
+	directory
+	* `gs://bucket_name/dir/**`: matches all files in the `bucket_name/dir`
+	and all subdirectories recursively
+	* `gs://bucket_name/file*`: matches files prefixed by `file` in
+	`bucket_name`
+	* `gs://bucket_name/??.txt`: matches files with two characters followed by
+	`.txt` in `bucket_name`
+	* `gs://bucket_name/[aeiou].txt`: matches files that contain a single
+	vowel character followed by `.txt` in
+	`bucket_name`
+	* `gs://bucket_name/[a-m].txt`: matches files that contain `a`, `b`, ...
+	or `m` followed by `.txt` in `bucket_name`
+	* `gs://bucket_name/a/* /b`: matches all files in `bucket_name` that match
+	the `a/* /b` pattern, such as `a/c/b`, `a/d/b`
+	* `gs://another_bucket/a.txt`: matches `gs://another_bucket/a.txt` */
+	// +optional
+	FilePattern []string `json:"filePattern,omitempty"`
+
+	/* File type in MIME format, for example, `text/plain`. */
+	// +optional
+	FileType *string `json:"fileType,omitempty"`
 }
 
 type EntryTableSpecStatus struct {
-	/* If the table is a dated shard, i.e., with name pattern [prefix]YYYYMMDD, groupedEntry is the
-	Data Catalog resource name of the date sharded grouped entry, for example,
-	projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/entries/{entryId}.
-	Otherwise, groupedEntry is empty. */
+	/* Output only. If the table is date-sharded, that is, it matches the
+	`[prefix]YYYYMMDD` name pattern, this field is the Data Catalog resource
+	name of the date-sharded grouped entry. For example:
+
+	`projects/{PROJECT_ID}/locations/{LOCATION}/entrygroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}`.
+
+	Otherwise, `grouped_entry` is empty. */
 	// +optional
 	GroupedEntry *string `json:"groupedEntry,omitempty"`
 }
 
+type EntryThriftStatus struct {
+	/* Thrift IDL source of the schema. */
+	// +optional
+	Text *string `json:"text,omitempty"`
+}
+
+type EntryUsageSignalStatus struct {
+}
+
 type EntryViewSpecStatus struct {
-	/* The query that defines the table view. */
+	/* Output only. The query that defines the table view. */
 	// +optional
 	ViewQuery *string `json:"viewQuery,omitempty"`
 }
@@ -174,28 +983,17 @@ type DataCatalogEntryStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataCatalogEntry's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Specification for a group of BigQuery tables with name pattern [prefix]YYYYMMDD.
-	Context: https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding. */
+	/* A unique specifier for the DataCatalogEntry resource in GCP. */
 	// +optional
-	BigqueryDateShardedSpec []EntryBigqueryDateShardedSpecStatus `json:"bigqueryDateShardedSpec,omitempty"`
-
-	/* Specification that applies to a BigQuery table. This is only valid on entries of type TABLE. */
-	// +optional
-	BigqueryTableSpec []EntryBigqueryTableSpecStatus `json:"bigqueryTableSpec,omitempty"`
-
-	/* This field indicates the entry's source system that Data Catalog integrates with, such as BigQuery or Pub/Sub. */
-	// +optional
-	IntegratedSystem *string `json:"integratedSystem,omitempty"`
-
-	/* The Data Catalog resource name of the entry in URL format.
-	Example: projects/{project_id}/locations/{location}/entryGroups/{entryGroupId}/entries/{entryId}.
-	Note that this Entry and its child resources may not actually be stored in the location in this name. */
-	// +optional
-	Name *string `json:"name,omitempty"`
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *EntryObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
@@ -203,9 +1001,7 @@ type DataCatalogEntryStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatacatalogentry;gcpdatacatalogentries
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
