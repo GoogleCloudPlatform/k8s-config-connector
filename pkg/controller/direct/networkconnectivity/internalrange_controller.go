@@ -62,10 +62,11 @@ func (m *internalRangeModel) AdapterForObject(ctx context.Context, reader client
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewInternalRangeIdentity(ctx, reader, obj)
+	idIdentity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := idIdentity.(*krm.InternalRangeIdentity)
 
 	// normalize reference fields
 	if obj.Spec.NetworkRef != nil {
@@ -143,7 +144,8 @@ func (a *internalRangeAdapter) Create(ctx context.Context, createOp *directbase.
 
 	fqn := a.id.String()
 
-	op, err := a.gcpClient.Projects.Locations.InternalRanges.Create(a.id.Parent().String(), req).InternalRangeId(a.id.ID()).Context(ctx).Do()
+	parent := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
+	op, err := a.gcpClient.Projects.Locations.InternalRanges.Create(parent, req).InternalRangeId(a.id.InternalRange).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating networkconnectivity internalrange %s: %w", fqn, err)
 	}
@@ -252,8 +254,8 @@ func (a *internalRangeAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -270,7 +272,7 @@ func (a *internalRangeAdapter) Delete(ctx context.Context, deleteOp *directbase.
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting networkconnectivity internalrange", "name", a.id)
 	fqn := a.id.String()
-	op, err := a.gcpClient.Projects.Locations.ServiceConnectionPolicies.Delete(fqn).Context(ctx).Do()
+	op, err := a.gcpClient.Projects.Locations.InternalRanges.Delete(fqn).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			log.V(2).Info("skipping delete for non-existent networkconnectivity internalrange, assuming it was already deleted", "name", a.id)
