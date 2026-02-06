@@ -149,6 +149,28 @@ func validatePath(t *testing.T, path string, generatedFiles, seenPaths map[strin
 	}
 }
 
+var (
+	// A list of regex patterns for URLs that should be skipped during validation.
+	skippedURLPatterns = []*regexp.Regexp{
+		regexp.MustCompile(`^https?://example\.com`),
+		regexp.MustCompile(`^https?://test\.com`),
+		regexp.MustCompile(`^http://localhost`),
+		regexp.MustCompile(`^http://metadata/`),
+		regexp.MustCompile(`\$\{.*?\}`),               // Templating variables
+		regexp.MustCompile(`\{\%.*?\%\}|\{\{.*?\}\}`), // Jinja/Go template syntax
+		regexp.MustCompile(`\[.*?\]`),                 // Placeholders
+	}
+)
+
+func shouldSkipURLValidation(url string) bool {
+	for _, pattern := range skippedURLPatterns {
+		if pattern.MatchString(url) {
+			return true
+		}
+	}
+	return false
+}
+
 func validateURLsInTemplates(t *testing.T, templatesDir string) {
 	t.Log("Validating external URLs in template files...")
 
@@ -169,6 +191,10 @@ func validateURLsInTemplates(t *testing.T, templatesDir string) {
 			matches := hrefRegex.FindAllStringSubmatch(string(content), -1)
 			for _, match := range matches {
 				url := match[1]
+
+				if shouldSkipURLValidation(url) {
+					continue
+				}
 
 				if strings.HasPrefix(url, "/") || strings.HasPrefix(url, "http") {
 					uniqueURLs[url] = append(uniqueURLs[url], path)
