@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -98,10 +98,10 @@ func (m *modelParameter) AdapterForObject(ctx context.Context, reader client.Rea
 
 	format := direct.ValueOf(obj.Spec.Format)
 
-	if format == ""	{
+	if format == "" {
 		obj.Spec.Format = direct.LazyPtr("UNFORMATTED")
 	} else {
-		if format != "UNFORMATTED" && format != "JSON" && format != "YAML"{
+		if format != "UNFORMATTED" && format != "JSON" && format != "YAML" {
 			return nil, fmt.Errorf("invalid format %q, only UNFORMATTED, JSON, and YAML are supported", format)
 		}
 	}
