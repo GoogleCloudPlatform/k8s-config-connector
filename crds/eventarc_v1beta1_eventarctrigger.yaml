@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.143.0
+    cnrm.cloud.google.com/version: ${CNRM_VERSION}
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -12,6 +12,7 @@ metadata:
     cnrm.cloud.google.com/system: "true"
   name: eventarctriggers.eventarc.cnrm.cloud.google.com
 spec:
+  preserveUnknownFields: false
   group: eventarc.cnrm.cloud.google.com
   names:
     categories:

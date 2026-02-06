@@ -23,6 +23,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"sigs.k8s.io/yaml"
@@ -75,6 +76,31 @@ func run(file, outputDir string) error {
 		if err != nil {
 			return fmt.Errorf("error marshalling CRD into bytes: %w", err)
 		}
+		// sigs.k8s.io/yaml (and the underlying go-yaml) omits preserveUnknownFields: false
+		// because of omitempty and it being the default value.
+		// For v1 CRDs, we want to match kustomize output which includes it.
+		if crd.APIVersion == "apiextensions.k8s.io/v1" {
+			// A simple but effective way to ensure it's there if it was in the original struct
+			// (which it is for our KCC CRDs).
+			if !crd.Spec.PreserveUnknownFields {
+				// Insert it into the marshaled YAML if it's missing.
+				// We look for 'spec:' and insert it after.
+				// This is a bit hacky but safer than using map[string]interface{} which might reorder everything.
+				// Actually, since we use sigs.k8s.io/yaml which is based on json, we can just use a map
+				// for marshaling if we want full control, but that's overkill.
+				
+				// Re-marshal into map to preserve fields that the struct might have missed
+				// but that's also tricky.
+				
+				// Let's use a simpler approach: if it's missing in the string, add it.
+				yamlStr := string(b)
+				if !containsPreserveUnknownFields(yamlStr) {
+					// Add it after 'spec:'
+					// We use a regex or just simple replacement
+					b = []byte(addPreserveUnknownFields(yamlStr))
+				}
+			}
+		}
 		outputName, err := crdgeneration.FileNameForCRD(crd)
 		if err != nil {
 			return fmt.Errorf("error determining file name for CRD with GVK %v: %w", crd.GroupVersionKind(), err)
@@ -85,4 +111,34 @@ func run(file, outputDir string) error {
 		}
 	}
 	return nil
+}
+
+func containsPreserveUnknownFields(yamlStr string) bool {
+	return strings.Contains(yamlStr, "preserveUnknownFields:")
+}
+
+func addPreserveUnknownFields(yamlStr string) string {
+	lines := strings.Split(yamlStr, "\n")
+	for i, line := range lines {
+		if strings.TrimSpace(line) == "spec:" {
+			// Find the next line's indentation
+			indent := ""
+			if i+1 < len(lines) {
+				for _, char := range lines[i+1] {
+					if char == ' ' {
+						indent += " "
+					} else {
+						break
+					}
+				}
+			}
+			if indent == "" {
+				indent = "  "
+			}
+			// Insert preserveUnknownFields: false
+			lines = append(lines[:i+1], append([]string{indent + "preserveUnknownFields: false"}, lines[i+1:]...)...)
+			break
+		}
+	}
+	return strings.Join(lines, "\n")
 }
