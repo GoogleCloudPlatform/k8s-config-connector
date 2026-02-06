@@ -236,7 +236,9 @@ func findAndReplaceInNestedFields(old, new string, fieldMap map[string][]*fieldP
 	for name, children := range fieldMap {
 		if name == old {
 			fieldMap[new] = children
-			delete(fieldMap, old)
+			if old != new {
+				delete(fieldMap, old)
+			}
 		}
 		// Replace in field type in nested struct
 		findAndReplaceInStructField(old, new, children)
@@ -502,6 +504,8 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 		}
 	case "float", "number":
 		return "float64"
+	case "schemaless":
+		return "apiextensions.JSON"
 	case "object":
 		if isSec {
 			return "v1alpha1.SecretKeyRef"
@@ -554,6 +558,10 @@ func formatToGoLiteral(t string) string {
 		return "int64"
 	case "float", "number":
 		return "float64"
+	case "schemaless":
+		return "apiextensions.JSON"
+	case "":
+		return "apiextensions.JSON"
 	default:
 		panic(fmt.Errorf("expected a JSONLiteral but got %v", t))
 	}
