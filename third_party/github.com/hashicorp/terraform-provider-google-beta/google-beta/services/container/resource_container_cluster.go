@@ -5615,9 +5615,9 @@ func flattenDnsEndpointConfig(dns *container.DNSEndpointConfig) []map[string]int
 	}
 	return []map[string]interface{}{
 		{
-			"endpoint":                    dns.Endpoint,
-			"allow_external_traffic":      dns.AllowExternalTraffic,
-			"enable_k8s_tokens_via_dns":   dns.EnableK8sTokensViaDns,
+			"endpoint":                  dns.Endpoint,
+			"allow_external_traffic":    dns.AllowExternalTraffic,
+			"enable_k8s_tokens_via_dns": dns.EnableK8sTokensViaDns,
 		},
 	}
 }
