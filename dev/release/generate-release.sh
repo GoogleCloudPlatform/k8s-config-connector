@@ -34,7 +34,7 @@ VERSION=${NEW_VERSION} STALE_VERSION=${STALE_VERSION} ./dev/tasks/propose-tag
 git add .
 git commit -m "Release ${NEW_VERSION}"
 
-# Step 5: Run Unit Tests
+# Step 4: Run Unit Tests
 echo "Running unit tests..."
 cd operator
 # We use an if statement to handle the failure case without exiting due to set -e
@@ -55,7 +55,7 @@ cd ..
 # If failed, fix the inaccessible URLs in the template files and rerun `make resource-docs`.
 VALIDATE_URLS="true" go test ./scripts/generate-google3-docs/...
 
-# Step 6: Format Code
+# Step 5: Format Code
 echo "Formatting code..."
 make fmt
 git add .
