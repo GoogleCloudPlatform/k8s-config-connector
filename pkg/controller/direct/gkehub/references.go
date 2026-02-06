@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -74,7 +76,7 @@ func resolveMembershipRef(ctx context.Context, reader client.Reader, obj *krm.GK
 	})
 	if err := reader.Get(ctx, key, membership); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced %v not found", key)
+			return nil, k8s.NewReferenceNotFoundError(membership.GroupVersionKind(), key)
 		}
 		return nil, fmt.Errorf("error reading referenced membership %v: %w", key, err)
 	}
@@ -134,7 +136,7 @@ func resolveFeatureRef(ctx context.Context, reader client.Reader, obj *krm.GKEHu
 	})
 	if err := reader.Get(ctx, key, feature); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced %v not found", key)
+			return nil, k8s.NewReferenceNotFoundError(feature.GroupVersionKind(), key)
 		}
 		return nil, fmt.Errorf("error reading referenced feature %v: %w", key, err)
 	}
