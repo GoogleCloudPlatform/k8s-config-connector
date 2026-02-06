@@ -31,7 +31,7 @@ var _ refs.Ref = &SQLInstanceRef{}
 // holds the GCP identifier for the KRM object.
 type SQLInstanceRef struct {
 	// A reference to an externally managed SQLInstance resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+	// Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a SQLInstance resource.
@@ -82,7 +82,7 @@ func (r *SQLInstanceRef) ParseExternalToIdentity() (identity.Identity, error) {
 
 func (r *SQLInstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromSQLInstanceSpec(ctx, reader, u)
+		identity, err := GetIdentityFromSQLInstanceSpec(ctx, reader, u)
 		if err != nil {
 			return ""
 		}

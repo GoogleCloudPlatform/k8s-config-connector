@@ -457,6 +457,9 @@ func (a *sqlInstanceAdapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	a.actual = instance
+	if a.identity.Location == "" {
+		a.identity.Location = a.actual.Region
+	}
 
 	log := klog.FromContext(ctx)
 	log.V(2).Info("found SQLInstance", "actual", a.actual)
@@ -509,7 +512,7 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.Cr
 			if err != nil {
 				return fmt.Errorf("getting SQLInstance %s failed: %w", a.identity.Instance, err)
 			}
-
+			a.identity.Location = updated.Region
 			log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
 		}
 		return nil
@@ -627,9 +630,9 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		if err != nil {
 			return fmt.Errorf("getting SQLInstance %s failed: %w", a.identity.Instance, err)
 		}
+		a.identity.Location = updated.Region
 
 		log.V(2).Info("instance version updated", "op", op, "instance", updated)
-
 		a.actual = updated
 	}
 
@@ -684,6 +687,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			if err != nil {
 				return fmt.Errorf("getting SQLInstance %s failed: %w", a.identity.Instance, err)
 			}
+			a.identity.Location = updated.Region
 
 			log.V(2).Info("instance edition updated", "op", op, "instance", updated)
 
@@ -720,6 +724,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		if err != nil {
 			return fmt.Errorf("getting SQLInstance %s failed: %w", a.identity.Instance, err)
 		}
+		a.identity.Location = updated.Region
 
 		log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
 	}
@@ -755,6 +760,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 		log.V(2).Info("instance updated", "op", op, "instance", updated)
 		instanceForStatus = updated
+		a.identity.Location = instanceForStatus.Region
 	}
 
 	status, err := SQLInstanceStatusGCPToKRM(instanceForStatus)

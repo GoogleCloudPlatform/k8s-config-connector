@@ -32,12 +32,13 @@ var (
 	_ identity.Resource   = &SQLInstance{}
 )
 
-var SQLInstanceIdentityFormat = gcpurls.Template[SQLInstanceIdentity]("cloudsql.googleapis.com", "projects/{project}/locations/{location}/instances/{instance}")
+var SQLInstanceIdentityFormat = gcpurls.Template[SQLInstanceIdentity]("cloudsql.googleapis.com", "projects/{project}/instances/{instance}")
 
 // +k8s:deepcopy-gen=false
 type SQLInstanceIdentity struct {
 	Project  string
 	Instance string
+	// Location is not part of the canonical identity URI, but is needed for connectionName
 	Location string
 }
 
@@ -75,7 +76,7 @@ func (i *SQLInstanceIdentity) Host() string {
 	return SQLInstanceIdentityFormat.Host()
 }
 
-func getIdentityFromSQLInstanceSpec(ctx context.Context, reader client.Reader, obj client.Object) (*SQLInstanceIdentity, error) {
+func GetIdentityFromSQLInstanceSpec(ctx context.Context, reader client.Reader, obj client.Object) (*SQLInstanceIdentity, error) {
 	u, ok := obj.(*unstructured.Unstructured)
 	if !ok {
 		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
@@ -109,7 +110,7 @@ func getIdentityFromSQLInstanceSpec(ctx context.Context, reader client.Reader, o
 }
 
 func (obj *SQLInstance) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromSQLInstanceSpec(ctx, reader, obj)
+	specIdentity, err := GetIdentityFromSQLInstanceSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}

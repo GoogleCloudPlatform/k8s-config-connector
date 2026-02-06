@@ -651,7 +651,7 @@ spec:
                                       external:
                                         description: A reference to an externally
                                           managed SQLInstance resource. Should be
-                                          in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                                          in the format "projects/{{projectID}}/instances/{{instanceID}}".
                                         type: string
                                       name:
                                         description: The name of a SQLInstance resource.
