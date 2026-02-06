@@ -21,7 +21,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/preview/parameters"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/preview"
+	corepreview "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/preview"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"k8s.io/client-go/rest"
@@ -32,7 +32,8 @@ import (
 )
 
 const (
-	defaultScope = "https://www.googleapis.com/auth/cloud-platform"
+	defaultScope   = "https://www.googleapis.com/auth/cloud-platform"
+	defaultTimeout = 15
 )
 
 func Execute(ctx context.Context, opts *parameters.Parameters) error {
@@ -53,16 +54,16 @@ func Execute(ctx context.Context, opts *parameters.Parameters) error {
 	if err != nil {
 		return fmt.Errorf("error building kubeconfig: %w", err)
 	}
-	recorder := preview.NewRecorder()
+	recorder := corepreview.NewRecorder()
 	if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig, opts.Namespace); err != nil {
-		return fmt.Errorf("error preload the list of resources to reconcile: %w", err)
+		return fmt.Errorf("error preloading the list of resources to reconcile: %w", err)
 	}
 
 	authorization, err := getGCPAuthorization(ctx, opts)
 	if err != nil {
 		return fmt.Errorf("error building GCP authorization: %w", err)
 	}
-	previewInstance, err := preview.NewPreviewInstance(recorder, preview.PreviewInstanceOptions{
+	previewInstance, err := corepreview.NewPreviewInstance(recorder, corepreview.PreviewInstanceOptions{
 		UpstreamRESTConfig:       upstreamRESTConfig,
 		UpstreamGCPAuthorization: authorization,
 		UpstreamGCPHTTPClient:    nil,
@@ -72,6 +73,10 @@ func Execute(ctx context.Context, opts *parameters.Parameters) error {
 	})
 	if err != nil {
 		return fmt.Errorf("building preview instance: %w", err)
+	}
+	// TODO: Consider if 0 means no timeout.
+	if opts.Timeout == 0 {
+		opts.Timeout = defaultTimeout
 	}
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(opts.Timeout)*time.Minute)
 	defer cancel()
@@ -83,7 +88,6 @@ func Execute(ctx context.Context, opts *parameters.Parameters) error {
 
 	errChan := make(chan error, 1)
 	go func() {
-		klog.V(0).Info("Starting preview")
 		errChan <- previewInstance.Start(ctx)
 	}()
 
@@ -100,7 +104,7 @@ func Execute(ctx context.Context, opts *parameters.Parameters) error {
 }
 
 func getRESTConfig(ctx context.Context, opts *parameters.Parameters) (*rest.Config, error) {
-	// TODO: Add rate limiting.
+	// TODO: Add rate limiting to Kube client.
 	if opts.InCluster {
 		return rest.InClusterConfig()
 	}
@@ -125,7 +129,7 @@ func getGCPAuthorization(ctx context.Context, opts *parameters.Parameters) (oaut
 	return ts, nil
 }
 
-func printCapturedObjects(recorder *preview.Recorder, opts *parameters.Parameters) error {
+func printCapturedObjects(recorder *corepreview.Recorder, opts *parameters.Parameters) error {
 	now := time.Now()
 	timestamp := now.Format("20060102-150405.000")
 	summaryFile := fmt.Sprintf("%s-%s", opts.ReportNamePrefix, timestamp)
