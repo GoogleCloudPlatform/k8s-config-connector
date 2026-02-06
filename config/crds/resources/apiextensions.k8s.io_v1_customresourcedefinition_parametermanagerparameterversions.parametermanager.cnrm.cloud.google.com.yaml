@@ -1,0 +1,212 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: parametermanagerparameterversions.parametermanager.cnrm.cloud.google.com
+spec:
+  group: parametermanager.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ParameterManagerParameterVersion
+    listKind: ParameterManagerParameterVersionList
+    plural: parametermanagerparameterversions
+    shortNames:
+    - gcpparametermanagerparameterversion
+    - gcpparametermanagerparameterversions
+    singular: parametermanagerparameterversion
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ParameterManagerParameterVersion is the Schema for the ParameterManagerParameterVersion
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ParameterManagerParameterVersionSpec defines the desired
+              state of ParameterManagerParameterVersion
+            properties:
+              disabled:
+                description: Optional. Disabled boolean to determine if a ParameterVersion
+                  acts as a metadata only resource (payload is never returned if disabled
+                  is true). If true any calls will always default to BASIC view even
+                  if the user explicitly passes FULL view as part of the request.
+                  A render call on a disabled resource fails with an error. Default
+                  value is False.
+                type: boolean
+              parameterRef:
+                description: The resource name of the [Parameter][google.cloud.parametermanager.v1.Parameter]
+                  to create a [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion]
+                  for.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ParameterManagerParameter
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}}".
+                    type: string
+                  name:
+                    description: The name of a ParameterManagerParameter resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ParameterManagerParameter resource.
+                    type: string
+                type: object
+              payload:
+                description: Required. Immutable. Payload content of a ParameterVersion
+                  resource.  This is only returned when the request provides the View
+                  value of FULL (default for GET request).
+                properties:
+                  data:
+                    description: Required. bytes data for storing payload.
+                    format: byte
+                    type: string
+                type: object
+              resourceID:
+                description: The ParameterManagerParameterVersion name. If not given,
+                  the metadata.name will be used.
+                type: string
+            type: object
+          status:
+            description: ParameterManagerParameterVersionStatus defines the config
+              connector machine state of ParameterManagerParameterVersion
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ParameterManagerParameterVersion
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. [Output only] Create time stamp
+                    type: string
+                  kmsKeyVersion:
+                    description: Optional. Output only. [Output only] The resource
+                      name of the KMS key version used to encrypt the ParameterVersion
+                      payload. This field is populated only if the Parameter resource
+                      has customer managed encryption key (CMEK) configured.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
+                  name:
+                    description: Identifier. [Output only] The resource name of the
+                      ParameterVersion in the format `projects/*/locations/*/parameters/*/versions/*`.
+                    type: string
+                  updateTime:
+                    description: Output only. [Output only] Update time stamp
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

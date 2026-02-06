@@ -224,6 +224,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Secret Manager
 	visitor.replacePaths[".spec.expireTime"] = "2025-10-03T15:01:23Z"
 
+	// Specific to Parameter Manager
+	visitor.replacePaths[".status.observedState.policyMember.iamPolicyUidPrincipal"] = "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
+
 	// Specific to MonitoringDashboard
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		if strings.HasSuffix(path, ".alertChart.alertPolicyRef.external") {
