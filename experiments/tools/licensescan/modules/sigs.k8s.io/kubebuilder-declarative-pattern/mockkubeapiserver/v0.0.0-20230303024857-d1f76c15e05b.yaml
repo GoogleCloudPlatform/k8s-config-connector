@@ -1,2 +1,2 @@
 # https://pkg.go.dev/sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver@v0.0.0-20230303024857-d1f76c15e05b
-license: TODO
+license: Apache-2.0
