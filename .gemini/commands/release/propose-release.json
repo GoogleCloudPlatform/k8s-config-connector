@@ -40,20 +40,6 @@
       ]
     },
     {
-      "name": "Synchronize CRDs",
-      "actions": [
-        {
-          "run": "VERSION=${get_version.input} ./dev/tasks/sync-crds-folder.sh"
-        },
-        {
-          "run": "git add ."
-        },
-        {
-          "run": "git commit -m \"Update alpha CRDs for Release ${get_version.input}\""
-        }
-      ]
-    },
-    {
       "name": "Run Unit Tests",
       "actions": [
         {
