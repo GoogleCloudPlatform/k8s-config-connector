@@ -34,12 +34,6 @@ VERSION=${NEW_VERSION} STALE_VERSION=${STALE_VERSION} ./dev/tasks/propose-tag
 git add .
 git commit -m "Release ${NEW_VERSION}"
 
-# Step 4: Synchronize CRDs
-echo "Synchronizing CRDs..."
-VERSION=${NEW_VERSION} ./dev/tasks/sync-crds-folder.sh
-git add .
-git commit -m "Update alpha CRDs for Release ${NEW_VERSION}"
-
 # Step 5: Run Unit Tests
 echo "Running unit tests..."
 cd operator

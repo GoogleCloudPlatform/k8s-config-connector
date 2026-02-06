@@ -45,22 +45,6 @@ This document outlines the automated steps to prepare a new release for KCC.
     ```
 3.  **Success Condition:** Both commands should execute with exit code 0.
 
-### Step 2.2: Synchronize CRDs
-
-**Description:** Run the `sync-crds-folder.sh` script to update the CRDs in the `/crds` directory.
-
-**Actions:**
-1.  Execute this command:
-    ```bash
-    VERSION=${VERSION} ./dev/tasks/sync-crds-folder.sh
-    ```
-2.  Commit the changes using the exact commit message format below:
-    ```bash
-    git add .
-    git commit -m "Update alpha CRDs for Release ${VERSION}"
-    ```
-3.  **Success Condition:** Both commands should execute with exit code 0.
-
 ## PHASE 3: TESTING & VERIFICATION
 
 ### Step 3.1: Run Unit Tests
