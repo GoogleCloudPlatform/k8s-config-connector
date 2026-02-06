@@ -2,7 +2,7 @@
 
 ## CRD Version Upgrades
 
-*   [COUNT] version upgrades in crds/ were upgraded from version [OLD_VERSION] to [NEW_VERSION].
+*   [COUNT] version upgrades in config/crds/resources/ were upgraded from version [OLD_VERSION] to [NEW_VERSION].
 
 ## API Version Promotions (v1alpha1 to v1beta1)
 
