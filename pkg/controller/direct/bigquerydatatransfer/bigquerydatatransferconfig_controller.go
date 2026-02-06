@@ -119,11 +119,11 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 		// for backwards compatibility and to satisfy the GCP API constraints, we must overrite the
 		// external reference in the payloads to just the resource ID of the dataset.
-		_, id, err := bigquerykrmapi.ParseDatasetExternal(dataset)
-		if err != nil {
+		datasetID := &bigquerykrmapi.DatasetIdentity{}
+		if err := datasetID.FromExternal(dataset); err != nil {
 			return nil, err
 		}
-		obj.Spec.DatasetRef.External = id
+		obj.Spec.DatasetRef.External = datasetID.Dataset
 	}
 
 	// Resolve KMSCryptoKey Ref
