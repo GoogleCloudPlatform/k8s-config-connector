@@ -17,8 +17,8 @@ package main
 import (
 	"golang.org/x/tools/go/analysis/multichecker"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/linters/loglint"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/linters/jsonunmarshalreuse"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/linters/loglint"
 )
 
 func main() {

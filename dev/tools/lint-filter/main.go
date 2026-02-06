@@ -41,7 +41,7 @@ func main() {
 		// For now, let's print error and output nothing (assume filtering failed implies safe to ignore or we want to fix env).
 		fmt.Fprintf(os.Stderr, "Warning: could not determine changed lines: %v. Linting all files.\n", err)
 		// Fallback: copy stdin to stdout
-		if _, err :=  os.Stdout.ReadFrom(os.Stdin); err != nil {
+		if _, err := os.Stdout.ReadFrom(os.Stdin); err != nil {
 			fmt.Fprintf(os.Stderr, "Error copying stdin: %v\n", err)
 		}
 		return
@@ -60,7 +60,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error reading stdin: %v\n", err)
 		os.Exit(1)
 	}
-	
+
 	if foundIssues {
 		os.Exit(1)
 	}
@@ -70,7 +70,7 @@ func getChanges() (FileChanges, error) {
 	// Try to find a merge base or common ancestor.
 	// In strict CI, origin/master is usually available.
 	base := "origin/master"
-	
+
 	// Check if origin/master exists
 	cmdCheck := exec.Command("git", "rev-parse", "--verify", "origin/master")
 	if err := cmdCheck.Run(); err != nil {
@@ -91,7 +91,7 @@ func getChanges() (FileChanges, error) {
 
 	changes := make(FileChanges)
 	var currentFile string
-	
+
 	lines := strings.Split(string(out), "\n")
 	for _, l := range lines {
 		if strings.HasPrefix(l, "+++ b/") {
@@ -103,16 +103,16 @@ func getChanges() (FileChanges, error) {
 				continue
 			}
 			newRange := parts[2] // +newStart,newLen
-			
+
 			// Handle cases where +newStart is missing the comma (count=1)
 			if !strings.HasPrefix(newRange, "+") {
 				continue // Should start with +
 			}
 			newRange = strings.TrimPrefix(newRange, "+")
-			
+
 			start := 0
-			count := 1 
-			
+			count := 1
+
 			if strings.Contains(newRange, ",") {
 				sub := strings.Split(newRange, ",")
 				start, _ = strconv.Atoi(sub[0])
@@ -120,56 +120,61 @@ func getChanges() (FileChanges, error) {
 			} else {
 				start, _ = strconv.Atoi(newRange)
 			}
-            
-            if count > 0 {
-                changes[currentFile] = append(changes[currentFile], LineRange{Start: start, Count: count})
-            }
+
+			if count > 0 {
+				changes[currentFile] = append(changes[currentFile], LineRange{Start: start, Count: count})
+			}
 		}
 	}
 	return changes, nil
 }
 
 func isRelevant(line string, changes FileChanges) bool {
-    // Expected format: file:line:col: message
-    parts := strings.SplitN(line, ":", 4)
-    if len(parts) < 3 {
-        return true // Pass through lines that don't look like file:line:col
-    }
-    
-    file := parts[0]
-    
-    // Normalize file path: if it's absolute, make it relative to the current working directory.
-    // Assumes the current working directory is the repository root.
-    if strings.HasPrefix(file, "/") {
-        wd, err := os.Getwd()
-        if err == nil && strings.HasPrefix(file, wd+string(os.PathSeparator)) {
-            file = strings.TrimPrefix(file, wd+string(os.PathSeparator))
-        }
-    }
+	// "go run" might print "exit status N" to stderr, which is part of the input to lint-filter.
+	// We need to ignore "exit status 3", as it means violations found.
+	if line == "exit status 3" {
+		return false
+	}
 
-    // Attempt to parse line number
-    lineNum, err := strconv.Atoi(parts[1])
-    if err != nil {
-        return true // Not a diagnostic line, pass through
-    }
-    
-    // Check if the normalized file path and line number are relevant.
-    if checkFile(file, lineNum, changes) {
-    	return true
-    }
-    
-    return false
+	parts := strings.SplitN(line, ":", 4)
+	if len(parts) < 3 {
+		return true // Pass through lines that don't look like file:line:col (e.g. potential panic or other error)
+	}
+
+	file := parts[0]
+
+	// Normalize file path: if it's absolute, make it relative to the current working directory.
+	// Assumes the current working directory is the repository root.
+	if strings.HasPrefix(file, "/") {
+		wd, err := os.Getwd()
+		if err == nil && strings.HasPrefix(file, wd+string(os.PathSeparator)) {
+			file = strings.TrimPrefix(file, wd+string(os.PathSeparator))
+		}
+	}
+
+	// Attempt to parse line number
+	lineNum, err := strconv.Atoi(parts[1])
+	if err != nil {
+		return true // Not a diagnostic line, pass through
+	}
+
+	// Check if the normalized file path and line number are relevant.
+	if checkFile(file, lineNum, changes) {
+		return true
+	}
+
+	return false
 }
 
 func checkFile(file string, lineNum int, changes FileChanges) bool {
-    ranges, ok := changes[file]
-    if !ok {
-        return false
-    }
-    for _, r := range ranges {
-        if lineNum >= r.Start && lineNum < r.Start+r.Count {
-            return true
-        }
-    }
-    return false
+	ranges, ok := changes[file]
+	if !ok {
+		return false
+	}
+	for _, r := range ranges {
+		if lineNum >= r.Start && lineNum < r.Start+r.Count {
+			return true
+		}
+	}
+	return false
 }
