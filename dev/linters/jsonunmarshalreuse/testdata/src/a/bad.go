@@ -10,6 +10,14 @@ type MyStruct struct {
 	Field string
 }
 
+type Embedded struct {
+	Inner string
+}
+
+type Wrapper struct {
+	Embedded `json:",inline"`
+}
+
 func BadUnmarshalUsage() {
 	var data []byte = []byte(`["a", "b"]`)
 	var s []string 
@@ -45,6 +53,18 @@ func BadUnmarshalUsage() {
 	// Case 5: util.Marshal with bad reuse
 	var v2 = []string{"foo"}
 	if err := util.Marshal(data, &v2); err != nil { // want "potential reuse of non-empty variable"
+		log.Fatal(err)
+	}
+
+	// Case 6: non-empty inlined field
+	var w = Wrapper{Embedded: Embedded{Inner: "foo"}}
+	if err := json.Unmarshal(data, &w); err != nil { // want "potential reuse of non-empty variable"
+		log.Fatal(err)
+	}
+
+	// Case 7: Pointer to non-empty struct literal (AssignStmt)
+	sPtr := &MyStruct{Field: "foo"}
+	if err := json.Unmarshal(data, sPtr); err != nil { // want "potential reuse of non-empty variable"
 		log.Fatal(err)
 	}
 }

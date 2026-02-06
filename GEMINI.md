@@ -143,6 +143,13 @@ If you need to fix a breakage in a specific presubmit, you can find the correspo
 For example, if the `tests-e2e-fixtures-tags` job is failing, you can run `dev/ci/presubmits/tests-e2e-fixtures-tags`.
 Running these scripts will typically fix out-of-date golden files if `WRITE_GOLDEN_OUTPUT=1` is set (which is often the default in these scripts).
 
+## Custom Linters
+
+We have custom linters in `dev/linters`.
+*   `jsonunmarshalreuse`: Checks for potential reuse of non-empty variables in `json.Unmarshal` (and `util.Marshal`), which causes merging behavior instead of overwriting.
+    *   This linter ignores struct fields tagged with `json:"-"`.
+    *   It may flag intentional reuse in test files (e.g., `pkg/k8s/managedfields_test.go`), which is expected when verifying merge behavior.
+
 # Github Issues
 
 When asked to work with github issues, use the `gh issue` tool to read/update issues.
