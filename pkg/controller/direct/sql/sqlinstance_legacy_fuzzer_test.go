@@ -21,7 +21,7 @@ import (
 
 func TestSQLInstanceLegacyFuzzer(t *testing.T) {
 	fuzzer := sqlInstanceLegacyFuzzer()
-	for i := int64(0); i < 1000; i++ {
+	for i := int64(0); i < 10000; i++ {
 		seed := rand.Int63()
 		fuzzer.FuzzSpec(t, seed)
 	}

@@ -91,6 +91,9 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 				in.Settings.UserLabels = make(map[string]string)
 			}
 			in.Settings.UserLabels["managed-by-cnrm"] = "true"
+			if len(in.Settings.DenyMaintenancePeriods) > 1 {
+				in.Settings.DenyMaintenancePeriods = in.Settings.DenyMaintenancePeriods[:1]
+			}
 		}
 	}
 
@@ -322,7 +325,6 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".GeminiConfig.NullFields")
 	f.Unimplemented_NotYetTriaged(".ReplicationCluster.ForceSendFields")
 	f.Unimplemented_NotYetTriaged(".ReplicationCluster.NullFields")
-	f.Unimplemented_NotYetTriaged(".Settings.DenyMaintenancePeriods")
 
 	return f
 }
