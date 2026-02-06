@@ -131,35 +131,31 @@ func getChanges() (FileChanges, error) {
 
 func isRelevant(line string, changes FileChanges) bool {
     // Expected format: file:line:col: message
-    // Note: absolute paths might be returned by linter.
-    // We should try to match relative paths.
-    
     parts := strings.SplitN(line, ":", 4)
     if len(parts) < 3 {
         return true // Pass through lines that don't look like file:line:col
     }
     
     file := parts[0]
-    // Normalize file path: if it starts with ./, remove it. 
-    // If it's absolute, we might need to trim common prefix, but git usually outputs relative to root.
-    // Custom linter (via go run) often outputs relative paths if inputs are relative.
     
+    // Normalize file path: if it's absolute, make it relative to the current working directory.
+    // Assumes the current working directory is the repository root.
+    if strings.HasPrefix(file, "/") {
+        wd, err := os.Getwd()
+        if err == nil && strings.HasPrefix(file, wd+string(os.PathSeparator)) {
+            file = strings.TrimPrefix(file, wd+string(os.PathSeparator))
+        }
+    }
+
     // Attempt to parse line number
     lineNum, err := strconv.Atoi(parts[1])
     if err != nil {
         return true // Not a diagnostic line, pass through
     }
     
-    // Check exact match first
+    // Check if the normalized file path and line number are relevant.
     if checkFile(file, lineNum, changes) {
     	return true
-    }
-    
-    // Check relative match (if linter output ./file)
-    if strings.HasPrefix(file, "./") {
-    	if checkFile(strings.TrimPrefix(file, "./"), lineNum, changes) {
-    		return true
-    	}
     }
     
     return false
