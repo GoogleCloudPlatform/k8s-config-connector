@@ -34,29 +34,28 @@ const (
 	`
 )
 
-var (
-	previewParams = parameters.Parameters{}
-	previewCmd    = &cobra.Command{
+func NewPreviewCmd() *cobra.Command {
+	params := parameters.Parameters{}
+	cmd := &cobra.Command{
 		Use:     "preview",
 		Short:   "preview Config Connector resources",
 		Example: previewExamples,
 		Hidden:  true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return preview.Execute(cmd.Context(), &previewParams)
+			return preview.Execute(cmd.Context(), &params)
 		},
 		Args: cobra.ExactArgs(0),
 	}
-)
 
-func init() {
-	// TODO: Add scope
-	previewCmd.Flags().StringVarP(&previewParams.Kubeconfig, previewKubeconfigFlag, "", previewParams.Kubeconfig, "path to the kubeconfig file.")
-	previewCmd.Flags().IntVarP(&previewParams.Timeout, previewTimeoutFlag, "", 15, "timeout in minutes. Default to 15 minutes.")
-	previewCmd.Flags().StringVarP(&previewParams.ReportNamePrefix, previewReportNamePrefixFlag, "", "preview-report", "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
-	previewCmd.Flags().BoolVarP(&previewParams.FullReport, "full-report", "f", false, "Write a full report with all the captured objects. Disabled by default.")
-	previewCmd.Flags().Float64VarP(&previewParams.GCPQPS, "gcpQPS", "q", 5.0, "Maximum qps for GCP API requests, per service. Default to 5.0. Set gcpQPS to 0 to disable rate limiting.")
-	previewCmd.Flags().IntVarP(&previewParams.GCPBurst, "gcpBurst", "b", 5, "Maximum burst for GCP API requests, per service. Default to 5. Set gcpQPS to 0 to disable rate limiting.")
-	previewCmd.Flags().StringVarP(&previewParams.Namespace, "namespace", "n", "", "Namespace to preview. If not specified, all namespaces will be previewed.")
-	previewCmd.Flags().IntVarP(&previewParams.Verbose, "verbose", "v", 0, "Log verbosity level. Default to 0.")
-	previewCmd.Flags().BoolVarP(&previewParams.InCluster, "in-cluster", "", false, "Run in GKE cluster. Default to false.")
+	cmd.Flags().StringVarP(&params.Kubeconfig, previewKubeconfigFlag, "", params.Kubeconfig, "path to the kubeconfig file.")
+	cmd.Flags().IntVarP(&params.Timeout, previewTimeoutFlag, "", 15, "timeout in minutes. Default to 15 minutes.")
+	cmd.Flags().StringVarP(&params.ReportNamePrefix, previewReportNamePrefixFlag, "", "preview-report", "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
+	cmd.Flags().BoolVarP(&params.FullReport, "full-report", "f", false, "Write a full report with all the captured objects. Disabled by default.")
+	cmd.Flags().Float64VarP(&params.GCPQPS, "gcp-qps", "q", 5.0, "Maximum qps for GCP API requests, per service. Default to 5.0. Set gcp-qps to 0 to disable rate limiting.")
+	cmd.Flags().IntVarP(&params.GCPBurst, "gcp-burst", "b", 5, "Maximum burst for GCP API requests, per service. Default to 5. Set gcp-qps to 0 to disable rate limiting.")
+	cmd.Flags().StringVarP(&params.Namespace, "namespace", "n", "", "Namespace to preview. If not specified, all namespaces will be previewed.")
+	cmd.Flags().IntVarP(&params.Verbose, "verbose", "v", 0, "Log verbosity level. Default to 0.")
+	cmd.Flags().BoolVarP(&params.InCluster, "in-cluster", "", false, "Run in GKE cluster. Default to false.")
+
+	return cmd
 }
