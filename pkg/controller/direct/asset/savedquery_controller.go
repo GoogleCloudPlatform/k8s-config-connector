@@ -45,6 +45,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -252,6 +253,12 @@ func (a *savedQueryAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range mutablePathsSet {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	updateMaskPaths := mutablePathsSet.UnsortedList() // Get the slice for the field mask
 	log.V(2).Info("updating asset saved query fields", "paths", updateMaskPaths)
