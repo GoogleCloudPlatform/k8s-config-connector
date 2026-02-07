@@ -350,6 +350,44 @@ func EntryType_Authorization_ToProto(mapCtx *direct.MapContext, in *krm.EntryTyp
 	out.AlternateUsePermission = direct.ValueOf(in.AlternateUsePermission)
 	return out
 }
+func Job_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Job {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Job{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: State
+	// MISSING: RetryCount
+	// MISSING: Service
+	// MISSING: ServiceJob
+	// MISSING: Message
+	// MISSING: Labels
+	// MISSING: Trigger
+	// MISSING: ExecutionSpec
+	return out
+}
+func Job_ToProto(mapCtx *direct.MapContext, in *krm.Job) *pb.Job {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Job{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: State
+	// MISSING: RetryCount
+	// MISSING: Service
+	// MISSING: ServiceJob
+	// MISSING: Message
+	// MISSING: Labels
+	// MISSING: Trigger
+	// MISSING: ExecutionSpec
+	return out
+}
 func JobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.JobObservedState {
 	if in == nil {
 		return nil
@@ -430,6 +468,46 @@ func Lake_MetastoreStatus_ToProto(mapCtx *direct.MapContext, in *krm.Lake_Metast
 	out.Endpoint = direct.ValueOf(in.Endpoint)
 	return out
 }
+func TaskObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.TaskObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TaskObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Description
+	// MISSING: DisplayName
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: Labels
+	// MISSING: TriggerSpec
+	// MISSING: ExecutionSpec
+	out.ExecutionStatus = Task_ExecutionStatus_FromProto(mapCtx, in.GetExecutionStatus())
+	// MISSING: Spark
+	// MISSING: Notebook
+	return out
+}
+func TaskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TaskObservedState) *pb.Task {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Description
+	// MISSING: DisplayName
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	// MISSING: Labels
+	// MISSING: TriggerSpec
+	// MISSING: ExecutionSpec
+	out.ExecutionStatus = Task_ExecutionStatus_ToProto(mapCtx, in.ExecutionStatus)
+	// MISSING: Spark
+	// MISSING: Notebook
+	return out
+}
 func Task_ExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionSpec) *krm.Task_ExecutionSpec {
 	if in == nil {
 		return nil
@@ -488,6 +566,24 @@ func Task_ExecutionSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Project = direct.ValueOf(in.Project)
 	out.MaxJobExecutionLifetime = direct.StringDuration_ToProto(mapCtx, in.MaxJobExecutionLifetime)
 	out.KmsKey = direct.ValueOf(in.KMSKey)
+	return out
+}
+func Task_ExecutionStatus_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionStatus) *krm.Task_ExecutionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Task_ExecutionStatus{}
+	// MISSING: UpdateTime
+	// MISSING: LatestJob
+	return out
+}
+func Task_ExecutionStatus_ToProto(mapCtx *direct.MapContext, in *krm.Task_ExecutionStatus) *pb.Task_ExecutionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task_ExecutionStatus{}
+	// MISSING: UpdateTime
+	// MISSING: LatestJob
 	return out
 }
 func Task_ExecutionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionStatus) *krm.Task_ExecutionStatusObservedState {

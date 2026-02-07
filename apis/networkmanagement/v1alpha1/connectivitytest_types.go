@@ -36,7 +36,7 @@ type Parent struct {
 }
 
 // NetworkManagementConnectivityTestSpec defines the desired state of NetworkManagementConnectivityTest
-// +kcc:proto=google.cloud.networkmanagement.v1.ConnectivityTest
+// +kcc:spec:proto=google.cloud.networkmanagement.v1.ConnectivityTest
 type NetworkManagementConnectivityTestSpec struct {
 	// The project that this resource belongs to. If not provided, the provider project is used.
 	// Resource name is in the format of `projects/{project_id}/locations/global/connectivityTests/{test_id}`.
@@ -243,7 +243,7 @@ type NetworkManagementConnectivityTestStatus struct {
 }
 
 // NetworkManagementConnectivityTestObservedState is the state of the NetworkManagementConnectivityTest resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.networkmanagement.v1.ConnectivityTest
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.ConnectivityTest
 type NetworkManagementConnectivityTestObservedState struct {
 	// Source specification of the Connectivity Test.
 	//
@@ -370,21 +370,21 @@ type ProbingDetailsObservedState struct {
 	DestinationEgressLocation *ProbingDetails_EdgeLocationObservedState `json:"destinationEgressLocation,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.ProbingDetails.EdgeLocation
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.ProbingDetails.EdgeLocation
 type ProbingDetails_EdgeLocationObservedState struct {
 	// Name of the metropolitan area.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ProbingDetails.EdgeLocation.metropolitan_area
 	MetropolitanArea *string `json:"metropolitanArea,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.LatencyDistribution
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.LatencyDistribution
 type LatencyDistributionObservedState struct {
 	// Representative latency percentiles.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.LatencyDistribution.latency_percentiles
 	LatencyPercentiles []LatencyPercentileObservedState `json:"latencyPercentiles,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.LatencyPercentile
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.LatencyPercentile
 type LatencyPercentileObservedState struct {
 	// Percentage of samples this data point applies to.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.LatencyPercentile.percent
@@ -397,7 +397,7 @@ type LatencyPercentileObservedState struct {
 	LatencyMicros *int64 `json:"latencyMicros,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.ReachabilityDetails
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.ReachabilityDetails
 type ReachabilityDetailsObservedState struct {
 	// The overall result of the test's configuration analysis.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ReachabilityDetails.result
@@ -418,7 +418,7 @@ type ReachabilityDetailsObservedState struct {
 	Traces []TraceObservedState `json:"traces,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.Trace
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.Trace
 type TraceObservedState struct {
 	// Derived from the source and destination endpoints definition specified by
 	//  user request, and validated by the data plane model.
@@ -443,7 +443,7 @@ type TraceObservedState struct {
 	ForwardTraceID *int32 `json:"forwardTraceID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.Step
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.Step
 type StepObservedState struct {
 	// A description of the step. Usually this is a summary of the state.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.Step.description
@@ -575,7 +575,7 @@ type StepObservedState struct {
 	ServerlessNeg *ServerlessNegInfoObservedState `json:"serverlessNeg,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.AbortInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.AbortInfo
 type AbortInfoObservedState struct {
 	// Causes that the analysis is aborted.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.AbortInfo.cause
@@ -595,7 +595,7 @@ type AbortInfoObservedState struct {
 	ProjectsMissingPermission []string `json:"projectsMissingPermission,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.AppEngineVersionInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.AppEngineVersionInfo
 type AppEngineVersionInfoObservedState struct {
 	// Name of an App Engine version.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.AppEngineVersionInfo.display_name
@@ -614,7 +614,7 @@ type AppEngineVersionInfoObservedState struct {
 	Environment *string `json:"environment,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.CloudFunctionInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.CloudFunctionInfo
 type CloudFunctionInfoObservedState struct {
 	// Name of a Cloud Function.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.CloudFunctionInfo.display_name
@@ -633,7 +633,7 @@ type CloudFunctionInfoObservedState struct {
 	VersionID *int64 `json:"versionID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.CloudRunRevisionInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.CloudRunRevisionInfo
 type CloudRunRevisionInfoObservedState struct {
 	// Name of a Cloud Run revision.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.CloudRunRevisionInfo.display_name
@@ -652,7 +652,7 @@ type CloudRunRevisionInfoObservedState struct {
 	ServiceURI *string `json:"serviceURI,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.CloudSQLInstanceInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.CloudSQLInstanceInfo
 type CloudSQLInstanceInfoObservedState struct {
 	// Name of a Cloud SQL instance.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.CloudSQLInstanceInfo.display_name
@@ -680,7 +680,7 @@ type CloudSQLInstanceInfoObservedState struct {
 	Region *string `json:"region,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.DeliverInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.DeliverInfo
 type DeliverInfoObservedState struct {
 	// Target type where the packet is delivered to.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.DeliverInfo.target
@@ -704,7 +704,7 @@ type DeliverInfoObservedState struct {
 	PSCGoogleAPITarget *string `json:"pscGoogleAPITarget,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.DropInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.DropInfo
 type DropInfoObservedState struct {
 	// Cause that the packet is dropped.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.DropInfo.cause
@@ -727,7 +727,7 @@ type DropInfoObservedState struct {
 	Region *string `json:"region,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.FirewallInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.FirewallInfo
 type FirewallInfoObservedState struct {
 	// The display name of the firewall rule. This field might be empty for
 	//  firewall policy rules.
@@ -782,7 +782,7 @@ type FirewallInfoObservedState struct {
 	FirewallRuleType *string `json:"firewallRuleType,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.ForwardInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.ForwardInfo
 type ForwardInfoObservedState struct {
 	// Target type where this packet is forwarded to.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ForwardInfo.target
@@ -797,7 +797,7 @@ type ForwardInfoObservedState struct {
 	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.ForwardingRuleInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.ForwardingRuleInfo
 type ForwardingRuleInfoObservedState struct {
 	// Name of the forwarding rule.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ForwardingRuleInfo.display_name
@@ -846,7 +846,7 @@ type ForwardingRuleInfoObservedState struct {
 	PSCGoogleAPITarget *string `json:"pscGoogleAPITarget,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.GKEMasterInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.GKEMasterInfo
 type GKEMasterInfoObservedState struct {
 	// URI of a GKE cluster.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.GKEMasterInfo.cluster_uri
@@ -869,7 +869,7 @@ type GKEMasterInfoObservedState struct {
 	DNSEndpoint *string `json:"dnsEndpoint,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.GoogleServiceInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.GoogleServiceInfo
 type GoogleServiceInfoObservedState struct {
 	// Source IP address.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.GoogleServiceInfo.source_ip
@@ -880,7 +880,7 @@ type GoogleServiceInfoObservedState struct {
 	GoogleServiceType *string `json:"googleServiceType,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.InstanceInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.InstanceInfo
 type InstanceInfoObservedState struct {
 	// Name of a Compute Engine instance.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.InstanceInfo.display_name
@@ -919,7 +919,7 @@ type InstanceInfoObservedState struct {
 	PSCNetworkAttachmentURI *string `json:"pscNetworkAttachmentURI,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.LoadBalancerBackend
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.LoadBalancerBackend
 type LoadBalancerBackendObservedState struct {
 	// Name of a Compute Engine instance or network endpoint.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.LoadBalancerBackend.display_name
@@ -942,7 +942,7 @@ type LoadBalancerBackendObservedState struct {
 	HealthCheckBlockingFirewallRules []string `json:"healthCheckBlockingFirewallRules,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.LoadBalancerInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.LoadBalancerInfo
 type LoadBalancerInfoObservedState struct {
 	// Type of the load balancer.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.LoadBalancerInfo.load_balancer_type
@@ -967,7 +967,7 @@ type LoadBalancerInfoObservedState struct {
 	BackendURI *string `json:"backendURI,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.NatInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.NatInfo
 type NATInfoObservedState struct {
 	// Type of NAT.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.NatInfo.type
@@ -1024,7 +1024,7 @@ type NATInfoObservedState struct {
 	NATGatewayName *string `json:"natGatewayName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.NetworkInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.NetworkInfo
 type NetworkInfoObservedState struct {
 	// Name of a Compute Engine network.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.NetworkInfo.display_name
@@ -1047,7 +1047,7 @@ type NetworkInfoObservedState struct {
 	Region *string `json:"region,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.ProxyConnectionInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.ProxyConnectionInfo
 type ProxyConnectionInfoObservedState struct {
 	// IP protocol in string format, for example: "TCP", "UDP", "ICMP".
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ProxyConnectionInfo.protocol
@@ -1097,7 +1097,7 @@ type ProxyConnectionInfoObservedState struct {
 	NetworkURI *string `json:"networkURI,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.RedisClusterInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.RedisClusterInfo
 type RedisClusterInfoObservedState struct {
 	// Name of a Redis Cluster.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.RedisClusterInfo.display_name
@@ -1127,7 +1127,7 @@ type RedisClusterInfoObservedState struct {
 	Location *string `json:"location,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.RedisInstanceInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.RedisInstanceInfo
 type RedisInstanceInfoObservedState struct {
 	// Name of a Cloud Redis Instance.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.RedisInstanceInfo.display_name
@@ -1154,7 +1154,7 @@ type RedisInstanceInfoObservedState struct {
 	Region *string `json:"region,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.RouteInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.RouteInfo
 type RouteInfoObservedState struct {
 	// Type of route.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.RouteInfo.route_type
@@ -1237,21 +1237,21 @@ type RouteInfoObservedState struct {
 	AdvertisedRouteNextHopURI *string `json:"advertisedRouteNextHopURI,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.ServerlessNegInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.ServerlessNegInfo
 type ServerlessNegInfoObservedState struct {
 	// URI of the serverless network endpoint group.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ServerlessNegInfo.neg_uri
 	NegURI *string `json:"negURI,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.StorageBucketInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.StorageBucketInfo
 type StorageBucketInfoObservedState struct {
 	// Cloud Storage Bucket name.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.StorageBucketInfo.bucket
 	Bucket *string `json:"bucket,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.VpcConnectorInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.VpcConnectorInfo
 type VPCConnectorInfoObservedState struct {
 	// Name of a VPC connector.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.VpcConnectorInfo.display_name
@@ -1266,7 +1266,7 @@ type VPCConnectorInfoObservedState struct {
 	Location *string `json:"location,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.VpnGatewayInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.VpnGatewayInfo
 type VPNGatewayInfoObservedState struct {
 	// Name of a VPN gateway.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.VpnGatewayInfo.display_name
@@ -1295,7 +1295,7 @@ type VPNGatewayInfoObservedState struct {
 	Region *string `json:"region,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.VpnTunnelInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.VpnTunnelInfo
 type VPNTunnelInfoObservedState struct {
 	// Name of a VPN tunnel.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.VpnTunnelInfo.display_name
@@ -1334,7 +1334,7 @@ type VPNTunnelInfoObservedState struct {
 	RoutingType *string `json:"routingType,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.LoadBalancerBackendInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.LoadBalancerBackendInfo
 type LoadBalancerBackendInfoObservedState struct {
 	// Display name of the backend. For example, it might be an instance name for
 	//  the instance group backends, or an IP address and port for zonal network
@@ -1386,7 +1386,7 @@ type LoadBalancerBackendInfoObservedState struct {
 	HealthCheckFirewallsConfigState *string `json:"healthCheckFirewallsConfigState,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.EndpointInfo
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.EndpointInfo
 type EndpointInfoObservedState struct {
 	// Source IP address.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.EndpointInfo.source_ip
@@ -1421,7 +1421,7 @@ type EndpointInfoObservedState struct {
 	SourceAgentURI *string `json:"sourceAgentURI,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkmanagement.v1.Endpoint
+// +kcc:observedstate:proto=google.cloud.networkmanagement.v1.Endpoint
 type EndpointObservedState struct {
 	// Output only. Specifies the type of the target of the forwarding rule.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.forwarding_rule_target
@@ -1437,7 +1437,7 @@ type EndpointObservedState struct {
 	LoadBalancerType *string `json:"loadBalancerType,omitempty"`
 }
 
-// +kcc:proto=google.rpc.Status
+// +kcc:observedstate:proto=google.rpc.Status
 type StatusObservedState struct {
 	// The status code, which should be an enum value of
 	//  [google.rpc.Code][google.rpc.Code].
@@ -1457,7 +1457,7 @@ type StatusObservedState struct {
 	Details []Any `json:"details,omitempty"`
 }
 
-// +kcc:proto=google.protobuf.Any
+// +kcc:observedstate:proto=google.protobuf.Any
 type Any struct {
 	// A URL/resource name that uniquely identifies the type of the serialized
 	//  protocol buffer message. This string must contain at least

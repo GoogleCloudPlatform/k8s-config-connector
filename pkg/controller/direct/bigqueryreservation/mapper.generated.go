@@ -55,6 +55,24 @@ func BigQueryReservationAssignmentObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: EnableGeminiInBigquery
 	return out
 }
+func Reservation_Autoscale_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krm.Reservation_Autoscale {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Reservation_Autoscale{}
+	// MISSING: CurrentSlots
+	out.MaxSlots = direct.LazyPtr(in.GetMaxSlots())
+	return out
+}
+func Reservation_Autoscale_ToProto(mapCtx *direct.MapContext, in *krm.Reservation_Autoscale) *pb.Reservation_Autoscale {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Reservation_Autoscale{}
+	// MISSING: CurrentSlots
+	out.MaxSlots = direct.ValueOf(in.MaxSlots)
+	return out
+}
 func Reservation_ReplicationStatus_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_ReplicationStatus) *krm.Reservation_ReplicationStatus {
 	if in == nil {
 		return nil
