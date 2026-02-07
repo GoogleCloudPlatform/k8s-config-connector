@@ -475,6 +475,9 @@ func isMapOrSliceType(t string) bool {
 	if strings.HasPrefix(t, "map[string]") {
 		return true
 	}
+	if t == "apiextensionsv1.JSON" {
+		return true
+	}
 	return false
 }
 
@@ -505,7 +508,7 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 	case "float", "number":
 		return "float64"
 	case "schemaless":
-		return "apiextensions.JSON"
+		return "apiextensionsv1.JSON"
 	case "object":
 		if isSec {
 			return "v1alpha1.SecretKeyRef"
@@ -559,9 +562,9 @@ func formatToGoLiteral(t string) string {
 	case "float", "number":
 		return "float64"
 	case "schemaless":
-		return "apiextensions.JSON"
+		return "apiextensionsv1.JSON"
 	case "":
-		return "apiextensions.JSON"
+		return "apiextensionsv1.JSON"
 	default:
 		panic(fmt.Errorf("expected a JSONLiteral but got %v", t))
 	}
