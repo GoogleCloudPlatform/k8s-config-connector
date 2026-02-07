@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:mapper
 // krm.group: batch.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.batch.v1
@@ -91,5 +90,24 @@ func AllocationPolicy_Disk_ToProto(mapCtx *direct.MapContext, in *krm.Allocation
 	out.Type = direct.ValueOf(in.Type)
 	out.SizeGb = direct.ValueOf(in.SizeGB)
 	out.DiskInterface = direct.ValueOf(in.DiskInterface)
+	return out
+}
+
+func AllocationPolicy_InstancePolicyOrTemplate_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_InstancePolicyOrTemplate) *pb.AllocationPolicy_InstancePolicyOrTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_InstancePolicyOrTemplate{}
+	if oneof := AllocationPolicy_InstancePolicy_ToProto(mapCtx, in.Policy); oneof != nil {
+		out.PolicyTemplate = &pb.AllocationPolicy_InstancePolicyOrTemplate_Policy{Policy: oneof}
+	}
+	if in.InstanceTemplateRef != nil {
+		out.PolicyTemplate = &pb.AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate{
+			InstanceTemplate: in.InstanceTemplateRef.External,
+		}
+	}
+	out.InstallGpuDrivers = direct.ValueOf(in.InstallGpuDrivers)
+	out.InstallOpsAgent = direct.ValueOf(in.InstallOpsAgent)
+	out.BlockProjectSshKeys = direct.ValueOf(in.BlockProjectSSHKeys)
 	return out
 }

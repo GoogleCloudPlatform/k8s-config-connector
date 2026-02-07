@@ -1,0 +1,8 @@
+---
+apiVersion: batch.cnrm.cloud.google.com/v1alpha1
+kind: BatchJob
+metadata:
+  name: batchjob-${uniqueId}
+  labels:
+    update-label: "true"
+spec: {} # Empty spec as no actual update is intended.
