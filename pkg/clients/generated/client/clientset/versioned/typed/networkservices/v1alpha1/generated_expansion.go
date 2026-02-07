@@ -26,3 +26,5 @@ type NetworkServicesEdgeCacheKeysetExpansion interface{}
 type NetworkServicesEdgeCacheOriginExpansion interface{}
 
 type NetworkServicesEdgeCacheServiceExpansion interface{}
+
+type NetworkServicesServiceBindingExpansion interface{}

@@ -32,155 +32,1472 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ConnectivitytestDestination struct {
-	/* A Compute Engine instance URI. */
-	// +optional
-	Instance *string `json:"instance,omitempty"`
+var _ = apiextensionsv1.JSON{}
 
-	/* The IP address of the endpoint, which can be an external or
-	internal IP. An IPv6 address is only allowed when the test's
-	destination is a global load balancer VIP. */
+type ConnectivitytestAppEngineVersion struct {
+	/* An [App Engine](https://cloud.google.com/appengine) [service version](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions) name. */
 	// +optional
-	IpAddress *string `json:"ipAddress,omitempty"`
-
-	/* A Compute Engine network URI. */
-	// +optional
-	Network *string `json:"network,omitempty"`
-
-	/* The IP protocol port of the endpoint. Only applicable when
-	protocol is TCP or UDP. */
-	// +optional
-	Port *int64 `json:"port,omitempty"`
-
-	/* Project ID where the endpoint is located. The Project ID can be
-	derived from the URI if you provide a VM instance or network URI.
-	The following are two cases where you must provide the project ID:
-	1. Only the IP address is specified, and the IP address is within
-	a GCP project. 2. When you are using Shared VPC and the IP address
-	that you provide is from the service project. In this case, the
-	network that the IP address resides in is defined in the host
-	project. */
-	// +optional
-	ProjectId *string `json:"projectId,omitempty"`
+	Uri *string `json:"uri,omitempty"`
 }
 
-type ConnectivitytestSource struct {
+type ConnectivitytestCloudFunction struct {
+	/* A [Cloud Function](https://cloud.google.com/functions) name. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type ConnectivitytestCloudRunRevision struct {
+	/* A [Cloud Run](https://cloud.google.com/run) [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get) URI. The format is: projects/{project}/locations/{location}/revisions/{revision} */
+	// +optional
+	RunRevisionRef *v1alpha1.ResourceRef `json:"runRevisionRef,omitempty"`
+}
+
+type ConnectivitytestDestination struct {
+	/* An [App Engine](https://cloud.google.com/appengine) [service version](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions). */
+	// +optional
+	AppEngineVersion *ConnectivitytestAppEngineVersion `json:"appEngineVersion,omitempty"`
+
+	/* A [Cloud Function](https://cloud.google.com/functions). */
+	// +optional
+	CloudFunction *ConnectivitytestCloudFunction `json:"cloudFunction,omitempty"`
+
+	/* A [Cloud Run](https://cloud.google.com/run) [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get) */
+	// +optional
+	CloudRunRevision *ConnectivitytestCloudRunRevision `json:"cloudRunRevision,omitempty"`
+
+	/* A forwarding rule and its corresponding IP address represent the frontend configuration of a Google Cloud load balancer. Forwarding rules are also used for protocol forwarding, Private Service Connect and other network services to provide forwarding information in the control plane. Format: projects/{project}/global/forwardingRules/{id} or projects/{project}/regions/{region}/forwardingRules/{id} */
+	// +optional
+	ComputeForwardingRuleRef *string `json:"computeForwardingRuleRef,omitempty"`
+
 	/* A Compute Engine instance URI. */
 	// +optional
-	Instance *string `json:"instance,omitempty"`
-
-	/* The IP address of the endpoint, which can be an external or
-	internal IP. An IPv6 address is only allowed when the test's
-	destination is a global load balancer VIP. */
-	// +optional
-	IpAddress *string `json:"ipAddress,omitempty"`
+	ComputeInstanceRef *v1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
 
 	/* A Compute Engine network URI. */
 	// +optional
-	Network *string `json:"network,omitempty"`
+	ComputeNetworkRef *v1alpha1.ResourceRef `json:"computeNetworkRef,omitempty"`
 
-	/* Type of the network where the endpoint is located. Possible values: ["GCP_NETWORK", "NON_GCP_NETWORK"]. */
+	/* A cluster URI for [Google Kubernetes Engine cluster control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture). */
+	// +optional
+	ContainerClusterRef *v1alpha1.ResourceRef `json:"containerClusterRef,omitempty"`
+
+	/* DNS endpoint of [Google Kubernetes Engine cluster control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture). Requires gke_master_cluster to be set, can't be used simultaneoulsly with ip_address or network. Applicable only to destination endpoint. */
+	// +optional
+	Fqdn *string `json:"fqdn,omitempty"`
+
+	/* The IP address of the endpoint, which can be an external or internal IP. */
+	// +optional
+	IpAddress *string `json:"ipAddress,omitempty"`
+
+	/* Type of the network where the endpoint is located. Applicable only to source endpoint, as destination network type can be inferred from the source. */
 	// +optional
 	NetworkType *string `json:"networkType,omitempty"`
 
-	/* The IP protocol port of the endpoint. Only applicable when
-	protocol is TCP or UDP. */
+	/* The IP protocol port of the endpoint. Only applicable when protocol is TCP or UDP. */
 	// +optional
-	Port *int64 `json:"port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 
-	/* Project ID where the endpoint is located. The Project ID can be
-	derived from the URI if you provide a VM instance or network URI.
-	The following are two cases where you must provide the project ID:
-
-	1. Only the IP address is specified, and the IP address is
-	within a GCP project.
-	2. When you are using Shared VPC and the IP address
-	that you provide is from the service project. In this case,
-	the network that the IP address resides in is defined in the
-	host project. */
+	/* Project ID where the endpoint is located. The Project ID can be derived from the URI if you provide a VM instance or network URI. The following are two cases where you must provide the project ID: 1. Only the IP address is specified, and the IP address is within a Google Cloud project. 2. When you are using Shared VPC and the IP address that you provide is from the service project. In this case, the network that the IP address resides in is defined in the host project. */
 	// +optional
-	ProjectId *string `json:"projectId,omitempty"`
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+
+	/* A [Redis Cluster](https://cloud.google.com/memorystore/docs/cluster) URI. */
+	// +optional
+	RedisCluster *string `json:"redisCluster,omitempty"`
+
+	/* A [Redis Instance](https://cloud.google.com/memorystore/docs/redis) URI. */
+	// +optional
+	RedisInstance *string `json:"redisInstance,omitempty"`
+
+	/* A [Cloud SQL](https://cloud.google.com/sql) instance URI. */
+	// +optional
+	SqlInstance *v1alpha1.ResourceRef `json:"sqlInstance,omitempty"`
+}
+
+type ConnectivitytestRelatedProjects struct {
+	/* The `projectID` field of a project, when not managed by Config Connector. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* The kind of the Project resource; optional but must be `Project` if provided. */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* The `name` field of a `Project` resource. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* The `namespace` field of a `Project` resource. */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type ConnectivitytestSource struct {
+	/* An [App Engine](https://cloud.google.com/appengine) [service version](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions). */
+	// +optional
+	AppEngineVersion *ConnectivitytestAppEngineVersion `json:"appEngineVersion,omitempty"`
+
+	/* A [Cloud Function](https://cloud.google.com/functions). */
+	// +optional
+	CloudFunction *ConnectivitytestCloudFunction `json:"cloudFunction,omitempty"`
+
+	/* A [Cloud Run](https://cloud.google.com/run) [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get) */
+	// +optional
+	CloudRunRevision *ConnectivitytestCloudRunRevision `json:"cloudRunRevision,omitempty"`
+
+	/* A forwarding rule and its corresponding IP address represent the frontend configuration of a Google Cloud load balancer. Forwarding rules are also used for protocol forwarding, Private Service Connect and other network services to provide forwarding information in the control plane. Format: projects/{project}/global/forwardingRules/{id} or projects/{project}/regions/{region}/forwardingRules/{id} */
+	// +optional
+	ComputeForwardingRuleRef *string `json:"computeForwardingRuleRef,omitempty"`
+
+	/* A Compute Engine instance URI. */
+	// +optional
+	ComputeInstanceRef *v1alpha1.ResourceRef `json:"computeInstanceRef,omitempty"`
+
+	/* A Compute Engine network URI. */
+	// +optional
+	ComputeNetworkRef *v1alpha1.ResourceRef `json:"computeNetworkRef,omitempty"`
+
+	/* A cluster URI for [Google Kubernetes Engine cluster control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture). */
+	// +optional
+	ContainerClusterRef *v1alpha1.ResourceRef `json:"containerClusterRef,omitempty"`
+
+	/* DNS endpoint of [Google Kubernetes Engine cluster control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture). Requires gke_master_cluster to be set, can't be used simultaneoulsly with ip_address or network. Applicable only to destination endpoint. */
+	// +optional
+	Fqdn *string `json:"fqdn,omitempty"`
+
+	/* The IP address of the endpoint, which can be an external or internal IP. */
+	// +optional
+	IpAddress *string `json:"ipAddress,omitempty"`
+
+	/* Type of the network where the endpoint is located. Applicable only to source endpoint, as destination network type can be inferred from the source. */
+	// +optional
+	NetworkType *string `json:"networkType,omitempty"`
+
+	/* The IP protocol port of the endpoint. Only applicable when protocol is TCP or UDP. */
+	// +optional
+	Port *int32 `json:"port,omitempty"`
+
+	/* Project ID where the endpoint is located. The Project ID can be derived from the URI if you provide a VM instance or network URI. The following are two cases where you must provide the project ID: 1. Only the IP address is specified, and the IP address is within a Google Cloud project. 2. When you are using Shared VPC and the IP address that you provide is from the service project. In this case, the network that the IP address resides in is defined in the host project. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+
+	/* A [Redis Cluster](https://cloud.google.com/memorystore/docs/cluster) URI. */
+	// +optional
+	RedisCluster *string `json:"redisCluster,omitempty"`
+
+	/* A [Redis Instance](https://cloud.google.com/memorystore/docs/redis) URI. */
+	// +optional
+	RedisInstance *string `json:"redisInstance,omitempty"`
+
+	/* A [Cloud SQL](https://cloud.google.com/sql) instance URI. */
+	// +optional
+	SqlInstance *v1alpha1.ResourceRef `json:"sqlInstance,omitempty"`
 }
 
 type NetworkManagementConnectivityTestSpec struct {
-	/* The user-supplied description of the Connectivity Test.
-	Maximum of 512 characters. */
+	/* Whether the test should skip firewall checking. If not provided, we assume false. */
+	// +optional
+	BypassFirewallChecks *bool `json:"bypassFirewallChecks,omitempty"`
+
+	/* The user-supplied description of the Connectivity Test. Maximum of 512 characters. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
 	/* Required. Destination specification of the Connectivity Test.
 
-	You can use a combination of destination IP address, Compute
-	Engine VM instance, or VPC network to uniquely identify the
-	destination location.
+	You can use a combination of destination IP address, Compute Engine
+	VM instance, or VPC network to uniquely identify the destination
+	location.
 
 	Even if the destination IP address is not unique, the source IP
 	location is unique. Usually, the analysis can infer the destination
 	endpoint from route information.
 
 	If the destination you specify is a VM instance and the instance has
-	multiple network interfaces, then you must also specify either a
-	destination IP address or VPC network to identify the destination
+	multiple network interfaces, then you must also specify either
+	a destination IP address  or VPC network to identify the destination
 	interface.
 
-	A reachability analysis proceeds even if the destination location
-	is ambiguous. However, the result can include endpoints that you
-	don't intend to test. */
+	A reachability analysis proceeds even if the destination location is
+	ambiguous. However, the result can include endpoints that you don't
+	intend to test. */
 	Destination ConnectivitytestDestination `json:"destination"`
 
-	/* The project that this resource belongs to. */
+	/* Resource labels to represent user-provided metadata. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	/* Immutable. The name of the location where the RuntimeTemplate will be created. */
+	Location string `json:"location"`
+
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* IP Protocol of the test. When not provided, "TCP" is assumed. */
 	// +optional
 	Protocol *string `json:"protocol,omitempty"`
 
-	/* Other projects that may be relevant for reachability analysis.
-	This is applicable to scenarios where a test can cross project
-	boundaries. */
+	/* Other projects that may be relevant for reachability analysis. This is applicable to scenarios where a test can cross project boundaries. */
 	// +optional
-	RelatedProjects []string `json:"relatedProjects,omitempty"`
+	RelatedProjects []ConnectivitytestRelatedProjects `json:"relatedProjects,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The NetworkManagementConnectivityTest name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Whether run analysis for the return path from destination to source. Default value is false. */
+	// +optional
+	RoundTrip *bool `json:"roundTrip,omitempty"`
 
 	/* Required. Source specification of the Connectivity Test.
 
 	You can use a combination of source IP address, virtual machine
-	(VM) instance, or Compute Engine network to uniquely identify the
-	source location.
+	(VM) instance, or Compute Engine network to uniquely identify
+	the source location.
 
-	Examples: If the source IP address is an internal IP address within
-	a Google Cloud Virtual Private Cloud (VPC) network, then you must
-	also specify the VPC network. Otherwise, specify the VM instance,
-	which already contains its internal IP address and VPC network
-	information.
+	Examples:
+	If the source IP address is an internal IP address within a Google Cloud
+	Virtual Private Cloud (VPC) network, then you must also specify the VPC
+	network. Otherwise, specify the VM instance, which already contains its
+	internal IP address and VPC network information.
 
-	If the source of the test is within an on-premises network, then
-	you must provide the destination VPC network.
+	If the source of the test is within an on-premises network, then you must
+	provide the destination VPC network.
 
 	If the source endpoint is a Compute Engine VM instance with multiple
-	network interfaces, the instance itself is not sufficient to
-	identify the endpoint. So, you must also specify the source IP
-	address or VPC network.
+	network interfaces, the instance itself is not sufficient to identify the
+	endpoint. So, you must also specify the source IP address or VPC network.
 
 	A reachability analysis proceeds even if the source location is
-	ambiguous. However, the test result may include endpoints that
-	you don't intend to test. */
+	ambiguous. However, the test result may include endpoints that you don't
+	intend to test. */
 	Source ConnectivitytestSource `json:"source"`
+}
+
+type ConnectivitytestAbortStatus struct {
+	/* Causes that the analysis is aborted. */
+	// +optional
+	Cause *string `json:"cause,omitempty"`
+
+	/* IP address that caused the abort. */
+	// +optional
+	IpAddress *string `json:"ipAddress,omitempty"`
+
+	/* List of project IDs the user specified in the request but lacks access to. In this case, analysis is aborted with the PERMISSION_DENIED cause. */
+	// +optional
+	ProjectsMissingPermission []string `json:"projectsMissingPermission,omitempty"`
+
+	/* URI of the resource that caused the abort. */
+	// +optional
+	ResourceURI *string `json:"resourceURI,omitempty"`
+}
+
+type ConnectivitytestAppEngineVersionStatus struct {
+	/* Name of an App Engine version. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* App Engine execution environment for a version. */
+	// +optional
+	Environment *string `json:"environment,omitempty"`
+
+	/* Runtime of the App Engine version. */
+	// +optional
+	Runtime *string `json:"runtime,omitempty"`
+
+	/* URI of an App Engine version. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type ConnectivitytestBackendsStatus struct {
+	/* Name of a Compute Engine instance or network endpoint. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* A list of firewall rule URIs allowing probes from health check IP ranges. */
+	// +optional
+	HealthCheckAllowingFirewallRules []string `json:"healthCheckAllowingFirewallRules,omitempty"`
+
+	/* A list of firewall rule URIs blocking probes from health check IP ranges. */
+	// +optional
+	HealthCheckBlockingFirewallRules []string `json:"healthCheckBlockingFirewallRules,omitempty"`
+
+	/* State of the health check firewall configuration. */
+	// +optional
+	HealthCheckFirewallState *string `json:"healthCheckFirewallState,omitempty"`
+
+	/* URI of a Compute Engine instance or network endpoint. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type ConnectivitytestCloudFunctionStatus struct {
+	/* Name of a Cloud Function. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Location in which the Cloud Function is deployed. */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
+	/* URI of a Cloud Function. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+
+	/* Latest successfully deployed version id of the Cloud Function. */
+	// +optional
+	VersionID *int64 `json:"versionID,omitempty"`
+}
+
+type ConnectivitytestCloudRunRevisionStatus struct {
+	/* Name of a Cloud Run revision. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Location in which this revision is deployed. */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
+	/* URI of Cloud Run service this revision belongs to. */
+	// +optional
+	ServiceURI *string `json:"serviceURI,omitempty"`
+
+	/* URI of a Cloud Run revision. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type ConnectivitytestCloudSQLInstanceStatus struct {
+	/* Name of a Cloud SQL instance. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* External IP address of a Cloud SQL instance. */
+	// +optional
+	ExternalIP *string `json:"externalIP,omitempty"`
+
+	/* Internal IP address of a Cloud SQL instance. */
+	// +optional
+	InternalIP *string `json:"internalIP,omitempty"`
+
+	/* URI of a Cloud SQL instance network or empty string if the instance does not have one. */
+	// +optional
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	/* Region in which the Cloud SQL instance is running. */
+	// +optional
+	Region *string `json:"region,omitempty"`
+
+	/* URI of a Cloud SQL instance. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type ConnectivitytestDeliverStatus struct {
+	/* IP address of the target (if applicable). */
+	// +optional
+	IpAddress *string `json:"ipAddress,omitempty"`
+
+	/* PSC Google API target the packet is delivered to (if applicable). */
+	// +optional
+	PscGoogleAPITarget *string `json:"pscGoogleAPITarget,omitempty"`
+
+	/* URI of the resource that the packet is delivered to. */
+	// +optional
+	ResourceURI *string `json:"resourceURI,omitempty"`
+
+	/* Name of the Cloud Storage Bucket the packet is delivered to (if applicable). */
+	// +optional
+	StorageBucket *string `json:"storageBucket,omitempty"`
+
+	/* Target type where the packet is delivered to. */
+	// +optional
+	Target *string `json:"target,omitempty"`
+}
+
+type ConnectivitytestDestinationEgressLocationStatus struct {
+	/* Name of the metropolitan area. */
+	// +optional
+	MetropolitanArea *string `json:"metropolitanArea,omitempty"`
+}
+
+type ConnectivitytestDestinationStatus struct {
+	/* Output only. Specifies the type of the target of the forwarding rule. */
+	// +optional
+	ForwardingRuleTarget *string `json:"forwardingRuleTarget,omitempty"`
+
+	/* Output only. ID of the load balancer the forwarding rule points to. Empty for forwarding rules not related to load balancers. */
+	// +optional
+	LoadBalancerID *string `json:"loadBalancerID,omitempty"`
+
+	/* Output only. Type of the load balancer the forwarding rule points to. */
+	// +optional
+	LoadBalancerType *string `json:"loadBalancerType,omitempty"`
+}
+
+type ConnectivitytestDetailsStatus struct {
+	/* A URL/resource name that uniquely identifies the type of the serialized
+	protocol buffer message. This string must contain at least
+	one "/" character. The last segment of the URL's path must represent
+	the fully qualified name of the type (as in
+	`path/google.protobuf.Duration`). The name should be in a canonical form
+	(e.g., leading "." is not accepted).
+
+	In practice, teams usually precompile into the binary all types that they
+	expect it to use in the context of Any. However, for URLs which use the
+	scheme `http`, `https`, or no scheme, one can optionally set up a type
+	server that maps type URLs to message definitions as follows:
+
+	* If no scheme is provided, `https` is assumed.
+	* An HTTP GET on the URL must yield a [google.protobuf.Type][]
+	value in binary format, or produce an error.
+	* Applications are allowed to cache lookup results based on the
+	URL, or have them precompiled into a binary to avoid any
+	lookup. Therefore, binary compatibility needs to be preserved
+	on changes to types. (Use versioned type names to manage
+	breaking changes.)
+
+	Note: this functionality is not currently available in the official
+	protobuf release, and it is not used for type URLs beginning with
+	type.googleapis.com.
+
+	Schemes other than `http`, `https` (or the empty scheme) might be
+	used with implementation specific semantics. */
+	// +optional
+	TypeURL *string `json:"typeURL,omitempty"`
+
+	/* Must be a valid serialized protocol buffer of the above specified type. */
+	// +optional
+	Value *string `json:"value,omitempty"`
+}
+
+type ConnectivitytestDropStatus struct {
+	/* Cause that the packet is dropped. */
+	// +optional
+	Cause *string `json:"cause,omitempty"`
+
+	/* Destination IP address of the dropped packet (if relevant). */
+	// +optional
+	DestinationIP *string `json:"destinationIP,omitempty"`
+
+	/* Region of the dropped packet (if relevant). */
+	// +optional
+	Region *string `json:"region,omitempty"`
+
+	/* URI of the resource that caused the drop. */
+	// +optional
+	ResourceURI *string `json:"resourceURI,omitempty"`
+
+	/* Source IP address of the dropped packet (if relevant). */
+	// +optional
+	SourceIP *string `json:"sourceIP,omitempty"`
+}
+
+type ConnectivitytestEndpointInfoStatus struct {
+	/* Destination IP address. */
+	// +optional
+	DestinationIP *string `json:"destinationIP,omitempty"`
+
+	/* URI of the network where this packet is sent to. */
+	// +optional
+	DestinationNetworkURI *string `json:"destinationNetworkURI,omitempty"`
+
+	/* Destination port. Only valid when protocol is TCP or UDP. */
+	// +optional
+	DestinationPort *int32 `json:"destinationPort,omitempty"`
+
+	/* IP protocol in string format, for example: "TCP", "UDP", "ICMP". */
+	// +optional
+	Protocol *string `json:"protocol,omitempty"`
+
+	/* URI of the source telemetry agent this packet originates from. */
+	// +optional
+	SourceAgentURI *string `json:"sourceAgentURI,omitempty"`
+
+	/* Source IP address. */
+	// +optional
+	SourceIP *string `json:"sourceIP,omitempty"`
+
+	/* URI of the network where this packet originates from. */
+	// +optional
+	SourceNetworkURI *string `json:"sourceNetworkURI,omitempty"`
+
+	/* Source port. Only valid when protocol is TCP or UDP. */
+	// +optional
+	SourcePort *int32 `json:"sourcePort,omitempty"`
+}
+
+type ConnectivitytestEndpointStatus struct {
+	/* Destination IP address. */
+	// +optional
+	DestinationIP *string `json:"destinationIP,omitempty"`
+
+	/* URI of the network where this packet is sent to. */
+	// +optional
+	DestinationNetworkURI *string `json:"destinationNetworkURI,omitempty"`
+
+	/* Destination port. Only valid when protocol is TCP or UDP. */
+	// +optional
+	DestinationPort *int32 `json:"destinationPort,omitempty"`
+
+	/* IP protocol in string format, for example: "TCP", "UDP", "ICMP". */
+	// +optional
+	Protocol *string `json:"protocol,omitempty"`
+
+	/* URI of the source telemetry agent this packet originates from. */
+	// +optional
+	SourceAgentURI *string `json:"sourceAgentURI,omitempty"`
+
+	/* Source IP address. */
+	// +optional
+	SourceIP *string `json:"sourceIP,omitempty"`
+
+	/* URI of the network where this packet originates from. */
+	// +optional
+	SourceNetworkURI *string `json:"sourceNetworkURI,omitempty"`
+
+	/* Source port. Only valid when protocol is TCP or UDP. */
+	// +optional
+	SourcePort *int32 `json:"sourcePort,omitempty"`
+}
+
+type ConnectivitytestErrorStatus struct {
+	/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
+	// +optional
+	Code *int32 `json:"code,omitempty"`
+
+	/* A list of messages that carry the error details.  There is a common set of message types for APIs to use. */
+	// +optional
+	Details []ConnectivitytestDetailsStatus `json:"details,omitempty"`
+
+	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
+	// +optional
+	Message *string `json:"message,omitempty"`
+}
+
+type ConnectivitytestFirewallStatus struct {
+	/* Possible values: ALLOW, DENY, APPLY_SECURITY_PROFILE_GROUP */
+	// +optional
+	Action *string `json:"action,omitempty"`
+
+	/* Possible values: INGRESS, EGRESS */
+	// +optional
+	Direction *string `json:"direction,omitempty"`
+
+	/* The display name of the firewall rule. This field might be empty for firewall policy rules. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* The firewall rule's type. */
+	// +optional
+	FirewallRuleType *string `json:"firewallRuleType,omitempty"`
+
+	/* The URI of the VPC network that the firewall rule is associated with. This field is not applicable to hierarchical firewall policy rules. */
+	// +optional
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	/* The name of the firewall policy that this rule is associated with. This field is not applicable to VPC firewall rules and implied VPC firewall rules. */
+	// +optional
+	Policy *string `json:"policy,omitempty"`
+
+	/* The URI of the firewall policy that this rule is associated with. This field is not applicable to VPC firewall rules and implied VPC firewall rules. */
+	// +optional
+	PolicyURI *string `json:"policyURI,omitempty"`
+
+	/* The priority of the firewall rule. */
+	// +optional
+	Priority *int32 `json:"priority,omitempty"`
+
+	/* The target service accounts specified by the firewall rule. */
+	// +optional
+	TargetServiceAccounts []string `json:"targetServiceAccounts,omitempty"`
+
+	/* The target tags defined by the VPC firewall rule. This field is not applicable to firewall policy rules. */
+	// +optional
+	TargetTags []string `json:"targetTags,omitempty"`
+
+	/* The URI of the firewall rule. This field is not applicable to implied VPC firewall rules. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type ConnectivitytestForwardStatus struct {
+	/* IP address of the target (if applicable). */
+	// +optional
+	IpAddress *string `json:"ipAddress,omitempty"`
+
+	/* URI of the resource that the packet is forwarded to. */
+	// +optional
+	ResourceURI *string `json:"resourceURI,omitempty"`
+
+	/* Target type where this packet is forwarded to. */
+	// +optional
+	Target *string `json:"target,omitempty"`
+}
+
+type ConnectivitytestForwardingRuleStatus struct {
+	/* Name of the forwarding rule. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Name of the load balancer the forwarding rule belongs to. Empty for forwarding rules not related to load balancers (like PSC forwarding rules). */
+	// +optional
+	LoadBalancerName *string `json:"loadBalancerName,omitempty"`
+
+	/* Port range defined in the forwarding rule that matches the packet. */
+	// +optional
+	MatchedPortRange *string `json:"matchedPortRange,omitempty"`
+
+	/* Protocol defined in the forwarding rule that matches the packet. */
+	// +optional
+	MatchedProtocol *string `json:"matchedProtocol,omitempty"`
+
+	/* Network URI. */
+	// +optional
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	/* PSC Google API target this forwarding rule targets (if applicable). */
+	// +optional
+	PscGoogleAPITarget *string `json:"pscGoogleAPITarget,omitempty"`
+
+	/* URI of the PSC service attachment this forwarding rule targets (if applicable). */
+	// +optional
+	PscServiceAttachmentURI *string `json:"pscServiceAttachmentURI,omitempty"`
+
+	/* Region of the forwarding rule. Set only for regional forwarding rules. */
+	// +optional
+	Region *string `json:"region,omitempty"`
+
+	/* Target type of the forwarding rule. */
+	// +optional
+	Target *string `json:"target,omitempty"`
+
+	/* URI of the forwarding rule. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+
+	/* VIP of the forwarding rule. */
+	// +optional
+	Vip *string `json:"vip,omitempty"`
+}
+
+type ConnectivitytestGkeMasterStatus struct {
+	/* URI of a GKE cluster network. */
+	// +optional
+	ClusterNetworkURI *string `json:"clusterNetworkURI,omitempty"`
+
+	/* URI of a GKE cluster. */
+	// +optional
+	ClusterURI *string `json:"clusterURI,omitempty"`
+
+	/* DNS endpoint of a GKE cluster control plane. */
+	// +optional
+	DnsEndpoint *string `json:"dnsEndpoint,omitempty"`
+
+	/* External IP address of a GKE cluster control plane. */
+	// +optional
+	ExternalIP *string `json:"externalIP,omitempty"`
+
+	/* Internal IP address of a GKE cluster control plane. */
+	// +optional
+	InternalIP *string `json:"internalIP,omitempty"`
+}
+
+type ConnectivitytestGoogleServiceStatus struct {
+	/* Recognized type of a Google Service. */
+	// +optional
+	GoogleServiceType *string `json:"googleServiceType,omitempty"`
+
+	/* Source IP address. */
+	// +optional
+	SourceIP *string `json:"sourceIP,omitempty"`
+}
+
+type ConnectivitytestInstanceStatus struct {
+	/* Name of a Compute Engine instance. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* External IP address of the network interface. */
+	// +optional
+	ExternalIP *string `json:"externalIP,omitempty"`
+
+	/* Name of the network interface of a Compute Engine instance. */
+	// +optional
+	Interface *string `json:"interface,omitempty"`
+
+	/* Internal IP address of the network interface. */
+	// +optional
+	InternalIP *string `json:"internalIP,omitempty"`
+
+	/* Network tags configured on the instance. */
+	// +optional
+	NetworkTags []string `json:"networkTags,omitempty"`
+
+	/* URI of a Compute Engine network. */
+	// +optional
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	/* URI of the PSC network attachment the NIC is attached to (if relevant). */
+	// +optional
+	PscNetworkAttachmentURI *string `json:"pscNetworkAttachmentURI,omitempty"`
+
+	/* Service account authorized for the instance. */
+	// +optional
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	/* URI of a Compute Engine instance. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type ConnectivitytestLatencyPercentilesStatus struct {
+	/* percent-th percentile of latency observed, in microseconds. Fraction of percent/100 of samples have latency lower or equal to the value of this field. */
+	// +optional
+	LatencyMicros *int64 `json:"latencyMicros,omitempty"`
+
+	/* Percentage of samples this data point applies to. */
+	// +optional
+	Percent *int32 `json:"percent,omitempty"`
+}
+
+type ConnectivitytestLoadBalancerBackendInfoStatus struct {
+	/* URI of the backend bucket this backend targets (if applicable). */
+	// +optional
+	BackendBucketURI *string `json:"backendBucketURI,omitempty"`
+
+	/* URI of the backend service this backend belongs to (if applicable). */
+	// +optional
+	BackendServiceURI *string `json:"backendServiceURI,omitempty"`
+
+	/* Output only. Health check firewalls configuration state for the backend. This is a result of the static firewall analysis (verifying that health check traffic from required IP ranges to the backend is allowed or not). The backend might still be unhealthy even if these firewalls are configured. Please refer to the documentation for more information: https://cloud.google.com/load-balancing/docs/firewall-rules */
+	// +optional
+	HealthCheckFirewallsConfigState *string `json:"healthCheckFirewallsConfigState,omitempty"`
+
+	/* URI of the health check attached to this backend (if applicable). */
+	// +optional
+	HealthCheckURI *string `json:"healthCheckURI,omitempty"`
+
+	/* URI of the instance group this backend belongs to (if applicable). */
+	// +optional
+	InstanceGroupURI *string `json:"instanceGroupURI,omitempty"`
+
+	/* URI of the backend instance (if applicable). Populated for instance group backends, and zonal NEG backends. */
+	// +optional
+	InstanceURI *string `json:"instanceURI,omitempty"`
+
+	/* Display name of the backend. For example, it might be an instance name for the instance group backends, or an IP address and port for zonal network endpoint group backends. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* URI of the network endpoint group this backend belongs to (if applicable). */
+	// +optional
+	NetworkEndpointGroupURI *string `json:"networkEndpointGroupURI,omitempty"`
+
+	/* PSC Google API target this PSC NEG backend targets (if applicable). */
+	// +optional
+	PscGoogleAPITarget *string `json:"pscGoogleAPITarget,omitempty"`
+
+	/* URI of the PSC service attachment this PSC NEG backend targets (if applicable). */
+	// +optional
+	PscServiceAttachmentURI *string `json:"pscServiceAttachmentURI,omitempty"`
+}
+
+type ConnectivitytestLoadBalancerStatus struct {
+	/* Type of load balancer's backend configuration. */
+	// +optional
+	BackendType *string `json:"backendType,omitempty"`
+
+	/* Backend configuration URI. */
+	// +optional
+	BackendURI *string `json:"backendURI,omitempty"`
+
+	/* Information for the loadbalancer backends. */
+	// +optional
+	Backends []ConnectivitytestBackendsStatus `json:"backends,omitempty"`
+
+	/* URI of the health check for the load balancer. Deprecated and no longer populated as different load balancer backends might have different health checks. */
+	// +optional
+	HealthCheckURI *string `json:"healthCheckURI,omitempty"`
+
+	/* Type of the load balancer. */
+	// +optional
+	LoadBalancerType *string `json:"loadBalancerType,omitempty"`
+}
+
+type ConnectivitytestNatStatus struct {
+	/* The name of Cloud NAT Gateway. Only valid when type is CLOUD_NAT. */
+	// +optional
+	NatGatewayName *string `json:"natGatewayName,omitempty"`
+
+	/* URI of the network where NAT translation takes place. */
+	// +optional
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	/* Destination IP address after NAT translation. */
+	// +optional
+	NewDestinationIP *string `json:"newDestinationIP,omitempty"`
+
+	/* Destination port after NAT translation. Only valid when protocol is TCP or UDP. */
+	// +optional
+	NewDestinationPort *int32 `json:"newDestinationPort,omitempty"`
+
+	/* Source IP address after NAT translation. */
+	// +optional
+	NewSourceIP *string `json:"newSourceIP,omitempty"`
+
+	/* Source port after NAT translation. Only valid when protocol is TCP or UDP. */
+	// +optional
+	NewSourcePort *int32 `json:"newSourcePort,omitempty"`
+
+	/* Destination IP address before NAT translation. */
+	// +optional
+	OldDestinationIP *string `json:"oldDestinationIP,omitempty"`
+
+	/* Destination port before NAT translation. Only valid when protocol is TCP or UDP. */
+	// +optional
+	OldDestinationPort *int32 `json:"oldDestinationPort,omitempty"`
+
+	/* Source IP address before NAT translation. */
+	// +optional
+	OldSourceIP *string `json:"oldSourceIP,omitempty"`
+
+	/* Source port before NAT translation. Only valid when protocol is TCP or UDP. */
+	// +optional
+	OldSourcePort *int32 `json:"oldSourcePort,omitempty"`
+
+	/* IP protocol in string format, for example: "TCP", "UDP", "ICMP". */
+	// +optional
+	Protocol *string `json:"protocol,omitempty"`
+
+	/* Uri of the Cloud Router. Only valid when type is CLOUD_NAT. */
+	// +optional
+	RouterURI *string `json:"routerURI,omitempty"`
+
+	/* Type of NAT. */
+	// +optional
+	Type *string `json:"type,omitempty"`
+}
+
+type ConnectivitytestNetworkStatus struct {
+	/* Name of a Compute Engine network. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* The IP range of the subnet matching the source IP address of the test. */
+	// +optional
+	MatchedIPRange *string `json:"matchedIPRange,omitempty"`
+
+	/* URI of the subnet matching the source IP address of the test. */
+	// +optional
+	MatchedSubnetURI *string `json:"matchedSubnetURI,omitempty"`
+
+	/* The region of the subnet matching the source IP address of the test. */
+	// +optional
+	Region *string `json:"region,omitempty"`
+
+	/* URI of a Compute Engine network. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type ConnectivitytestObservedStateStatus struct {
+	/* Output only. The time the test was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Destination specification of the Connectivity Test.
+
+	You can use a combination of destination IP address, Compute Engine
+	VM instance, or VPC network to uniquely identify the destination
+	location.
+
+	Even if the destination IP address is not unique, the source IP
+	location is unique. Usually, the analysis can infer the destination
+	endpoint from route information.
+
+	If the destination you specify is a VM instance and the instance has
+	multiple network interfaces, then you must also specify either
+	a destination IP address  or VPC network to identify the destination
+	interface.
+
+	A reachability analysis proceeds even if the destination location is
+	ambiguous. However, the result can include endpoints that you don't
+	intend to test. */
+	// +optional
+	Destination *ConnectivitytestDestinationStatus `json:"destination,omitempty"`
+
+	/* Output only. The display name of a Connectivity Test. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Output only. The probing details of this test from the latest run, present for applicable tests only. The details are updated when creating a new test, updating an existing test, or triggering a one-time rerun of an existing test. */
+	// +optional
+	ProbingDetails *ConnectivitytestProbingDetailsStatus `json:"probingDetails,omitempty"`
+
+	/* Output only. The reachability details of this test from the latest run. The details are updated when creating a new test, updating an existing test, or triggering a one-time rerun of an existing test. */
+	// +optional
+	ReachabilityDetails *ConnectivitytestReachabilityDetailsStatus `json:"reachabilityDetails,omitempty"`
+
+	/* Output only. The reachability details of this test from the latest run for the return path. The details are updated when creating a new test, updating an existing test, or triggering a one-time rerun of an existing test. */
+	// +optional
+	ReturnReachabilityDetails *ConnectivitytestReturnReachabilityDetailsStatus `json:"returnReachabilityDetails,omitempty"`
+
+	/* Source specification of the Connectivity Test.
+
+	You can use a combination of source IP address, virtual machine
+	(VM) instance, or Compute Engine network to uniquely identify
+	the source location.
+
+	Examples:
+	If the source IP address is an internal IP address within a Google Cloud
+	Virtual Private Cloud (VPC) network, then you must also specify the VPC
+	network. Otherwise, specify the VM instance, which already contains its
+	internal IP address and VPC network information.
+
+	If the source of the test is within an on-premises network, then you must
+	provide the destination VPC network.
+
+	If the source endpoint is a Compute Engine VM instance with multiple
+	network interfaces, the instance itself is not sufficient to identify the
+	endpoint. So, you must also specify the source IP address or VPC network.
+
+	A reachability analysis proceeds even if the source location is
+	ambiguous. However, the test result may include endpoints that you don't
+	intend to test. */
+	// +optional
+	Source *ConnectivitytestSourceStatus `json:"source,omitempty"`
+
+	/* Output only. The time the test's configuration was updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type ConnectivitytestProbingDetailsStatus struct {
+	/* The reason probing was aborted. */
+	// +optional
+	AbortCause *string `json:"abortCause,omitempty"`
+
+	/* The EdgeLocation from which a packet destined for/originating from the internet will egress/ingress the Google network. This will only be populated for a connectivity test which has an internet destination/source address. The absence of this field *must not* be used as an indication that the destination/source is part of the Google network. */
+	// +optional
+	DestinationEgressLocation *ConnectivitytestDestinationEgressLocationStatus `json:"destinationEgressLocation,omitempty"`
+
+	/* The source and destination endpoints derived from the test input and used for active probing. */
+	// +optional
+	EndpointInfo *ConnectivitytestEndpointInfoStatus `json:"endpointInfo,omitempty"`
+
+	/* Details about an internal failure or the cancellation of active probing. */
+	// +optional
+	Error *ConnectivitytestErrorStatus `json:"error,omitempty"`
+
+	/* Latency as measured by active probing in one direction: from the source to the destination endpoint. */
+	// +optional
+	ProbingLatency *ConnectivitytestProbingLatencyStatus `json:"probingLatency,omitempty"`
+
+	/* The overall result of active probing. */
+	// +optional
+	Result *string `json:"result,omitempty"`
+
+	/* Number of probes sent. */
+	// +optional
+	SentProbeCount *int32 `json:"sentProbeCount,omitempty"`
+
+	/* Number of probes that reached the destination. */
+	// +optional
+	SuccessfulProbeCount *int32 `json:"successfulProbeCount,omitempty"`
+
+	/* The time that reachability was assessed through active probing. */
+	// +optional
+	VerifyTime *string `json:"verifyTime,omitempty"`
+}
+
+type ConnectivitytestProbingLatencyStatus struct {
+	/* Representative latency percentiles. */
+	// +optional
+	LatencyPercentiles []ConnectivitytestLatencyPercentilesStatus `json:"latencyPercentiles,omitempty"`
+}
+
+type ConnectivitytestProxyConnectionStatus struct {
+	/* URI of the network where connection is proxied. */
+	// +optional
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	/* Destination IP address of a new connection. */
+	// +optional
+	NewDestinationIP *string `json:"newDestinationIP,omitempty"`
+
+	/* Destination port of a new connection. Only valid when protocol is TCP or UDP. */
+	// +optional
+	NewDestinationPort *int32 `json:"newDestinationPort,omitempty"`
+
+	/* Source IP address of a new connection. */
+	// +optional
+	NewSourceIP *string `json:"newSourceIP,omitempty"`
+
+	/* Source port of a new connection. Only valid when protocol is TCP or UDP. */
+	// +optional
+	NewSourcePort *int32 `json:"newSourcePort,omitempty"`
+
+	/* Destination IP address of an original connection */
+	// +optional
+	OldDestinationIP *string `json:"oldDestinationIP,omitempty"`
+
+	/* Destination port of an original connection. Only valid when protocol is TCP or UDP. */
+	// +optional
+	OldDestinationPort *int32 `json:"oldDestinationPort,omitempty"`
+
+	/* Source IP address of an original connection. */
+	// +optional
+	OldSourceIP *string `json:"oldSourceIP,omitempty"`
+
+	/* Source port of an original connection. Only valid when protocol is TCP or UDP. */
+	// +optional
+	OldSourcePort *int32 `json:"oldSourcePort,omitempty"`
+
+	/* IP protocol in string format, for example: "TCP", "UDP", "ICMP". */
+	// +optional
+	Protocol *string `json:"protocol,omitempty"`
+
+	/* Uri of proxy subnet. */
+	// +optional
+	SubnetURI *string `json:"subnetURI,omitempty"`
+}
+
+type ConnectivitytestReachabilityDetailsStatus struct {
+	/* The details of a failure or a cancellation of reachability analysis. */
+	// +optional
+	Error *ConnectivitytestErrorStatus `json:"error,omitempty"`
+
+	/* The overall result of the test's configuration analysis. */
+	// +optional
+	Result *string `json:"result,omitempty"`
+
+	/* Result may contain a list of traces if a test has multiple possible paths in the network, such as when destination endpoint is a load balancer with multiple backends. */
+	// +optional
+	Traces []ConnectivitytestTracesStatus `json:"traces,omitempty"`
+
+	/* The time of the configuration analysis. */
+	// +optional
+	VerifyTime *string `json:"verifyTime,omitempty"`
+}
+
+type ConnectivitytestRedisClusterStatus struct {
+	/* Discovery endpoint IP address of a Redis Cluster. */
+	// +optional
+	DiscoveryEndpointIPAddress *string `json:"discoveryEndpointIPAddress,omitempty"`
+
+	/* Name of a Redis Cluster. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Name of the region in which the Redis Cluster is defined. For example, "us-central1". */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
+	/* URI of a Redis Cluster network in format "projects/{project_id}/global/networks/{network_id}". */
+	// +optional
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	/* Secondary endpoint IP address of a Redis Cluster. */
+	// +optional
+	SecondaryEndpointIPAddress *string `json:"secondaryEndpointIPAddress,omitempty"`
+
+	/* URI of a Redis Cluster in format "projects/{project_id}/locations/{location}/clusters/{cluster_id}" */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type ConnectivitytestRedisInstanceStatus struct {
+	/* Name of a Cloud Redis Instance. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* URI of a Cloud Redis Instance network. */
+	// +optional
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	/* Primary endpoint IP address of a Cloud Redis Instance. */
+	// +optional
+	PrimaryEndpointIP *string `json:"primaryEndpointIP,omitempty"`
+
+	/* Read endpoint IP address of a Cloud Redis Instance (if applicable). */
+	// +optional
+	ReadEndpointIP *string `json:"readEndpointIP,omitempty"`
+
+	/* Region in which the Cloud Redis Instance is defined. */
+	// +optional
+	Region *string `json:"region,omitempty"`
+
+	/* URI of a Cloud Redis Instance. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type ConnectivitytestReturnReachabilityDetailsStatus struct {
+	/* The details of a failure or a cancellation of reachability analysis. */
+	// +optional
+	Error *ConnectivitytestErrorStatus `json:"error,omitempty"`
+
+	/* The overall result of the test's configuration analysis. */
+	// +optional
+	Result *string `json:"result,omitempty"`
+
+	/* Result may contain a list of traces if a test has multiple possible paths in the network, such as when destination endpoint is a load balancer with multiple backends. */
+	// +optional
+	Traces []ConnectivitytestTracesStatus `json:"traces,omitempty"`
+
+	/* The time of the configuration analysis. */
+	// +optional
+	VerifyTime *string `json:"verifyTime,omitempty"`
+}
+
+type ConnectivitytestRouteStatus struct {
+	/* For advertised routes, the URI of their next hop, i.e. the URI of the hybrid endpoint (VPN tunnel, Interconnect attachment, NCC router appliance) the advertised prefix is advertised through, or URI of the source peered network. */
+	// +optional
+	AdvertisedRouteNextHopURI *string `json:"advertisedRouteNextHopURI,omitempty"`
+
+	/* For advertised dynamic routes, the URI of the Cloud Router that advertised the corresponding IP prefix. */
+	// +optional
+	AdvertisedRouteSourceRouterURI *string `json:"advertisedRouteSourceRouterURI,omitempty"`
+
+	/* Destination IP range of the route. */
+	// +optional
+	DestIPRange *string `json:"destIPRange,omitempty"`
+
+	/* Destination port ranges of the route. Policy based routes only. */
+	// +optional
+	DestPortRanges []string `json:"destPortRanges,omitempty"`
+
+	/* Name of a route. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Instance tags of the route. */
+	// +optional
+	InstanceTags []string `json:"instanceTags,omitempty"`
+
+	/* URI of a NCC Hub. NCC_HUB routes only. */
+	// +optional
+	NccHubURI *string `json:"nccHubURI,omitempty"`
+
+	/* URI of a NCC Spoke. NCC_HUB routes only. */
+	// +optional
+	NccSpokeURI *string `json:"nccSpokeURI,omitempty"`
+
+	/* URI of a Compute Engine network. NETWORK routes only. */
+	// +optional
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	/* Next hop of the route. */
+	// +optional
+	NextHop *string `json:"nextHop,omitempty"`
+
+	/* Type of next hop. */
+	// +optional
+	NextHopType *string `json:"nextHopType,omitempty"`
+
+	/* Priority of the route. */
+	// +optional
+	Priority *int32 `json:"priority,omitempty"`
+
+	/* Protocols of the route. Policy based routes only. */
+	// +optional
+	Protocols []string `json:"protocols,omitempty"`
+
+	/* Region of the route (if applicable). */
+	// +optional
+	Region *string `json:"region,omitempty"`
+
+	/* Indicates where route is applicable. */
+	// +optional
+	RouteScope *string `json:"routeScope,omitempty"`
+
+	/* Type of route. */
+	// +optional
+	RouteType *string `json:"routeType,omitempty"`
+
+	/* Source IP address range of the route. Policy based routes only. */
+	// +optional
+	SrcIPRange *string `json:"srcIPRange,omitempty"`
+
+	/* Source port ranges of the route. Policy based routes only. */
+	// +optional
+	SrcPortRanges []string `json:"srcPortRanges,omitempty"`
+
+	/* URI of a route (if applicable). */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type ConnectivitytestServerlessNegStatus struct {
+	/* URI of the serverless network endpoint group. */
+	// +optional
+	NegURI *string `json:"negURI,omitempty"`
+}
+
+type ConnectivitytestSourceStatus struct {
+	/* Output only. Specifies the type of the target of the forwarding rule. */
+	// +optional
+	ForwardingRuleTarget *string `json:"forwardingRuleTarget,omitempty"`
+
+	/* Output only. ID of the load balancer the forwarding rule points to. Empty for forwarding rules not related to load balancers. */
+	// +optional
+	LoadBalancerID *string `json:"loadBalancerID,omitempty"`
+
+	/* Output only. Type of the load balancer the forwarding rule points to. */
+	// +optional
+	LoadBalancerType *string `json:"loadBalancerType,omitempty"`
+}
+
+type ConnectivitytestStepsStatus struct {
+	/* Display information of the final state "abort" and reason. */
+	// +optional
+	Abort *ConnectivitytestAbortStatus `json:"abort,omitempty"`
+
+	/* Display information of an App Engine service version. */
+	// +optional
+	AppEngineVersion *ConnectivitytestAppEngineVersionStatus `json:"appEngineVersion,omitempty"`
+
+	/* This is a step that leads to the final state Drop. */
+	// +optional
+	CausesDrop *bool `json:"causesDrop,omitempty"`
+
+	/* Display information of a Cloud Function. */
+	// +optional
+	CloudFunction *ConnectivitytestCloudFunctionStatus `json:"cloudFunction,omitempty"`
+
+	/* Display information of a Cloud Run revision. */
+	// +optional
+	CloudRunRevision *ConnectivitytestCloudRunRevisionStatus `json:"cloudRunRevision,omitempty"`
+
+	/* Display information of a Cloud SQL instance. */
+	// +optional
+	CloudSQLInstance *ConnectivitytestCloudSQLInstanceStatus `json:"cloudSQLInstance,omitempty"`
+
+	/* Display information of the final state "deliver" and reason. */
+	// +optional
+	Deliver *ConnectivitytestDeliverStatus `json:"deliver,omitempty"`
+
+	/* A description of the step. Usually this is a summary of the state. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Display information of the final state "drop" and reason. */
+	// +optional
+	Drop *ConnectivitytestDropStatus `json:"drop,omitempty"`
+
+	/* Display information of the source and destination under analysis. The endpoint information in an intermediate state may differ with the initial input, as it might be modified by state like NAT, or Connection Proxy. */
+	// +optional
+	Endpoint *ConnectivitytestEndpointStatus `json:"endpoint,omitempty"`
+
+	/* Display information of a Compute Engine firewall rule. */
+	// +optional
+	Firewall *ConnectivitytestFirewallStatus `json:"firewall,omitempty"`
+
+	/* Display information of the final state "forward" and reason. */
+	// +optional
+	Forward *ConnectivitytestForwardStatus `json:"forward,omitempty"`
+
+	/* Display information of a Compute Engine forwarding rule. */
+	// +optional
+	ForwardingRule *ConnectivitytestForwardingRuleStatus `json:"forwardingRule,omitempty"`
+
+	/* Display information of a Google Kubernetes Engine cluster master. */
+	// +optional
+	GkeMaster *ConnectivitytestGkeMasterStatus `json:"gkeMaster,omitempty"`
+
+	/* Display information of a Google service */
+	// +optional
+	GoogleService *ConnectivitytestGoogleServiceStatus `json:"googleService,omitempty"`
+
+	/* Display information of a Compute Engine instance. */
+	// +optional
+	Instance *ConnectivitytestInstanceStatus `json:"instance,omitempty"`
+
+	/* Display information of the load balancers. Deprecated in favor of the `load_balancer_backend_info` field, not used in new tests. */
+	// +optional
+	LoadBalancer *ConnectivitytestLoadBalancerStatus `json:"loadBalancer,omitempty"`
+
+	/* Display information of a specific load balancer backend. */
+	// +optional
+	LoadBalancerBackendInfo *ConnectivitytestLoadBalancerBackendInfoStatus `json:"loadBalancerBackendInfo,omitempty"`
+
+	/* Display information of a NAT. */
+	// +optional
+	Nat *ConnectivitytestNatStatus `json:"nat,omitempty"`
+
+	/* Display information of a Google Cloud network. */
+	// +optional
+	Network *ConnectivitytestNetworkStatus `json:"network,omitempty"`
+
+	/* Project ID that contains the configuration this step is validating. */
+	// +optional
+	ProjectID *string `json:"projectID,omitempty"`
+
+	/* Display information of a ProxyConnection. */
+	// +optional
+	ProxyConnection *ConnectivitytestProxyConnectionStatus `json:"proxyConnection,omitempty"`
+
+	/* Display information of a Redis Cluster. */
+	// +optional
+	RedisCluster *ConnectivitytestRedisClusterStatus `json:"redisCluster,omitempty"`
+
+	/* Display information of a Redis Instance. */
+	// +optional
+	RedisInstance *ConnectivitytestRedisInstanceStatus `json:"redisInstance,omitempty"`
+
+	/* Display information of a Compute Engine route. */
+	// +optional
+	Route *ConnectivitytestRouteStatus `json:"route,omitempty"`
+
+	/* Display information of a Serverless network endpoint group backend. Used only for return traces. */
+	// +optional
+	ServerlessNeg *ConnectivitytestServerlessNegStatus `json:"serverlessNeg,omitempty"`
+
+	/* Each step is in one of the pre-defined states. */
+	// +optional
+	State *string `json:"state,omitempty"`
+
+	/* Display information of a Storage Bucket. Used only for return traces. */
+	// +optional
+	StorageBucket *ConnectivitytestStorageBucketStatus `json:"storageBucket,omitempty"`
+
+	/* Display information of a VPC connector. */
+	// +optional
+	VpcConnector *ConnectivitytestVpcConnectorStatus `json:"vpcConnector,omitempty"`
+
+	/* Display information of a Compute Engine VPN gateway. */
+	// +optional
+	VpnGateway *ConnectivitytestVpnGatewayStatus `json:"vpnGateway,omitempty"`
+
+	/* Display information of a Compute Engine VPN tunnel. */
+	// +optional
+	VpnTunnel *ConnectivitytestVpnTunnelStatus `json:"vpnTunnel,omitempty"`
+}
+
+type ConnectivitytestStorageBucketStatus struct {
+	/* Cloud Storage Bucket name. */
+	// +optional
+	Bucket *string `json:"bucket,omitempty"`
+}
+
+type ConnectivitytestTracesStatus struct {
+	/* Derived from the source and destination endpoints definition specified by user request, and validated by the data plane model. If there are multiple traces starting from different source locations, then the endpoint_info may be different between traces. */
+	// +optional
+	EndpointInfo *ConnectivitytestEndpointInfoStatus `json:"endpointInfo,omitempty"`
+
+	/* ID of trace. For forward traces, this ID is unique for each trace. For return traces, it matches ID of associated forward trace. A single forward trace can be associated with none, one or more than one return trace. */
+	// +optional
+	ForwardTraceID *int32 `json:"forwardTraceID,omitempty"`
+
+	/* A trace of a test contains multiple steps from the initial state to the
+	final state (delivered, dropped, forwarded, or aborted).
+
+	The steps are ordered by the processing sequence within the simulated
+	network state machine. It is critical to preserve the order of the steps
+	and avoid reordering or sorting them. */
+	// +optional
+	Steps []ConnectivitytestStepsStatus `json:"steps,omitempty"`
+}
+
+type ConnectivitytestVpcConnectorStatus struct {
+	/* Name of a VPC connector. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Location in which the VPC connector is deployed. */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
+	/* URI of a VPC connector. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type ConnectivitytestVpnGatewayStatus struct {
+	/* Name of a VPN gateway. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* IP address of the VPN gateway. */
+	// +optional
+	IpAddress *string `json:"ipAddress,omitempty"`
+
+	/* URI of a Compute Engine network where the VPN gateway is configured. */
+	// +optional
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	/* Name of a Google Cloud region where this VPN gateway is configured. */
+	// +optional
+	Region *string `json:"region,omitempty"`
+
+	/* URI of a VPN gateway. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+
+	/* A VPN tunnel that is associated with this VPN gateway. There may be multiple VPN tunnels configured on a VPN gateway, and only the one relevant to the test is displayed. */
+	// +optional
+	VpnTunnelURI *string `json:"vpnTunnelURI,omitempty"`
+}
+
+type ConnectivitytestVpnTunnelStatus struct {
+	/* Name of a VPN tunnel. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* URI of a Compute Engine network where the VPN tunnel is configured. */
+	// +optional
+	NetworkURI *string `json:"networkURI,omitempty"`
+
+	/* Name of a Google Cloud region where this VPN tunnel is configured. */
+	// +optional
+	Region *string `json:"region,omitempty"`
+
+	/* URI of a VPN gateway at remote end of the tunnel. */
+	// +optional
+	RemoteGateway *string `json:"remoteGateway,omitempty"`
+
+	/* Remote VPN gateway's IP address. */
+	// +optional
+	RemoteGatewayIP *string `json:"remoteGatewayIP,omitempty"`
+
+	/* Type of the routing policy. */
+	// +optional
+	RoutingType *string `json:"routingType,omitempty"`
+
+	/* URI of the VPN gateway at local end of the tunnel. */
+	// +optional
+	SourceGateway *string `json:"sourceGateway,omitempty"`
+
+	/* Local VPN gateway's IP address. */
+	// +optional
+	SourceGatewayIP *string `json:"sourceGatewayIP,omitempty"`
+
+	/* URI of a VPN tunnel. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
 }
 
 type NetworkManagementConnectivityTestStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkManagementConnectivityTest's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the NetworkManagementConnectivityTest resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *ConnectivitytestObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
@@ -188,9 +1505,7 @@ type NetworkManagementConnectivityTestStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworkmanagementconnectivitytest;gcpnetworkmanagementconnectivitytests
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

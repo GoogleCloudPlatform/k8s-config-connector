@@ -32,89 +32,102 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var _ = apiextensionsv1.JSON{}
+
+type TagEnumValue struct {
+	/* The display name of the enum value. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
 type TagFields struct {
-	/* Holds the value for a tag field with boolean type. */
+	/* The value of a tag field with a boolean type. */
 	// +optional
 	BoolValue *bool `json:"boolValue,omitempty"`
 
-	/* The display name of this field. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
-
-	/* Holds the value for a tag field with double type. */
+	/* The value of a tag field with a double type. */
 	// +optional
 	DoubleValue *float64 `json:"doubleValue,omitempty"`
 
-	/* The display name of the enum value. */
+	/* The value of a tag field with an enum type.
+
+	This value must be one of the allowed values listed in this enum. */
 	// +optional
-	EnumValue *string `json:"enumValue,omitempty"`
+	EnumValue *TagEnumValue `json:"enumValue,omitempty"`
 
-	FieldName string `json:"fieldName"`
+	/* The value of a tag field with a rich text type.
 
-	/* The order of this field with respect to other fields in this tag. For example, a higher value can indicate
-	a more important field. The value can be negative. Multiple fields can have the same order, and field orders
-	within a tag do not have to be sequential. */
+	The maximum length is 10 MiB as this value holds HTML descriptions
+	including encoded images. The maximum length of the text without images
+	is 100 KiB. */
 	// +optional
-	Order *int64 `json:"order,omitempty"`
+	RichtextValue *string `json:"richtextValue,omitempty"`
 
-	/* Holds the value for a tag field with string type. */
+	/* The value of a tag field with a string type.
+
+	The maximum length is 2000 UTF-8 characters. */
 	// +optional
 	StringValue *string `json:"stringValue,omitempty"`
 
-	/* Holds the value for a tag field with timestamp type. */
+	/* The value of a tag field with a timestamp type. */
 	// +optional
 	TimestampValue *string `json:"timestampValue,omitempty"`
 }
 
 type DataCatalogTagSpec struct {
-	/* Resources like Entry can have schemas associated with them. This scope allows users to attach tags to an
-	individual column based on that schema.
+	/* Resources like entry can have schemas associated with them. This scope
+	allows you to attach tags to an individual column based on that schema.
 
-	For attaching a tag to a nested column, use '.' to separate the column names. Example:
-	'outer_column.inner_column'. */
+	To attach a tag to a nested column, separate column names with a dot
+	(`.`). Example: `column.nested_column`. */
 	// +optional
 	Column *string `json:"column,omitempty"`
 
-	/* This maps the ID of a tag field to the value of and additional information about that field.
-	Valid field IDs are defined by the tag's template. A tag must have at least 1 field and at most 500 fields. */
-	Fields []TagFields `json:"fields"`
+	/* Required. Reference to the DataCatalogEntry that owns this Tag. The entry must be in the same project and location as the tag. */
+	EntryRef v1alpha1.ResourceRef `json:"entryRef"`
 
-	/* Immutable. The name of the parent this tag is attached to. This can be the name of an entry or an entry group. If an entry group, the tag will be attached to
-	all entries in that group. */
 	// +optional
-	Parent *string `json:"parent,omitempty"`
+	Fields map[string]TagFields `json:"fields,omitempty"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* The DataCatalogTag name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The resource name of the tag template that this tag uses. Example:
-	projects/{project_id}/locations/{location}/tagTemplates/{tagTemplateId}
+	/* Required. The resource name of the tag template this tag uses.
+
 	This field cannot be modified after creation. */
-	Template string `json:"template"`
+	TemplateRef v1alpha1.ResourceRef `json:"templateRef"`
+}
+
+type TagObservedStateStatus struct {
+	/* Output only. Denotes the transfer status of the Tag Template. */
+	// +optional
+	DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
+
+	/* Output only. The display name of the tag template. */
+	// +optional
+	TemplateDisplayName *string `json:"templateDisplayName,omitempty"`
 }
 
 type DataCatalogTagStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataCatalogTag's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The resource name of the tag in URL format. Example:
-	projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/entries/{entryId}/tags/{tag_id} or
-	projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/tags/{tag_id}
-	where tag_id is a system-generated identifier. Note that this Tag may not actually be stored in the location in this name. */
+	/* A unique specifier for the DataCatalogTag resource in GCP. */
 	// +optional
-	Name *string `json:"name,omitempty"`
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The display name of the tag template. */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	TemplateDisplayname *string `json:"templateDisplayname,omitempty"`
+	ObservedState *TagObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
@@ -122,9 +135,7 @@ type DataCatalogTagStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatacatalogtag;gcpdatacatalogtags
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

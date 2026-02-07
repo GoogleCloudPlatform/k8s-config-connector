@@ -32,7 +32,6 @@ import (
 type BigqueryreservationV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	BigQueryReservationCapacityCommitmentsGetter
-	BigQueryReservationReservationsGetter
 }
 
 // BigqueryreservationV1alpha1Client is used to interact with features provided by the bigqueryreservation.cnrm.cloud.google.com group.
@@ -42,10 +41,6 @@ type BigqueryreservationV1alpha1Client struct {
 
 func (c *BigqueryreservationV1alpha1Client) BigQueryReservationCapacityCommitments(namespace string) BigQueryReservationCapacityCommitmentInterface {
 	return newBigQueryReservationCapacityCommitments(c, namespace)
-}
-
-func (c *BigqueryreservationV1alpha1Client) BigQueryReservationReservations(namespace string) BigQueryReservationReservationInterface {
-	return newBigQueryReservationReservations(c, namespace)
 }
 
 // NewForConfig creates a new BigqueryreservationV1alpha1Client for the given config.

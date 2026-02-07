@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type ConfigEmailPreferences struct {
 	/* If true, email notifications will be sent on transfer run failures. */
@@ -45,6 +48,15 @@ type ConfigEncryptionConfiguration struct {
 	/* The KMS key used for encrypting BigQuery data. */
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+}
+
+type ConfigEventDrivenSchedule struct {
+	/* Pub/Sub subscription used to receive events. Only Google Cloud Storage data source support this option. */
+	// +optional
+	PubSubSubscriptionRef *v1alpha1.ResourceRef `json:"pubSubSubscriptionRef,omitempty"`
+}
+
+type ConfigManualSchedule struct {
 }
 
 type ConfigScheduleOptions struct {
@@ -61,6 +73,46 @@ type ConfigScheduleOptions struct {
 	StartTime *string `json:"startTime,omitempty"`
 }
 
+type ConfigScheduleOptionsV2 struct {
+	/* Event driven transfer schedule options. If set, the transfer will be scheduled upon events arrial. */
+	// +optional
+	EventDrivenSchedule *ConfigEventDrivenSchedule `json:"eventDrivenSchedule,omitempty"`
+
+	/* Manual transfer schedule. If set, the transfer run will not be auto-scheduled by the system, unless the client invokes StartManualTransferRuns.  This is equivalent to disable_auto_scheduling = true. */
+	// +optional
+	ManualSchedule *ConfigManualSchedule `json:"manualSchedule,omitempty"`
+
+	/* Time based transfer schedule options. This is the default schedule option. */
+	// +optional
+	TimeBasedSchedule *ConfigTimeBasedSchedule `json:"timeBasedSchedule,omitempty"`
+}
+
+type ConfigTimeBasedSchedule struct {
+	/* Defines time to stop scheduling transfer runs. A transfer run cannot be scheduled at or after the end time. The end time can be changed at any moment. */
+	// +optional
+	EndTime *string `json:"endTime,omitempty"`
+
+	/* Data transfer schedule.
+	If the data source does not support a custom schedule, this should be
+	empty. If it is empty, the default value for the data source will be used.
+	The specified times are in UTC.
+	Examples of valid format:
+	`1st,3rd monday of month 15:30`,
+	`every wed,fri of jan,jun 13:15`, and
+	`first sunday of quarter 00:00`.
+	See more explanation about the format here:
+	https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
+
+	NOTE: The minimum interval time between recurring transfers depends on the
+	data source; refer to the documentation for your data source. */
+	// +optional
+	Schedule *string `json:"schedule,omitempty"`
+
+	/* Specifies time to start scheduling transfer runs. The first run will be scheduled at or after the start time according to a recurrence pattern defined in the schedule string. The start time can be changed at any moment. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
+}
+
 type BigQueryDataTransferConfigSpec struct {
 	/* The number of days to look back to automatically refresh the data. For example, if `data_refresh_window_days = 10`, then every day BigQuery reingests data for [today-10, today-1], rather than ingesting data for just [today-1]. Only valid if the data source supports the feature. Set the value to 0 to use the default value. */
 	// +optional
@@ -70,7 +122,8 @@ type BigQueryDataTransferConfigSpec struct {
 	DataSourceID string `json:"dataSourceID"`
 
 	/* The BigQuery target dataset id. */
-	DatasetRef v1alpha1.ResourceRef `json:"datasetRef"`
+	// +optional
+	DatasetRef *v1alpha1.ResourceRef `json:"datasetRef,omitempty"`
 
 	/* Is this config disabled. When set to true, no runs will be scheduled for this transfer config. */
 	// +optional
@@ -101,7 +154,7 @@ type BigQueryDataTransferConfigSpec struct {
 	// +optional
 	PubSubTopicRef *v1alpha1.ResourceRef `json:"pubSubTopicRef,omitempty"`
 
-	/* Immutable. The BigQueryDataTransferConfig name. If not given, the metadata.name will be used. */
+	/* The BigQueryDataTransferConfig name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -125,15 +178,33 @@ type BigQueryDataTransferConfigSpec struct {
 	// +optional
 	ScheduleOptions *ConfigScheduleOptions `json:"scheduleOptions,omitempty"`
 
+	/* Options customizing different types of data transfer schedule. This field replaces "schedule" and "schedule_options" fields. ScheduleOptionsV2 cannot be used together with ScheduleOptions/Schedule. */
+	// +optional
+	ScheduleOptionsV2 *ConfigScheduleOptionsV2 `json:"scheduleOptionsV2,omitempty"`
+
 	/* Service account email. If this field is set, the transfer config will be created with this service account's credentials. It requires that the requesting user calling this API has permissions to act as this service account. Note that not all data sources support service account credentials when creating a transfer config. For the latest list of data sources, please refer to https://cloud.google.com/bigquery/docs/use-service-accounts. */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+}
+
+type ConfigErrorStatus struct {
+	/* The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
+	// +optional
+	Code *int32 `json:"code,omitempty"`
+
+	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client. */
+	// +optional
+	Message *string `json:"message,omitempty"`
 }
 
 type ConfigObservedStateStatus struct {
 	/* Output only. Region in which BigQuery dataset is located. */
 	// +optional
 	DatasetRegion *string `json:"datasetRegion,omitempty"`
+
+	/* Output only. Error code with detailed information about reason of the latest config failure. */
+	// +optional
+	Error *ConfigErrorStatus `json:"error,omitempty"`
 
 	/* Identifier. The resource name of the transfer config. Transfer config names have the form either `projects/{project_id}/locations/{region}/transferConfigs/{config_id}` or `projects/{project_id}/transferConfigs/{config_id}`, where `config_id` is usually a UUID, even though it is not guaranteed or required. The name is ignored when creating a transfer config. */
 	// +optional
@@ -185,7 +256,7 @@ type BigQueryDataTransferConfigStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=
+// +kubebuilder:resource:categories=gcp,shortName=gcpbigquerydatatransferconfig;gcpbigquerydatatransferconfigs
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"

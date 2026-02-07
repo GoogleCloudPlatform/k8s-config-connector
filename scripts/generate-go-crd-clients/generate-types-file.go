@@ -236,7 +236,9 @@ func findAndReplaceInNestedFields(old, new string, fieldMap map[string][]*fieldP
 	for name, children := range fieldMap {
 		if name == old {
 			fieldMap[new] = children
-			delete(fieldMap, old)
+			if old != new {
+				delete(fieldMap, old)
+			}
 		}
 		// Replace in field type in nested struct
 		findAndReplaceInStructField(old, new, children)
@@ -473,6 +475,9 @@ func isMapOrSliceType(t string) bool {
 	if strings.HasPrefix(t, "map[string]") {
 		return true
 	}
+	if t == "apiextensionsv1.JSON" {
+		return true
+	}
 	return false
 }
 
@@ -502,6 +507,8 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 		}
 	case "float", "number":
 		return "float64"
+	case "schemaless":
+		return "apiextensionsv1.JSON"
 	case "object":
 		if isSec {
 			return "v1alpha1.SecretKeyRef"
@@ -554,6 +561,10 @@ func formatToGoLiteral(t string) string {
 		return "int64"
 	case "float", "number":
 		return "float64"
+	case "schemaless":
+		return "apiextensionsv1.JSON"
+	case "":
+		return "apiextensionsv1.JSON"
 	default:
 		panic(fmt.Errorf("expected a JSONLiteral but got %v", t))
 	}

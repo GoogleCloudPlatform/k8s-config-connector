@@ -35,6 +35,7 @@ go generate ./pkg/clients/...
 # Generate the clients
 echo "Generating clients"
 cd "${REPO_ROOT}/pkg/clients/generated/"
+rm -rf client
 
 # Extract API & version names
 API_DIRS=(apis/*/*/)

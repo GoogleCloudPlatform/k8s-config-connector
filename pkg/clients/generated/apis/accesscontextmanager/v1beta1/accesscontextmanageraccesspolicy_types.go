@@ -32,15 +32,18 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type AccessContextManagerAccessPolicySpec struct {
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Human readable title. Does not affect behavior. */
+	/* Required. Human readable title. Does not affect behavior. */
 	Title string `json:"title"`
 }
 
@@ -48,7 +51,7 @@ type AccessContextManagerAccessPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AccessContextManagerAccessPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Time the AccessPolicy was created in UTC. */
+	/* Output only. Time the AccessPolicy was created in UTC. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
@@ -60,7 +63,7 @@ type AccessContextManagerAccessPolicyStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Time the AccessPolicy was updated in UTC. */
+	/* Output only. Time the AccessPolicy was updated in UTC. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
