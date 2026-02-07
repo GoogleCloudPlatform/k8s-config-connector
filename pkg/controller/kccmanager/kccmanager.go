@@ -91,6 +91,10 @@ type Config struct {
 	// as the default value for 'state-into-spec' annotation if unset.
 	StateIntoSpecUserOverride *string
 
+	// ResourceReconcileConfig allows configuring the reconciliation parameters for a given
+	// resource kind.
+	ResourceReconcileConfig string
+
 	// UseCache is true if we should use the informer cache
 	// Currently only used in preview
 	UseCache bool
@@ -286,6 +290,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		GRPCUnaryClientInterceptor: cfg.GRPCUnaryClientInterceptor,
 		UserAgent:                  gcp.KCCUserAgent(),
 		EnableMetricsTransport:     cfg.EnableMetricsTransport,
+		ResourceReconcileConfig:    cfg.ResourceReconcileConfig,
 	}
 	if !cfg.skipControllerRegistration {
 		// Bootstrap the Google Terraform provider

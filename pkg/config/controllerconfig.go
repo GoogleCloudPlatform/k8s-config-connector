@@ -56,6 +56,10 @@ type ControllerConfig struct {
 	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
 	EnableMetricsTransport bool
 
+	// ResourceReconcileConfig allows configuring the reconciliation parameters for a given
+	// resource kind.
+	ResourceReconcileConfig string
+
 	// ProjectMapper maps between project ids and numbers
 	ProjectMapper *projects.ProjectMapper
 }
