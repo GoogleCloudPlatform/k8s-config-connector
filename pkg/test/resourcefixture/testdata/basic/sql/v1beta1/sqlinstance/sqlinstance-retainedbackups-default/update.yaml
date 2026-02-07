@@ -1,0 +1,43 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-backupconfiguration-binarylog-direct-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  settings:
+    backupConfiguration:
+      backupRetentionSettings:
+        retainedBackups: 4
+        retentionUnit: COUNT
+      # Binary log can only be enabled for mysql instances.
+      binaryLogEnabled: true
+      enabled: true
+      location: us-west1
+      # PITR can only be enabled for postgres and sqlserver instances.
+      pointInTimeRecoveryEnabled: false
+      startTime: 01:00
+      transactionLogRetentionDays: 3
+    # Location preference is not actually a required field. However, setting it for tests
+    # helps with with normalizing the GCP responses, because otherwise GCP chooses a zone
+    # preference based on availability. Therefore it could potentially vary if not
+    # explicitly specified.
+    locationPreference:
+      zone: us-central1-a
+    tier: db-custom-1-3840

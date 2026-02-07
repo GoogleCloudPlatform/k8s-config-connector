@@ -1,0 +1,51 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/reconciler: direct
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: sqlinstance-primary-direct-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  databaseVersion: MYSQL_8_0
+  region: us-central1
+  settings:
+    backupConfiguration:
+      backupRetentionSettings:
+        retainedBackups: 24
+        retentionUnit: COUNT
+      binaryLogEnabled: true
+      enabled: true
+      startTime: "12:00"
+      transactionLogRetentionDays: 14
+    edition: ENTERPRISE_PLUS
+    tier: db-perf-optimized-N-2
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  connectionName: ${projectId}:us-central1:sqlinstance-primary-direct-${uniqueId}
+  firstIpAddress: 10.1.2.3
+  instanceType: CLOUD_SQL_INSTANCE
+  ipAddress: 10.1.2.3
+  observedGeneration: 2
+  publicIpAddress: 10.1.2.3
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-primary-direct-${uniqueId}
+  serverCaCert:
+    cert: |
+      -----BEGIN CERTIFICATE-----
+      -----END CERTIFICATE-----
+    commonName: common-name
+    createTime: "1970-01-01T00:00:00Z"
+    expirationTime: "1970-01-01T00:00:00Z"
+    sha1Fingerprint: "12345678"
+  serviceAccountEmailAddress: p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com
