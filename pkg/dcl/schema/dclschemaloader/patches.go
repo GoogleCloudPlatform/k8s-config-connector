@@ -60,4 +60,67 @@ func patchDCLSchemas(schemaMap map[string]*openapi.Schema) {
 			},
 		}
 	}
+	patchNetworkServicesHTTPRoute(schemaMap)
+}
+
+func patchNetworkServicesHTTPRoute(schemaMap map[string]*openapi.Schema) {
+	s := schemaMap["networkservices_ga_httproute"]
+	if s == nil {
+		return
+	}
+
+	// Path 1: rules.items.properties.action.properties.destinations.items.properties.serviceName
+	rules := s.Properties["rules"]
+	if rules != nil && rules.Items != nil {
+		action := rules.Items.Properties["action"]
+		if action != nil {
+			destinations := action.Properties["destinations"]
+			if destinations != nil && destinations.Items != nil {
+				serviceName := destinations.Items.Properties["serviceName"]
+				addStorageBucketRef(serviceName)
+			}
+
+			// Path 2: rules.items.properties.action.properties.requestMirrorPolicy.properties.destination.properties.serviceName
+			mirror := action.Properties["requestMirrorPolicy"]
+			if mirror != nil {
+				destination := mirror.Properties["destination"]
+				if destination != nil {
+					serviceName := destination.Properties["serviceName"]
+					addStorageBucketRef(serviceName)
+				}
+			}
+		}
+	}
+}
+
+func addStorageBucketRef(s *openapi.Schema) {
+	if s == nil {
+		return
+	}
+	refs, ok := s.Extension["x-dcl-references"]
+	if !ok {
+		return
+	}
+	refList, ok := refs.([]interface{})
+	if !ok {
+		return
+	}
+
+	// Check if already exists (idempotency)
+	for _, r := range refList {
+		m, ok := r.(map[interface{}]interface{})
+		if !ok {
+			continue
+		}
+		if m["resource"] == "Storage/Bucket" {
+			return
+		}
+	}
+
+	// Add Storage/Bucket
+	newRef := map[string]interface{}{
+		"resource": "Storage/Bucket",
+		"field":    "name",
+	}
+	s.Extension["x-dcl-references"] = append(refList, newRef)
 }
