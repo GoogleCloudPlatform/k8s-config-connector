@@ -20,6 +20,7 @@ import (
 	"go/types"
 	"reflect"
 	"strconv"
+	"strings"
 
 	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/passes/inspect"
@@ -63,7 +64,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 		// Target 2: pkg/util.Marshal
 		if !isTarget && sel.Sel.Name == "Marshal" {
 			if obj := pass.TypesInfo.ObjectOf(sel.Sel); obj != nil {
-				if pkg := obj.Pkg(); pkg != nil && pkg.Path() == "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util" {
+				if pkg := obj.Pkg(); pkg != nil && strings.HasSuffix(pkg.Path(), "/pkg/util") {
 					isTarget = true
 				}
 			}
@@ -213,13 +214,22 @@ func checkCompositeLit(pass *analysis.Pass, lit *ast.CompositeLit) (bool, string
 func checkMakeCall(pass *analysis.Pass, makeCall *ast.CallExpr) (bool, string) {
 	if fun, isFun := makeCall.Fun.(*ast.Ident); isFun && fun.Name == "make" {
 		if len(makeCall.Args) >= 2 {
-			// The second argument of make is the length
+			// The second argument of make is the length/capacity
 			lenArg := makeCall.Args[1]
 			tv, ok := pass.TypesInfo.Types[lenArg]
 			if ok && tv.Value != nil {
 				valStr := tv.Value.ExactString()
 				if length, err := strconv.Atoi(valStr); err == nil && length > 0 {
-					return true, "potential reuse of variable created with non-zero length in json.Unmarshal/util.Marshal; consider using make([]T, 0) or nil"
+					// Determine if it's a slice or map being made
+					makeType := pass.TypesInfo.TypeOf(makeCall)
+					if _, isSlice := makeType.Underlying().(*types.Slice); isSlice {
+						return true, "potential reuse of variable created with non-zero length slice; existing elements will be lost; consider using make([]T, 0) or nil"
+					} else if _, isMap := makeType.Underlying().(*types.Map); isMap {
+						// make(map, capacity > 0) creates an empty map, so it's not problematic for reuse
+						return false, ""
+					}
+					// Fallback for unexpected types with length > 0 (should not happen)
+					return true, "potential reuse of variable created with non-zero length; consider using make([]T, 0) or nil"
 				}
 			}
 		}
