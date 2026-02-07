@@ -98,6 +98,8 @@ spec:
                               description: Required. Git repository the package should
                                 be cloned from.
                               type: string
+                          required:
+                          - repo
                           type: object
                         googleCloudBuildRepo:
                           description: Optional. Cloud Build V2 repository containing
@@ -158,6 +160,8 @@ spec:
                                 will result in Skaffold copying all files within the
                                 "dir/configs" directory in the bucket "my-bucket".
                               type: string
+                          required:
+                          - source
                           type: object
                       type: object
                     type: array
@@ -166,6 +170,8 @@ spec:
                       for render operations. If not provided then Cloud Deploy will
                       perform the render operations via `skaffold render`.
                     type: string
+                required:
+                - deployAction
                 type: object
               description:
                 description: Optional. Description of the `CustomTargetType`. Max

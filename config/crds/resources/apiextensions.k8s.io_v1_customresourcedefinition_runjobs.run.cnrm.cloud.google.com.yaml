@@ -292,6 +292,8 @@ spec:
                                             type: object
                                         type: object
                                     type: object
+                                required:
+                                - name
                                 type: object
                               type: array
                             image:
@@ -328,6 +330,8 @@ spec:
                                             description: Optional. The header field
                                               value
                                             type: string
+                                        required:
+                                        - name
                                         type: object
                                       type: array
                                     path:
@@ -455,6 +459,8 @@ spec:
                                             description: Optional. The header field
                                               value
                                             type: string
+                                        required:
+                                        - name
                                         type: object
                                       type: array
                                     path:
@@ -525,6 +531,9 @@ spec:
                                     description: Required. This must match the Name
                                       of a Volume.
                                     type: string
+                                required:
+                                - mountPath
+                                - name
                                 type: object
                               type: array
                             workingDir:
