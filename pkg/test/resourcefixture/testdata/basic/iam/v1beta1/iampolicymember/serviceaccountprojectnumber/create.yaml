@@ -1,0 +1,10 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-num-${uniqueId}
+spec:
+  resourceRef:
+    kind: PubSubTopic
+    name: pubsubtopic-num-${uniqueId}
+  role: roles/editor
+  member: serviceAccount:123456789012@cloudbuild.gserviceaccount.com
