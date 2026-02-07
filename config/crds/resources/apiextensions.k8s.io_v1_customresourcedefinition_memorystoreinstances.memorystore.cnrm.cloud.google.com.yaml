@@ -326,11 +326,15 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  backupCollection:
+                    description: Output only. The backup collection full resource
+                      name.
+                    type: string
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
                   endpoints:
-                    description: Optional. Endpoints for the instance.
+                    description: Optional. Endpoints for the instance.``
                     items:
                       properties:
                         connections:
@@ -721,11 +725,15 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  backupCollection:
+                    description: Output only. The backup collection full resource
+                      name.
+                    type: string
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
                   endpoints:
-                    description: Optional. Endpoints for the instance.
+                    description: Optional. Endpoints for the instance.``
                     items:
                       properties:
                         connections:
