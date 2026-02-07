@@ -94,78 +94,6 @@ func run(pass *analysis.Pass) (interface{}, error) {
 			expr = starExpr.X
 		}
 
-		// Helper to check if a CompositeLit is problematic
-		checkCompositeLit := func(lit *ast.CompositeLit) (bool, string) {
-			// Check if it's a struct literal
-			if structType, ok := pass.TypesInfo.TypeOf(lit).Underlying().(*types.Struct); ok {
-				if len(lit.Elts) > 0 {
-					allInitializedFieldsIgnored := true
-					for _, elt := range lit.Elts {
-						var fieldName string
-						if kv, isKv := elt.(*ast.KeyValueExpr); isKv {
-							if ident, isIdent := kv.Key.(*ast.Ident); isIdent {
-								fieldName = ident.Name
-							}
-						} else {
-							// For unkeyed struct literals, conservatively assume it's problematic
-							allInitializedFieldsIgnored = false
-							break
-						}
-
-						if fieldName == "" {
-							allInitializedFieldsIgnored = false
-							break
-						}
-
-						foundField := false
-						for i := 0; i < structType.NumFields(); i++ {
-							field := structType.Field(i)
-							if field.Name() == fieldName {
-								foundField = true
-								jsonTag := reflect.StructTag(structType.Tag(i)).Get("json")
-								if jsonTag != "-" {
-									allInitializedFieldsIgnored = false
-									break
-								}
-							}
-						}
-						if !foundField {
-							// Should not happen for valid Go code, but be safe.
-							allInitializedFieldsIgnored = false
-							break
-						}
-						if !allInitializedFieldsIgnored {
-							break
-						}
-					}
-					if !allInitializedFieldsIgnored {
-						return true, "potential reuse of non-empty variable in json.Unmarshal/util.Marshal; consider using an empty literal or nil"
-					}
-				}
-			} else { // Not a struct, so it's a map or slice
-				if len(lit.Elts) > 0 {
-					return true, "potential reuse of non-empty variable in json.Unmarshal/util.Marshal; consider using an empty literal or nil"
-				}
-			}
-			return false, ""
-		}
-
-		// Helper to check if a make() call is problematic
-		checkMakeCall := func(makeCall *ast.CallExpr) (bool, string) {
-			if fun, isFun := makeCall.Fun.(*ast.Ident); isFun && fun.Name == "make" {
-				if len(makeCall.Args) >= 2 {
-					// The second argument of make is the length
-					// (Note: for maps, this is capacity, not length, so it's always safe)
-					if basicLit, isBasicLit := makeCall.Args[1].(*ast.BasicLit); isBasicLit && basicLit.Kind == token.INT {
-						if length, err := strconv.Atoi(basicLit.Value); err == nil && length > 0 {
-							return true, "potential reuse of variable created with non-zero length in json.Unmarshal/util.Marshal; consider using make([]T, 0) or nil"
-						}
-					}
-				}
-			}
-			return false, ""
-		}
-
 		// Function to check if an expression is a problematic initialization
 		var isProblematic func(e ast.Expr) (bool, string)
 		isProblematic = func(e ast.Expr) (bool, string) {
@@ -176,7 +104,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 
 			// Check for non-empty composite literal (struct, slice, map)
 			if lit, isLit := e.(*ast.CompositeLit); isLit {
-				return checkCompositeLit(lit)
+				return checkCompositeLit(pass, lit)
 			}
 
 			// Check for make() call with length > 0
@@ -184,7 +112,9 @@ func run(pass *analysis.Pass) (interface{}, error) {
 				return checkMakeCall(call)
 			}
 			return false, ""
-		} // 1. Check if the argument itself is a problematic expression (e.g. inline literal)
+		}
+
+		// 1. Check if the argument itself is a problematic expression (e.g. inline literal)
 		if problem, msg := isProblematic(expr); problem {
 			pass.Reportf(call.Pos(), "%s", msg)
 			return
@@ -215,4 +145,76 @@ func run(pass *analysis.Pass) (interface{}, error) {
 		}
 	})
 	return nil, nil
+}
+
+// Helper to check if a CompositeLit is problematic
+func checkCompositeLit(pass *analysis.Pass, lit *ast.CompositeLit) (bool, string) {
+	// Check if it's a struct literal
+	if structType, ok := pass.TypesInfo.TypeOf(lit).Underlying().(*types.Struct); ok {
+		if len(lit.Elts) > 0 {
+			allInitializedFieldsIgnored := true
+			for _, elt := range lit.Elts {
+				var fieldName string
+				if kv, isKv := elt.(*ast.KeyValueExpr); isKv {
+					if ident, isIdent := kv.Key.(*ast.Ident); isIdent {
+						fieldName = ident.Name
+					}
+				} else {
+					// For unkeyed struct literals, conservatively assume it's problematic
+					allInitializedFieldsIgnored = false
+					break
+				}
+
+				if fieldName == "" {
+					allInitializedFieldsIgnored = false
+					break
+				}
+
+				foundField := false
+				for i := 0; i < structType.NumFields(); i++ {
+					field := structType.Field(i)
+					if field.Name() == fieldName {
+						foundField = true
+						jsonTag := reflect.StructTag(structType.Tag(i)).Get("json")
+						if jsonTag != "-" {
+							allInitializedFieldsIgnored = false
+							break
+						}
+					}
+				}
+				if !foundField {
+					// Should not happen for valid Go code, but be safe.
+					allInitializedFieldsIgnored = false
+					break
+				}
+				if !allInitializedFieldsIgnored {
+					break
+				}
+			}
+			if !allInitializedFieldsIgnored {
+				return true, "potential reuse of non-empty variable in json.Unmarshal/util.Marshal; consider using an empty literal or nil"
+			}
+		}
+	} else { // Not a struct, so it's a map or slice
+		if len(lit.Elts) > 0 {
+			return true, "potential reuse of non-empty variable in json.Unmarshal/util.Marshal; consider using an empty literal or nil"
+		}
+	}
+	return false, ""
+}
+
+// Helper to check if a make() call is problematic
+func checkMakeCall(makeCall *ast.CallExpr) (bool, string) {
+	if fun, isFun := makeCall.Fun.(*ast.Ident); isFun && fun.Name == "make" {
+		if len(makeCall.Args) >= 2 {
+			// The second argument of make is the length
+			// (Note: for maps, this is capacity, not length, so it's always safe)
+			if basicLit, isBasicLit := makeCall.Args[1].(*ast.BasicLit); isBasicLit && basicLit.Kind == token.INT {
+				if length, err := strconv.Atoi(basicLit.Value); err == nil && length > 0 {
+					return true, "potential reuse of variable created with non-zero length in json.Unmarshal/util.Marshal; consider using make([]T, 0) or nil"
+				}
+			}
+		}
+	}
+	return false, ""
 }
