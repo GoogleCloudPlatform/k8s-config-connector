@@ -109,7 +109,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 
 			// Check for make() call with length > 0
 			if call, isCall := e.(*ast.CallExpr); isCall {
-				return checkMakeCall(call)
+				return checkMakeCall(pass, call)
 			}
 			return false, ""
 		}
@@ -198,11 +198,9 @@ func checkCompositeLit(pass *analysis.Pass, lit *ast.CompositeLit) (bool, string
 	} else { // Not a struct, so it's a map or slice
 		if len(lit.Elts) > 0 {
 			underlying := pass.TypesInfo.TypeOf(lit).Underlying()
-			if _, isSlice := underlying.(*types.Slice);
-				isSlice {
+			if _, isSlice := underlying.(*types.Slice); isSlice {
 				return true, "potential reuse of non-empty slice; existing elements will be lost; consider using an empty literal or nil"
-			} else if _, isMap := underlying.(*types.Map);
-				isMap {
+			} else if _, isMap := underlying.(*types.Map); isMap {
 				return true, "potential reuse of non-empty map; existing elements will be merged; consider using an empty literal or nil"
 			}
 			return true, "potential reuse of non-empty variable in json.Unmarshal/util.Marshal; consider using an empty literal or nil"
@@ -212,13 +210,15 @@ func checkCompositeLit(pass *analysis.Pass, lit *ast.CompositeLit) (bool, string
 }
 
 // Helper to check if a make() call is problematic
-func checkMakeCall(makeCall *ast.CallExpr) (bool, string) {
+func checkMakeCall(pass *analysis.Pass, makeCall *ast.CallExpr) (bool, string) {
 	if fun, isFun := makeCall.Fun.(*ast.Ident); isFun && fun.Name == "make" {
 		if len(makeCall.Args) >= 2 {
 			// The second argument of make is the length
-			// (Note: for maps, this is capacity, not length, so it's always safe)
-			if basicLit, isBasicLit := makeCall.Args[1].(*ast.BasicLit); isBasicLit && basicLit.Kind == token.INT {
-				if length, err := strconv.Atoi(basicLit.Value); err == nil && length > 0 {
+			lenArg := makeCall.Args[1]
+			tv, ok := pass.TypesInfo.Types[lenArg]
+			if ok && tv.Value != nil {
+				valStr := tv.Value.ExactString()
+				if length, err := strconv.Atoi(valStr); err == nil && length > 0 {
 					return true, "potential reuse of variable created with non-zero length in json.Unmarshal/util.Marshal; consider using make([]T, 0) or nil"
 				}
 			}
