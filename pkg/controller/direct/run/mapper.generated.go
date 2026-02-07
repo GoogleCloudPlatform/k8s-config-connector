@@ -432,17 +432,17 @@ func HTTPHeader_ToProto(mapCtx *direct.MapContext, in *krm.HTTPHeader) *pb.HTTPH
 	out.Value = direct.ValueOf(in.Value)
 	return out
 }
-func NfsVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.NFSVolumeSource) *krm.NfsVolumeSource {
+func NFSVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.NFSVolumeSource) *krm.NFSVolumeSource {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NfsVolumeSource{}
+	out := &krm.NFSVolumeSource{}
 	out.Server = direct.LazyPtr(in.GetServer())
 	out.Path = direct.LazyPtr(in.GetPath())
 	out.ReadOnly = direct.LazyPtr(in.GetReadOnly())
 	return out
 }
-func NfsVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.NfsVolumeSource) *pb.NFSVolumeSource {
+func NFSVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.NFSVolumeSource) *pb.NFSVolumeSource {
 	if in == nil {
 		return nil
 	}
@@ -814,40 +814,6 @@ func VersionToPath_ToProto(mapCtx *direct.MapContext, in *krm.VersionToPath) *pb
 		out.Version = in.VersionRef.External
 	}
 	out.Mode = direct.ValueOf(in.Mode)
-	return out
-}
-func Volume_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.Volume {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Volume{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Secret = SecretVolumeSource_FromProto(mapCtx, in.GetSecret())
-	out.CloudSQLInstance = CloudSQLInstance_FromProto(mapCtx, in.GetCloudSqlInstance())
-	out.EmptyDir = EmptyDirVolumeSource_FromProto(mapCtx, in.GetEmptyDir())
-	// MISSING: Nfs
-	out.GCS = GCSVolumeSource_FromProto(mapCtx, in.GetGcs())
-	return out
-}
-func Volume_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Volume{}
-	out.Name = direct.ValueOf(in.Name)
-	if oneof := SecretVolumeSource_ToProto(mapCtx, in.Secret); oneof != nil {
-		out.VolumeType = &pb.Volume_Secret{Secret: oneof}
-	}
-	if oneof := CloudSQLInstance_ToProto(mapCtx, in.CloudSQLInstance); oneof != nil {
-		out.VolumeType = &pb.Volume_CloudSqlInstance{CloudSqlInstance: oneof}
-	}
-	if oneof := EmptyDirVolumeSource_ToProto(mapCtx, in.EmptyDir); oneof != nil {
-		out.VolumeType = &pb.Volume_EmptyDir{EmptyDir: oneof}
-	}
-	// MISSING: Nfs
-	if oneof := GCSVolumeSource_ToProto(mapCtx, in.GCS); oneof != nil {
-		out.VolumeType = &pb.Volume_Gcs{Gcs: oneof}
-	}
 	return out
 }
 func VolumeMount_FromProto(mapCtx *direct.MapContext, in *pb.VolumeMount) *krm.VolumeMount {

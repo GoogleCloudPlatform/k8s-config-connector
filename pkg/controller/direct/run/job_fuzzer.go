@@ -78,8 +78,6 @@ func runJobFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".template.template.containers[].volume_mounts[].sub_path")
 	f.Unimplemented_NotYetTriaged(".template.template.gpu_zonal_redundancy_disabled")
 	f.Unimplemented_NotYetTriaged(".template.template.node_selector")
-	f.Unimplemented_NotYetTriaged(".template.template.volumes[].nfs")
-	f.Unimplemented_NotYetTriaged(".template.template.volumes[].gcs")
 	f.Unimplemented_NotYetTriaged(".template.labels")
 	f.Unimplemented_NotYetTriaged(".terminal_condition.execution_reason")
 	f.Unimplemented_NotYetTriaged(".terminal_condition.reason")
