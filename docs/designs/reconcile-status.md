@@ -29,7 +29,7 @@ We will utilize the `Ready` condition in `status.conditions` to communicate the 
 | :--- | :--- | :--- | :--- |
 | **Starting Update** | `False` | `Updating` | `Updating resource (first field path: spec.foo)` |
 | **Successful Completion** | `True` | `UpToDate` | `Resource is up to date` |
-| **Update Failure** | `False` | `UpdateFailure` | `Failed to update resource (first field path: spec.foo): <error message>` |
+| **Update Failure** | `False` | `UpdateFailed` | `Failed to update resource (first field path: spec.foo): <error message>` |
 
 #### 4.2. Triggering Field Identification
 
@@ -88,7 +88,7 @@ This implementation satisfies the requirement of having at most one `Ready` cond
 
 If the GCP API call fails, the adapter should return an error. The `DirectReconciler` catches this error and calls `handleUpdateFailed`, which sets the `Ready` condition to `False` with the error message.
 
-We should ensure `handleUpdateFailed` uses a consistent `Reason` (e.g., `UpdateFailure`) and preserves the "first field path" information if available. This might require passing more context in the error or setting the status one last time before returning the error from the Adapter.
+We should ensure `handleUpdateFailed` uses a consistent `Reason` (e.g., `UpdateFailed`) and preserves the "first field path" information if available. This might require passing more context in the error or setting the status one last time before returning the error from the Adapter.
 
 ### 6. Kubernetes API Conventions Compliance
 
@@ -96,7 +96,7 @@ This design aligns with the [Kubernetes API conventions](https://github.com/kube
 
 *   **Condition Type:** Reuses "Ready", which is a standard predicate.
 *   **Status:** Uses "True" and "False".
-*   **Reason:** Uses CamelCase strings ("Updating", "UpToDate", "UpdateFailure").
+*   **Reason:** Uses CamelCase strings ("Updating", "UpToDate", "UpdateFailed").
 *   **ObservedGeneration:** `UpdateStatus` already sets `status.observedGeneration` to the current metadata generation.
 
 ### 7. Future Considerations: Long Running Operations (LROs)

@@ -425,6 +425,9 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 				return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
 			}
+			if createOp.HasSetReadyCondition {
+				return createOp.RequeueRequested, err
+			}
 			return false, r.handleUpdateFailed(ctx, u, fmt.Errorf("error creating: %w", err))
 		}
 		hasSetReadyCondition = createOp.HasSetReadyCondition
@@ -435,6 +438,9 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 				return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
+			}
+			if updateOp.HasSetReadyCondition {
+				return updateOp.RequeueRequested, err
 			}
 			return false, r.handleUpdateFailed(ctx, u, fmt.Errorf("error updating: %w", err))
 		}
