@@ -68,32 +68,40 @@ func main() {
 
 func getChanges() (FileChanges, error) {
 	// Try to find a merge base or common ancestor.
-	// In strict CI, origin/master is usually available.
-	base := "origin/master"
+	// Allow overriding via environment variable
+	base := os.Getenv("LINT_FILTER_GIT_BASE")
 
-	// Check if origin/master exists
-	cmdCheck := exec.Command("git", "rev-parse", "--verify", "origin/master")
-	if err := cmdCheck.Run(); err != nil {
-		// Fallback to master
-		base = "master"
-		cmdCheck = exec.Command("git", "rev-parse", "--verify", "master")
+	if base == "" {
+		// Default to origin/master if available
+		base = "origin/master"
+		// Check if origin/master exists
+		cmdCheck := exec.Command("git", "rev-parse", "--verify", "origin/master")
 		if err := cmdCheck.Run(); err != nil {
-			// Fallback to HEAD~1 (assuming standard commit workflow)
-			base = "HEAD~1"
+			// Fallback to master
+			base = "master"
+			cmdCheck = exec.Command("git", "rev-parse", "--verify", "master")
+			if err := cmdCheck.Run(); err != nil {
+				// Fallback to HEAD~1 (assuming standard commit workflow)
+				base = "HEAD~1"
+			}
 		}
 	}
-
 	cmd := exec.Command("git", "diff", "--unified=0", base)
-	out, err := cmd.Output()
+	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create stdout pipe: %w", err)
+	}
+
+	if err := cmd.Start(); err != nil {
+		return nil, fmt.Errorf("failed to start git diff command: %w", err)
 	}
 
 	changes := make(FileChanges)
 	var currentFile string
 
-	lines := strings.Split(string(out), "\n")
-	for _, l := range lines {
+	scanner := bufio.NewScanner(stdout)
+	for scanner.Scan() {
+		l := scanner.Text()
 		if strings.HasPrefix(l, "+++ b/") {
 			currentFile = strings.TrimPrefix(l, "+++ b/")
 		} else if strings.HasPrefix(l, "@@") {
@@ -113,18 +121,39 @@ func getChanges() (FileChanges, error) {
 			start := 0
 			count := 1
 
+			var parseErr error
 			if strings.Contains(newRange, ",") {
 				sub := strings.Split(newRange, ",")
-				start, _ = strconv.Atoi(sub[0])
-				count, _ = strconv.Atoi(sub[1])
+				start, parseErr = strconv.Atoi(sub[0])
+				if parseErr != nil {
+					fmt.Fprintf(os.Stderr, "Warning: failed to parse start line %q in git diff: %v\n", sub[0], parseErr)
+					continue
+				}
+				count, parseErr = strconv.Atoi(sub[1])
+				if parseErr != nil {
+					fmt.Fprintf(os.Stderr, "Warning: failed to parse count %q in git diff: %v\n", sub[1], parseErr)
+					continue
+				}
 			} else {
-				start, _ = strconv.Atoi(newRange)
+				start, parseErr = strconv.Atoi(newRange)
+				if parseErr != nil {
+					fmt.Fprintf(os.Stderr, "Warning: failed to parse start line %q in git diff: %v\n", newRange, parseErr)
+					continue
+				}
 			}
 
 			if count > 0 {
 				changes[currentFile] = append(changes[currentFile], LineRange{Start: start, Count: count})
 			}
 		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("error reading git diff output: %w", err)
+	}
+
+	if err := cmd.Wait(); err != nil {
+		return nil, fmt.Errorf("git diff command failed: %w", err)
 	}
 	return changes, nil
 }
