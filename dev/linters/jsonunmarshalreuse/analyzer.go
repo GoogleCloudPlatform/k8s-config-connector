@@ -197,6 +197,14 @@ func checkCompositeLit(pass *analysis.Pass, lit *ast.CompositeLit) (bool, string
 		}
 	} else { // Not a struct, so it's a map or slice
 		if len(lit.Elts) > 0 {
+			underlying := pass.TypesInfo.TypeOf(lit).Underlying()
+			if _, isSlice := underlying.(*types.Slice);
+				isSlice {
+				return true, "potential reuse of non-empty slice; existing elements will be lost; consider using an empty literal or nil"
+			} else if _, isMap := underlying.(*types.Map);
+				isMap {
+				return true, "potential reuse of non-empty map; existing elements will be merged; consider using an empty literal or nil"
+			}
 			return true, "potential reuse of non-empty variable in json.Unmarshal/util.Marshal; consider using an empty literal or nil"
 		}
 	}

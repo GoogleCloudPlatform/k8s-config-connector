@@ -146,7 +146,9 @@ Running these scripts will typically fix out-of-date golden files if `WRITE_GOLD
 ## Custom Linters
 
 We have custom linters in `dev/linters`.
-*   `jsonunmarshalreuse`: Checks for potential reuse of non-empty variables in `json.Unmarshal` (and `util.Marshal`), which causes merging behavior instead of overwriting.
+*   `jsonunmarshalreuse`: Checks for suboptimal `json.Unmarshal` (and `util.Marshal`) practices where a non-empty variable might be reused.
+    *   For **slices**, unmarshalling into a non-empty slice will cause existing elements to be lost (overwritten).
+    *   For **maps** and **structs**, unmarshalling into non-empty variables will result in merging existing elements.
     *   This linter ignores struct fields tagged with `json:"-"`.
     *   It may flag intentional reuse in test files (e.g., `pkg/k8s/managedfields_test.go`), which is expected when verifying merge behavior.
 
