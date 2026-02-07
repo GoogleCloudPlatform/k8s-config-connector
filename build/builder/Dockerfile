@@ -38,6 +38,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o webhook g
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
 
 RUN go mod vendor -o temp-vendor # So we can load license files
 RUN go run scripts/generate-third-party-licenses/main.go
