@@ -20,18 +20,15 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-./generate-proto.sh
-
 go run . generate-types \
-  --service google.cloud.run.v2 \
-  --api-version run.cnrm.cloud.google.com/v1beta1 \
-  --resource RunJob:Job
+    --service google.cloud.run.v2 \
+    --api-version "run.cnrm.cloud.google.com/v1alpha1" \
+    --resource RunWorkerPool:WorkerPool
 
 go run . generate-mapper \
-  --multiversion \
-  --service google.cloud.run.v2 \
-  --api-version run.cnrm.cloud.google.com/v1beta1
-
+    --multiversion \
+    --service google.cloud.run.v2 \
+    --api-version "run.cnrm.cloud.google.com/v1alpha1"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

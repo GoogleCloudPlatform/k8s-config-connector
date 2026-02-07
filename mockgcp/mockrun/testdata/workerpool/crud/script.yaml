@@ -1,0 +1,4 @@
+- exec: gcloud beta run worker-pools create test-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud beta run worker-pools describe test-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud beta run worker-pools update test-${uniqueId} --region=us-central1 --project=${projectId} --description="updated description"
+- exec: gcloud beta run worker-pools delete test-${uniqueId} --region=us-central1 --project=${projectId} --quiet
