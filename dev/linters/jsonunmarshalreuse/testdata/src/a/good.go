@@ -62,4 +62,11 @@ func GoodUnmarshalUsage() {
 	if err := util.Marshal(data, &u2); err != nil {
 		log.Fatal(err)
 	}
+
+	// Case: make with map capacity - Safe (always empty initially)
+	const mapCapacity = 10
+	var myMap = make(map[string]string, mapCapacity)
+	if err := json.Unmarshal(data, &myMap); err != nil {
+		log.Fatal(err)
+	}
 }
