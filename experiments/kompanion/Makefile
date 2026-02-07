@@ -27,3 +27,11 @@ bin:
 .PHONY: clean
 clean:
 	rm -rf bin
+
+.PHONY: docker-build
+docker-build:
+	docker build -t ${KOMPANION_IMG} -f Dockerfile ../..
+
+.PHONY: docker-push
+docker-push:
+	docker push ${KOMPANION_IMG}
