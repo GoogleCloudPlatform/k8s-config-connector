@@ -1016,6 +1016,10 @@ type ClusterWorkloadIdentityConfig struct {
 	/* The workload pool to attach all Kubernetes service accounts to. */
 	// +optional
 	WorkloadPool *string `json:"workloadPool,omitempty"`
+
+	/* Enable K8s tokens via DNS. */
+	// +optional
+	EnableK8sTokensViaDns *bool `json:"enableK8sTokensViaDns,omitempty"`
 }
 
 type ClusterWorkloadMetadataConfig struct {
