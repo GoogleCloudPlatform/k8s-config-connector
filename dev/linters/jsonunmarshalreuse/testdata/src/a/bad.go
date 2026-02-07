@@ -34,13 +34,13 @@ func BadUnmarshalUsage() {
 
 	// Case 2: non-empty composite literal (slice)
 	var v = []string{"foo"}
-	if err := json.Unmarshal(data, &v); err != nil { // want "potential reuse of non-empty variable"
+	if err := json.Unmarshal(data, &v); err != nil { // want "potential reuse of non-empty slice; existing elements will be lost"
 		log.Fatal(err)
 	}
 
 	// Case 3: non-empty composite literal (map)
 	var m = map[string]string{"foo": "bar"}
-	if err := json.Unmarshal(data, &m); err != nil { // want "potential reuse of non-empty variable"
+	if err := json.Unmarshal(data, &m); err != nil { // want "potential reuse of non-empty map; existing elements will be merged"
 		log.Fatal(err)
 	}
 
@@ -52,7 +52,7 @@ func BadUnmarshalUsage() {
 
 	// Case 5: util.Marshal with bad reuse
 	var v2 = []string{"foo"}
-	if err := util.Marshal(data, &v2); err != nil { // want "potential reuse of non-empty variable"
+	if err := util.Marshal(data, &v2); err != nil { // want "potential reuse of non-empty slice; existing elements will be lost"
 		log.Fatal(err)
 	}
 
