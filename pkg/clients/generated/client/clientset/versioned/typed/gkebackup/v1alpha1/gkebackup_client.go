@@ -31,7 +31,10 @@ import (
 
 type GkebackupV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	GKEBackupBackupsGetter
 	GKEBackupBackupPlansGetter
+	GKEBackupRestoresGetter
+	GKEBackupRestorePlansGetter
 }
 
 // GkebackupV1alpha1Client is used to interact with features provided by the gkebackup.cnrm.cloud.google.com group.
@@ -39,8 +42,20 @@ type GkebackupV1alpha1Client struct {
 	restClient rest.Interface
 }
 
+func (c *GkebackupV1alpha1Client) GKEBackupBackups(namespace string) GKEBackupBackupInterface {
+	return newGKEBackupBackups(c, namespace)
+}
+
 func (c *GkebackupV1alpha1Client) GKEBackupBackupPlans(namespace string) GKEBackupBackupPlanInterface {
 	return newGKEBackupBackupPlans(c, namespace)
+}
+
+func (c *GkebackupV1alpha1Client) GKEBackupRestores(namespace string) GKEBackupRestoreInterface {
+	return newGKEBackupRestores(c, namespace)
+}
+
+func (c *GkebackupV1alpha1Client) GKEBackupRestorePlans(namespace string) GKEBackupRestorePlanInterface {
+	return newGKEBackupRestorePlans(c, namespace)
 }
 
 // NewForConfig creates a new GkebackupV1alpha1Client for the given config.

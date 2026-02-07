@@ -32,29 +32,32 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var _ = apiextensionsv1.JSON{}
+
 type SecuritypolicyAdaptiveProtectionConfig struct {
-	/* Auto Deploy Config of this security policy. */
+	/* Auto Deploy Config of this security policy */
 	// +optional
 	AutoDeployConfig *SecuritypolicyAutoDeployConfig `json:"autoDeployConfig,omitempty"`
 
-	/* Layer 7 DDoS Defense Config of this security policy. */
+	/* Layer 7 DDoS Defense Config of this security policy */
 	// +optional
 	Layer7DdosDefenseConfig *SecuritypolicyLayer7DdosDefenseConfig `json:"layer7DdosDefenseConfig,omitempty"`
 }
 
 type SecuritypolicyAdvancedOptionsConfig struct {
-	/* Custom configuration to apply the JSON parsing. Only applicable when JSON parsing is set to STANDARD. */
+	/* Custom configuration to apply the JSON parsing. Only applicable when json_parsing is set to STANDARD. */
 	// +optional
 	JsonCustomConfig *SecuritypolicyJsonCustomConfig `json:"jsonCustomConfig,omitempty"`
 
-	/* JSON body parsing. Supported values include: "DISABLED", "STANDARD". */
+	/* Check the JsonParsing enum for the list of possible values. */
 	// +optional
 	JsonParsing *string `json:"jsonParsing,omitempty"`
 
-	/* Logging level. Supported values include: "NORMAL", "VERBOSE". */
+	/* Check the LogLevel enum for the list of possible values. */
 	// +optional
 	LogLevel *string `json:"logLevel,omitempty"`
 
@@ -70,7 +73,7 @@ type SecuritypolicyAutoDeployConfig struct {
 
 	/* Google Cloud Armor stops applying the action in the automatically deployed rule to an identified attacker after this duration. The rule continues to operate against new requests. */
 	// +optional
-	ExpirationSec *int64 `json:"expirationSec,omitempty"`
+	ExpirationSec *int32 `json:"expirationSec,omitempty"`
 
 	/* Rules are only automatically deployed when the estimated impact to baseline traffic from the suggested mitigation is below this threshold. */
 	// +optional
@@ -83,14 +86,14 @@ type SecuritypolicyAutoDeployConfig struct {
 
 type SecuritypolicyBanThreshold struct {
 	/* Number of HTTP(S) requests for calculating the threshold. */
-	Count int64 `json:"count"`
+	Count int32 `json:"count"`
 
 	/* Interval over which the threshold is computed. */
-	IntervalSec int64 `json:"intervalSec"`
+	IntervalSec int32 `json:"intervalSec"`
 }
 
 type SecuritypolicyConfig struct {
-	/* Set of IP addresses or ranges (IPV4 or IPV6) in CIDR notation to match against inbound traffic. There is a limit of 10 IP ranges per rule. A value of '*' matches all IPs (can be used to override the default behavior). */
+	/* CIDR IP address range. Maximum number of src_ip_ranges allowed is 10. */
 	SrcIpRanges []string `json:"srcIpRanges"`
 }
 
@@ -99,7 +102,7 @@ type SecuritypolicyEnforceOnKeyConfigs struct {
 	// +optional
 	EnforceOnKeyName *string `json:"enforceOnKeyName,omitempty"`
 
-	/* Determines the key to enforce the rate_limit_threshold on. */
+	/* Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if "enforceOnKeyConfigs" is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. - USER_IP: The IP address of the originating client, which is resolved based on "userIpRequestHeaders" configured with the security policy. If there is no "userIpRequestHeaders" configuration or an IP address cannot be resolved from it, the key type defaults to IP. - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. Check the EnforceOnKeyType enum for the list of possible values. */
 	// +optional
 	EnforceOnKeyType *string `json:"enforceOnKeyType,omitempty"`
 }
@@ -109,24 +112,24 @@ type SecuritypolicyExceedRedirectOptions struct {
 	// +optional
 	Target *string `json:"target,omitempty"`
 
-	/* Type of the redirect action. */
+	/* Type of the redirect action. Possible values are: - GOOGLE_RECAPTCHA: redirect to reCAPTCHA for manual challenge assessment. - EXTERNAL_302: redirect to a different URL via a 302 response. Check the Type enum for the list of possible values. */
 	Type string `json:"type"`
 }
 
 type SecuritypolicyExclusion struct {
-	/* Request cookie whose value will be excluded from inspection during preconfigured WAF evaluation. */
+	/* A list of request cookie names whose value will be excluded from inspection during preconfigured WAF evaluation. */
 	// +optional
 	RequestCookie []SecuritypolicyRequestCookie `json:"requestCookie,omitempty"`
 
-	/* Request header whose value will be excluded from inspection during preconfigured WAF evaluation. */
+	/* A list of request header names whose value will be excluded from inspection during preconfigured WAF evaluation. */
 	// +optional
 	RequestHeader []SecuritypolicyRequestHeader `json:"requestHeader,omitempty"`
 
-	/* Request query parameter whose value will be excluded from inspection during preconfigured WAF evaluation.  Note that the parameter can be in the query string or in the POST body. */
+	/* A list of request query parameter names whose value will be excluded from inspection during preconfigured WAF evaluation. Note that the parameter can be in the query string or in the POST body. */
 	// +optional
 	RequestQueryParam []SecuritypolicyRequestQueryParam `json:"requestQueryParam,omitempty"`
 
-	/* Request URI from the request line to be excluded from inspection during preconfigured WAF evaluation. When specifying this field, the query or fragment part should be excluded. */
+	/* A list of request URIs from the request line to be excluded from inspection during preconfigured WAF evaluation. When specifying this field, the query or fragment part should be excluded. */
 	// +optional
 	RequestUri []SecuritypolicyRequestUri `json:"requestUri,omitempty"`
 
@@ -135,21 +138,24 @@ type SecuritypolicyExclusion struct {
 	TargetRuleIds []string `json:"targetRuleIds,omitempty"`
 
 	/* Target WAF rule set to apply the preconfigured WAF exclusion. */
-	TargetRuleSet string `json:"targetRuleSet"`
+	// +optional
+	TargetRuleSet *string `json:"targetRuleSet,omitempty"`
 }
 
 type SecuritypolicyExpr struct {
-	/* Textual representation of an expression in Common Expression Language syntax. The application context of the containing message determines which well-known feature set of CEL is supported. */
-	Expression string `json:"expression"`
+	/* Textual representation of an expression in Common Expression Language syntax. */
+	// +optional
+	Expression *string `json:"expression,omitempty"`
 }
 
 type SecuritypolicyHeaderAction struct {
 	/* The list of request headers to add or overwrite if they're already present. */
-	RequestHeadersToAdds []SecuritypolicyRequestHeadersToAdds `json:"requestHeadersToAdds"`
+	// +optional
+	RequestHeadersToAdds []SecuritypolicyRequestHeadersToAdds `json:"requestHeadersToAdds,omitempty"`
 }
 
 type SecuritypolicyJsonCustomConfig struct {
-	/* A list of custom Content-Type header values to apply the JSON parsing. */
+	/* A list of custom Content-Type header values to apply the JSON parsing. As per RFC 1341, a Content-Type header value has the following format: Content-Type := type "/" subtype *[";" parameter] When configuring a custom Content-Type header value, only the type/subtype needs to be specified, and the parameters should be excluded. */
 	ContentTypes []string `json:"contentTypes"`
 }
 
@@ -168,17 +174,17 @@ type SecuritypolicyMatch struct {
 	// +optional
 	Config *SecuritypolicyConfig `json:"config,omitempty"`
 
-	/* User defined CEVAL expression. A CEVAL expression is used to specify match criteria such as origin.ip, source.region_code and contents in the request header. */
+	/* User defined CEVAL expression. A CEVAL expression is used to specify match criteria such as origin.ip, source.region_code and contents in the request header. Expressions containing `evaluateThreatIntelligence` require Cloud Armor Managed Protection Plus tier and are not supported in Edge Policies nor in Regional Policies. Expressions containing `evaluatePreconfiguredExpr('sourceiplist-*')` require Cloud Armor Managed Protection Plus tier and are only supported in Global Security Policies. */
 	// +optional
 	Expr *SecuritypolicyExpr `json:"expr,omitempty"`
 
-	/* Predefined rule expression. If this field is specified, config must also be specified. Available options:   SRC_IPS_V1: Must specify the corresponding src_ip_ranges field in config. */
+	/* Preconfigured versioned expression. If this field is specified, config must also be specified. Available preconfigured expressions along with their requirements are: SRC_IPS_V1 - must specify the corresponding src_ip_range field in config. Check the VersionedExpr enum for the list of possible values. */
 	// +optional
 	VersionedExpr *string `json:"versionedExpr,omitempty"`
 }
 
 type SecuritypolicyPreconfiguredWafConfig struct {
-	/* An exclusion to apply during preconfigured WAF evaluation. */
+	/* A list of exclusions to apply during preconfigured WAF evaluation. */
 	// +optional
 	Exclusion []SecuritypolicyExclusion `json:"exclusion,omitempty"`
 }
@@ -186,20 +192,20 @@ type SecuritypolicyPreconfiguredWafConfig struct {
 type SecuritypolicyRateLimitOptions struct {
 	/* Can only be specified if the action for the rule is "rate_based_ban". If specified, determines the time (in seconds) the traffic will continue to be banned by the rate limit after the rate falls below the threshold. */
 	// +optional
-	BanDurationSec *int64 `json:"banDurationSec,omitempty"`
+	BanDurationSec *int32 `json:"banDurationSec,omitempty"`
 
-	/* Can only be specified if the action for the rule is "rate_based_ban". If specified, the key will be banned for the configured 'banDurationSec' when the number of requests that exceed the 'rateLimitThreshold' also exceed this 'banThreshold'. */
+	/* Can only be specified if the action for the rule is "rate_based_ban". If specified, the key will be banned for the configured 'ban_duration_sec' when the number of requests that exceed the 'rate_limit_threshold' also exceed this 'ban_threshold'. */
 	// +optional
 	BanThreshold *SecuritypolicyBanThreshold `json:"banThreshold,omitempty"`
 
 	/* Action to take for requests that are under the configured rate limit threshold. Valid option is "allow" only. */
 	ConformAction string `json:"conformAction"`
 
-	/* Determines the key to enforce the rateLimitThreshold on. */
+	/* Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if "enforceOnKey" is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. - USER_IP: The IP address of the originating client, which is resolved based on "userIpRequestHeaders" configured with the security policy. If there is no "userIpRequestHeaders" configuration or an IP address cannot be resolved from it, the key type defaults to IP. - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. Check the EnforceOnKey enum for the list of possible values. */
 	// +optional
 	EnforceOnKey *string `json:"enforceOnKey,omitempty"`
 
-	/* Enforce On Key Config of this security policy. */
+	/* If specified, any combination of values of enforce_on_key_type/enforce_on_key_name is treated as the key on which ratelimit threshold/action is enforced. You can specify up to 3 enforce_on_key_configs. If enforce_on_key_configs is specified, enforce_on_key must not be specified. */
 	// +optional
 	EnforceOnKeyConfigs []SecuritypolicyEnforceOnKeyConfigs `json:"enforceOnKeyConfigs,omitempty"`
 
@@ -207,10 +213,10 @@ type SecuritypolicyRateLimitOptions struct {
 	// +optional
 	EnforceOnKeyName *string `json:"enforceOnKeyName,omitempty"`
 
-	/* Action to take for requests that are above the configured rate limit threshold, to either deny with a specified HTTP response code, or redirect to a different endpoint. Valid options are "deny()" where valid values for status are 403, 404, 429, and 502, and "redirect" where the redirect parameters come from exceedRedirectOptions below. */
+	/* Action to take for requests that are above the configured rate limit threshold, to either deny with a specified HTTP response code, or redirect to a different endpoint. Valid options are `deny(STATUS)`, where valid values for `STATUS` are 403, 404, 429, and 502, and `redirect`, where the redirect parameters come from `exceedRedirectOptions` below. The `redirect` action is only supported in Global Security Policies of type CLOUD_ARMOR. */
 	ExceedAction string `json:"exceedAction"`
 
-	/* Parameters defining the redirect action that is used as the exceed action. Cannot be specified if the exceed action is not redirect. */
+	/* Parameters defining the redirect action that is used as the exceed action. Cannot be specified if the exceed action is not redirect. This field is only supported in Global Security Policies of type CLOUD_ARMOR. */
 	// +optional
 	ExceedRedirectOptions *SecuritypolicyExceedRedirectOptions `json:"exceedRedirectOptions,omitempty"`
 
@@ -220,19 +226,13 @@ type SecuritypolicyRateLimitOptions struct {
 
 type SecuritypolicyRateLimitThreshold struct {
 	/* Number of HTTP(S) requests for calculating the threshold. */
-	Count int64 `json:"count"`
+	Count int32 `json:"count"`
 
 	/* Interval over which the threshold is computed. */
-	IntervalSec int64 `json:"intervalSec"`
+	IntervalSec int32 `json:"intervalSec"`
 }
 
 type SecuritypolicyRecaptchaOptionsConfig struct {
-	/* A field to supply a reCAPTCHA site key to be used for all the rules
-	using the redirect action with the type of GOOGLE_RECAPTCHA under
-	the security policy. The specified site key needs to be created from
-	the reCAPTCHA API. The user is responsible for the validity of the
-	specified site key. If not specified, a Google-managed site key is
-	used. */
 	RedirectSiteKeyRef v1alpha1.ResourceRef `json:"redirectSiteKeyRef"`
 }
 
@@ -241,31 +241,34 @@ type SecuritypolicyRedirectOptions struct {
 	// +optional
 	Target *string `json:"target,omitempty"`
 
-	/* Type of the redirect action. Available options: EXTERNAL_302: Must specify the corresponding target field in config. GOOGLE_RECAPTCHA: Cannot specify target field in config. */
+	/* Type of the redirect action. Possible values are: - GOOGLE_RECAPTCHA: redirect to reCAPTCHA for manual challenge assessment. - EXTERNAL_302: redirect to a different URL via a 302 response. Check the Type enum for the list of possible values. */
 	Type string `json:"type"`
 }
 
 type SecuritypolicyRequestCookie struct {
-	/* You can specify an exact match or a partial match by using a field operator and a field value. Available options: EQUALS: The operator matches if the field value equals the specified value. STARTS_WITH: The operator matches if the field value starts with the specified value. ENDS_WITH: The operator matches if the field value ends with the specified value. CONTAINS: The operator matches if the field value contains the specified value. EQUALS_ANY: The operator matches if the field value is any value. */
-	Operator string `json:"operator"`
+	/* The match operator for the field. Check the Op enum for the list of possible values. */
+	// +optional
+	Operator *string `json:"operator,omitempty"`
 
-	/* A request field matching the specified value will be excluded from inspection during preconfigured WAF evaluation. The field value must be given if the field operator is not EQUALS_ANY, and cannot be given if the field operator is EQUALS_ANY. */
+	/* The value of the field. */
 	// +optional
 	Value *string `json:"value,omitempty"`
 }
 
 type SecuritypolicyRequestHeader struct {
-	/* You can specify an exact match or a partial match by using a field operator and a field value. Available options: EQUALS: The operator matches if the field value equals the specified value. STARTS_WITH: The operator matches if the field value starts with the specified value. ENDS_WITH: The operator matches if the field value ends with the specified value. CONTAINS: The operator matches if the field value contains the specified value. EQUALS_ANY: The operator matches if the field value is any value. */
-	Operator string `json:"operator"`
+	/* The match operator for the field. Check the Op enum for the list of possible values. */
+	// +optional
+	Operator *string `json:"operator,omitempty"`
 
-	/* A request field matching the specified value will be excluded from inspection during preconfigured WAF evaluation. The field value must be given if the field operator is not EQUALS_ANY, and cannot be given if the field operator is EQUALS_ANY. */
+	/* The value of the field. */
 	// +optional
 	Value *string `json:"value,omitempty"`
 }
 
 type SecuritypolicyRequestHeadersToAdds struct {
 	/* The name of the header to set. */
-	HeaderName string `json:"headerName"`
+	// +optional
+	HeaderName *string `json:"headerName,omitempty"`
 
 	/* The value to set the named header to. */
 	// +optional
@@ -273,84 +276,80 @@ type SecuritypolicyRequestHeadersToAdds struct {
 }
 
 type SecuritypolicyRequestQueryParam struct {
-	/* You can specify an exact match or a partial match by using a field operator and a field value. Available options: EQUALS: The operator matches if the field value equals the specified value. STARTS_WITH: The operator matches if the field value starts with the specified value. ENDS_WITH: The operator matches if the field value ends with the specified value. CONTAINS: The operator matches if the field value contains the specified value. EQUALS_ANY: The operator matches if the field value is any value. */
-	Operator string `json:"operator"`
+	/* The match operator for the field. Check the Op enum for the list of possible values. */
+	// +optional
+	Operator *string `json:"operator,omitempty"`
 
-	/* A request field matching the specified value will be excluded from inspection during preconfigured WAF evaluation. The field value must be given if the field operator is not EQUALS_ANY, and cannot be given if the field operator is EQUALS_ANY. */
+	/* The value of the field. */
 	// +optional
 	Value *string `json:"value,omitempty"`
 }
 
 type SecuritypolicyRequestUri struct {
-	/* You can specify an exact match or a partial match by using a field operator and a field value. Available options: EQUALS: The operator matches if the field value equals the specified value. STARTS_WITH: The operator matches if the field value starts with the specified value. ENDS_WITH: The operator matches if the field value ends with the specified value. CONTAINS: The operator matches if the field value contains the specified value. EQUALS_ANY: The operator matches if the field value is any value. */
-	Operator string `json:"operator"`
+	/* The match operator for the field. Check the Op enum for the list of possible values. */
+	// +optional
+	Operator *string `json:"operator,omitempty"`
 
-	/* A request field matching the specified value will be excluded from inspection during preconfigured WAF evaluation. The field value must be given if the field operator is not EQUALS_ANY, and cannot be given if the field operator is EQUALS_ANY. */
+	/* The value of the field. */
 	// +optional
 	Value *string `json:"value,omitempty"`
 }
 
 type SecuritypolicyRule struct {
-	/* Action to take when match matches the request. */
+	/* The Action to perform when the rule is matched. The following are the valid actions: - allow: allow access to target. - deny(STATUS): deny access to target, returns the HTTP response code specified. Valid values for `STATUS` are 403, 404, and 502. - rate_based_ban: limit client traffic to the configured threshold and ban the client if the traffic exceeds the threshold. Configure parameters for this action in RateLimitOptions. Requires rate_limit_options to be set. - redirect: redirect to a different target. This can either be an internal reCAPTCHA redirect, or an external URL-based redirect via a 302 response. Parameters for this action can be configured via redirectOptions. This action is only supported in Global Security Policies of type CLOUD_ARMOR. - throttle: limit client traffic to the configured threshold. Configure parameters for this action in rateLimitOptions. Requires rate_limit_options to be set for this. */
 	Action string `json:"action"`
 
-	/* An optional description of this rule. Max size is 64. */
+	/* An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Additional actions that are performed on headers. */
+	/* Optional, additional actions that are performed on headers. This field is only supported in Global Security Policies of type CLOUD_ARMOR. */
 	// +optional
 	HeaderAction *SecuritypolicyHeaderAction `json:"headerAction,omitempty"`
 
-	/* A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding action is enforced. */
+	/* A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced. */
 	Match SecuritypolicyMatch `json:"match"`
 
 	/* Preconfigured WAF configuration to be applied for the rule. If the rule does not evaluate preconfigured WAF rules, i.e., if evaluatePreconfiguredWaf() is not used, this field will have no effect. */
 	// +optional
 	PreconfiguredWafConfig *SecuritypolicyPreconfiguredWafConfig `json:"preconfiguredWafConfig,omitempty"`
 
-	/* When set to true, the action specified above is not enforced. Stackdriver logs for requests that trigger a preview action are annotated as such. */
+	/* If set to true, the specified action is not enforced. */
 	// +optional
 	Preview *bool `json:"preview,omitempty"`
 
-	/* An unique positive integer indicating the priority of evaluation for a rule. Rules are evaluated from highest priority (lowest numerically) to lowest priority (highest numerically) in order. */
-	Priority int64 `json:"priority"`
+	/* An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest priority. */
+	Priority int32 `json:"priority"`
 
-	/* Rate limit threshold for this security policy. Must be specified if the action is "rate_based_ban" or "throttle". Cannot be specified for any other actions. */
+	/* Must be specified if the action is "rate_based_ban" or "throttle". Cannot be specified for any other actions. */
 	// +optional
 	RateLimitOptions *SecuritypolicyRateLimitOptions `json:"rateLimitOptions,omitempty"`
 
-	/* Parameters defining the redirect action. Cannot be specified for any other actions. */
+	/* Parameters defining the redirect action. Cannot be specified for any other actions. This field is only supported in Global Security Policies of type CLOUD_ARMOR. */
 	// +optional
 	RedirectOptions *SecuritypolicyRedirectOptions `json:"redirectOptions,omitempty"`
 }
 
 type ComputeSecurityPolicySpec struct {
-	/* Adaptive Protection Config of this security policy. */
 	// +optional
 	AdaptiveProtectionConfig *SecuritypolicyAdaptiveProtectionConfig `json:"adaptiveProtectionConfig,omitempty"`
 
-	/* Advanced Options Config of this security policy. */
 	// +optional
 	AdvancedOptionsConfig *SecuritypolicyAdvancedOptionsConfig `json:"advancedOptionsConfig,omitempty"`
 
-	/* An optional description of this security policy. Max size is 2048. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* reCAPTCHA configuration options to be applied for the security policy. */
 	// +optional
 	RecaptchaOptionsConfig *SecuritypolicyRecaptchaOptionsConfig `json:"recaptchaOptionsConfig,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The ComputeSecurityPolicy name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* The set of rules that belong to this policy. There must always be a default rule (rule with priority 2147483647 and match "*"). If no rules are provided when creating a security policy, a default rule with action "allow" will be added. */
 	// +optional
 	Rule []SecuritypolicyRule `json:"rule,omitempty"`
 
-	/* The type indicates the intended use of the security policy. CLOUD_ARMOR - Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. CLOUD_ARMOR_EDGE - Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google's cache. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }
@@ -359,7 +358,6 @@ type ComputeSecurityPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeSecurityPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Fingerprint of this resource. */
 	// +optional
 	Fingerprint *string `json:"fingerprint,omitempty"`
 
@@ -367,7 +365,6 @@ type ComputeSecurityPolicyStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* The URI of the created resource. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 }
@@ -381,9 +378,6 @@ type ComputeSecurityPolicyStatus struct {
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
-// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
-// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
-// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeSecurityPolicy is the Schema for the compute API
 // +k8s:openapi-gen=true

@@ -21,8 +21,6 @@
 
 package v1alpha1
 
-type APIGatewayAPIExpansion interface{}
-
 type APIGatewayAPIConfigExpansion interface{}
 
 type APIGatewayGatewayExpansion interface{}

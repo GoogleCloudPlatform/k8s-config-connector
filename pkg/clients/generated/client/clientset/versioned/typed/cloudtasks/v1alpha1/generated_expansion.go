@@ -21,4 +21,4 @@
 
 package v1alpha1
 
-type CloudTasksQueueExpansion interface{}
+type TasksQueueExpansion interface{}

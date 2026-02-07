@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type NodepoolAdditionalNodeNetworkConfigs struct {
 	/* Immutable. Name of the VPC where the additional interface belongs. */
@@ -60,8 +63,13 @@ type NodepoolAdditionalPodNetworkConfigs struct {
 }
 
 type NodepoolAdvancedMachineFeatures struct {
+	/* Immutable. Whether or not to enable nested virtualization (defaults to false). */
+	// +optional
+	EnableNestedVirtualization *bool `json:"enableNestedVirtualization,omitempty"`
+
 	/* Immutable. The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed. */
-	ThreadsPerCore int64 `json:"threadsPerCore"`
+	// +optional
+	ThreadsPerCore *int64 `json:"threadsPerCore,omitempty"`
 }
 
 type NodepoolAutoscaling struct {

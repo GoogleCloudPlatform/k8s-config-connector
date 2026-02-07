@@ -47,10 +47,6 @@ func (c *FakeVertexaiV1alpha1) VertexAIIndexEndpoints(namespace string) v1alpha1
 	return &FakeVertexAIIndexEndpoints{c, namespace}
 }
 
-func (c *FakeVertexaiV1alpha1) VertexAIMetadataStores(namespace string) v1alpha1.VertexAIMetadataStoreInterface {
-	return &FakeVertexAIMetadataStores{c, namespace}
-}
-
 func (c *FakeVertexaiV1alpha1) VertexAITensorboards(namespace string) v1alpha1.VertexAITensorboardInterface {
 	return &FakeVertexAITensorboards{c, namespace}
 }
