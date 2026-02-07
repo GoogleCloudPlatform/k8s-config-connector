@@ -997,6 +997,14 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/storagetransfer/storagetransferjob.md">StorageTransferJob</a></td>
 </tr>
 <tr>
+  <td><a href="/resource-manager/docs/tags/tags-overview">Tags</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/tags/tagslocationtagbinding.md">TagsLocationTagBinding</a></td>
+</tr>
+<tr>
+  <td><a href="/resource-manager/docs/tags/tags-overview">Tags</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/tags/tagstagbinding.md">TagsTagBinding</a></td>
+</tr>
+<tr>
   <td><a href="/traffic-director/docs/">{{td_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/networksecurity/networksecurityauthorizationpolicy.md">NetworkSecurityAuthorizationPolicy</a></td>
 </tr>
