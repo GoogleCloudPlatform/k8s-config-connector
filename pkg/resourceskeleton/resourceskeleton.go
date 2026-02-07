@@ -63,7 +63,13 @@ func NewFromURI(uri string, smLoader *servicemappingloader.ServiceMappingLoader,
 	if err != nil {
 		return nil, fmt.Errorf("error parsing '%v' as url: %w", uri, err)
 	}
-	canonicalHost := trimRegionPrefix(parsedURL.Host) // e.g. "us-central1-aiplatform.googleapis.com" -> "aiplatform.googleapis.com"
+	canonicalHost := parsedURL.Host
+
+	// For secretmanager regional host would be secretmanager.us-central1.rep.googleapis.com:443. 
+	// Hence skipping region prefix trim for secretmanager.
+	if !strings.Contains(parsedURL.Host, "secretmanager") {
+		canonicalHost = trimRegionPrefix(parsedURL.Host) // e.g. "us-central1-aiplatform.googleapis.com" -> "aiplatform.googleapis.com"
+	}
 	sm, rc, err := uri2.GetServiceMappingAndResourceConfig(smLoader, canonicalHost, parsedURL.Path)
 	if err != nil {
 		return nil, fmt.Errorf("error getting service mapping and resource config for url '%v': %w", uri, err)
