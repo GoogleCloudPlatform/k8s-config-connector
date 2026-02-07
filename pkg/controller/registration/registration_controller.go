@@ -21,6 +21,7 @@ import (
 	"sync"
 	"time"
 
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
@@ -49,6 +50,7 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/event"
@@ -68,12 +70,47 @@ type RegistrationControllerOptions struct {
 
 // AddDefaultControllers creates the registration controller with the default controller factory,
 // this will dynamically create the default controllers for each CRD.
-func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *controller.Deps, controllerConfig *config.ControllerConfig) error {
+func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *controller.Deps, controllerConfig *config.ControllerConfig, scopedNamespace string) error {
 	opt := RegistrationControllerOptions{
 		ControllerName: "registration-controller",
 	}
+
+	// Prefetch resource exclusion settings to avoid repeated API calls in the loop.
+	// We use mgr.GetAPIReader() because the manager's cache is not started yet.
+	// This results in a direct API call, which is acceptable for this one-time startup operation.
+	c := mgr.GetAPIReader()
+
+	// The `cccSettings` and `ccSettings` are fetched only once when `AddDefaultControllers` is called
+	// (typically at startup). This means any changes to `ConfigConnector` or `ConfigConnectorContext`
+	// resources at runtime will not be reflected until the manager process is restarted.
+	var cccSettings []operatorv1beta1.ResourceSetting
+	if scopedNamespace != "" {
+		ccc := &operatorv1beta1.ConfigConnectorContext{}
+		if err := c.Get(ctx, types.NamespacedName{Namespace: scopedNamespace, Name: operatorv1beta1.ConfigConnectorContextAllowedName}, ccc); err != nil {
+			if !errors.IsNotFound(err) {
+				return fmt.Errorf("error getting ConfigConnectorContext in %q: %w", scopedNamespace, err)
+			}
+			fmt.Printf("ConfigConnectorContext not found in %s\n", scopedNamespace)
+		} else if ccc.Spec.Experiments != nil {
+			cccSettings = ccc.Spec.Experiments.ResourceSettings
+			fmt.Printf("Found CCC Settings in %s: %v\n", scopedNamespace, cccSettings)
+		}
+	} else {
+		fmt.Println("scopedNamespace is empty")
+	}
+
+	var ccSettings []operatorv1beta1.ResourceSetting
+	cc := &operatorv1beta1.ConfigConnector{}
+	if err := c.Get(ctx, types.NamespacedName{Name: operatorv1beta1.ConfigConnectorAllowedName}, cc); err != nil {
+		if !errors.IsNotFound(err) {
+			return fmt.Errorf("error getting ConfigConnector: %w", err)
+		}
+	} else if cc.Spec.Experiments != nil {
+		ccSettings = cc.Spec.Experiments.ResourceSettings
+	}
+
 	if err := add(mgr, rd,
-		registerDefaultControllers(ctx, controllerConfig), opt); err != nil {
+		registerDefaultControllers(ctx, controllerConfig, scopedNamespace, cccSettings, ccSettings), opt); err != nil {
 		return fmt.Errorf("error adding default registration controller: %w", err)
 	}
 	return nil
@@ -246,17 +283,24 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 	return crd.Spec.Group == serviceAccountKeyAPIGroup && crd.Spec.Names.Kind == serviceAccountKeyKind
 }
 
-func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig) registrationFunc { //nolint:revive
+func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig, scopedNamespace string, cccSettings []operatorv1beta1.ResourceSetting, ccSettings []operatorv1beta1.ResourceSetting) registrationFunc { //nolint:revive
 	return func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-		return registerDefaultController(ctx, r, config, crd, gvk)
+		return registerDefaultController(ctx, r, config, crd, gvk, scopedNamespace, cccSettings, ccSettings)
 	}
 }
 
-func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings []operatorv1beta1.ResourceSetting, ccSettings []operatorv1beta1.ResourceSetting) (k8s.SchemaReferenceUpdater, error) {
 	logger := crlog.FromContext(ctx)
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
+
+	// Check if the resource is disabled by configuration (ConfigConnector or ConfigConnectorContext).
+	if disabled := isResourceDisabled(ctx, gvk, scopedNamespace, cccSettings, ccSettings); disabled {
+		logger.Info("Skipping controller registration because resource is disabled in ConfigConnector or ConfigConnectorContext", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+		return nil, nil
+	}
+
 	cds := controller.Deps{
 		TFProvider:   r.provider,
 		TFLoader:     r.smLoader,
@@ -368,4 +412,44 @@ func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextens
 		return nil, fmt.Errorf("error registering deletion defender controller for '%v': %w", crd.GetName(), err)
 	}
 	return nil, nil
+}
+
+func isResourceDisabled(ctx context.Context, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings []operatorv1beta1.ResourceSetting, ccSettings []operatorv1beta1.ResourceSetting) bool {
+	logger := crlog.FromContext(ctx)
+	// 1. Check ConfigConnectorContext (Namespace-level) setting
+	var foundCCC, enabledCCC bool
+	if scopedNamespace != "" {
+		foundCCC, enabledCCC = getResourceSetting(cccSettings, gvk)
+		if foundCCC && enabledCCC {
+			logger.Info("ignoring enabled: true in ConfigConnectorContext because only enabled: false is supported", "namespace", scopedNamespace, "group", gvk.Group, "kind", gvk.Kind)
+		}
+	}
+
+	// 2. Check ConfigConnector (Cluster-level) setting
+	foundCC, enabledCC := getResourceSetting(ccSettings, gvk)
+	if foundCC && enabledCC {
+		logger.Info("ignoring enabled: true in ConfigConnector because only enabled: false is supported", "group", gvk.Group, "kind", gvk.Kind)
+	}
+
+	// 3. Resolve Precedence (Disable Only)
+	// If explicitly disabled in CCC, it is disabled.
+	if foundCCC && !enabledCCC {
+		return true
+	}
+	// If explicitly disabled in CC, it is disabled.
+	if foundCC && !enabledCC {
+		return true
+	}
+
+	// Default: Enabled: true
+	return false
+}
+
+func getResourceSetting(settings []operatorv1beta1.ResourceSetting, gvk schema.GroupVersionKind) (found bool, enabled bool) {
+	for _, s := range settings {
+		if s.Group == gvk.Group && s.Kind == gvk.Kind {
+			return true, s.Enabled
+		}
+	}
+	return false, true // default to enabled true
 }

@@ -183,6 +183,7 @@ func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace strin
 			},
 		},
 		MultiClusterLease: multiclusterlease,
+		ScopedNamespace:   scopedNamespace,
 	}
 
 	controllersCfg.UserProjectOverride = userProjectOverride
