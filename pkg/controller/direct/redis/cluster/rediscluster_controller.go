@@ -36,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -259,28 +260,35 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 
 	// TODO: What if a different field (immutability again)
 
+	report := &structuredreporting.Diff{Object: u}
 	if direct.ValueOf(a.desired.ReplicaCount) != direct.ValueOf(a.actual.ReplicaCount) {
 		updateMask.Paths = append(updateMask.Paths, "replica_count")
+		report.AddField("replica_count", a.actual.ReplicaCount, a.desired.ReplicaCount)
 	}
 
 	if direct.ValueOf(a.desired.ShardCount) != direct.ValueOf(a.actual.ShardCount) {
 		updateMask.Paths = append(updateMask.Paths, "shard_count")
+		report.AddField("shard_count", a.actual.ShardCount, a.desired.ShardCount)
 	}
 
 	if direct.ValueOf(a.desired.DeletionProtectionEnabled) != direct.ValueOf(a.actual.DeletionProtectionEnabled) {
 		updateMask.Paths = append(updateMask.Paths, "deletion_protection_enabled")
+		report.AddField("deletion_protection_enabled", a.actual.DeletionProtectionEnabled, a.desired.DeletionProtectionEnabled)
 	}
 
 	if !proto.Equal(a.desired.PersistenceConfig, a.actual.PersistenceConfig) {
+		report.AddField("persistence_config", a.actual.PersistenceConfig, a.desired.PersistenceConfig)
 		updateMask.Paths = append(updateMask.Paths, "persistence_config")
 	}
 
 	if !reflect.DeepEqual(a.desired.GetRedisConfigs(), a.actual.GetRedisConfigs()) {
+		report.AddField("redis_configs", a.actual.GetRedisConfigs(), a.desired.GetRedisConfigs())
 		updateMask.Paths = append(updateMask.Paths, "redis_configs")
 	}
 
 	var latest *pb.Cluster
 	if len(updateMask.Paths) != 0 {
+		structuredreporting.ReportDiff(ctx, report)
 
 		// exactly 1 update_mask field must be specified per update request
 		for _, path := range updateMask.Paths {
