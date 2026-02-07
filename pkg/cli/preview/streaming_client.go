@@ -196,7 +196,7 @@ type WatchOptions struct {
 
 // WatchListener is a listener for watch operations.
 type WatchListener interface {
-	OnWatchEvent(eventType string, object Object) error
+	OnWatchEvent(ctx context.Context, eventType string, object Object) error
 }
 
 // Watch watches the given type.
@@ -255,7 +255,7 @@ func (c *StreamingClient) Watch(ctx context.Context, typeInfo *typeInfo, namespa
 				return fmt.Errorf("decoding %T from %v: %w", object, u, err)
 			}
 		}
-		if err := listener.OnWatchEvent(event.Type, object); err != nil {
+		if err := listener.OnWatchEvent(ctx, event.Type, object); err != nil {
 			return err
 		}
 
