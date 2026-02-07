@@ -26,7 +26,6 @@ package v1beta1
 
 import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	v1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -48,11 +47,7 @@ func (in *BackupObservedStateStatus) DeepCopyInto(out *BackupObservedStateStatus
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.ServiceRevision != nil {
-		in, out := &in.ServiceRevision, &out.ServiceRevision
-		*out = new(v1.JSON)
-		(*in).DeepCopyInto(*out)
-	}
+	in.ServiceRevision.DeepCopyInto(&out.ServiceRevision)
 	if in.State != nil {
 		in, out := &in.State, &out.State
 		*out = new(string)

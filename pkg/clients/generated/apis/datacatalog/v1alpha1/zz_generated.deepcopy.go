@@ -26,7 +26,6 @@ package v1alpha1
 
 import (
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	v1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -999,11 +998,7 @@ func (in *EntryColumns) DeepCopyInto(out *EntryColumns) {
 		*out = new(EntryRangeElementType)
 		**out = **in
 	}
-	if in.Subcolumns != nil {
-		in, out := &in.Subcolumns, &out.Subcolumns
-		*out = new(v1.JSON)
-		(*in).DeepCopyInto(*out)
-	}
+	in.Subcolumns.DeepCopyInto(&out.Subcolumns)
 	return
 }
 

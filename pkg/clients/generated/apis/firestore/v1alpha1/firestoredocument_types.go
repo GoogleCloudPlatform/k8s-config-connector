@@ -32,9 +32,11 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type FirestoreDocumentSpec struct {
 	/* Collection is the identity of the firestore collection in which to create the document. */
@@ -46,7 +48,7 @@ type FirestoreDocumentSpec struct {
 
 	/* Fields holds the field values; values follow JSON typing conventions. */
 	// +optional
-	Fields map[string]apiextensions.JSON `json:"fields,omitempty"`
+	Fields map[string]apiextensionsv1.JSON `json:"fields,omitempty"`
 
 	/* The FirestoreDocument name. If not given, the metadata.name will be used. */
 	// +optional

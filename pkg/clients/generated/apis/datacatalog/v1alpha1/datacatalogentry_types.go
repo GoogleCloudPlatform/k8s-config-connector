@@ -32,9 +32,11 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type EntryAvro struct {
 	/* JSON source of the Avro schema. */
@@ -164,7 +166,7 @@ type EntryColumns struct {
 
 	/* Optional. Schema of sub-columns. A column can have zero or more sub-columns. */
 	// +optional
-	Subcolumns *apiextensions.JSON `json:"subcolumns,omitempty"`
+	Subcolumns apiextensionsv1.JSON `json:"subcolumns,omitempty"`
 
 	/* Required. Type of the column.
 

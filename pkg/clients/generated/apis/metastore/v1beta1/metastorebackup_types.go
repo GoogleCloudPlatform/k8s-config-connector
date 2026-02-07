@@ -32,9 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type MetastoreBackupSpec struct {
 	/* The description of the backup. */
@@ -64,7 +66,7 @@ type BackupObservedStateStatus struct {
 
 	/* Output only. The revision of the service at the time of backup. */
 	// +optional
-	ServiceRevision *apiextensions.JSON `json:"serviceRevision,omitempty"`
+	ServiceRevision apiextensionsv1.JSON `json:"serviceRevision,omitempty"`
 
 	/* Output only. The current state of the backup. */
 	// +optional

@@ -32,9 +32,11 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type PolicyCondition struct {
 	/* Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI. */
@@ -99,7 +101,7 @@ type PolicyRules struct {
 
 	/* Optional. Required for managed constraints if parameters are defined. Passes parameter values when policy enforcement is enabled. Ensure that parameter value types match those defined in the constraint definition. For example: { "allowedLocations" : ["us-east1", "us-west1"], "allowAll" : true } */
 	// +optional
-	Parameters *apiextensions.JSON `json:"parameters,omitempty"`
+	Parameters apiextensionsv1.JSON `json:"parameters,omitempty"`
 
 	/* List of values to be used for this policy rule. This field can be set only in policies for list constraints. */
 	// +optional
