@@ -318,7 +318,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     },
     "controlPlaneEndpointsConfig": {
       "dnsEndpointConfig": {
-        "allowExternalTraffic": true
+        "allowExternalTraffic": true,
+        "enableK8sTokensViaDns": false
       },
       "ipEndpointsConfig": {
         "enabled": false
@@ -497,6 +498,8 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
+      "enableK8sCertsViaDns": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -833,6 +836,8 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
+      "enableK8sCertsViaDns": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -1169,6 +1174,8 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
+      "enableK8sCertsViaDns": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -1505,6 +1512,8 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
+      "enableK8sCertsViaDns": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -1764,7 +1773,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "update": {
     "desiredControlPlaneEndpointsConfig": {
       "dnsEndpointConfig": {
-        "allowExternalTraffic": true
+        "allowExternalTraffic": true,
+        "enableK8sTokensViaDns": false
       },
       "ipEndpointsConfig": {
         "enabled": false
@@ -1877,6 +1887,8 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
+      "enableK8sCertsViaDns": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -2213,6 +2225,8 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
+      "enableK8sCertsViaDns": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -2549,6 +2563,8 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
+      "enableK8sCertsViaDns": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
     "ipEndpointsConfig": {

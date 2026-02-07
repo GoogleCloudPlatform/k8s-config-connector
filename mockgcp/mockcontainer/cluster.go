@@ -893,7 +893,12 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		if dnsEndpointConfig.AllowExternalTraffic == nil {
 			dnsEndpointConfig.AllowExternalTraffic = PtrTo(false)
 		}
-		//  "enableK8sCertsViaDns": false,
+		if dnsEndpointConfig.EnableK8SCertsViaDns == nil {
+			dnsEndpointConfig.EnableK8SCertsViaDns = PtrTo(false)
+		}
+		if dnsEndpointConfig.EnableK8STokensViaDns == nil {
+			dnsEndpointConfig.EnableK8STokensViaDns = PtrTo(false)
+		}
 		dnsEndpointConfig.Endpoint = fmt.Sprintf("gke-12345trewq-${projectNumber}.%s.gke.goog", obj.Location)
 	}
 
