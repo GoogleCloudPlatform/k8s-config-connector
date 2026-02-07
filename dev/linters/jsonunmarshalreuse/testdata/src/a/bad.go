@@ -19,6 +19,7 @@ type Wrapper struct {
 }
 
 func BadUnmarshalUsage() {
+	const sliceLen = 5
 	var data []byte = []byte(`["a", "b"]`)
 	var s []string 
 	
@@ -67,4 +68,11 @@ func BadUnmarshalUsage() {
 	if err := json.Unmarshal(data, sPtr); err != nil { // want "potential reuse of non-empty variable"
 		log.Fatal(err)
 	}
+
+	// Case 8: make with named constant for length
+	var t2 []string = make([]string, sliceLen)
+	if err := json.Unmarshal(data, &t2); err != nil { // want "potential reuse of variable created with non-zero length"
+		log.Fatal(err)
+	}
 }
+
