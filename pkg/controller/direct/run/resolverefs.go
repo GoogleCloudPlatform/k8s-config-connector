@@ -22,6 +22,8 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -85,11 +87,30 @@ func ResolveRunJobRefs(ctx context.Context, kube client.Reader, desired *krm.Run
 		for _, v := range template.Volumes {
 			if v.CloudSQLInstance != nil {
 				for _, sqlInstance := range v.CloudSQLInstance.InstanceRefs {
-					instanceRef, err := refs.ResolveSQLInstanceRef(ctx, kube, desired, sqlInstance)
-					if err != nil {
+					if err := sqlInstance.Normalize(ctx, kube, desired.GetNamespace()); err != nil {
 						return err
 					}
-					sqlInstance.External = instanceRef.ConnectionName()
+					id := &sqlv1beta1.SQLInstanceIdentity{}
+					if err := id.FromExternal(sqlInstance.External); err != nil {
+						return err
+					}
+					if id.Location == "" && (sqlInstance.Name != "" || sqlInstance.Namespace != "") {
+						u := &unstructured.Unstructured{}
+						u.SetGroupVersionKind(sqlv1beta1.SQLInstanceGVK)
+						nn := sqlInstance.GetNamespacedName()
+						if nn.Namespace == "" {
+							nn.Namespace = desired.GetNamespace()
+						}
+						if err := kube.Get(ctx, nn, u); err != nil {
+							return fmt.Errorf("getting SQLInstance %v: %w", nn, err)
+						}
+						specId, err := sqlv1beta1.GetIdentityFromSQLInstanceSpec(ctx, kube, u)
+						if err != nil {
+							return err
+						}
+						id.Location = specId.Location
+					}
+					sqlInstance.External = id.ConnectionName()
 				}
 			}
 			if v.GCS != nil && v.GCS.BucketRef != nil {
