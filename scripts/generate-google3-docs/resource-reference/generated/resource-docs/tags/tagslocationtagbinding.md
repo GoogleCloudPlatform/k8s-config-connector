@@ -2,7 +2,7 @@
 
 {% extends "config-connector/_base.html" %}
 
-{% block page_title %}ApigeeEnvgroup{% endblock %}
+{% block page_title %}TagsLocationTagBinding{% endblock %}
 {% block body %}
 
 
@@ -16,31 +16,31 @@
 <tbody>
 <tr>
 <td>{{gcp_name_short}} Service Name</td>
-<td>Apigee</td>
+<td>Tags</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} Service Documentation</td>
-<td><a href="/apigee/docs/">/apigee/docs/</a></td>
+<td><a href="/resource-manager/docs/tags/tags-overview">/resource-manager/docs/tags/tags-overview</a></td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
-<td>v1.organizations.envgroups</td>
+<td>v3.projects.locations.tagBindings</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/apigee/docs/reference/apis/apigee/rest/v1/organizations.envgroups">/apigee/docs/reference/apis/apigee/rest/v1/organizations.envgroups</a></td>
+<td><a href="/resource-manager/reference/rest/v3/tagBindings">/resource-manager/reference/rest/v3/tagBindings</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpapigeeenvgroup<br>gcpapigeeenvgroups<br>apigeeenvgroup</td>
+<td>gcptagslocationtagbinding<br>gcptagslocationtagbindings<br>tagslocationtagbinding</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
-<td>apigee.googleapis.com</td>
+<td>cloudresourcemanager.googleapis.com</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Fully Qualified Name</td>
-<td>apigeeenvgroups.apigee.cnrm.cloud.google.com</td>
+<td>tagslocationtagbindings.tags.cnrm.cloud.google.com</td>
 </tr>
 
 <tr>
@@ -63,13 +63,17 @@
 ### Spec
 #### Schema
 ```yaml
-hostnames:
-- string
-organizationRef:
+location: string
+parentRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
+tagValueRef:
+  external: string
+  name: string
+  namespace: string
 ```
 
 <table class="properties responsive">
@@ -81,62 +85,62 @@ resourceID: string
 <tbody>
     <tr>
         <td>
-            <p><code>hostnames</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Host names for this environment group.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>hostnames[]</code></p>
-            <p><i>Optional</i></p>
+            <p><code>location</code></p>
+            <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The location for the resource being tagged.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>organizationRef</code></p>
+            <p><code>parentRef</code></p>
             <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}ApigeeOrganizationRef is a reference to a ApigeeOrganization resource.{% endverbatim %}</p>
+            <p>{% verbatim %}ParentRef is a reference to a parent resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>organizationRef.external</code></p>
+            <p><code>parentRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed ApigeeOrganization resource. Should be in the format "organizations/{{organizationID}}".{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `//cloudresourcemanager.googleapis.com/projects/{{value}}`, where {{value}} is the `number` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>organizationRef.name</code></p>
+            <p><code>parentRef.kind</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of a ApigeeOrganization resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Kind to which we are binding the tag.  Defaults to Project if not specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>organizationRef.namespace</code></p>
+            <p><code>parentRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The namespace of a ApigeeOrganization resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>parentRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -146,7 +150,47 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ApigeeEnvgroup name. If not given, the metadata.name will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tagValueRef</code></p>
+            <p><i>Required</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}TagsTagValueRef is a reference to a TagsTagValue resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tagValueRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A reference to an externally managed TagsTagValue resource. Should be in the format "tagValues/{{tagValueID}}".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tagValueRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of a TagsTagValue resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tagValueRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The namespace of a TagsTagValue resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -164,12 +208,8 @@ conditions:
   status: string
   type: string
 externalRef: string
+name: string
 observedGeneration: integer
-observedState:
-  createdAt: integer
-  lastModifiedAt: integer
-  name: string
-  state: string
 ```
 
 <table class="properties responsive">
@@ -232,7 +272,14 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the ApigeeEnvgroup resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the TagsLocationTagBinding resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>name</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The generated id for the TagBinding. This is a string of the form: tagBindings/{full-resource-name}/{tag-value-name}.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -242,73 +289,10 @@ observedState:
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
         </td>
     </tr>
-    <tr>
-        <td><code>observedState</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.createdAt</code></td>
-        <td>
-            <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Output only. The time at which the environment group was created as milliseconds since epoch.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.lastModifiedAt</code></td>
-        <td>
-            <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Output only. The time at which the environment group was last updated as milliseconds since epoch.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.name</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}ID of the environment group.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.state</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. State of the environment group. Values other than ACTIVE means the resource is not ready to use.{% endverbatim %}</p>
-        </td>
-    </tr>
 </tbody>
 </table>
 
 ## Sample YAML(s)
-
-### Typical Use Case
-```yaml
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-apiVersion: apigee.cnrm.cloud.google.com/v1beta1
-kind: ApigeeEnvgroup
-metadata:
-  name: apigeeenvgroup-sample
-spec:
-  hostnames:
-    - sample.mytesthost.net
-  organizationRef:
-    external: organizations/${PROJECT_ID?}
-  resourceID: apigeeenvgroup-sample
-```
 
 
 Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

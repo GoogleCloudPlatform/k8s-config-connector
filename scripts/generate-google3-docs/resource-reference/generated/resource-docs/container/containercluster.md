@@ -161,6 +161,8 @@ clusterAutoscaling:
       maxUnavailable: integer
       strategy: string
   autoscalingProfile: string
+  defaultComputeClassConfig:
+    enabled: boolean
   enabled: boolean
   resourceLimits:
   - maximum: integer
@@ -1135,6 +1137,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Configuration options for the Autoscaling profile feature, which lets you choose whether the cluster autoscaler should optimize for resource utilization or resource availability when deciding to remove nodes from a cluster. Can be BALANCED or OPTIMIZE_UTILIZATION. Defaults to BALANCED.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.defaultComputeClassConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Default compute class is a configuration for default compute class.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.defaultComputeClassConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enables default compute class.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
