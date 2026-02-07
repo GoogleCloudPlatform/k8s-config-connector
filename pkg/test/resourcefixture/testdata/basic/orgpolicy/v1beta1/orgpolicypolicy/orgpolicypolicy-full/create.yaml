@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: orgpolicy.cnrm.cloud.google.com/v1alpha1
+apiVersion: orgpolicy.cnrm.cloud.google.com/v1beta1
 kind: OrgPolicyPolicy
 metadata:
   name: custom.orgpolicypolicy${uniqueId}
@@ -20,8 +20,22 @@ spec:
   projectRef:
     external: projects/1070934155037  # kcc-orgpolicy-test-project
   spec:
+    inheritFromParent: true
+    reset: false
     rules:
-      - enforce: false
+      - condition:
+          expression: "resource.matchTag('123456789/environment', 'prod')"
+          title: "prod-env"
+          description: "Production environment"
+          location: "us-east1"
+        enforce: true
   dryRunSpec:
+    inheritFromParent: false
+    reset: true
     rules:
-      - enforce: true
+      - condition:
+          expression: "resource.matchTag('123456789/environment', 'staging')"
+          title: "staging-env"
+          description: "Staging environment"
+          location: "us-west1"
+        enforce: false

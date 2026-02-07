@@ -12,29 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: orgpolicy.cnrm.cloud.google.com/v1alpha1
+apiVersion: orgpolicy.cnrm.cloud.google.com/v1beta1
 kind: OrgPolicyPolicy
 metadata:
-  name: custom.orgpolicypolicy-params-${uniqueId}
+  name: custom.orgpolicypolicy${uniqueId}
 spec:
   projectRef:
-    external: ${projectId}
+    external: projects/1070934155037  # kcc-orgpolicy-test-project
   spec:
     rules:
       - enforce: false
-        parameters:
-          allowedLocations:
-            - us-east1
-            - us-west1
-          allowAll: true
   dryRunSpec:
     rules:
       - enforce: true
-
-    rules:
-      - enforce: false
-        parameters:
-          allowedLocations:
-            - europe-west1
-            - europe-west2
-          allowAll: true
