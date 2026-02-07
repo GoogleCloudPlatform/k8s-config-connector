@@ -44,6 +44,7 @@ func (i *ExecutionIdentity) Parent() *ExecutionParent {
 	return i.parent
 }
 
+// TODO: Fix the parent to use WorkflowIdentity which already contains ProjectID and Location.
 type ExecutionParent struct {
 	ProjectID string
 	Location  string
@@ -67,8 +68,8 @@ func NewExecutionIdentity(ctx context.Context, reader client.Reader, obj *Workfl
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
-	_, workflow, err := workflow.ParseWorkflowsWorkflowExternal(obj.Spec.WorkflowRef.External)
-	if err != nil {
+	workflowIdentity := &workflow.WorkflowsWorkflowIdentity{}
+	if err := workflowIdentity.FromExternal(obj.Spec.WorkflowRef.External); err != nil {
 		return nil, err
 	}
 
@@ -104,7 +105,7 @@ func NewExecutionIdentity(ctx context.Context, reader client.Reader, obj *Workfl
 		parent: &ExecutionParent{
 			ProjectID: projectID,
 			Location:  location,
-			Workflow:  workflow,
+			Workflow:  workflowIdentity.ID(),
 		},
 		id: resourceID,
 	}, nil

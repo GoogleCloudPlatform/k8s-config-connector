@@ -72,6 +72,9 @@ func (s *WorkflowsV1) CreateWorkflow(ctx context.Context, req *pb.CreateWorkflow
 	obj.State = pb.Workflow_ACTIVE
 	s.populateDefaultsForWorkflow(obj)
 
+	obj.AllKmsKeys = []string{obj.CryptoKeyName}
+	obj.AllKmsKeysVersions = []string{obj.CryptoKeyName + "cryptoKeyVersions/1"}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
