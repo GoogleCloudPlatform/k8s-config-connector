@@ -22,9 +22,6 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -124,19 +121,6 @@ func ResolveIAMServiceAccount(ctx context.Context, reader client.Reader, src cli
 
 	return &refs.IAMServiceAccountRef{
 		External: fmt.Sprintf("projects/%s/serviceAccounts/%s@%s.iam.gserviceaccount.com", projectID, resourceID, projectID)}, nil
-}
-
-func resolveResourceName(ctx context.Context, reader client.Reader, key client.ObjectKey, gvk schema.GroupVersionKind) (*unstructured.Unstructured, error) {
-	resource := &unstructured.Unstructured{}
-	resource.SetGroupVersionKind(gvk)
-	if err := reader.Get(ctx, key, resource); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(resource.GroupVersionKind(), key)
-		}
-		return nil, fmt.Errorf("error reading referenced %v %v: %w", gvk.Kind, key, err)
-	}
-
-	return resource, nil
 }
 
 func resolveFirewallPolicyRuleRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeFirewallPolicyRule) error {
