@@ -226,7 +226,21 @@ func (a *computeURLMapAdapter) Update(ctx context.Context, updateOp *directbase.
 	// Fingerprint is required for update
 	urlMap.Fingerprint = a.actual.Fingerprint
 
-	if !reflect.DeepEqual(urlMap, a.actual) {
+	// Compare desired spec with actual spec to avoid diffs on output-only fields
+	actualSpec := ComputeURLMapSpec_v1beta1_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	// Ignore Location as it is not in the proto
+	actualSpec.Location = desired.Spec.Location
+
+	// Ignore ResourceID if it is not set in desired
+	if desired.Spec.ResourceID == nil {
+		actualSpec.ResourceID = nil
+	}
+
+	if !reflect.DeepEqual(desired.Spec, *actualSpec) {
 		op := &gcp.Operation{}
 		if a.id.ParentID.Location == "global" {
 			req := &computepb.UpdateUrlMapRequest{

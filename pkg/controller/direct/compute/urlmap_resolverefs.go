@@ -20,10 +20,10 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	"sigs.k8s.io/controller-runtime/pkg/client"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func resolveComputeURLMapRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeURLMap) error {
@@ -217,9 +217,3 @@ func resolveUrlmapRouteActionRefs(ctx context.Context, reader client.Reader, obj
 	}
 	return nil
 }
-
-// resolveResourceName from forwardingrule_resolverefs.go (copying here as it is not exported or shared)
-// Actually it is in `utils.go` in the same package usually, or duplicated.
-// Let's check `pkg/controller/direct/compute/utils.go` or similar.
-// If it is not there, I should implement it.
-// I will assume it is not available and implement it locally.
