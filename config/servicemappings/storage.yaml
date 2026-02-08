@@ -41,6 +41,10 @@ spec:
       observedFields:
         - soft_delete_policy.effective_time
         - soft_delete_policy.retention_duration_seconds
+        - ip_filter.mode
+        #- ip_filter.public_network_source # observed fields of an object is not supported
+        #- ip_filter.vpc_network_sources  # observed fields of an array is not supported
+        #- ip_filter.vpc_network_sources.allowed_ip_cidr_ranges # observed fields of an array is not supported
       idTemplate: "{{name}}"
       # odd resource where the project is 'optional', needs more thought -- also not supported by gcloud (yet), problem applies to all Storage resources
       idTemplateCanBeUsedToMatchResourceName: false
