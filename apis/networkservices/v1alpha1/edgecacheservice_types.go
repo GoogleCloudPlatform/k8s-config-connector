@@ -685,6 +685,7 @@ type NetworkServicesEdgeCacheServiceList struct {
 	Items           []NetworkServicesEdgeCacheService `json:"items"`
 }
 
-func init() {
-	SchemeBuilder.Register(&NetworkServicesEdgeCacheService{}, &NetworkServicesEdgeCacheServiceList{})
-}
+// func init() {
+// 	SchemeBuilder.Register(&NetworkServicesEdgeCacheService{}, &NetworkServicesEdgeCacheServiceList{})
+// }
+
