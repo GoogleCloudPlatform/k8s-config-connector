@@ -1,0 +1,9 @@
+- op: add
+  path: /spec/versions/0/schema/openAPIV3Schema/properties/spec/properties/networkConfig
+  value:
+    description: Configuration for NetworkConfig.
+    properties:
+      enableFqdnNetworkPolicy:
+        description: Whether FQDN Network Policy is enabled on this cluster. This requires NetworkPolicy to be enabled.
+        type: boolean
+    type: object

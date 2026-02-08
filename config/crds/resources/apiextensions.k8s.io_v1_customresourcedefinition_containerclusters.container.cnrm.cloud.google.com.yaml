@@ -967,6 +967,14 @@ spec:
                   include monitoring.googleapis.com(Legacy Stackdriver), monitoring.googleapis.com/kubernetes(Stackdriver
                   Kubernetes Engine Monitoring), and none. Defaults to monitoring.googleapis.com/kubernetes.
                 type: string
+              networkConfig:
+                description: Configuration for NetworkConfig.
+                properties:
+                  enableFqdnNetworkPolicy:
+                    description: Whether FQDN Network Policy is enabled on this cluster.
+                      This requires NetworkPolicy to be enabled.
+                    type: boolean
+                type: object
               networkPolicy:
                 description: Configuration options for the NetworkPolicy feature.
                 properties:
