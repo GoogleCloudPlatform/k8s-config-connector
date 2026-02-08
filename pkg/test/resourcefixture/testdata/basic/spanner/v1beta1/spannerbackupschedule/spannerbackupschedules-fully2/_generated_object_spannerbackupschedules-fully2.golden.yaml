@@ -12,8 +12,9 @@ metadata:
 spec:
   encryptionConfig:
     encryptionType: CUSTOMER_MANAGED_ENCRYPTION
-    kmsKeyRef:
-      name: kmscryptokey-${uniqueId}
+    kmsKeyRefs:
+    - name: kmscryptokey-${uniqueId}
+    - name: kmscryptokey-${uniqueId}-2
   fullBackupSpec: {}
   incrementalBackupSpec: {}
   retentionDuration: 1000000s

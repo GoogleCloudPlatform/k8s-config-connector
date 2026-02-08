@@ -87,6 +87,7 @@ func (m *modelBackupSchedule) AdapterForObject(ctx context.Context, reader clien
 		id:        id,
 		gcpClient: gcpClient,
 		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -100,6 +101,7 @@ type BackupScheduleAdapter struct {
 	gcpClient *gcp.DatabaseAdminClient
 	desired   *krm.SpannerBackupSchedule
 	actual    *spannerbackupschedulespb.BackupSchedule
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &BackupScheduleAdapter{}
@@ -127,6 +129,11 @@ func (a *BackupScheduleAdapter) Find(ctx context.Context) (bool, error) {
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *BackupScheduleAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	err := resolveBackupScheduleRefs(ctx, a.reader, a.desired)
+	if err != nil {
+		return err
+	}
+
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating BackupSchedule", "name", a.id)
 	mapCtx := &direct.MapContext{}
@@ -159,6 +166,11 @@ func (a *BackupScheduleAdapter) Create(ctx context.Context, createOp *directbase
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *BackupScheduleAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	err := resolveBackupScheduleRefs(ctx, a.reader, a.desired)
+	if err != nil {
+		return err
+	}
+
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating BackupSchedule", "name", a.id)
 	mapCtx := &direct.MapContext{}
