@@ -36,6 +36,9 @@ type ResourceRef struct {
 
 // NetworkServicesEdgeCacheServiceSpec defines the desired state of NetworkServicesEdgeCacheService
 // +kcc:spec:proto=google.cloud.networkservices.v1.EdgeCacheService
+// Note: The Direct controller implementation for this resource is currently blocked
+// by missing support in the cloud.google.com/go/networkservices client library.
+// The resource is currently managed by the Terraform-based controller.
 type NetworkServicesEdgeCacheServiceSpec struct {
 	// Optional. A human-readable description of the resource.
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheService.description
