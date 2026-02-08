@@ -47,7 +47,7 @@ func NewBackupScheduleModel(ctx context.Context, config *config.ControllerConfig
 
 var _ directbase.Model = &modelBackupSchedule{}
 
-var outputOnlyFields = []string{"name", "spec.cron_spec.creation_window", "spec.cron_spec.creation_window"}
+var outputOnlyFields = []string{"name", "update_time", "spec.cron_spec.creation_window", "spec.cron_spec.time_zone", "full_backup_spec", "incremental_backup_spec"}
 var defaultOnEmptyFields = []string{"encryption_config.encryption_type"}
 
 type modelBackupSchedule struct {
@@ -172,6 +172,15 @@ func (a *BackupScheduleAdapter) Update(ctx context.Context, updateOp *directbase
 	if err != nil {
 		return err
 	}
+
+	// Remove output only fields from paths
+	paths = paths.Delete(outputOnlyFields...)
+
+	// Check default-on-empty fields
+	if desiredPb.EncryptionConfig == nil {
+		paths = paths.Delete(defaultOnEmptyFields...)
+	}
+
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.SpannerBackupScheduleStatus{}
@@ -180,13 +189,6 @@ func (a *BackupScheduleAdapter) Update(ctx context.Context, updateOp *directbase
 			return mapCtx.Err()
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
-	}
-	// Remove output only fields from paths
-	paths = paths.Delete(outputOnlyFields...)
-
-	// Check default-on-empty fields
-	if desiredPb.EncryptionConfig == nil {
-		paths = paths.Delete(defaultOnEmptyFields...)
 	}
 
 	updateMask := &fieldmaskpb.FieldMask{
