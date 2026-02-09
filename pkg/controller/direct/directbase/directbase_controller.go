@@ -332,7 +332,11 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		adapter, adapteErr = m.IAMAdapterForObject(ctx, r.Reconciler.Client, u, r.Reconciler.iamDeps)
 	default:
 		// The default case handles any other type that implements the base model interface.
-		adapter, adapteErr = r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
+		op := &AdapterForObjectOperation{
+			Reader: r.Reconciler.Client,
+			Object: u,
+		}
+		adapter, adapteErr = r.Reconciler.model.AdapterForObject(ctx, op)
 	}
 	if adapteErr != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(adapteErr); ok {
