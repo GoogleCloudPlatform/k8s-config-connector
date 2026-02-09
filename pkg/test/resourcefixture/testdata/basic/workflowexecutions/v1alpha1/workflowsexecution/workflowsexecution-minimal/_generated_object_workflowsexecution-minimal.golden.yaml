@@ -23,10 +23,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/3796b580-5212-4a21-9b4b-f7cbdd7383a2
+  externalRef: projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/123456789
   observedGeneration: 2
-  observedState:
-    startTime: "2025-03-19T02:14:46.706687577Z"
-    state: ACTIVE
-    status: {}
-    workflowRevisionID: 000001-383

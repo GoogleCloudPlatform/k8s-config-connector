@@ -68,8 +68,11 @@ func (m *modelExecution) AdapterForObject(ctx context.Context, reader client.Rea
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
-	id, err := krm.NewExecutionRef(ctx, reader, obj)
-	if err != nil {
+	id := &krm.WorkflowsExecutionRef{
+		Name:      u.GetName(),
+		Namespace: u.GetNamespace(),
+	}
+	if err := id.Normalize(ctx, reader, u.GetNamespace()); err != nil {
 		return nil, err
 	}
 
@@ -91,7 +94,7 @@ func (m *modelExecution) AdapterForURL(ctx context.Context, url string) (directb
 }
 
 type ExecutionAdapter struct {
-	id        *krm.ExecutionRef
+	id        *krm.WorkflowsExecutionRef
 	gcpClient *gcp.Client
 	desired   *krm.WorkflowsExecution
 	actual    *executionpb.Execution
@@ -107,11 +110,7 @@ func (a *ExecutionAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Execution", "name", a.id)
 
-	_, idIsSet, err := a.id.ExecutionID()
-	if err != nil {
-		return false, err
-	}
-	if !idIsSet { // resource is not yet created
+	if a.id.External == "" { // resource is not yet created
 		return false, nil
 	}
 
@@ -145,10 +144,14 @@ func (a *ExecutionAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	}
 	resource.Labels["managed-by-cnrm"] = "true"
 	resource.Name = a.id.External
-	parent, err := a.id.Parent()
+
+	id, err := a.id.ParseExternalToIdentity()
 	if err != nil {
 		return err
 	}
+	workflowsExecutionID := id.(*krm.WorkflowsExecutionIdentity)
+	parent := fmt.Sprintf("projects/%s/locations/%s/workflows/%s", workflowsExecutionID.Project, workflowsExecutionID.Location, workflowsExecutionID.Workflow)
+
 	req := &executionpb.CreateExecutionRequest{
 		Parent:    parent,
 		Execution: resource,
@@ -192,16 +195,16 @@ func (a *ExecutionAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	parent, err := a.id.Parent()
+
+	id, err := a.id.ParseExternalToIdentity()
 	if err != nil {
 		return nil, err
 	}
-	if parent != "" {
-		tokens := strings.Split(parent, "/")
-		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "workflows" {
-			obj.Spec.ProjectRef = &refs.ProjectRef{Name: tokens[1]}
-			obj.Spec.Location = tokens[3]
-		}
+	workflowsExecutionID := id.(*krm.WorkflowsExecutionIdentity)
+
+	if workflowsExecutionID.Project != "" {
+		obj.Spec.ProjectRef = &refs.ProjectRef{Name: workflowsExecutionID.Project}
+		obj.Spec.Location = workflowsExecutionID.Location
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

@@ -26,6 +26,9 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
 
+	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
+	grpcpb "cloud.google.com/go/workflows/executions/apiv1/executionspb"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -61,7 +64,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterExecutionsServer(grpcServer, &workflowExecutionService{MockService: s})
+	grpcpb.RegisterExecutionsServer(grpcServer, &workflowExecutionService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {

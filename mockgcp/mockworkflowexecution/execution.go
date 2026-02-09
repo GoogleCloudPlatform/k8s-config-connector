@@ -29,27 +29,29 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
+	grpcpb "cloud.google.com/go/workflows/executions/apiv1/executionspb"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/workflows/executions/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type workflowExecutionService struct {
 	*MockService
-	pb.UnimplementedExecutionsServer
+	grpcpb.UnimplementedExecutionsServer
 }
 
-func (s *workflowExecutionService) CreateExecution(ctx context.Context, req *pb.CreateExecutionRequest) (*pb.Execution, error) {
+func (s *workflowExecutionService) CreateExecution(ctx context.Context, req *grpcpb.CreateExecutionRequest) (*grpcpb.Execution, error) {
 	fqn := req.GetParent() + "/executions/123456789"
 	now := time.Now()
-	obj := proto.Clone(req.GetExecution()).(*pb.Execution)
+	obj := proto.Clone(req.GetExecution()).(*grpcpb.Execution)
 	obj.Name = fqn
 	obj.StartTime = timestamppb.New(now)
 	obj.EndTime = timestamppb.New(now.Add(2 * time.Minute))
-	obj.State = pb.Execution_SUCCEEDED
+	obj.State = grpcpb.Execution_SUCCEEDED
 	obj.WorkflowRevisionId = "000001-609"
 	obj.Result = "us-central1"
-	obj.Status = &pb.Execution_Status{}
+	obj.Status = &grpcpb.Execution_Status{}
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -57,7 +59,7 @@ func (s *workflowExecutionService) CreateExecution(ctx context.Context, req *pb.
 	return obj, nil
 }
 
-func (s *workflowExecutionService) GetExecution(ctx context.Context, req *pb.GetExecutionRequest) (*pb.Execution, error) {
+func (s *workflowExecutionService) GetExecution(ctx context.Context, req *grpcpb.GetExecutionRequest) (*grpcpb.Execution, error) {
 	name, err := s.parseExecutionName(req.GetName())
 	if err != nil {
 		return nil, err
@@ -65,7 +67,7 @@ func (s *workflowExecutionService) GetExecution(ctx context.Context, req *pb.Get
 
 	fqn := name.String()
 
-	obj := &pb.Execution{}
+	obj := &grpcpb.Execution{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Execution %q not found.", fqn)
@@ -76,13 +78,13 @@ func (s *workflowExecutionService) GetExecution(ctx context.Context, req *pb.Get
 	return obj, nil
 }
 
-func (s *workflowExecutionService) ListExecutions(ctx context.Context, req *pb.ListExecutionsRequest) (*pb.ListExecutionsResponse, error) {
+func (s *workflowExecutionService) ListExecutions(ctx context.Context, req *grpcpb.ListExecutionsRequest) (*grpcpb.ListExecutionsResponse, error) {
 	findPrefix := req.GetParent()
 
-	response := &pb.ListExecutionsResponse{}
-	findKind := (&pb.Execution{}).ProtoReflect().Descriptor()
+	response := &grpcpb.ListExecutionsResponse{}
+	findKind := (&grpcpb.Execution{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
-		execution := obj.(*pb.Execution)
+		execution := obj.(*grpcpb.Execution)
 		response.Executions = append(response.Executions, execution)
 		return nil
 	}); err != nil {
@@ -92,18 +94,18 @@ func (s *workflowExecutionService) ListExecutions(ctx context.Context, req *pb.L
 	return response, nil
 }
 
-func (s *workflowExecutionService) CancelExecution(ctx context.Context, req *pb.CancelExecutionRequest) (*pb.Execution, error) {
+func (s *workflowExecutionService) CancelExecution(ctx context.Context, req *grpcpb.CancelExecutionRequest) (*grpcpb.Execution, error) {
 	name, err := s.parseExecutionName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := &pb.Execution{}
+	obj := &grpcpb.Execution{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	obj.State = pb.Execution_CANCELLED
+	obj.State = grpcpb.Execution_CANCELLED
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
