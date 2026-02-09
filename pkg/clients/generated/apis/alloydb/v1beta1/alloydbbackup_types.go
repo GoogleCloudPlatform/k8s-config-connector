@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type BackupEncryptionConfig struct {
 	/* Immutable. The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]. */
@@ -59,7 +62,7 @@ type AlloyDBBackupSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The backupId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -89,6 +92,10 @@ type AlloyDBBackupStatus struct {
 	/* A hash of the resource. */
 	// +optional
 	Etag *string `json:"etag,omitempty"`
+
+	/* A unique specifier for the AlloyDBBackup resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* Output only. The name of the backup resource with the format: * projects/{project}/locations/{region}/backups/{backupId}. */
 	// +optional

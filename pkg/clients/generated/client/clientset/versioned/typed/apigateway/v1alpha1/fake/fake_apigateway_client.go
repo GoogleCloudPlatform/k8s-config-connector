@@ -31,10 +31,6 @@ type FakeApigatewayV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeApigatewayV1alpha1) APIGatewayAPIs(namespace string) v1alpha1.APIGatewayAPIInterface {
-	return &FakeAPIGatewayAPIs{c, namespace}
-}
-
 func (c *FakeApigatewayV1alpha1) APIGatewayAPIConfigs(namespace string) v1alpha1.APIGatewayAPIConfigInterface {
 	return &FakeAPIGatewayAPIConfigs{c, namespace}
 }

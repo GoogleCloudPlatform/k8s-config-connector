@@ -21,6 +21,16 @@
 
 package v1beta1
 
+type ApigeeEndpointAttachmentExpansion interface{}
+
+type ApigeeEnvgroupExpansion interface{}
+
+type ApigeeEnvgroupAttachmentExpansion interface{}
+
 type ApigeeEnvironmentExpansion interface{}
+
+type ApigeeInstanceExpansion interface{}
+
+type ApigeeInstanceAttachmentExpansion interface{}
 
 type ApigeeOrganizationExpansion interface{}
