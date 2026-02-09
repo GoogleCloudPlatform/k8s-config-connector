@@ -35,7 +35,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -56,7 +55,9 @@ type modelSpannerInstance struct {
 	config *config.ControllerConfig
 }
 
-func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.SpannerInstance{}
 	copied := u.DeepCopy()
 	if err := label.ComputeLabels(copied); err != nil {

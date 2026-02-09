@@ -84,7 +84,9 @@ func (m *savedQueryModel) client(ctx context.Context, projectID string) (*gcp.Cl
 	return gcpClient, err
 }
 
-func (m *savedQueryModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *savedQueryModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.AssetSavedQuery{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)

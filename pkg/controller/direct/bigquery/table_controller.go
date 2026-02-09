@@ -70,7 +70,9 @@ func (m *model) tableService(ctx context.Context) (*bigquery.TablesService, erro
 	return gcpService.Tables, err
 }
 
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.BigQueryTable{}
 	copied := u.DeepCopy()
 	if err := label.ComputeLabels(copied); err != nil {
