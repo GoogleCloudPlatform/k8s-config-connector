@@ -85,6 +85,10 @@ type MemorystoreInstanceSpec struct {
 	// Optional. The mode config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.mode
 	Mode *string `json:"mode,omitempty"`
+
+	// Optional. The config for cross instance replication.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
+	CrossInstanceReplicationConfig *CrossInstanceReplicationConfig `json:"crossInstanceReplicationConfig,omitempty"`
 }
 
 type Parent struct {
@@ -143,6 +147,39 @@ type MemorystoreInstanceObservedState struct {
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints
 	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
+
+	// Optional. The config for cross instance replication.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.cross_instance_replication_config
+	CrossInstanceReplicationConfig *CrossInstanceReplicationConfigObservedState `json:"crossInstanceReplicationConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
+type CrossInstanceReplicationConfig struct {
+	// Required. The role of the instance in cross instance replication.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.instance_role
+	InstanceRole *string `json:"instanceRole,omitempty"`
+
+	// Optional. Details of the primary instance that is used as the replication
+	//  source for this secondary instance.
+	//
+	//  This field is only set for a secondary instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.primary_instance
+	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstance `json:"primaryInstance,omitempty"`
+
+	// Optional. List of secondary instances that are replicating from this
+	//  primary instance.
+	//
+	//  This field is only set for a primary instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.secondary_instances
+	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstance `json:"secondaryInstances,omitempty"`
+}
+
+// +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance
+type CrossInstanceReplicationConfig_RemoteInstance struct {
+	// Optional. The full resource path of the remote instance in
+	//  the format: projects/<project>/locations/<region>/instances/<instance-id>
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.instance
+	Instance *string `json:"instance,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
@@ -290,6 +327,59 @@ type DiscoveryEndpointObservedState struct {
 	//  projects/{network_project}/global/networks/{network_id}.
 	// +kcc:proto:field=google.cloud.memorystore.v1.DiscoveryEndpoint.network
 	Network *string `json:"network,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
+type CrossInstanceReplicationConfigObservedState struct {
+	// Optional. Details of the primary instance that is used as the replication
+	//  source for this secondary instance.
+	//
+	//  This field is only set for a secondary instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.primary_instance
+	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"primaryInstance,omitempty"`
+
+	// Output only. The last time cross instance replication config was updated.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. An output only view of all the member instances participating
+	//  in the cross instance replication. This view will be provided by every
+	//  member instance irrespective of its instance role(primary or secondary).
+	//
+	//  A primary instance can provide information about all the secondary
+	//  instances replicating from it. However, a secondary instance only knows
+	//  about the primary instance from which it is replicating. However, for
+	//  scenarios, where the primary instance is unavailable(e.g. regional outage),
+	//  a Getinstance request can be sent to any other member instance and this
+	//  field will list all the member instances participating in cross instance
+	//  replication.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.membership
+	Membership *CrossInstanceReplicationConfig_MembershipObservedState `json:"membership,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership
+type CrossInstanceReplicationConfig_MembershipObservedState struct {
+	// Output only. The primary instance that acts as the source of replication
+	//  for the secondary instances.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership.primary_instance
+	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"primaryInstance,omitempty"`
+
+	// Output only. The list of secondary instances replicating from the primary
+	//  instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.Membership.secondary_instances
+	SecondaryInstances []CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"secondaryInstances,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance
+type CrossInstanceReplicationConfig_RemoteInstanceObservedState struct {
+	// Optional. The full resource path of the remote instance in
+	//  the format: projects/<project>/locations/<region>/instances/<instance-id>
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.instance
+	Instance *string `json:"instance,omitempty"`
+
+	// Output only. The unique identifier of the remote instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.uid
+	Uid *string `json:"uid,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
