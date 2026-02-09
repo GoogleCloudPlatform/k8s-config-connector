@@ -2988,6 +2988,20 @@ service ProjectsServer {
   };
 }
 
+// Profile describing the data handling characteristics of an MCP tool. When used within the McpTool.meta field, this message should be packed into a google.protobuf.Any and associated with the key: "google.com/tool.profiles/data_handling"
+message ApiservingMcpMcpToolDataHandlingProfile {
+  // // The data access level of the tool's inputs.
+  string input_data_access_level = 1 [json_name="inputDataAccessLevel"];
+  // The data access level of the tool's outputs.
+  string output_data_access_level = 2 [json_name="outputDataAccessLevel"];
+}
+
+// Profile describing the lifecycle stage of an MCP tool. When used within the McpTool.meta field, this message should be packed into a google.protobuf.Any and associated with the key: "google.com/tool.profiles/lifecycle"
+message ApiservingMcpMcpToolLifecycleProfile {
+  // Output only. The current launch state of the MCP tool.
+  string launch_state = 1 [json_name="launchState"];
+}
+
 // Describes why a bundle is invalid. Intended for use in error details.
 message EdgeConfigstoreBundleBadBundle {
   // Describes all precondition violations.
@@ -5910,7 +5924,7 @@ message GoogleCloudApigeeV1RuntimeConfig {
   string trace_bucket = 4 [json_name="traceBucket"];
 }
 
-// NEXT ID: 8 RuntimeTraceConfig defines the configurations for distributed trace in an environment.
+// NEXT ID: 9 RuntimeTraceConfig defines the configurations for distributed trace in an environment.
 message GoogleCloudApigeeV1RuntimeTraceConfig {
   // Endpoint of the exporter.
   string endpoint = 1 [json_name="endpoint"];
@@ -5918,30 +5932,34 @@ message GoogleCloudApigeeV1RuntimeTraceConfig {
   string exporter = 2 [json_name="exporter"];
   // Name of the trace config in the following format: `organizations/{org}/environment/{env}/traceConfig`
   string name = 3 [json_name="name"];
+  // If `true`, the runtime uses OpenTelemetry Protocol (OTLP) to send trace data. Configuration Requirements (if `open_telemetry_protocol_enabled` is `true`): - Allowed `Exporter`s: `CLOUD_TRACE` or `OPEN_TELEMETRY_COLLECTOR`. - If `Exporter` is `OPEN_TELEMETRY_COLLECTOR`: - `endpoint` refers to a valid OTLP collector URL. - If `Exporter` is `CLOUD_TRACE`: - `endpoint` refers to a valid project ID
+  bool open_telemetry_protocol_enabled = 4 [json_name="openTelemetryProtocolEnabled"];
   // List of trace configuration overrides for spicific API proxies.
-  repeated GoogleCloudApigeeV1RuntimeTraceConfigOverride overrides = 4 [json_name="overrides"];
+  repeated GoogleCloudApigeeV1RuntimeTraceConfigOverride overrides = 5 [json_name="overrides"];
   // The timestamp that the revision was created or updated.
-  .google.protobuf.Timestamp revision_create_time = 5 [json_name="revisionCreateTime"];
+  .google.protobuf.Timestamp revision_create_time = 6 [json_name="revisionCreateTime"];
   // Revision number which can be used by the runtime to detect if the trace config has changed between two versions.
-  string revision_id = 6 [json_name="revisionId"];
+  string revision_id = 7 [json_name="revisionId"];
   // Trace configuration for all API proxies in an environment.
-  GoogleCloudApigeeV1RuntimeTraceSamplingConfig sampling_config = 7 [json_name="samplingConfig"];
+  GoogleCloudApigeeV1RuntimeTraceSamplingConfig sampling_config = 8 [json_name="samplingConfig"];
 }
 
-// NEXT ID: 7 Trace configuration override for a specific API proxy in an environment.
+// NEXT ID: 8 Trace configuration override for a specific API proxy in an environment.
 message GoogleCloudApigeeV1RuntimeTraceConfigOverride {
   // Name of the API proxy that will have its trace configuration overridden following format: `organizations/{org}/apis/{api}`
   string api_proxy = 1 [json_name="apiProxy"];
   // Name of the trace config override in the following format: `organizations/{org}/environment/{env}/traceConfig/overrides/{override}`
   string name = 2 [json_name="name"];
+  // If `true`, the runtime uses OpenTelemetry Protocol (OTLP) to send trace data. Configuration Requirements (if `open_telemetry_protocol_enabled` is `true`): - Allowed `Exporter`s: `CLOUD_TRACE` or `OPEN_TELEMETRY_COLLECTOR`. - If `Exporter` is `OPEN_TELEMETRY_COLLECTOR`: - `endpoint` refers to a valid OTLP collector URL. - If `Exporter` is `CLOUD_TRACE`: - `endpoint` refers to a valid project ID
+  bool open_telemetry_protocol_enabled = 3 [json_name="openTelemetryProtocolEnabled"];
   // The timestamp that the revision was created or updated.
-  .google.protobuf.Timestamp revision_create_time = 3 [json_name="revisionCreateTime"];
+  .google.protobuf.Timestamp revision_create_time = 4 [json_name="revisionCreateTime"];
   // Revision number which can be used by the runtime to detect if the trace config override has changed between two versions.
-  string revision_id = 4 [json_name="revisionId"];
+  string revision_id = 5 [json_name="revisionId"];
   // Trace configuration override for a specific API proxy in an environment.
-  GoogleCloudApigeeV1RuntimeTraceSamplingConfig sampling_config = 5 [json_name="samplingConfig"];
+  GoogleCloudApigeeV1RuntimeTraceSamplingConfig sampling_config = 6 [json_name="samplingConfig"];
   // Unique ID for the configuration override. The ID will only change if the override is deleted and recreated. Corresponds to name's "override" field.
-  string uid = 6 [json_name="uid"];
+  string uid = 7 [json_name="uid"];
 }
 
 // NEXT ID: 3 RuntimeTraceSamplingConfig represents the detail settings of distributed tracing. Only the fields that are defined in the distributed trace configuration can be overridden using the distribute trace configuration override APIs.
