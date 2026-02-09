@@ -65,6 +65,40 @@ spec:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
                 type: string
+              crossInstanceReplicationConfig:
+                description: Optional. The config for cross instance replication.
+                properties:
+                  instanceRole:
+                    description: Required. The role of the instance in cross instance
+                      replication.
+                    type: string
+                  primaryInstance:
+                    description: |-
+                      Optional. Details of the primary instance that is used as the replication
+                       source for this secondary instance.
+
+                       This field is only set for a secondary instance.
+                    properties:
+                      instance:
+                        description: 'Optional. The full resource path of the remote
+                          instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                        type: string
+                    type: object
+                  secondaryInstances:
+                    description: |-
+                      Optional. List of secondary instances that are replicating from this
+                       primary instance.
+
+                       This field is only set for a primary instance.
+                    items:
+                      properties:
+                        instance:
+                          description: 'Optional. The full resource path of the remote
+                            instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                          type: string
+                      type: object
+                    type: array
+                type: object
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -329,6 +363,73 @@ spec:
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
+                  crossInstanceReplicationConfig:
+                    description: Optional. The config for cross instance replication.
+                    properties:
+                      membership:
+                        description: |-
+                          Output only. An output only view of all the member instances participating
+                           in the cross instance replication. This view will be provided by every
+                           member instance irrespective of its instance role(primary or secondary).
+
+                           A primary instance can provide information about all the secondary
+                           instances replicating from it. However, a secondary instance only knows
+                           about the primary instance from which it is replicating. However, for
+                           scenarios, where the primary instance is unavailable(e.g. regional outage),
+                           a Getinstance request can be sent to any other member instance and this
+                           field will list all the member instances participating in cross instance
+                           replication.
+                        properties:
+                          primaryInstance:
+                            description: Output only. The primary instance that acts
+                              as the source of replication for the secondary instances.
+                            properties:
+                              instance:
+                                description: 'Optional. The full resource path of
+                                  the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                                type: string
+                              uid:
+                                description: Output only. The unique identifier of
+                                  the remote instance.
+                                type: string
+                            type: object
+                          secondaryInstances:
+                            description: Output only. The list of secondary instances
+                              replicating from the primary instance.
+                            items:
+                              properties:
+                                instance:
+                                  description: 'Optional. The full resource path of
+                                    the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                                  type: string
+                                uid:
+                                  description: Output only. The unique identifier
+                                    of the remote instance.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      primaryInstance:
+                        description: |-
+                          Optional. Details of the primary instance that is used as the replication
+                           source for this secondary instance.
+
+                           This field is only set for a secondary instance.
+                        properties:
+                          instance:
+                            description: 'Optional. The full resource path of the
+                              remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                            type: string
+                          uid:
+                            description: Output only. The unique identifier of the
+                              remote instance.
+                            type: string
+                        type: object
+                      updateTime:
+                        description: Output only. The last time cross instance replication
+                          config was updated.
+                        type: string
+                    type: object
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
@@ -460,6 +561,40 @@ spec:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
                 type: string
+              crossInstanceReplicationConfig:
+                description: Optional. The config for cross instance replication.
+                properties:
+                  instanceRole:
+                    description: Required. The role of the instance in cross instance
+                      replication.
+                    type: string
+                  primaryInstance:
+                    description: |-
+                      Optional. Details of the primary instance that is used as the replication
+                       source for this secondary instance.
+
+                       This field is only set for a secondary instance.
+                    properties:
+                      instance:
+                        description: 'Optional. The full resource path of the remote
+                          instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                        type: string
+                    type: object
+                  secondaryInstances:
+                    description: |-
+                      Optional. List of secondary instances that are replicating from this
+                       primary instance.
+
+                       This field is only set for a primary instance.
+                    items:
+                      properties:
+                        instance:
+                          description: 'Optional. The full resource path of the remote
+                            instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                          type: string
+                      type: object
+                    type: array
+                type: object
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -724,6 +859,73 @@ spec:
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
+                  crossInstanceReplicationConfig:
+                    description: Optional. The config for cross instance replication.
+                    properties:
+                      membership:
+                        description: |-
+                          Output only. An output only view of all the member instances participating
+                           in the cross instance replication. This view will be provided by every
+                           member instance irrespective of its instance role(primary or secondary).
+
+                           A primary instance can provide information about all the secondary
+                           instances replicating from it. However, a secondary instance only knows
+                           about the primary instance from which it is replicating. However, for
+                           scenarios, where the primary instance is unavailable(e.g. regional outage),
+                           a Getinstance request can be sent to any other member instance and this
+                           field will list all the member instances participating in cross instance
+                           replication.
+                        properties:
+                          primaryInstance:
+                            description: Output only. The primary instance that acts
+                              as the source of replication for the secondary instances.
+                            properties:
+                              instance:
+                                description: 'Optional. The full resource path of
+                                  the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                                type: string
+                              uid:
+                                description: Output only. The unique identifier of
+                                  the remote instance.
+                                type: string
+                            type: object
+                          secondaryInstances:
+                            description: Output only. The list of secondary instances
+                              replicating from the primary instance.
+                            items:
+                              properties:
+                                instance:
+                                  description: 'Optional. The full resource path of
+                                    the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                                  type: string
+                                uid:
+                                  description: Output only. The unique identifier
+                                    of the remote instance.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      primaryInstance:
+                        description: |-
+                          Optional. Details of the primary instance that is used as the replication
+                           source for this secondary instance.
+
+                           This field is only set for a secondary instance.
+                        properties:
+                          instance:
+                            description: 'Optional. The full resource path of the
+                              remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                            type: string
+                          uid:
+                            description: Output only. The unique identifier of the
+                              remote instance.
+                            type: string
+                        type: object
+                      updateTime:
+                        description: Output only. The last time cross instance replication
+                          config was updated.
+                        type: string
+                    type: object
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
