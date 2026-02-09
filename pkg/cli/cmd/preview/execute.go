@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/preview/parameters"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/preview/options"
 	corepreview "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/preview"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -36,7 +36,7 @@ const (
 	defaultTimeout = 15
 )
 
-func Execute(ctx context.Context, opts *parameters.Parameters) error {
+func Execute(ctx context.Context, opts *options.Options) error {
 	// Use a custom FlagSet for klog to avoid conflicts with global flag.CommandLine
 	klogFlags := flag.NewFlagSet("klog", flag.ExitOnError)
 	klog.InitFlags(klogFlags)
@@ -103,7 +103,7 @@ func Execute(ctx context.Context, opts *parameters.Parameters) error {
 	return nil
 }
 
-func getRESTConfig(ctx context.Context, opts *parameters.Parameters) (*rest.Config, error) {
+func getRESTConfig(ctx context.Context, opts *options.Options) (*rest.Config, error) {
 	// TODO: Add rate limiting to Kube client.
 	if opts.InCluster {
 		return rest.InClusterConfig()
@@ -119,7 +119,7 @@ func getRESTConfig(ctx context.Context, opts *parameters.Parameters) (*rest.Conf
 		&clientcmd.ConfigOverrides{}).ClientConfig()
 }
 
-func getGCPAuthorization(ctx context.Context, opts *parameters.Parameters) (oauth2.TokenSource, error) {
+func getGCPAuthorization(ctx context.Context, opts *options.Options) (oauth2.TokenSource, error) {
 	// TODO: Add scope
 	scopes := []string{defaultScope}
 	ts, err := google.DefaultTokenSource(ctx, scopes...)
@@ -129,7 +129,7 @@ func getGCPAuthorization(ctx context.Context, opts *parameters.Parameters) (oaut
 	return ts, nil
 }
 
-func printCapturedObjects(recorder *corepreview.Recorder, opts *parameters.Parameters) error {
+func printCapturedObjects(recorder *corepreview.Recorder, opts *options.Options) error {
 	now := time.Now()
 	timestamp := now.Format("20060102-150405.000")
 	summaryFile := fmt.Sprintf("%s-%s", opts.ReportNamePrefix, timestamp)
