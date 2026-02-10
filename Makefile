@@ -20,6 +20,7 @@ RECORDER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/recorder:${SHORT_SHA}
 WEBHOOK_IMG ?= gcr.io/${PROJECT_ID}/cnrm/webhook:${SHORT_SHA}
 DELETION_DEFENDER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/deletiondefender:${SHORT_SHA}
 UNMANAGED_DETECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/unmanageddetector:${SHORT_SHA}
+CONFIG_CONNECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/config-connector-cli:${SHORT_SHA}
 # Detects the location of the user golangci-lint cache.
 GOLANGCI_LINT_CACHE := /tmp/golangci-lint
 # When updating this, make sure to update the corresponding action in
@@ -31,6 +32,8 @@ GOLANGCI_LINT_VERSION := v2.7.1
 DOCKER_BUILD := DOCKER_BUILDKIT=1 docker build
 
 KUSTOMIZE=go run sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
+
+GKE_DISTROLESS_IMG := gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
 
 CRD_OUTPUT_TMP := config/crds/tmp
 CRD_OUTPUT_STAGING := config/crds/tmp/staging
@@ -153,7 +156,7 @@ generate:
 
 # Build the docker images
 .PHONY: docker-build
-docker-build: docker-build-manager docker-build-recorder docker-build-webhook docker-build-deletiondefender docker-build-unmanageddetector
+docker-build: docker-build-manager docker-build-recorder docker-build-webhook docker-build-deletiondefender docker-build-unmanageddetector docker-build-config-connector
 
 # build all the binaries into the builder docker image
 .PHONY: docker-build-builder
@@ -163,7 +166,7 @@ docker-build-builder:
 # Build the manager docker image
 .PHONY: docker-build-manager
 docker-build-manager: docker-build-builder
-	$(DOCKER_BUILD) -t ${CONTROLLER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/manager/Dockerfile
+	$(DOCKER_BUILD) -t ${CONTROLLER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/manager/Dockerfile
 	@echo "updating kustomize image patch file for manager resource"
 	cp config/installbundle/components/manager/base/manager_image_patch_template.yaml config/installbundle/components/manager/base/manager_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${CONTROLLER_IMG}"'@' ./config/installbundle/components/manager/base/manager_image_patch.yaml
@@ -171,7 +174,7 @@ docker-build-manager: docker-build-builder
 # Build the recorder docker image
 .PHONY: docker-build-recorder
 docker-build-recorder: docker-build-builder
-	$(DOCKER_BUILD) -t ${RECORDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/recorder/Dockerfile
+	$(DOCKER_BUILD) -t ${RECORDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/recorder/Dockerfile
 	@echo "updating kustomize image patch file for recorder resource"
 	cp config/installbundle/components/recorder/recorder_image_patch_template.yaml config/installbundle/components/recorder/recorder_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${RECORDER_IMG}"'@' ./config/installbundle/components/recorder/recorder_image_patch.yaml
@@ -179,24 +182,28 @@ docker-build-recorder: docker-build-builder
 # Build the webhook docker image
 .PHONY: docker-build-webhook
 docker-build-webhook: docker-build-builder
-	$(DOCKER_BUILD) -t ${WEBHOOK_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/webhook/Dockerfile
+	$(DOCKER_BUILD) -t ${WEBHOOK_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/webhook/Dockerfile
 	@echo "updating kustomize image patch file for webhook resource"
 	cp config/installbundle/components/webhook/webhook_image_patch_template.yaml config/installbundle/components/webhook/webhook_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${WEBHOOK_IMG}"'@' ./config/installbundle/components/webhook/webhook_image_patch.yaml
 
 .PHONY: docker-build-deletiondefender
 docker-build-deletiondefender: docker-build-builder
-	$(DOCKER_BUILD) -t ${DELETION_DEFENDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/deletiondefender/Dockerfile
+	$(DOCKER_BUILD) -t ${DELETION_DEFENDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/deletiondefender/Dockerfile
 	@echo "updating kustomize image patch file for deletion defender resource"
 	cp config/installbundle/components/deletiondefender/deletiondefender_image_patch_template.yaml config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${DELETION_DEFENDER_IMG}"'@' ./config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
 
 .PHONY: docker-build-unmanageddetector
 docker-build-unmanageddetector: docker-build-builder
-	$(DOCKER_BUILD) -t ${UNMANAGED_DETECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/unmanageddetector/Dockerfile
+	$(DOCKER_BUILD) -t ${UNMANAGED_DETECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/unmanageddetector/Dockerfile
 	@echo "updating kustomize image patch file for unmanaged detector resource"
 	cp config/installbundle/components/unmanageddetector/unmanageddetector_image_patch_template.yaml config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${UNMANAGED_DETECTOR_IMG}"'@' ./config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
+
+.PHONY: docker-build-config-connector
+docker-build-config-connector: docker-build-builder
+	$(DOCKER_BUILD) -t ${CONFIG_CONNECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/config-connector/Dockerfile
 
 # Push the docker image
 .PHONY: docker-push
@@ -206,6 +213,7 @@ docker-push:
 	docker push ${WEBHOOK_IMG}
 	docker push ${DELETION_DEFENDER_IMG}
 	docker push ${UNMANAGED_DETECTOR_IMG}
+	docker push ${CONFIG_CONNECTOR_IMG}
 
 __tooling-image:
 	docker buildx build build/tooling \
@@ -341,7 +349,7 @@ config-connector-manifests-autopilot: build-operator-manifests
 .PHONY: build-operator-manifests
 build-operator-manifests:
 	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
-	make -C operator docker-build
+	make -C operator docker-build GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 
 .PHONY: push-operator-manifest
 push-operator-manifest:

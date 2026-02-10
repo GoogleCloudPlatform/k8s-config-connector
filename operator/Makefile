@@ -16,6 +16,7 @@ REPO_ROOT := $(shell git rev-parse --show-toplevel)
 PROJECT_ID ?= $(shell gcloud config get-value project)
 SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
 OPERATOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/operator:${SHORT_SHA}
+GKE_DISTROLESS_IMG ?= gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
 
 KUSTOMIZE=go run sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
 
@@ -76,7 +77,7 @@ uninstall: manifests
 # Build the docker image
 .PHONY: docker-build
 docker-build:
-	docker build .. -f Dockerfile -t ${OPERATOR_IMG}
+	docker build .. -f Dockerfile -t ${OPERATOR_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 	@echo "updating kustomize image patch file for manager"
 	cp config/manager/manager_image_patch_template.yaml config/manager/manager_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' config/manager/manager_image_patch.yaml
