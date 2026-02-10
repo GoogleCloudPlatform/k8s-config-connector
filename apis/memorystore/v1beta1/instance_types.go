@@ -143,6 +143,10 @@ type MemorystoreInstanceObservedState struct {
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints
 	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
+
+	// Output only. Service attachment details to configure PSC connections.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.psc_attachment_details
+	PscAttachmentDetails []PscAttachmentDetailObservedState `json:"pscAttachmentDetails,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
@@ -151,10 +155,6 @@ type Instance_ConnectionDetail struct {
 	//  service connectivity automation.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_auto_connection
 	PscAutoConnection *PscAutoConnection `json:"pscAutoConnection,omitempty"`
-
-	// Detailed information of a PSC connection that is created by the user.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_connection
-	// PscConnection *PscConnection `json:"pscConnection,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.InstanceEndpoint
@@ -210,6 +210,18 @@ type PersistenceConfig_RdbConfig struct {
 	//  will be used.
 	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.RDBConfig.rdb_snapshot_start_time
 	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.memorystore.v1.PscAttachmentDetail
+type PscAttachmentDetailObservedState struct {
+	// Output only. Service attachment URI which your self-created PscConnection
+	//  should use as target.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PscAttachmentDetail.service_attachment
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+
+	// Output only. Type of Psc endpoint.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PscAttachmentDetail.connection_type
+	ConnectionType *string `json:"connectionType,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.PscAutoConnection
@@ -298,9 +310,6 @@ type Instance_ConnectionDetailObservedState struct {
 	// service connectivity automation.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_auto_connection
 	PscAutoConnection *PscAutoConnectionObservedState `json:"pscAutoConnection,omitempty"`
-	// Detailed information of a PSC connection that is created by the user.
-	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_connection
-	// PscConnection *PscConnectionObservedState `json:"pscConnection,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.InstanceEndpoint
