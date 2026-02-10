@@ -32,8 +32,6 @@ fi
 flaky_tests=(
   # https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/2745
   "TestAllInSeries/samples/regular-cluster"
-  # b/321582240 flaky gkehubfeaturemembership scenarios test due to deletion ordering
-  "TestE2EScript/scenarios/gkehubfeaturemembership"
   # https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4624
   "TestE2EScript/scenarios/iam/iampartialpolicy"
 
