@@ -6,7 +6,8 @@
 
 ## New features:
 
-*   TODO
+*   Added the `preview` command to the `config-connector` CLI. The `preview` command has been removed from the experimental `kompanion` tool.
+
 
 ## Bug Fixes:
 
