@@ -1766,12 +1766,11 @@ message ComposeObjectRequest {
   optional string destination_bucket = 1;
   optional string destination_object = 2;
   optional string destination_predefined_acl = 3;
-  optional string drop_context_groups = 4;
-  optional string if_generation_match = 5;
-  optional string if_metageneration_match = 6;
-  optional string kms_key_name = 7;
-  optional string user_project = 8;
-  optional ComposeRequest object = 9;
+  optional string if_generation_match = 4;
+  optional string if_metageneration_match = 5;
+  optional string kms_key_name = 6;
+  optional string user_project = 7;
+  optional ComposeRequest object = 8;
 }
 
 message CopyObjectRequest {
@@ -1903,23 +1902,22 @@ message RewriteObjectRequest {
   optional string destination_kms_key_name = 2;
   optional string destination_object = 3;
   optional string destination_predefined_acl = 4;
-  optional string drop_context_groups = 5;
-  optional string if_generation_match = 6;
-  optional string if_generation_not_match = 7;
-  optional string if_metageneration_match = 8;
-  optional string if_metageneration_not_match = 9;
-  optional string if_source_generation_match = 10;
-  optional string if_source_generation_not_match = 11;
-  optional string if_source_metageneration_match = 12;
-  optional string if_source_metageneration_not_match = 13;
-  optional string max_bytes_rewritten_per_call = 14;
-  optional string projection = 15;
-  optional string rewrite_token = 16;
-  optional string source_bucket = 17;
-  optional string source_generation = 18;
-  optional string source_object = 19;
-  optional string user_project = 20;
-  optional Object object = 21;
+  optional string if_generation_match = 5;
+  optional string if_generation_not_match = 6;
+  optional string if_metageneration_match = 7;
+  optional string if_metageneration_not_match = 8;
+  optional string if_source_generation_match = 9;
+  optional string if_source_generation_not_match = 10;
+  optional string if_source_metageneration_match = 11;
+  optional string if_source_metageneration_not_match = 12;
+  optional string max_bytes_rewritten_per_call = 13;
+  optional string projection = 14;
+  optional string rewrite_token = 15;
+  optional string source_bucket = 16;
+  optional string source_generation = 17;
+  optional string source_object = 18;
+  optional string user_project = 19;
+  optional Object object = 20;
 }
 
 message UpdateObjectRequest {

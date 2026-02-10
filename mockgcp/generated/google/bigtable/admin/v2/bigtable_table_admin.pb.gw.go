@@ -14,7 +14,7 @@ import (
 	"net/http"
 
 	extAdminpb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
-	iampb_0 "cloud.google.com/go/iam/apiv1/iampb"
+	extIampb "cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -1936,7 +1936,7 @@ func local_request_BigtableTableAdmin_CopyBackup_0(ctx context.Context, marshale
 }
 
 func request_BigtableTableAdmin_GetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.GetIamPolicyRequest
+	var protoReq extIampb.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1970,7 +1970,7 @@ func request_BigtableTableAdmin_GetIamPolicy_0(ctx context.Context, marshaler ru
 }
 
 func local_request_BigtableTableAdmin_GetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.GetIamPolicyRequest
+	var protoReq extIampb.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2004,7 +2004,7 @@ func local_request_BigtableTableAdmin_GetIamPolicy_0(ctx context.Context, marsha
 }
 
 func request_BigtableTableAdmin_GetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.GetIamPolicyRequest
+	var protoReq extIampb.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2038,7 +2038,7 @@ func request_BigtableTableAdmin_GetIamPolicy_1(ctx context.Context, marshaler ru
 }
 
 func local_request_BigtableTableAdmin_GetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.GetIamPolicyRequest
+	var protoReq extIampb.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2072,7 +2072,7 @@ func local_request_BigtableTableAdmin_GetIamPolicy_1(ctx context.Context, marsha
 }
 
 func request_BigtableTableAdmin_GetIamPolicy_2(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.GetIamPolicyRequest
+	var protoReq extIampb.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2106,7 +2106,7 @@ func request_BigtableTableAdmin_GetIamPolicy_2(ctx context.Context, marshaler ru
 }
 
 func local_request_BigtableTableAdmin_GetIamPolicy_2(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.GetIamPolicyRequest
+	var protoReq extIampb.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2140,7 +2140,7 @@ func local_request_BigtableTableAdmin_GetIamPolicy_2(ctx context.Context, marsha
 }
 
 func request_BigtableTableAdmin_GetIamPolicy_3(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.GetIamPolicyRequest
+	var protoReq extIampb.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2174,7 +2174,7 @@ func request_BigtableTableAdmin_GetIamPolicy_3(ctx context.Context, marshaler ru
 }
 
 func local_request_BigtableTableAdmin_GetIamPolicy_3(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.GetIamPolicyRequest
+	var protoReq extIampb.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2208,7 +2208,7 @@ func local_request_BigtableTableAdmin_GetIamPolicy_3(ctx context.Context, marsha
 }
 
 func request_BigtableTableAdmin_SetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.SetIamPolicyRequest
+	var protoReq extIampb.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2242,7 +2242,7 @@ func request_BigtableTableAdmin_SetIamPolicy_0(ctx context.Context, marshaler ru
 }
 
 func local_request_BigtableTableAdmin_SetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.SetIamPolicyRequest
+	var protoReq extIampb.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2276,7 +2276,7 @@ func local_request_BigtableTableAdmin_SetIamPolicy_0(ctx context.Context, marsha
 }
 
 func request_BigtableTableAdmin_SetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.SetIamPolicyRequest
+	var protoReq extIampb.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2310,7 +2310,7 @@ func request_BigtableTableAdmin_SetIamPolicy_1(ctx context.Context, marshaler ru
 }
 
 func local_request_BigtableTableAdmin_SetIamPolicy_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.SetIamPolicyRequest
+	var protoReq extIampb.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2344,7 +2344,7 @@ func local_request_BigtableTableAdmin_SetIamPolicy_1(ctx context.Context, marsha
 }
 
 func request_BigtableTableAdmin_SetIamPolicy_2(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.SetIamPolicyRequest
+	var protoReq extIampb.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2378,7 +2378,7 @@ func request_BigtableTableAdmin_SetIamPolicy_2(ctx context.Context, marshaler ru
 }
 
 func local_request_BigtableTableAdmin_SetIamPolicy_2(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.SetIamPolicyRequest
+	var protoReq extIampb.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2412,7 +2412,7 @@ func local_request_BigtableTableAdmin_SetIamPolicy_2(ctx context.Context, marsha
 }
 
 func request_BigtableTableAdmin_SetIamPolicy_3(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.SetIamPolicyRequest
+	var protoReq extIampb.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2446,7 +2446,7 @@ func request_BigtableTableAdmin_SetIamPolicy_3(ctx context.Context, marshaler ru
 }
 
 func local_request_BigtableTableAdmin_SetIamPolicy_3(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.SetIamPolicyRequest
+	var protoReq extIampb.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2480,7 +2480,7 @@ func local_request_BigtableTableAdmin_SetIamPolicy_3(ctx context.Context, marsha
 }
 
 func request_BigtableTableAdmin_TestIamPermissions_0(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.TestIamPermissionsRequest
+	var protoReq extIampb.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2514,7 +2514,7 @@ func request_BigtableTableAdmin_TestIamPermissions_0(ctx context.Context, marsha
 }
 
 func local_request_BigtableTableAdmin_TestIamPermissions_0(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.TestIamPermissionsRequest
+	var protoReq extIampb.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2548,7 +2548,7 @@ func local_request_BigtableTableAdmin_TestIamPermissions_0(ctx context.Context, 
 }
 
 func request_BigtableTableAdmin_TestIamPermissions_1(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.TestIamPermissionsRequest
+	var protoReq extIampb.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2582,7 +2582,7 @@ func request_BigtableTableAdmin_TestIamPermissions_1(ctx context.Context, marsha
 }
 
 func local_request_BigtableTableAdmin_TestIamPermissions_1(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.TestIamPermissionsRequest
+	var protoReq extIampb.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2616,7 +2616,7 @@ func local_request_BigtableTableAdmin_TestIamPermissions_1(ctx context.Context, 
 }
 
 func request_BigtableTableAdmin_TestIamPermissions_2(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.TestIamPermissionsRequest
+	var protoReq extIampb.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2650,7 +2650,7 @@ func request_BigtableTableAdmin_TestIamPermissions_2(ctx context.Context, marsha
 }
 
 func local_request_BigtableTableAdmin_TestIamPermissions_2(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.TestIamPermissionsRequest
+	var protoReq extIampb.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2684,7 +2684,7 @@ func local_request_BigtableTableAdmin_TestIamPermissions_2(ctx context.Context, 
 }
 
 func request_BigtableTableAdmin_TestIamPermissions_3(ctx context.Context, marshaler runtime.Marshaler, client extAdminpb.BigtableTableAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.TestIamPermissionsRequest
+	var protoReq extIampb.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2718,7 +2718,7 @@ func request_BigtableTableAdmin_TestIamPermissions_3(ctx context.Context, marsha
 }
 
 func local_request_BigtableTableAdmin_TestIamPermissions_3(ctx context.Context, marshaler runtime.Marshaler, server extAdminpb.BigtableTableAdminServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.TestIamPermissionsRequest
+	var protoReq extIampb.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)

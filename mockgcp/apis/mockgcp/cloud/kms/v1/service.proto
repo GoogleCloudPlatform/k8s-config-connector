@@ -622,12 +622,10 @@ message AutokeyConfig {
   optional string etag = 1 [json_name="etag"];
   // Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new CryptoKey when a KeyHandle is created. On UpdateAutokeyConfig, the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on this key project. Once configured, for Cloud KMS Autokey to function properly, this key project must have the Cloud KMS API activated and the Cloud KMS Service Agent for this key project must be granted the `cloudkms.admin` role (or pertinent permissions). A request with an empty key project field will clear the configuration.
   optional string key_project = 2 [json_name="keyProject"];
-  // Optional. KeyProjectResolutionMode for the AutokeyConfig. Valid values are `DEDICATED_KEY_PROJECT`, `RESOURCE_PROJECT`, or `DISABLED`.
-  optional string key_project_resolution_mode = 3 [json_name="keyProjectResolutionMode"];
   // Identifier. Name of the AutokeyConfig resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`
-  optional string name = 4 [json_name="name"];
+  optional string name = 3 [json_name="name"];
   // Output only. The state for the AutokeyConfig.
-  optional string state = 5 [json_name="state"];
+  optional string state = 4 [json_name="state"];
 }
 
 // Associates `members`, or principals, with a `role`.
@@ -956,7 +954,7 @@ message ImportJob {
   optional KeyOperationAttestation attestation = 1 [json_name="attestation"];
   // Output only. The time at which this ImportJob was created.
   optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
-  // Immutable. The resource name of the backend environment where the key material for the wrapping key resides and where all related cryptographic operations are performed. Currently, this field is only populated for keys stored in HSM_SINGLE_TENANT. Note, this list is non-exhaustive and may apply to additional ProtectionLevels in the future. Supported resources: * `"projects/*/locations/*/singleTenantHsmInstances/*"`
+  // Immutable. The resource name of the backend environment where the key material for the wrapping key resides and where all related cryptographic operations are performed. Currently, this field is only populated for keys stored in HSM_SINGLE_TENANT. Note, this list is non-exhaustive and may apply to additional ProtectionLevels in the future.
   optional string crypto_key_backend = 3 [json_name="cryptoKeyBackend"];
   // Output only. The time this ImportJob expired. Only present if state is EXPIRED.
   optional .google.protobuf.Timestamp expire_event_time = 4 [json_name="expireEventTime"];
