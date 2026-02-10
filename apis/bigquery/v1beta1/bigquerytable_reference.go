@@ -16,29 +16,28 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var BigQueryTableGVK = GroupVersion.WithKind("BigQueryTable")
+
 func init() {
-	refsv1beta1.Register(&TableRef{})
+	refs.Register(&BigQueryTableRef{})
 }
 
-var _ refsv1beta1.Ref = &TableRef{}
-var _ refsv1beta1.ExternalRef = &TableRef{}
+var _ refs.Ref = &BigQueryTableRef{}
 
-// TableRef defines the resource reference to BigQueryTable, which "External" field
+// BigQueryTableRef defines the resource reference to BigQueryTable, which "External" field
 // holds the GCP identifier for the KRM object.
-type TableRef struct {
+type BigQueryTableRef struct {
 	// A reference to an externally-managed BigQueryTable resource.
-	// Should be in the format "projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}".
+	// Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BigQueryTable resource.
@@ -49,12 +48,12 @@ type TableRef struct {
 }
 
 // GetGVK returns the GroupVersionKind for BigQueryTable.
-func (r *TableRef) GetGVK() schema.GroupVersionKind {
+func (r *BigQueryTableRef) GetGVK() schema.GroupVersionKind {
 	return BigQueryTableGVK
 }
 
 // GetNamespacedName returns the NamespacedName for the reference.
-func (r *TableRef) GetNamespacedName() types.NamespacedName {
+func (r *BigQueryTableRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
@@ -62,51 +61,38 @@ func (r *TableRef) GetNamespacedName() types.NamespacedName {
 }
 
 // GetExternal returns the external reference.
-func (r *TableRef) GetExternal() string {
+func (r *BigQueryTableRef) GetExternal() string {
 	return r.External
 }
 
 // SetExternal sets the external reference.
-func (r *TableRef) SetExternal(external string) {
+func (r *BigQueryTableRef) SetExternal(external string) {
 	r.External = external
 }
 
 // ValidateExternal validates the external reference format.
-func (r *TableRef) ValidateExternal(external string) error {
-	if external == "" {
-		return fmt.Errorf("external reference cannot be empty")
-	}
-	// Expected format: projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}
-	if err := (&TableIdentity{}).FromExternal(external); err != nil {
+func (r *BigQueryTableRef) ValidateExternal(external string) error {
+	id := &BigQueryTableIdentity{}
+	if err := id.FromExternal(external); err != nil {
 		return err
 	}
 	return nil
 }
 
 // Normalize resolves the external reference.
-func (r *TableRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *BigQueryTableRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		// Get resourceID
-		tableID, err := refsv1beta1.GetResourceID(u)
+		id, err := getIdentityFromBigQueryTableSpec(ctx, reader, u)
 		if err != nil {
 			return ""
 		}
-		// Resolve parent
-		obj := &BigQueryTable{}
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-			return ""
-		}
-		datasetRef := obj.Spec.DatasetRef
-		if err := datasetRef.Normalize(ctx, reader, defaultNamespace); err != nil {
-			return ""
-		}
-		return fmt.Sprintf("%s/tables/%s", datasetRef.External, tableID)
+		return id.String()
 	}
-	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
 
-func (r *TableRef) ParseExternalToIdentity() (identity.Identity, error) {
-	id := &TableIdentity{}
+func (r *BigQueryTableRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &BigQueryTableIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err
 	}

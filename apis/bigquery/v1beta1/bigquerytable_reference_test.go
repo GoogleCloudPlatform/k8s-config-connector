@@ -18,7 +18,7 @@ import (
 	"testing"
 )
 
-func TestTableRef_ValidateExternal(t *testing.T) {
+func TestBigQueryTableRef_ValidateExternal(t *testing.T) {
 	tests := []struct {
 		name     string
 		external string
@@ -53,7 +53,7 @@ func TestTableRef_ValidateExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := &TableRef{}
+			r := &BigQueryTableRef{}
 			err := r.ValidateExternal(tt.external)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)

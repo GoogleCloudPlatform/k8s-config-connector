@@ -18,17 +18,17 @@ import (
 	"testing"
 )
 
-func TestTableIdentity_FromExternal(t *testing.T) {
+func TestBigQueryTableIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
 		wantErr bool
-		want    *TableIdentity
+		want    *BigQueryTableIdentity
 	}{
 		{
 			name: "valid reference",
 			ref:  "projects/my-project/datasets/my-dataset/tables/my-table",
-			want: &TableIdentity{
+			want: &BigQueryTableIdentity{
 				Project: "my-project",
 				Dataset: "my-dataset",
 				Table:   "my-table",
@@ -42,7 +42,7 @@ func TestTableIdentity_FromExternal(t *testing.T) {
 		{
 			name: "full url",
 			ref:  "https://bigquery.googleapis.com/projects/my-project/datasets/my-dataset/tables/my-table",
-			want: &TableIdentity{
+			want: &BigQueryTableIdentity{
 				Project: "my-project",
 				Dataset: "my-dataset",
 				Table:   "my-table",
@@ -52,7 +52,7 @@ func TestTableIdentity_FromExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := &TableIdentity{}
+			i := &BigQueryTableIdentity{}
 			err := i.FromExternal(tt.ref)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
