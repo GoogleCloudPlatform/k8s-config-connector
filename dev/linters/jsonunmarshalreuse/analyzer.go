@@ -61,7 +61,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 			}
 		}
 
-		// Target 2: pkg/util.Marshal
+		// Target 2: pkg/util.Marshal (internally performs json.Unmarshal into its second argument)
 		if !isTarget && sel.Sel.Name == "Marshal" {
 			if obj := pass.TypesInfo.ObjectOf(sel.Sel); obj != nil {
 				if pkg := obj.Pkg(); pkg != nil && strings.HasSuffix(pkg.Path(), "/pkg/util") {

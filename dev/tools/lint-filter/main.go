@@ -35,10 +35,8 @@ type FileChanges map[string][]LineRange
 func main() {
 	changes, err := getChanges()
 	if err != nil {
-		// If git fails (e.g. no git repo, detached head issues), we warn but pass everything through?
-		// Or fail? Let's fail safe: pass everything through if we can't detect changes (e.g. initial commit or CI weirdness),
-		// OR simpler: just print error and exit.
-		// For now, let's print error and output nothing (assume filtering failed implies safe to ignore or we want to fix env).
+		// If git fails (e.g. no git repo, detached head issues), we fail safe:
+		// print a warning to stderr and pass everything from stdin to stdout.
 		fmt.Fprintf(os.Stderr, "Warning: could not determine changed lines: %v. Linting all files.\n", err)
 		// Fallback: copy stdin to stdout
 		if _, err := os.Stdout.ReadFrom(os.Stdin); err != nil {
@@ -112,9 +110,9 @@ func getChanges() (FileChanges, error) {
 			}
 			newRange := parts[2] // +newStart,newLen
 
-			// Handle cases where +newStart is missing the comma (count=1)
+			// Ensure the range starts with '+'
 			if !strings.HasPrefix(newRange, "+") {
-				continue // Should start with +
+				continue
 			}
 			newRange = strings.TrimPrefix(newRange, "+")
 
@@ -135,13 +133,13 @@ func getChanges() (FileChanges, error) {
 					continue
 				}
 			} else {
+				// Handle cases where count is missing (implies count=1)
 				start, parseErr = strconv.Atoi(newRange)
 				if parseErr != nil {
 					fmt.Fprintf(os.Stderr, "Warning: failed to parse start line %q in git diff: %v\n", newRange, parseErr)
 					continue
 				}
 			}
-
 			if count > 0 {
 				changes[currentFile] = append(changes[currentFile], LineRange{Start: start, Count: count})
 			}
