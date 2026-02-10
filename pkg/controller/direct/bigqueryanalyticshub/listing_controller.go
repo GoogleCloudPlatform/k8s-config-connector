@@ -104,7 +104,7 @@ func resolveOptionalReferences(ctx context.Context, reader client.Reader, obj *k
 			}
 
 			for _, selectedResource := range obj.Spec.Source.BigQueryDatasetSource.SelectedResources {
-				if ref := selectedResource.BigQueryTableRef; ref != nil {
+				if ref := selectedResource.TableRef; ref != nil {
 					if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 						return err
 					}

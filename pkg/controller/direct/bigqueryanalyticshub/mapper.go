@@ -127,7 +127,7 @@ func Listing_BigQueryDatasetSource_SelectedResource_FromProto(mapCtx *direct.Map
 	}
 	out := &krm.SelectedResource{}
 	if in.GetTable() != "" {
-		out.BigQueryTableRef = &bigqueryv1beta1.BigQueryTableRef{
+		out.TableRef = &bigqueryv1beta1.BigQueryTableRef{
 			External: in.GetTable(),
 		}
 	}
@@ -139,9 +139,9 @@ func Listing_BigQueryDatasetSource_SelectedResource_ToProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &pb.Listing_BigQueryDatasetSource_SelectedResource{}
-	if in.BigQueryTableRef != nil {
+	if in.TableRef != nil {
 		out.Resource = &pb.Listing_BigQueryDatasetSource_SelectedResource_Table{
-			Table: in.BigQueryTableRef.External,
+			Table: in.TableRef.External,
 		}
 	}
 
@@ -271,7 +271,7 @@ func Listing_BigQueryDatasetSource_ToProto(mapCtx *direct.MapContext, in *krm.Bi
 		for _, tableRef := range in.SelectedResources {
 			out.BigqueryDataset.SelectedResources = append(out.BigqueryDataset.SelectedResources, &pb.Listing_BigQueryDatasetSource_SelectedResource{
 				Resource: &pb.Listing_BigQueryDatasetSource_SelectedResource_Table{
-					Table: tableRef.BigQueryTableRef.External,
+					Table: tableRef.TableRef.External,
 				},
 			})
 		}
