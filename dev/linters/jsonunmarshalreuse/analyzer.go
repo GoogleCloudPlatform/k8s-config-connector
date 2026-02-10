@@ -45,26 +45,33 @@ func run(pass *analysis.Pass) (interface{}, error) {
 		call := n.(*ast.CallExpr)
 
 		// Check function call identifier
-		sel, ok := call.Fun.(*ast.SelectorExpr)
-		if !ok {
+		var funName string
+		var funObj types.Object
+		isTarget := false
+
+		if sel, ok := call.Fun.(*ast.SelectorExpr); ok {
+			funName = sel.Sel.Name
+			funObj = pass.TypesInfo.ObjectOf(sel.Sel)
+		} else if ident, ok := call.Fun.(*ast.Ident); ok {
+			funName = ident.Name
+			funObj = pass.TypesInfo.ObjectOf(ident)
+		} else {
 			return
 		}
 
-		isTarget := false
-
 		// Target 1: encoding/json.Unmarshal
-		if sel.Sel.Name == "Unmarshal" {
-			if obj := pass.TypesInfo.ObjectOf(sel.Sel); obj != nil {
-				if pkg := obj.Pkg(); pkg != nil && pkg.Path() == "encoding/json" {
+		if funName == "Unmarshal" {
+			if funObj != nil {
+				if pkg := funObj.Pkg(); pkg != nil && pkg.Path() == "encoding/json" {
 					isTarget = true
 				}
 			}
 		}
 
 		// Target 2: pkg/util.Marshal (internally performs json.Unmarshal into its second argument)
-		if !isTarget && sel.Sel.Name == "Marshal" {
-			if obj := pass.TypesInfo.ObjectOf(sel.Sel); obj != nil {
-				if pkg := obj.Pkg(); pkg != nil && strings.HasSuffix(pkg.Path(), "/pkg/util") {
+		if !isTarget && funName == "Marshal" {
+			if funObj != nil {
+				if pkg := funObj.Pkg(); pkg != nil && strings.HasSuffix(pkg.Path(), "/pkg/util") {
 					isTarget = true
 				}
 			}
