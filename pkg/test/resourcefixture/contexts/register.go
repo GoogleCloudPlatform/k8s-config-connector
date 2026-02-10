@@ -392,7 +392,11 @@ func getAdapter(ctx context.Context, u *unstructured.Unstructured, c client.Clie
 	if err != nil {
 		return nil, err
 	}
-	return model.AdapterForObject(ctx, c, u)
+	op := &directbase.AdapterForObjectOperation{
+		Reader: c,
+		Object: u,
+	}
+	return model.AdapterForObject(ctx, op)
 }
 
 func directExport(ctx context.Context, u *unstructured.Unstructured, c client.Client) (*unstructured.Unstructured, error) {

@@ -16,12 +16,13 @@
 # It sets up automatic key creation for resources in the specified folder,
 # using the specified project for key storage.
 # Note: AutokeyConfig is a singleton per folder; only one can exist.
-apiVersion: kms.cnrm.cloud.google.com/v1alpha1
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSAutokeyConfig
 metadata:
   name: kmsautokeyconfig-sample
 spec:
   folderRef:
+    # Replace "${FOLDER_ID?}" with the numeric ID for your folder on which you want to configure autokey.
     # Replace "${FOLDER_ID?}" with the numeric ID for your folder on which you want to configure autokey.
     external: folders/${FOLDER_ID?}
   keyProject:

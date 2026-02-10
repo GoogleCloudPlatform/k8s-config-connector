@@ -3,6 +3,7 @@ kind: ComputeNetwork
 metadata:
   name: batchjob-dep-network-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   autoCreateSubnetworks: false
@@ -12,6 +13,7 @@ kind: ComputeSubnetwork
 metadata:
   name: batchjob-dep-subnetwork-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   ipCidrRange: 10.2.0.0/16

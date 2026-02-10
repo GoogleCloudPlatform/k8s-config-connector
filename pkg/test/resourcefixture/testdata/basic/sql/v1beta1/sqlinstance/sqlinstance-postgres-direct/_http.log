@@ -571,6 +571,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
+      "queryPlansPerMinute": 5,
       "queryStringLength": 1024,
       "recordApplicationTags": true,
       "recordClientAddress": true
@@ -693,6 +694,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -743,6 +745,7 @@ X-Xss-Protection: 0
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
+      "queryPlansPerMinute": 5,
       "queryStringLength": 1024,
       "recordApplicationTags": true,
       "recordClientAddress": true
@@ -794,6 +797,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-postgres-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
@@ -848,6 +852,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -898,6 +903,7 @@ X-Xss-Protection: 0
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
+      "queryPlansPerMinute": 5,
       "queryStringLength": 1024,
       "recordApplicationTags": true,
       "recordClientAddress": true
@@ -1034,6 +1040,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1084,6 +1091,7 @@ X-Xss-Protection: 0
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
+      "queryPlansPerMinute": 5,
       "queryStringLength": 1024,
       "recordApplicationTags": true,
       "recordClientAddress": true
@@ -1163,6 +1171,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
+      "queryPlansPerMinute": 5,
       "queryStringLength": 1024,
       "recordApplicationTags": true,
       "recordClientAddress": true
@@ -1286,6 +1295,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1336,6 +1346,7 @@ X-Xss-Protection: 0
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
+      "queryPlansPerMinute": 5,
       "queryStringLength": 1024,
       "recordApplicationTags": true,
       "recordClientAddress": true

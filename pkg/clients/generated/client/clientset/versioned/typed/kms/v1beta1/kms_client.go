@@ -33,6 +33,8 @@ type KmsV1beta1Interface interface {
 	RESTClient() rest.Interface
 	KMSAutokeyConfigsGetter
 	KMSCryptoKeysGetter
+	KMSImportJobsGetter
+	KMSKeyHandlesGetter
 	KMSKeyRingsGetter
 }
 
@@ -47,6 +49,14 @@ func (c *KmsV1beta1Client) KMSAutokeyConfigs(namespace string) KMSAutokeyConfigI
 
 func (c *KmsV1beta1Client) KMSCryptoKeys(namespace string) KMSCryptoKeyInterface {
 	return newKMSCryptoKeys(c, namespace)
+}
+
+func (c *KmsV1beta1Client) KMSImportJobs(namespace string) KMSImportJobInterface {
+	return newKMSImportJobs(c, namespace)
+}
+
+func (c *KmsV1beta1Client) KMSKeyHandles(namespace string) KMSKeyHandleInterface {
+	return newKMSKeyHandles(c, namespace)
 }
 
 func (c *KmsV1beta1Client) KMSKeyRings(namespace string) KMSKeyRingInterface {

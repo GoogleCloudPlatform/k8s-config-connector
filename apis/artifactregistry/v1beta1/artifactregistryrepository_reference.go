@@ -16,7 +16,6 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -89,22 +88,11 @@ func (r *ArtifactRegistryRepositoryRef) ParseExternalToIdentity() (identity.Iden
 
 func (r *ArtifactRegistryRepositoryRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		resourceID, err := refs.GetResourceID(u)
+		identity, err := getIdentityFromArtifactRegistryRepositorySpec(ctx, reader, u)
 		if err != nil {
 			return ""
 		}
-
-		location, err := refs.GetLocation(u)
-		if err != nil {
-			return ""
-		}
-
-		projectID, err := refs.ResolveProjectID(ctx, reader, u)
-		if err != nil {
-			return ""
-		}
-
-		return fmt.Sprintf("projects/%s/locations/%s/repositories/%s", projectID, location, resourceID)
+		return identity.String()
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }

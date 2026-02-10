@@ -172,7 +172,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Adaptive Protection Config of this security policy.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -182,7 +182,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Auto Deploy Config of this security policy.{% endverbatim %}</p>
+            <p>{% verbatim %}Auto Deploy Config of this security policy{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -232,7 +232,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Layer 7 DDoS Defense Config of this security policy.{% endverbatim %}</p>
+            <p>{% verbatim %}Layer 7 DDoS Defense Config of this security policy{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -262,7 +262,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Advanced Options Config of this security policy.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -272,7 +272,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Custom configuration to apply the JSON parsing. Only applicable when JSON parsing is set to STANDARD.{% endverbatim %}</p>
+            <p>{% verbatim %}Custom configuration to apply the JSON parsing. Only applicable when json_parsing is set to STANDARD.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -282,7 +282,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}A list of custom Content-Type header values to apply the JSON parsing.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of custom Content-Type header values to apply the JSON parsing. As per RFC 1341, a Content-Type header value has the following format: Content-Type := type "/" subtype *[";" parameter] When configuring a custom Content-Type header value, only the type/subtype needs to be specified, and the parameters should be excluded.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -302,7 +302,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}JSON body parsing. Supported values include: "DISABLED", "STANDARD".{% endverbatim %}</p>
+            <p>{% verbatim %}Check the JsonParsing enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -312,7 +312,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Logging level. Supported values include: "NORMAL", "VERBOSE".{% endverbatim %}</p>
+            <p>{% verbatim %}Check the LogLevel enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -342,7 +342,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An optional description of this security policy. Max size is 2048.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -352,7 +352,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}reCAPTCHA configuration options to be applied for the security policy.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -362,12 +362,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A field to supply a reCAPTCHA site key to be used for all the rules
-using the redirect action with the type of GOOGLE_RECAPTCHA under
-the security policy. The specified site key needs to be created from
-the reCAPTCHA API. The user is responsible for the validity of the
-specified site key. If not specified, a Google-managed site key is
-used.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -377,7 +372,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `RecaptchaEnterpriseKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed RecaptchaEnterpriseKey resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -387,7 +382,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a RecaptchaEnterpriseKey resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -397,7 +392,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a RecaptchaEnterpriseKey resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -407,7 +402,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeSecurityPolicy name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -417,7 +412,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The set of rules that belong to this policy. There must always be a default rule (rule with priority 2147483647 and match "*"). If no rules are provided when creating a security policy, a default rule with action "allow" will be added.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -437,7 +432,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Action to take when match matches the request.{% endverbatim %}</p>
+            <p>{% verbatim %}The Action to perform when the rule is matched. The following are the valid actions: - allow: allow access to target. - deny(STATUS): deny access to target, returns the HTTP response code specified. Valid values for `STATUS` are 403, 404, and 502. - rate_based_ban: limit client traffic to the configured threshold and ban the client if the traffic exceeds the threshold. Configure parameters for this action in RateLimitOptions. Requires rate_limit_options to be set. - redirect: redirect to a different target. This can either be an internal reCAPTCHA redirect, or an external URL-based redirect via a 302 response. Parameters for this action can be configured via redirectOptions. This action is only supported in Global Security Policies of type CLOUD_ARMOR. - throttle: limit client traffic to the configured threshold. Configure parameters for this action in rateLimitOptions. Requires rate_limit_options to be set for this.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -447,7 +442,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An optional description of this rule. Max size is 64.{% endverbatim %}</p>
+            <p>{% verbatim %}An optional description of this resource. Provide this property when you create the resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -457,13 +452,13 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Additional actions that are performed on headers.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional, additional actions that are performed on headers. This field is only supported in Global Security Policies of type CLOUD_ARMOR.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>rule[].headerAction.requestHeadersToAdds</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
@@ -473,7 +468,7 @@ used.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>rule[].headerAction.requestHeadersToAdds[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -483,7 +478,7 @@ used.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>rule[].headerAction.requestHeadersToAdds[].headerName</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -507,7 +502,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding action is enforced.{% endverbatim %}</p>
+            <p>{% verbatim %}A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -527,7 +522,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Set of IP addresses or ranges (IPV4 or IPV6) in CIDR notation to match against inbound traffic. There is a limit of 10 IP ranges per rule. A value of '*' matches all IPs (can be used to override the default behavior).{% endverbatim %}</p>
+            <p>{% verbatim %}CIDR IP address range. Maximum number of src_ip_ranges allowed is 10.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -547,17 +542,17 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}User defined CEVAL expression. A CEVAL expression is used to specify match criteria such as origin.ip, source.region_code and contents in the request header.{% endverbatim %}</p>
+            <p>{% verbatim %}User defined CEVAL expression. A CEVAL expression is used to specify match criteria such as origin.ip, source.region_code and contents in the request header. Expressions containing `evaluateThreatIntelligence` require Cloud Armor Managed Protection Plus tier and are not supported in Edge Policies nor in Regional Policies. Expressions containing `evaluatePreconfiguredExpr('sourceiplist-*')` require Cloud Armor Managed Protection Plus tier and are only supported in Global Security Policies.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>rule[].match.expr.expression</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Textual representation of an expression in Common Expression Language syntax. The application context of the containing message determines which well-known feature set of CEL is supported.{% endverbatim %}</p>
+            <p>{% verbatim %}Textual representation of an expression in Common Expression Language syntax.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -567,7 +562,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Predefined rule expression. If this field is specified, config must also be specified. Available options:   SRC_IPS_V1: Must specify the corresponding src_ip_ranges field in config.{% endverbatim %}</p>
+            <p>{% verbatim %}Preconfigured versioned expression. If this field is specified, config must also be specified. Available preconfigured expressions along with their requirements are: SRC_IPS_V1 - must specify the corresponding src_ip_range field in config. Check the VersionedExpr enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -587,7 +582,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}An exclusion to apply during preconfigured WAF evaluation.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of exclusions to apply during preconfigured WAF evaluation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -607,7 +602,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Request cookie whose value will be excluded from inspection during preconfigured WAF evaluation.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of request cookie names whose value will be excluded from inspection during preconfigured WAF evaluation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -623,11 +618,11 @@ used.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>rule[].preconfiguredWafConfig.exclusion[].requestCookie[].operator</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}You can specify an exact match or a partial match by using a field operator and a field value. Available options: EQUALS: The operator matches if the field value equals the specified value. STARTS_WITH: The operator matches if the field value starts with the specified value. ENDS_WITH: The operator matches if the field value ends with the specified value. CONTAINS: The operator matches if the field value contains the specified value. EQUALS_ANY: The operator matches if the field value is any value.{% endverbatim %}</p>
+            <p>{% verbatim %}The match operator for the field. Check the Op enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -637,7 +632,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A request field matching the specified value will be excluded from inspection during preconfigured WAF evaluation. The field value must be given if the field operator is not EQUALS_ANY, and cannot be given if the field operator is EQUALS_ANY.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of the field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -647,7 +642,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Request header whose value will be excluded from inspection during preconfigured WAF evaluation.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of request header names whose value will be excluded from inspection during preconfigured WAF evaluation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -663,11 +658,11 @@ used.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>rule[].preconfiguredWafConfig.exclusion[].requestHeader[].operator</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}You can specify an exact match or a partial match by using a field operator and a field value. Available options: EQUALS: The operator matches if the field value equals the specified value. STARTS_WITH: The operator matches if the field value starts with the specified value. ENDS_WITH: The operator matches if the field value ends with the specified value. CONTAINS: The operator matches if the field value contains the specified value. EQUALS_ANY: The operator matches if the field value is any value.{% endverbatim %}</p>
+            <p>{% verbatim %}The match operator for the field. Check the Op enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -677,7 +672,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A request field matching the specified value will be excluded from inspection during preconfigured WAF evaluation. The field value must be given if the field operator is not EQUALS_ANY, and cannot be given if the field operator is EQUALS_ANY.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of the field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -687,7 +682,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Request query parameter whose value will be excluded from inspection during preconfigured WAF evaluation.  Note that the parameter can be in the query string or in the POST body.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of request query parameter names whose value will be excluded from inspection during preconfigured WAF evaluation. Note that the parameter can be in the query string or in the POST body.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -703,11 +698,11 @@ used.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>rule[].preconfiguredWafConfig.exclusion[].requestQueryParam[].operator</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}You can specify an exact match or a partial match by using a field operator and a field value. Available options: EQUALS: The operator matches if the field value equals the specified value. STARTS_WITH: The operator matches if the field value starts with the specified value. ENDS_WITH: The operator matches if the field value ends with the specified value. CONTAINS: The operator matches if the field value contains the specified value. EQUALS_ANY: The operator matches if the field value is any value.{% endverbatim %}</p>
+            <p>{% verbatim %}The match operator for the field. Check the Op enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -717,7 +712,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A request field matching the specified value will be excluded from inspection during preconfigured WAF evaluation. The field value must be given if the field operator is not EQUALS_ANY, and cannot be given if the field operator is EQUALS_ANY.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of the field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -727,7 +722,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Request URI from the request line to be excluded from inspection during preconfigured WAF evaluation. When specifying this field, the query or fragment part should be excluded.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of request URIs from the request line to be excluded from inspection during preconfigured WAF evaluation. When specifying this field, the query or fragment part should be excluded.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -743,11 +738,11 @@ used.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>rule[].preconfiguredWafConfig.exclusion[].requestUri[].operator</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}You can specify an exact match or a partial match by using a field operator and a field value. Available options: EQUALS: The operator matches if the field value equals the specified value. STARTS_WITH: The operator matches if the field value starts with the specified value. ENDS_WITH: The operator matches if the field value ends with the specified value. CONTAINS: The operator matches if the field value contains the specified value. EQUALS_ANY: The operator matches if the field value is any value.{% endverbatim %}</p>
+            <p>{% verbatim %}The match operator for the field. Check the Op enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -757,7 +752,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A request field matching the specified value will be excluded from inspection during preconfigured WAF evaluation. The field value must be given if the field operator is not EQUALS_ANY, and cannot be given if the field operator is EQUALS_ANY.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of the field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -783,7 +778,7 @@ used.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>rule[].preconfiguredWafConfig.exclusion[].targetRuleSet</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -797,7 +792,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}When set to true, the action specified above is not enforced. Stackdriver logs for requests that trigger a preview action are annotated as such.{% endverbatim %}</p>
+            <p>{% verbatim %}If set to true, the specified action is not enforced.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -807,7 +802,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}An unique positive integer indicating the priority of evaluation for a rule. Rules are evaluated from highest priority (lowest numerically) to lowest priority (highest numerically) in order.{% endverbatim %}</p>
+            <p>{% verbatim %}An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest priority.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -817,7 +812,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Rate limit threshold for this security policy. Must be specified if the action is "rate_based_ban" or "throttle". Cannot be specified for any other actions.{% endverbatim %}</p>
+            <p>{% verbatim %}Must be specified if the action is "rate_based_ban" or "throttle". Cannot be specified for any other actions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -837,7 +832,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Can only be specified if the action for the rule is "rate_based_ban". If specified, the key will be banned for the configured 'banDurationSec' when the number of requests that exceed the 'rateLimitThreshold' also exceed this 'banThreshold'.{% endverbatim %}</p>
+            <p>{% verbatim %}Can only be specified if the action for the rule is "rate_based_ban". If specified, the key will be banned for the configured 'ban_duration_sec' when the number of requests that exceed the 'rate_limit_threshold' also exceed this 'ban_threshold'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -877,7 +872,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Determines the key to enforce the rateLimitThreshold on.{% endverbatim %}</p>
+            <p>{% verbatim %}Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if "enforceOnKey" is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. - USER_IP: The IP address of the originating client, which is resolved based on "userIpRequestHeaders" configured with the security policy. If there is no "userIpRequestHeaders" configuration or an IP address cannot be resolved from it, the key type defaults to IP. - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. Check the EnforceOnKey enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -887,7 +882,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Enforce On Key Config of this security policy.{% endverbatim %}</p>
+            <p>{% verbatim %}If specified, any combination of values of enforce_on_key_type/enforce_on_key_name is treated as the key on which ratelimit threshold/action is enforced. You can specify up to 3 enforce_on_key_configs. If enforce_on_key_configs is specified, enforce_on_key must not be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -917,7 +912,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Determines the key to enforce the rate_limit_threshold on.{% endverbatim %}</p>
+            <p>{% verbatim %}Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if "enforceOnKeyConfigs" is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. - USER_IP: The IP address of the originating client, which is resolved based on "userIpRequestHeaders" configured with the security policy. If there is no "userIpRequestHeaders" configuration or an IP address cannot be resolved from it, the key type defaults to IP. - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. Check the EnforceOnKeyType enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -937,7 +932,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Action to take for requests that are above the configured rate limit threshold, to either deny with a specified HTTP response code, or redirect to a different endpoint. Valid options are "deny()" where valid values for status are 403, 404, 429, and 502, and "redirect" where the redirect parameters come from exceedRedirectOptions below.{% endverbatim %}</p>
+            <p>{% verbatim %}Action to take for requests that are above the configured rate limit threshold, to either deny with a specified HTTP response code, or redirect to a different endpoint. Valid options are `deny(STATUS)`, where valid values for `STATUS` are 403, 404, 429, and 502, and `redirect`, where the redirect parameters come from `exceedRedirectOptions` below. The `redirect` action is only supported in Global Security Policies of type CLOUD_ARMOR.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -947,7 +942,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Parameters defining the redirect action that is used as the exceed action. Cannot be specified if the exceed action is not redirect.{% endverbatim %}</p>
+            <p>{% verbatim %}Parameters defining the redirect action that is used as the exceed action. Cannot be specified if the exceed action is not redirect. This field is only supported in Global Security Policies of type CLOUD_ARMOR.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -967,7 +962,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Type of the redirect action.{% endverbatim %}</p>
+            <p>{% verbatim %}Type of the redirect action. Possible values are: - GOOGLE_RECAPTCHA: redirect to reCAPTCHA for manual challenge assessment. - EXTERNAL_302: redirect to a different URL via a 302 response. Check the Type enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1007,7 +1002,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Parameters defining the redirect action. Cannot be specified for any other actions.{% endverbatim %}</p>
+            <p>{% verbatim %}Parameters defining the redirect action. Cannot be specified for any other actions. This field is only supported in Global Security Policies of type CLOUD_ARMOR.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1027,7 +1022,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Type of the redirect action. Available options: EXTERNAL_302: Must specify the corresponding target field in config. GOOGLE_RECAPTCHA: Cannot specify target field in config.{% endverbatim %}</p>
+            <p>{% verbatim %}Type of the redirect action. Possible values are: - GOOGLE_RECAPTCHA: redirect to reCAPTCHA for manual challenge assessment. - EXTERNAL_302: redirect to a different URL via a 302 response. Check the Type enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1037,7 +1032,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The type indicates the intended use of the security policy. CLOUD_ARMOR - Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. CLOUD_ARMOR_EDGE - Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google's cache.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -1072,7 +1067,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1121,7 +1116,7 @@ selfLink: string
         <td><code>fingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Fingerprint of this resource.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1135,7 +1130,7 @@ selfLink: string
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The URI of the created resource.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

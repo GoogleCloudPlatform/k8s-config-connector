@@ -15,6 +15,8 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computenetwork-minimal-${uniqueId}
 spec:
   routingMode: REGIONAL
@@ -23,6 +25,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computesubnetwork-minimal-${uniqueId}
 spec:
   ipCidrRange: 10.2.0.0/16
@@ -33,6 +37,8 @@ spec:
 apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: containercluster-minimal-${uniqueId}
 spec:
   location: us-central1
@@ -50,6 +56,8 @@ spec:
 apiVersion: gkebackup.cnrm.cloud.google.com/v1alpha1
 kind: GKEBackupBackupPlan
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: gkebackupbackupplan-minimal-${uniqueId}
 spec:
   projectRef:
@@ -66,6 +74,8 @@ spec:
 apiVersion: gkebackup.cnrm.cloud.google.com/v1alpha1
 kind: GKEBackupBackup
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: gkebackupbackup-minimal-${uniqueId}
 spec:
   backupPlanRef:
@@ -75,6 +85,8 @@ spec:
 apiVersion: gkebackup.cnrm.cloud.google.com/v1alpha1
 kind: GKEBackupRestorePlan
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: gkebackuprestoreplan-minimal-${uniqueId}
 spec:
   projectRef:

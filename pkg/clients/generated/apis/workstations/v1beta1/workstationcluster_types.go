@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type WorkstationclusterAllowedProjects struct {
 	/* The `projectID` field of a project, when not managed by Config Connector. */
@@ -110,7 +113,7 @@ type WorkstationClusterSpec struct {
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. The WorkstationCluster name. If not given, the metadata.name will be used. */
+	/* The WorkstationCluster name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -193,7 +196,7 @@ type WorkstationClusterStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=
+// +kubebuilder:resource:categories=gcp,shortName=gcpworkstationcluster;gcpworkstationclusters
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"

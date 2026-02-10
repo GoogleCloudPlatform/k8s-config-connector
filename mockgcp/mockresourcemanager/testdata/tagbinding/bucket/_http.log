@@ -314,7 +314,8 @@ X-Xss-Protection: 0
     {
       "name": "tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fkcctest-${uniqueId}/tagValues/${tagValueID}",
       "parent": "//storage.googleapis.com/projects/_/buckets/kcctest-${uniqueId}",
-      "tagValue": "tagValues/${tagValueID}"
+      "tagValue": "tagValues/${tagValueID}",
+      "tagValueNamespacedName": "${projectId}/test-${uniqueId}/value1"
     }
   ]
 }

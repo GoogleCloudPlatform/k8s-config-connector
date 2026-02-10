@@ -15,6 +15,8 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computenetwork-${uniqueId}
 spec:
   autoCreateSubnetworks: false
@@ -24,6 +26,7 @@ kind: ServiceIdentity
 metadata:
   name: serviceidentity-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
@@ -33,6 +36,8 @@ spec:
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: alloydbcluster-${uniqueId}
 spec:
   initialUser:
@@ -48,6 +53,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computeaddress-${uniqueId}
 spec:
   location: global
@@ -61,6 +68,8 @@ spec:
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: servicenetworkingconnection-${uniqueId}
 spec:
   networkRef:
@@ -72,6 +81,8 @@ spec:
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: alloydbinstance-${uniqueId}
 spec:
   clusterRef: 
@@ -85,6 +96,8 @@ spec:
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: kmskeyring-${uniqueId}
 spec:
   location: europe-west10
@@ -92,6 +105,8 @@ spec:
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   labels:
     key-one: value-one
   name: kmscryptokey-${uniqueId}
@@ -102,6 +117,8 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: iampolicy-${uniqueId}
 spec:
   resourceRef:

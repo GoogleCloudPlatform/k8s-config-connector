@@ -61,7 +61,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "insightsConfig": {
-      "queryInsightsEnabled": true
+      "queryInsightsEnabled": true,
+      "queryPlansPerMinute": 5
     },
     "ipConfiguration": {
       "ipv4Enabled": true,
@@ -179,6 +180,7 @@ X-Xss-Protection: 0
   "name": "test-${uniqueId}",
   "project": "${projectId}",
   "region": "europe-west3",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/test-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -220,7 +222,8 @@ X-Xss-Protection: 0
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "insightsConfig": {
-      "queryInsightsEnabled": true
+      "queryInsightsEnabled": true,
+      "queryPlansPerMinute": 5
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
@@ -268,6 +271,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "test-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
@@ -326,6 +330,7 @@ X-Xss-Protection: 0
   "name": "test-${uniqueId}",
   "project": "${projectId}",
   "region": "europe-west3",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/test-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -367,7 +372,8 @@ X-Xss-Protection: 0
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "insightsConfig": {
-      "queryInsightsEnabled": true
+      "queryInsightsEnabled": true,
+      "queryPlansPerMinute": 5
     },
     "ipConfiguration": {
       "authorizedNetworks": [],

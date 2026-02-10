@@ -24,3 +24,5 @@ package v1beta1
 type IAPBrandExpansion interface{}
 
 type IAPIdentityAwareProxyClientExpansion interface{}
+
+type IAPSettingsExpansion interface{}

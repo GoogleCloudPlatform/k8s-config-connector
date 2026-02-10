@@ -168,7 +168,7 @@ type reconcileContext struct {
 func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
 	log := klog.FromContext(ctx)
 
-	logger.Info("Running reconcile", "resource", request.NamespacedName)
+	logger.V(1).Info("Running reconcile", "resource", request.NamespacedName)
 	startTime := time.Now()
 	ctx, cancel := context.WithTimeout(ctx, k8s.ReconcileDeadline)
 	defer cancel()
@@ -264,7 +264,7 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 	case v1beta1.Reconciling:
 		logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", r.NamespacedName)
 	case v1beta1.Paused:
-		logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
+		logger.V(2).Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
 
 		// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling
 		if pp.GetDeletionTimestamp().IsZero() {

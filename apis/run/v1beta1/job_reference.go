@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -24,6 +25,10 @@ import (
 )
 
 var _ refsv1beta1.Ref = &JobRef{}
+
+func init() {
+	refsv1beta1.Register(&JobRef{})
+}
 
 // JobRef defines the resource reference to RunJob, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -64,6 +69,14 @@ func (r *JobRef) ValidateExternal(ref string) error {
 		return err
 	}
 	return nil
+}
+
+func (r *JobRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &JobIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
 func (r *JobRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {

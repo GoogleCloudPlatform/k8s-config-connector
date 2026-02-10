@@ -20,8 +20,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var BigQueryTableGVK = GroupVersion.WithKind("BigQueryTable")
-
 // +kcc:proto=google.cloud.bigquery.v2.AvroOptions
 type AvroOptions struct {
 	// If sourceFormat is set to "AVRO", indicates whether to interpret

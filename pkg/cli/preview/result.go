@@ -132,6 +132,11 @@ func (r *Recorder) ExportDetailObjectsEvent(filename string) error {
 			switch event.eventType {
 			case EventTypeDiff:
 				fmt.Fprintf(f, "  diff %+v\n", event.diff)
+				for _, field := range event.diff.Fields {
+					fmt.Fprintf(f, "  field %s\n", field.ID)
+					fmt.Fprintf(f, "    old %+v\n", field.Old)
+					fmt.Fprintf(f, "    new %+v\n", field.New)
+				}
 
 			case EventTypeReconcileStart:
 				fmt.Fprintf(f, "  reconcileStart %+v\n", event.object)
@@ -161,7 +166,7 @@ func (r *Recorder) SummaryReport(filename string) error {
 	total := len(r.ReconciledResources)
 	reconciled := total - r.RemainResourcesCount
 	fmt.Fprintf(f, "Finish reconciled %d out of %d resouces.\n", reconciled, total)
-	summary := r.newPreviewSummary()
+	summary := r.getOrCreateSummary()
 	fmt.Fprintf(f, "Detect %d good and %d bad objects.\n", summary.totalGood, summary.totalBad)
 	for ns := range summary.badGKNN {
 		fmt.Fprintln(f, "-----------------------------------------------------------------")

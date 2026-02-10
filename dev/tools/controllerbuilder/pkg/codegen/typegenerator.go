@@ -40,6 +40,7 @@ type TypeGenerator struct {
 	visitedMessages         []protoreflect.MessageDescriptor
 	outputMessages          []*OutputMessageDetails
 	generatedFileAnnotation *codegenannotations.FileAnnotation
+	includeSkippedOutput    bool
 }
 
 type OutputMessageDetails struct {
@@ -59,6 +60,12 @@ func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Prot
 // WithGeneratedFileAnnotation sets the generated file annotation
 func (g *TypeGenerator) WithGeneratedFileAnnotation(generatedFileAnnotation *codegenannotations.FileAnnotation) *TypeGenerator {
 	g.generatedFileAnnotation = generatedFileAnnotation
+	return g
+}
+
+// WithIncludeSkippedOutput sets whether to output skipped types as commented-out code
+func (g *TypeGenerator) WithIncludeSkippedOutput(includeSkippedOutput bool) *TypeGenerator {
+	g.includeSkippedOutput = includeSkippedOutput
 	return g
 }
 
@@ -146,6 +153,9 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		}
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type %q, won't generate", goTypeName)
+			if g.includeSkippedOutput {
+				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type %q, skipping", goTypeName))
+			}
 			continue
 		}
 
@@ -155,6 +165,9 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		}
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
+			if g.includeSkippedOutput {
+				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()))
+			}
 			continue
 		}
 
@@ -187,6 +200,9 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		}
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type %q, won't generate", goTypeName)
+			if g.includeSkippedOutput {
+				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type %q, skipping", goTypeName))
+			}
 			continue
 		}
 
@@ -196,12 +212,27 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		}
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
+			if g.includeSkippedOutput {
+				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()))
+			}
 			continue
 		}
 
 		WriteObservedStateMessage(&out.body, msgDetails)
 	}
 	return errors.Join(g.errors...)
+}
+
+func WriteMessageAsComment(out io.Writer, msg protoreflect.MessageDescriptor, reason string) {
+	fmt.Fprintf(out, "\n/* %s\n", reason)
+	WriteMessage(out, msg)
+	fmt.Fprintf(out, "*/\n")
+}
+
+func WriteObservedStateMessageAsComment(out io.Writer, msgDetails *OutputMessageDetails, reason string) {
+	fmt.Fprintf(out, "\n/* %s\n", reason)
+	WriteObservedStateMessage(out, msgDetails)
+	fmt.Fprintf(out, "*/\n")
 }
 
 func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {

@@ -15,15 +15,7 @@
 name: license-lint
 on:
   push:
-    paths:
-      - "go.mod"
-      - "go.sum"
-      - "vendor/**" # if we ever use vendor we can target the paths too
   pull_request:
-    paths:
-      - "go.mod"
-      - "go.sum"
-      - "vendor/**" # if we ever use vendor we can target the paths too
 jobs:
   license-lint:
     name: "license-lint"

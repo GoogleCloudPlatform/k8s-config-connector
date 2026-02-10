@@ -408,6 +408,16 @@ spec:
                       when deciding to remove nodes from a cluster. Can be BALANCED
                       or OPTIMIZE_UTILIZATION. Defaults to BALANCED.
                     type: string
+                  defaultComputeClassConfig:
+                    description: Default compute class is a configuration for default
+                      compute class.
+                    properties:
+                      enabled:
+                        description: Enables default compute class.
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
                   enabled:
                     description: Whether node auto-provisioning is enabled. Resource
                       limits for cpu and memory must be defined to enable node auto-provisioning.

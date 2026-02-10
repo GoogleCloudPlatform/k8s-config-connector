@@ -20,12 +20,15 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ identity.Identity = &DatasetIdentity{}
+var (
+	_ identity.IdentityV2 = &DatasetIdentity{}
+	_ identity.Resource   = &BigQueryDataset{}
+)
 
 var (
 	DatasetIdentityFormat = gcpurls.Template[DatasetIdentity]("bigquery.googleapis.com", "projects/{project}/datasets/{dataset}")
@@ -56,74 +59,44 @@ func (i *DatasetIdentity) FromExternal(ref string) error {
 	return nil
 }
 
-func (i *DatasetIdentity) ID() string {
-	return i.Dataset
+func (i *DatasetIdentity) Host() string {
+	return DatasetIdentityFormat.Host()
 }
 
-func (i *DatasetIdentity) Parent() *DatasetParent {
-	return &DatasetParent{ProjectID: i.Project}
-}
-
-type DatasetParent struct {
-	ProjectID string
-}
-
-func (p *DatasetParent) String() string {
-	return "projects/" + p.ProjectID
-}
-
-// New builds a DatasetIdentity from the Config Connector Dataset object.
-func NewDatasetIdentity(ctx context.Context, reader client.Reader, obj *BigQueryDataset) (*DatasetIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func getIdentityFromBigQueryDatasetSpec(ctx context.Context, reader client.Reader, obj client.Object) (*DatasetIdentity, error) {
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
-		return nil, err
-	}
-	if projectRef == nil {
-		return nil, fmt.Errorf("cannot resolve projectRef: obj.Spec.ProjectRef not defined")
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
-	// Use approved External
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		actualIdentity := &DatasetIdentity{}
-		if err := actualIdentity.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
-		if actualIdentity.Project != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.Project, projectID)
-		}
-		if actualIdentity.Dataset != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualIdentity.Dataset)
-		}
-	}
 	return &DatasetIdentity{
 		Project: projectID,
 		Dataset: resourceID,
 	}, nil
 }
 
-// Deprecated: prefer FromExternal
-func ParseDatasetExternal(external string) (parent *DatasetParent, resourceID string, err error) {
-	id := &DatasetIdentity{}
-	if err := id.FromExternal(external); err != nil {
-		return nil, "", err
+func (obj *BigQueryDataset) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromBigQueryDatasetSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
 	}
-	return id.Parent(), id.ID(), nil
+
+	// Use approved External
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		statusIdentity := &DatasetIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change BigQueryDataset identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+	return specIdentity, nil
 }

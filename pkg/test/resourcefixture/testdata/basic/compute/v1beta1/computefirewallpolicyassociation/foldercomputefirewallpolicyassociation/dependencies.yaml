@@ -15,6 +15,8 @@
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Folder
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: folder-${uniqueId}
 spec:
   displayName: KCC ${uniqueId}
@@ -24,6 +26,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeFirewallPolicy
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: firewallpolicy-${uniqueId}
 spec:
   organizationRef:

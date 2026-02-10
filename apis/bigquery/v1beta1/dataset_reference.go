@@ -16,17 +16,21 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &DatasetRef{}
+func init() {
+	refs.Register(&DatasetRef{})
+}
+
+var _ refs.Ref = &DatasetRef{}
+var _ refs.ExternalRef = &DatasetRef{}
 
 // DatasetRef defines the resource reference to BigQueryDataset, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -74,34 +78,19 @@ func (r *DatasetRef) ValidateExternal(ref string) error {
 
 func (r *DatasetRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		// BigQueryDataset is still TF based so we resolve the reference from the object
-		// BUT only construct the reference if the resource is ready
-		resource, err := k8s.NewResource(u)
+		identity, err := getIdentityFromBigQueryDatasetSpec(ctx, reader, u)
 		if err != nil {
 			return ""
 		}
-		if !k8s.IsResourceReady(resource) {
-			return ""
-		}
-
-		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-		if err != nil {
-			return ""
-		}
-		datasetID, err := refsv1beta1.GetResourceID(u)
-		if err != nil {
-			return ""
-		}
-		return fmt.Sprintf("projects/%s/datasets/%s", projectID, datasetID)
+		return identity.String()
 	}
-	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, otherNamespace, fallback)
+	return refs.NormalizeWithFallback(ctx, reader, r, otherNamespace, fallback)
 }
 
-// NormalizedExternal is a helper function to resolve the external reference.
-// Deprecated: Use Normalize instead.
-func (r *DatasetRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
-		return "", err
+func (r *DatasetRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &DatasetIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
 	}
-	return r.External, nil
+	return id, nil
 }

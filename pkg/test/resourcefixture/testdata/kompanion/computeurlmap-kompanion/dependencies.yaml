@@ -1,6 +1,8 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computeurlmap-kompanion-default-${uniqueId}
 spec:
   description: Default Backend Service for computeurlmap-kompanion
@@ -13,6 +15,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computeurlmap-kompanion-chaosmonkey-${uniqueId}
 spec:
   description: Chaosmonkey Backend Service for computeurlmap-kompanion
@@ -25,6 +29,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computeurlmap-kompanion-chaosmonkeymulti-${uniqueId}
 spec:
   description: Chaosmonkeymulti Backend Service for computeurlmap-kompanion

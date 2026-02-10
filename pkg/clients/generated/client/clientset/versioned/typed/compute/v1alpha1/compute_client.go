@@ -38,7 +38,10 @@ type ComputeV1alpha1Interface interface {
 	ComputeGlobalNetworkEndpointsGetter
 	ComputeGlobalNetworkEndpointGroupsGetter
 	ComputeInstanceGroupNamedPortsGetter
+	ComputeInterconnectsGetter
 	ComputeMachineImagesGetter
+	ComputeNetworkAttachmentsGetter
+	ComputeNetworkEdgeSecurityServicesGetter
 	ComputeNetworkEndpointsGetter
 	ComputeNetworkFirewallPolicyRulesGetter
 	ComputeNetworkPeeringRoutesConfigsGetter
@@ -85,8 +88,20 @@ func (c *ComputeV1alpha1Client) ComputeInstanceGroupNamedPorts(namespace string)
 	return newComputeInstanceGroupNamedPorts(c, namespace)
 }
 
+func (c *ComputeV1alpha1Client) ComputeInterconnects(namespace string) ComputeInterconnectInterface {
+	return newComputeInterconnects(c, namespace)
+}
+
 func (c *ComputeV1alpha1Client) ComputeMachineImages(namespace string) ComputeMachineImageInterface {
 	return newComputeMachineImages(c, namespace)
+}
+
+func (c *ComputeV1alpha1Client) ComputeNetworkAttachments(namespace string) ComputeNetworkAttachmentInterface {
+	return newComputeNetworkAttachments(c, namespace)
+}
+
+func (c *ComputeV1alpha1Client) ComputeNetworkEdgeSecurityServices(namespace string) ComputeNetworkEdgeSecurityServiceInterface {
+	return newComputeNetworkEdgeSecurityServices(c, namespace)
 }
 
 func (c *ComputeV1alpha1Client) ComputeNetworkEndpoints(namespace string) ComputeNetworkEndpointInterface {

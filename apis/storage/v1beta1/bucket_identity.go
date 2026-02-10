@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
@@ -61,6 +62,14 @@ func ParseStorageBucketExternal(external string) (*StorageBucketIdentity, error)
 }
 
 func (i *StorageBucketIdentity) FromExternal(ref string) error {
+	if strings.HasPrefix(ref, "gs://") {
+		bucket := strings.TrimPrefix(ref, "gs://")
+		if !strings.Contains(bucket, "/") {
+			i.Bucket = bucket
+			i.Project = ""
+			return nil
+		}
+	}
 	parsed, match, err := StorageBucketIdentityFormat.Parse(ref)
 	if err != nil {
 		return fmt.Errorf("format of StorageBucket external=%q was not known (use %s): %w", ref, StorageBucketURLFormat, err)

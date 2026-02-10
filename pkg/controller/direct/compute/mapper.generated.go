@@ -27,6 +27,90 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSecurityPolicyObservedState{}
+	// MISSING: CreationTimestamp
+	// MISSING: DdosProtectionConfig
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: UserDefinedFields
+	return out
+}
+func ComputeSecurityPolicyObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSecurityPolicyObservedState) *pb.SecurityPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicy{}
+	// MISSING: CreationTimestamp
+	// MISSING: DdosProtectionConfig
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: UserDefinedFields
+	return out
+}
+func ComputeSecurityPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeSecurityPolicySpec{}
+	out.AdaptiveProtectionConfig = SecurityPolicyAdaptiveProtectionConfig_v1beta1_FromProto(mapCtx, in.GetAdaptiveProtectionConfig())
+	out.AdvancedOptionsConfig = SecurityPolicyAdvancedOptionsConfig_v1beta1_FromProto(mapCtx, in.GetAdvancedOptionsConfig())
+	// MISSING: CreationTimestamp
+	// MISSING: DdosProtectionConfig
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	out.RecaptchaOptionsConfig = SecurityPolicyRecaptchaOptionsConfig_v1beta1_FromProto(mapCtx, in.GetRecaptchaOptionsConfig())
+	// MISSING: Region
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, SecurityPolicyRule_v1beta1_FromProto)
+	// MISSING: SelfLink
+	out.Type = in.Type
+	// MISSING: UserDefinedFields
+	return out
+}
+func ComputeSecurityPolicySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeSecurityPolicySpec) *pb.SecurityPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicy{}
+	out.AdaptiveProtectionConfig = SecurityPolicyAdaptiveProtectionConfig_v1beta1_ToProto(mapCtx, in.AdaptiveProtectionConfig)
+	out.AdvancedOptionsConfig = SecurityPolicyAdvancedOptionsConfig_v1beta1_ToProto(mapCtx, in.AdvancedOptionsConfig)
+	// MISSING: CreationTimestamp
+	// MISSING: DdosProtectionConfig
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	out.RecaptchaOptionsConfig = SecurityPolicyRecaptchaOptionsConfig_v1beta1_ToProto(mapCtx, in.RecaptchaOptionsConfig)
+	// MISSING: Region
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, SecurityPolicyRule_v1beta1_ToProto)
+	// MISSING: SelfLink
+	out.Type = in.Type
+	// MISSING: UserDefinedFields
+	return out
+}
 func ComputeSubnetworkSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subnetwork) *krm.ComputeSubnetworkSpec {
 	if in == nil {
 		return nil
@@ -177,6 +261,28 @@ func ComputeSubnetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: State
 	// MISSING: SystemReservedExternalIPV6Ranges
 	// MISSING: SystemReservedInternalIPV6Ranges
+	return out
+}
+func Expr_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Expr) *krm.Expr {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Expr{}
+	out.Description = in.Description
+	out.Expression = in.Expression
+	out.Location = in.Location
+	out.Title = in.Title
+	return out
+}
+func Expr_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Expr) *pb.Expr {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Expr{}
+	out.Description = in.Description
+	out.Expression = in.Expression
+	out.Location = in.Location
+	out.Title = in.Title
 	return out
 }
 func FirewallPolicyRuleMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
@@ -409,6 +515,412 @@ func NetworkAttachmentConnectedEndpoint_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.Status = in.Status
 	out.Subnetwork = in.Subnetwork
 	out.SubnetworkCidrRange = in.SubnetworkCIDRRange
+	return out
+}
+func SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig) *krm.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig{}
+	out.AutoDeployConfidenceThreshold = in.AutoDeployConfidenceThreshold
+	out.AutoDeployExpirationSec = in.AutoDeployExpirationSec
+	out.AutoDeployImpactedBaselineThreshold = in.AutoDeployImpactedBaselineThreshold
+	out.AutoDeployLoadThreshold = in.AutoDeployLoadThreshold
+	out.DetectionAbsoluteQps = in.DetectionAbsoluteQps
+	out.DetectionLoadThreshold = in.DetectionLoadThreshold
+	out.DetectionRelativeToBaselineQps = in.DetectionRelativeToBaselineQps
+	out.Name = in.Name
+	out.TrafficGranularityConfigs = direct.Slice_FromProto(mapCtx, in.TrafficGranularityConfigs, SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig_v1beta1_FromProto)
+	return out
+}
+func SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig) *pb.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig{}
+	out.AutoDeployConfidenceThreshold = in.AutoDeployConfidenceThreshold
+	out.AutoDeployExpirationSec = in.AutoDeployExpirationSec
+	out.AutoDeployImpactedBaselineThreshold = in.AutoDeployImpactedBaselineThreshold
+	out.AutoDeployLoadThreshold = in.AutoDeployLoadThreshold
+	out.DetectionAbsoluteQps = in.DetectionAbsoluteQps
+	out.DetectionLoadThreshold = in.DetectionLoadThreshold
+	out.DetectionRelativeToBaselineQps = in.DetectionRelativeToBaselineQps
+	out.Name = in.Name
+	out.TrafficGranularityConfigs = direct.Slice_ToProto(mapCtx, in.TrafficGranularityConfigs, SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig_v1beta1_ToProto)
+	return out
+}
+func SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig) *krm.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig{}
+	out.EnableEachUniqueValue = in.EnableEachUniqueValue
+	out.Type = in.Type
+	out.Value = in.Value
+	return out
+}
+func SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig) *pb.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig{}
+	out.EnableEachUniqueValue = in.EnableEachUniqueValue
+	out.Type = in.Type
+	out.Value = in.Value
+	return out
+}
+func SecurityPolicyAdvancedOptionsConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAdvancedOptionsConfig) *krm.SecurityPolicyAdvancedOptionsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyAdvancedOptionsConfig{}
+	out.JsonCustomConfig = SecurityPolicyAdvancedOptionsConfigJsonCustomConfig_v1beta1_FromProto(mapCtx, in.GetJsonCustomConfig())
+	out.JsonParsing = in.JsonParsing
+	out.LogLevel = in.LogLevel
+	out.UserIPRequestHeaders = in.UserIpRequestHeaders
+	return out
+}
+func SecurityPolicyAdvancedOptionsConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyAdvancedOptionsConfig) *pb.SecurityPolicyAdvancedOptionsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyAdvancedOptionsConfig{}
+	out.JsonCustomConfig = SecurityPolicyAdvancedOptionsConfigJsonCustomConfig_v1beta1_ToProto(mapCtx, in.JsonCustomConfig)
+	out.JsonParsing = in.JsonParsing
+	out.LogLevel = in.LogLevel
+	out.UserIpRequestHeaders = in.UserIPRequestHeaders
+	return out
+}
+func SecurityPolicyAdvancedOptionsConfigJsonCustomConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig) *krm.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig{}
+	out.ContentTypes = in.ContentTypes
+	return out
+}
+func SecurityPolicyAdvancedOptionsConfigJsonCustomConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig) *pb.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig{}
+	out.ContentTypes = in.ContentTypes
+	return out
+}
+func SecurityPolicyDdosProtectionConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyDdosProtectionConfig) *krm.SecurityPolicyDdosProtectionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyDdosProtectionConfig{}
+	out.DdosProtection = in.DdosProtection
+	return out
+}
+func SecurityPolicyDdosProtectionConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyDdosProtectionConfig) *pb.SecurityPolicyDdosProtectionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyDdosProtectionConfig{}
+	out.DdosProtection = in.DdosProtection
+	return out
+}
+func SecurityPolicyRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRule) *krm.SecurityPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRule{}
+	out.Action = in.Action
+	out.Description = in.Description
+	out.HeaderAction = SecurityPolicyRuleHTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
+	// MISSING: Kind
+	out.Match = SecurityPolicyRuleMatcher_v1beta1_FromProto(mapCtx, in.GetMatch())
+	// MISSING: NetworkMatch
+	out.PreconfiguredWafConfig = SecurityPolicyRulePreconfiguredWafConfig_v1beta1_FromProto(mapCtx, in.GetPreconfiguredWafConfig())
+	out.Preview = in.Preview
+	out.Priority = in.Priority
+	out.RateLimitOptions = SecurityPolicyRuleRateLimitOptions_v1beta1_FromProto(mapCtx, in.GetRateLimitOptions())
+	out.RedirectOptions = SecurityPolicyRuleRedirectOptions_v1beta1_FromProto(mapCtx, in.GetRedirectOptions())
+	return out
+}
+func SecurityPolicyRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRule) *pb.SecurityPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRule{}
+	out.Action = in.Action
+	out.Description = in.Description
+	out.HeaderAction = SecurityPolicyRuleHTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
+	// MISSING: Kind
+	out.Match = SecurityPolicyRuleMatcher_v1beta1_ToProto(mapCtx, in.Match)
+	// MISSING: NetworkMatch
+	out.PreconfiguredWafConfig = SecurityPolicyRulePreconfiguredWafConfig_v1beta1_ToProto(mapCtx, in.PreconfiguredWafConfig)
+	out.Preview = in.Preview
+	out.Priority = in.Priority
+	out.RateLimitOptions = SecurityPolicyRuleRateLimitOptions_v1beta1_ToProto(mapCtx, in.RateLimitOptions)
+	out.RedirectOptions = SecurityPolicyRuleRedirectOptions_v1beta1_ToProto(mapCtx, in.RedirectOptions)
+	return out
+}
+func SecurityPolicyRuleHTTPHeaderAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRuleHttpHeaderAction) *krm.SecurityPolicyRuleHTTPHeaderAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRuleHTTPHeaderAction{}
+	out.RequestHeadersToAdds = direct.Slice_FromProto(mapCtx, in.RequestHeadersToAdds, SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption_v1beta1_FromProto)
+	return out
+}
+func SecurityPolicyRuleHTTPHeaderAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRuleHTTPHeaderAction) *pb.SecurityPolicyRuleHttpHeaderAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRuleHttpHeaderAction{}
+	out.RequestHeadersToAdds = direct.Slice_ToProto(mapCtx, in.RequestHeadersToAdds, SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption_v1beta1_ToProto)
+	return out
+}
+func SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRuleHttpHeaderActionHttpHeaderOption) *krm.SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption{}
+	out.HeaderName = in.HeaderName
+	out.HeaderValue = in.HeaderValue
+	return out
+}
+func SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRuleHTTPHeaderActionHTTPHeaderOption) *pb.SecurityPolicyRuleHttpHeaderActionHttpHeaderOption {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRuleHttpHeaderActionHttpHeaderOption{}
+	out.HeaderName = in.HeaderName
+	out.HeaderValue = in.HeaderValue
+	return out
+}
+func SecurityPolicyRuleMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRuleMatcher) *krm.SecurityPolicyRuleMatcher {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRuleMatcher{}
+	out.Config = SecurityPolicyRuleMatcherConfig_v1beta1_FromProto(mapCtx, in.GetConfig())
+	out.Expr = SecurityPolicyRuleMatcherExpr_v1beta1_FromProto(mapCtx, in.GetExpr())
+	// MISSING: ExprOptions
+	out.VersionedExpr = in.VersionedExpr
+	return out
+}
+func SecurityPolicyRuleMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRuleMatcher) *pb.SecurityPolicyRuleMatcher {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRuleMatcher{}
+	out.Config = SecurityPolicyRuleMatcherConfig_v1beta1_ToProto(mapCtx, in.Config)
+	out.Expr = SecurityPolicyRuleMatcherExpr_v1beta1_ToProto(mapCtx, in.Expr)
+	// MISSING: ExprOptions
+	out.VersionedExpr = in.VersionedExpr
+	return out
+}
+func SecurityPolicyRuleMatcherConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRuleMatcherConfig) *krm.SecurityPolicyRuleMatcherConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRuleMatcherConfig{}
+	out.SrcIPRanges = in.SrcIpRanges
+	return out
+}
+func SecurityPolicyRuleMatcherConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRuleMatcherConfig) *pb.SecurityPolicyRuleMatcherConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRuleMatcherConfig{}
+	out.SrcIpRanges = in.SrcIPRanges
+	return out
+}
+func SecurityPolicyRuleMatcherExprOptions_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRuleMatcherExprOptions) *krm.SecurityPolicyRuleMatcherExprOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRuleMatcherExprOptions{}
+	out.RecaptchaOptions = SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions_v1beta1_FromProto(mapCtx, in.GetRecaptchaOptions())
+	return out
+}
+func SecurityPolicyRuleMatcherExprOptions_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRuleMatcherExprOptions) *pb.SecurityPolicyRuleMatcherExprOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRuleMatcherExprOptions{}
+	out.RecaptchaOptions = SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions_v1beta1_ToProto(mapCtx, in.RecaptchaOptions)
+	return out
+}
+func SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions) *krm.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions{}
+	out.ActionTokenSiteKeys = in.ActionTokenSiteKeys
+	out.SessionTokenSiteKeys = in.SessionTokenSiteKeys
+	return out
+}
+func SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions) *pb.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions{}
+	out.ActionTokenSiteKeys = in.ActionTokenSiteKeys
+	out.SessionTokenSiteKeys = in.SessionTokenSiteKeys
+	return out
+}
+func SecurityPolicyRuleNetworkMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRuleNetworkMatcher) *krm.SecurityPolicyRuleNetworkMatcher {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRuleNetworkMatcher{}
+	out.DestIPRanges = in.DestIpRanges
+	out.DestPorts = in.DestPorts
+	out.IPProtocols = in.IpProtocols
+	out.SrcAsns = in.SrcAsns
+	out.SrcIPRanges = in.SrcIpRanges
+	out.SrcPorts = in.SrcPorts
+	out.SrcRegionCodes = in.SrcRegionCodes
+	out.UserDefinedFields = direct.Slice_FromProto(mapCtx, in.UserDefinedFields, SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch_v1beta1_FromProto)
+	return out
+}
+func SecurityPolicyRuleNetworkMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRuleNetworkMatcher) *pb.SecurityPolicyRuleNetworkMatcher {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRuleNetworkMatcher{}
+	out.DestIpRanges = in.DestIPRanges
+	out.DestPorts = in.DestPorts
+	out.IpProtocols = in.IPProtocols
+	out.SrcAsns = in.SrcAsns
+	out.SrcIpRanges = in.SrcIPRanges
+	out.SrcPorts = in.SrcPorts
+	out.SrcRegionCodes = in.SrcRegionCodes
+	out.UserDefinedFields = direct.Slice_ToProto(mapCtx, in.UserDefinedFields, SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch_v1beta1_ToProto)
+	return out
+}
+func SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch) *krm.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch{}
+	out.Name = in.Name
+	out.Values = in.Values
+	return out
+}
+func SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch) *pb.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch{}
+	out.Name = in.Name
+	out.Values = in.Values
+	return out
+}
+func SecurityPolicyRuleRateLimitOptions_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRuleRateLimitOptions) *krm.SecurityPolicyRuleRateLimitOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRuleRateLimitOptions{}
+	out.BanDurationSec = in.BanDurationSec
+	out.BanThreshold = SecurityPolicyRuleRateLimitOptionsThreshold_v1beta1_FromProto(mapCtx, in.GetBanThreshold())
+	out.ConformAction = in.ConformAction
+	out.EnforceOnKey = in.EnforceOnKey
+	out.EnforceOnKeyConfigs = direct.Slice_FromProto(mapCtx, in.EnforceOnKeyConfigs, SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig_v1beta1_FromProto)
+	out.EnforceOnKeyName = in.EnforceOnKeyName
+	out.ExceedAction = in.ExceedAction
+	out.ExceedRedirectOptions = SecurityPolicyRuleRedirectOptions_v1beta1_FromProto(mapCtx, in.GetExceedRedirectOptions())
+	out.RateLimitThreshold = SecurityPolicyRuleRateLimitOptionsThreshold_v1beta1_FromProto(mapCtx, in.GetRateLimitThreshold())
+	return out
+}
+func SecurityPolicyRuleRateLimitOptions_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRuleRateLimitOptions) *pb.SecurityPolicyRuleRateLimitOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRuleRateLimitOptions{}
+	out.BanDurationSec = in.BanDurationSec
+	out.BanThreshold = SecurityPolicyRuleRateLimitOptionsThreshold_v1beta1_ToProto(mapCtx, in.BanThreshold)
+	out.ConformAction = in.ConformAction
+	out.EnforceOnKey = in.EnforceOnKey
+	out.EnforceOnKeyConfigs = direct.Slice_ToProto(mapCtx, in.EnforceOnKeyConfigs, SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig_v1beta1_ToProto)
+	out.EnforceOnKeyName = in.EnforceOnKeyName
+	out.ExceedAction = in.ExceedAction
+	out.ExceedRedirectOptions = SecurityPolicyRuleRedirectOptions_v1beta1_ToProto(mapCtx, in.ExceedRedirectOptions)
+	out.RateLimitThreshold = SecurityPolicyRuleRateLimitOptionsThreshold_v1beta1_ToProto(mapCtx, in.RateLimitThreshold)
+	return out
+}
+func SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig) *krm.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig{}
+	out.EnforceOnKeyName = in.EnforceOnKeyName
+	out.EnforceOnKeyType = in.EnforceOnKeyType
+	return out
+}
+func SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig) *pb.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig{}
+	out.EnforceOnKeyName = in.EnforceOnKeyName
+	out.EnforceOnKeyType = in.EnforceOnKeyType
+	return out
+}
+func SecurityPolicyRuleRateLimitOptionsThreshold_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRuleRateLimitOptionsThreshold) *krm.SecurityPolicyRuleRateLimitOptionsThreshold {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRuleRateLimitOptionsThreshold{}
+	out.Count = in.Count
+	out.IntervalSec = in.IntervalSec
+	return out
+}
+func SecurityPolicyRuleRateLimitOptionsThreshold_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRuleRateLimitOptionsThreshold) *pb.SecurityPolicyRuleRateLimitOptionsThreshold {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRuleRateLimitOptionsThreshold{}
+	out.Count = in.Count
+	out.IntervalSec = in.IntervalSec
+	return out
+}
+func SecurityPolicyRuleRedirectOptions_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyRuleRedirectOptions) *krm.SecurityPolicyRuleRedirectOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyRuleRedirectOptions{}
+	out.Target = in.Target
+	out.Type = in.Type
+	return out
+}
+func SecurityPolicyRuleRedirectOptions_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyRuleRedirectOptions) *pb.SecurityPolicyRuleRedirectOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyRuleRedirectOptions{}
+	out.Target = in.Target
+	out.Type = in.Type
+	return out
+}
+func SecurityPolicyUserDefinedField_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyUserDefinedField) *krm.SecurityPolicyUserDefinedField {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecurityPolicyUserDefinedField{}
+	out.Base = in.Base
+	out.Mask = in.Mask
+	out.Name = in.Name
+	out.Offset = in.Offset
+	out.Size = in.Size
+	return out
+}
+func SecurityPolicyUserDefinedField_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPolicyUserDefinedField) *pb.SecurityPolicyUserDefinedField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityPolicyUserDefinedField{}
+	out.Base = in.Base
+	out.Mask = in.Mask
+	out.Name = in.Name
+	out.Offset = in.Offset
+	out.Size = in.Size
 	return out
 }
 func SubnetworkLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SubnetworkLogConfig) *krm.SubnetworkLogConfig {

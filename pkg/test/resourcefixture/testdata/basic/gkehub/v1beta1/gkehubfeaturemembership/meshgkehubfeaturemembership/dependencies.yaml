@@ -16,6 +16,7 @@ apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
   name: gkehubfm-${uniqueId}
 spec:
@@ -30,6 +31,7 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
     cnrm.cloud.google.com/deletion-policy: "abandon"
   name: container.googleapis.com
@@ -38,6 +40,7 @@ apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   name: gke-mesh-${uniqueId}
 spec:
@@ -50,6 +53,7 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
     cnrm.cloud.google.com/deletion-policy: "abandon"
   name: anthos.googleapis.com
@@ -58,6 +62,7 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
     # Abandon the resource to unblock cleanup; Otherwise it fails with error message
     # "Error waiting for api to disable ... ensure there are no more resources managed
@@ -69,6 +74,7 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
     cnrm.cloud.google.com/deletion-policy: "abandon"
   name: mesh.googleapis.com
@@ -76,6 +82,8 @@ metadata:
 apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubFeature
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: gkehubfeature-mesh-${uniqueId}
 spec:
   projectRef:
@@ -87,6 +95,7 @@ apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubMembership
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   name: gkehubmembership-mesh-${uniqueId}
 spec:

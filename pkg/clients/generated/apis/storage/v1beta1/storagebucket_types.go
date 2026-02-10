@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type BucketAction struct {
 	/* The target Storage Class of objects affected by this Lifecycle Rule. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. */
@@ -115,7 +118,7 @@ type BucketCors struct {
 }
 
 type BucketCustomPlacementConfig struct {
-	/* Immutable. The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions. Note: If any of the data_locations changes, it will recreate the bucket. */
+	/* The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions. */
 	DataLocations []string `json:"dataLocations"`
 }
 
@@ -200,7 +203,7 @@ type StorageBucketSpec struct {
 	// +optional
 	LifecycleRule []BucketLifecycleRule `json:"lifecycleRule,omitempty"`
 
-	/* Immutable. The Google Cloud Storage location. */
+	/* The Google Cloud Storage location. */
 	// +optional
 	Location *string `json:"location,omitempty"`
 
