@@ -79,10 +79,35 @@ spec:
 
                        This field is only set for a secondary instance.
                     properties:
-                      instance:
+                      instanceRef:
                         description: 'Optional. The full resource path of the remote
                           instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
                     type: object
                   secondaryInstances:
                     description: |-
@@ -92,10 +117,36 @@ spec:
                        This field is only set for a primary instance.
                     items:
                       properties:
-                        instance:
+                        instanceRef:
                           description: 'Optional. The full resource path of the remote
                             instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
-                          type: string
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed MemorystoreInstance
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                              type: string
+                            name:
+                              description: The name of a MemorystoreInstance resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a MemorystoreInstance
+                                resource.
+                              type: string
+                          type: object
                       type: object
                     type: array
                 type: object
@@ -384,10 +435,6 @@ spec:
                             description: Output only. The primary instance that acts
                               as the source of replication for the secondary instances.
                             properties:
-                              instance:
-                                description: 'Optional. The full resource path of
-                                  the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
-                                type: string
                               uid:
                                 description: Output only. The unique identifier of
                                   the remote instance.
@@ -398,10 +445,6 @@ spec:
                               replicating from the primary instance.
                             items:
                               properties:
-                                instance:
-                                  description: 'Optional. The full resource path of
-                                    the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
-                                  type: string
                                 uid:
                                   description: Output only. The unique identifier
                                     of the remote instance.
@@ -416,10 +459,6 @@ spec:
 
                            This field is only set for a secondary instance.
                         properties:
-                          instance:
-                            description: 'Optional. The full resource path of the
-                              remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
-                            type: string
                           uid:
                             description: Output only. The unique identifier of the
                               remote instance.
@@ -575,10 +614,35 @@ spec:
 
                        This field is only set for a secondary instance.
                     properties:
-                      instance:
+                      instanceRef:
                         description: 'Optional. The full resource path of the remote
                           instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
                     type: object
                   secondaryInstances:
                     description: |-
@@ -588,10 +652,36 @@ spec:
                        This field is only set for a primary instance.
                     items:
                       properties:
-                        instance:
+                        instanceRef:
                           description: 'Optional. The full resource path of the remote
                             instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
-                          type: string
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed MemorystoreInstance
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                              type: string
+                            name:
+                              description: The name of a MemorystoreInstance resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a MemorystoreInstance
+                                resource.
+                              type: string
+                          type: object
                       type: object
                     type: array
                 type: object
@@ -880,10 +970,6 @@ spec:
                             description: Output only. The primary instance that acts
                               as the source of replication for the secondary instances.
                             properties:
-                              instance:
-                                description: 'Optional. The full resource path of
-                                  the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
-                                type: string
                               uid:
                                 description: Output only. The unique identifier of
                                   the remote instance.
@@ -894,10 +980,6 @@ spec:
                               replicating from the primary instance.
                             items:
                               properties:
-                                instance:
-                                  description: 'Optional. The full resource path of
-                                    the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
-                                  type: string
                                 uid:
                                   description: Output only. The unique identifier
                                     of the remote instance.
@@ -912,10 +994,6 @@ spec:
 
                            This field is only set for a secondary instance.
                         properties:
-                          instance:
-                            description: 'Optional. The full resource path of the
-                              remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
-                            type: string
                           uid:
                             description: Output only. The unique identifier of the
                               remote instance.
