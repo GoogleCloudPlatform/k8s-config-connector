@@ -498,7 +498,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
@@ -836,7 +835,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
@@ -1174,7 +1172,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
@@ -1512,7 +1509,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
@@ -1887,7 +1883,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
@@ -2225,7 +2220,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },
@@ -2563,7 +2557,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog"
     },

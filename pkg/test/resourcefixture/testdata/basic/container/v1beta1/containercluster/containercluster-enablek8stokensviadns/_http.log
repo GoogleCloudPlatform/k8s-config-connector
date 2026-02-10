@@ -226,7 +226,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": true,
       "endpoint": "gke-12345trewq-${projectNumber}.us-west2.gke.goog"
     },
@@ -571,7 +570,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": true,
       "endpoint": "gke-12345trewq-${projectNumber}.us-west2.gke.goog"
     },
@@ -916,7 +914,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": true,
       "endpoint": "gke-12345trewq-${projectNumber}.us-west2.gke.goog"
     },
@@ -1261,7 +1258,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": true,
       "endpoint": "gke-12345trewq-${projectNumber}.us-west2.gke.goog"
     },
@@ -1647,7 +1643,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-west2.gke.goog"
     },
@@ -1992,7 +1987,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-west2.gke.goog"
     },
@@ -2337,7 +2331,6 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
-      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-west2.gke.goog"
     },
