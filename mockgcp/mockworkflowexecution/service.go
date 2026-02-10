@@ -24,15 +24,13 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
 
 	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
-	grpcpb "cloud.google.com/go/workflows/executions/apiv1/executionspb"
+	executionspb "cloud.google.com/go/workflows/executions/apiv1/executionspb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/workflows/executions/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -64,26 +62,21 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	grpcpb.RegisterExecutionsServer(grpcServer, &workflowExecutionService{MockService: s})
+	executionspb.RegisterExecutionsServer(grpcServer, &workflowExecutionService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterExecutionsHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
-	)
+	mux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
 		return nil, fmt.Errorf("creating http mux: %w", err)
 	}
 
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
-	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
+	mux.AddService(executionspb.NewExecutionsClient(conn))
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+
+	mux.OverrideHeaders(func(response http.ResponseWriter) {
 		response.Header().Del("Cache-Control")
-	}
+	})
 
 	return mux, nil
 }
