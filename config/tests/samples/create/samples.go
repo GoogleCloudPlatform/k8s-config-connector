@@ -35,8 +35,8 @@ import (
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	kccutil "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
 	"github.com/ghodss/yaml" //nolint:depguard
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
