@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -26,7 +27,7 @@ var MemorystoreInstanceEndpointGVK = GroupVersion.WithKind("MemorystoreInstanceE
 // +kcc:spec:proto=google.cloud.memorystore.v1.Instance
 type MemorystoreInstanceEndpointSpec struct {
 	// The MemorystoreInstance reference.
-	InstanceRef *InstanceRef `json:"instanceRef,omitempty"`
+	InstanceRef *refsv1beta1.MemorystoreInstanceRef `json:"instanceRef,omitempty"`
 
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints

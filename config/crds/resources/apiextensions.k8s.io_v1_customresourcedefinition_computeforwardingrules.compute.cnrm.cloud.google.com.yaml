@@ -476,6 +476,50 @@ spec:
                 properties:
                   googleAPIsBundle:
                     type: string
+                  memorystoreInstanceServiceAttachmentRef:
+                    description: MemorystoreInstanceServiceAttachmentRef defines the
+                      resource reference to MemorystoreInstance managed ServiceAttachment
+                      which "ServiceAttachmentExternal" field holds the GCP identifier
+                      for the KRM object.
+                    properties:
+                      memorystoreInstanceRef:
+                        description: The MemorystoreInstance resource that the ServiceAttachment
+                          is attached to.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
+                      pscAttachmentDetailsIndex:
+                        description: The index of the PSC attachment details in the
+                          MemorystoreInstance resource.
+                        type: integer
+                      serviceAttachmentExternal:
+                        description: The MemorystoreInstance managed ServiceAttachment
+                          of the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
+                        type: string
+                    type: object
                   serviceAttachmentRef:
                     oneOf:
                     - not:

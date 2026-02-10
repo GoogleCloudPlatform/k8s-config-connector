@@ -20,7 +20,8 @@ package v1alpha1
 
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	k8sv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -187,7 +188,7 @@ func (in *MemorystoreInstanceEndpointSpec) DeepCopyInto(out *MemorystoreInstance
 	*out = *in
 	if in.InstanceRef != nil {
 		in, out := &in.InstanceRef, &out.InstanceRef
-		*out = new(InstanceRef)
+		*out = new(v1beta1.MemorystoreInstanceRef)
 		**out = **in
 	}
 	if in.Endpoints != nil {
@@ -214,7 +215,7 @@ func (in *MemorystoreInstanceEndpointStatus) DeepCopyInto(out *MemorystoreInstan
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1beta1.Condition, len(*in))
+		*out = make([]k8sv1beta1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
