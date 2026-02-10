@@ -323,6 +323,7 @@ managedkafka.cnrm.cloud.google.com,ManagedKafkaCluster,True,True,False,Direct
 managedkafka.cnrm.cloud.google.com,ManagedKafkaConsumerGroup,True,False,False,Direct
 managedkafka.cnrm.cloud.google.com,ManagedKafkaTopic,True,True,False,Direct
 memcache.cnrm.cloud.google.com,MemcacheInstance,False,True,False,Terraform
+memorystore.cnrm.cloud.google.com,MemorystoreInstanceBackup,True,False,False,Direct
 memorystore.cnrm.cloud.google.com,MemorystoreInstance,True,True,False,Direct
 metastore.cnrm.cloud.google.com,MetastoreBackup,True,True,False,Direct
 metastore.cnrm.cloud.google.com,MetastoreFederation,True,False,False,Direct
