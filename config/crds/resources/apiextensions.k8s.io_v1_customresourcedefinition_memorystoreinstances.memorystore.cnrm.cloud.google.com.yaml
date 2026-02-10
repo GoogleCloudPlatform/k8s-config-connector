@@ -65,6 +65,51 @@ spec:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
                 type: string
+              automatedBackupConfig:
+                description: Optional. The automated backup config for the instance.
+                properties:
+                  automatedBackupMode:
+                    description: Optional. The automated backup mode. If the mode
+                      is disabled, the other fields will be ignored.
+                    type: string
+                  fixedFrequencySchedule:
+                    description: Optional. Trigger automated backups at a fixed frequency.
+                    properties:
+                      startTime:
+                        description: Required. The start time of every automated backup
+                          in UTC. It must be set to the start of an hour. This field
+                          is required.
+                        properties:
+                          hours:
+                            description: Hours of day in 24 hour format. Should be
+                              from 0 to 23. An API may choose to allow the value "24:00:00"
+                              for scenarios like business closing time.
+                            format: int32
+                            type: integer
+                          minutes:
+                            description: Minutes of hour of day. Must be from 0 to
+                              59.
+                            format: int32
+                            type: integer
+                          nanos:
+                            description: Fractions of seconds in nanoseconds. Must
+                              be from 0 to 999,999,999.
+                            format: int32
+                            type: integer
+                          seconds:
+                            description: Seconds of minutes of the time. Must normally
+                              be from 0 to 59. An API may allow the value 60 if it
+                              allows leap-seconds.
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
+                  retention:
+                    description: Optional. How long to keep automated backups before
+                      the backups are deleted. The value should be between 1 day and
+                      365 days. If not specified, the default value is 35 days.
+                    type: string
+                type: object
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -168,6 +213,18 @@ spec:
               engineVersion:
                 description: Optional. Immutable. Engine version of the instance.
                 type: string
+              gcsBackupSource:
+                description: Optional.Backups that stored in Cloud Storage buckets.
+                  The Cloud Storage buckets need to be the same region as the instances.
+                  Read permission is required to import from the provided Cloud Storage
+                  Objects.
+                properties:
+                  uris:
+                    description: 'Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2'
+                    items:
+                      type: string
+                    type: array
+                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -179,6 +236,43 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              managedBackupSource:
+                description: Optional. Backups that generated and managed by memorystore
+                  service.
+                properties:
+                  backup:
+                    description: 'Optional. Example: //memorystore.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
+                      A shorter version (without the prefix) of the backup name is
+                      also supported, like projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
+                      In this case, it assumes the backup is under memorystore.googleapis.com.'
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed MemorystoreInstanceBackup
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backupCollections/{{backupCollectionName}}/backups/{{backupID}}".
+                        type: string
+                      name:
+                        description: The name of a MemorystoreInstanceBackup resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a MemorystoreInstanceBackup
+                          resource.
+                        type: string
+                    type: object
+                type: object
               mode:
                 description: Optional. The mode config for the instance.
                 type: string
@@ -326,6 +420,10 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  backupCollection:
+                    description: 'Output only. The backup collection full resource
+                      name. Example: projects/{project}/locations/{location}/backupCollections/{collection}'
+                    type: string
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
@@ -460,6 +558,51 @@ spec:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
                 type: string
+              automatedBackupConfig:
+                description: Optional. The automated backup config for the instance.
+                properties:
+                  automatedBackupMode:
+                    description: Optional. The automated backup mode. If the mode
+                      is disabled, the other fields will be ignored.
+                    type: string
+                  fixedFrequencySchedule:
+                    description: Optional. Trigger automated backups at a fixed frequency.
+                    properties:
+                      startTime:
+                        description: Required. The start time of every automated backup
+                          in UTC. It must be set to the start of an hour. This field
+                          is required.
+                        properties:
+                          hours:
+                            description: Hours of day in 24 hour format. Should be
+                              from 0 to 23. An API may choose to allow the value "24:00:00"
+                              for scenarios like business closing time.
+                            format: int32
+                            type: integer
+                          minutes:
+                            description: Minutes of hour of day. Must be from 0 to
+                              59.
+                            format: int32
+                            type: integer
+                          nanos:
+                            description: Fractions of seconds in nanoseconds. Must
+                              be from 0 to 999,999,999.
+                            format: int32
+                            type: integer
+                          seconds:
+                            description: Seconds of minutes of the time. Must normally
+                              be from 0 to 59. An API may allow the value 60 if it
+                              allows leap-seconds.
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
+                  retention:
+                    description: Optional. How long to keep automated backups before
+                      the backups are deleted. The value should be between 1 day and
+                      365 days. If not specified, the default value is 35 days.
+                    type: string
+                type: object
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -563,6 +706,18 @@ spec:
               engineVersion:
                 description: Optional. Immutable. Engine version of the instance.
                 type: string
+              gcsBackupSource:
+                description: Optional.Backups that stored in Cloud Storage buckets.
+                  The Cloud Storage buckets need to be the same region as the instances.
+                  Read permission is required to import from the provided Cloud Storage
+                  Objects.
+                properties:
+                  uris:
+                    description: 'Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2'
+                    items:
+                      type: string
+                    type: array
+                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -574,6 +729,43 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              managedBackupSource:
+                description: Optional. Backups that generated and managed by memorystore
+                  service.
+                properties:
+                  backup:
+                    description: 'Optional. Example: //memorystore.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
+                      A shorter version (without the prefix) of the backup name is
+                      also supported, like projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
+                      In this case, it assumes the backup is under memorystore.googleapis.com.'
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed MemorystoreInstanceBackup
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backupCollections/{{backupCollectionName}}/backups/{{backupID}}".
+                        type: string
+                      name:
+                        description: The name of a MemorystoreInstanceBackup resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a MemorystoreInstanceBackup
+                          resource.
+                        type: string
+                    type: object
+                type: object
               mode:
                 description: Optional. The mode config for the instance.
                 type: string
@@ -721,6 +913,10 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  backupCollection:
+                    description: 'Output only. The backup collection full resource
+                      name. Example: projects/{project}/locations/{location}/backupCollections/{collection}'
+                    type: string
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
