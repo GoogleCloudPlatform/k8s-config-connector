@@ -64,16 +64,9 @@ func (i *BigQueryTableIdentity) Host() string {
 }
 
 func getIdentityFromBigQueryTableSpec(ctx context.Context, reader client.Reader, obj client.Object) (*BigQueryTableIdentity, error) {
-	bigQueryTable, ok := obj.(*BigQueryTable)
-	if !ok {
-		u, ok := obj.(*unstructured.Unstructured)
-		if !ok {
-			return nil, fmt.Errorf("expected *BigQueryTable or *unstructured.Unstructured, got %T", obj)
-		}
-		bigQueryTable = &BigQueryTable{}
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, bigQueryTable); err != nil {
-			return nil, fmt.Errorf("error converting unstructured to BigQueryTable: %w", err)
-		}
+	bigQueryTable, err := TypedCopy[BigQueryTable](obj)
+	if err != nil {
+		return nil, err
 	}
 
 	if err := bigQueryTable.Spec.DatasetRef.Normalize(ctx, reader, bigQueryTable.GetNamespace()); err != nil {
@@ -112,20 +105,41 @@ func (obj *BigQueryTable) GetIdentity(ctx context.Context, reader client.Reader)
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualIdentity := &BigQueryTableIdentity{}
-		if err := actualIdentity.FromExternal(externalRef); err != nil {
+		statusIdentity := &BigQueryTableIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualIdentity.Project != specIdentity.Project {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.Project, specIdentity.Project)
-		}
-		if actualIdentity.Dataset != specIdentity.Dataset {
-			return nil, fmt.Errorf("spec.datasetRef changed, expect %s, got %s", actualIdentity.Dataset, specIdentity.Dataset)
-		}
-		if actualIdentity.Table != specIdentity.Table {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				specIdentity.Table, actualIdentity.Table)
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change BigQueryTable identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 	return specIdentity, nil
+}
+
+func (i *BigQueryTableIdentity) Parent() *DatasetIdentity {
+	return &DatasetIdentity{
+		Project: i.Project,
+		Dataset: i.Dataset,
+	}
+}
+
+func (i *BigQueryTableIdentity) ID() string {
+	return i.Table
+}
+
+func TypedCopy[T any](obj client.Object) (*T, error) {
+	if val, ok := any(obj).(*T); ok {
+		if ro, ok := any(val).(runtime.Object); ok {
+			return any(ro.DeepCopyObject()).(*T), nil
+		}
+	}
+	u, ok := obj.(*unstructured.Unstructured)
+	if !ok {
+		return nil, fmt.Errorf("expected %T or *unstructured.Unstructured, got %T", *new(T), obj)
+	}
+	res := new(T)
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, res); err != nil {
+		return nil, fmt.Errorf("error converting unstructured to %T: %w", res, err)
+	}
+	return res, nil
 }
