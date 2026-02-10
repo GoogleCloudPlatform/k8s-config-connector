@@ -240,7 +240,7 @@ spec:
                 description: Optional. Backups that generated and managed by memorystore
                   service.
                 properties:
-                  backup:
+                  backupRef:
                     description: 'Optional. Example: //memorystore.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
                       A shorter version (without the prefix) of the backup name is
                       also supported, like projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
@@ -733,7 +733,7 @@ spec:
                 description: Optional. Backups that generated and managed by memorystore
                   service.
                 properties:
-                  backup:
+                  backupRef:
                     description: 'Optional. Example: //memorystore.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
                       A shorter version (without the prefix) of the backup name is
                       also supported, like projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}

@@ -228,7 +228,7 @@ type Instance_ManagedBackupSource struct {
 	//  projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
 	//  In this case, it assumes the backup is under memorystore.googleapis.com.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ManagedBackupSource.backup
-	Backup *v1alpha1.BackupRef `json:"backup,omitempty"`
+	BackupRef *v1alpha1.BackupRef `json:"backupRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.StateInfo
