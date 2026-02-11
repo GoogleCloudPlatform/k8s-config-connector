@@ -89,7 +89,7 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 	}
 
 	go func() {
-		result, err := callback()
+		_, err := callback()
 		finished := &pb.Operation{}
 		if err2 := s.storage.Get(ctx, fqn, finished); err2 != nil {
 			klog.Warningf("error getting LRO: %v", err2)
@@ -102,8 +102,6 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 
 		if err != nil {
 			klog.Warningf("TODO: handle LRO error %v", err)
-		} else {
-			klog.Warningf("TODO: handle LRO result %v", result)
 		}
 		if err := s.storage.Update(ctx, fqn, finished); err != nil {
 			klog.Warningf("error updating LRO: %v", err)
