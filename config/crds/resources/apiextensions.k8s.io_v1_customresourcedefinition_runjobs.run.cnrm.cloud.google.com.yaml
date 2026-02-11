@@ -730,7 +730,7 @@ spec:
                               description: Required. Volume's name.
                               type: string
                             nfs:
-                              description: For NFS Voumes, contains the path to the
+                              description: For Nfs Volumes, contains the path to the
                                 nfs Volume
                               properties:
                                 path:

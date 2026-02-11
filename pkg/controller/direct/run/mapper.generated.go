@@ -432,17 +432,17 @@ func HTTPHeader_ToProto(mapCtx *direct.MapContext, in *krm.HTTPHeader) *pb.HTTPH
 	out.Value = direct.ValueOf(in.Value)
 	return out
 }
-func NFSVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.NFSVolumeSource) *krm.NFSVolumeSource {
+func NfsVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.NFSVolumeSource) *krm.NfsVolumeSource {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NFSVolumeSource{}
+	out := &krm.NfsVolumeSource{}
 	out.Server = direct.LazyPtr(in.GetServer())
 	out.Path = direct.LazyPtr(in.GetPath())
 	out.ReadOnly = direct.LazyPtr(in.GetReadOnly())
 	return out
 }
-func NFSVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.NFSVolumeSource) *pb.NFSVolumeSource {
+func NfsVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.NfsVolumeSource) *pb.NFSVolumeSource {
 	if in == nil {
 		return nil
 	}

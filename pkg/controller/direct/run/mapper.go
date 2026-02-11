@@ -15,7 +15,7 @@ func Volume_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.Volume {
 	out.Secret = SecretVolumeSource_FromProto(mapCtx, in.GetSecret())
 	out.CloudSQLInstance = CloudSQLInstance_FromProto(mapCtx, in.GetCloudSqlInstance())
 	out.EmptyDir = EmptyDirVolumeSource_FromProto(mapCtx, in.GetEmptyDir())
-	out.NFS = NFSVolumeSource_FromProto(mapCtx, in.GetNfs())
+	out.Nfs = NfsVolumeSource_FromProto(mapCtx, in.GetNfs())
 	out.GCS = GCSVolumeSource_FromProto(mapCtx, in.GetGcs())
 	return out
 }
@@ -35,7 +35,7 @@ func Volume_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
 	if oneof := EmptyDirVolumeSource_ToProto(mapCtx, in.EmptyDir); oneof != nil {
 		out.VolumeType = &pb.Volume_EmptyDir{EmptyDir: oneof}
 	}
-	if oneof := NFSVolumeSource_ToProto(mapCtx, in.NFS); oneof != nil {
+	if oneof := NfsVolumeSource_ToProto(mapCtx, in.Nfs); oneof != nil {
 		out.VolumeType = &pb.Volume_Nfs{Nfs: oneof}
 	}
 	if oneof := GCSVolumeSource_ToProto(mapCtx, in.GCS); oneof != nil {

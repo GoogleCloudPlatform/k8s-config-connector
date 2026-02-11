@@ -595,9 +595,9 @@ type Volume struct {
 	// +kcc:proto:field=google.cloud.run.v2.Volume.empty_dir
 	EmptyDir *EmptyDirVolumeSource `json:"emptyDir,omitempty"`
 
-	// For NFS Voumes, contains the path to the nfs Volume
+	// For Nfs Volumes, contains the path to the nfs Volume
 	// +kcc:proto:field=google.cloud.run.v2.Volume.nfs
-	NFS *NFSVolumeSource `json:"nfs,omitempty"`
+	Nfs *NfsVolumeSource `json:"nfs,omitempty"`
 
 	// Persistent storage backed by a Google Cloud Storage bucket.
 	// +kcc:proto:field=google.cloud.run.v2.Volume.gcs
@@ -618,21 +618,6 @@ type GCSVolumeSource struct {
 	//  Options should be specified without the leading "--".
 	// +kcc:proto:field=google.cloud.run.v2.GCSVolumeSource.mount_options
 	MountOptions []string `json:"mountOptions,omitempty"`
-}
-
-// +kcc:proto=google.cloud.run.v2.NFSVolumeSource
-type NFSVolumeSource struct {
-	// Hostname or IP address of the NFS server
-	// +kcc:proto:field=google.cloud.run.v2.NFSVolumeSource.server
-	Server *string `json:"server,omitempty"`
-
-	// Path that is exported by the NFS server.
-	// +kcc:proto:field=google.cloud.run.v2.NFSVolumeSource.path
-	Path *string `json:"path,omitempty"`
-
-	// If true, the volume will be mounted as read only for all mounts.
-	// +kcc:proto:field=google.cloud.run.v2.NFSVolumeSource.read_only
-	ReadOnly *bool `json:"readOnly,omitempty"`
 }
 
 // +kcc:proto=google.cloud.run.v2.VpcAccess
