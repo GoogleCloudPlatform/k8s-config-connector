@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
 	containerkrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
+	gkehubkrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -282,4 +283,13 @@ type MultiTarget struct {
 	// Required. The target_ids of this multiTarget.
 	// +kcc:proto:field=google.cloud.deploy.v1.MultiTarget.target_ids
 	TargetIDs []string `json:"targetIds,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.AnthosCluster
+type AnthosCluster struct {
+	// Optional. Membership of the GKE Hub-registered cluster to which to apply
+	//  the Skaffold configuration. Format is
+	//  `projects/{project}/locations/{location}/memberships/{membership_name}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.AnthosCluster.membership
+	MembershipRef *gkehubkrm.GKEHubMembershipRef `json:"membershipRef,omitempty"`
 }

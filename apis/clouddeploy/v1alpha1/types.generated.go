@@ -23,15 +23,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.deploy.v1.AnthosCluster
-type AnthosCluster struct {
-	// Optional. Membership of the GKE Hub-registered cluster to which to apply
-	//  the Skaffold configuration. Format is
-	//  `projects/{project}/locations/{location}/memberships/{membership_name}`.
-	// +kcc:proto:field=google.cloud.deploy.v1.AnthosCluster.membership
-	Membership *string `json:"membership,omitempty"`
-}
-
 // +kcc:proto=google.cloud.deploy.v1.AssociatedEntities
 type AssociatedEntities struct {
 	// Optional. Information specifying GKE clusters as associated entities.

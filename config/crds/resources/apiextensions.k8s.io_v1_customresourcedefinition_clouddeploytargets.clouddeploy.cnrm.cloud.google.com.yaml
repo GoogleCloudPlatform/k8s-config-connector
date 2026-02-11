@@ -64,10 +64,36 @@ spec:
               anthosCluster:
                 description: Information specifying an Anthos Cluster.
                 properties:
-                  membership:
+                  membershipRef:
                     description: Optional. Membership of the GKE Hub-registered cluster
                       to which to apply the Skaffold configuration. Format is `projects/{project}/locations/{location}/memberships/{membership_name}`.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'The name of the membership. Allowed value: The
+                          Google Cloud resource name of a `GKEHubMembership` resource
+                          (format: `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                 type: object
               associatedEntities:
                 additionalProperties:
@@ -77,11 +103,24 @@ spec:
                         as associated entities.
                       items:
                         properties:
-                          membership:
+                          membershipRef:
                             description: Optional. Membership of the GKE Hub-registered
                               cluster to which to apply the Skaffold configuration.
                               Format is `projects/{project}/locations/{location}/memberships/{membership_name}`.
-                            type: string
+                            properties:
+                              external:
+                                description: 'The name of the membership. Allowed
+                                  value: The Google Cloud resource name of a `GKEHubMembership`
+                                  resource (format: `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).'
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
                         type: object
                       type: array
                     gkeClusters:
