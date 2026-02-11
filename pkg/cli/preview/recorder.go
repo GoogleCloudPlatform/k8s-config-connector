@@ -52,8 +52,8 @@ type Recorder struct {
 	ReconciledResources map[GKNN]bool
 	// Number of resources has not been reconciled.
 	RemainResourcesCount int
-	// Summary of the preview.
-	Summary *PreviewSummary
+	// reconciledResults of the preview.
+	reconciledResults *RecorderReconciledResults
 }
 
 // NewRecorder creates a new Recorder.
@@ -113,11 +113,11 @@ const (
 
 // gcpAction holds a GCP action that was recorded
 type gcpAction struct {
-	method     string
-	url        string
-	body       string
-	action     Action
-	updateMask []string
+	Method     string
+	URL        string
+	Body       string
+	Action     Action
+	UpdateMask []string
 }
 
 // NewStructuredReportingListener creates a new StructuredReportingListener.
@@ -287,11 +287,11 @@ func (r *Recorder) recordGCPAction(ctx context.Context, err *BlockedGCPError, ar
 	var gknn GKNN
 
 	gcpAction := &gcpAction{
-		method:     err.Method,
-		body:       err.Body,
-		url:        err.URL,
-		action:     action,
-		updateMask: err.UpdateMask,
+		Method:     err.Method,
+		Body:       err.Body,
+		URL:        err.URL,
+		Action:     action,
+		UpdateMask: err.UpdateMask,
 	}
 
 	for _, arg := range args {
@@ -425,11 +425,15 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config, namespa
 	return nil
 }
 
-func (r *Recorder) getOrCreateSummary() *PreviewSummary {
-	if r.Summary == nil {
-		r.Summary = r.newPreviewSummary()
+func (recorder *Recorder) SummaryReport(summaryFile string) error {
+	return recorder.getOrCreateSummary().SummaryReport(summaryFile)
+}
+
+func (recorder *Recorder) getOrCreateSummary() *RecorderReconciledResults {
+	if recorder.reconciledResults == nil {
+		recorder.reconciledResults = recorder.GenerateRecorderReconciledResults()
 	}
-	return r.Summary
+	return recorder.reconciledResults
 }
 
 // contains checks if a slice contains a specific string.
