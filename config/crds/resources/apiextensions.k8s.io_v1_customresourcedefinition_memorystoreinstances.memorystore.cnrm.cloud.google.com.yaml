@@ -452,18 +452,6 @@ spec:
                               type: object
                             type: array
                         type: object
-                      primaryInstance:
-                        description: |-
-                          Optional. Details of the primary instance that is used as the replication
-                           source for this secondary instance.
-
-                           This field is only set for a secondary instance.
-                        properties:
-                          uid:
-                            description: Output only. The unique identifier of the
-                              remote instance.
-                            type: string
-                        type: object
                       updateTime:
                         description: Output only. The last time cross instance replication
                           config was updated.
@@ -986,18 +974,6 @@ spec:
                                   type: string
                               type: object
                             type: array
-                        type: object
-                      primaryInstance:
-                        description: |-
-                          Optional. Details of the primary instance that is used as the replication
-                           source for this secondary instance.
-
-                           This field is only set for a secondary instance.
-                        properties:
-                          uid:
-                            description: Output only. The unique identifier of the
-                              remote instance.
-                            type: string
                         type: object
                       updateTime:
                         description: Output only. The last time cross instance replication

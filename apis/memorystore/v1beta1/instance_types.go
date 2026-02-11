@@ -331,13 +331,6 @@ type DiscoveryEndpointObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
 type CrossInstanceReplicationConfigObservedState struct {
-	// Optional. Details of the primary instance that is used as the replication
-	//  source for this secondary instance.
-	//
-	//  This field is only set for a secondary instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.primary_instance
-	PrimaryInstance *CrossInstanceReplicationConfig_RemoteInstanceObservedState `json:"primaryInstance,omitempty"`
-
 	// Output only. The last time cross instance replication config was updated.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
