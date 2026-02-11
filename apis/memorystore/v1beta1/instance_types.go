@@ -365,6 +365,10 @@ type CrossInstanceReplicationConfig_MembershipObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance
 type CrossInstanceReplicationConfig_RemoteInstanceObservedState struct {
+	// Optional. The full resource path of the remote instance in
+	//  the format: projects/<project>/locations/<region>/instances/<instance-id>
+	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.instance
+	Instance *string `json:"instance,omitempty"`
 	// Output only. The unique identifier of the remote instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.RemoteInstance.uid
 	Uid *string `json:"uid,omitempty"`

@@ -435,6 +435,10 @@ spec:
                             description: Output only. The primary instance that acts
                               as the source of replication for the secondary instances.
                             properties:
+                              instance:
+                                description: 'Optional. The full resource path of
+                                  the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                                type: string
                               uid:
                                 description: Output only. The unique identifier of
                                   the remote instance.
@@ -445,6 +449,10 @@ spec:
                               replicating from the primary instance.
                             items:
                               properties:
+                                instance:
+                                  description: 'Optional. The full resource path of
+                                    the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                                  type: string
                                 uid:
                                   description: Output only. The unique identifier
                                     of the remote instance.
@@ -958,6 +966,10 @@ spec:
                             description: Output only. The primary instance that acts
                               as the source of replication for the secondary instances.
                             properties:
+                              instance:
+                                description: 'Optional. The full resource path of
+                                  the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                                type: string
                               uid:
                                 description: Output only. The unique identifier of
                                   the remote instance.
@@ -968,6 +980,10 @@ spec:
                               replicating from the primary instance.
                             items:
                               properties:
+                                instance:
+                                  description: 'Optional. The full resource path of
+                                    the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                                  type: string
                                 uid:
                                   description: Output only. The unique identifier
                                     of the remote instance.
