@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -159,6 +160,16 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	// r.Get() overrides the TypeMeta to empty value, so need to configure it
 	// after r.Get().
 	auditConfig.SetGroupVersionKind(iamv1beta1.IAMAuditConfigGVK)
+	uObj := &unstructured.Unstructured{}
+	uObj.Object, err = runtime.DefaultUnstructuredConverter.ToUnstructured(&auditConfig)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	uObj.SetNamespace(auditConfig.GetNamespace())
+	uObj.SetName(auditConfig.GetName())
+	uObj.SetGroupVersionKind(iamv1beta1.IAMAuditConfigGVK)
+	structuredreporting.ReportReconcileStart(ctx, uObj, k8s.ReconcilerTypeIAMAuditConfig)
+	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err, k8s.ReconcilerTypeIAMAuditConfig)
 	if err := r.handleDefaults(ctx, &auditConfig); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM policy '%v': %w", k8s.GetNamespacedName(&auditConfig), err)
 	}
