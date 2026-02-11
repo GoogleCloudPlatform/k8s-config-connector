@@ -153,7 +153,7 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 	req := &spannerpb.CreateInstanceRequest{
 		InstanceId: a.id.ID(),
 		Instance:   resource,
-		Parent:     a.id.Parent().String(),
+		Parent:     a.id.Parent(),
 	}
 	op, err := a.gcpClient.CreateInstance(ctx, req)
 	if err != nil {
