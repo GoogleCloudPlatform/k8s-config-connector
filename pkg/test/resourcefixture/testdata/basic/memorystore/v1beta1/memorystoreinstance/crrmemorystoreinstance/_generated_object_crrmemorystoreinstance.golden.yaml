@@ -1,0 +1,47 @@
+apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
+kind: MemorystoreInstance
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: memorystoreinstance-us-central1-b-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  crossInstanceReplicationConfig:
+    instanceRole: SECONDARY
+    primaryInstance:
+      instanceRef:
+        name: memorystoreinstance-us-central1-a-${uniqueId}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  replicaCount: 1
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-b
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    crossInstanceReplicationConfig:
+      membership:
+        primaryInstance:
+          uid: 0130b78d-4dcd-44a3-b426-4c6ea35110c9
+        secondaryInstances:
+        - uid: ddb858f7-7973-4d62-ae27-3f694ee59e00
+      updateTime: "2026-02-11T20:20:50.54948285Z"
+    nodeConfig:
+      sizeGB: 1.4
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
