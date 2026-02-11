@@ -32,12 +32,14 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var _ = apiextensionsv1.JSON{}
+
 type IndexFields struct {
-	/* Immutable. Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can
-	be specified. Possible values: ["CONTAINS"]. */
+	/* Immutable. Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["CONTAINS"]. */
 	// +optional
 	ArrayConfig *string `json:"arrayConfig,omitempty"`
 
@@ -45,8 +47,7 @@ type IndexFields struct {
 	// +optional
 	FieldPath *string `json:"fieldPath,omitempty"`
 
-	/* Immutable. Indicates that this field supports ordering by the specified order or comparing using =, <, <=, >, >=.
-	Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"]. */
+	/* Immutable. Indicates that this field supports ordering by the specified order or comparing using =, <, <=, >, >=. Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"]. */
 	// +optional
 	Order *string `json:"order,omitempty"`
 }
@@ -59,12 +60,7 @@ type FirestoreIndexSpec struct {
 	// +optional
 	Database *string `json:"database,omitempty"`
 
-	/* Immutable. The fields supported by this index. The last field entry is always for
-	the field path '__name__'. If, on creation, '__name__' was not
-	specified as the last field, it will be added automatically with the
-	same direction as that of the last field defined. If the final field
-	in a composite index is not directional, the '__name__' will be
-	ordered '"ASCENDING"' (unless explicitly specified otherwise). */
+	/* Immutable. The fields supported by this index. The last field entry is always for the field path '__name__'. If, on creation, '__name__' was not specified as the last field, it will be added automatically with the same direction as that of the last field defined. If the final field in a composite index is not directional, the '__name__' will be ordered '"ASCENDING"' (unless explicitly specified otherwise). */
 	Fields []IndexFields `json:"fields"`
 
 	/* Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP"]. */
@@ -76,8 +72,7 @@ type FirestoreIndexStatus struct {
 	/* Conditions represent the latest available observations of the
 	   FirestoreIndex's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A server defined name for this index. Format:
-	'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}'. */
+	/* A server defined name for this index. Format: 'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}'. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 

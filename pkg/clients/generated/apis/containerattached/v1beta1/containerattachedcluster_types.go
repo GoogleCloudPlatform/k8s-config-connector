@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type ClusterAuthorization struct {
 	/* Optional. Users that can perform operations as a cluster admin. A managed
@@ -170,7 +173,7 @@ type ContainerAttachedClusterSpec struct {
 	/* The ID of the project in which the resource belongs. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable, Optional. The ContainerAttachedCluster name. If not given, the metadata.name will be used. */
+	/* Optional. The ContainerAttachedCluster name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }

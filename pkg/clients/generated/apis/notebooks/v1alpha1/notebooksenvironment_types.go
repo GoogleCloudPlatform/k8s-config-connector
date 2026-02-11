@@ -32,13 +32,16 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var _ = apiextensionsv1.JSON{}
+
 type EnvironmentContainerImage struct {
-	/* The path to the container image repository.
-	For example: gcr.io/{project_id}/{imageName}. */
-	Repository string `json:"repository"`
+	/* Required. The path to the container image repository. For example: `gcr.io/{project_id}/{image_name}` */
+	// +optional
+	Repository *string `json:"repository,omitempty"`
 
 	/* The tag of the container image. If not specified, this defaults to the latest tag. */
 	// +optional
@@ -54,9 +57,9 @@ type EnvironmentVmImage struct {
 	// +optional
 	ImageName *string `json:"imageName,omitempty"`
 
-	/* The name of the Google Cloud project that this VM image belongs to.
-	Format: projects/{project_id}. */
-	Project string `json:"project"`
+	/* Required. The name of the Google Cloud project that this VM image belongs to. Format: `{project_id}` */
+	// +optional
+	Project *string `json:"project,omitempty"`
 }
 
 type NotebooksEnvironmentSpec struct {
@@ -72,17 +75,17 @@ type NotebooksEnvironmentSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	LocationRef v1alpha1.ResourceRef `json:"locationRef"`
+	/* The location for the resource. */
+	Location string `json:"location"`
 
-	/* Path to a Bash script that automatically runs after a notebook instance fully boots up.
-	The path must be a URL or Cloud Storage path. Example: "gs://path-to-file/file-name". */
+	/* Path to a Bash script that automatically runs after a notebook instance fully boots up. The path must be a URL or Cloud Storage path. Example: `"gs://path-to-file/file-name"` */
 	// +optional
 	PostStartupScript *string `json:"postStartupScript,omitempty"`
 
-	/* The project that this resource belongs to. */
+	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The NotebooksEnvironment name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -91,17 +94,27 @@ type NotebooksEnvironmentSpec struct {
 	VmImage *EnvironmentVmImage `json:"vmImage,omitempty"`
 }
 
+type EnvironmentObservedStateStatus struct {
+	/* Output only. The time at which this environment was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+}
+
 type NotebooksEnvironmentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NotebooksEnvironment's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Instance creation time. */
+	/* A unique specifier for the NotebooksEnvironment resource in GCP. */
 	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *EnvironmentObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
@@ -109,9 +122,7 @@ type NotebooksEnvironmentStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpnotebooksenvironment;gcpnotebooksenvironments
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

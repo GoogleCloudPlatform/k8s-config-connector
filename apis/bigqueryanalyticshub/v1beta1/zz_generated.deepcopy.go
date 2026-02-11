@@ -802,7 +802,7 @@ func (in *SelectedResource) DeepCopyInto(out *SelectedResource) {
 	*out = *in
 	if in.TableRef != nil {
 		in, out := &in.TableRef, &out.TableRef
-		*out = new(bigqueryv1beta1.TableRef)
+		*out = new(bigqueryv1beta1.BigQueryTableRef)
 		**out = **in
 	}
 }

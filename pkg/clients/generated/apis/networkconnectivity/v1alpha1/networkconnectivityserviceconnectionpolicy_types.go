@@ -32,8 +32,11 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type ServiceconnectionpolicyPscConfig struct {
 	/* Optional. Max number of PSC connections for this policy. */
@@ -188,7 +191,7 @@ type NetworkConnectivityServiceConnectionPolicyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=,shortName=
+// +kubebuilder:resource:categories=gcp,shortName=gcpnetworkconnectivityserviceconnectionpolicy;gcpnetworkconnectivityserviceconnectionpolicies
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"

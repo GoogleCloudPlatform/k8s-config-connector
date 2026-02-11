@@ -21,4 +21,8 @@
 
 package v1alpha1
 
-type FirestoreDatabaseExpansion interface{}
+type FirestoreBackupScheduleExpansion interface{}
+
+type FirestoreDocumentExpansion interface{}
+
+type FirestoreFieldExpansion interface{}

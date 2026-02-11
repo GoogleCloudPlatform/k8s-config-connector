@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type SecretAuto struct {
 	/* Optional. The customer-managed encryption configuration of the
@@ -126,6 +129,7 @@ type SecretRotation struct {
 }
 
 type SecretTopics struct {
+	/* PubSubTopicRef defines the resource reference to PubSubTopic, which "External" field holds the GCP identifier for the KRM object. */
 	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
 }
 
@@ -157,6 +161,20 @@ type SecretManagerSecretSpec struct {
 	// +optional
 	ExpireTime *string `json:"expireTime,omitempty"`
 
+	/* The labels assigned to this Secret.
+
+	Label keys must be between 1 and 63 characters long, have a UTF-8 encoding
+	of maximum 128 bytes, and must conform to the following PCRE regular
+	expression: `[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}`
+
+	Label values must be between 0 and 63 characters long, have a UTF-8
+	encoding of maximum 128 bytes, and must conform to the following PCRE
+	regular expression: `[\p{Ll}\p{Lo}\p{N}_-]{0,63}`
+
+	No more than 64 labels can be assigned to a given resource. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
 	/* Optional. Immutable. The replication policy of the secret data attached to
 	the [Secret][google.cloud.secretmanager.v1.Secret].
 
@@ -164,7 +182,7 @@ type SecretManagerSecretSpec struct {
 	// +optional
 	Replication *SecretReplication `json:"replication,omitempty"`
 
-	/* Immutable. The SecretManagerSecret name. If not given, the metadata.name will be used. */
+	/* The SecretManagerSecret name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -176,7 +194,7 @@ type SecretManagerSecretSpec struct {
 	// +optional
 	Topics []SecretTopics `json:"topics,omitempty"`
 
-	/* Input only. The TTL for the [Secret][google.cloud.secretmanager.v1.Secret]. */
+	/* Input only. A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s". */
 	// +optional
 	Ttl *string `json:"ttl,omitempty"`
 
@@ -196,6 +214,8 @@ type SecretManagerSecretSpec struct {
 }
 
 type SecretObservedStateStatus struct {
+	// +optional
+	VersionAliases map[string]string `json:"versionAliases,omitempty"`
 }
 
 type SecretManagerSecretStatus struct {

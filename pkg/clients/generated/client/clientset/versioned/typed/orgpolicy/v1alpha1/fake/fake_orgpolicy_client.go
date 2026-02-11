@@ -31,8 +31,8 @@ type FakeOrgpolicyV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeOrgpolicyV1alpha1) OrgPolicyCustomConstraints(namespace string) v1alpha1.OrgPolicyCustomConstraintInterface {
-	return &FakeOrgPolicyCustomConstraints{c, namespace}
+func (c *FakeOrgpolicyV1alpha1) OrgPolicyPolicies(namespace string) v1alpha1.OrgPolicyPolicyInterface {
+	return &FakeOrgPolicyPolicies{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

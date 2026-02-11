@@ -18,9 +18,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-export GOCACHE=/tmp/gocache
-export GOMODCACHE=/tmp/gomodcache
-
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 REPO_ROOT="${SCRIPT_DIR}/../../.."
 
