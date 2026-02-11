@@ -138,7 +138,7 @@ func (d *DCLIAMClient) SetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy)
 	}
 	// Check if resource's live state matches the desired state.
 	if reflect.DeepEqual(dclPolicyResource, liveDCLResource) {
-		logger.Info("underlying resource is already up to date", "resource", k8s.GetNamespacedName(policy))
+		logger.V(2).Info("underlying resource is already up to date", "resource", k8s.GetNamespacedName(policy))
 		return newIAMPolicyFromDCLResource(liveDCLResource, policy)
 	}
 	dclPolicyResource, err = dclunstruct.SetPolicyWithEtag(ctx, d.dclClient.Config, dclResource, dclPolicyResource)

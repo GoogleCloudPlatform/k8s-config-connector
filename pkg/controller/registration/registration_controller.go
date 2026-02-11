@@ -293,7 +293,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 	default:
 		// register the controller to automatically create secrets for GSA keys
 		if isServiceAccountKeyCRD(crd) {
-			logger.Info("registering the GSA-Key-to-Secret generation controller")
+			logger.V(2).Info("registering the GSA-Key-to-Secret generation controller")
 			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator}); err != nil {
 				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
