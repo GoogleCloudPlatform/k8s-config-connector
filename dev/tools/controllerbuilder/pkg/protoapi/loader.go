@@ -79,3 +79,14 @@ func (p *Proto) GetFileDescriptorByPackage(protoPackage string) ([]protoreflect.
 	}
 	return files, nil
 }
+
+func (p *Proto) GetAllFileDescriptors() ([]protoreflect.FileDescriptor, error) {
+	var files []protoreflect.FileDescriptor
+	for _, f := range p.SortedFiles() {
+		files = append(files, f)
+	}
+	if len(files) == 0 {
+		return nil, fmt.Errorf("could not find any FileDescriptors")
+	}
+	return files, nil
+}
