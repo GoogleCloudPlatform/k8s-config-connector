@@ -199,6 +199,12 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.EngineVersion == "" {
 		obj.EngineVersion = "VALKEY_7_2"
 	}
+	if obj.CrossInstanceReplicationConfig == nil {
+		obj.CrossInstanceReplicationConfig = &pb.CrossInstanceReplicationConfig{}
+	}
+	if obj.CrossInstanceReplicationConfig.InstanceRole == pb.CrossInstanceReplicationConfig_INSTANCE_ROLE_UNSPECIFIED {
+		obj.CrossInstanceReplicationConfig.InstanceRole = pb.CrossInstanceReplicationConfig_NONE
+	}
 	return nil
 }
 
@@ -257,6 +263,8 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.Labels = req.Instance.Labels
 		case "nodeType":
 			obj.NodeType = req.Instance.NodeType
+		case "crossInstanceReplicationConfig":
+			obj.CrossInstanceReplicationConfig = req.Instance.CrossInstanceReplicationConfig
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)

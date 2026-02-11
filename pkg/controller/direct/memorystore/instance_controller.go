@@ -123,6 +123,24 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 			// }
 		}
 	}
+	if obj.Spec.CrossInstanceReplicationConfig != nil {
+		crr := obj.Spec.CrossInstanceReplicationConfig
+		ns := obj.GetNamespace()
+		switch *crr.InstanceRole {
+		case "PRIMARY":
+			for _, secondaryInstance := range crr.SecondaryInstances {
+				if _, err := secondaryInstance.InstanceRef.NormalizedExternal(ctx, reader, ns); err != nil {
+					return err
+				}
+			}
+		case "SECONDARY":
+			if _, err := crr.PrimaryInstance.InstanceRef.NormalizedExternal(ctx, reader, ns); err != nil {
+				return err
+			}
+		default:
+			// do nothing
+		}
+	}
 	return nil
 }
 
@@ -186,6 +204,7 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if err != nil {
 		return fmt.Errorf("Instance %s waiting creation: %w", a.id, err)
 	}
+	a.actual = created
 	log.V(2).Info("successfully created Instance", "name", a.id)
 
 	status := &krm.MemorystoreInstanceStatus{}
@@ -249,6 +268,9 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if a.desired.Spec.NodeType != nil && !reflect.DeepEqual(desiredPb.NodeType, a.actual.NodeType) {
 		paths = append(paths, "node_type")
 	}
+	if a.desired.Spec.CrossInstanceReplicationConfig != nil && instanceRole(desiredPb) != instanceRole(a.actual) {
+		paths = append(paths, "cross_instance_replication_config")
+	}
 
 	updated := a.actual
 	if len(paths) == 0 {
@@ -272,6 +294,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 			if err != nil {
 				return fmt.Errorf("instance %s waiting update: %w", a.id, err)
 			}
+			a.actual = updated
 			log.V(2).Info("successfully updated Instance", "name", a.id, "updateMask", path)
 		}
 		log.V(2).Info("successfully updated Instance", "name", a.id)
@@ -282,6 +305,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -334,4 +358,11 @@ func (a *InstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 		return false, fmt.Errorf("waiting delete Instance %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func instanceRole(instance *memorystorepb.Instance) memorystorepb.CrossInstanceReplicationConfig_InstanceRole {
+	if instance == nil || instance.CrossInstanceReplicationConfig == nil || instance.CrossInstanceReplicationConfig.InstanceRole == memorystorepb.CrossInstanceReplicationConfig_INSTANCE_ROLE_UNSPECIFIED {
+		return memorystorepb.CrossInstanceReplicationConfig_NONE
+	}
+	return instance.CrossInstanceReplicationConfig.InstanceRole
 }
