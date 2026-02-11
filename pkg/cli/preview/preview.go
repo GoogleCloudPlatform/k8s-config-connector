@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 // PreviewInstance runs KCC but intercepts GCP and Kubernetes API calls.
@@ -108,6 +109,10 @@ var httpRoundTripperKey httpRoundTripperKeyType
 
 // Start starts the PreviewInstance.
 func (i *PreviewInstance) Start(ctx context.Context) error {
+	log := log.FromContext(ctx)
+	filteredLog := filterLogs(log)
+	ctx = klog.NewContext(ctx, filteredLog)
+
 	grpcUnaryInterceptor := i.hookGCP.GRPCUnaryClientInterceptor()
 	gcpHTTPClient := i.hookGCP.HTTPClient()
 
@@ -138,6 +143,7 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 	}
 
 	kccConfig := kccmanager.Config{}
+	kccConfig.ManagerOptions.Logger = filteredLog
 	if i.Namespace != "" {
 		kccConfig.ManagerOptions.Cache.DefaultNamespaces = map[string]cache.Config{
 			i.Namespace: {},
@@ -194,7 +200,7 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 				return
 			case <-ticker.C:
 				if i.recorder.DoneReconciling() {
-					klog.Info("All resources reconciled, stopping manager.")
+					log.V(0).Info("All resources reconciled, stopping manager.")
 					cancel() // Cancel the inner context
 					return
 				}

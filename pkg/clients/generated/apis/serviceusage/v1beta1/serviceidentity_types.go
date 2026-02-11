@@ -32,14 +32,17 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var _ = apiextensionsv1.JSON{}
+
 type ServiceIdentitySpec struct {
-	/* The project that this resource belongs to. */
+	/* The project that this service identity belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The service of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* The service name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -48,6 +51,7 @@ type ServiceIdentityStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ServiceIdentity's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The email address of the service account that a service producer would use to access consumer resources. */
 	// +optional
 	Email *string `json:"email,omitempty"`
 

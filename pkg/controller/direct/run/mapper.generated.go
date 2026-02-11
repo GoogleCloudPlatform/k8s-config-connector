@@ -26,6 +26,7 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	krmsecretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	krmvpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	apipb "google.golang.org/genproto/googleapis/api"
@@ -354,7 +355,9 @@ func GCSVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.GCSVolumeSource
 		return nil
 	}
 	out := &krm.GCSVolumeSource{}
-	out.Bucket = direct.LazyPtr(in.GetBucket())
+	if in.GetBucket() != "" {
+		out.BucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetBucket()}
+	}
 	out.ReadOnly = direct.LazyPtr(in.GetReadOnly())
 	out.MountOptions = in.MountOptions
 	return out
@@ -364,7 +367,9 @@ func GCSVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSVolumeSource)
 		return nil
 	}
 	out := &pb.GCSVolumeSource{}
-	out.Bucket = direct.ValueOf(in.Bucket)
+	if in.BucketRef != nil {
+		out.Bucket = in.BucketRef.External
+	}
 	out.ReadOnly = direct.ValueOf(in.ReadOnly)
 	out.MountOptions = in.MountOptions
 	return out
@@ -821,7 +826,7 @@ func Volume_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.Volume {
 	out.CloudSQLInstance = CloudSQLInstance_FromProto(mapCtx, in.GetCloudSqlInstance())
 	out.EmptyDir = EmptyDirVolumeSource_FromProto(mapCtx, in.GetEmptyDir())
 	// MISSING: Nfs
-	// MISSING: GCS
+	out.GCS = GCSVolumeSource_FromProto(mapCtx, in.GetGcs())
 	return out
 }
 func Volume_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
@@ -840,7 +845,9 @@ func Volume_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
 		out.VolumeType = &pb.Volume_EmptyDir{EmptyDir: oneof}
 	}
 	// MISSING: Nfs
-	// MISSING: GCS
+	if oneof := GCSVolumeSource_ToProto(mapCtx, in.GCS); oneof != nil {
+		out.VolumeType = &pb.Volume_Gcs{Gcs: oneof}
+	}
 	return out
 }
 func VolumeMount_FromProto(mapCtx *direct.MapContext, in *pb.VolumeMount) *krm.VolumeMount {

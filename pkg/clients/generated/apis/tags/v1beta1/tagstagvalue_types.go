@@ -32,23 +32,33 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var _ = apiextensionsv1.JSON{}
+
 type TagsTagValueSpec struct {
-	/* User-assigned description of the TagValue. Must not exceed 256 characters. */
+	/* Optional. User-assigned description of the TagValue.
+	Must not exceed 256 characters.
+
+	Read-write. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Immutable. The TagValue's parent TagKey. */
 	ParentRef v1alpha1.ResourceRef `json:"parentRef"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. Input only. User-assigned short name for TagValue. The short name should be unique for TagValues within the same parent TagKey.
+	/* Required. Immutable. User-assigned short name for TagValue. The short name
+	should be unique for TagValues within the same parent TagKey.
 
-	The short name must be 63 characters or less, beginning and ending with an alphanumeric character ([a-z0-9A-Z]) with dashes (-), underscores (_), dots (.), and alphanumerics between. */
+	The short name must be 63 characters or less, beginning and ending with
+	an alphanumeric character ([a-z0-9A-Z]) with dashes (-), underscores (_),
+	dots (.), and alphanumerics between. */
 	ShortName string `json:"shortName"`
 }
 
@@ -56,17 +66,19 @@ type TagsTagValueStatus struct {
 	/* Conditions represent the latest available observations of the
 	   TagsTagValue's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. Creation time.
-
-	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	/* Output only. Creation time. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* The generated numeric id for the TagValue. */
+	/* A unique specifier for the TagsTagValue resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	/* Immutable. Resource name for TagValue in the format `tagValues/456`. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* Output only. Namespaced name of the TagValue. Will be in the format {parentNamespace}/{tagKeyShortName}/{shortName}. */
+	/* Output only. The namespaced name of the TagValue. Can be in the form `{organization_id}/{tag_key_short_name}/{tag_value_short_name}` or `{project_id}/{tag_key_short_name}/{tag_value_short_name}` or `{project_number}/{tag_key_short_name}/{tag_value_short_name}`. */
 	// +optional
 	NamespacedName *string `json:"namespacedName,omitempty"`
 
@@ -74,8 +86,7 @@ type TagsTagValueStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. Update time.
-	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	/* Output only. Update time. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }

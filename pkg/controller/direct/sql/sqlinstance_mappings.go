@@ -28,6 +28,8 @@ import (
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 )
 
@@ -39,19 +41,18 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, actual *api.DatabaseInstance, fiel
 	out := &api.DatabaseInstance{
 		DatabaseVersion:             direct.ValueOf(in.Spec.DatabaseVersion),
 		DiskEncryptionConfiguration: InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in.Spec.EncryptionKMSCryptoKeyRef),
-		// GeminiConfig is not supported in KRM API.
-		InstanceType:       direct.ValueOf(in.Spec.InstanceType),
-		Kind:               "sql#instance",
-		MaintenanceVersion: direct.ValueOf(in.Spec.MaintenanceVersion),
-		MasterInstanceName: InstanceMasterInstanceRefKRMToGCP(in.Spec.MasterInstanceRef),
+		InstanceType:                direct.ValueOf(in.Spec.InstanceType),
+		Kind:                        "sql#instance",
+		MaintenanceVersion:          direct.ValueOf(in.Spec.MaintenanceVersion),
+		MasterInstanceName:          InstanceMasterInstanceRefKRMToGCP(in.Spec.MasterInstanceRef),
 		// MaxDiskSize is not supported in KRM API.
 		Name: direct.ValueOf(in.Spec.ResourceID),
 		// OnPremisesConfiguration is not supported in KRM API.
 		Region:               direct.ValueOf(in.Spec.Region),
 		ReplicaConfiguration: InstanceReplicaConfigurationKRMToGCP(in.Spec.ReplicaConfiguration),
-		// ReplicationCluster is not supported in KRM API.
-		RootPassword: InstanceRootPasswordKRMToGCP(in.Spec.RootPassword),
-		Settings:     InstanceSettingsKRMToGCP(in.Spec.Settings, in.Labels),
+		ReplicationCluster:   InstanceReplicationClusterKRMToGCP(in.Spec.ReplicationCluster),
+		RootPassword:         InstanceRootPasswordKRMToGCP(in.Spec.RootPassword),
+		Settings:             InstanceSettingsKRMToGCP(in.Spec.Settings, in.Labels),
 		// SqlNetworkArchitecture is not supported in KRM API.
 		// SwitchTransactionLogsToCloudStorageEnabled is not supported in KRM API.
 	}
@@ -82,6 +83,30 @@ func InstanceMasterInstanceRefKRMToGCP(in *refs.SQLInstanceRef) string {
 
 	out := in.External
 
+	return out
+}
+
+func InstanceReplicationClusterKRMToGCP(in *krm.ReplicationCluster) *api.ReplicationCluster {
+	if in == nil {
+		return nil
+	}
+
+	out := &api.ReplicationCluster{}
+	proto := ReplicationCluster_ToProto(nil, in)
+	if err := common.ProtoToAPI(proto, out); err != nil {
+		panic(fmt.Errorf("converting ReplicationCluster to API: %w", err))
+	}
+	return out
+}
+
+func ReplicationCluster_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationCluster) *pb.ReplicationCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReplicationCluster{}
+	if in.FailoverDrReplicaRef != nil {
+		out.FailoverDrReplicaName = direct.LazyPtr(in.FailoverDrReplicaRef.External)
+	}
 	return out
 }
 
@@ -626,16 +651,15 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 		Spec: krm.SQLInstanceSpec{
 			DatabaseVersion:           direct.LazyPtr(in.DatabaseVersion),
 			EncryptionKMSCryptoKeyRef: InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in.DiskEncryptionConfiguration),
-			// GeminiConfig is not supported in KRM API.
-			InstanceType:       direct.LazyPtr(in.InstanceType),
-			MaintenanceVersion: direct.LazyPtr(in.MaintenanceVersion),
-			MasterInstanceRef:  InstanceMasterInstanceRefGCPToKRM(in.MasterInstanceName),
+			InstanceType:              direct.LazyPtr(in.InstanceType),
+			MaintenanceVersion:        direct.LazyPtr(in.MaintenanceVersion),
+			MasterInstanceRef:         InstanceMasterInstanceRefGCPToKRM(in.MasterInstanceName),
 			// MaxDiskSize is not supported in KRM API.
 			ResourceID: direct.LazyPtr(in.Name),
 			// OnPremisesConfiguration is not supported in KRM API.
 			Region:               direct.LazyPtr(in.Region),
 			ReplicaConfiguration: InstanceReplicaConfigurationGCPToKRM(in.ReplicaConfiguration),
-			// ReplicationCluster is not supported in KRM API.
+			ReplicationCluster:   InstanceReplicationClusterGCPToKRM(in.ReplicationCluster),
 			// RootPassword is not exported.
 			Settings: InstanceSettingsGCPToKRM(in.Settings),
 			// SqlNetworkArchitecture is not supported in KRM API.
@@ -710,6 +734,59 @@ func InstanceSettingsGCPToKRM(in *api.Settings) krm.InstanceSettings {
 		TimeZone:             direct.LazyPtr(in.TimeZone),
 	}
 
+	return out
+}
+
+func InstanceReplicationClusterGCPToKRM(in *api.ReplicationCluster) *krm.ReplicationCluster {
+	if in == nil {
+		return nil
+	}
+	proto := &pb.ReplicationCluster{}
+	if err := common.APIToProto(in, proto); err != nil {
+		panic(fmt.Errorf("converting ReplicationCluster from API: %w", err))
+	}
+	return ReplicationCluster_FromProto(nil, proto)
+}
+
+func ReplicationCluster_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationCluster) *krm.ReplicationCluster {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReplicationCluster{}
+	if in.FailoverDrReplicaName != nil {
+		out.FailoverDrReplicaRef = &refs.SQLInstanceRef{External: *in.FailoverDrReplicaName}
+	}
+	return out
+}
+
+func InstanceReplicationClusterObservedStateGCPToKRM(in *api.ReplicationCluster) *krm.ReplicationClusterObservedState {
+	if in == nil {
+		return nil
+	}
+	proto := &pb.ReplicationCluster{}
+	if err := common.APIToProto(in, proto); err != nil {
+		panic(fmt.Errorf("converting ReplicationCluster from API: %w", err))
+	}
+	return ReplicationClusterObservedState_FromProto(nil, proto)
+}
+
+func ReplicationClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationCluster) *krm.ReplicationClusterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReplicationClusterObservedState{}
+	out.DrReplica = in.DrReplica
+	out.PsaWriteEndpoint = in.PsaWriteEndpoint
+	return out
+}
+
+func ReplicationClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationClusterObservedState) *pb.ReplicationCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReplicationCluster{}
+	out.DrReplica = in.DrReplica
+	out.PsaWriteEndpoint = in.PsaWriteEndpoint
 	return out
 }
 
@@ -1029,6 +1106,12 @@ func SQLInstanceStatusGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstanceStatus
 		SelfLink:                     direct.LazyPtr(in.SelfLink),
 		ServerCaCert:                 SQLInstanceServerCaCertGCPToKRM(in.ServerCaCert),
 		ServiceAccountEmailAddress:   direct.LazyPtr(in.ServiceAccountEmailAddress),
+	}
+
+	if in.ReplicationCluster != nil {
+		out.ObservedState = &krm.SQLInstanceObservedState{
+			ReplicationCluster: InstanceReplicationClusterObservedStateGCPToKRM(in.ReplicationCluster),
+		}
 	}
 
 	return out, nil

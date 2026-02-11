@@ -34,6 +34,7 @@ type NetworkservicesV1alpha1Interface interface {
 	NetworkServicesEdgeCacheKeysetsGetter
 	NetworkServicesEdgeCacheOriginsGetter
 	NetworkServicesEdgeCacheServicesGetter
+	NetworkServicesServiceBindingsGetter
 }
 
 // NetworkservicesV1alpha1Client is used to interact with features provided by the networkservices.cnrm.cloud.google.com group.
@@ -51,6 +52,10 @@ func (c *NetworkservicesV1alpha1Client) NetworkServicesEdgeCacheOrigins(namespac
 
 func (c *NetworkservicesV1alpha1Client) NetworkServicesEdgeCacheServices(namespace string) NetworkServicesEdgeCacheServiceInterface {
 	return newNetworkServicesEdgeCacheServices(c, namespace)
+}
+
+func (c *NetworkservicesV1alpha1Client) NetworkServicesServiceBindings(namespace string) NetworkServicesServiceBindingInterface {
+	return newNetworkServicesServiceBindings(c, namespace)
 }
 
 // NewForConfig creates a new NetworkservicesV1alpha1Client for the given config.

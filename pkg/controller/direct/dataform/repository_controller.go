@@ -65,7 +65,9 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.DataformRepository{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -265,6 +267,16 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	if a.desired.Spec.SetAuthenticatedUserAdmin != a.actual.SetAuthenticatedUserAdmin {
 		updateMask.Paths = append(updateMask.Paths, "set_authenticated_user_admin")
+	}
+
+	if direct.ValueOf(a.desired.Spec.DisplayName) != a.actual.DisplayName {
+		updateMask.Paths = append(updateMask.Paths, "display_name")
+	}
+
+	if a.desired.Spec.ServiceAccountRef != nil {
+		if !reflect.DeepEqual(a.desired.Spec.ServiceAccountRef.External, a.actual.ServiceAccount) {
+			updateMask.Paths = append(updateMask.Paths, "service_account")
+		}
 	}
 
 	desired := a.desired.DeepCopy()

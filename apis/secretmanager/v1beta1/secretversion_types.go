@@ -28,8 +28,8 @@ type SecretManagerSecretVersionSpec struct {
 	// The resource name of the [Secret][google.cloud.secretmanager.v1.Secret] to create a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] for.
 	SecretRef *SecretRef `json:"secretRef,omitempty"`
 
-	// The SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service.
-	// If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number
+	// The service-generated SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service.
+	// If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number
 	// from `status.observedState.version`
 	ResourceID *string `json:"resourceID,omitempty"`
 

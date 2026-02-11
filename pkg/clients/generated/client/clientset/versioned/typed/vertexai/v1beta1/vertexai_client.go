@@ -34,6 +34,7 @@ type VertexaiV1beta1Interface interface {
 	VertexAIDatasetsGetter
 	VertexAIEndpointsGetter
 	VertexAIIndexesGetter
+	VertexAIMetadataStoresGetter
 }
 
 // VertexaiV1beta1Client is used to interact with features provided by the vertexai.cnrm.cloud.google.com group.
@@ -51,6 +52,10 @@ func (c *VertexaiV1beta1Client) VertexAIEndpoints(namespace string) VertexAIEndp
 
 func (c *VertexaiV1beta1Client) VertexAIIndexes(namespace string) VertexAIIndexInterface {
 	return newVertexAIIndexes(c, namespace)
+}
+
+func (c *VertexaiV1beta1Client) VertexAIMetadataStores(namespace string) VertexAIMetadataStoreInterface {
+	return newVertexAIMetadataStores(c, namespace)
 }
 
 // NewForConfig creates a new VertexaiV1beta1Client for the given config.

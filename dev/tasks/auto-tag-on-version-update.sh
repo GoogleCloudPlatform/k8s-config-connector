@@ -50,8 +50,7 @@ echo "Using HEAD as commit to tag: ${COMMIT_HASH}"
 # 4. Verify the commit messages match the release pattern.
 # We expect the sequence (oldest to newest):
 # 1. Release <VERSION>
-# 2. Update alpha CRDs for Release <VERSION>
-# 3. (Optional) Update golden files for operator controllers
+# 2. (Optional) Update golden files for operator controllers
 
 # We start checking from HEAD and work backwards.
 CURRENT_REF="HEAD"
@@ -65,24 +64,12 @@ if [[ "${MSG}" == "Merge pull request"* ]]; then
   MSG=$(git log --format=%s -n 1 "${CURRENT_REF}")
 fi
 
-# Check for Optional commit 3: Golden files
+# Check for Optional commit 2: Golden files
 EXPECTED_GOLDEN="Update golden files for operator controllers"
 if [ "${MSG}" = "${EXPECTED_GOLDEN}" ]; then
   echo "Found golden files update commit at ${CURRENT_REF}."
   CURRENT_REF="${CURRENT_REF}~1"
   MSG=$(git log --format=%s -n 1 "${CURRENT_REF}")
-fi
-
-# Check for Required commit 2: Alpha CRDs
-EXPECTED_CRDS="Update alpha CRDs for Release ${VERSION}"
-if [ "${MSG}" = "${EXPECTED_CRDS}" ]; then
-  echo "Found alpha CRDs update commit at ${CURRENT_REF}."
-  CURRENT_REF="${CURRENT_REF}~1"
-  MSG=$(git log --format=%s -n 1 "${CURRENT_REF}")
-else
-  echo "ERROR: Expected commit message '${EXPECTED_CRDS}' at ${CURRENT_REF}, but found '${MSG}'"
-  echo "The release PR must include an '${EXPECTED_CRDS}' commit."
-  exit 1
 fi
 
 # Check for Required commit 1: Release version

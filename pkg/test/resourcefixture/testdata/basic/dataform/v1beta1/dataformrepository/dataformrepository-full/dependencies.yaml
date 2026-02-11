@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,23 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Secret
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
 metadata:
+  name: df-sa1-${uniqueId}
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-  name: secret-${uniqueId}
-data:
-  secretData: SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  displayName: Dataform SA 1
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: df-sa2-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  displayName: Dataform SA 2
 ---
 apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecret
 metadata:
-  name: secretmanagersecret-${uniqueId}
+  name: df-secret-${uniqueId}
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
-    alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
   replication:
     automatic: true
@@ -36,17 +46,25 @@ spec:
 apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecretVersion
 metadata:
+  name: df-secret-v1-${uniqueId}
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
-    alpha.cnrm.cloud.google.com/reconciler: direct
-  name: secretmanagersecretversion-${uniqueId}
 spec:
-  enabled: true
-  secretData:
-    valueFrom:
-      secretKeyRef:
-        key: secretData
-        name: secret-${uniqueId}
   secretRef:
-    name: secretmanagersecret-${uniqueId}
+    name: df-secret-${uniqueId}
+  secretData:
+    value: "token-v1"
+---
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecretVersion
+metadata:
+  name: df-secret-v2-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  secretRef:
+    name: df-secret-${uniqueId}
+  secretData:
+    value: "token-v2"

@@ -23,15 +23,6 @@ type FeatureRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type MembershipRef struct {
-	/* The name of the membership. Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (format: `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).*/
-	External string `json:"external,omitempty"`
-	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
-	Name string `json:"name,omitempty"`
-	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
-	Namespace string `json:"namespace,omitempty"`
-}
-
 type FeatureProjectRef struct {
 	/* The project of the feature. Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).*/
 	External string `json:"external,omitempty"`

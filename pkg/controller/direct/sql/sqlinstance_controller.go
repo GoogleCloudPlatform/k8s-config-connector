@@ -25,7 +25,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
@@ -322,6 +321,21 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
+	"spec.replicationCluster": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			out.ReplicationCluster = actual.ReplicationCluster
+		},
+	},
+	"spec.replicationCluster.failoverDrReplicaRef": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.ReplicationCluster != nil {
+				if out.ReplicationCluster == nil {
+					out.ReplicationCluster = &api.ReplicationCluster{}
+				}
+				out.ReplicationCluster.FailoverDrReplicaName = actual.ReplicationCluster.FailoverDrReplicaName
+			}
+		},
+	},
 }
 
 var sortedUnmanageableFieldPaths []string
@@ -361,7 +375,9 @@ type sqlInstanceAdapter struct {
 
 var _ directbase.Adapter = &sqlInstanceAdapter{}
 
-func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	kube := op.Reader
 	obj := &krm.SQLInstance{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("converting to %T failed: %w", obj, err)
@@ -583,7 +599,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		}
 
 		{
-			report := &structuredreporting.Diff{}
+			report := &structuredreporting.Diff{Object: u}
 			report.AddField(".databaseVersion", a.actual.DatabaseVersion, a.desired.Spec.DatabaseVersion)
 			structuredreporting.ReportDiff(ctx, report)
 		}
@@ -640,7 +656,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			}
 
 			{
-				report := &structuredreporting.Diff{}
+				report := &structuredreporting.Diff{Object: u}
 				report.AddField(".settings.edition", actualEdition, desiredEdition)
 				structuredreporting.ReportDiff(ctx, report)
 			}
@@ -676,7 +692,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		}
 
 		{
-			report := &structuredreporting.Diff{}
+			report := &structuredreporting.Diff{Object: u}
 			report.AddField(".maintenanceVersion", a.actual.MaintenanceVersion, a.desired.Spec.MaintenanceVersion)
 			structuredreporting.ReportDiff(ctx, report)
 		}
@@ -707,6 +723,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	if instanceDiff := DiffInstances(desiredGCP, a.actual); instanceDiff.HasDiff() {
 		updateOp.RecordUpdatingEvent()
+		instanceDiff.Object = u
 
 		{
 			structuredreporting.ReportDiff(ctx, instanceDiff)

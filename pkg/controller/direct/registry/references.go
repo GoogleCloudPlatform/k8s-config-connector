@@ -89,7 +89,11 @@ func AdapterForReference(ctx context.Context, reader client.Reader, sourceNamesp
 		return nil, fmt.Errorf("error retrieving resource '%v' with GroupVersionKind '%v': %w", nn, gvk, err)
 	}
 
-	adapter, err := model.AdapterForObject(ctx, reader, obj)
+	op := &directbase.AdapterForObjectOperation{
+		Reader: reader,
+		Object: obj,
+	}
+	adapter, err := model.AdapterForObject(ctx, op)
 	if err != nil {
 		return nil, fmt.Errorf("building adapter: %w", err)
 	}

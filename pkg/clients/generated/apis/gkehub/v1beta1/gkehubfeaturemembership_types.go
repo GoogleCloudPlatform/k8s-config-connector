@@ -32,8 +32,47 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
+
+type FeaturemembershipAdmission struct {
+	/* Container resource requirements. */
+	// +optional
+	ContainerResources *FeaturemembershipContainerResources `json:"containerResources,omitempty"`
+
+	/* Pod affinity configuration. */
+	// +optional
+	PodAffinity *string `json:"podAffinity,omitempty"`
+
+	/* Pod tolerations of node taints. */
+	// +optional
+	PodTolerations []FeaturemembershipPodTolerations `json:"podTolerations,omitempty"`
+
+	/* Pod replica count. */
+	// +optional
+	ReplicaCount *int64 `json:"replicaCount,omitempty"`
+}
+
+type FeaturemembershipAudit struct {
+	/* Container resource requirements. */
+	// +optional
+	ContainerResources *FeaturemembershipContainerResources `json:"containerResources,omitempty"`
+
+	/* Pod affinity configuration. */
+	// +optional
+	PodAffinity *string `json:"podAffinity,omitempty"`
+
+	/* Pod tolerations of node taints. */
+	// +optional
+	PodTolerations []FeaturemembershipPodTolerations `json:"podTolerations,omitempty"`
+
+	/* Pod replica count. */
+	// +optional
+	ReplicaCount *int64 `json:"replicaCount,omitempty"`
+}
 
 type FeaturemembershipBinauthz struct {
 	/* Whether binauthz is enabled in this cluster. */
@@ -58,6 +97,10 @@ type FeaturemembershipConfigSync struct {
 	/* Specifies whether the Config Sync Repo is in "hierarchical" or "unstructured" mode. */
 	// +optional
 	SourceFormat *string `json:"sourceFormat,omitempty"`
+
+	/* Set to true to stop syncing configurations for a single cluster. This field is only available on clusters using Config Sync auto-upgrades or on Config Sync version 1.20.0 or later. Defaults: false. */
+	// +optional
+	StopSyncing *bool `json:"stopSyncing,omitempty"`
 }
 
 type FeaturemembershipConfigmanagement struct {
@@ -84,6 +127,27 @@ type FeaturemembershipConfigmanagement struct {
 	/* Optional. Version of ACM to install. Defaults to the latest version. */
 	// +optional
 	Version *string `json:"version,omitempty"`
+}
+
+type FeaturemembershipContainerResources struct {
+	/* Limits describes the maximum amount of compute resources allowed for use by the running container. */
+	// +optional
+	Limits *FeaturemembershipLimits `json:"limits,omitempty"`
+
+	/* Requests describes the amount of compute resources reserved for the container by the kube-scheduler. */
+	// +optional
+	Requests *FeaturemembershipRequests `json:"requests,omitempty"`
+}
+
+type FeaturemembershipDeploymentConfigs struct {
+	// +optional
+	Admission *FeaturemembershipAdmission `json:"admission,omitempty"`
+
+	// +optional
+	Audit *FeaturemembershipAudit `json:"audit,omitempty"`
+
+	// +optional
+	Mutation *FeaturemembershipMutation `json:"mutation,omitempty"`
 }
 
 type FeaturemembershipGit struct {
@@ -133,6 +197,16 @@ type FeaturemembershipHierarchyController struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+type FeaturemembershipLimits struct {
+	/* CPU requirement expressed in Kubernetes resource units. */
+	// +optional
+	Cpu *string `json:"cpu,omitempty"`
+
+	/* Memory requirement expressed in Kubernetes resource units. */
+	// +optional
+	Memory *string `json:"memory,omitempty"`
+}
+
 type FeaturemembershipMesh struct {
 	/* **DEPRECATED** Whether to automatically manage Service Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC, MANUAL */
 	// +optional
@@ -147,6 +221,24 @@ type FeaturemembershipMonitoring struct {
 	/* Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export. */
 	// +optional
 	Backends []string `json:"backends,omitempty"`
+}
+
+type FeaturemembershipMutation struct {
+	/* Container resource requirements. */
+	// +optional
+	ContainerResources *FeaturemembershipContainerResources `json:"containerResources,omitempty"`
+
+	/* Pod affinity configuration. */
+	// +optional
+	PodAffinity *string `json:"podAffinity,omitempty"`
+
+	/* Pod tolerations of node taints. */
+	// +optional
+	PodTolerations []FeaturemembershipPodTolerations `json:"podTolerations,omitempty"`
+
+	/* Pod replica count. */
+	// +optional
+	ReplicaCount *int64 `json:"replicaCount,omitempty"`
 }
 
 type FeaturemembershipOci struct {
@@ -168,6 +260,24 @@ type FeaturemembershipOci struct {
 	/* Period in seconds(int64 format) between consecutive syncs. Default: 15. */
 	// +optional
 	SyncWaitSecs *string `json:"syncWaitSecs,omitempty"`
+}
+
+type FeaturemembershipPodTolerations struct {
+	/* Matches a taint effect. */
+	// +optional
+	Effect *string `json:"effect,omitempty"`
+
+	/* Matches a taint key (not necessarily unique). */
+	// +optional
+	Key *string `json:"key,omitempty"`
+
+	/* Matches a taint operator. */
+	// +optional
+	Operator *string `json:"operator,omitempty"`
+
+	/* Matches a taint value. */
+	// +optional
+	Value *string `json:"value,omitempty"`
 }
 
 type FeaturemembershipPolicyContent struct {
@@ -219,6 +329,10 @@ type FeaturemembershipPolicyControllerHubConfig struct {
 	// +optional
 	ConstraintViolationLimit *int64 `json:"constraintViolationLimit,omitempty"`
 
+	/* Map of deployment configs to deployments (“admission”, “audit”, “mutation”). */
+	// +optional
+	DeploymentConfigs *FeaturemembershipDeploymentConfigs `json:"deploymentConfigs,omitempty"`
+
 	/* The set of namespaces that are excluded from Policy Controller checks. Namespaces do not need to currently exist on the cluster. */
 	// +optional
 	ExemptableNamespaces []string `json:"exemptableNamespaces,omitempty"`
@@ -250,11 +364,22 @@ type FeaturemembershipPolicyControllerHubConfig struct {
 
 type FeaturemembershipPolicycontroller struct {
 	/* Policy Controller configuration for the cluster. */
-	PolicyControllerHubConfig FeaturemembershipPolicyControllerHubConfig `json:"policyControllerHubConfig"`
+	// +optional
+	PolicyControllerHubConfig *FeaturemembershipPolicyControllerHubConfig `json:"policyControllerHubConfig,omitempty"`
 
 	/* Optional. Version of Policy Controller to install. Defaults to the latest version. */
 	// +optional
 	Version *string `json:"version,omitempty"`
+}
+
+type FeaturemembershipRequests struct {
+	/* CPU requirement expressed in Kubernetes resource units. */
+	// +optional
+	Cpu *string `json:"cpu,omitempty"`
+
+	/* Memory requirement expressed in Kubernetes resource units. */
+	// +optional
+	Memory *string `json:"memory,omitempty"`
 }
 
 type FeaturemembershipTemplateLibrary struct {
