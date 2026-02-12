@@ -126,7 +126,22 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 	return recorderReconciledResults
 }
 
+func (r *RecorderReconciledResults) LogBadResult() {
+	for group := range r.results {
+		for kind := range r.results[group] {
+			for namespace := range r.results[group][kind] {
+				for _, result := range r.results[group][kind][namespace] {
+					if result.ReconcileStatus == ReconcileStatusUnhealthy {
+						klog.V(0).Info("\"PreviewResult\" ", result.FormatGKNNReconciledResult())
+					}
+				}
+			}
+		}
+	}
+}
+
 func (r *RecorderReconciledResults) SummaryReport(summaryFile string) error {
+	defer r.LogBadResult()
 	f, err := os.Create(summaryFile)
 	if err != nil {
 		return fmt.Errorf("error creating file %q: %w", summaryFile, err)
@@ -141,7 +156,6 @@ func (r *RecorderReconciledResults) SummaryReport(summaryFile string) error {
 				for _, result := range r.results[group][kind][namespace] {
 					reconcileStatus := formatReconciledStatus(result)
 					if result.ReconcileStatus == ReconcileStatusUnhealthy {
-						klog.V(0).Info("PreviewResult ", result.FormatGKNNReconciledResult())
 						badResult = append(badResult, result)
 					}
 					fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\t%s\n", group, kind, namespace, result.GKNN.Name, result.ControllerType, reconcileStatus, FormatFieldIDs(result.Diffs))
