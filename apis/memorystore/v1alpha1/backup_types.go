@@ -33,6 +33,10 @@ type MemorystoreInstanceBackupSpec struct {
 
 	// The resource name of the MemorystoreInstance from which the backup is created.
 	InstanceRef *refsv1beta1.MemorystoreInstanceRef `json:"instanceRef,omitempty"`
+
+	// Optional. TTL for the backup to expire. Value range is 1 day to 100 years.
+	// If not specified, the default value is 100 years.
+	Ttl *string `json:"ttl,omitempty"`
 }
 
 // MemorystoreInstanceBackupStatus defines the config connector machine state of MemorystoreInstanceBackup

@@ -99,6 +99,10 @@ spec:
                 description: The MemorystoreInstanceBackup name. If not given, the
                   metadata.name will be used.
                 type: string
+              ttl:
+                description: Optional. TTL for the backup to expire. Value range is
+                  1 day to 100 years. If not specified, the default value is 100 years.
+                type: string
             type: object
           status:
             description: MemorystoreInstanceBackupStatus defines the config connector
