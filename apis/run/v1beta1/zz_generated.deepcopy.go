@@ -1190,6 +1190,11 @@ func (in *Volume) DeepCopyInto(out *Volume) {
 		*out = new(EmptyDirVolumeSource)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Nfs != nil {
+		in, out := &in.Nfs, &out.Nfs
+		*out = new(NfsVolumeSource)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.GCS != nil {
 		in, out := &in.GCS, &out.GCS
 		*out = new(GCSVolumeSource)
