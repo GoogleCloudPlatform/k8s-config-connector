@@ -300,7 +300,7 @@ func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, e
 		return "MYSQL_8_0_41.R20251004.01_07", nil
 
 	case pb.SqlDatabaseVersion_MYSQL_8_4:
-		return "MYSQL_8_4_6.R20251004.01_07", nil
+		return "MYSQL_8_4_7.R20251004.01_24", nil
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
 		return "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02", nil
@@ -309,7 +309,7 @@ func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, e
 		return "SQLSERVER_2019_EXPRESS_CU26.R20240501.00_05", nil
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2022_EXPRESS:
-		return "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05", nil
+		return "SQLSERVER_2022_EXPRESS_CU19_GDR.R20251019.02_03", nil
 
 	case pb.SqlDatabaseVersion_POSTGRES_9_6:
 		return "POSTGRES_9_6_24.R20250302.00_31", nil
@@ -430,8 +430,15 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		})
 
 	case pb.SqlDatabaseVersion_MYSQL_8_4:
-		obj.DatabaseInstalledVersion = "MYSQL_8_4_6"
+		obj.DatabaseInstalledVersion = "MYSQL_8_4_7"
 		obj.UpgradableDatabaseVersions = nil
+		if obj.Settings == nil {
+			obj.Settings = &pb.Settings{}
+		}
+		// 8.4 defaults to ENTERPRISE_PLUS edition
+		if obj.Settings.Edition == pb.Settings_EDITION_UNSPECIFIED {
+			obj.Settings.Edition = pb.Settings_ENTERPRISE_PLUS
+		}
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
 		obj.DatabaseInstalledVersion = "SQLSERVER_2017_EXPRESS_CU31_GDR"
@@ -477,7 +484,7 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		}
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2022_EXPRESS:
-		obj.DatabaseInstalledVersion = "SQLSERVER_2022_EXPRESS_CU12_GDR"
+		obj.DatabaseInstalledVersion = "SQLSERVER_2022_EXPRESS_CU19_GDR"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				MajorVersion: asRef("SQLSERVER_2022_STANDARD"),
@@ -528,6 +535,11 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 }
 
 func populateDefaults(obj *pb.DatabaseInstance) {
+	isEnterprisePlus := false
+	if obj.GetSettings().GetEdition() == pb.Settings_ENTERPRISE_PLUS {
+		isEnterprisePlus = true
+	}
+
 	if obj.InstanceType == pb.SqlInstanceType_SQL_INSTANCE_TYPE_UNSPECIFIED {
 		obj.InstanceType = pb.SqlInstanceType_CLOUD_SQL_INSTANCE
 	}
@@ -537,7 +549,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 			obj.GeminiConfig = &pb.GeminiInstanceConfig{
 				ActiveQueryEnabled:     asRef(false),
 				Entitled:               asRef(false),
-				FlagRecommenderEnabled: asRef(false),
+				FlagRecommenderEnabled: asRef(true),
 				IndexAdvisorEnabled:    asRef(false),
 			}
 		} else if isPostgres(obj) {
@@ -559,13 +571,25 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	if settings.AuthorizedGaeApplications == nil {
 		settings.AuthorizedGaeApplications = []string{}
 	}
-	setDefaultInt64(&settings.DataDiskSizeGb, 10)
+	if settings.DataDiskSizeGb == nil {
+		if isEnterprisePlus {
+			settings.DataDiskSizeGb = wrapperspb.Int64(20)
+		} else {
+			settings.DataDiskSizeGb = wrapperspb.Int64(10)
+		}
+	}
+
 	setDefaultBool(&settings.DeletionProtectionEnabled, false)
 	if settings.ConnectorEnforcement == 0 {
 		settings.ConnectorEnforcement = pb.Settings_NOT_REQUIRED
 	}
 	if settings.DataDiskType == 0 {
-		settings.DataDiskType = pb.SqlDataDiskType_PD_SSD
+		if isEnterprisePlus {
+			// Should be HYPERDISK_BALANCED, but not exported yet
+			settings.DataDiskType = pb.SqlDataDiskType_PD_SSD
+		} else {
+			settings.DataDiskType = pb.SqlDataDiskType_PD_SSD
+		}
 	}
 	if settings.PricingPlan == 0 {
 		settings.PricingPlan = pb.SqlPricingPlan_PER_USE
@@ -574,7 +598,14 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		settings.ReplicationType = pb.SqlReplicationType_SYNCHRONOUS
 	}
 	setDefaultInt64(&settings.StorageAutoResizeLimit, 0)
-	setDefaultBool(&settings.StorageAutoResize, false)
+
+	if settings.StorageAutoResize == nil {
+		if isEnterprisePlus {
+			settings.StorageAutoResize = wrapperspb.Bool(true)
+		} else {
+			settings.StorageAutoResize = wrapperspb.Bool(false)
+		}
+	}
 
 	if settings.IpConfiguration == nil {
 		settings.IpConfiguration = &pb.IpConfiguration{}
@@ -606,6 +637,9 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	backupConfiguration := settings.BackupConfiguration
 	if backupConfiguration == nil {
 		backupConfiguration = &pb.BackupConfiguration{}
+		if isEnterprisePlus {
+			backupConfiguration.Enabled = wrapperspb.Bool(true)
+		}
 		settings.BackupConfiguration = backupConfiguration
 	} else {
 		if isPostgres(obj) {
@@ -620,12 +654,24 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	}
 	backupConfiguration.Kind = "sql#backupConfiguration"
 
+	if backupConfiguration.BinaryLogEnabled == nil {
+		if isEnterprisePlus && backupConfiguration.GetEnabled().GetValue() {
+			backupConfiguration.BinaryLogEnabled = wrapperspb.Bool(true)
+		}
+	}
+
 	backupRetentionSettings := backupConfiguration.BackupRetentionSettings
 	if backupRetentionSettings == nil {
 		backupRetentionSettings = &pb.BackupRetentionSettings{}
 		backupConfiguration.BackupRetentionSettings = backupRetentionSettings
 	}
-	setDefaultInt32(&backupRetentionSettings.RetainedBackups, 7)
+	if backupRetentionSettings.RetainedBackups == nil {
+		if isEnterprisePlus {
+			backupRetentionSettings.RetainedBackups = wrapperspb.Int32(15)
+		} else {
+			backupRetentionSettings.RetainedBackups = wrapperspb.Int32(7)
+		}
+	}
 	if backupRetentionSettings.RetentionUnit == 0 {
 		backupRetentionSettings.RetentionUnit = pb.BackupRetentionSettings_COUNT
 	}
@@ -640,15 +686,65 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		backupConfiguration.PointInTimeRecoveryEnabled = nil
 	}
 
-	setDefaultBool(&backupConfiguration.Enabled, false)
-	setDefaultInt32(&backupConfiguration.TransactionLogRetentionDays, 7)
+	if backupConfiguration.Enabled == nil {
+		backupConfiguration.Enabled = wrapperspb.Bool(false)
+	}
+
+	if settings.BackupConfiguration.TransactionLogRetentionDays == nil {
+		if isEnterprisePlus {
+			settings.BackupConfiguration.TransactionLogRetentionDays = wrapperspb.Int32(14)
+		} else {
+			settings.BackupConfiguration.TransactionLogRetentionDays = wrapperspb.Int32(7)
+		}
+	}
 	if backupConfiguration.StartTime == "" {
 		backupConfiguration.StartTime = "12:00"
 	}
 	if backupConfiguration.TransactionalLogStorageState == nil {
-		backupConfiguration.TransactionalLogStorageState = asRef(pb.BackupConfiguration_TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED)
+		if isEnterprisePlus {
+			backupConfiguration.TransactionalLogStorageState = PtrTo(pb.BackupConfiguration_CLOUD_STORAGE)
+		} else {
+			backupConfiguration.TransactionalLogStorageState = PtrTo(pb.BackupConfiguration_TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED)
+		}
 	}
 
+	if isEnterprisePlus {
+		if settings.ActivationPolicy == pb.Settings_SQL_ACTIVATION_POLICY_UNSPECIFIED {
+			settings.ActivationPolicy = pb.Settings_ALWAYS
+		}
+		if settings.AuthorizedGaeApplications == nil {
+			settings.AuthorizedGaeApplications = []string{}
+		}
+		if settings.AvailabilityType == pb.SqlAvailabilityType_SQL_AVAILABILITY_TYPE_UNSPECIFIED {
+			settings.AvailabilityType = pb.SqlAvailabilityType_ZONAL
+		}
+
+		if settings.BackupConfiguration.BackupTier == nil {
+			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
+		}
+		// 	if settings.BackupConfiguration.BackupLogEnabled == nil {
+		// 		settings.BackupConfiguration.BackupLogEnabled = asRef(true)
+		// 	}
+	}
+
+	if isSqlServer(obj) {
+		if settings.BackupConfiguration.BackupTier == nil {
+			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
+		}
+		if settings.IpConfiguration.ServerCertificateRotationMode == nil {
+			settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
+		}
+		if settings.ReplicationLagMaxSeconds == nil {
+			settings.ReplicationLagMaxSeconds = PtrTo(int32(31536000))
+		}
+		if obj.IncludeReplicasForMajorVersionUpgrade == nil {
+			obj.IncludeReplicasForMajorVersionUpgrade = PtrTo(false)
+		}
+	}
+
+	if obj.SatisfiesPzi == nil {
+		obj.SatisfiesPzi = PtrTo(true)
+	}
 }
 
 func isMysql(obj *pb.DatabaseInstance) bool {
@@ -678,6 +774,13 @@ func validateDatabaseInstance(obj *pb.DatabaseInstance) error {
 			}
 		}
 	}
+
+	if obj.GetSettings().GetEdition() == pb.Settings_ENTERPRISE {
+		if strings.HasPrefix(obj.GetSettings().GetTier(), "db-c4a-") {
+			return status.Errorf(codes.InvalidArgument, "Invalid request: Invalid Tier (%s) for (ENTERPRISE) Edition.", obj.GetSettings().GetTier())
+		}
+	}
+
 	return nil
 }
 
@@ -701,7 +804,21 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	}
 
 	if settings := req.GetBody().GetSettings(); settings != nil {
-		if settings.Edition != pb.Settings_EDITION_UNSPECIFIED {
+		if newEdition := settings.Edition; newEdition != pb.Settings_EDITION_UNSPECIFIED && obj.Settings.Edition != newEdition {
+			// Changing edition may impact defaults, so we reset some fields to allow
+			// them to be re-populated later.
+			if backupConfiguration := obj.Settings.BackupConfiguration; backupConfiguration != nil {
+				backupConfiguration.BackupRetentionSettings = nil
+				backupConfiguration.TransactionLogRetentionDays = nil
+				backupConfiguration.ReplicationLogArchivingEnabled = nil
+			}
+			if newEdition == pb.Settings_ENTERPRISE_PLUS {
+				if obj.Settings.DataCacheConfig == nil {
+					obj.Settings.DataCacheConfig = &pb.DataCacheConfig{}
+				}
+				obj.Settings.DataCacheConfig.DataCacheEnabled = true
+			}
+
 			obj.Settings.Edition = settings.Edition
 		}
 		if settings.Tier != "" {
@@ -729,6 +846,8 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	}
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(obj.GetSettings().GetSettingsVersion().GetValue() + 1)
+
+	populateDefaults(obj)
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -877,7 +996,14 @@ func (s *MockService) buildInstanceName(projectID, instanceName string) (*Instan
 	}, nil
 }
 
+// asRef returns a pointer to the given value.
+// deprecated: prefer PtrTo
 func asRef[T any](v T) *T {
+	return &v
+}
+
+// PtrTo returns a pointer to the given value.
+func PtrTo[T any](v T) *T {
 	return &v
 }
 

@@ -32,7 +32,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "databaseVersion": "POSTGRES_16",
+  "databaseVersion": "POSTGRES_15",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "sqlinstance-postgres-minimal-direct-${uniqueId}",
@@ -135,8 +135,8 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-postgres-minimal-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_16_3",
-  "databaseVersion": "POSTGRES_16",
+  "databaseInstalledVersion": "POSTGRES_15_7",
+  "databaseVersion": "POSTGRES_15",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
@@ -149,19 +149,20 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     },
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.11",
       "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
   "name": "sqlinstance-postgres-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-minimal-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -217,7 +218,14 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 16",
+      "majorVersion": "POSTGRES_16",
+      "name": "POSTGRES_16"
+    }
+  ]
 }
 
 ---
@@ -240,6 +248,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-postgres-minimal-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
@@ -250,69 +259,6 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#usersList"
-}
-
----
-
-PATCH https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-minimal-direct-${uniqueId}?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "maintenanceVersion": "POSTGRES_16_9.R20250302.00_19"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "UPDATE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "status": "PENDING",
-  "targetId": "sqlinstance-postgres-minimal-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-minimal-direct-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "UPDATE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "sqlinstance-postgres-minimal-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-minimal-direct-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
 }
 
 ---
@@ -334,8 +280,8 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-postgres-minimal-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_16_3",
-  "databaseVersion": "POSTGRES_16",
+  "databaseInstalledVersion": "POSTGRES_15_7",
+  "databaseVersion": "POSTGRES_15",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
@@ -348,19 +294,20 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     },
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.11",
       "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_9.R20250302.00_19",
+  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
   "name": "sqlinstance-postgres-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-minimal-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -416,7 +363,14 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE"
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 16",
+      "majorVersion": "POSTGRES_16",
+      "name": "POSTGRES_16"
+    }
+  ]
 }
 
 ---
@@ -426,7 +380,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "maintenanceVersion": "POSTGRES_16_9.R20250302.00_31"
+  "databaseVersion": "POSTGRES_16"
 }
 
 200 OK
@@ -515,19 +469,20 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     },
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.11",
       "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_9.R20250302.00_31",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
   "name": "sqlinstance-postgres-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-minimal-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -551,6 +506,7 @@ X-Xss-Protection: 0
       },
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
@@ -596,7 +552,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "databaseVersion": "POSTGRES_16",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_9.R20250302.00_31",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
   "name": "sqlinstance-postgres-minimal-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -723,19 +679,20 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     },
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.11",
       "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_9.R20250302.00_31",
+  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
   "name": "sqlinstance-postgres-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-minimal-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",

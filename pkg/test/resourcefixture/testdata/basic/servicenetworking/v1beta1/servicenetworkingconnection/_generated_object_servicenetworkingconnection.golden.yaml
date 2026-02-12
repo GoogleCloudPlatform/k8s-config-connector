@@ -15,10 +15,10 @@ metadata:
   namespace: ${uniqueId}
 spec:
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: ${networkID}
   reservedPeeringRanges:
-  - name: computeaddress1-${uniqueId}
-  - name: computeaddress2-${uniqueId}
+  - name: ${addressID}
+  - name: ${addressID}
   service: servicenetworking.googleapis.com
 status:
   conditions:

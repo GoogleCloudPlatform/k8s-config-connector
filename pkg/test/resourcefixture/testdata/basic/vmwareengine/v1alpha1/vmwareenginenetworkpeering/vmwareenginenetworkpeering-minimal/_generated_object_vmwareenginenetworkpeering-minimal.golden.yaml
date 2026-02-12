@@ -14,7 +14,7 @@ spec:
   location: global
   peerNetwork:
     computeNetworkRef:
-      name: computenetwork-minimal-${uniqueId}
+      name: ${networkID}
   peerNetworkType: STANDARD
   projectRef:
     external: ${projectId}

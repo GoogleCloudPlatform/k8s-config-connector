@@ -45,7 +45,7 @@ spec:
     ipConfiguration:
       ipv4Enabled: false
       privateNetworkRef:
-        external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+        external: projects/${projectId}/global/networks/${networkID}
       requireSsl: true
     locationPreference:
       zone: us-central1-b
@@ -66,7 +66,7 @@ status:
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 2
-  privateIpAddress: 192.168.0.3
+  privateIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}
   serverCaCert:
     cert: |

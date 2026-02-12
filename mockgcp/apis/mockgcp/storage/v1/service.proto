@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -1334,10 +1334,12 @@ message RelocateBucketRequestDestinationCustomPlacementConfig {
 message RelocateBucketRequest {
   // The bucket's new custom placement configuration if relocating to a Custom Dual Region.
   optional RelocateBucketRequestDestinationCustomPlacementConfig destination_custom_placement_config = 1 [json_name="destinationCustomPlacementConfig"];
+  // Resource name of a Cloud KMS key, of the form projects/my-project/locations/global/keyRings/my-kr/cryptoKeys/my-key. If set, is used to encrypt all objects in the destination bucket.
+  optional string destination_kms_key_name = 2 [json_name="destinationKmsKeyName"];
   // The new location the bucket will be relocated to.
-  optional string destination_location = 2 [json_name="destinationLocation"];
+  optional string destination_location = 3 [json_name="destinationLocation"];
   // If true, validate the operation, but do not actually relocate the bucket.
-  optional bool validate_only = 3 [json_name="validateOnly"];
+  optional bool validate_only = 4 [json_name="validateOnly"];
 }
 
 // A rewrite response.

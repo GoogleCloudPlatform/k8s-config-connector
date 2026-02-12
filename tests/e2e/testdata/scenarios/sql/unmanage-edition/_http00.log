@@ -144,11 +144,11 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     },
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.11",
       "type": "OUTGOING"
     }
   ],
@@ -157,6 +157,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -174,17 +175,19 @@ X-Xss-Protection: 0
     "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
-        "retainedBackups": 7,
+        "retainedBackups": 15,
         "retentionUnit": "COUNT"
       },
-      "enabled": false,
+      "backupTier": "STANDARD",
+      "binaryLogEnabled": true,
+      "enabled": true,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
-      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+      "transactionLogRetentionDays": 14,
+      "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "10",
+    "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
@@ -238,6 +241,7 @@ X-Xss-Protection: 0
   "items": [
     {
       "etag": "abcdef0123A=",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",

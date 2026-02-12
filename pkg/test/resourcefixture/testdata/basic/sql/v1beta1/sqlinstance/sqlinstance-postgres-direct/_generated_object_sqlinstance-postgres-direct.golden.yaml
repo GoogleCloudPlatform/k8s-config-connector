@@ -46,7 +46,7 @@ spec:
     ipConfiguration:
       ipv4Enabled: false
       privateNetworkRef:
-        name: computenetwork-${uniqueId}
+        name: ${networkID}
       requireSsl: false
       sslMode: ENCRYPTED_ONLY
     locationPreference:
@@ -64,7 +64,7 @@ status:
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 2
-  privateIpAddress: 192.168.0.3
+  privateIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}
   serverCaCert:
     cert: |

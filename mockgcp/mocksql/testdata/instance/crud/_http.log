@@ -102,13 +102,13 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -117,6 +117,7 @@ X-Xss-Protection: 0
   "name": "mysql-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/mysql-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -352,28 +353,29 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:mysql-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_8_4_6",
+  "databaseInstalledVersion": "MYSQL_8_4_7",
   "databaseVersion": "MYSQL_8_4",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_8_4_6.R20251004.01_07",
+  "maintenanceVersion": "MYSQL_8_4_7.R20251004.01_24",
   "name": "mysql-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/mysql-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -387,11 +389,14 @@ X-Xss-Protection: 0
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
+    "activationPolicy": "ALWAYS",
+    "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -402,6 +407,7 @@ X-Xss-Protection: 0
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
       "ipv4Enabled": true,
       "requireSsl": false,
@@ -517,28 +523,29 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:mysql-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_8_4_6",
+  "databaseInstalledVersion": "MYSQL_8_4_7",
   "databaseVersion": "MYSQL_8_4",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_8_4_6.R20251004.01_07",
+  "maintenanceVersion": "MYSQL_8_4_7.R20251004.01_24",
   "name": "mysql-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/mysql-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -552,11 +559,14 @@ X-Xss-Protection: 0
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
+    "activationPolicy": "ALWAYS",
+    "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -567,6 +577,7 @@ X-Xss-Protection: 0
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
       "ipv4Enabled": true,
       "requireSsl": false,

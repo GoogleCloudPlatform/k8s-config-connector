@@ -1133,7 +1133,6 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Specific to Sql
 	{
-		visitor.ReplacePath(".ipAddresses[].ipAddress", "10.1.2.3")
 		visitor.ReplacePath(".serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
 		visitor.ReplacePath(".serverCaCert.commonName", "common-name")
 		visitor.ReplacePath(".serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")

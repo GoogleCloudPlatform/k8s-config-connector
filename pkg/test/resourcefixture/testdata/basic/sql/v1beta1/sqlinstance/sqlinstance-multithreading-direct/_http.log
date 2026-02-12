@@ -143,10 +143,11 @@ X-Xss-Protection: 0
   "databaseVersion": "SQLSERVER_2019_EXPRESS",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -155,6 +156,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-multithreading-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-multithreading-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -179,6 +181,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -194,6 +197,7 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -202,6 +206,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -273,6 +278,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-multithreading-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "##MS_PolicyEventProcessingLogin##",
@@ -287,6 +293,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-multithreading-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "##MS_PolicyTsqlExecutionLogin##",
@@ -301,6 +308,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-multithreading-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "sqlserver",
@@ -341,10 +349,11 @@ X-Xss-Protection: 0
   "databaseVersion": "SQLSERVER_2019_EXPRESS",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -353,6 +362,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-multithreading-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-multithreading-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -377,6 +387,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -392,6 +403,7 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -400,6 +412,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -476,6 +489,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
@@ -582,10 +596,11 @@ X-Xss-Protection: 0
   "databaseVersion": "SQLSERVER_2019_EXPRESS",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -594,6 +609,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-multithreading-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-multithreading-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -618,6 +634,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -633,6 +650,7 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -641,6 +659,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,

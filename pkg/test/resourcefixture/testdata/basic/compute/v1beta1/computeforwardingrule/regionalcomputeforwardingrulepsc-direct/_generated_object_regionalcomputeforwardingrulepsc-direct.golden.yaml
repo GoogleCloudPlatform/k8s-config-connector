@@ -12,18 +12,18 @@ metadata:
   labels:
     cnrm-test: "true"
     label-one: value-two
-  name: computeforwardingrule-${uniqueId}
+  name: ${forwardingRuleID}
   namespace: ${uniqueId}
 spec:
   allowPscGlobalAccess: true
   description: A VPC private service connect forwarding rule
   ipAddress:
     addressRef:
-      external: https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/addresses/computeaddress-${uniqueId}
+      external: https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/addresses/${addressID}
   loadBalancingScheme: ""
   location: us-central1
   networkRef:
-    name: computenetwork-1-${uniqueId}
+    name: ${networkID}
   target:
     serviceAttachmentRef:
       name: computeserviceattachment-${uniqueId}
@@ -35,7 +35,7 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
-  externalRef: //compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingrules/computeforwardingrule-${uniqueId}
+  externalRef: //compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingrules/${forwardingRuleID}
   labelFingerprint: abcdef0123A=
   observedGeneration: 1
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeforwardingrule-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}

@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -7685,7 +7685,7 @@ type Service struct {
 	CustomError *CustomError `protobuf:"bytes,9,opt,name=custom_error,json=customError,proto3" json:"custom_error,omitempty"`
 	// Additional API documentation.
 	Documentation *Documentation `protobuf:"bytes,10,opt,name=documentation,proto3" json:"documentation,omitempty"`
-	// Configuration for network endpoints. If this is empty, then an endpoint with the same name as the service is automatically generated to service all defined APIs.
+	// Configuration for network endpoints. If this is empty, then an endpoint with the same name as the service is automatically generated to service all defined APIs. WARNING: Defining any entries in the `endpoints` list disables the automatic generation of default endpoint variations (e.g., `{service}.clients6.google.com`, `content-{service}.googleapis.com`, and mTLS variants like `{service}.mtls.googleapis.com`). To retain these default variations, you are required to explicitly include your main service endpoint (e.g., `myservice.googleapis.com`) in this list alongside any other custom endpoints (like REP, GFE, etc.).
 	Endpoints []*Endpoint `protobuf:"bytes,11,rep,name=endpoints,proto3" json:"endpoints,omitempty"`
 	// A list of all enum types included in this API service. Enums referenced directly or indirectly by the `apis` are automatically included. Enums which are not referenced but shall be included should be listed here by name by the configuration author. Example: enums: - name: google.someapi.v1.SomeEnum
 	Enums []*Enum `protobuf:"bytes,12,rep,name=enums,proto3" json:"enums,omitempty"`
@@ -7699,7 +7699,7 @@ type Service struct {
 	Logs []*LogDescriptor `protobuf:"bytes,16,rep,name=logs,proto3" json:"logs,omitempty"`
 	// Defines the metrics used by this service.
 	Metrics []*MetricDescriptor `protobuf:"bytes,17,rep,name=metrics,proto3" json:"metrics,omitempty"`
-	// Defines the monitored resources used by this service. This is required by the Service.monitoring and Service.logging configurations.
+	// Defines the monitored resources used by this service. This is required by the `Service.monitoring` and `Service.logging` configurations.
 	MonitoredResources []*MonitoredResourceDescriptor `protobuf:"bytes,18,rep,name=monitored_resources,json=monitoredResources,proto3" json:"monitored_resources,omitempty"`
 	// Monitoring configuration.
 	Monitoring *Monitoring `protobuf:"bytes,19,opt,name=monitoring,proto3" json:"monitoring,omitempty"`

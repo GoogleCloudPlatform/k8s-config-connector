@@ -144,11 +144,11 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     },
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.11",
       "type": "OUTGOING"
     }
   ],
@@ -157,6 +157,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -238,6 +239,7 @@ X-Xss-Protection: 0
   "items": [
     {
       "etag": "abcdef0123A=",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
@@ -346,11 +348,11 @@ X-Xss-Protection: 0
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     },
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.11",
       "type": "OUTGOING"
     }
   ],
@@ -359,6 +361,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -381,6 +384,7 @@ X-Xss-Protection: 0
       },
       "enabled": false,
       "kind": "sql#backupConfiguration",
+      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
