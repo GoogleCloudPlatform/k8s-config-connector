@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -29,6 +30,9 @@ type MemorystoreInstanceBackupSpec struct {
 
 	// The MemorystoreInstanceBackup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// The resource name of the MemorystoreInstance from which the backup is created.
+	InstanceRef *refsv1beta1.MemorystoreInstanceRef `json:"instanceRef,omitempty"`
 }
 
 // MemorystoreInstanceBackupStatus defines the config connector machine state of MemorystoreInstanceBackup

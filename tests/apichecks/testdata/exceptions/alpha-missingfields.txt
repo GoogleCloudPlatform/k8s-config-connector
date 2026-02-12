@@ -1747,6 +1747,7 @@
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=memorystoreinstancebackups.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupCollection" is not set in unstructured objects
+[missing_field] crd=memorystoreinstancebackups.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.databaseType" is not set in unstructured objects
 [missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveMetastoreConfig.configOverrides" is not set in unstructured objects

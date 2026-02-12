@@ -66,6 +66,35 @@ spec:
               backupCollection:
                 description: The project that this resource belongs to.
                 type: string
+              instanceRef:
+                description: The resource name of the MemorystoreInstance from which
+                  the backup is created.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed MemorystoreInstance
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                    type: string
+                  name:
+                    description: The name of a MemorystoreInstance resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a MemorystoreInstance resource.
+                    type: string
+                type: object
               resourceID:
                 description: The MemorystoreInstanceBackup name. If not given, the
                   metadata.name will be used.

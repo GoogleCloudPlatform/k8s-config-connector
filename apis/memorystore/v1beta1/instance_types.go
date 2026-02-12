@@ -16,7 +16,6 @@ package v1beta1
 
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -228,7 +227,7 @@ type Instance_ManagedBackupSource struct {
 	//  projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
 	//  In this case, it assumes the backup is under memorystore.googleapis.com.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ManagedBackupSource.backup
-	BackupRef *v1alpha1.BackupRef `json:"backupRef,omitempty"`
+	BackupRef *refs.MemorystoreInstanceBackupRef `json:"backupRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.StateInfo
