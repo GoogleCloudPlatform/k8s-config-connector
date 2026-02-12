@@ -18,12 +18,14 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/run/v2"
 	"github.com/google/uuid"
+	api "google.golang.org/genproto/googleapis/api"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -64,14 +66,18 @@ func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorker
 
 	obj := proto.Clone(req.WorkerPool).(*pb.WorkerPool)
 	obj.Name = fqn
-	obj.CreateTime = timestamppb.Now()
-	obj.UpdateTime = timestamppb.Now()
+	obj.CreateTime = timestamppb.New(time.Unix(0, 0))
+	obj.UpdateTime = timestamppb.New(time.Unix(0, 0))
 	obj.Etag = fields.ComputeWeakEtag(obj)
 	obj.Creator = "test@google.com"
 	obj.LastModifier = "test@google.com"
-
 	obj.Uid = uuid.NewString()
 	obj.Generation = 1
+
+	// Server-side defaults
+	if obj.LaunchStage == 0 {
+		obj.LaunchStage = api.LaunchStage_GA
+	}
 
 	if obj.Template == nil {
 		obj.Template = &pb.WorkerPoolRevisionTemplate{}
@@ -80,38 +86,41 @@ func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorker
 	// Set TerminalCondition to Ready if not set (Mocking immediate success)
 	if obj.TerminalCondition == nil {
 		obj.TerminalCondition = &pb.Condition{
-			LastTransitionTime: timestamppb.Now(),
+			LastTransitionTime: obj.CreateTime,
 			State:              pb.Condition_CONDITION_SUCCEEDED,
 			Type:               "Ready",
+		}
+	}
+
+	// Set default scaling if not provided
+	if obj.Scaling == nil {
+		obj.Scaling = &pb.WorkerPoolScaling{
+			ManualInstanceCount: proto.Int32(1),
+		}
+	}
+
+	// Set default template values
+	if obj.Template != nil {
+		if obj.Template.ServiceAccount == "" {
+			obj.Template.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
+		}
+		for _, container := range obj.Template.Containers {
+			if container.Resources == nil {
+				container.Resources = &pb.ResourceRequirements{
+					Limits: map[string]string{
+						"cpu":    "1000m",
+						"memory": "512Mi",
+					},
+				}
+			}
 		}
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
 	return s.operations.StartLRO(ctx, req.Parent, obj, func() (proto.Message, error) {
-		return obj, nil
-	})
-}
-
-func (s *workerPools) DeleteWorkerPool(ctx context.Context, req *pb.DeleteWorkerPoolRequest) (*longrunning.Operation, error) {
-	name, err := s.parseWorkerPoolName(req.Name)
-	if err != nil {
-		return nil, err
-	}
-
-	fqn := name.String()
-
-	obj := &pb.WorkerPool{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-	if err := s.storage.Delete(ctx, fqn, &pb.WorkerPool{}); err != nil {
-		return nil, err
-	}
-
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, lroPrefix, obj, func() (protoreflect.ProtoMessage, error) {
 		return obj, nil
 	})
 }
@@ -131,21 +140,56 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 
 	updated := req.GetWorkerPool()
 
-	// Basic update logic
+	// Update fields from request
 	if updated.Labels != nil {
 		obj.Labels = updated.Labels
 	}
 	if updated.Annotations != nil {
 		obj.Annotations = updated.Annotations
 	}
+	if updated.Description != "" {
+		obj.Description = updated.Description
+	}
 	if updated.Template != nil {
 		obj.Template = updated.Template
 	}
+	if updated.Scaling != nil {
+		obj.Scaling = updated.Scaling
+	}
+	if len(updated.InstanceSplits) > 0 {
+		obj.InstanceSplits = updated.InstanceSplits
+	}
+	if updated.BinaryAuthorization != nil {
+		obj.BinaryAuthorization = updated.BinaryAuthorization
+	}
 
-	obj.UpdateTime = timestamppb.Now()
+	obj.UpdateTime = timestamppb.New(time.Unix(0, 0))
 	obj.Generation++
+	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return s.operations.StartLRO(ctx, lroPrefix, obj, func() (protoreflect.ProtoMessage, error) {
+		return obj, nil
+	})
+}
+
+func (s *workerPools) DeleteWorkerPool(ctx context.Context, req *pb.DeleteWorkerPoolRequest) (*longrunning.Operation, error) {
+	name, err := s.parseWorkerPoolName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.WorkerPool{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	if err := s.storage.Delete(ctx, fqn, &pb.WorkerPool{}); err != nil {
 		return nil, err
 	}
 

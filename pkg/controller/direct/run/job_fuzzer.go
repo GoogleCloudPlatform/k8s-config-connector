@@ -29,8 +29,8 @@ func init() {
 
 func runJobFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Job{},
-		RunJobSpec_FromProto, RunJobSpec_ToProto,
-		RunJobObservedState_FromProto, RunJobObservedState_ToProto,
+		RunJobSpec_v1beta1_FromProto, RunJobSpec_v1beta1_ToProto,
+		RunJobObservedState_v1beta1_FromProto, RunJobObservedState_v1beta1_ToProto,
 	)
 
 	f.SpecFields.Insert(".annotations")
