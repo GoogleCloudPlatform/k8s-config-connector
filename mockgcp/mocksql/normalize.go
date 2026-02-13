@@ -49,9 +49,6 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			case "OUTGOING":
 				replacements.ReplaceStringValue(ipAddress.IPAddress, "10.10.10.11")
 			}
-			if ipAddress.Type == "PRIMARY" {
-				replacements.ReplaceStringValue(ipAddress.IPAddress, "10.10.10.10")
-			}
 		}
 	}
 }

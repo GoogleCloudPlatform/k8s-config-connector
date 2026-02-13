@@ -1,0 +1,36 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: network-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0" # Make more deterministic
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: address-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0" # Make more deterministic
+spec:
+  location: global
+  addressType: INTERNAL
+  networkRef:
+    name: network-${uniqueId}
+  prefixLength: 16
+  purpose: VPC_PEERING
+  resourceID: address-${uniqueId}
+---
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  name: servicenetworkingconnection-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0" # Make more deterministic
+spec:
+  networkRef:
+    name: network-${uniqueId}
+  reservedPeeringRanges:
+  - name: address-${uniqueId}
+  service: servicenetworking.googleapis.com
