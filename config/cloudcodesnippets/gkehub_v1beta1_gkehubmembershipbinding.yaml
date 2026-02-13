@@ -1,0 +1,13 @@
+label: Config Connector GKEHubMembershipBinding
+markdownDescription: Creates yaml for a GKEHubMembershipBinding resource
+insertText: |
+  apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+  kind: GKEHubMembershipBinding
+  metadata:
+    name: \${1:gkehubmembershipbinding-name}
+  spec:
+    location: \${2:global}
+    membershipRef:
+      name: \${3:gkehubmembership-name}
+    scopeRef:
+      name: \${4:gkehubscope-name}

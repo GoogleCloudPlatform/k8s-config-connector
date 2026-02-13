@@ -1,0 +1,10 @@
+label: Config Connector GKEHubScope
+markdownDescription: Creates yaml for a GKEHubScope resource
+insertText: |
+  apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+  kind: GKEHubScope
+  metadata:
+    name: \${1:gkehubscope-name}
+  spec:
+    labels:
+      \${2:label-one}: \${3:value-one}
