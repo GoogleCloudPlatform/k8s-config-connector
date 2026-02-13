@@ -287,7 +287,10 @@ func UrlMapTest_FromProto(mapCtx *direct.MapContext, in *pb.UrlMapTest) *krm.Url
 	out.Description = in.Description
 	out.Host = direct.ValueOf(in.Host)
 	out.Path = direct.ValueOf(in.Path)
-	out.Service = *ComputeURLMapSpec_Service_FromProto(mapCtx, in.Service)
+	service := ComputeURLMapSpec_Service_FromProto(mapCtx, in.Service)
+	if service != nil {
+		out.Service = *service
+	}
 	return out
 }
 
