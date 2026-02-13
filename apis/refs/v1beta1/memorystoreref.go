@@ -19,6 +19,7 @@ package v1beta1
 type MemorystoreInstanceRef struct {
 	// A reference to an externally managed MemorystoreInstance resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
 	External string `json:"external,omitempty"`
 
 	// The name of a MemorystoreInstance resource.
@@ -32,6 +33,7 @@ type MemorystoreInstanceRef struct {
 // which "ServiceAttachmentExternal" field holds the GCP identifier for the KRM object.
 type MemorystoreInstanceServiceAttachmentRef struct {
 	// The MemorystoreInstance managed ServiceAttachment of the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
+	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/regions\/[^/]+\/serviceAttachments\/[^/]+$
 	ServiceAttachmentExternal string `json:"serviceAttachmentExternal,omitempty"`
 
 	// The MemorystoreInstance resource that the ServiceAttachment is attached to.

@@ -107,10 +107,12 @@ type PscConnectionObservedState struct {
 	//  periodically. Please use Private Service Connect APIs for the latest
 	//  status.
 	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.psc_connection_status
+	// +kubebuilder:validation:Enum=ACTIVE;NOT_FOUND
 	PscConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
 
 	// Output only. Type of the PSC connection.
 	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.connection_type
+	// +kubebuilder:validation:Enum=CONNECTION_TYPE_DISCOVERY;CONNECTION_TYPE_PRIMARY;CONNECTION_TYPE_READER
 	ConnectionType *string `json:"connectionType,omitempty"`
 }
 

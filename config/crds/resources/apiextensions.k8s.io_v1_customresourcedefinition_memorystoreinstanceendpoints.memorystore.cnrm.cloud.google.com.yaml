@@ -137,6 +137,7 @@ spec:
                   external:
                     description: A reference to an externally managed MemorystoreInstance
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                    pattern: ^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
                     type: string
                   name:
                     description: The name of a MemorystoreInstance resource.
@@ -204,6 +205,10 @@ spec:
                                 properties:
                                   connectionType:
                                     description: Output only. Type of the PSC connection.
+                                    enum:
+                                    - CONNECTION_TYPE_DISCOVERY
+                                    - CONNECTION_TYPE_PRIMARY
+                                    - CONNECTION_TYPE_READER
                                     type: string
                                   projectID:
                                     description: Output only. The consumer project_id
@@ -216,6 +221,9 @@ spec:
                                       this value is updated periodically. Please use
                                       Private Service Connect APIs for the latest
                                       status.'
+                                    enum:
+                                    - ACTIVE
+                                    - NOT_FOUND
                                     type: string
                                 type: object
                             type: object

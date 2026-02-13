@@ -217,10 +217,12 @@ type PscAttachmentDetailObservedState struct {
 	// Output only. Service attachment URI which your self-created PscConnection
 	//  should use as target.
 	// +kcc:proto:field=google.cloud.memorystore.v1.PscAttachmentDetail.service_attachment
+	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/regions\/[^/]+\/serviceAttachments\/[^/]+$
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 
 	// Output only. Type of Psc endpoint.
 	// +kcc:proto:field=google.cloud.memorystore.v1.PscAttachmentDetail.connection_type
+	// +kubebuilder:validation:Enum=CONNECTION_TYPE_DISCOVERY;CONNECTION_TYPE_PRIMARY;CONNECTION_TYPE_READER
 	ConnectionType *string `json:"connectionType,omitempty"`
 }
 

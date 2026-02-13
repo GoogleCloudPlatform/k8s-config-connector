@@ -503,6 +503,7 @@ spec:
                           external:
                             description: A reference to an externally managed MemorystoreInstance
                               resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            pattern: ^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
                             type: string
                           name:
                             description: The name of a MemorystoreInstance resource.
@@ -518,6 +519,7 @@ spec:
                       serviceAttachmentExternal:
                         description: The MemorystoreInstance managed ServiceAttachment
                           of the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
+                        pattern: ^projects\/[^/]+\/regions\/[^/]+\/serviceAttachments\/[^/]+$
                         type: string
                     type: object
                   serviceAttachmentRef:

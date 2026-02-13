@@ -399,10 +399,15 @@ spec:
                       properties:
                         connectionType:
                           description: Output only. Type of Psc endpoint.
+                          enum:
+                          - CONNECTION_TYPE_DISCOVERY
+                          - CONNECTION_TYPE_PRIMARY
+                          - CONNECTION_TYPE_READER
                           type: string
                         serviceAttachment:
                           description: Output only. Service attachment URI which your
                             self-created PscConnection should use as target.
+                          pattern: ^projects\/[^/]+\/regions\/[^/]+\/serviceAttachments\/[^/]+$
                           type: string
                       type: object
                     type: array
@@ -808,10 +813,15 @@ spec:
                       properties:
                         connectionType:
                           description: Output only. Type of Psc endpoint.
+                          enum:
+                          - CONNECTION_TYPE_DISCOVERY
+                          - CONNECTION_TYPE_PRIMARY
+                          - CONNECTION_TYPE_READER
                           type: string
                         serviceAttachment:
                           description: Output only. Service attachment URI which your
                             self-created PscConnection should use as target.
+                          pattern: ^projects\/[^/]+\/regions\/[^/]+\/serviceAttachments\/[^/]+$
                           type: string
                       type: object
                     type: array
