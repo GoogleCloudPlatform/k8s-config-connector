@@ -191,6 +191,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -564,6 +565,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": true,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
