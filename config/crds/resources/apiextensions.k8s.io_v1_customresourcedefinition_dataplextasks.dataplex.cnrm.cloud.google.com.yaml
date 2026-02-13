@@ -460,6 +460,8 @@ spec:
                     description: Required. Immutable. Trigger type of the user-specified
                       Task.
                     type: string
+                required:
+                - type
                 type: object
             required:
             - executionSpec

@@ -141,6 +141,8 @@ spec:
                                 description: Required. Values are deploy parameters
                                   in key-value pairs.
                                 type: object
+                            required:
+                            - values
                             type: object
                           type: array
                         profiles:
@@ -205,6 +207,8 @@ spec:
                                         tests after each percentage deployment via
                                         `skaffold verify`.
                                       type: boolean
+                                  required:
+                                  - percentages
                                   type: object
                                 customCanaryDeployment:
                                   description: Optional. Configures the progressive
@@ -277,8 +281,13 @@ spec:
                                               verify tests after the deployment via
                                               `skaffold verify`.
                                             type: boolean
+                                        required:
+                                        - percentage
+                                        - phaseID
                                         type: object
                                       type: array
+                                  required:
+                                  - phaseConfigs
                                   type: object
                                 runtimeConfig:
                                   description: Optional. Runtime specific configurations
@@ -396,6 +405,10 @@ spec:
                                                 and 3600s. If unspecified, there is
                                                 no cutback time.
                                               type: string
+                                          required:
+                                          - deployment
+                                          - httpRoute
+                                          - service
                                           type: object
                                         serviceNetworking:
                                           description: Optional. Kubernetes Service
@@ -425,6 +438,9 @@ spec:
                                               description: Required. Name of the Kubernetes
                                                 Service.
                                               type: string
+                                          required:
+                                          - deployment
+                                          - service
                                           type: object
                                       type: object
                                   type: object
@@ -716,6 +732,8 @@ spec:
                                 description: Required. Values are deploy parameters
                                   in key-value pairs.
                                 type: object
+                            required:
+                            - values
                             type: object
                           type: array
                         profiles:
@@ -780,6 +798,8 @@ spec:
                                         tests after each percentage deployment via
                                         `skaffold verify`.
                                       type: boolean
+                                  required:
+                                  - percentages
                                   type: object
                                 customCanaryDeployment:
                                   description: Optional. Configures the progressive
@@ -852,8 +872,13 @@ spec:
                                               verify tests after the deployment via
                                               `skaffold verify`.
                                             type: boolean
+                                        required:
+                                        - percentage
+                                        - phaseID
                                         type: object
                                       type: array
+                                  required:
+                                  - phaseConfigs
                                   type: object
                                 runtimeConfig:
                                   description: Optional. Runtime specific configurations
@@ -971,6 +996,10 @@ spec:
                                                 and 3600s. If unspecified, there is
                                                 no cutback time.
                                               type: string
+                                          required:
+                                          - deployment
+                                          - httpRoute
+                                          - service
                                           type: object
                                         serviceNetworking:
                                           description: Optional. Kubernetes Service
@@ -1000,6 +1029,9 @@ spec:
                                               description: Required. Name of the Kubernetes
                                                 Service.
                                               type: string
+                                          required:
+                                          - deployment
+                                          - service
                                           type: object
                                       type: object
                                   type: object

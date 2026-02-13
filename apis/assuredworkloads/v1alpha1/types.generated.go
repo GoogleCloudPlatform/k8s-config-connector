@@ -25,12 +25,14 @@ package v1alpha1
 type Workload_KMSSettings struct {
 	// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
 	//  new version of the crypto key and mark it as the primary.
+	// +required
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.KMSSettings.next_rotation_time
 	NextRotationTime *string `json:"nextRotationTime,omitempty"`
 
 	// Required. Input only. Immutable. [next_rotation_time] will be advanced by this period when the Key
 	//  Management Service automatically rotates a key. Must be at least 24 hours
 	//  and at most 876,000 hours.
+	// +required
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.KMSSettings.rotation_period
 	RotationPeriod *string `json:"rotationPeriod,omitempty"`
 }

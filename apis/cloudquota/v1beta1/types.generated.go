@@ -26,6 +26,7 @@ package v1beta1
 type QuotaConfig struct {
 	// Required. The preferred value. Must be greater than or equal to -1. If set
 	//  to -1, it means the value is "unlimited".
+	// +required
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaConfig.preferred_value
 	PreferredValue *int64 `json:"preferredValue,omitempty"`
 

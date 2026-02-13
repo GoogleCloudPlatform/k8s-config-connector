@@ -63,6 +63,7 @@ type EmptyDirVolumeSource struct {
 type EnvVar struct {
 	// Required. Name of the environment variable. Must not exceed 32768
 	//  characters.
+	// +required
 	// +kcc:proto:field=google.cloud.run.v2.EnvVar.name
 	Name *string `json:"name,omitempty"`
 
@@ -120,6 +121,7 @@ type GrpcAction struct {
 // +kcc:proto=google.cloud.run.v2.HTTPHeader
 type HTTPHeader struct {
 	// Required. The header field name
+	// +required
 	// +kcc:proto:field=google.cloud.run.v2.HTTPHeader.name
 	Name *string `json:"name,omitempty"`
 
@@ -146,6 +148,7 @@ type NfsVolumeSource struct {
 // +kcc:proto=google.cloud.run.v2.NodeSelector
 type NodeSelector struct {
 	// Required. GPU accelerator type to attach to an instance.
+	// +required
 	// +kcc:proto:field=google.cloud.run.v2.NodeSelector.accelerator
 	Accelerator *string `json:"accelerator,omitempty"`
 }
@@ -162,6 +165,7 @@ type TCPSocketAction struct {
 // +kcc:proto=google.cloud.run.v2.VolumeMount
 type VolumeMount struct {
 	// Required. This must match the Name of a Volume.
+	// +required
 	// +kcc:proto:field=google.cloud.run.v2.VolumeMount.name
 	Name *string `json:"name,omitempty"`
 
@@ -170,6 +174,7 @@ type VolumeMount struct {
 	//  otherwise be `/cloudsql`. All instances defined in the Volume will be
 	//  available as `/cloudsql/[instance]`. For more information on Cloud SQL
 	//  volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run
+	// +required
 	// +kcc:proto:field=google.cloud.run.v2.VolumeMount.mount_path
 	MountPath *string `json:"mountPath,omitempty"`
 }

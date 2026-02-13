@@ -57,6 +57,7 @@ type TrustConfig_CertificateAuthorityServiceConfig struct {
 	//  projects/{project}/locations/{location}/caPools/{ca_pool}.
 	//  The CA pool does not need to be in the same project or location as the
 	//  Kafka cluster.
+	// +required
 	// +kcc:proto:field=google.cloud.managedkafka.v1.TrustConfig.CertificateAuthorityServiceConfig.ca_pool
 	CAPool *string `json:"caPool,omitempty"`
 }
