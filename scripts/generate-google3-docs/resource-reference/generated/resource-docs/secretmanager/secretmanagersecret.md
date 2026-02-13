@@ -106,6 +106,7 @@ annotations:
 expireTime: string
 labels:
   string: string
+location: string
 replication:
   auto:
     customerManagedEncryption:
@@ -192,6 +193,16 @@ encoding of maximum 128 bytes, and must conform to the following PCRE
 regular expression: `[\p{Ll}\p{Lo}\p{N}_-]{0,63}`
 
 No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>location</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Immutable. Location where secret will reside. Default is global{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -703,6 +714,37 @@ metadata:
 spec:
   replication:
     automatic: true
+```
+
+### Regional Secret
+```yaml
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecret
+metadata:
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  labels:
+    label-one: value-asia-south1
+  name: regionalsecret-kcc-asia-south1 # kubectl name
+spec:
+  resourceID: regionalsecret-kcc # GCP name
+  location: asia-south1
+---
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecret
+metadata:
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+  labels:
+    label-one: value-us-central1
+  name: regionalsecret-kcc-us-central1 # kubectl name
+spec:
+  resourceID: regionalsecret-kcc # GCP name
+  location: us-central1
 ```
 
 ### User Managed Secret Replication
