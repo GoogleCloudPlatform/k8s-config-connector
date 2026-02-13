@@ -226,6 +226,7 @@ spec:
                   uris:
                     description: 'Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2'
                     items:
+                      pattern: ^gs\:\/\/[^\/]+\/.+$
                       type: string
                     type: array
                 type: object
@@ -725,6 +726,7 @@ spec:
                   uris:
                     description: 'Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2'
                     items:
+                      pattern: ^gs\:\/\/[^\/]+\/.+$
                       type: string
                     type: array
                 type: object

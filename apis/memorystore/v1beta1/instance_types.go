@@ -210,6 +210,7 @@ type Instance_ConnectionDetail struct {
 type Instance_GCSBackupSource struct {
 	// Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.GcsBackupSource.uris
+	// +kubebuilder:validation:items:Pattern=`^gs\:\/\/[^\/]+\/.+$`
 	Uris []string `json:"uris,omitempty"`
 }
 
