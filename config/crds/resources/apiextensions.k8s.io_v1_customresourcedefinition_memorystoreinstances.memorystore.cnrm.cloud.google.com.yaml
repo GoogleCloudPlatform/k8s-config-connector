@@ -71,6 +71,10 @@ spec:
                   instanceRole:
                     description: Required. The role of the instance in cross instance
                       replication.
+                    enum:
+                    - PRIMARY
+                    - SECONDARY
+                    - NONE
                     type: string
                   primaryInstance:
                     description: |-
@@ -100,6 +104,7 @@ spec:
                           external:
                             description: A reference to an externally managed MemorystoreInstance
                               resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            pattern: ^projects\/[a-z]([-a-z0-9]*[a-z0-9])?\/locations\/[a-z]([-a-z0-9]*[a-z0-9])?\/instances\/[a-z][0-9a-z-]*$
                             type: string
                           name:
                             description: The name of a MemorystoreInstance resource.
@@ -138,6 +143,7 @@ spec:
                             external:
                               description: A reference to an externally managed MemorystoreInstance
                                 resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                              pattern: ^projects\/[a-z]([-a-z0-9]*[a-z0-9])?\/locations\/[a-z]([-a-z0-9]*[a-z0-9])?\/instances\/[a-z][0-9a-z-]*$
                               type: string
                             name:
                               description: The name of a MemorystoreInstance resource.
@@ -149,7 +155,15 @@ spec:
                           type: object
                       type: object
                     type: array
+                required:
+                - instanceRole
                 type: object
+                x-kubernetes-validations:
+                - rule: (self.instanceRole=="NONE" && !has(self.primaryInstance) &&
+                    !has(self.secondaryInstances)) || (self.instanceRole=="PRIMARY"
+                    && !has(self.primaryInstance) && has(self.secondaryInstances))
+                    || (self.instanceRole=="SECONDARY" && has(self.primaryInstance)
+                    && !has(self.secondaryInstances))
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -463,6 +477,7 @@ spec:
                       updateTime:
                         description: Output only. The last time cross instance replication
                           config was updated.
+                        format: date-time
                         type: string
                     type: object
                   endpoints:
@@ -602,6 +617,10 @@ spec:
                   instanceRole:
                     description: Required. The role of the instance in cross instance
                       replication.
+                    enum:
+                    - PRIMARY
+                    - SECONDARY
+                    - NONE
                     type: string
                   primaryInstance:
                     description: |-
@@ -631,6 +650,7 @@ spec:
                           external:
                             description: A reference to an externally managed MemorystoreInstance
                               resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            pattern: ^projects\/[a-z]([-a-z0-9]*[a-z0-9])?\/locations\/[a-z]([-a-z0-9]*[a-z0-9])?\/instances\/[a-z][0-9a-z-]*$
                             type: string
                           name:
                             description: The name of a MemorystoreInstance resource.
@@ -669,6 +689,7 @@ spec:
                             external:
                               description: A reference to an externally managed MemorystoreInstance
                                 resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                              pattern: ^projects\/[a-z]([-a-z0-9]*[a-z0-9])?\/locations\/[a-z]([-a-z0-9]*[a-z0-9])?\/instances\/[a-z][0-9a-z-]*$
                               type: string
                             name:
                               description: The name of a MemorystoreInstance resource.
@@ -680,7 +701,15 @@ spec:
                           type: object
                       type: object
                     type: array
+                required:
+                - instanceRole
                 type: object
+                x-kubernetes-validations:
+                - rule: (self.instanceRole=="NONE" && !has(self.primaryInstance) &&
+                    !has(self.secondaryInstances)) || (self.instanceRole=="PRIMARY"
+                    && !has(self.primaryInstance) && has(self.secondaryInstances))
+                    || (self.instanceRole=="SECONDARY" && has(self.primaryInstance)
+                    && !has(self.secondaryInstances))
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -994,6 +1023,7 @@ spec:
                       updateTime:
                         description: Output only. The last time cross instance replication
                           config was updated.
+                        format: date-time
                         type: string
                     type: object
                   endpoints:
