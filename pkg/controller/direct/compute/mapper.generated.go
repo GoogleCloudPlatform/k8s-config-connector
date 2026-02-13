@@ -263,6 +263,138 @@ func ComputeSubnetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: SystemReservedInternalIPV6Ranges
 	return out
 }
+func ComputeURLMapStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMap) *krm.ComputeURLMapStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeURLMapStatus{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: DefaultCustomErrorResponsePolicy
+	// MISSING: DefaultRouteAction
+	// MISSING: DefaultService
+	// MISSING: DefaultURLRedirect
+	// MISSING: Description
+	out.Fingerprint = in.Fingerprint
+	// MISSING: HeaderAction
+	// MISSING: HostRules
+	out.ID = in.Id
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PathMatchers
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Tests
+	return out
+}
+func ComputeURLMapStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapStatus) *pb.UrlMap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlMap{}
+	out.CreationTimestamp = in.CreationTimestamp
+	// MISSING: DefaultCustomErrorResponsePolicy
+	// MISSING: DefaultRouteAction
+	// MISSING: DefaultService
+	// MISSING: DefaultURLRedirect
+	// MISSING: Description
+	out.Fingerprint = in.Fingerprint
+	// MISSING: HeaderAction
+	// MISSING: HostRules
+	out.Id = in.ID
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PathMatchers
+	// MISSING: Region
+	out.SelfLink = in.SelfLink
+	// MISSING: Tests
+	return out
+}
+func CorsPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CorsPolicy) *krm.CorsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CorsPolicy{}
+	out.AllowCredentials = in.AllowCredentials
+	out.AllowHeaders = in.AllowHeaders
+	out.AllowMethods = in.AllowMethods
+	out.AllowOriginRegexes = in.AllowOriginRegexes
+	out.AllowOrigins = in.AllowOrigins
+	out.Disabled = in.Disabled
+	out.ExposeHeaders = in.ExposeHeaders
+	out.MaxAge = in.MaxAge
+	return out
+}
+func CorsPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CorsPolicy) *pb.CorsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CorsPolicy{}
+	out.AllowCredentials = in.AllowCredentials
+	out.AllowHeaders = in.AllowHeaders
+	out.AllowMethods = in.AllowMethods
+	out.AllowOriginRegexes = in.AllowOriginRegexes
+	out.AllowOrigins = in.AllowOrigins
+	out.Disabled = in.Disabled
+	out.ExposeHeaders = in.ExposeHeaders
+	out.MaxAge = in.MaxAge
+	return out
+}
+func CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomErrorResponsePolicy) *krm.CustomErrorResponsePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomErrorResponsePolicy{}
+	out.ErrorResponseRules = direct.Slice_FromProto(mapCtx, in.ErrorResponseRules, CustomErrorResponsePolicyCustomErrorResponseRule_v1beta1_FromProto)
+	out.ErrorService = in.ErrorService
+	return out
+}
+func CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CustomErrorResponsePolicy) *pb.CustomErrorResponsePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomErrorResponsePolicy{}
+	out.ErrorResponseRules = direct.Slice_ToProto(mapCtx, in.ErrorResponseRules, CustomErrorResponsePolicyCustomErrorResponseRule_v1beta1_ToProto)
+	out.ErrorService = in.ErrorService
+	return out
+}
+func CustomErrorResponsePolicyCustomErrorResponseRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomErrorResponsePolicyCustomErrorResponseRule) *krm.CustomErrorResponsePolicyCustomErrorResponseRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomErrorResponsePolicyCustomErrorResponseRule{}
+	out.MatchResponseCodes = in.MatchResponseCodes
+	out.OverrideResponseCode = in.OverrideResponseCode
+	out.Path = in.Path
+	return out
+}
+func CustomErrorResponsePolicyCustomErrorResponseRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CustomErrorResponsePolicyCustomErrorResponseRule) *pb.CustomErrorResponsePolicyCustomErrorResponseRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomErrorResponsePolicyCustomErrorResponseRule{}
+	out.MatchResponseCodes = in.MatchResponseCodes
+	out.OverrideResponseCode = in.OverrideResponseCode
+	out.Path = in.Path
+	return out
+}
+func Duration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
+func Duration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Duration) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	out.Seconds = in.Seconds
+	return out
+}
 func Expr_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Expr) *krm.Expr {
 	if in == nil {
 		return nil
@@ -365,6 +497,298 @@ func ForwardingruleServiceDirectoryRegistrations_v1beta1_ToProto(mapCtx *direct.
 	out.Namespace = in.Namespace
 	out.Service = in.Service
 	// MISSING: ServiceDirectoryRegion
+	return out
+}
+func HTTPFaultAbort_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpFaultAbort) *krm.HTTPFaultAbort {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPFaultAbort{}
+	out.HTTPStatus = in.HttpStatus
+	out.Percentage = in.Percentage
+	return out
+}
+func HTTPFaultAbort_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPFaultAbort) *pb.HttpFaultAbort {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpFaultAbort{}
+	out.HttpStatus = in.HTTPStatus
+	out.Percentage = in.Percentage
+	return out
+}
+func HTTPFaultDelay_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpFaultDelay) *krm.HTTPFaultDelay {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPFaultDelay{}
+	out.FixedDelay = Duration_v1beta1_FromProto(mapCtx, in.GetFixedDelay())
+	out.Percentage = in.Percentage
+	return out
+}
+func HTTPFaultDelay_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPFaultDelay) *pb.HttpFaultDelay {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpFaultDelay{}
+	out.FixedDelay = Duration_v1beta1_ToProto(mapCtx, in.FixedDelay)
+	out.Percentage = in.Percentage
+	return out
+}
+func HTTPFaultInjection_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpFaultInjection) *krm.HTTPFaultInjection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPFaultInjection{}
+	out.Abort = HTTPFaultAbort_v1beta1_FromProto(mapCtx, in.GetAbort())
+	out.Delay = HTTPFaultDelay_v1beta1_FromProto(mapCtx, in.GetDelay())
+	return out
+}
+func HTTPFaultInjection_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPFaultInjection) *pb.HttpFaultInjection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpFaultInjection{}
+	out.Abort = HTTPFaultAbort_v1beta1_ToProto(mapCtx, in.Abort)
+	out.Delay = HTTPFaultDelay_v1beta1_ToProto(mapCtx, in.Delay)
+	return out
+}
+func HTTPHeaderAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpHeaderAction) *krm.HTTPHeaderAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPHeaderAction{}
+	out.RequestHeadersToAdd = direct.Slice_FromProto(mapCtx, in.RequestHeadersToAdd, HTTPHeaderOption_v1beta1_FromProto)
+	out.RequestHeadersToRemove = in.RequestHeadersToRemove
+	out.ResponseHeadersToAdd = direct.Slice_FromProto(mapCtx, in.ResponseHeadersToAdd, HTTPHeaderOption_v1beta1_FromProto)
+	out.ResponseHeadersToRemove = in.ResponseHeadersToRemove
+	return out
+}
+func HTTPHeaderAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPHeaderAction) *pb.HttpHeaderAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpHeaderAction{}
+	out.RequestHeadersToAdd = direct.Slice_ToProto(mapCtx, in.RequestHeadersToAdd, HTTPHeaderOption_v1beta1_ToProto)
+	out.RequestHeadersToRemove = in.RequestHeadersToRemove
+	out.ResponseHeadersToAdd = direct.Slice_ToProto(mapCtx, in.ResponseHeadersToAdd, HTTPHeaderOption_v1beta1_ToProto)
+	out.ResponseHeadersToRemove = in.ResponseHeadersToRemove
+	return out
+}
+func HTTPHeaderMatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpHeaderMatch) *krm.HTTPHeaderMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPHeaderMatch{}
+	out.ExactMatch = in.ExactMatch
+	out.HeaderName = in.HeaderName
+	out.InvertMatch = in.InvertMatch
+	out.PrefixMatch = in.PrefixMatch
+	out.PresentMatch = in.PresentMatch
+	out.RangeMatch = Int64RangeMatch_v1beta1_FromProto(mapCtx, in.GetRangeMatch())
+	out.RegexMatch = in.RegexMatch
+	out.SuffixMatch = in.SuffixMatch
+	return out
+}
+func HTTPHeaderMatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPHeaderMatch) *pb.HttpHeaderMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpHeaderMatch{}
+	out.ExactMatch = in.ExactMatch
+	out.HeaderName = in.HeaderName
+	out.InvertMatch = in.InvertMatch
+	out.PrefixMatch = in.PrefixMatch
+	out.PresentMatch = in.PresentMatch
+	out.RangeMatch = Int64RangeMatch_v1beta1_ToProto(mapCtx, in.RangeMatch)
+	out.RegexMatch = in.RegexMatch
+	out.SuffixMatch = in.SuffixMatch
+	return out
+}
+func HTTPHeaderOption_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpHeaderOption) *krm.HTTPHeaderOption {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPHeaderOption{}
+	out.HeaderName = in.HeaderName
+	out.HeaderValue = in.HeaderValue
+	out.Replace = in.Replace
+	return out
+}
+func HTTPHeaderOption_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPHeaderOption) *pb.HttpHeaderOption {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpHeaderOption{}
+	out.HeaderName = in.HeaderName
+	out.HeaderValue = in.HeaderValue
+	out.Replace = in.Replace
+	return out
+}
+func HTTPQueryParameterMatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpQueryParameterMatch) *krm.HTTPQueryParameterMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPQueryParameterMatch{}
+	out.ExactMatch = in.ExactMatch
+	out.Name = in.Name
+	out.PresentMatch = in.PresentMatch
+	out.RegexMatch = in.RegexMatch
+	return out
+}
+func HTTPQueryParameterMatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPQueryParameterMatch) *pb.HttpQueryParameterMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpQueryParameterMatch{}
+	out.ExactMatch = in.ExactMatch
+	out.Name = in.Name
+	out.PresentMatch = in.PresentMatch
+	out.RegexMatch = in.RegexMatch
+	return out
+}
+func HTTPRedirectAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRedirectAction) *krm.HTTPRedirectAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPRedirectAction{}
+	out.HostRedirect = in.HostRedirect
+	out.HTTPSRedirect = in.HttpsRedirect
+	out.PathRedirect = in.PathRedirect
+	out.PrefixRedirect = in.PrefixRedirect
+	out.RedirectResponseCode = in.RedirectResponseCode
+	out.StripQuery = in.StripQuery
+	return out
+}
+func HTTPRedirectAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPRedirectAction) *pb.HttpRedirectAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRedirectAction{}
+	out.HostRedirect = in.HostRedirect
+	out.HttpsRedirect = in.HTTPSRedirect
+	out.PathRedirect = in.PathRedirect
+	out.PrefixRedirect = in.PrefixRedirect
+	out.RedirectResponseCode = in.RedirectResponseCode
+	out.StripQuery = in.StripQuery
+	return out
+}
+func HTTPRetryPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRetryPolicy) *krm.HTTPRetryPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPRetryPolicy{}
+	out.NumRetries = in.NumRetries
+	out.PerTryTimeout = Duration_v1beta1_FromProto(mapCtx, in.GetPerTryTimeout())
+	out.RetryConditions = in.RetryConditions
+	return out
+}
+func HTTPRetryPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPRetryPolicy) *pb.HttpRetryPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRetryPolicy{}
+	out.NumRetries = in.NumRetries
+	out.PerTryTimeout = Duration_v1beta1_ToProto(mapCtx, in.PerTryTimeout)
+	out.RetryConditions = in.RetryConditions
+	return out
+}
+func HTTPRouteAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRouteAction) *krm.HTTPRouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPRouteAction{}
+	out.CorsPolicy = CorsPolicy_v1beta1_FromProto(mapCtx, in.GetCorsPolicy())
+	out.FaultInjectionPolicy = HTTPFaultInjection_v1beta1_FromProto(mapCtx, in.GetFaultInjectionPolicy())
+	out.MaxStreamDuration = Duration_v1beta1_FromProto(mapCtx, in.GetMaxStreamDuration())
+	out.RequestMirrorPolicy = RequestMirrorPolicy_v1beta1_FromProto(mapCtx, in.GetRequestMirrorPolicy())
+	out.RetryPolicy = HTTPRetryPolicy_v1beta1_FromProto(mapCtx, in.GetRetryPolicy())
+	out.Timeout = Duration_v1beta1_FromProto(mapCtx, in.GetTimeout())
+	out.URLRewrite = URLRewrite_v1beta1_FromProto(mapCtx, in.GetUrlRewrite())
+	out.WeightedBackendServices = direct.Slice_FromProto(mapCtx, in.WeightedBackendServices, WeightedBackendService_v1beta1_FromProto)
+	return out
+}
+func HTTPRouteAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPRouteAction) *pb.HttpRouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRouteAction{}
+	out.CorsPolicy = CorsPolicy_v1beta1_ToProto(mapCtx, in.CorsPolicy)
+	out.FaultInjectionPolicy = HTTPFaultInjection_v1beta1_ToProto(mapCtx, in.FaultInjectionPolicy)
+	out.MaxStreamDuration = Duration_v1beta1_ToProto(mapCtx, in.MaxStreamDuration)
+	out.RequestMirrorPolicy = RequestMirrorPolicy_v1beta1_ToProto(mapCtx, in.RequestMirrorPolicy)
+	out.RetryPolicy = HTTPRetryPolicy_v1beta1_ToProto(mapCtx, in.RetryPolicy)
+	out.Timeout = Duration_v1beta1_ToProto(mapCtx, in.Timeout)
+	out.UrlRewrite = URLRewrite_v1beta1_ToProto(mapCtx, in.URLRewrite)
+	out.WeightedBackendServices = direct.Slice_ToProto(mapCtx, in.WeightedBackendServices, WeightedBackendService_v1beta1_ToProto)
+	return out
+}
+func HTTPRouteRuleMatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRouteRuleMatch) *krm.HTTPRouteRuleMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HTTPRouteRuleMatch{}
+	out.FullPathMatch = in.FullPathMatch
+	out.HeaderMatches = direct.Slice_FromProto(mapCtx, in.HeaderMatches, HTTPHeaderMatch_v1beta1_FromProto)
+	out.IgnoreCase = in.IgnoreCase
+	out.MetadataFilters = direct.Slice_FromProto(mapCtx, in.MetadataFilters, MetadataFilter_v1beta1_FromProto)
+	out.PathTemplateMatch = in.PathTemplateMatch
+	out.PrefixMatch = in.PrefixMatch
+	out.QueryParameterMatches = direct.Slice_FromProto(mapCtx, in.QueryParameterMatches, HTTPQueryParameterMatch_v1beta1_FromProto)
+	out.RegexMatch = in.RegexMatch
+	return out
+}
+func HTTPRouteRuleMatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPRouteRuleMatch) *pb.HttpRouteRuleMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRouteRuleMatch{}
+	out.FullPathMatch = in.FullPathMatch
+	out.HeaderMatches = direct.Slice_ToProto(mapCtx, in.HeaderMatches, HTTPHeaderMatch_v1beta1_ToProto)
+	out.IgnoreCase = in.IgnoreCase
+	out.MetadataFilters = direct.Slice_ToProto(mapCtx, in.MetadataFilters, MetadataFilter_v1beta1_ToProto)
+	out.PathTemplateMatch = in.PathTemplateMatch
+	out.PrefixMatch = in.PrefixMatch
+	out.QueryParameterMatches = direct.Slice_ToProto(mapCtx, in.QueryParameterMatches, HTTPQueryParameterMatch_v1beta1_ToProto)
+	out.RegexMatch = in.RegexMatch
+	return out
+}
+func HostRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HostRule) *krm.HostRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HostRule{}
+	out.Description = in.Description
+	out.Hosts = in.Hosts
+	out.PathMatcher = in.PathMatcher
+	return out
+}
+func HostRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HostRule) *pb.HostRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HostRule{}
+	out.Description = in.Description
+	out.Hosts = in.Hosts
+	out.PathMatcher = in.PathMatcher
+	return out
+}
+func Int64RangeMatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Int64RangeMatch) *krm.Int64RangeMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Int64RangeMatch{}
+	out.RangeEnd = in.RangeEnd
+	out.RangeStart = in.RangeStart
+	return out
+}
+func Int64RangeMatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Int64RangeMatch) *pb.Int64RangeMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Int64RangeMatch{}
+	out.RangeEnd = in.RangeEnd
+	out.RangeStart = in.RangeStart
 	return out
 }
 func InterconnectCircuitInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectCircuitInfo) *krmcomputev1alpha1.InterconnectCircuitInfo {
@@ -515,6 +939,22 @@ func NetworkAttachmentConnectedEndpoint_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.Status = in.Status
 	out.Subnetwork = in.Subnetwork
 	out.SubnetworkCidrRange = in.SubnetworkCIDRRange
+	return out
+}
+func RequestMirrorPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RequestMirrorPolicy) *krm.RequestMirrorPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RequestMirrorPolicy{}
+	out.BackendService = in.BackendService
+	return out
+}
+func RequestMirrorPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RequestMirrorPolicy) *pb.RequestMirrorPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RequestMirrorPolicy{}
+	out.BackendService = in.BackendService
 	return out
 }
 func SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig) *krm.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig {
@@ -983,5 +1423,43 @@ func SubnetworkSecondaryRange_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.IpCidrRange = in.IPCIDRRange
 	out.RangeName = in.RangeName
 	// MISSING: ReservedInternalRange
+	return out
+}
+func URLMapTestHeader_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMapTestHeader) *krm.URLMapTestHeader {
+	if in == nil {
+		return nil
+	}
+	out := &krm.URLMapTestHeader{}
+	out.Name = in.Name
+	out.Value = in.Value
+	return out
+}
+func URLMapTestHeader_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.URLMapTestHeader) *pb.UrlMapTestHeader {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlMapTestHeader{}
+	out.Name = in.Name
+	out.Value = in.Value
+	return out
+}
+func URLRewrite_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlRewrite) *krm.URLRewrite {
+	if in == nil {
+		return nil
+	}
+	out := &krm.URLRewrite{}
+	out.HostRewrite = in.HostRewrite
+	out.PathPrefixRewrite = in.PathPrefixRewrite
+	out.PathTemplateRewrite = in.PathTemplateRewrite
+	return out
+}
+func URLRewrite_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.URLRewrite) *pb.UrlRewrite {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlRewrite{}
+	out.HostRewrite = in.HostRewrite
+	out.PathPrefixRewrite = in.PathPrefixRewrite
+	out.PathTemplateRewrite = in.PathTemplateRewrite
 	return out
 }
