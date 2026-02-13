@@ -2257,6 +2257,9 @@
 [missing_field] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.weeklyMaintenanceWindow[].startTime.seconds" is not set in unstructured objects
 [missing_field] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".spec.memcacheParameters.id" is not set in unstructured objects
 [missing_field] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".spec.memcacheVersion" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.crossInstanceReplicationConfig.instanceRole" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.crossInstanceReplicationConfig.primaryInstance.instanceRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.crossInstanceReplicationConfig.secondaryInstances[].instanceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringalertpolicies.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.alertStrategy.autoClose" is not set in unstructured objects
 [missing_field] crd=monitoringalertpolicies.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.alertStrategy.notificationChannelStrategy[].notificationChannelNames[]" is not set in unstructured objects
 [missing_field] crd=monitoringalertpolicies.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.alertStrategy.notificationChannelStrategy[].renotifyInterval" is not set in unstructured objects

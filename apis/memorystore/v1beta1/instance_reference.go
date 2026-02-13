@@ -33,6 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &InstanceRef{}
 type InstanceRef struct {
 	// A reference to an externally managed MemorystoreInstance resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+	// +kubebuilder:validation:Pattern=^projects\/[a-z]([-a-z0-9]*[a-z0-9])?\/locations\/[a-z]([-a-z0-9]*[a-z0-9])?\/instances\/[a-z][0-9a-z-]*$
 	External string `json:"external,omitempty"`
 
 	// The name of a MemorystoreInstance resource.
