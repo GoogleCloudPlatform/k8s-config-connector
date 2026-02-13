@@ -115,8 +115,8 @@ type SecurityPolicyAdvancedOptionsConfig struct {
 
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig
 type SecurityPolicyAdvancedOptionsConfigJsonCustomConfig struct {
-	// A list of custom Content-Type header values to apply the JSON parsing. As per RFC 1341, a Content-Type header value has the following format: Content-Type := type "/" subtype *[";" parameter] When configuring a custom Content-Type header value, only the type/subtype needs to be specified, and the parameters should be excluded.
 	// +required
+	// A list of custom Content-Type header values to apply the JSON parsing. As per RFC 1341, a Content-Type header value has the following format: Content-Type := type "/" subtype *[";" parameter] When configuring a custom Content-Type header value, only the type/subtype needs to be specified, and the parameters should be excluded.
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig.content_types
 	ContentTypes []string `json:"contentTypes,omitempty"`
 }
@@ -140,8 +140,8 @@ type RecaptchaEnterpriseKeyRef struct {
 
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyRule
 type SecurityPolicyRule struct {
-	// The Action to perform when the rule is matched. The following are the valid actions: - allow: allow access to target. - deny(STATUS): deny access to target, returns the HTTP response code specified. Valid values for `STATUS` are 403, 404, and 502. - rate_based_ban: limit client traffic to the configured threshold and ban the client if the traffic exceeds the threshold. Configure parameters for this action in RateLimitOptions. Requires rate_limit_options to be set. - redirect: redirect to a different target. This can either be an internal reCAPTCHA redirect, or an external URL-based redirect via a 302 response. Parameters for this action can be configured via redirectOptions. This action is only supported in Global Security Policies of type CLOUD_ARMOR. - throttle: limit client traffic to the configured threshold. Configure parameters for this action in rateLimitOptions. Requires rate_limit_options to be set for this.
 	// +required
+	// The Action to perform when the rule is matched. The following are the valid actions: - allow: allow access to target. - deny(STATUS): deny access to target, returns the HTTP response code specified. Valid values for `STATUS` are 403, 404, and 502. - rate_based_ban: limit client traffic to the configured threshold and ban the client if the traffic exceeds the threshold. Configure parameters for this action in RateLimitOptions. Requires rate_limit_options to be set. - redirect: redirect to a different target. This can either be an internal reCAPTCHA redirect, or an external URL-based redirect via a 302 response. Parameters for this action can be configured via redirectOptions. This action is only supported in Global Security Policies of type CLOUD_ARMOR. - throttle: limit client traffic to the configured threshold. Configure parameters for this action in rateLimitOptions. Requires rate_limit_options to be set for this.
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.action
 	Action *string `json:"action,omitempty"`
 
@@ -153,8 +153,8 @@ type SecurityPolicyRule struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.header_action
 	HeaderAction *SecurityPolicyRuleHTTPHeaderAction `json:"headerAction,omitempty"`
 
-	// A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced.
 	// +required
+	// A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced.
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.match
 	Match *SecurityPolicyRuleMatcher `json:"match,omitempty"`
 
@@ -166,8 +166,8 @@ type SecurityPolicyRule struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.preview
 	Preview *bool `json:"preview,omitempty"`
 
-	// An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest priority.
 	// +required
+	// An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest priority.
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRule.priority
 	Priority *int32 `json:"priority,omitempty"`
 
@@ -271,9 +271,9 @@ type SecurityPolicyRuleRedirectOptions struct {
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRedirectOptions.target
 	Target *string `json:"target,omitempty"`
 
+	// +required
 	// Type of the redirect action. Possible values are: - GOOGLE_RECAPTCHA: redirect to reCAPTCHA for manual challenge assessment. - EXTERNAL_302: redirect to a different URL via a 302 response.
 	//  Check the Type enum for the list of possible values.
-	// +required
 	// +kcc:proto:field=google.cloud.compute.v1.SecurityPolicyRuleRedirectOptions.type
 	Type *string `json:"type,omitempty"`
 }
