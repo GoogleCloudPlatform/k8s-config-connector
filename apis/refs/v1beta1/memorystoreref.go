@@ -32,6 +32,7 @@ import (
 type MemorystoreInstanceRef struct {
 	// A reference to an externally managed MemorystoreInstance resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
 	External string `json:"external,omitempty"`
 
 	// The name of a MemorystoreInstance resource.
@@ -102,6 +103,7 @@ func ResolveMemorystoreInstance(ctx context.Context, reader client.Reader, src c
 type MemorystoreInstanceBackupRef struct {
 	// A reference to an externally managed MemorystoreInstanceBackup resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/backupCollections/{{backupCollectionName}}/backups/{{backupID}}".
+	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+\/backups\/[^/]+$
 	External string `json:"external,omitempty"`
 
 	// The name of a MemorystoreInstanceBackup resource.

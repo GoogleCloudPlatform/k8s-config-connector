@@ -65,6 +65,7 @@ spec:
             properties:
               backupCollection:
                 description: The project that this resource belongs to.
+                pattern: ^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+$
                 type: string
               instanceRef:
                 description: The resource name of the MemorystoreInstance from which
@@ -87,6 +88,7 @@ spec:
                   external:
                     description: A reference to an externally managed MemorystoreInstance
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                    pattern: ^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
                     type: string
                   name:
                     description: The name of a MemorystoreInstance resource.
@@ -102,6 +104,7 @@ spec:
               ttl:
                 description: Optional. TTL for the backup to expire. Value range is
                   1 day to 100 years. If not specified, the default value is 100 years.
+                pattern: ^[-+]?([0-9]*(\.[0-9]*)?(ns|us|µs|μs|ms|s|m|h))+$
                 type: string
             type: object
           status:
@@ -137,6 +140,7 @@ spec:
               externalRef:
                 description: A unique specifier for the MemorystoreInstanceBackup
                   resource in GCP.
+                pattern: ^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+\/backups\/[^/]+$
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -157,6 +161,7 @@ spec:
                         createTime:
                           description: Output only. The time when the backup file
                             was created.
+                          format: date-time
                           type: string
                         fileName:
                           description: 'Output only. e.g: <shard-id>.rdb'
@@ -169,24 +174,35 @@ spec:
                     type: array
                   backupType:
                     description: Output only. Type of the backup.
+                    enum:
+                    - ON_DEMAND
+                    - AUTOMATED
                     type: string
                   createTime:
                     description: Output only. The time when the backup was created.
+                    format: date-time
                     type: string
                   engineVersion:
                     description: Output only. valkey-7.5/valkey-8.0, etc.
                     type: string
                   expireTime:
                     description: Output only. The time when the backup will expire.
+                    format: date-time
                     type: string
                   instance:
                     description: Output only. Instance resource path of this backup.
+                    pattern: ^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
                     type: string
                   instanceUid:
                     description: Output only. Instance uid of this backup.
                     type: string
                   nodeType:
                     description: Output only. Node type of the instance.
+                    enum:
+                    - SHARED_CORE_NANO
+                    - HIGHMEM_MEDIUM
+                    - HIGHMEM_XLARGE
+                    - STANDARD_SMALL
                     type: string
                   replicaCount:
                     description: Output only. Number of replicas for the instance.
@@ -198,6 +214,11 @@ spec:
                     type: integer
                   state:
                     description: Output only. State of the backup.
+                    enum:
+                    - CREATING
+                    - ACTIVE
+                    - DELETING
+                    - SUSPENDED
                     type: string
                   totalSizeBytes:
                     description: Output only. Total size of the backup in bytes.

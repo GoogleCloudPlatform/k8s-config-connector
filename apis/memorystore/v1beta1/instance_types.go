@@ -162,6 +162,7 @@ type MemorystoreInstanceObservedState struct {
 	// Output only. The backup collection full resource name. Example:
 	//  projects/{project}/locations/{location}/backupCollections/{collection}
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.backup_collection
+	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+$
 	BackupCollection *string `json:"backupCollection,omitempty"`
 }
 
@@ -174,12 +175,14 @@ type AutomatedBackupConfig struct {
 	// Optional. The automated backup mode. If the mode is disabled, the other
 	//  fields will be ignored.
 	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.automated_backup_mode
+	// +kubebuilder:validation:Enum=DISABLED;ENABLED
 	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
 
 	// Optional. How long to keep automated backups before the backups are
 	//  deleted. The value should be between 1 day and 365 days. If not specified,
 	//  the default value is 35 days.
 	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.retention
+	// +kubebuilder:validation:Pattern=^[-+]?([0-9]*(\.[0-9]*)?(ns|us|µs|μs|ms|s|m|h))+$
 	Retention *string `json:"retention,omitempty"`
 }
 
