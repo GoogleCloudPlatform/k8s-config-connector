@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,12 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+function on_error() {
+  echo "<hint_for_agent>Run 'dev/tasks/run-license-lint' to fix.</hint_for_agent>"
+}
+trap on_error ERR
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-echo "Running custom linters..."
-go run ./dev/linters/main.go ./pkg/... ./cmd/... ./config/... 2>&1 | go run ./dev/tools/lint-filter/main.go
+./dev/tasks/run-license-lint

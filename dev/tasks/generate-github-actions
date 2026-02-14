@@ -65,6 +65,54 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     runs-on: ubuntu-latest
 EOF
 
+    if [[ "${name}" == "golangci-lint" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Free up disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.7.1
+          args: --timeout=10m
+EOF
+    continue
+    fi
+
+    if [[ "${name}" == "license-lint" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run ${f}"
+        run: |
+          ./${f}
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        if: \${{ !cancelled() }}
+        with:
+          name: artifacts-${name}
+          path: /tmp/artifacts/
+
+EOF
+    continue
+    fi
+
     if [[ "${name}" == tests-e2e-* ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     needs: unit-tests
