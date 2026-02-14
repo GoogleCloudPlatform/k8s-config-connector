@@ -1,0 +1,1182 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+branches:
+    - name: aiplatform-model
+      local: resource-aiplatform-model
+      remote: resource-aiplatform-model
+      command: gcloud ai-platform models
+      group: aiplatform
+      resource: model
+      controller: Unknown
+      kind: AIPlatformModel
+      package: google.cloud.aiplatform.v1
+      proto: Model
+      proto-path: google/cloud/aiplatform/v1/model_garden_service.proto
+      proto-service: google.cloud.aiplatform.v1.ModelService
+      proto-msg: google.cloud.aiplatform.v1.Model
+      host-name: aiplatform.googleapis.com
+      notes:
+        - Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3841
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3972
+    - name: apphub-applications
+      local: resource-apphub-application
+      remote: resource-apphub-application
+      command: gcloud apphub applications
+      group: apphub
+      resource: application
+      controller: Unknown
+      kind: AppHubApplication
+      package: google.cloud.apphub.v1
+      proto: Application
+      proto-path: google/cloud/apphub/v1/apphub_service.proto
+      proto-service: google.cloud.apphub.v1
+      proto-msg: google.cloud.apphub.v1.Application
+      host-name: apphub.googleapis.com
+      notes:
+        - Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3842
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3947
+        - Controller https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4078
+    - name: apphub-discoveredservice
+      local: resource-apphub-discoveredservice
+      remote: resource-apphub-discoveredservice
+      command: gcloud apphub discovered-services
+      group: apphub
+      resource: discoveredservice
+      controller: Unknown
+      skip: true
+      kind: AppHubDiscoveredService
+      package: google.cloud.apphub.v1
+      proto: DiscoveredService
+      proto-path: google/cloud/apphub/v1/apphub_service.proto
+      proto-service: google.cloud.apphub.v1
+      proto-msg: google.cloud.apphub.v1.DiscoveredService
+      host-name: apphub.googleapis.com
+      notes:
+        - Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3843
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4115
+        - Controller not support this is a read only resource
+    - name: apphub-discoveredworkload
+      local: resource-apphub-discoveredworkload
+      remote: resource-apphub-discoveredworkload
+      command: gcloud apphub discovered-workloads
+      group: apphub
+      resource: discoveredworkload
+      controller: Unknown
+      skip: true
+      kind: AppHubDiscoveredWorkload
+      package: google.cloud.apphub.v1
+      proto: DiscoveredWorkload
+      proto-path: google/cloud/apphub/v1/apphub_service.proto
+      proto-service: google.cloud.apphub.v1
+      proto-msg: google.cloud.apphub.v1.DiscoveredWorkload
+      host-name: apphub.googleapis.com
+      notes:
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4011
+        - Controller not support this is a read only resource
+    - name: batch-job
+      local: resource-batch-job
+      remote: resource-batch-job
+      command: gcloud batch jobs
+      group: batch
+      resource: job
+      controller: Unknown
+      kind: BatchJob
+      package: google.cloud.batch.v1
+      proto: Job
+      proto-path: google/cloud/batch/v1/batch.proto
+      proto-service: google.cloud.batch.v1
+      proto-msg: google.cloud.batch.v1.Job
+      host-name: batch.googleapis.com
+      notes:
+        - Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3854
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3974
+        - Controller https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4074
+    - name: batch-task
+      local: resource-batch-task
+      remote: resource-batch-task
+      command: gcloud batch tasks
+      group: batch
+      resource: task
+      controller: Unknown
+      kind: BatchTask
+      package: google.cloud.batch.v1
+      proto: Task
+      proto-path: google/cloud/batch/v1/batch.proto
+      proto-service: google.cloud.batch.v1
+      proto-msg: google.cloud.batch.v1.Task
+      host-name: batch.googleapis.com
+      notes: 
+        - Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3855
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4117
+        - Controller https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4142
+    - name: ""
+      local: resource-contactcenterinsights-qascorecardresult
+      remote: resource-contactcenterinsights-qascorecardresult
+      command: gcloud contactcenterinsights QaScorecardResult
+      group: contactcenterinsights
+      resource: qascorecardresult
+      controller: Unknown
+      skip: true
+      kind: ContactCenterInsightsQaScorecardResult
+      package: google.cloud.contactcenterinsights.v1
+      proto: QaScorecardResult
+      proto-path: google/cloud/contactcenterinsights/v1/contact_center_insights.proto
+      proto-service: ""
+      proto-msg: google.cloud.contactcenterinsights.v1.QaScorecardResult
+      host-name: ""
+      notes:
+        - No gcloud command found
+    - name: dataproc-autoscalingpolicy
+      local: resource-dataproc-autoscalingpolicy
+      remote: resource-dataproc-autoscalingpolicy
+      command: gcloud dataproc autoscaling-policies
+      group: dataproc
+      resource: autoscalingpolicy
+      controller: Unknown
+      skip: true
+      kind: DataprocAutoscalingPolicy
+      package: google.cloud.dataproc.v1
+      proto: AutoscalingPolicy
+      proto-path: google/cloud/dataproc/v1/autoscaling_policies.proto
+      proto-service: ""
+      proto-msg: google.cloud.dataproc.v1.AutoscalingPolicy
+      host-name: dataproc.googleapis.com
+      notes:
+        - Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3857
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3949
+        - This is a DCL beta resource
+    - name: dataproc-batch
+      local: resource-dataproc-batch
+      remote: resource-dataproc-batch
+      command: gcloud dataproc batches
+      group: dataproc
+      resource: batch
+      controller: Unknown
+      kind: DataprocBatch
+      package: google.cloud.dataproc.v1
+      proto: Batch
+      proto-path: google/cloud/dataproc/v1/batches.proto
+      proto-service: google.cloud.dataproc.v1
+      proto-msg: google.cloud.dataproc.v1.Batch
+      host-name: dataproc.googleapis.com
+      notes:
+        - Mock and Controller https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4190
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3988
+    - name: dataproc-nodegroup
+      local: resource-dataproc-nodegroup
+      remote: resource-dataproc-nodegroup
+      command: gcloud dataproc node-groups
+      group: dataproc
+      resource: nodegroup
+      controller: Unknown
+      kind: DataprocNodeGroup
+      package: google.cloud.dataproc.v1
+      proto: NodeGroup
+      proto-path: google/cloud/dataproc/v1/node_groups.proto
+      proto-service: google.cloud.dataproc.v1
+      proto-msg: google.cloud.dataproc.v1.NodeGroup
+      host-name: dataproc.googleapis.com
+      notes:
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3989
+        - Controller and Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4271
+    - name: dataproc-workflowtemplate
+      local: resource-dataproc-workflowtemplate
+      remote: resource-dataproc-workflowtemplate
+      command: gcloud dataproc workflow-templates
+      group: dataproc
+      resource: workflowtemplate
+      controller: Unknown
+      skip: true
+      kind: DataprocWorkflowTemplate
+      package: google.cloud.dataproc.v1
+      proto: WorkflowTemplate
+      proto-path: google/cloud/dataproc/v1/workflow_templates.proto
+      proto-service: google.cloud.dataproc.v1
+      proto-msg: google.cloud.dataproc.v1.WorkflowTemplate
+      host-name: dataproc.googleapis.com
+      notes:
+        - Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3851
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4195
+        - This is a DCL beta resource
+    - name: edgecontainer-cluster
+      local: resource-edgecontainer-cluster
+      remote: resource-edgecontainer-cluster
+      command: gcloud edge-cloud container clusters
+      group: edgecontainer
+      resource: cluster
+      controller: Unknown
+      skip: true
+      kind: EdgeContainerCluster
+      package: google.cloud.edgecontainer.v1
+      proto: Cluster
+      proto-path: google/cloud/edgecontainer/v1/resources.proto
+      proto-service: google.cloud.edgecontainer.v1.Service
+      proto-msg: google.cloud.edgecontainer.v1.Cluster
+      host-name: edgecontainer.googleapis.com
+      notes:
+        - Mock already exists
+        - CRD and Mapper https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4201
+        - This is a DCL beta resource
+    - name: edgecontainer-machine
+      local: resource-edgecontainer-machine
+      remote: resource-edgecontainer-machine
+      command: gcloud edge-cloud container machines
+      group: edgecontainer
+      resource: machine
+      controller: Unknown
+      kind: EdgeContainerMachine
+      package: google.cloud.edgecontainer.v1
+      proto: Machine
+      proto-path: google/cloud/edgecontainer/v1/resources.proto
+      proto-service: google.cloud.edgecontainer.v1.Service
+      proto-msg: google.cloud.edgecontainer.v1.Machine
+      host-name: edgecontainer.googleapis.com
+      notes:
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4012
+        - This is a read-only resource. Controller not supported.
+    - name: edgecontainer-vpnconnection
+      local: resource-edgecontainer-vpnconnection
+      remote: resource-edgecontainer-vpnconnection
+      command: gcloud edge-cloud container vpn-connections
+      group: edgecontainer
+      resource: vpnconnection
+      controller: Unknown
+      skip: true
+      kind: EdgeContainerVpnConnection
+      package: google.cloud.edgecontainer.v1
+      proto: VpnConnection
+      proto-path: google/cloud/edgecontainer/v1/resources.proto
+      proto-service: google.cloud.edgecontainer.v1.Service
+      proto-msg: google.cloud.edgecontainer.v1.VpnConnection
+      host-name: edgecontainer.googleapis.com
+      notes:
+        - Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3908
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4164
+        - Controller https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4192
+    - name: gkemulticloud-attachedcluster
+      local: resource-gkemulticloud-attachedcluster
+      remote: resource-gkemulticloud-attachedcluster
+      command: gcloud container attached clusters
+      group: gkemulticloud
+      resource: attachedcluster
+      controller: Unknown
+      kind: GkeMultiCloudAttachedCluster
+      package: google.cloud.gkemulticloud.v1
+      proto: AttachedCluster
+      proto-path: google/cloud/gkemulticloud/v1/attached_service.proto
+      proto-service: google.cloud.gkemulticloud.v1.AttachedCluster
+      proto-msg: google.cloud.gkemulticloud.v1.AttachedCluster
+      host-name: gkemulticloud.googleapis.com
+      notes:
+        - mock already exists
+        - CRD and Mapper https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4216
+    - name: gkemulticloud-attachedserverconfig
+      local: resource-gkemulticloud-attachedserverconfig
+      remote: resource-gkemulticloud-attachedserverconfig
+      command: gcloud container attached get-server-config
+      group: gkemulticloud
+      resource: attachedserverconfig
+      controller: Unknown
+      skip: true
+      kind: GkeMultiCloudAttachedServerConfig
+      package: google.cloud.gkemulticloud.v1
+      proto: AttachedServerConfig
+      proto-path: google/cloud/gkemulticloud/v1/attached_service.proto
+      proto-service: google.cloud.gkemulticloud.v1
+      proto-msg: google.cloud.gkemulticloud.v1.AttachedServerConfig
+      host-name: gkemulticloud.googleapis.com
+      notes:
+        - This is a read only resource
+    - name: managedkafka-cluster
+      local: resource-managedkafka-cluster
+      remote: resource-managedkafka-cluster
+      command: gcloud managed-kafka clusters
+      group: managedkafka
+      resource: cluster
+      controller: Unknown
+      skip: true
+      kind: ManagedKafkaCluster
+      package: google.cloud.managedkafka.v1
+      proto: Cluster
+      proto-path: google/cloud/managedkafka/v1/managed_kafka.proto
+      proto-service: google.cloud.managedkafka.v1
+      proto-msg: google.cloud.managedkafka.v1.Cluster
+      host-name: managedkafka.googleapis.com
+      notes:
+        - This is a direct controller beta resource
+    - name: managedkafka-topic
+      local: resource-managedkafka-topic
+      remote: resource-managedkafka-topic
+      command: gcloud managed-kafka topics
+      group: managedkafka
+      resource: topic
+      controller: Unknown
+      skip: true
+      kind: ManagedKafkaTopic
+      package: google.cloud.managedkafka.v1
+      proto: Topic
+      proto-path: google/cloud/managedkafka/v1/managed_kafka.proto
+      proto-service: google.cloud.managedkafka.v1
+      proto-msg: google.cloud.managedkafka.v1.Topic
+      host-name: managedkafka.googleapis.com
+      notes:
+        - This is a direct controller beta resource
+    - name: managedkafka-consumergroup
+      local: resource-managedkafka-consumergroup
+      remote: resource-managedkafka-consumergroup
+      command: gcloud managed-kafka consumer-groups
+      group: managedkafka
+      resource: consumergroup
+      controller: Unknown
+      kind: ManagedKafkaConsumerGroup
+      package: google.cloud.managedkafka.v1
+      proto: ConsumerGroup
+      proto-path: google/cloud/managedkafka/v1/managed_kafka.proto
+      proto-service: google.cloud.managedkafka.v1
+      proto-msg: google.cloud.managedkafka.v1.ConsumerGroup
+      host-name: managedkafka.googleapis.com
+      notes:
+        - Supports delete, get, list and patch https://cloud.google.com/managed-service-for-apache-kafka/docs/reference/rest/v1/projects.locations.clusters.consumerGroups
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4222
+    - name: networkservices-endpointpolicy
+      local: resource-networkservices-endpointpolicy
+      remote: resource-networkservices-endpointpolicy
+      command: gcloud network-services endpoint-policies
+      group: networkservices
+      resource: endpointpolicy
+      controller: Unknown
+      skip: true
+      kind: NetworkServicesEndpointPolicy
+      package: google.cloud.networkservices.v1
+      proto: EndpointPolicy
+      proto-path: google/cloud/networkservices/v1/dep.proto
+      proto-service: google.cloud.networkservices.v1.NetworkServices
+      proto-msg: google.cloud.networkservices.v1.EndpointPolicy
+      host-name: networkservices.googleapis.com
+      notes:
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4224
+        - This is DCL beta resource
+    - name: networkservices-gateway
+      local: resource-networkservices-gateway
+      remote: resource-networkservices-gateway
+      command: gcloud network-services gateways
+      group: networkservices
+      resource: gateway
+      controller: Unknown
+      skip: true
+      kind: NetworkServicesGateway
+      package: google.cloud.networkservices.v1
+      proto: Gateway
+      proto-path: google/cloud/networkservices/v1/dep.proto
+      proto-service: google.cloud.networkservices.v1.NetworkServices
+      proto-msg: google.cloud.networkservices.v1.Gateway
+      host-name: networkservices.googleapis.com
+      notes:
+        - This is DCL beta resource
+    - name: networkservices-grpcroute
+      local: resource-networkservices-grpcroute
+      remote: resource-networkservices-grpcroute
+      command: gcloud network-services grpc-routes
+      group: networkservices
+      resource: grpcroute
+      controller: Unknown
+      skip: true
+      kind: NetworkServicesGrpcRoute
+      package: google.cloud.networkservices.v1
+      proto: GrpcRoute
+      proto-path: google/cloud/networkservices/v1/dep.proto
+      proto-service: google.cloud.networkservices.v1.NetworkServices
+      proto-msg: google.cloud.networkservices.v1.GrpcRoute
+      host-name: networkservices.googleapis.com
+      notes: []
+        - This is DCL beta resource
+    - name: networkservices-httproute
+      local: resource-networkservices-httproute
+      remote: resource-networkservices-httproute
+      command: gcloud network-services http-routes
+      group: networkservices
+      resource: httproute
+      controller: Unknown
+      skip: true
+      kind: NetworkServicesHttpRoute
+      package: google.cloud.networkservices.v1
+      proto: HttpRoute
+      proto-path: google/cloud/networkservices/v1/dep.proto
+      proto-service: google.cloud.networkservices.v1.NetworkServices
+      proto-msg: google.cloud.networkservices.v1.HttpRoute
+      host-name: networkservices.googleapis.com
+      notes:
+        - This is DCL beta resource
+    - name: networkservices-mesh
+      local: resource-networkservices-mesh
+      remote: resource-networkservices-mesh
+      command: gcloud network-services meshes
+      group: networkservices
+      resource: mesh
+      controller: Unknown
+      skip: true
+      kind: NetworkServicesMesh
+      package: google.cloud.networkservices.v1
+      proto: Mesh
+      proto-path: google/cloud/networkservices/v1/dep.proto
+      proto-service: google.cloud.networkservices.v1.NetworkServices
+      proto-msg: google.cloud.networkservices.v1.Mesh
+      host-name: networkservices.googleapis.com
+      notes:
+        - This is DCL beta resource
+    - name: networkservices-servicebinding
+      local: resource-networkservices-servicebinding
+      remote: resource-networkservices-servicebinding
+      command: gcloud network-services service-bindings
+      group: networkservices
+      resource: servicebinding
+      controller: Unknown
+      kind: NetworkServicesServiceBinding
+      package: google.cloud.networkservices.v1
+      proto: ServiceBinding
+      proto-path: google/cloud/networkservices/v1/dep.proto
+      proto-service: google.cloud.networkservices.v1.NetworkServices
+      proto-msg: google.cloud.networkservices.v1.ServiceBinding
+      host-name: networkservices.googleapis.com
+      notes:
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4015
+        - Controller and Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4128
+    - name: networkservices-tcproute
+      local: resource-networkservices-tcproute
+      remote: resource-networkservices-tcproute
+      command: gcloud network-services tcp-routes
+      group: networkservices
+      resource: tcproute
+      controller: Unknown
+      skip: true
+      kind: NetworkServicesTcpRoute
+      package: google.cloud.networkservices.v1
+      proto: TcpRoute
+      proto-path: google/cloud/networkservices/v1/dep.proto
+      proto-service: google.cloud.networkservices.v1.NetworkServices
+      proto-msg: google.cloud.networkservices.v1.TcpRoute
+      host-name: networkservices.googleapis.com
+      notes:
+        - This is DCL beta resource
+    - name: networkservices-tlsroute
+      local: resource-networkservices-tlsroute
+      remote: resource-networkservices-tlsroute
+      command: gcloud network-services tls-routes
+      group: networkservices
+      resource: tlsroute
+      controller: Unknown
+      skip: true
+      kind: NetworkServicesTlsRoute
+      package: google.cloud.networkservices.v1
+      proto: TlsRoute
+      proto-path: google/cloud/networkservices/v1/dep.proto
+      proto-service: google.cloud.networkservices.v1.NetworkServices
+      proto-msg: google.cloud.networkservices.v1.TlsRoute
+      host-name: networkservices.googleapis.com
+      notes:
+        - This is DCL beta resource
+    - name: tasks-queue
+      local: resource-tasks-queue
+      remote: resource-tasks-queue
+      command: gcloud tasks Queue
+      group: cloudtasks
+      resource: queue
+      controller: Unknown
+      kind: TasksQueue
+      package: google.cloud.tasks.v2
+      proto: Queue
+      proto-path: google/cloud/tasks/v2/cloudtasks.proto
+      proto-service: google.cloud.tasks.v2
+      proto-msg: google.cloud.tasks.v2.Queue
+      host-name: cloudtasks.googleapis.com
+      notes:
+        - Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3892
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3950
+        - Controller https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4067
+    - name: tasks-task
+      local: resource-tasks-task
+      remote: resource-tasks-task
+      command: gcloud tasks
+      group: tasks
+      resource: task
+      controller: Unknown
+      skip: true
+      kind: TasksTask
+      package: google.cloud.tasks.v2
+      proto: Task
+      proto-path: google/cloud/tasks/v2/cloudtasks.proto
+      proto-service: google.cloud.tasks.v2
+      proto-msg: google.cloud.tasks.v2.Task
+      host-name: cloudtasks.googleapis.com
+      notes:
+        - REST API https://cloud.google.com/tasks/docs/reference/rest/v2/projects.locations.queues.tasks
+    - name: workflows-execution
+      local: resource-workflows-execution
+      remote: resource-workflows-execution
+      command: gcloud workflows executions
+      group: workflows
+      resource: execution
+      controller: Unknown
+      kind: WorkflowsExecution
+      package: google.cloud.workflows.executions.v1
+      proto: Execution
+      proto-path: google/cloud/workflows/executions/v1/executions.proto
+      proto-service: google.cloud.workflows.executions.v1
+      proto-msg: google.cloud.workflows.executions.v1.Execution
+      host-name: workflowexecutions.googleapis.com
+      notes:
+        - Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3888
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3981
+        - Controller https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4089
+    - name: iam-policybinding
+      local: resource-iam-policybinding
+      remote: resource-iam-policybinding
+      command: gcloud iam policy-bindings
+      group: iam
+      resource: policybinding
+      controller: Unknown
+      kind: IAMPolicyBinding
+      package: google.iam.v3
+      proto: PolicyBinding
+      proto-path: google/iam/v3/policy_bindings_service.proto
+      proto-service: google.iam.v3.PolicyBinding
+      proto-msg: google.iam.v3.PolicyBinding
+      host-name: iam.googleapis.com
+      notes:
+        - CRD and Mapper https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4228
+        - This is support in KCC https://cloud.google.com/config-connector/docs/reference/resource-docs/iam/iampartialpolicy
+    - name: iam-principalaccessboundarypolicy
+      local: resource-iam-principalaccessboundarypolicy
+      remote: resource-iam-principalaccessboundarypolicy
+      command: gcloud iam principal-access-boundary-policies
+      group: iam
+      resource: principalaccessboundarypolicy
+      controller: Unknown
+      kind: IAMPrincipalAccessBoundaryPolicy
+      package: google.iam.v3
+      proto: PrincipalAccessBoundaryPolicy
+      proto-path: google/iam/v3/policy_bindings_service.proto
+      proto-service: google.iam.v3.PrincipalAccessBoundaryPolicies
+      proto-msg: google.iam.v3.PrincipalAccessBoundaryPolicy
+      host-name: iam.googleapis.com
+      notes: []
+    - name: storage-folder
+      local: resource-storage-folder
+      remote: resource-storage-folder
+      command: gcloud storage folders
+      group: storage
+      resource: folder
+      controller: Unknown
+      kind: StorageFolder
+      package: google.storage.control.v2
+      proto: Folder
+      proto-path: google/storage/control/v2/storage_control.proto
+      proto-service: google.storage.control.v2
+      proto-msg: google.storage.control.v2.Folder
+      host-name: storage.googleapis.com
+      notes:
+        - Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3882
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4043
+        - Controller https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4114
+    - name: storage-managedfolder
+      local: resource-storage-managedfolder
+      remote: resource-storage-managedfolder
+      command: gcloud storage managed-folders
+      group: storage
+      resource: managedfolder
+      controller: Unknown
+      kind: StorageManagedFolder
+      package: google.storage.control.v2
+      proto: ManagedFolder
+      proto-path: google/storage/control/v2/storage_control.proto
+      proto-service: google.storage.control.v2
+      proto-msg: google.storage.control.v2.ManagedFolder
+      host-name: storage.googleapis.com
+      notes:
+        - Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3886
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4022
+    - name: aiplatform-jobs
+      local: resource-aiplatform-jobs
+      remote: resource-aiplatform-jobs
+      command: gcloud ai-platform jobs
+      group: aiplatform
+      resource: jobs
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: google.cloud.aiplatform.v1
+      proto: ""
+      proto-path: ""
+      proto-service: google.cloud.aiplatform.v1.JobService
+      proto-msg: ""
+      host-name: aiplatform.googleapis.com
+      notes:
+        - gcloud command does not support create/delete
+    - name: aiplatform-local
+      local: resource-aiplatform-local
+      remote: resource-aiplatform-local
+      command: gcloud ai-platform local
+      group: aiplatform
+      resource: local
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Invalid resource
+    - name: aiplatform-operations
+      local: resource-aiplatform-operations
+      remote: resource-aiplatform-operations
+      command: gcloud ai-platform operations
+      group: aiplatform
+      resource: operations
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Invalid resource
+    - name: aiplatform-versions
+      local: resource-aiplatform-versions
+      remote: resource-aiplatform-versions
+      command: gcloud ai-platform versions
+      group: aiplatform
+      resource: versions
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: google.cloud.aiplatform.v1
+      proto: ""
+      proto-path: ""
+      proto-service: google.cloud.aiplatform.v1.
+      proto-msg: ""
+      host-name: aiplatform.googleapis.com
+      notes:
+        - Unable to find proto
+    - name: apphub-versions
+      local: resource-apphub-versions
+      remote: resource-apphub-versions
+      command: gcloud apphub versions
+      group: apphub
+      resource: versions
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Invalid resource
+    - name: apphub-locations
+      local: resource-apphub-locations
+      remote: resource-apphub-locations
+      command: gcloud apphub locations
+      group: apphub
+      resource: locations
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Invalid resource
+    - name: apphub-operations
+      local: resource-apphub-operations
+      remote: resource-apphub-operations
+      command: gcloud apphub operations
+      group: apphub
+      resource: operations
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Invalid resource
+    - name: apphub-serviceprojects
+      local: resource-apphub-serviceprojects
+      remote: resource-apphub-serviceprojects
+      command: gcloud apphub service-projects
+      group: apphub
+      resource: serviceprojects
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: google.cloud.apphub.v1
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: apphub.googleapis.com
+      notes:
+        - Unable to find proto
+    - name: dataproc-clusters
+      local: resource-dataproc-clusters
+      remote: resource-dataproc-clusters
+      command: gcloud dataproc clusters
+      group: dataproc
+      resource: clusters
+      controller: Unknown
+      skip: true
+      kind: DataprocCluster
+      package: google.cloud.dataproc.v1
+      proto: Cluster
+      proto-path: google/cloud/dataproc/v1/clusters.proto
+      proto-service: google.cloud.dataproc.v1
+      proto-msg: google.cloud.dataproc.v1.Cluster
+      host-name: dataproc.googleapis.com
+      notes:
+        - This is a DCL beta resource
+    - name: dataproc-jobs
+      local: resource-dataproc-jobs
+      remote: resource-dataproc-jobs
+      command: gcloud dataproc jobs
+      group: dataproc
+      resource: jobs
+      controller: Unknown
+      kind: DataprocJob
+      package: google.cloud.dataproc.v1
+      proto: Job
+      proto-path: google/cloud/dataproc/v1/jobs.proto
+      proto-service: google.cloud.dataproc.v1
+      proto-msg: google.cloud.dataproc.v1.Job
+      host-name: dataproc.googleapis.com
+      notes:
+        - CRD and Mapper and Fuzzer https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3986
+        - Controller and Mock https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4231
+    - name: dataproc-operations
+      local: resource-dataproc-operations
+      remote: resource-dataproc-operations
+      command: gcloud dataproc operations
+      group: dataproc
+      resource: operations
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: google.cloud.dataproc.v1
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: google.cloud.dataproc.v1.Operations
+      host-name: dataproc.googleapis.com
+      notes:
+        - Invalid resource
+    - name: edgecontainer-operations
+      local: resource-edgecontainer-operations
+      remote: resource-edgecontainer-operations
+      command: gcloud edge-cloud container operations
+      group: edgecontainer
+      resource: operations
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Invalid resource
+    - name: edgecontainer-regions
+      local: resource-edgecontainer-regions
+      remote: resource-edgecontainer-regions
+      command: gcloud edge-cloud container regions
+      group: edgecontainer
+      resource: regions
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Invalid resource
+    - name: edgecontainer-zones
+      local: resource-edgecontainer-zones
+      remote: resource-edgecontainer-zones
+      command: gcloud edge-cloud container zones
+      group: edgecontainer
+      resource: zones
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Invalid resource
+    - name: iam-oauthclient
+      local: resource-iam-oauthclient
+      remote: resource-iam-oauthclient
+      command: gcloud iam oauth-clients
+      group: iam
+      resource: oauthclient
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Unable to find proto
+    - name: iam-policy
+      local: resource-iam-policy
+      remote: resource-iam-policy
+      command: gcloud iam policies
+      group: iam
+      resource: policy
+      controller: Unknown
+      skip: true
+      kind: IAMPolicy
+      package: google.iam.v2
+      proto: Policy
+      proto-path: google/iam/v2/policy.proto
+      proto-service: google.iam.v2.Policies
+      proto-msg: google.iam.v2.Policy
+      host-name: iam.googleapis.com
+      notes:
+        - This is supported in KCC
+    - name: iam-role
+      local: resource-iam-role
+      remote: resource-iam-role
+      command: gcloud iam roles
+      group: iam
+      resource: role
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: iam.googleapis.com
+      notes:
+        - mock already exists
+    - name: iam-simulator
+      local: resource-iam-simulator
+      remote: resource-iam-simulator
+      command: gcloud iam simulator
+      group: iam
+      resource: simulator
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: iam.googleapis.com
+      notes:
+        - This is a read only resource
+    - name: iam-workforcepool
+      local: resource-iam-workforcepool
+      remote: resource-iam-workforcepool
+      command: gcloud iam workforce-pools
+      group: iam
+      resource: iamworkforcepool
+      controller: dcl
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: iam.googleapis.com
+      notes:
+        - Unable to find proto
+    - name: networkservices-routeviews
+      local: resource-networkservices-routeviews
+      remote: resource-networkservices-routeviews
+      command: gcloud network-services route-views
+      group: networkservices
+      resource: routeviews
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: networkservices.googleapis.com
+      notes:
+        - This is a read only resource
+    - name: networkservices-servicelbpolicies
+      local: resource-networkservices-servicelbpolicies
+      remote: resource-networkservices-servicelbpolicies
+      command: gcloud network-services service-lb-policies
+      group: networkservices
+      resource: servicelbpolicies
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: google.cloud.networkservices.v1
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: networkservices.googleapis.com
+      notes:
+        - Unable to find proto
+    - name: storage-hmac
+      local: resource-storage-hmac
+      remote: resource-storage-hmac
+      command: gcloud storage hmac
+      group: storage
+      resource: hmac
+      controller: Unknown
+      kind: StorageHmac
+      package: google.cloud.storage.v1
+      proto: HmacKeyMetadata
+      proto-path: google/cloud/storage/v1/storage_resources.proto
+      proto-service: google.cloud.storage.v1
+      proto-msg: google.cloud.storage.v1.HmacKeyMetadata
+      host-name: storage.googleapis.com
+      notes: []
+    - name: storage-insight-report-config
+      local: resource-storage-insight
+      remote: resource-storage-insight
+      command: gcloud storage insights inventory-reports
+      group: storage
+      resource: insight
+      controller: Unknown
+      kind: StorageInsightReportConfig
+      package: google.cloud.storage.v1
+      proto: StorageInsights
+      proto-path: google/cloud/storageinsights/v1/storageinsights.proto
+      proto-service: google.cloud.storageinsights.v1
+      proto-msg: google.cloud.storageinsights.v1.ReportConfig
+      host-name: storageinsights.googleapis.com
+      notes: []
+    - name: storage-object
+      local: resource-storage-object
+      remote: resource-storage-object
+      command: gcloud storage objects
+      group: storage
+      resource: object
+      controller: Unknown
+      kind: StorageObject
+      package: google.cloud.storage.v1
+      proto: Object
+      proto-path: google/cloud/storage/v1/storage_resources.proto
+      proto-service: google.cloud.storage.v1
+      proto-msg: google.cloud.storage.v1.Object
+      host-name: storage.googleapis.com
+      notes:
+        - This resource does not support create/delete
+    - name: storage-operation
+      local: resource-storage-operation
+      remote: resource-storage-operation
+      command: gcloud storage operations
+      group: storage
+      resource: operation
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: storage.googleapis.com
+      notes:
+        - Invalid resource
+    - name: tasks-cmekconfig
+      local: resource-tasks-cmekconfig
+      remote: resource-tasks-cmekconfig
+      command: gcloud tasks cmek-config
+      group: tasks
+      resource: cmekconfig
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: cloudtasks.googleapis.com
+      notes:
+        - This resource only supports update/delete https://cloud.google.com/tasks/docs/reference/rest#rest-resource:-v2.projects.locations
+    - name: tasks-locations
+      local: resource-tasks-locations
+      remote: resource-tasks-locations
+      command: gcloud tasks locations
+      group: tasks
+      resource: locations
+      controller: Unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Invalid resource
+    - name: endpoints-services
+      local: resource-endpoints-services
+      remote: resource-endpoints-services
+      command: gcloud endpoints services
+      group: endpoints
+      resource: endpointsservices
+      controller: unknown
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Unable to find proto
+    - name: healthcare-healthcareconsentstores
+      local: resource-healthcare-healthcareconsentstores
+      remote: resource-healthcare-healthcareconsentstores
+      command: gcloud healthcare consent-stores
+      group: healthcare
+      resource: healthcareconsentstores
+      controller: terraform
+      skip: true
+      kind: HealthcareConsentStore
+      package: ""
+      proto: ""
+      proto-path: google/cloud/healthcare/logging/?
+      proto-service: google.cloud.healthcare.logging
+      proto-msg: google.cloud.healthcare.logging
+      host-name: ""
+      notes:
+        - Unable to find proto
+    - name: healthcare-healthcaredatasets
+      local: resource-healthcare-healthcaredatasets
+      remote: resource-healthcare-healthcaredatasets
+      command: gcloud healthcare datasets
+      group: healthcare
+      resource: healthcaredatasets
+      controller: terraform
+      skip: true
+      kind: HealthcareDataset
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+        - Unable to find proto
+    - name: healthcare-healthcaredicomstores
+      local: resource-healthcare-healthcaredicomstores
+      remote: resource-healthcare-healthcaredicomstores
+      command: gcloud healthcare dicom-stores
+      group: healthcare
+      resource: healthcaredicomstores
+      controller: terraform
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Unable to find proto
+    - name: healthcare-healthcarefhirstores
+      local: resource-healthcare-healthcarefhirstores
+      remote: resource-healthcare-healthcarefhirstores
+      command: gcloud healthcare fhir-stores
+      group: healthcare
+      resource: healthcarefhirstores
+      controller: terraform
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Unable to find proto
+    - name: healthcare-healthcarehl7v2stores
+      local: resource-healthcare-healthcarehl7v2stores
+      remote: resource-healthcare-healthcarehl7v2stores
+      command: gcloud healthcare hl7v2-stores
+      group: healthcare
+      resource: healthcarehl7v2stores
+      controller: terraform
+      skip: true
+      kind: ""
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes:
+        - Unable to find proto
+    - name: workflows-workflow
+      local: resource-workflows-workflow
+      remote: resource-workflows-workflow
+      command: gcloud workflows
+      group: workflows
+      resource: workflowsworkflows
+      controller: terraform
+      skip: true
+      kind: WorkflowsWorkflow
+      package: google.cloud.workflows.v1
+      proto: Workflow
+      proto-path: google/cloud/workflows/v1/workflows.proto
+      proto-service: google.cloud.workflows.v1
+      proto-msg: google.cloud.workflows.v1.Workflow
+      host-name: workflows.googleapis.com
+      notes:
+        - This is a direct controller alpha resource
