@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,12 +23,35 @@ package clouddeploy
 import (
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
 	krmcloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
+	krmcloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
 	krmclouddeployv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1beta1"
+	krmgkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
+func AnthosCluster_FromProto(mapCtx *direct.MapContext, in *pb.AnthosCluster) *krmclouddeployv1alpha1.AnthosCluster {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.AnthosCluster{}
+	if in.GetMembership() != "" {
+		out.MembershipRef = &krmgkehubv1beta1.GKEHubMembershipRef{External: in.GetMembership()}
+	}
+	return out
+}
+func AnthosCluster_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.AnthosCluster) *pb.AnthosCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AnthosCluster{}
+	if in.MembershipRef != nil {
+		out.Membership = in.MembershipRef.External
+	}
+	return out
+}
 func Canary_FromProto(mapCtx *direct.MapContext, in *pb.Canary) *krm.Canary {
 	if in == nil {
 		return nil
@@ -97,6 +120,22 @@ func CloudRunConfig_ToProto(mapCtx *direct.MapContext, in *krm.CloudRunConfig) *
 	out.StableRevisionTags = in.StableRevisionTags
 	return out
 }
+func CloudRunLocation_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunLocation) *krmclouddeployv1alpha1.CloudRunLocation {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CloudRunLocation{}
+	out.Location = direct.LazyPtr(in.GetLocation())
+	return out
+}
+func CloudRunLocation_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CloudRunLocation) *pb.CloudRunLocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudRunLocation{}
+	out.Location = direct.ValueOf(in.Location)
+	return out
+}
 func CustomCanaryDeployment_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment) *krm.CustomCanaryDeployment {
 	if in == nil {
 		return nil
@@ -137,6 +176,22 @@ func CustomCanaryDeployment_PhaseConfig_ToProto(mapCtx *direct.MapContext, in *k
 	out.Verify = direct.ValueOf(in.Verify)
 	out.Predeploy = Predeploy_ToProto(mapCtx, in.Predeploy)
 	out.Postdeploy = Postdeploy_ToProto(mapCtx, in.Postdeploy)
+	return out
+}
+func CustomTarget_FromProto(mapCtx *direct.MapContext, in *pb.CustomTarget) *krmclouddeployv1alpha1.CustomTarget {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.CustomTarget{}
+	out.CustomTargetType = direct.LazyPtr(in.GetCustomTargetType())
+	return out
+}
+func CustomTarget_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CustomTarget) *pb.CustomTarget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomTarget{}
+	out.CustomTargetType = direct.ValueOf(in.CustomTargetType)
 	return out
 }
 func CustomTargetSkaffoldActions_FromProto(mapCtx *direct.MapContext, in *pb.CustomTargetSkaffoldActions) *krmclouddeployv1alpha1.CustomTargetSkaffoldActions {
@@ -215,6 +270,28 @@ func CustomTargetTypeSpec_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv
 	if oneof := CustomTargetSkaffoldActions_ToProto(mapCtx, in.CustomActions); oneof != nil {
 		out.Definition = &pb.CustomTargetType_CustomActions{CustomActions: oneof}
 	}
+	return out
+}
+func DefaultPool_FromProto(mapCtx *direct.MapContext, in *pb.DefaultPool) *krmclouddeployv1alpha1.DefaultPool {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.DefaultPool{}
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.ArtifactStorage = direct.LazyPtr(in.GetArtifactStorage())
+	return out
+}
+func DefaultPool_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.DefaultPool) *pb.DefaultPool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DefaultPool{}
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.ArtifactStorage = direct.ValueOf(in.ArtifactStorage)
 	return out
 }
 func DeliveryPipelineAttribute_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipelineAttribute) *krmclouddeployv1alpha1.DeliveryPipelineAttribute {
@@ -383,6 +460,48 @@ func DeployPolicySpec_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alp
 	out.Selectors = direct.Slice_ToProto(mapCtx, in.Selectors, DeployPolicyResourceSelector_ToProto)
 	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, PolicyRule_ToProto)
 	// MISSING: Etag
+	return out
+}
+func ExecutionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionConfig) *krmclouddeployv1alpha1.ExecutionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.ExecutionConfig{}
+	out.Usages = direct.EnumSlice_FromProto(mapCtx, in.Usages)
+	out.DefaultPool = DefaultPool_FromProto(mapCtx, in.GetDefaultPool())
+	out.PrivatePool = PrivatePool_FromProto(mapCtx, in.GetPrivatePool())
+	if in.GetWorkerPool() != "" {
+		out.WorkerPoolRef = &krmcloudbuildv1beta1.CloudBuildWorkerPoolRef{External: in.GetWorkerPool()}
+	}
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.ArtifactStorage = direct.LazyPtr(in.GetArtifactStorage())
+	out.ExecutionTimeout = direct.StringDuration_FromProto(mapCtx, in.GetExecutionTimeout())
+	out.Verbose = direct.LazyPtr(in.GetVerbose())
+	return out
+}
+func ExecutionConfig_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.ExecutionConfig) *pb.ExecutionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionConfig{}
+	out.Usages = direct.EnumSlice_ToProto[pb.ExecutionConfig_ExecutionEnvironmentUsage](mapCtx, in.Usages)
+	if oneof := DefaultPool_ToProto(mapCtx, in.DefaultPool); oneof != nil {
+		out.ExecutionEnvironment = &pb.ExecutionConfig_DefaultPool{DefaultPool: oneof}
+	}
+	if oneof := PrivatePool_ToProto(mapCtx, in.PrivatePool); oneof != nil {
+		out.ExecutionEnvironment = &pb.ExecutionConfig_PrivatePool{PrivatePool: oneof}
+	}
+	if in.WorkerPoolRef != nil {
+		out.WorkerPool = in.WorkerPoolRef.External
+	}
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.ArtifactStorage = direct.ValueOf(in.ArtifactStorage)
+	out.ExecutionTimeout = direct.StringDuration_ToProto(mapCtx, in.ExecutionTimeout)
+	out.Verbose = direct.ValueOf(in.Verbose)
 	return out
 }
 func KubernetesConfig_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig) *krm.KubernetesConfig {
@@ -585,6 +704,34 @@ func Predeploy_ToProto(mapCtx *direct.MapContext, in *krm.Predeploy) *pb.Predepl
 	}
 	out := &pb.Predeploy{}
 	out.Actions = in.Actions
+	return out
+}
+func PrivatePool_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePool) *krmclouddeployv1alpha1.PrivatePool {
+	if in == nil {
+		return nil
+	}
+	out := &krmclouddeployv1alpha1.PrivatePool{}
+	if in.GetWorkerPool() != "" {
+		out.WorkerPoolRef = &krmcloudbuildv1beta1.CloudBuildWorkerPoolRef{External: in.GetWorkerPool()}
+	}
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.ArtifactStorage = direct.LazyPtr(in.GetArtifactStorage())
+	return out
+}
+func PrivatePool_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.PrivatePool) *pb.PrivatePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivatePool{}
+	if in.WorkerPoolRef != nil {
+		out.WorkerPool = in.WorkerPoolRef.External
+	}
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.ArtifactStorage = direct.ValueOf(in.ArtifactStorage)
 	return out
 }
 func RolloutRestriction_FromProto(mapCtx *direct.MapContext, in *pb.RolloutRestriction) *krmclouddeployv1alpha1.RolloutRestriction {
