@@ -28,6 +28,7 @@ import (
 
 func BuildToolsCommand() *cobra.Command {
 	var opts ToolOptions
+	opts.InitDefaults()
 
 	cmd := &cobra.Command{
 		Use:   "tools",
@@ -38,7 +39,12 @@ func BuildToolsCommand() *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&opts.Verbose, "verbose", opts.Verbose, "Enable verbose output logging")
 	cmd.PersistentFlags().StringVar(&opts.RepoRoot, "repo-root", opts.RepoRoot, "Directory in which to do the work.")
 
+	// mockgcp
 	cmd.AddCommand(BuildMockgcpGenerateGcloudTestCommand(&opts))
+
+	// controller
+	cmd.AddCommand(BuildGenerateControllerCommand(&opts))
+	cmd.AddCommand(BuildGenerateControllerClientCommand(&opts))
 
 	return cmd
 }
@@ -85,6 +91,9 @@ type ToolOptions struct {
 
 	// Verbose indicates if we should show verbose output
 	Verbose bool
+}
+
+func (o *ToolOptions) InitDefaults() {
 }
 
 func (o *ToolOptions) DefaultAndValidate() error {
