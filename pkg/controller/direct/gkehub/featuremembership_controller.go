@@ -203,7 +203,13 @@ func (a *gkeHubAdapter) patchMembershipSpec(ctx context.Context) ([]byte, error)
 	// MembershipSpecs is a map of membership spec. Here we only patch one membership.
 	// GKE Hub server doesn't patch other memberships if they are not present in the membershipSpecs map.
 	feature.MembershipSpecs = mSpecs
-	op, err := a.hubClient.featureClient.Patch(a.featureID, feature).UpdateMask("membershipSpecs").Context(ctx).Do()
+	patchCall := a.hubClient.featureClient.Patch(a.featureID, feature)
+	if etag := feature.Header.Get("ETag"); etag != "" {
+		patchCall.Header().Set("If-Match", etag)
+
+	}
+	// CRUD to gkehubfeaturemembership equals to patch calls to the membershipSpecs field of the gkehub feature resource.
+	op, err := patchCall.UpdateMask("membershipSpecs").Context(ctx).Do()
 	if err != nil {
 		return nil, err
 	}
