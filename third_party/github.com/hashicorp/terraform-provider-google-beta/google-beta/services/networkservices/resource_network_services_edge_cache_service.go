@@ -380,6 +380,11 @@ Only one of origin or urlRedirect can be set.`,
 																MaxItems:    1,
 																Elem: &schema.Resource{
 																	Schema: map[string]*schema.Schema{
+																		"compression_mode": {
+																			Type:        schema.TypeString,
+																			Optional:    true,
+																			Description: `Compress text responses using Brotli or Gzip compression options: "AUTOMATIC", "DISABLED".`,
+																		},
 																		"add_signatures": {
 																			Type:     schema.TypeList,
 																			Optional: true,
@@ -1862,6 +1867,8 @@ func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActio
 		flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicyDefaultTtl(original["defaultTtl"], d, config)
 	transformed["max_ttl"] =
 		flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicyMaxTtl(original["maxTtl"], d, config)
+	transformed["compression_mode"] =
+		flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicyCompressionMode(original["compressionMode"], d, config)
 	transformed["cache_key_policy"] =
 		flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicyCacheKeyPolicy(original["cacheKeyPolicy"], d, config)
 	transformed["negative_caching"] =
@@ -1893,6 +1900,10 @@ func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActio
 }
 
 func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicyMaxTtl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicyCompressionMode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -2878,6 +2889,13 @@ func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteAction
 		transformed["maxTtl"] = transformedMaxTtl
 	}
 
+	transformedCompressionMode, err := expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicyCompressionMode(original["compression_mode"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedCompressionMode); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["compressionMode"] = transformedCompressionMode
+	}
+
 	transformedCacheKeyPolicy, err := expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicyCacheKeyPolicy(original["cache_key_policy"], d, config)
 	if err != nil {
 		return nil, err
@@ -2950,6 +2968,10 @@ func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteAction
 }
 
 func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicyMaxTtl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicyCompressionMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
