@@ -987,6 +987,7 @@ type ComputeURLMapStatus struct {
 
 // ComputeURLMap is the Schema for the compute API
 // +k8s:openapi-gen=true
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/default-controller=direct"
 type ComputeURLMap struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

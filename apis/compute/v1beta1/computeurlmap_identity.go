@@ -27,6 +27,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var (
+	ComputeURLMapGVK = GroupVersion.WithKind("ComputeURLMap")
+)
+
 var _ identity.Identity = &ComputeURLMapIdentity{}
 
 // ComputeURLMapIdentity defines the resource reference to ComputeURLMap, which "External" field

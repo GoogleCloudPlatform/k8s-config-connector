@@ -30,18 +30,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var ComputeURLMapGVK = schema.GroupVersionKind{
-	Group:   "compute.cnrm.cloud.google.com",
-	Version: "v1beta1",
-	Kind:    "ComputeURLMap",
-}
-
 func init() {
-	registry.RegisterModel(ComputeURLMapGVK, NewComputeURLMapModel)
+	registry.RegisterModel(krm.ComputeURLMapGVK, NewComputeURLMapModel)
 }
 
 func NewComputeURLMapModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -301,7 +294,7 @@ func (a *computeURLMapAdapter) Export(ctx context.Context) (*unstructured.Unstru
 		Object: make(map[string]interface{}),
 	}
 	u.SetName(a.id.ResourceID)
-	u.SetGroupVersionKind(ComputeURLMapGVK)
+	u.SetGroupVersionKind(krm.ComputeURLMapGVK)
 
 	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
 		return nil, fmt.Errorf("setting spec: %w", err)
