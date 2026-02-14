@@ -84,7 +84,7 @@ echo "Generated ${BUILD_DIR}/release-bundle.tar.gz for manual installation."
 
 # Leave this step out of the script for now.
 
-# gsutil cp ${REPO_ROOT}/.build/release-bundle.tar.gz gs://configconnector-operator/${LATEST_VERSION}/
-# gsutil cp ${REPO_ROOT}/.build/release-bundle.tar.gz gs://configconnector-operator/latest
+# gcloud storage cp ${REPO_ROOT}/.build/release-bundle.tar.gz gs://configconnector-operator/${LATEST_VERSION}/
+# gcloud storage cp ${REPO_ROOT}/.build/release-bundle.tar.gz gs://configconnector-operator/latest
 
 # echo "Pushed the latest release-bundle."

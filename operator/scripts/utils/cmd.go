@@ -39,7 +39,7 @@ func DownloadAndExtractTarballAt(gcsPath, outputDir string) error {
 }
 
 func DownloadObjectFromGCS(gcsPath, outputDir string) error {
-	cmd := exec.Command("gsutil", "cp", gcsPath, outputDir)
+	cmd := exec.Command("gcloud", "storage", "cp", gcsPath, outputDir)
 	return Execute(cmd)
 }
 
