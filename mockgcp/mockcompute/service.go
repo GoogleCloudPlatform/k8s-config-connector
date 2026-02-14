@@ -120,6 +120,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterInstancesServer(grpcServer, &InstancesV1{MockService: s})
 	pb.RegisterInstanceTemplatesServer(grpcServer, &InstanceTemplatesV1{MockService: s})
 
+	pb.RegisterInstanceTemplatesServer(grpcServer, &InstanceTemplatesV1{MockService: s})
+
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
 }
 
