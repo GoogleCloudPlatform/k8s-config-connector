@@ -214,7 +214,7 @@ func containerTypesToAnnotations(containerTypes []corekccv1alpha1.ContainerType)
 }
 
 func ContainerTypes(containers []corekccv1alpha1.Container) []corekccv1alpha1.ContainerType {
-	types := make([]corekccv1alpha1.ContainerType, 0)
+	types := make([]corekccv1alpha1.ContainerType, 0, len(containers))
 	for _, c := range containers {
 		types = append(types, c.Type)
 	}
