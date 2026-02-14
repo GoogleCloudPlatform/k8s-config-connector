@@ -58,6 +58,69 @@ spec:
             type: object
           spec:
             properties:
+              defaultCustomErrorResponsePolicy:
+                description: defaultCustomErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendServiceor BackendBucket responds with an error.
+                properties:
+                  errorResponseRules:
+                    description: Specifies rules for how to respond to errors.
+                    items:
+                      properties:
+                        matchResponseCodes:
+                          description: |-
+                            Valid values include:
+                            * A number between 400 and 599: For example 401 or 503, in which case the load balancer applies the policy if the error code exactly matches this value.
+                            * 5xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 500 to 599.
+                            * 4xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 400 to 499.
+                            Values must be unique within matchResponseCodes and across all errorResponseRules of CustomErrorResponsePolicy.
+                          items:
+                            type: string
+                          type: array
+                        overrideResponseCode:
+                          description: The HTTP status code to use for this CustomErrorResponsePolicy.
+                          type: integer
+                        path:
+                          description: The path to the custom error content.
+                          type: string
+                      type: object
+                    type: array
+                  errorServiceRef:
+                    description: |-
+                      The full or partial URL to the BackendBucket resource that contains the custom error content. Examples are:
+                      - https://www.googleapis.com/compute/v1/projects/project/global/backendBuckets/myBackendBucket
+                      - compute/v1/projects/project/global/backendBuckets/myBackendBucket
+                      - global/backendBuckets/myBackendBucket
+
+                      If errorService is not specified at lower levels like pathMatcher, pathRule and routeRule, an errorService specified at a higher level in the UrlMap will be used.
+                      If UrlMap.defaultCustomErrorResponsePolicy contains one or more errorResponseRules[], it must specify errorService.
+                      If load balancer cannot reach the backendBucket, a simple Not Found Error will be returned, with the original response code (or overrideResponseCode if configured).
+                      errorService is not supported for internal or regional HTTP/HTTPS load balancers.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `selfLink` field of a `ComputeBackendBucket`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                type: object
               defaultRouteAction:
                 description: |-
                   defaultRouteAction takes effect when none of the hostRules match. The load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend. If defaultRouteAction specifies any weightedBackendServices, defaultService must not be set. Conversely if defaultService is set, defaultRouteAction cannot contain any weightedBackendServices.
