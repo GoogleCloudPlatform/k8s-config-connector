@@ -126,6 +126,77 @@ func IsControllerManagerService(obj *manifest.Object) bool {
 	return obj.GetName() == k8s.NamespacedManagerServiceTmpl
 }
 
+func ApplyMultiClusterLeaderElection(m *manifest.Objects, lease *corev1beta1.MultiClusterLeaseSpec) error {
+	if lease == nil {
+		return nil
+	}
+
+	targetControllerName := "cnrm-controller-manager"
+	targetContainerName := "manager"
+	targetControllerGVK := schema.GroupVersionKind{
+		Group:   appsv1.SchemeGroupVersion.Group,
+		Version: appsv1.SchemeGroupVersion.Version,
+		Kind:    "StatefulSet",
+	}
+
+	for _, item := range m.Items {
+		if item.GroupVersionKind() != targetControllerGVK {
+			continue
+		}
+		if !strings.HasPrefix(item.GetName(), targetControllerName) {
+			continue
+		}
+
+		if err := item.MutateContainers(func(container map[string]interface{}) error {
+			name, _, _ := unstructured.NestedString(container, "name")
+			if name != targetContainerName {
+				return nil
+			}
+
+			// Add --leader-election-type=multicluster flag
+			args, found, _ := unstructured.NestedStringSlice(container, "args")
+			if !found {
+				args = []string{}
+			}
+
+			newArgs := []string{}
+			for _, arg := range args {
+				if strings.HasPrefix(arg, "--leader-election-type=") {
+					continue
+				}
+				newArgs = append(newArgs, arg)
+			}
+			newArgs = append(newArgs, "--leader-election-type=multicluster")
+
+			if err := unstructured.SetNestedStringSlice(container, newArgs, "args"); err != nil {
+				return fmt.Errorf("failed to set args: %w", err)
+			}
+			return nil
+		}); err != nil {
+			return fmt.Errorf("failed to apply multi-cluster leader election to %s: %w", item.GetName(), err)
+		}
+
+		// Add annotations to the Pod template
+		u := item.UnstructuredObject()
+		annotations, _, err := unstructured.NestedStringMap(u.Object, "spec", "template", "metadata", "annotations")
+		if err != nil {
+			return fmt.Errorf("failed to get pod template annotations: %w", err)
+		}
+		if annotations == nil {
+			annotations = make(map[string]string)
+		}
+		annotations["cnrm.cloud.google.com/lease-name"] = lease.LeaseName
+		annotations["cnrm.cloud.google.com/lease-namespace"] = lease.Namespace
+		annotations["cnrm.cloud.google.com/lease-identity"] = lease.ClusterCandidateIdentity
+
+		if err := unstructured.SetNestedStringMap(u.Object, annotations, "spec", "template", "metadata", "annotations"); err != nil {
+			return fmt.Errorf("failed to set pod template annotations: %w", err)
+		}
+	}
+
+	return nil
+}
+
 func GetControllerResource(ctx context.Context, c client.Client, name string) (*customizev1beta1.ControllerResource, error) {
 	obj := &customizev1beta1.ControllerResource{}
 	if err := c.Get(ctx, types.NamespacedName{Name: name}, obj); err != nil {
