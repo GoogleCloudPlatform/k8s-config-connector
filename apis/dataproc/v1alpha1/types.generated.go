@@ -12,6 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: dataproc.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.dataproc.v1
+// resource: DataprocBatch:Batch
+// resource: DataprocJob:Job
+// resource: DataprocNodeGroup:NodeGroup
+
 package v1alpha1
 
 // +kcc:proto=google.cloud.dataproc.v1.AcceleratorConfig
@@ -38,6 +46,13 @@ type AcceleratorConfig struct {
 	// The number of the accelerator cards of this type exposed to this instance.
 	// +kcc:proto:field=google.cloud.dataproc.v1.AcceleratorConfig.accelerator_count
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.AuthenticationConfig
+type AuthenticationConfig struct {
+	// Optional. Authentication type for the user workload running in containers.
+	// +kcc:proto:field=google.cloud.dataproc.v1.AuthenticationConfig.user_workload_authentication_type
+	UserWorkloadAuthenticationType *string `json:"userWorkloadAuthenticationType,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
@@ -231,14 +246,14 @@ type StartupConfig struct {
 	RequiredRegistrationFraction *float64 `json:"requiredRegistrationFraction,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
 type InstanceFlexibilityPolicyObservedState struct {
 	// Output only. A list of instance selection results in the group.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_results
 	InstanceSelectionResults []InstanceFlexibilityPolicy_InstanceSelectionResult `json:"instanceSelectionResults,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
 type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 	// Output only. Full machine-type names, e.g. "n1-standard-16".
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult.machine_type
@@ -246,10 +261,10 @@ type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 
 	// Output only. Number of VM provisioned with the machine_type.
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult.vm_count
-	VmCount *int32 `json:"vmCount,omitempty"`
+	VMCount *int32 `json:"vmCount,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.InstanceGroupConfig
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfigObservedState struct {
 	// Output only. The list of instance names. Dataproc derives the names
 	//  from `cluster_name`, `num_instances`, and the instance group.
@@ -277,7 +292,7 @@ type InstanceGroupConfigObservedState struct {
 	InstanceFlexibilityPolicy *InstanceFlexibilityPolicyObservedState `json:"instanceFlexibilityPolicy,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.ManagedGroupConfig
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfigObservedState struct {
 	// Output only. The name of the Instance Template used for the Managed
 	//  Instance Group.
