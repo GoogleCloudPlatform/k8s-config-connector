@@ -30,6 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/deploy/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
@@ -105,14 +106,8 @@ func (s *cloudDeploy) UpdateDeployPolicy(ctx context.Context, req *pb.UpdateDepl
 	now := time.Now()
 
 	obj.UpdateTime = timestamppb.New(now)
-
-	for _, path := range paths {
-		switch path {
-		case "suspended":
-			obj.Suspended = req.GetDeployPolicy().GetSuspended()
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
-		}
+	if err := fields.UpdateByFieldMask(obj, req.DeployPolicy, req.UpdateMask.Paths); err != nil {
+		return nil, fmt.Errorf("update field_mask.paths: %w", err)
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
