@@ -13,7 +13,7 @@ import (
 	"io"
 	"net/http"
 
-	iampb_0 "cloud.google.com/go/iam/apiv2/iampb"
+	extIampb "cloud.google.com/go/iam/apiv2/iampb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -36,8 +36,8 @@ var (
 	filter_Policies_ListPolicies_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_Policies_ListPolicies_0(ctx context.Context, marshaler runtime.Marshaler, client iampb_0.PoliciesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.ListPoliciesRequest
+func request_Policies_ListPolicies_0(ctx context.Context, marshaler runtime.Marshaler, client extIampb.PoliciesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extIampb.ListPoliciesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -69,8 +69,8 @@ func request_Policies_ListPolicies_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-func local_request_Policies_ListPolicies_0(ctx context.Context, marshaler runtime.Marshaler, server iampb_0.PoliciesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.ListPoliciesRequest
+func local_request_Policies_ListPolicies_0(ctx context.Context, marshaler runtime.Marshaler, server extIampb.PoliciesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extIampb.ListPoliciesRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -102,8 +102,8 @@ func local_request_Policies_ListPolicies_0(ctx context.Context, marshaler runtim
 
 }
 
-func request_Policies_GetPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client iampb_0.PoliciesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.GetPolicyRequest
+func request_Policies_GetPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extIampb.PoliciesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extIampb.GetPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -128,8 +128,8 @@ func request_Policies_GetPolicy_0(ctx context.Context, marshaler runtime.Marshal
 
 }
 
-func local_request_Policies_GetPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server iampb_0.PoliciesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.GetPolicyRequest
+func local_request_Policies_GetPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extIampb.PoliciesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extIampb.GetPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -158,8 +158,8 @@ var (
 	filter_Policies_CreatePolicy_0 = &utilities.DoubleArray{Encoding: map[string]int{"policy": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_Policies_CreatePolicy_0(ctx context.Context, marshaler runtime.Marshaler, client iampb_0.PoliciesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.CreatePolicyRequest
+func request_Policies_CreatePolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extIampb.PoliciesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extIampb.CreatePolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -199,8 +199,8 @@ func request_Policies_CreatePolicy_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-func local_request_Policies_CreatePolicy_0(ctx context.Context, marshaler runtime.Marshaler, server iampb_0.PoliciesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.CreatePolicyRequest
+func local_request_Policies_CreatePolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extIampb.PoliciesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extIampb.CreatePolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -240,8 +240,8 @@ func local_request_Policies_CreatePolicy_0(ctx context.Context, marshaler runtim
 
 }
 
-func request_Policies_UpdatePolicy_0(ctx context.Context, marshaler runtime.Marshaler, client iampb_0.PoliciesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.UpdatePolicyRequest
+func request_Policies_UpdatePolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extIampb.PoliciesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extIampb.UpdatePolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -274,8 +274,8 @@ func request_Policies_UpdatePolicy_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-func local_request_Policies_UpdatePolicy_0(ctx context.Context, marshaler runtime.Marshaler, server iampb_0.PoliciesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.UpdatePolicyRequest
+func local_request_Policies_UpdatePolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extIampb.PoliciesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extIampb.UpdatePolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -312,8 +312,8 @@ var (
 	filter_Policies_DeletePolicy_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_Policies_DeletePolicy_0(ctx context.Context, marshaler runtime.Marshaler, client iampb_0.PoliciesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.DeletePolicyRequest
+func request_Policies_DeletePolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extIampb.PoliciesClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extIampb.DeletePolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -345,8 +345,8 @@ func request_Policies_DeletePolicy_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-func local_request_Policies_DeletePolicy_0(ctx context.Context, marshaler runtime.Marshaler, server iampb_0.PoliciesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.DeletePolicyRequest
+func local_request_Policies_DeletePolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extIampb.PoliciesServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq extIampb.DeletePolicyRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -382,7 +382,7 @@ func local_request_Policies_DeletePolicy_0(ctx context.Context, marshaler runtim
 // UnaryRPC     :call PoliciesServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterPoliciesHandlerFromEndpoint instead.
-func RegisterPoliciesHandlerServer(ctx context.Context, mux *runtime.ServeMux, server iampb_0.PoliciesServer) error {
+func RegisterPoliciesHandlerServer(ctx context.Context, mux *runtime.ServeMux, server extIampb.PoliciesServer) error {
 
 	mux.Handle("GET", pattern_Policies_ListPolicies_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -540,15 +540,15 @@ func RegisterPoliciesHandlerFromEndpoint(ctx context.Context, mux *runtime.Serve
 // RegisterPoliciesHandler registers the http handlers for service Policies to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterPoliciesHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterPoliciesHandlerClient(ctx, mux, iampb_0.NewPoliciesClient(conn))
+	return RegisterPoliciesHandlerClient(ctx, mux, extIampb.NewPoliciesClient(conn))
 }
 
 // RegisterPoliciesHandlerClient registers the http handlers for service Policies
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "iampb_0.PoliciesClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "iampb_0.PoliciesClient"
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "extIampb.PoliciesClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "extIampb.PoliciesClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "iampb_0.PoliciesClient" to call the correct interceptors.
-func RegisterPoliciesHandlerClient(ctx context.Context, mux *runtime.ServeMux, client iampb_0.PoliciesClient) error {
+// "extIampb.PoliciesClient" to call the correct interceptors.
+func RegisterPoliciesHandlerClient(ctx context.Context, mux *runtime.ServeMux, client extIampb.PoliciesClient) error {
 
 	mux.Handle("GET", pattern_Policies_ListPolicies_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())

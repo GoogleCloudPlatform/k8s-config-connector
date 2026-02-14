@@ -177,6 +177,12 @@ type KeyManagementServiceClient interface {
 	// [CryptoKey.purpose][mockgcp.cloud.kms.v1.CryptoKey.purpose] MAC, and returns
 	// a response that indicates whether or not the verification was successful.
 	MacVerify(ctx context.Context, in *MacVerifyRequest, opts ...grpc.CallOption) (*MacVerifyResponse, error)
+	// Decapsulates data that was encapsulated with a public key retrieved from
+	// [GetPublicKey][mockgcp.cloud.kms.v1.KeyManagementService.GetPublicKey]
+	// corresponding to a [CryptoKeyVersion][mockgcp.cloud.kms.v1.CryptoKeyVersion]
+	// with [CryptoKey.purpose][mockgcp.cloud.kms.v1.CryptoKey.purpose]
+	// KEY_ENCAPSULATION.
+	Decapsulate(ctx context.Context, in *DecapsulateRequest, opts ...grpc.CallOption) (*DecapsulateResponse, error)
 	// Generate random bytes using the Cloud KMS randomness source in the provided
 	// location.
 	GenerateRandomBytes(ctx context.Context, in *GenerateRandomBytesRequest, opts ...grpc.CallOption) (*GenerateRandomBytesResponse, error)
@@ -433,6 +439,15 @@ func (c *keyManagementServiceClient) MacVerify(ctx context.Context, in *MacVerif
 	return out, nil
 }
 
+func (c *keyManagementServiceClient) Decapsulate(ctx context.Context, in *DecapsulateRequest, opts ...grpc.CallOption) (*DecapsulateResponse, error) {
+	out := new(DecapsulateResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.kms.v1.KeyManagementService/Decapsulate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *keyManagementServiceClient) GenerateRandomBytes(ctx context.Context, in *GenerateRandomBytesRequest, opts ...grpc.CallOption) (*GenerateRandomBytesResponse, error) {
 	out := new(GenerateRandomBytesResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.kms.v1.KeyManagementService/GenerateRandomBytes", in, out, opts...)
@@ -601,6 +616,12 @@ type KeyManagementServiceServer interface {
 	// [CryptoKey.purpose][mockgcp.cloud.kms.v1.CryptoKey.purpose] MAC, and returns
 	// a response that indicates whether or not the verification was successful.
 	MacVerify(context.Context, *MacVerifyRequest) (*MacVerifyResponse, error)
+	// Decapsulates data that was encapsulated with a public key retrieved from
+	// [GetPublicKey][mockgcp.cloud.kms.v1.KeyManagementService.GetPublicKey]
+	// corresponding to a [CryptoKeyVersion][mockgcp.cloud.kms.v1.CryptoKeyVersion]
+	// with [CryptoKey.purpose][mockgcp.cloud.kms.v1.CryptoKey.purpose]
+	// KEY_ENCAPSULATION.
+	Decapsulate(context.Context, *DecapsulateRequest) (*DecapsulateResponse, error)
 	// Generate random bytes using the Cloud KMS randomness source in the provided
 	// location.
 	GenerateRandomBytes(context.Context, *GenerateRandomBytesRequest) (*GenerateRandomBytesResponse, error)
@@ -691,6 +712,9 @@ func (UnimplementedKeyManagementServiceServer) MacSign(context.Context, *MacSign
 }
 func (UnimplementedKeyManagementServiceServer) MacVerify(context.Context, *MacVerifyRequest) (*MacVerifyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MacVerify not implemented")
+}
+func (UnimplementedKeyManagementServiceServer) Decapsulate(context.Context, *DecapsulateRequest) (*DecapsulateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Decapsulate not implemented")
 }
 func (UnimplementedKeyManagementServiceServer) GenerateRandomBytes(context.Context, *GenerateRandomBytesRequest) (*GenerateRandomBytesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateRandomBytes not implemented")
@@ -1194,6 +1218,24 @@ func _KeyManagementService_MacVerify_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _KeyManagementService_Decapsulate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DecapsulateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KeyManagementServiceServer).Decapsulate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.kms.v1.KeyManagementService/Decapsulate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KeyManagementServiceServer).Decapsulate(ctx, req.(*DecapsulateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _KeyManagementService_GenerateRandomBytes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GenerateRandomBytesRequest)
 	if err := dec(in); err != nil {
@@ -1326,6 +1368,10 @@ var KeyManagementService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MacVerify",
 			Handler:    _KeyManagementService_MacVerify_Handler,
+		},
+		{
+			MethodName: "Decapsulate",
+			Handler:    _KeyManagementService_Decapsulate_Handler,
 		},
 		{
 			MethodName: "GenerateRandomBytes",
