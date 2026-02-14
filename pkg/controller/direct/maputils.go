@@ -214,6 +214,9 @@ func StringDuration_FromProto(mapCtx *MapContext, d *durationpb.Duration) *strin
 		return nil
 	}
 	s := d.AsDuration().String()
+	// Prefer 10h to 10h0m0s
+	s = strings.TrimSuffix(s, "m0s")
+	s = strings.TrimSuffix(s, "h0m")
 	return &s
 }
 
