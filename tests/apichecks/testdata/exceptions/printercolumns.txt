@@ -38,7 +38,8 @@ crd=namespacedcontrollerresources.customize.core.cnrm.cloud.google.com version=v
 ---
 crd=networkconnectivityserviceconnectionpolicies.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: additionalPrinterColumns mismatch
 ---
+crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: additionalPrinterColumns mismatch
+---
 crd=validatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com version=v1alpha1: additionalPrinterColumns mismatch
 ---
 crd=validatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com version=v1beta1: additionalPrinterColumns mismatch
-
