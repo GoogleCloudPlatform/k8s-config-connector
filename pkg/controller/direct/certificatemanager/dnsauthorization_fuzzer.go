@@ -32,7 +32,7 @@ func dnsAuthorizationFuzzer() fuzztesting.KRMFuzzer {
 
 	fuzzer.UnimplementedFields.Insert(".dns_resource_record")
 	fuzzer.UnimplementedFields.Insert(".name")
-	fuzzer.UnimplementedFields.Insert(".labels")
+	fuzzer.Unimplemented_LabelsAnnotations(".labels")
 	fuzzer.UnimplementedFields.Insert(".type")
 
 	fuzzer.StatusFields.Insert(".create_time")
