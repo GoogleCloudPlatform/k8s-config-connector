@@ -67,9 +67,9 @@ spec:
     external: projects/mock-project
   location: global
   membershipRef:
-    name: gkehubmembership-${uniqueId}
+    external: projects/mock-project/locations/global/memberships/gkehubmembership-${uniqueId}
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/mock-project/locations/global/features/gkehubfeature-${uniqueId}
   configmanagement:
     configSync:
       git:
@@ -95,9 +95,9 @@ spec:
     external: projects/mock-project
   location: global
   membershipRef:
-    name: gkehubmembership-${uniqueId}
+    external: projects/mock-project/locations/global/memberships/gkehubmembership-${uniqueId}
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/mock-project/locations/global/features/gkehubfeature-${uniqueId}
   configmanagement:
     configSync:
       git:

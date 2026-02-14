@@ -85,9 +85,9 @@ spec:
     external: projects/mock-project
   location: global
   membershipRef:
-    name: gkehubmembership2-${uniqueId}
+    external: projects/mock-project/locations/us-central1/memberships/gkehubmembership2-${uniqueId}
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/mock-project/locations/global/features/gkehubfeature-${uniqueId}
   configmanagement:
     configSync:
       git:
@@ -105,9 +105,9 @@ spec:
     external: projects/mock-project
   location: global
   membershipRef:
-    name: gkehubmembership1-${uniqueId}
+    external: projects/mock-project/locations/us-central1/memberships/gkehubmembership1-${uniqueId}
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/mock-project/locations/global/features/gkehubfeature-${uniqueId}
   configmanagement:
     configSync:
       git:
@@ -126,9 +126,9 @@ spec:
     external: projects/mock-project
   location: global
   membershipRef:
-    name: gkehubmembership1-${uniqueId}
+    external: projects/mock-project/locations/us-central1/memberships/gkehubmembership1-${uniqueId}
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/mock-project/locations/global/features/gkehubfeature-${uniqueId}
   configmanagement:
     configSync:
       git:
