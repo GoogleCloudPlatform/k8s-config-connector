@@ -16,6 +16,7 @@ package structuredreporting
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -39,8 +40,23 @@ func (l *DebugLogListener) OnError(ctx context.Context, err error, args ...any) 
 // OnDiff is called when a controller calls ReportDiffs
 func (l *DebugLogListener) OnDiff(ctx context.Context, diffs *Diff) {
 	log := log.FromContext(ctx)
+	var fields []string
+	for _, field := range diffs.Fields {
+		fieldOld := "nil"
+		if field.Old != nil {
+			fieldOld = fmt.Sprintf("%v", field.Old)
+		}
+
+		fieldNew := "nil"
+		if field.New != nil {
+			fieldNew = fmt.Sprintf("%v", field.New)
+		}
+
+		fields = append(fields, fmt.Sprintf("%v: %v -> %v", field.ID, fieldOld, fieldNew))
+	}
+
 	log.Info("structuredreporting OnDiff",
-		"diff.fields", diffs.Fields,
+		"diff.fields", fields,
 		"diff.isNewObject", diffs.IsNewObject,
 	)
 }
