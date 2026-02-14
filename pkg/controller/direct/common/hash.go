@@ -22,7 +22,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -109,7 +108,7 @@ func clearFields(m protoreflect.Message, paths []string) {
 	}
 }
 
-func NewCookie(spec, gcp proto.Message) (*Cookie, error) {
+func NewLegacyCookie(spec, gcp proto.Message) (*LegacyCookie, error) {
 	specHash, err := hashProto(spec)
 	if err != nil {
 		return nil, fmt.Errorf("calculating spec hash: %w", err)
@@ -118,18 +117,18 @@ func NewCookie(spec, gcp proto.Message) (*Cookie, error) {
 	if err != nil {
 		return nil, fmt.Errorf("calculating gcp hash: %w", err)
 	}
-	return &Cookie{SpecHash: specHash, GCPHash: gcpHash}, nil
+	return &LegacyCookie{SpecHash: specHash, GCPHash: gcpHash}, nil
 }
 
-// Cookie is used for stateful reconciliation.
+// LegacyCookie is used for stateful reconciliation.
 // It is stored in the status of the KCC resource.
-type Cookie struct {
+type LegacyCookie struct {
 	SpecHash string `json:"specHash"`
 	GCPHash  string `json:"gcpHash"`
 }
 
 // ComposeCookie creates a cookie string from the spec and gcp hashes.
-func (c *Cookie) String() string {
+func (c *LegacyCookie) String() string {
 	b, err := json.Marshal(c)
 	if err != nil {
 		klog.Errorf("error marshalling cookie: %v", err)
@@ -138,13 +137,21 @@ func (c *Cookie) String() string {
 	return fmt.Sprintf("%x", md5.Sum(b))
 }
 
-func (c *Cookie) Equal(lastModifiedCookie *string) bool {
+func (c *LegacyCookie) Equal(lastModifiedCookie *string) bool {
 	if lastModifiedCookie == nil {
 		return false
 	}
-	other := direct.ValueOf(lastModifiedCookie)
+	other := *lastModifiedCookie
 	if other == "" {
 		return false
 	}
 	return c.String() == other
+}
+
+func valueOf[T any](t *T) T {
+	var zeroVal T
+	if t == nil {
+		return zeroVal
+	}
+	return *t
 }

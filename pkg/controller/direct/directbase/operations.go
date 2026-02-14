@@ -20,8 +20,10 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/changecookies"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"google.golang.org/protobuf/proto"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -51,6 +53,12 @@ type Operation interface {
 
 	// RequestRequeue requests a requeue of the operation, by returning Requeue = true from the reconcile loop.
 	RequestRequeue()
+
+	// SetLastModifiedCookie sets the last-changed-cookie annotation on the object.
+	SetLastModifiedCookie(ctx context.Context, desired, actual proto.Message) error
+
+	// CompareLastModifiedCookie compares the last-changed-cookie annotation on the object with the hashes of the desired and actual state.
+	CompareLastModifiedCookie(desired, actual proto.Message) (bool, error)
 }
 
 // GetUnstructured returns the object being reconciled, in unstructured format.
@@ -203,6 +211,38 @@ func (o *operationBase) UpdateStatus(ctx context.Context, typedStatus any, ready
 // RequestRequeue requests a requeue of the operation, by returning Requeue = true from the reconcile loop.
 func (o *operationBase) RequestRequeue() {
 	o.RequeueRequested = true
+}
+
+func (o *operationBase) SetLastModifiedCookie(ctx context.Context, desired, actual proto.Message) error {
+	cookie, err := changecookies.ComputeChangeCookie(desired, actual)
+	if err != nil {
+		return err
+	}
+	u := o.GetUnstructured()
+	annotations := u.GetAnnotations()
+	if annotations == nil {
+		annotations = make(map[string]string)
+	}
+	if annotations[k8s.LastChangedCookieAnnotation] == cookie {
+		log := klog.FromContext(ctx)
+		log.Info("skipping setting last modified cookie as existing cookie matches", "cookie", cookie)
+		return nil
+	}
+	annotations[k8s.LastChangedCookieAnnotation] = cookie
+	u.SetAnnotations(annotations)
+	if err := o.client.Update(ctx, u); err != nil {
+		return fmt.Errorf("updating object to set %s: %w", k8s.LastChangedCookieAnnotation, err)
+	}
+	return nil
+}
+
+func (o *operationBase) CompareLastModifiedCookie(desired, actual proto.Message) (bool, error) {
+	cookie, err := changecookies.ComputeChangeCookie(desired, actual)
+	if err != nil {
+		return false, err
+	}
+	u := o.GetUnstructured()
+	return u.GetAnnotations()[k8s.LastChangedCookieAnnotation] == cookie, nil
 }
 
 type statusWithConditions struct {
