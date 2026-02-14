@@ -76,7 +76,7 @@ func (m *gkeHubMembershipBindingModel) AdapterForObject(ctx context.Context, op 
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	projectID, err := direct.ResolveProjectID(ctx, reader, obj.GetNamespace(), &obj.Spec.ProjectRef)
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +94,6 @@ func (m *gkeHubMembershipBindingModel) AdapterForObject(ctx context.Context, op 
 	if err := obj.Spec.ScopeRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
-	scopeID := obj.Spec.ScopeRef.External
 
 	return &gkeHubMembershipBindingAdapter{
 		id: &GKEHubMembershipBindingIdentity{

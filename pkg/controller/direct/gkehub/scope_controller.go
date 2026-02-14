@@ -75,7 +75,7 @@ func (m *gkeHubScopeModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	projectID, err := direct.ResolveProjectID(ctx, reader, obj.GetNamespace(), &obj.Spec.ProjectRef)
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -254,4 +254,14 @@ func (a *gkeHubScopeAdapter) apiToKrm(mapCtx *direct.MapContext) krm.GKEHubScope
 	out.ResourceID = direct.LazyPtr(a.id.ID)
 	out.Labels = a.actual.Labels
 	return out
+}
+
+type GKEHubScopeIdentity struct {
+	Project  string
+	Location string
+	ID       string
+}
+
+func (i *GKEHubScopeIdentity) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s/scopes/%s", i.Project, i.Location, i.ID)
 }

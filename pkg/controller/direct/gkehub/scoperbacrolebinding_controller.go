@@ -52,7 +52,7 @@ var _ directbase.Model = &gkeHubScopeRBACRoleBindingModel{}
 type gkeHubScopeRBACRoleBindingAdapter struct {
 	id      *GKEHubScopeRBACRoleBindingIdentity
 	desired *krm.GKEHubScopeRBACRoleBinding
-	actual  *api.ScopeRBACRoleBinding
+	actual  *api.RBACRoleBinding
 
 	hubClient *gkeHubClient
 }
@@ -76,7 +76,7 @@ func (m *gkeHubScopeRBACRoleBindingModel) AdapterForObject(ctx context.Context, 
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	projectID, err := direct.ResolveProjectID(ctx, reader, obj.GetNamespace(), &obj.Spec.ProjectRef)
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -257,8 +257,8 @@ func (a *gkeHubScopeRBACRoleBindingAdapter) setID(u *unstructured.Unstructured) 
 	return nil
 }
 
-func (a *gkeHubScopeRBACRoleBindingAdapter) krmToApi(mapCtx *direct.MapContext) *api.ScopeRBACRoleBinding {
-	out := &api.ScopeRBACRoleBinding{}
+func (a *gkeHubScopeRBACRoleBindingAdapter) krmToApi(mapCtx *direct.MapContext) *api.RBACRoleBinding {
+	out := &api.RBACRoleBinding{}
 	out.Labels = a.desired.Spec.Labels
 	out.User = direct.ValueOf(a.desired.Spec.User)
 	out.Group = direct.ValueOf(a.desired.Spec.Group)
