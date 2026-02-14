@@ -46,6 +46,11 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".alertPolicies[].creationRecord.mutatedBy", emailPlaceholder)
 	replacements.ReplacePath(".alertPolicies[].mutationRecord.mutatedBy", emailPlaceholder)
 	replacements.ReplacePath(".alertPolicies[].mutationRecords[].mutatedBy", emailPlaceholder)
+
+	// metricsScopes
+	replacements.ReplacePath(".metricsScopes[].createTime", timePlaceholder)
+	replacements.ReplacePath(".metricsScopes[].updateTime", timePlaceholder)
+	replacements.ReplacePath(".metricsScopes[].monitoredProjects[].createTime", timePlaceholder)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

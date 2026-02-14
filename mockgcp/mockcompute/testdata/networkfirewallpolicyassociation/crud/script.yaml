@@ -1,0 +1,7 @@
+- exec: gcloud compute networks create network-${uniqueId} --subnet-mode=auto --bgp-routing-mode=global
+- exec: gcloud compute network-firewall-policies create policy-${uniqueId} --global
+- exec: gcloud compute network-firewall-policies associations create --firewall-policy=policy-${uniqueId} --network=network-${uniqueId} --name=assoc-${uniqueId} --global-firewall-policy
+- exec: gcloud compute network-firewall-policies describe policy-${uniqueId} --global
+- exec: gcloud compute network-firewall-policies associations delete --name=assoc-${uniqueId} --firewall-policy=policy-${uniqueId} --global-firewall-policy
+- exec: gcloud compute network-firewall-policies delete policy-${uniqueId} --global
+- exec: gcloud compute networks delete network-${uniqueId} --quiet

@@ -65,7 +65,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	dashboardpb.RegisterDashboardsServiceServer(grpcServer, &DashboardsService{MockService: s})
 
-	metricsscopepb.RegisterMetricsScopesServer(grpcServer, &metricsScopeService{MockService: s})
+	metricsscopepb.RegisterMetricsScopesServer(grpcServer, &metricsScopesV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -91,4 +91,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	return mux, nil
+}
+
+type metricsScopesV1 struct {
+	*MockService
+	metricsscopepb.UnimplementedMetricsScopesServer
 }
