@@ -1029,33 +1029,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	events.RemoveHTTPResponseHeader("Etag")
 	events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
 	events.RemoveHTTPResponseHeader("Cache-Control")  // not really relevant to us
-
-	// Replace any expires headers with (rounded) relative offsets
-	for _, event := range events {
-		expires := event.Response.Header.Get("Expires")
-		if expires == "" {
-			continue
-		}
-
-		if expires == "Mon, 01 Jan 1990 00:00:00 GMT" {
-			// Magic value meaning no-cache; don't change
-			continue
-		}
-
-		expiresTime, err := time.Parse(http.TimeFormat, expires)
-		if err != nil {
-			t.Fatalf("parsing Expires header %q: %v", expires, err)
-		}
-		now := time.Now()
-		delta := expiresTime.Sub(now)
-		if delta > (55 * time.Minute) {
-			delta = delta.Round(time.Hour)
-			event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vh}", delta.Hours()))
-		} else {
-			delta = delta.Round(time.Minute)
-			event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vm}", delta.Minutes()))
-		}
-	}
+	events.RemoveHTTPResponseHeader("Expires")        // not behavioural
 
 	normalizeHTTPResponses(t, services, events)
 

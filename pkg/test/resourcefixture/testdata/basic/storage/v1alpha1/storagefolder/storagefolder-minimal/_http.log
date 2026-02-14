@@ -3,7 +3,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -74,7 +73,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
@@ -142,7 +140,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -276,7 +273,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -343,7 +339,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -359,7 +354,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 204 No Content
 Content-Type: application/json
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
