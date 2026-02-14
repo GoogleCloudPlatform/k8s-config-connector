@@ -12,6 +12,7 @@ metadata:
   name: networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com
 spec:
   group: networkservices.cnrm.cloud.google.com
+  preserveUnknownFields: false
   names:
     categories:
     - gcp
@@ -21,7 +22,6 @@ spec:
     - gcpnetworkservicesedgecacheservice
     - gcpnetworkservicesedgecacheservices
     singular: networkservicesedgecacheservice
-  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -384,6 +384,15 @@ spec:
                                         - name
                                         type: object
                                       type: array
+                                    routeMethods:
+                                      description: Specifies a list of HTTP methods
+                                        to match against.
+                                      properties:
+                                        allowedMethods:
+                                          items:
+                                            type: string
+                                          type: array
+                                      type: object
                                   type: object
                                 type: array
                               origin:

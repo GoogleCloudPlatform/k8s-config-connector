@@ -214,6 +214,23 @@ captures in total.`,
 																Optional:    true,
 																Description: `For satisfying the matchRule condition, the request's path must begin with the specified prefixMatch. prefixMatch must begin with a /.`,
 															},
+															"route_methods": {
+																Type:        schema.TypeList,
+																Optional:    true,
+																Description: `Specifies a list of HTTP methods to match against.`,
+																MaxItems:    1,
+																Elem: &schema.Resource{
+																	Schema: map[string]*schema.Schema{
+																		"allowed_methods": {
+																			Type:     schema.TypeList,
+																			Optional: true,
+																			Elem: &schema.Schema{
+																				Type: schema.TypeString,
+																			},
+																		},
+																	},
+																},
+															},
 															"query_parameter_match": {
 																Type:        schema.TypeList,
 																Optional:    true,
@@ -1602,10 +1619,24 @@ func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRule(
 			"prefix_match":          flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRulePrefixMatch(original["prefixMatch"], d, config),
 			"path_template_match":   flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRulePathTemplateMatch(original["pathTemplateMatch"], d, config),
 			"full_path_match":       flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRuleFullPathMatch(original["fullPathMatch"], d, config),
+			"route_methods":         flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRuleRouteMethods(original["routeMethods"], d, config),
 		})
 	}
 	return transformed
 }
+func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRuleRouteMethods(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["allowed_methods"] = original["allowedMethods"]
+	return []interface{}{transformed}
+}
+
 func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRuleIgnoreCase(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
@@ -2470,9 +2501,31 @@ func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRule(v
 			transformed["fullPathMatch"] = transformedFullPathMatch
 		}
 
+		transformedRouteMethods, err := expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRuleRouteMethods(original["route_methods"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedRouteMethods); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["routeMethods"] = transformedRouteMethods
+		}
+
 		req = append(req, transformed)
 	}
 	return req, nil
+}
+
+func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRuleRouteMethods(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	original := l[0].(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	if val, ok := original["allowed_methods"]; ok && val != nil {
+		transformed["allowedMethods"] = val
+	}
+
+	return transformed, nil
 }
 
 func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRuleIgnoreCase(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
