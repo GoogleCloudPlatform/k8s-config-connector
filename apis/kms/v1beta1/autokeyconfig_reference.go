@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &KMSAutokeyConfigRef{}
 // holds the GCP identifier for the KRM object.
 type KMSAutokeyConfigRef struct {
 	// A reference to an externally managed KMSAutokeyConfig resource.
-	// Should be in the format "folders/<folderID>/autokeyConfig".
+	// Should be in the format "folders/<folderID>/autokeyConfig" or "projects/<projectID>/autokeyConfig".
 	External string `json:"external,omitempty"`
 
 	// The name of a KMSAutokeyConfig resource.

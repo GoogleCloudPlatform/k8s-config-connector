@@ -32,12 +32,21 @@ type KMSAutokeyConfigSpec struct {
 
 	// NOTE: ResourceID field is not required for AutokeyConfig as its ID has the format folders/<folderID>/autokeyConfig i.e., it doesnt have any unique ID of its own and relies on folderID for uniqueness.
 
-	// Immutable. The folder that this resource belongs to.
-	// +required
-	FolderRef *refs.FolderRef `json:"folderRef"`
+	// Immutable. The folder that this resource belongs to. Exactly one of folderRef or projectRef must be specified.
+	// +optional
+	FolderRef *refs.FolderRef `json:"folderRef,omitempty"`
+
+	// Immutable. The project that this resource belongs to. Exactly one of folderRef or projectRef must be specified.
+	// +optional
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
 
 	// +optional
 	KeyProjectRef *refs.ProjectRef `json:"keyProject,omitempty"`
+
+	// How Autokey determines which key project to use when provisioning CMEK keys.
+	// +optional
+	// +kubebuilder:validation:Enum=KEY_PROJECT_RESOLUTION_MODE_UNSPECIFIED;DEDICATED_KEY_PROJECT;RESOURCE_PROJECT;DISABLED
+	KeyProjectResolutionMode *string `json:"keyProjectResolutionMode,omitempty"`
 }
 
 // KMSAutokeyConfigStatus defines the config connector machine state of KMSAutokeyConfig
