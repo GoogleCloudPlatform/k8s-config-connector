@@ -17,6 +17,7 @@ kind: BillingBudgetsBudget
 metadata:
   name: billingbudgetsbudget-${uniqueId}
 spec:
+  displayName: updated-custom-budget-${uniqueId}
   billingAccountRef:
     external: ${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES}
   budgetFilter:
@@ -25,7 +26,7 @@ spec:
     creditTypesTreatment: "INCLUDE_SPECIFIED_CREDITS"
     customPeriod:
       startDate:
-        year: 2141
+        year: 2135
         month: 2
         day: 2
       endDate:
