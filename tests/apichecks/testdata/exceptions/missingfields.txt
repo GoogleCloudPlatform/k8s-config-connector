@@ -2257,6 +2257,14 @@
 [missing_field] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.weeklyMaintenanceWindow[].startTime.seconds" is not set in unstructured objects
 [missing_field] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".spec.memcacheParameters.id" is not set in unstructured objects
 [missing_field] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".spec.memcacheVersion" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.automatedBackupMode" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.hours" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.minutes" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.nanos" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.seconds" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.retention" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.gcsBackupSource.uris[]" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.managedBackupSource.backupRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringalertpolicies.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.alertStrategy.autoClose" is not set in unstructured objects
 [missing_field] crd=monitoringalertpolicies.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.alertStrategy.notificationChannelStrategy[].notificationChannelNames[]" is not set in unstructured objects
 [missing_field] crd=monitoringalertpolicies.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.alertStrategy.notificationChannelStrategy[].renotifyInterval" is not set in unstructured objects

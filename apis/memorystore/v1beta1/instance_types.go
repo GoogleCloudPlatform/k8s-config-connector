@@ -85,6 +85,21 @@ type MemorystoreInstanceSpec struct {
 	// Optional. The mode config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.mode
 	Mode *string `json:"mode,omitempty"`
+
+	// Optional. The automated backup config for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.automated_backup_config
+	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
+
+	// Optional.Backups that stored in Cloud Storage buckets.
+	//  The Cloud Storage buckets need to be the same region as the instances.
+	//  Read permission is required to import from the provided Cloud Storage
+	//  Objects.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.gcs_backup_source
+	GcsBackupSource *Instance_GCSBackupSource `json:"gcsBackupSource,omitempty"`
+
+	// Optional. Backups that generated and managed by memorystore service.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.managed_backup_source
+	ManagedBackupSource *Instance_ManagedBackupSource `json:"managedBackupSource,omitempty"`
 }
 
 type Parent struct {
@@ -143,6 +158,40 @@ type MemorystoreInstanceObservedState struct {
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints
 	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
+
+	// Output only. The backup collection full resource name. Example:
+	//  projects/{project}/locations/{location}/backupCollections/{collection}
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.backup_collection
+	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+$
+	BackupCollection *string `json:"backupCollection,omitempty"`
+}
+
+// +kcc:proto=google.cloud.memorystore.v1.AutomatedBackupConfig
+type AutomatedBackupConfig struct {
+	// Optional. Trigger automated backups at a fixed frequency.
+	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.fixed_frequency_schedule
+	FixedFrequencySchedule *AutomatedBackupConfig_FixedFrequencySchedule `json:"fixedFrequencySchedule,omitempty"`
+
+	// Optional. The automated backup mode. If the mode is disabled, the other
+	//  fields will be ignored.
+	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.automated_backup_mode
+	// +kubebuilder:validation:Enum=DISABLED;ENABLED
+	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
+
+	// Optional. How long to keep automated backups before the backups are
+	//  deleted. The value should be between 1 day and 365 days. If not specified,
+	//  the default value is 35 days.
+	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.retention
+	// +kubebuilder:validation:Pattern=^[-+]?([0-9]*(\.[0-9]*)?(ns|us|µs|μs|ms|s|m|h))+$
+	Retention *string `json:"retention,omitempty"`
+}
+
+// +kcc:proto=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule
+type AutomatedBackupConfig_FixedFrequencySchedule struct {
+	// Required. The start time of every automated backup in UTC. It must be set
+	//  to the start of an hour. This field is required.
+	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule.start_time
+	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.ConnectionDetail
@@ -157,12 +206,32 @@ type Instance_ConnectionDetail struct {
 	// PscConnection *PscConnection `json:"pscConnection,omitempty"`
 }
 
+// +kcc:proto=google.cloud.memorystore.v1.Instance.GcsBackupSource
+type Instance_GCSBackupSource struct {
+	// Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.GcsBackupSource.uris
+	// +kubebuilder:validation:items:Pattern=`^gs\:\/\/[^\/]+\/.+$`
+	Uris []string `json:"uris,omitempty"`
+}
+
 // +kcc:proto=google.cloud.memorystore.v1.Instance.InstanceEndpoint
 type Instance_InstanceEndpoint struct {
 	// Optional. A group of PSC connections. They are created in the same VPC
 	//  network, one for each service attachment in the cluster.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.InstanceEndpoint.connections
 	Connections []Instance_ConnectionDetail `json:"connections,omitempty"`
+}
+
+// +kcc:proto=google.cloud.memorystore.v1.Instance.ManagedBackupSource
+type Instance_ManagedBackupSource struct {
+	// Optional. Example:
+	//  //memorystore.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
+	//  A shorter version (without the prefix) of the backup name is also
+	//  supported, like
+	//  projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
+	//  In this case, it assumes the backup is under memorystore.googleapis.com.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ManagedBackupSource.backup
+	BackupRef *refs.MemorystoreInstanceBackupRef `json:"backupRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.StateInfo
@@ -261,6 +330,27 @@ type PscConnection struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.service_attachment
 	// +required
 	ServiceAttachmentRef *refs.ComputeServiceAttachmentRef `json:"serviceAttachmentRef,omitempty"`
+}
+
+// +kcc:proto=google.type.TimeOfDay
+type TimeOfDay struct {
+	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
+	//  to allow the value "24:00:00" for scenarios like business closing time.
+	// +kcc:proto:field=google.type.TimeOfDay.hours
+	Hours *int32 `json:"hours,omitempty"`
+
+	// Minutes of hour of day. Must be from 0 to 59.
+	// +kcc:proto:field=google.type.TimeOfDay.minutes
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
+	//  allow the value 60 if it allows leap-seconds.
+	// +kcc:proto:field=google.type.TimeOfDay.seconds
+	Seconds *int32 `json:"seconds,omitempty"`
+
+	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
+	// +kcc:proto:field=google.type.TimeOfDay.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.ZoneDistributionConfig
