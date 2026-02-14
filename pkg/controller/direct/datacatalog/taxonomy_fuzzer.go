@@ -29,8 +29,8 @@ func init() {
 
 func dataCatalogTaxonomyFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Taxonomy{},
-		DataCatalogTaxonomySpec_FromProto, DataCatalogTaxonomySpec_ToProto,
-		DataCatalogTaxonomyObservedState_FromProto, DataCatalogTaxonomyObservedState_ToProto,
+		DataCatalogTaxonomySpec_v1beta1_FromProto, DataCatalogTaxonomySpec_v1beta1_ToProto,
+		DataCatalogTaxonomyObservedState_v1beta1_FromProto, DataCatalogTaxonomyObservedState_v1beta1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")

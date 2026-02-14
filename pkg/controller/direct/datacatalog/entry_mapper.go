@@ -14,36 +14,23 @@
 
 // +generated:mapper
 // krm.group: datacatalog.cnrm.cloud.google.com
-// krm.version: v1beta1
+// krm.version: v1alpha1
 // proto.service: google.cloud.datacatalog.v1
 
 package datacatalog
 
 import (
 	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1beta1"
+	krmdatacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataCatalogTaxonomySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Taxonomy) *krm.DataCatalogTaxonomySpec {
+func GCSFilesetSpecObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GcsFilesetSpec) *krmdatacatalogv1alpha1.GCSFilesetSpecObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataCatalogTaxonomySpec{}
-	// MISSING: Name
-	out.DisplayName = in.GetDisplayName()
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.ActivatedPolicyTypes = direct.EnumSlice_FromProto(mapCtx, in.ActivatedPolicyTypes)
-	return out
-}
-func DataCatalogTaxonomySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalogTaxonomySpec) *pb.Taxonomy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Taxonomy{}
-	// MISSING: Name
-	out.DisplayName = in.DisplayName
-	out.Description = direct.ValueOf(in.Description)
-	out.ActivatedPolicyTypes = direct.EnumSlice_ToProto[pb.Taxonomy_PolicyType](mapCtx, in.ActivatedPolicyTypes)
+	out := &krmdatacatalogv1alpha1.GCSFilesetSpecObservedState{}
+	// MISSING: FilePatterns
+	out.SampleGCSFileSpecs = direct.Slice_FromProto(mapCtx, in.SampleGcsFileSpecs, GCSFileSpec_v1alpha1_FromProto)
 	return out
 }
