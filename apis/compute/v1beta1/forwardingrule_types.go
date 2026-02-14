@@ -86,6 +86,9 @@ type Target struct {
 	GoogleAPIsBundle *string `json:"googleAPIsBundle,omitempty"`
 
 	// +optional
+	MemorystoreInstanceServiceAttachmentRef *refs.MemorystoreInstanceServiceAttachmentRef `json:"memorystoreInstanceServiceAttachmentRef,omitempty"`
+
+	// +optional
 	ServiceAttachmentRef *refs.ComputeServiceAttachmentRef `json:"serviceAttachmentRef,omitempty"`
 
 	// +optional
