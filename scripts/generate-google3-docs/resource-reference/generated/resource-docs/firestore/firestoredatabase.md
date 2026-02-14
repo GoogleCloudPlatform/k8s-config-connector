@@ -4,6 +4,8 @@
 
 {% block page_title %}FirestoreDatabase{% endblock %}
 {% block body %}
+
+
 <table>
 <thead>
 <tr>

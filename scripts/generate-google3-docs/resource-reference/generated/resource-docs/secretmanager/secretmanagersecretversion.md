@@ -123,7 +123,7 @@ secretRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service. If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number from `status.observedState.version`{% endverbatim %}</p>
+            <p>{% verbatim %}The service-generated SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service. If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number from `status.observedState.version`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

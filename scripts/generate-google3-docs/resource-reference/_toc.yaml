@@ -669,6 +669,12 @@ toc:
   section:
   - title: "StorageTransferJob"
     path: /config-connector/docs/reference/resource-docs/storagetransfer/storagetransferjob.md
+- title: "Tags"
+  section:
+  - title: "TagsLocationTagBinding"
+    path: /config-connector/docs/reference/resource-docs/tags/tagslocationtagbinding.md
+  - title: "TagsTagBinding"
+    path: /config-connector/docs/reference/resource-docs/tags/tagstagbinding.md
 - title: "Vertex AI"
   section:
   - title: "VertexAIDataset"
