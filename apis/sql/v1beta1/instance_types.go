@@ -397,7 +397,7 @@ type InstanceSettings struct {
 type ReplicationCluster struct {
 	/* Optional. If the instance is a primary instance, then this field identifies the disaster recovery (DR) replica. A DR replica is an optional configuration for Enterprise Plus edition instances. If the instance is a read replica, then the field is not set. Set this field to a replica name to designate a DR replica for a primary instance. Remove the replica name to remove the DR replica designation. */
 	// +optional
-	FailoverDrReplicaRef *refsv1beta1.SQLInstanceRef `json:"failoverDrReplicaRef,omitempty"`
+	FailoverDrReplicaRef *SQLInstanceRef `json:"failoverDrReplicaRef,omitempty"`
 }
 
 type SQLInstanceObservedState struct {
@@ -443,7 +443,7 @@ type CloneSource struct {
 	PointInTime *string `json:"pointInTime,omitempty"`
 
 	/* The source SQLInstance to clone */
-	SQLInstanceRef refsv1beta1.SQLInstanceRef `json:"sqlInstanceRef,omitempty"`
+	SQLInstanceRef SQLInstanceRef `json:"sqlInstanceRef,omitempty"`
 }
 
 type SQLInstanceSpec struct {
@@ -467,7 +467,7 @@ type SQLInstanceSpec struct {
 	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
 
 	// +optional
-	MasterInstanceRef *refsv1beta1.SQLInstanceRef `json:"masterInstanceRef,omitempty"`
+	MasterInstanceRef *SQLInstanceRef `json:"masterInstanceRef,omitempty"`
 
 	/* Immutable. The region the instance will sit in. Note, Cloud SQL is not available in all regions. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this. */
 	// +optional
