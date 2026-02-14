@@ -427,7 +427,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 	}
 	newState, diagnostics := krmResource.TFResource.Apply(ctx, liveState, diff, tfProviderMeta)
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
-		r.logger.Error(err, "error applying desired state", "resource", krmResource.GetNamespacedName())
+		r.logger.V(2).Error(err, "error applying desired state", "resource", krmResource.GetNamespacedName())
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error applying desired state: %w", err))
 	}
 	return false, r.handleUpToDate(ctx, krmResource, newState, secretVersions)
@@ -475,12 +475,12 @@ func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.R
 		timeoutPeriod := r.jitterGenerator.WatchJitteredTimeout()
 		ctx, cancel := context.WithTimeout(ctx, timeoutPeriod)
 		defer cancel()
-		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
+		logger.V(2).Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
 		if err := watcher.WaitForResourceToBeReadyOrDeleted(ctx, refNN, refGVK); err != nil {
-			logger.Error(err, "error while waiting for resource's reference to be ready")
+			logger.V(2).Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}
-		logger.Info("enqueuing resource for immediate reconciliation now that its reference is ready")
+		logger.V(2).Info("enqueuing resource for immediate reconciliation now that its reference is ready")
 		r.enqueueForImmediateReconciliation(resource.GetNamespacedName())
 	}()
 

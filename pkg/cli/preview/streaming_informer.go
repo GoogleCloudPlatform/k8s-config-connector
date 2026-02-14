@@ -118,7 +118,7 @@ func (i *streamingInformer) run(ctx context.Context) {
 				log.V(2).Info("context closed; stopping informer")
 				return
 			}
-			log.Error(err, "running list/watch for informer (will retry)")
+			log.V(2).Error(err, "running list/watch for informer (will retry)")
 		}
 
 		// TODO: Backoff

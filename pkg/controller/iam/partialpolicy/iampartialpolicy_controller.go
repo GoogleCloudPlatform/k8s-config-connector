@@ -282,7 +282,7 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 	iamPolicy := ToIAMPolicySkeleton(pp)
 	if iamPolicy, err = r.Reconciler.iamClient.GetPolicy(r.Ctx, iamPolicy); err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(pp))
+			logger.V(2).Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(pp))
 			return r.handleUnresolvableDeps(pp, unwrappedErr)
 		}
 		return false, r.handleUpdateFailed(pp, err)
