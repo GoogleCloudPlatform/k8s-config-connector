@@ -510,8 +510,8 @@ func addServiceToRoundTrip(ctx context.Context, opts *RunnerOptions, branch Bran
 	// Run the LLM to add the service to roundtrip file.
 	cfg := CommandConfig{
 		Name:         "Add service to roundtrip",
-		Cmd:          "codebot",
-		Args:         []string{"--ui-type=prompt", fmt.Sprintf("--prompt=%s", promptPath)},
+		Cmd:          "gemini",
+		Args:         []string{fmt.Sprintf("--prompt=%s", promptPath)},
 		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
@@ -565,8 +565,8 @@ func addProtoToMakefile(ctx context.Context, opts *RunnerOptions, branch Branch,
 	// Run the LLM to add the service to roundtrip file.
 	cfg := CommandConfig{
 		Name:         "Add proto to makefile",
-		Cmd:          "codebot",
-		Args:         []string{"--ui-type=prompt", fmt.Sprintf("--prompt=%s", promptPath)},
+		Cmd:          "gemini",
+		Args:         []string{fmt.Sprintf("--prompt=%s", promptPath)},
 		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
@@ -704,7 +704,7 @@ func fixMockgcpFailures(ctx context.Context, opts *RunnerOptions, branch Branch,
 	// Run the LLM to generate the file.
 	cfg := CommandConfig{
 		Name:         "Fix mockgcp failures",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),
