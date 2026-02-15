@@ -478,10 +478,13 @@ The file should follow these requirements:
 - If the CRD has a "spec.location" field, use location: us-central1
 - If the CRD has any field name end with "Ref", it's a reference field. Use its subfield ".name" and set value to be <kind>-${uniqueId}. Replace <kind> with the kind of the reference field. The kind is indicated in the description of the reference field's subfield, "external" field.
 - If any field under the CRD has both subfields "value" and "valueFrom", it's a sensitive field. Use its subfield ".valueFrom" and set value of ".valueFrom.secretKeyRef.name" to "secret-${uniqueId}" and set value of ".valueFrom.secretKeyRef.key" to the field name of the sensitive field.
-- Use as many spec fields in the following list as possible to achieve full coverage: ${MISSING_FIELDS}; if the list is empty, use as many fields under spec as possible to try to reach full coverage
 - Follow the schema defined in the CRD file
 - Do not use any field not defined in the CRD
 - If the value of a field contains any " (double quote), quote it with single quotes
+- Follow the additional instructions after the colon if provided: ${CREATE_INSTRUCTIONS}
+- If the additional instructions are not provided, use as many spec fields in the following list as possible to achieve full coverage: ${MISSING_FIELDS}
+- If the list is empty, use as many fields under spec as possible to try to reach full coverage
+
 
 Use ReadFile to read the CRD file.
 Use CreateFile to write the YAML content to the ${TEST_DIR}/create.yaml file if it doesn't exist; or overwrite the existing file.
@@ -496,9 +499,10 @@ Replace <pluralized-kind> with the pluralized version of the kind: ${KIND} in th
 
 The file should follow these requirements:
 - Keep the same license header, apiVersion, kind and metadata.name
-- Modify as many fields as possibleb in the spec section to test updates
+- Modify as many fields as possible in the spec section to test updates
 - Ensure the changes are valid according to the CRD schema
-- Keep other fields unchanged from create.yaml
+- Keep other fields unchanged from create.yaml, don't add or remove any fields in the spec section
+- Follow the additional instructions after the colon if provided: ${UPDATE_INSTRUCTIONS}
 
 Use ReadFile to read the ${TEST_DIR}/create.yaml file.
 Use ReadFile to read the CRD file.
@@ -529,6 +533,7 @@ Second, generate a ${TEST_DIR}/dependencies.yaml file. The file should follow th
     - Only include required fields from the CRD of <kind>.
     - Follow the schema defined in the CRD file of <kind>.
     - Do not add any field not defined in the CRD file of <kind>.
+- Follow the additional instructions after the colon if provided: ${DEPENDENCIES_INSTRUCTIONS}
 
 Use ReadFile to read the ${TEST_DIR}/create.yaml file.
 Use ReadFile to read the ${TEST_DIR}/update.yaml file.
@@ -649,6 +654,7 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 		createPrompt = strings.ReplaceAll(createPrompt, "${CRD_VERSION}", crdVersion)
 		createPrompt = strings.ReplaceAll(createPrompt, "${KIND_LOWERCASE}", strings.ToLower(branch.Kind))
 		createPrompt = strings.ReplaceAll(createPrompt, "${MISSING_FIELDS}", fmt.Sprintf("%+v", missingFields))
+		createPrompt = strings.ReplaceAll(createPrompt, "${CREATE_INSTRUCTIONS}", branch.CreateFileInstructions)
 		cfg = CommandConfig{
 			Name:         "Generate Create YAML",
 			Cmd:          "codebot",
@@ -666,6 +672,7 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 		updatePrompt := strings.ReplaceAll(CreateFullTestUpdatePrompt, "${TEST_DIR}", testDir)
 		updatePrompt = strings.ReplaceAll(updatePrompt, "${GROUP}", branch.Group)
 		updatePrompt = strings.ReplaceAll(updatePrompt, "${KIND}", branch.Kind)
+		updatePrompt = strings.ReplaceAll(updatePrompt, "${UPDATE_INSTRUCTIONS}", branch.UpdateFileInstructions)
 		cfg = CommandConfig{
 			Name:         "Generate Update YAML",
 			Cmd:          "codebot",
@@ -684,6 +691,7 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 		dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${GROUP}", branch.Group)
 		dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${KIND}", branch.Kind)
 		dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${CURRENT_YEAR}", fmt.Sprintf("%d", currentYear))
+		dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${DEPENDENCIES_INSTRUCTIONS}", branch.DependenciesFileInstructions)
 		cfg = CommandConfig{
 			Name:         "Generate Dependencies YAML",
 			Cmd:          "codebot",
