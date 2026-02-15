@@ -7,18 +7,21 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: networkconnectivityinternalrange-minimal-${uniqueId}
+    foo: baz
+  name: networkconnectivityinternalrange-full-ipcidrrange-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: Updated description
+  description: Full test of all API fields with ipCIDRRange - updated
+  ipCIDRRange: 10.0.100.0/24
   location: global
   networkRef:
     name: computenetwork-${uniqueId}
-  peering: FOR_SELF
-  prefixLength: 24
+  peering: FOR_PEER
   projectRef:
     external: ${projectId}
-  usage: FOR_VPC
+  targetCIDRRange:
+  - 10.0.0.0/16
+  usage: EXTERNAL_TO_VPC
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

@@ -1,0 +1,6 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computenetwork-${uniqueId}
+spec:
+  autoCreateSubnetworks: false
