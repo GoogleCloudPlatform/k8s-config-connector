@@ -22,8 +22,30 @@ import (
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
+
+func Duration_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {
+	if in == nil {
+		return nil
+	}
+	d := in.AsDuration()
+	s := d.String()
+	return &s
+}
+
+func Duration_ToProto(mapCtx *direct.MapContext, in *string) *durationpb.Duration {
+	if in == nil {
+		return nil
+	}
+	d, err := time.ParseDuration(*in)
+	if err != nil {
+		mapCtx.Errorf("invalid duration %q", *in)
+		return nil
+	}
+	return durationpb.New(d)
+}
 
 func Cluster_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	return Timestamp_FromProto(mapCtx, in)
