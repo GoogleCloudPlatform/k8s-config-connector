@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+
+import argparse
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--terraform-resource') # Example: google_container_cluster
+parser.add_argument('--terraform-field-name') # Example: enable_nested_virtualization
+parser.add_argument('--krm-kind') # Example: ContainerCluster
+parser.add_argument('--krm-field-path') # Example: spec.nodeConfig.enableNestedVirtualization
+parser.add_argument('--terraform-source-url') # Example: https://github.com/hashicorp/terraform-provider-google/blob/main/google/services/container/node_config.go
+parser.add_argument('--terraform-vendor-file') # Example: vendor/github.com/hashicorp/terraform-provider-google/google/services/container/node_config.go
+parser.add_argument('--test-file') # Example: pkg/test/resourcefixture/testdata/basic/container/v1beta1/containercluster/containercluster
+parser.add_argument('--proto-service') # Example: container
+parser.add_argument('--proto-resource-name') # Example: Cluster
+parser.add_argument('--proto-field-name') # Example: enable_nested_virtualization
+
+args = parser.parse_args()
+
+
+prompt = """
+I need to add support for a new field to the ContainerCluster KCC resource; the ContainerCluster resource uses terraform.
+
+I want to follow the example of this PR: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/5815
+
+Please download the diff as needed (which you can do by looking at https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/5815.diff)
+
+That PR added support for this field:
+
+terraform field name: enable_cilium_clusterwide_network_policy
+terraform resource name: google_container_cluster
+KCC resource name: ContainerCluster
+KCC field path: spec.networkConfig.enableCiliumClusterwideNetworkPolicy
+
+In this case, I want to add support for this field;
+
+terraform field name: {{terraform_field_name}}
+terraform resource name: {{terraform_resource_name}}
+KCC resource name: {{kcc_resource_name}}
+KCC field path: {{kcc_field_path}}
+
+Please get the correct terraform implementation from the latest terraform implementation at {{terraform_source_url}}
+
+As in the previous PR, please only add support for the new field to {{terraform_vendor_file}} .  Do not add support for other missing fields.
+
+Please also extend the test `{{test_file}}` to include setting the new field (in create.yaml) and updating the new field (in update.yaml)
+
+
+Here is the plan I propose you follow:
+
+* Extract the needed changes to support the new field {{terraform_field_name}} from {{terraform_source_url}}
+
+* Apply those changes to our code, in {{terraform_vendor_file}}.  Commit the changes with a message like "terraform: add support for {{terraform_field_name}} to {{terraform_resource_name}}"
+
+* Update mockgcp to include support for updating the relevant proto field, in mockgcp/mock{{proto_service}}/{{proto_resource_name}}.go.  Commit the changes with a message like "mockgcp: add support for {{proto_field_name}} to {{proto_resource_name}}"
+
+* Update the terraform service mapping if needed.  Commit the changes with a message like "feature: add support for {{krm_field_path}} to {{krm_kind}}"
+
+* Run `make ready-pr` to update the CRDs etc.  Commit the changes with a message like "autogen: generation for {{krm_field_path}} in {{krm_kind}}"
+
+* Update the tests to verify setting and updating {{krm_field_path}}.  Commit with a message like "tests: verify {{krm_field_path}} in {{krm_kind}}"
+
+* Run `hack/compare-mock fixtures/{{krm_kind}}` to update the golden output.  Commit with a message like "autogen: golden output for {{krm_field_path}} support"
+"""
+
+prompt = prompt.replace("{{terraform_field_name}}", args.terraform_field_name)
+prompt = prompt.replace("{{terraform_resource_name}}", args.terraform_resource_name)
+prompt = prompt.replace("{{krm_kind}}", args.krm_kind)
+prompt = prompt.replace("{{krm_field_path}}", args.krm_field_path)
+prompt = prompt.replace("{{terraform_source_url}}", args.terraform_source_url)
+prompt = prompt.replace("{{terraform_vendor_file}}", args.terraform_vendor_file)
+prompt = prompt.replace("{{proto_service}}", args.proto_service)
+prompt = prompt.replace("{{proto_resource_name}}", args.proto_resource_name)
+prompt = prompt.replace("{{proto_field_name}}", args.proto_field_name)
+
+print(prompt)

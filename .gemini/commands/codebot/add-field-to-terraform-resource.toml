@@ -1,0 +1,45 @@
+description = "Add a missing field to a terraform backed resource."
+
+prompt = """
+I need to add support for a new field to the ContainerCluster KCC resource; the ContainerCluster resource uses terraform.
+
+I want to follow the example of this PR: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/5815
+
+Please download the diff as needed (which you can do by looking at https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/5815.diff)
+
+That PR added support for this field:
+
+terraform field name: enable_cilium_clusterwide_network_policy
+terraform resource name: google_container_cluster
+KCC resource name: ContainerCluster
+KCC field path: spec.networkConfig.enableCiliumClusterwideNetworkPolicy
+
+In this case, I want to add support for this field;
+
+terraform field name: {{args.terraform_field_name}}
+terraform resource name: {{args.terraform_resource_name}}
+KCC resource name: {{args.krm_kind}}
+KCC field path: {{args.krm_field_path}}
+
+Please get the correct terraform implementation from the latest terraform implementation at {{args.terraform_source_url}}
+
+As in the previous PR, please only add support for the new field to {{args.terraform_vendor_file}} .  Do not add support for other missing fields.
+
+Please also extend the test `{{args.test_file}}` to include setting the new field (in create.yaml) and updating the new field (in update.yaml)
+
+Here is the plan I want you to follow:
+
+* Extract the needed changes to support the new field {{args.terraform_field_name}} from {{args.terraform_source_url}}
+
+* Apply those changes to our code, in {{args.terraform_vendor_file}}.  Commit the changes with a message like "terraform: add support for {{args.terraform_field_name}} to {{args.terraform_resource_name}}"
+
+* Update mockgcp to include support for updating the relevant proto field, in mockgcp/mock{{args.proto_service}}/{{args.proto_resource_name}}.go.  Commit the changes with a message like "mockgcp: add support for {{args.proto_field_name}} to {{args.proto_resource_name}}"
+
+* Update the terraform service mapping if needed (config/servicemappings/{{args.proto_service}}.yaml).  Often this step is not needed.  Commit the changes with a message like "feature: add support for {{args.krm_field_path}} to {{args.krm_kind}}"
+
+* Run `make ready-pr` to update the CRDs etc.  Commit the changes with a message like "autogen: generation for {{args.krm_field_path}} in {{args.krm_kind}}"
+
+* Update the tests to verify setting and updating {{args.krm_field_path}}.  Commit with a message like "tests: verify {{args.krm_field_path}} in {{args.krm_kind}}"
+
+* Run `hack/compare-mock fixtures/{{args.krm_kind}}` to update the golden output.  Commit with a message like "autogen: golden output for {{args.krm_field_path}} support"
+"""
