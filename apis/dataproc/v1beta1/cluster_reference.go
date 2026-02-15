@@ -85,6 +85,7 @@ func (r *DataprocClusterRef) NormalizedExternal(ctx context.Context, reader clie
 		return r.External, nil
 	}
 
+	// no status.externalRef
 	resourceID, err := refsv1beta1.GetResourceID(u)
 	if err != nil {
 		return "", err
@@ -95,7 +96,7 @@ func (r *DataprocClusterRef) NormalizedExternal(ctx context.Context, reader clie
 		return "", err
 	}
 
-	region, _, err := unstructured.NestedString(u.Object, "spec", "region")
+	region, err := refsv1beta1.GetLocation(u)
 	if err != nil {
 		return "", err
 	}
