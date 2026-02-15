@@ -15,8 +15,6 @@
 apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerInstance
 metadata:
-  annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: spannerinstance-${uniqueId}
 spec:
   config: regional-us-west1
@@ -25,8 +23,6 @@ spec:
 apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerDatabase
 metadata:
-  annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   # Database names can be only 30 characters max. As ${uniqueId} is a 20-char
   # long random alphanumeric string, the prefix can be at most 9-char long.
   name: spannerdb-${uniqueId}
@@ -41,7 +37,6 @@ kind: ServiceIdentity
 metadata:
   name: serviceidentity-${uniqueId}
   annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
@@ -51,8 +46,6 @@ spec:
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
-  annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: kmskeyring-${uniqueId}
 spec:
   location: us-west1
@@ -62,7 +55,16 @@ kind: KMSCryptoKey
 metadata:
   name: kmscryptokey-${uniqueId}
   annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/project-id: "${projectId}"
+spec:
+  keyRingRef:
+    name: kmskeyring-${uniqueId}
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: kmscryptokey-${uniqueId}-2
+  annotations:
     cnrm.cloud.google.com/project-id: "${projectId}"
 spec:
   keyRingRef:
