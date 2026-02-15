@@ -120,6 +120,37 @@ func (s *MockService) parseDNSAuthorizationName(name string) (*dnsAuthorizationN
 	}
 }
 
+type certificateIssuanceConfigName struct {
+	Project                       *projects.ProjectData
+	Location                      string
+	CertificateIssuanceConfigName string
+}
+
+func (n *certificateIssuanceConfigName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/certificateIssuanceConfigs/" + n.CertificateIssuanceConfigName
+}
+
+func (s *MockService) parseCertificateIssuanceConfigName(name string) (*certificateIssuanceConfigName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "certificateIssuanceConfigs" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &certificateIssuanceConfigName{
+			Project:                       project,
+			Location:                      tokens[3],
+			CertificateIssuanceConfigName: tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
 type certificateMapEntryName struct {
 	Project                 *projects.ProjectData
 	Location                string
