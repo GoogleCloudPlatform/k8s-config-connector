@@ -81,7 +81,10 @@ func (m *entryModel) client(ctx context.Context, projectID string) (*api.Client,
 	return gcpClient, nil
 }
 
-func (m *entryModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) { // Reverted back to client.Reader
+func (m *entryModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
+	_, _ = u, reader // Reverted back to client.Reader
 	obj := &krm.DataCatalogEntry{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)

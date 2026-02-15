@@ -59,8 +59,20 @@ func (c *FakeComputeV1alpha1) ComputeInstanceGroupNamedPorts(namespace string) v
 	return &FakeComputeInstanceGroupNamedPorts{c, namespace}
 }
 
+func (c *FakeComputeV1alpha1) ComputeInterconnects(namespace string) v1alpha1.ComputeInterconnectInterface {
+	return &FakeComputeInterconnects{c, namespace}
+}
+
 func (c *FakeComputeV1alpha1) ComputeMachineImages(namespace string) v1alpha1.ComputeMachineImageInterface {
 	return &FakeComputeMachineImages{c, namespace}
+}
+
+func (c *FakeComputeV1alpha1) ComputeNetworkAttachments(namespace string) v1alpha1.ComputeNetworkAttachmentInterface {
+	return &FakeComputeNetworkAttachments{c, namespace}
+}
+
+func (c *FakeComputeV1alpha1) ComputeNetworkEdgeSecurityServices(namespace string) v1alpha1.ComputeNetworkEdgeSecurityServiceInterface {
+	return &FakeComputeNetworkEdgeSecurityServices{c, namespace}
 }
 
 func (c *FakeComputeV1alpha1) ComputeNetworkEndpoints(namespace string) v1alpha1.ComputeNetworkEndpointInterface {

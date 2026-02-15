@@ -25,6 +25,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	kccyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/yaml"
@@ -308,7 +309,9 @@ oneOf:
 			ruleYAML = refRuleWithKind
 			// kind is optional for projectRef (and maybe in future other well-known ref types)
 			// fieldPath is the best mechanism we have today (?)
-			if isProjectPath(fieldPath) || strings.HasSuffix(fieldPath, ".requiredAccessLevels[]") {
+			// TODO: We should remove the hard-coded isProjectPath and requiredAccessLevels logic
+			// and rely entirely on whether kind is required in the underlying type.
+			if isProjectPath(fieldPath) || strings.HasSuffix(fieldPath, ".requiredAccessLevels[]") || !slices.Contains(props.Required, "kind") {
 				ruleYAML = refRuleWithOptionalKind
 			}
 		} else if signature == "external,name,namespace" {

@@ -38,7 +38,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -68,7 +67,9 @@ func (m *modelJob) client(ctx context.Context) (*gcp.JobsClient, error) {
 	return gcpClient, err
 }
 
-func (m *modelJob) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelJob) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.RunJob{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -78,7 +79,6 @@ func (m *modelJob) AdapterForObject(ctx context.Context, reader client.Reader, u
 	if err != nil {
 		return nil, err
 	}
-	// TODO: this should not block DELETION.
 	if err := ResolveRunJobRefs(ctx, reader, obj); err != nil {
 		return nil, err
 	}
@@ -166,7 +166,7 @@ func (a *JobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Job", "name", a.id)
 	req := &runpb.CreateJobRequest{
-		Parent: a.id.Parent().String(),
+		Parent: fmt.Sprintf("projects/%s/locations/%s", a.id.ProjectID, a.id.Location),
 		Job:    a.desired,
 		JobId:  a.id.ID(),
 	}
@@ -264,8 +264,8 @@ func (a *JobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = &a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.ProjectID}
+	obj.Spec.Location = &a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

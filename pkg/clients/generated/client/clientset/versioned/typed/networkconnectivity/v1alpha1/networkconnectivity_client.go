@@ -31,12 +31,17 @@ import (
 
 type NetworkconnectivityV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	NetworkConnectivityInternalRangesGetter
 	NetworkConnectivityServiceConnectionPoliciesGetter
 }
 
 // NetworkconnectivityV1alpha1Client is used to interact with features provided by the networkconnectivity.cnrm.cloud.google.com group.
 type NetworkconnectivityV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *NetworkconnectivityV1alpha1Client) NetworkConnectivityInternalRanges(namespace string) NetworkConnectivityInternalRangeInterface {
+	return newNetworkConnectivityInternalRanges(c, namespace)
 }
 
 func (c *NetworkconnectivityV1alpha1Client) NetworkConnectivityServiceConnectionPolicies(namespace string) NetworkConnectivityServiceConnectionPolicyInterface {

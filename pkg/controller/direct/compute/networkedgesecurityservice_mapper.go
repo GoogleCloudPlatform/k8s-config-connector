@@ -26,7 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ComputeNetworkEdgeSecurityServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEdgeSecurityService) *krm.ComputeNetworkEdgeSecurityServiceObservedState {
+func ComputeNetworkEdgeSecurityServiceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEdgeSecurityService) *krm.ComputeNetworkEdgeSecurityServiceObservedState {
 	if in == nil {
 		return nil
 	}
@@ -40,7 +40,7 @@ func ComputeNetworkEdgeSecurityServiceObservedState_FromProto(mapCtx *direct.Map
 	out.SelfLinkWithID = in.SelfLinkWithId
 	return out
 }
-func ComputeNetworkEdgeSecurityServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkEdgeSecurityServiceObservedState) *pb.NetworkEdgeSecurityService {
+func ComputeNetworkEdgeSecurityServiceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkEdgeSecurityServiceObservedState) *pb.NetworkEdgeSecurityService {
 	if in == nil {
 		return nil
 	}
@@ -54,7 +54,7 @@ func ComputeNetworkEdgeSecurityServiceObservedState_ToProto(mapCtx *direct.MapCo
 	out.SelfLinkWithId = in.SelfLinkWithID
 	return out
 }
-func ComputeNetworkEdgeSecurityServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEdgeSecurityService) *krm.ComputeNetworkEdgeSecurityServiceSpec {
+func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEdgeSecurityService) *krm.ComputeNetworkEdgeSecurityServiceSpec {
 	if in == nil {
 		return nil
 	}
@@ -67,7 +67,7 @@ func ComputeNetworkEdgeSecurityServiceSpec_FromProto(mapCtx *direct.MapContext, 
 	}
 	return out
 }
-func ComputeNetworkEdgeSecurityServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
+func ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
 	if in == nil {
 		return nil
 	}

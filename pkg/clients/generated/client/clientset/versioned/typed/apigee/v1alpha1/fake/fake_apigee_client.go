@@ -35,26 +35,6 @@ func (c *FakeApigeeV1alpha1) ApigeeAddonsConfigs(namespace string) v1alpha1.Apig
 	return &FakeApigeeAddonsConfigs{c, namespace}
 }
 
-func (c *FakeApigeeV1alpha1) ApigeeEndpointAttachments(namespace string) v1alpha1.ApigeeEndpointAttachmentInterface {
-	return &FakeApigeeEndpointAttachments{c, namespace}
-}
-
-func (c *FakeApigeeV1alpha1) ApigeeEnvgroups(namespace string) v1alpha1.ApigeeEnvgroupInterface {
-	return &FakeApigeeEnvgroups{c, namespace}
-}
-
-func (c *FakeApigeeV1alpha1) ApigeeEnvgroupAttachments(namespace string) v1alpha1.ApigeeEnvgroupAttachmentInterface {
-	return &FakeApigeeEnvgroupAttachments{c, namespace}
-}
-
-func (c *FakeApigeeV1alpha1) ApigeeInstances(namespace string) v1alpha1.ApigeeInstanceInterface {
-	return &FakeApigeeInstances{c, namespace}
-}
-
-func (c *FakeApigeeV1alpha1) ApigeeInstanceAttachments(namespace string) v1alpha1.ApigeeInstanceAttachmentInterface {
-	return &FakeApigeeInstanceAttachments{c, namespace}
-}
-
 func (c *FakeApigeeV1alpha1) ApigeeNATAddresses(namespace string) v1alpha1.ApigeeNATAddressInterface {
 	return &FakeApigeeNATAddresses{c, namespace}
 }

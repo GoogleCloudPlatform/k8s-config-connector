@@ -56,7 +56,9 @@ func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) 
 	if !ReplicaConfigurationsMatch(desired.ReplicaConfiguration, actual.ReplicaConfiguration) {
 		diff.AddField(".replicaConfiguration", actual.ReplicaConfiguration, desired.ReplicaConfiguration)
 	}
-	// Ignore ReplicationCluster. It is not supported in KRM API.
+	if !ReplicationClustersMatch(desired.ReplicationCluster, actual.ReplicationCluster) {
+		diff.AddField(".replicationCluster", actual.ReplicationCluster, desired.ReplicationCluster)
+	}
 	// Ignore RootPassword. It is not exported.
 	diff.AddDiff(DiffSettings(desired.Settings, actual.Settings))
 
@@ -671,5 +673,20 @@ func PointersMatch[T any](desired *T, actual *T) bool {
 		return false
 	}
 	// Otherwise, they match. Either both are nil, or both are not nil.
+	return true
+}
+
+func ReplicationClustersMatch(desired *api.ReplicationCluster, actual *api.ReplicationCluster) bool {
+	if desired == nil && actual == nil {
+		return true
+	}
+	if !PointersMatch(desired, actual) {
+		return false
+	}
+	if desired.FailoverDrReplicaName != actual.FailoverDrReplicaName {
+		return false
+	}
+	// Ignore PsaWriteEndpoint. It is output only.
+	// Ignore DrReplica. It is output only.
 	return true
 }

@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(TPUNode{}).Name(),
 	}
 
+	TPUVirtualMachineGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(TPUVirtualMachine{}).Name(),
+	}
+
 	tpuAPIVersion = SchemeGroupVersion.String()
 )

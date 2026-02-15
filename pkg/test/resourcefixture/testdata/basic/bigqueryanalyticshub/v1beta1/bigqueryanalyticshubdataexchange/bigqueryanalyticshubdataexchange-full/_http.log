@@ -4,12 +4,20 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 404 Not Found
-Content-Type: application/json
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "dataExchange \"projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Failed to find data exchange in projects/${projectNumber}: dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -28,19 +36,25 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2FUS
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "description": "example data exchange",
   "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "my_data_exchange",
   "documentation": "a documentation",
-  "icon": "",
-  "listingCount": 0,
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "logLinkedDatasetQueryUserEmail": false,
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
   "primaryContact": "a@contact.com",
-  "sharingEnvironmentConfig": null
+  "sharingEnvironmentConfig": {
+    "defaultExchangeConfig": {}
+  }
 }
 
 ---
@@ -51,51 +65,63 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "description": "example data exchange",
   "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "my_data_exchange",
   "documentation": "a documentation",
-  "icon": "",
-  "listingCount": 0,
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "logLinkedDatasetQueryUserEmail": false,
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
   "primaryContact": "a@contact.com",
-  "sharingEnvironmentConfig": null
+  "sharingEnvironmentConfig": {
+    "defaultExchangeConfig": {}
+  }
 }
 
 ---
 
-PATCH https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}?updateMask=displayName%2Cdescription%2CprimaryContact%2Cdocumentation%2CdiscoveryType
+PATCH https://analyticshub.googleapis.com/v1/projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}?updateMask=displayName%2Cdescription%2CprimaryContact%2Cdocumentation%2CdiscoveryType
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: data_exchange.name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+X-Goog-Request-Params: data_exchange.name=projects%2F${projectNumber}%2Flocations%2Fus%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 {
   "description": "example data exchange",
   "discoveryType": 2,
   "displayName": "my_data_exchange",
   "documentation": "an updated documentation",
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
   "primaryContact": "another@contact.com"
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "description": "example data exchange",
   "discoveryType": "DISCOVERY_TYPE_PUBLIC",
   "displayName": "my_data_exchange",
   "documentation": "an updated documentation",
-  "icon": "",
-  "listingCount": 0,
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "logLinkedDatasetQueryUserEmail": false,
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
   "primaryContact": "another@contact.com",
-  "sharingEnvironmentConfig": null
+  "sharingEnvironmentConfig": {
+    "defaultExchangeConfig": {}
+  }
 }
 
 ---
@@ -106,19 +132,25 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "description": "example data exchange",
   "discoveryType": "DISCOVERY_TYPE_PUBLIC",
   "displayName": "my_data_exchange",
   "documentation": "an updated documentation",
-  "icon": "",
-  "listingCount": 0,
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "logLinkedDatasetQueryUserEmail": false,
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
   "primaryContact": "another@contact.com",
-  "sharingEnvironmentConfig": null
+  "sharingEnvironmentConfig": {
+    "defaultExchangeConfig": {}
+  }
 }
 
 ---
@@ -129,8 +161,12 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-Grpc-Metadata-X-Http-Code: 204
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

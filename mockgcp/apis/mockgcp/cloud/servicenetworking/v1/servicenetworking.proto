@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -1417,7 +1417,7 @@ message Service {
   CustomError custom_error = 9 [json_name="customError"];
   // Additional API documentation.
   Documentation documentation = 10 [json_name="documentation"];
-  // Configuration for network endpoints. If this is empty, then an endpoint with the same name as the service is automatically generated to service all defined APIs.
+  // Configuration for network endpoints. If this is empty, then an endpoint with the same name as the service is automatically generated to service all defined APIs. WARNING: Defining any entries in the `endpoints` list disables the automatic generation of default endpoint variations (e.g., `{service}.clients6.google.com`, `content-{service}.googleapis.com`, and mTLS variants like `{service}.mtls.googleapis.com`). To retain these default variations, you are required to explicitly include your main service endpoint (e.g., `myservice.googleapis.com`) in this list alongside any other custom endpoints (like REP, GFE, etc.).
   repeated Endpoint endpoints = 11 [json_name="endpoints"];
   // A list of all enum types included in this API service. Enums referenced directly or indirectly by the `apis` are automatically included. Enums which are not referenced but shall be included should be listed here by name by the configuration author. Example: enums: - name: google.someapi.v1.SomeEnum
   repeated Enum enums = 12 [json_name="enums"];
@@ -1431,7 +1431,7 @@ message Service {
   repeated LogDescriptor logs = 16 [json_name="logs"];
   // Defines the metrics used by this service.
   repeated MetricDescriptor metrics = 17 [json_name="metrics"];
-  // Defines the monitored resources used by this service. This is required by the Service.monitoring and Service.logging configurations.
+  // Defines the monitored resources used by this service. This is required by the `Service.monitoring` and `Service.logging` configurations.
   repeated MonitoredResourceDescriptor monitored_resources = 18 [json_name="monitoredResources"];
   // Monitoring configuration.
   Monitoring monitoring = 19 [json_name="monitoring"];

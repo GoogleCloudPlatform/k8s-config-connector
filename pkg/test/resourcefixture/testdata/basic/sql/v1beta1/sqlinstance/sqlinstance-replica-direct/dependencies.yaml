@@ -17,6 +17,7 @@ kind: SQLInstance
 metadata:
   name: sqlinstance-master-direct-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   databaseVersion: MYSQL_5_7

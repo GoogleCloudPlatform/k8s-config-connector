@@ -27,7 +27,7 @@ import (
 
 const (
 	ApigeeInstanceIDToken  = "instances"
-	ApigeeInstanceIDFormat = apigeev1beta1.ApigeeOrganizationIDFormat + "/" + apigeev1beta1.ApigeeInstanceIDToken + "/{{instanceID}}"
+	ApigeeInstanceIDFormat = apigeev1beta1.ApigeeOrganizationURLFormat + "/" + apigeev1beta1.ApigeeInstanceIDToken + "/{{instanceID}}"
 )
 
 var _ identity.Identity = &ApigeeInstanceIdentity{}

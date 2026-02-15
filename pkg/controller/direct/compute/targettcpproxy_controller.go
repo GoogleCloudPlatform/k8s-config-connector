@@ -61,7 +61,9 @@ type targetTCPProxyAdapter struct {
 
 var _ directbase.Adapter = &targetTCPProxyAdapter{}
 
-func (m *targetTCPProxyModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *targetTCPProxyModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.ComputeTargetTCPProxy{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -145,7 +147,7 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 
 	desired := a.desired.DeepCopy()
 
-	targetTCPProxy := ComputeTargetTCPProxySpec_ToProto(mapCtx, &desired.Spec)
+	targetTCPProxy := ComputeTargetTCPProxySpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -190,7 +192,7 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 	}
 
 	status := &krm.ComputeTargetTCPProxyStatus{}
-	status = ComputeTargetTCPProxyStatus_FromProto(mapCtx, created)
+	status = ComputeTargetTCPProxyStatus_v1beta1_FromProto(mapCtx, created)
 
 	externalRef := a.id.String()
 	status.ExternalRef = &externalRef
@@ -210,7 +212,7 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	targetTCPProxy := ComputeTargetTCPProxySpec_ToProto(mapCtx, &desired.Spec)
+	targetTCPProxy := ComputeTargetTCPProxySpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -292,7 +294,7 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	}
 
 	status := &krm.ComputeTargetTCPProxyStatus{}
-	status = ComputeTargetTCPProxyStatus_FromProto(mapCtx, updated)
+	status = ComputeTargetTCPProxyStatus_v1beta1_FromProto(mapCtx, updated)
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -302,7 +304,7 @@ func (a *targetTCPProxyAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	}
 
 	mc := &direct.MapContext{}
-	spec := ComputeTargetTCPProxySpec_FromProto(mc, a.actual)
+	spec := ComputeTargetTCPProxySpec_v1beta1_FromProto(mc, a.actual)
 	// Convert proto region format `https://www.googleapis.com/compute/v1/projects/projectId/regions/europe-west4` to `europe-west4`
 	if spec.Location != nil {
 		region := strings.Split(*spec.Location, "/")

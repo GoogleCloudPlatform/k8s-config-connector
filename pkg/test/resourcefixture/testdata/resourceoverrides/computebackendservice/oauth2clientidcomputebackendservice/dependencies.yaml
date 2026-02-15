@@ -17,6 +17,7 @@ kind: ComputeNetwork
 metadata:
   name: default
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
@@ -25,6 +26,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeInstance
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computeinstance-${uniqueId}
 spec:
   zone: us-central1-a
@@ -40,6 +43,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeInstanceGroup
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computeinstancegroup-${uniqueId}
 spec:
   instances:
@@ -56,12 +61,16 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeHTTPHealthCheck
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computehttphealthcheck-${uniqueId}
 ---
 # It is important for this test to run in its own project because IAPBrand is a 'singleton' resource
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: iapclient-${uniqueId}
 spec:
   name: ComputeProjectMetadata
@@ -72,6 +81,7 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: iapclient-${uniqueId}
   name: iap.googleapis.com
 ---
@@ -80,6 +90,7 @@ kind: IAPBrand
 metadata:
   name: iapbrand-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: iapclient-${uniqueId}
 spec:
   applicationTitle: "test brand"
@@ -91,6 +102,7 @@ kind: IAPIdentityAwareProxyClient
 metadata:
   name: iapidentityawareproxyclient-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: iapclient-${uniqueId}
 spec:
   displayName: "Test Client"

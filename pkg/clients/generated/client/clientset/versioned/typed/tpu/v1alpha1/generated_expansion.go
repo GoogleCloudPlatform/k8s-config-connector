@@ -22,3 +22,5 @@
 package v1alpha1
 
 type TPUNodeExpansion interface{}
+
+type TPUVirtualMachineExpansion interface{}

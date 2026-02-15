@@ -160,10 +160,7 @@ virtualRepositoryConfig:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Cleanup policies for this repository. Cleanup policies indicate when
-certain package versions can be automatically deleted.
-Map keys are policy IDs supplied by users during policy creation. They must
-unique within a repository and be under 128 characters in length.{% endverbatim %}</p>
+            <p>{% verbatim %}Cleanup policies for this repository. Cleanup policies indicate when certain package versions can be automatically deleted. Map keys are policy IDs supplied by users during policy creation. They must unique within a repository and be under 128 characters in length.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -183,7 +180,7 @@ unique within a repository and be under 128 characters in length.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Policy action. Possible values: ["DELETE", "KEEP"].{% endverbatim %}</p>
+            <p>{% verbatim %}Policy action.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -263,7 +260,7 @@ unique within a repository and be under 128 characters in length.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Match versions by tag status. Default value: "ANY" Possible values: ["TAGGED", "UNTAGGED", "ANY"].{% endverbatim %}</p>
+            <p>{% verbatim %}Match versions by tag status.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -289,11 +286,11 @@ unique within a repository and be under 128 characters in length.{% endverbatim 
     <tr>
         <td>
             <p><code>cleanupPolicies[].id</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The user-provided ID of the cleanup policy.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -303,8 +300,7 @@ unique within a repository and be under 128 characters in length.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Policy condition for retaining a minimum number of versions. May only be
-specified with a Keep action.{% endverbatim %}</p>
+            <p>{% verbatim %}Policy condition for retaining a minimum number of versions. May only be specified with a Keep action.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -324,7 +320,7 @@ specified with a Keep action.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Match versions by package prefix. Applied on any prefix match.{% endverbatim %}</p>
+            <p>{% verbatim %}List of package name prefixes that will apply this rule.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -344,8 +340,7 @@ specified with a Keep action.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If true, the cleanup pipeline is prevented from deleting versions in this
-repository.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If true, the cleanup pipeline is prevented from deleting versions in this repository.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -381,14 +376,11 @@ repository.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>format</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The format of packages that are stored in the repository. Supported formats
-can be found [here](https://cloud.google.com/artifact-registry/docs/supported-formats).
-You can only create alpha formats if you are a member of the
-[alpha user group](https://cloud.google.com/artifact-registry/docs/supported-formats#alpha-access).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The format of packages that are stored in the repository.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -398,8 +390,7 @@ You can only create alpha formats if you are a member of the
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The customer managed encryption key that’s used to encrypt the
-contents of the Repository.{% endverbatim %}</p>
+            <p>{% verbatim %}The Cloud KMS resource name of the customer managed encryption key that's used to encrypt the contents of the Repository. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. This value may not be changed after the Repository has been created.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -409,7 +400,7 @@ contents of the Repository.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -419,7 +410,7 @@ contents of the Repository.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -429,7 +420,7 @@ contents of the Repository.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -449,9 +440,7 @@ contents of the Repository.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}MavenRepositoryConfig is maven related repository details.
-Provides additional configuration details for repositories of the maven
-format type.{% endverbatim %}</p>
+            <p>{% verbatim %}Maven repository config contains repository level configuration for the repositories of maven type.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -461,8 +450,7 @@ format type.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. The repository with this flag will allow publishing the same
-snapshot versions.{% endverbatim %}</p>
+            <p>{% verbatim %}The repository with this flag will allow publishing the same snapshot versions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -472,7 +460,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Version policy defines the versions that the registry will accept. Default value: "VERSION_POLICY_UNSPECIFIED" Possible values: ["VERSION_POLICY_UNSPECIFIED", "RELEASE", "SNAPSHOT"].{% endverbatim %}</p>
+            <p>{% verbatim %}Version policy defines the versions that the registry will accept.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -482,7 +470,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The mode configures the repository to serve artifacts from different sources. Default value: "STANDARD_REPOSITORY" Possible values: ["STANDARD_REPOSITORY", "VIRTUAL_REPOSITORY", "REMOTE_REPOSITORY"].{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The mode of the repository.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -492,7 +480,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Configuration specific for a Remote Repository.{% endverbatim %}</p>
+            <p>{% verbatim %}Configuration specific for a Remote Repository.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -502,7 +490,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The description of the remote source.{% endverbatim %}</p>
+            <p>{% verbatim %}The description of the remote source.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -512,7 +500,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Specific settings for a Docker remote repository.{% endverbatim %}</p>
+            <p>{% verbatim %}Specific settings for a Docker remote repository.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -522,7 +510,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Address of the remote repository. Default value: "DOCKER_HUB" Possible values: ["DOCKER_HUB"].{% endverbatim %}</p>
+            <p>{% verbatim %}One of the publicly available Docker repositories supported by Artifact Registry.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -532,7 +520,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Specific settings for a Maven remote repository.{% endverbatim %}</p>
+            <p>{% verbatim %}Specific settings for a Maven remote repository.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -542,7 +530,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Address of the remote repository. Default value: "MAVEN_CENTRAL" Possible values: ["MAVEN_CENTRAL"].{% endverbatim %}</p>
+            <p>{% verbatim %}One of the publicly available Maven repositories supported by Artifact Registry.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -552,7 +540,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Specific settings for an Npm remote repository.{% endverbatim %}</p>
+            <p>{% verbatim %}Specific settings for an Npm remote repository.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -562,7 +550,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Address of the remote repository. Default value: "NPMJS" Possible values: ["NPMJS"].{% endverbatim %}</p>
+            <p>{% verbatim %}One of the publicly available Npm repositories supported by Artifact Registry.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -572,7 +560,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Specific settings for a Python remote repository.{% endverbatim %}</p>
+            <p>{% verbatim %}Specific settings for a Python remote repository.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -582,7 +570,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Address of the remote repository. Default value: "PYPI" Possible values: ["PYPI"].{% endverbatim %}</p>
+            <p>{% verbatim %}One of the publicly available Python repositories supported by Artifact Registry.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -592,7 +580,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The repositoryId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The ArtifactRegistryRepository name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -612,8 +600,7 @@ snapshot versions.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Policies that configure the upstream artifacts distributed by the Virtual
-Repository. Upstream policies cannot be set on a standard repository.{% endverbatim %}</p>
+            <p>{% verbatim %}Policies that configure the upstream artifacts distributed by the Virtual Repository. Upstream policies cannot be set on a standard repository.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -653,8 +640,7 @@ Repository. Upstream policies cannot be set on a standard repository.{% endverba
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A reference to the repository resource, for example:
-"projects/p1/locations/us-central1/repositories/repo1".{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to the repository resource, for example: `projects/p1/locations/us-central1/repositories/repo1`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -664,7 +650,7 @@ Repository. Upstream policies cannot be set on a standard repository.{% endverba
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/locations/{{location}}/repositories/{{value}}`, where {{value}} is the `name` field of an `ArtifactRegistryRepository` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed ArtifactRegistryRepository resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/repositories/{{repositoryID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -674,7 +660,7 @@ Repository. Upstream policies cannot be set on a standard repository.{% endverba
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a ArtifactRegistryRepository resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -684,14 +670,12 @@ Repository. Upstream policies cannot be set on a standard repository.{% endverba
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a ArtifactRegistryRepository resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
 </table>
 
-
-<p>* Field is required when parent field is specified</p>
 
 
 ### Status
@@ -720,7 +704,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -769,15 +753,14 @@ updateTime: string
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time when the repository was created.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The time when the repository was created.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the repository, for example:
-"repo1".{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the repository, for example: "repo1".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -791,7 +774,7 @@ updateTime: string
         <td><code>updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time when the repository was last updated.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The time when the repository was last updated.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

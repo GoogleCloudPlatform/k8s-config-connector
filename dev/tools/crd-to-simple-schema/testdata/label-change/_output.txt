@@ -1,0 +1,5 @@
+metadata:
++ metadata.labels.add=me
+- metadata.labels.change=old
++ metadata.labels.change=new
+- metadata.labels.remove=me

@@ -21,6 +21,8 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
+
 go run . generate-types \
     --service google.cloud.speech.v2  \
     --api-version speech.cnrm.cloud.google.com/v1alpha1 \
@@ -37,4 +39,3 @@ cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/speech/
-

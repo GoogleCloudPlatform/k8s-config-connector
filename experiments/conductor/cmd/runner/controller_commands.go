@@ -512,7 +512,7 @@ If any spec field name ends with "Ref", or if any field value ends with "${uniqu
 Replace <pluralized-kind> with the pluralized version of the kind: ${KIND} in the filename. If not, do nothing and leave.
 Identify field with subfields "name", "namespace" and "external" in the CRD file. These fields are reference fields.
 Identify the kinds of the reference fields. The kind is indicated in the description of the reference field's subfield, "external" field in the CRD file.
-For each identified kind, read the CRD files with names ending with "<kind>.yaml" under crds/ folder.
+For each identified kind, read the CRD files in config/crds/resources/ folder. You might need to list the directory to find the exact filename for the kind.
 
 Second, generate a ${TEST_DIR}/dependencies.yaml file. The file should follow these requirements:
 - Add an Apache 2.0 license header with Copyright ${CURRENT_YEAR} Google LLC.
@@ -521,7 +521,7 @@ Second, generate a ${TEST_DIR}/dependencies.yaml file. The file should follow th
 - Split each resource with "---" and a new line.
 - For each resource,
     - The <kind> should be the kind of the reference field.
-    - Use apiVersion: <apiVersion>, where <apiVersion> is defined in the CRD file, whose name ends with "<kind>.yaml".
+    - Use apiVersion: <apiVersion>, where <apiVersion> is defined in the CRD file.
     - Use kind: <kind>.
     - Use metadata.name: <referencedResourceName>, where <referencedResourceName> is the value of the subfield "name" under the reference field.
     - If the CRD has a "spec.projectRef" field, use projectRef.external: ${projectId}.

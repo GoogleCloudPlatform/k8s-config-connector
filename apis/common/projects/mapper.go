@@ -69,6 +69,49 @@ func NewProjectMapper(cache *ProjectCache) *ProjectMapper {
 	}
 }
 
+// ReplaceProjectNumberWithIDInLink replaces the project number with the project ID in a link.
+// It assumes the link contains segments like "projects/{projectNumber}".
+func (m *ProjectMapper) ReplaceProjectNumberWithIDInLink(ctx context.Context, link string) (string, error) {
+	return replaceProjectNumberWithIDInLink(ctx, link, m.ReplaceProjectNumberWithID)
+}
+
+func replaceProjectNumberWithIDInLink(ctx context.Context, link string, resolver func(context.Context, string) (string, error)) (string, error) {
+	// Identify if there is a prefix (e.g. //artifactregistry.googleapis.com/)
+	prefix := ""
+	path := link
+	if strings.HasPrefix(link, "//") {
+		// Find the third slash, which marks the start of the resource path
+		// e.g. //host/path...
+		parts := strings.SplitN(link[2:], "/", 2)
+		if len(parts) == 2 {
+			prefix = "//" + parts[0] + "/"
+			path = parts[1]
+		}
+	} else if strings.HasPrefix(link, "/") {
+		// Just a leading slash
+		prefix = "/"
+		path = link[1:]
+	}
+
+	segments := strings.Split(path, "/")
+
+	// Iterate over segments. We expect key/value pairs.
+	// If "projects" is a key (even index), we check the value (odd index).
+	for i := 0; i < len(segments)-1; i += 2 {
+		if segments[i] == "projects" {
+			projectSegment := segments[i+1]
+			// Check if it is a number or needs resolution
+			projectID, err := resolver(ctx, projectSegment)
+			if err != nil {
+				return "", err
+			}
+			segments[i+1] = projectID
+		}
+	}
+
+	return prefix + strings.Join(segments, "/"), nil
+}
+
 func (m *ProjectMapper) ReplaceProjectNumberWithID(ctx context.Context, projectID string) (string, error) {
 	projectNumber, err := strconv.ParseInt(projectID, 10, 64)
 	if err != nil {

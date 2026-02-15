@@ -48,4 +48,5 @@ status:
     type: Ready
   externalRef: projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}
   observedGeneration: 2
-  observedState: {}
+  observedState:
+    state: ACTIVE

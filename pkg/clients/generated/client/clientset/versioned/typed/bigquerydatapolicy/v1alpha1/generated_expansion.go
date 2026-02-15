@@ -21,4 +21,6 @@
 
 package v1alpha1
 
+type BigQueryDataPolicyExpansion interface{}
+
 type BigQueryDataPolicyDataPolicyExpansion interface{}

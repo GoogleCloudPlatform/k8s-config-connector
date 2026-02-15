@@ -24,6 +24,7 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
 
 go run . generate-types \
     --service google.cloud.filestore.v1 \
@@ -134,4 +135,3 @@ git add pkg/controller/direct/filestore/instance_fuzzer.go
 git add pkg/controller/direct/register/register.go
 git commit -m "FilestoreInstance: create fuzzer"
 ```
-

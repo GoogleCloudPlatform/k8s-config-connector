@@ -64,7 +64,8 @@ type immutableFieldsValidatorHandler struct {
 }
 
 var (
-	allowedResponse = admission.ValidationResponse(true, "admission controller passed")
+	allowedResponse                      = admission.ValidationResponse(true, "admission controller passed")
+	controllerManagerServiceAccountRegex = regexp.MustCompile(ControllerManagerServiceAccountRegex)
 )
 
 func NewImmutableFieldsValidatorHandler(smLoader *servicemappingloader.ServiceMappingLoader, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader) HandlerFunc {
@@ -79,7 +80,7 @@ func NewImmutableFieldsValidatorHandler(smLoader *servicemappingloader.ServiceMa
 }
 
 func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admission.Request) admission.Response {
-	if regexp.MustCompile(ControllerManagerServiceAccountRegex).MatchString(req.AdmissionRequest.UserInfo.Username) {
+	if controllerManagerServiceAccountRegex.MatchString(req.AdmissionRequest.UserInfo.Username) {
 		return admission.ValidationResponse(true, "ignore non-user requests")
 	}
 

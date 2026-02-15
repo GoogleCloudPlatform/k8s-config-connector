@@ -15,6 +15,8 @@
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: pubsubtopic-1-${uniqueId}
 spec:
   projectRef:
@@ -23,6 +25,8 @@ spec:
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: pubsubtopic-2-${uniqueId}
 spec:
   projectRef:
@@ -32,6 +36,7 @@ apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
   name: project-${uniqueId}
 spec:
@@ -47,6 +52,7 @@ kind: Service
 metadata:
   name: bigquery.googleapis.com
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
@@ -55,6 +61,8 @@ spec:
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: bigquerydataset-1-${uniqueId}
 spec:
   resourceID: bigquerydataset1${uniqueId}
@@ -63,6 +71,8 @@ spec:
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: bigquerytable-1-${uniqueId}
 spec:
   resourceID: bigquerytable1${uniqueId}
@@ -73,6 +83,8 @@ spec:
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: bigquerydataset-2-${uniqueId}
 spec:
   resourceID: bigquerydataset2${uniqueId}
@@ -83,6 +95,8 @@ spec:
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: bigquerytable-2-${uniqueId}
 spec:
   resourceID: bigquerytable2${uniqueId}

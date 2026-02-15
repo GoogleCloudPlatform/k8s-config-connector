@@ -221,6 +221,284 @@ func local_request_ProjectsLocationsServer_ListProjectsLocations_0(ctx context.C
 
 }
 
+var (
+	filter_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0 = &utilities.DoubleArray{Encoding: map[string]int{"projects_locations_automated_dns_record": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+)
+
+func request_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsAutomatedDnsRecordsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateProjectsLocationsAutomatedDnsRecordRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsAutomatedDnsRecord); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.CreateProjectsLocationsAutomatedDnsRecord(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsAutomatedDnsRecordsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateProjectsLocationsAutomatedDnsRecordRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsAutomatedDnsRecord); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.CreateProjectsLocationsAutomatedDnsRecord(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsAutomatedDnsRecordsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteProjectsLocationsAutomatedDnsRecordRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.DeleteProjectsLocationsAutomatedDnsRecord(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsAutomatedDnsRecordsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteProjectsLocationsAutomatedDnsRecordRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.DeleteProjectsLocationsAutomatedDnsRecord(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_ProjectsLocationsAutomatedDnsRecordsServer_GetProjectsLocationsAutomatedDnsRecord_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsAutomatedDnsRecordsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProjectsLocationsAutomatedDnsRecordRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetProjectsLocationsAutomatedDnsRecord(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsAutomatedDnsRecordsServer_GetProjectsLocationsAutomatedDnsRecord_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsAutomatedDnsRecordsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProjectsLocationsAutomatedDnsRecordRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetProjectsLocationsAutomatedDnsRecord(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsAutomatedDnsRecordsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListProjectsLocationsAutomatedDnsRecordsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ListProjectsLocationsAutomatedDnsRecords(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsAutomatedDnsRecordsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListProjectsLocationsAutomatedDnsRecordsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListProjectsLocationsAutomatedDnsRecords(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_ProjectsLocationsGlobalHubsServer_AcceptSpokeProjectsLocationsGlobalHub_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsGlobalHubsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq AcceptSpokeProjectsLocationsGlobalHubRequest
 	var metadata runtime.ServerMetadata
@@ -4951,6 +5229,115 @@ func RegisterProjectsLocationsServerHandlerServer(ctx context.Context, mux *runt
 	return nil
 }
 
+// RegisterProjectsLocationsAutomatedDnsRecordsServerHandlerServer registers the http handlers for service ProjectsLocationsAutomatedDnsRecordsServer to "mux".
+// UnaryRPC     :call ProjectsLocationsAutomatedDnsRecordsServerServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterProjectsLocationsAutomatedDnsRecordsServerHandlerFromEndpoint instead.
+func RegisterProjectsLocationsAutomatedDnsRecordsServerHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ProjectsLocationsAutomatedDnsRecordsServerServer) error {
+
+	mux.Handle("POST", pattern_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/CreateProjectsLocationsAutomatedDnsRecord", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/automatedDnsRecords"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/DeleteProjectsLocationsAutomatedDnsRecord", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/automatedDnsRecords/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsAutomatedDnsRecordsServer_GetProjectsLocationsAutomatedDnsRecord_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/GetProjectsLocationsAutomatedDnsRecord", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/automatedDnsRecords/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsAutomatedDnsRecordsServer_GetProjectsLocationsAutomatedDnsRecord_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsAutomatedDnsRecordsServer_GetProjectsLocationsAutomatedDnsRecord_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/ListProjectsLocationsAutomatedDnsRecords", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/automatedDnsRecords"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
 // RegisterProjectsLocationsGlobalHubsServerHandlerServer registers the http handlers for service ProjectsLocationsGlobalHubsServer to "mux".
 // UnaryRPC     :call ProjectsLocationsGlobalHubsServerServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -6857,6 +7244,155 @@ var (
 	forward_ProjectsLocationsServer_GetProjectsLocation_0 = runtime.ForwardResponseMessage
 
 	forward_ProjectsLocationsServer_ListProjectsLocations_0 = runtime.ForwardResponseMessage
+)
+
+// RegisterProjectsLocationsAutomatedDnsRecordsServerHandlerFromEndpoint is same as RegisterProjectsLocationsAutomatedDnsRecordsServerHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterProjectsLocationsAutomatedDnsRecordsServerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.Dial(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+
+	return RegisterProjectsLocationsAutomatedDnsRecordsServerHandler(ctx, mux, conn)
+}
+
+// RegisterProjectsLocationsAutomatedDnsRecordsServerHandler registers the http handlers for service ProjectsLocationsAutomatedDnsRecordsServer to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterProjectsLocationsAutomatedDnsRecordsServerHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterProjectsLocationsAutomatedDnsRecordsServerHandlerClient(ctx, mux, NewProjectsLocationsAutomatedDnsRecordsServerClient(conn))
+}
+
+// RegisterProjectsLocationsAutomatedDnsRecordsServerHandlerClient registers the http handlers for service ProjectsLocationsAutomatedDnsRecordsServer
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ProjectsLocationsAutomatedDnsRecordsServerClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ProjectsLocationsAutomatedDnsRecordsServerClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "ProjectsLocationsAutomatedDnsRecordsServerClient" to call the correct interceptors.
+func RegisterProjectsLocationsAutomatedDnsRecordsServerHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ProjectsLocationsAutomatedDnsRecordsServerClient) error {
+
+	mux.Handle("POST", pattern_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/CreateProjectsLocationsAutomatedDnsRecord", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/automatedDnsRecords"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/DeleteProjectsLocationsAutomatedDnsRecord", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/automatedDnsRecords/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsAutomatedDnsRecordsServer_GetProjectsLocationsAutomatedDnsRecord_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/GetProjectsLocationsAutomatedDnsRecord", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/automatedDnsRecords/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsAutomatedDnsRecordsServer_GetProjectsLocationsAutomatedDnsRecord_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsAutomatedDnsRecordsServer_GetProjectsLocationsAutomatedDnsRecord_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/ListProjectsLocationsAutomatedDnsRecords", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/automatedDnsRecords"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+var (
+	pattern_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "projects", "locations", "parent", "automatedDnsRecords"}, ""))
+
+	pattern_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "automatedDnsRecords", "name"}, ""))
+
+	pattern_ProjectsLocationsAutomatedDnsRecordsServer_GetProjectsLocationsAutomatedDnsRecord_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "automatedDnsRecords", "name"}, ""))
+
+	pattern_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "projects", "locations", "parent", "automatedDnsRecords"}, ""))
+)
+
+var (
+	forward_ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsAutomatedDnsRecordsServer_GetProjectsLocationsAutomatedDnsRecord_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterProjectsLocationsGlobalHubsServerHandlerFromEndpoint is same as RegisterProjectsLocationsGlobalHubsServerHandler but

@@ -42,7 +42,7 @@ type refNormalizer struct {
 	ctx     context.Context
 	kube    client.Reader
 	src     client.Object
-	project refs.Project
+	project refs.ProjectIdentity
 }
 
 func (r *refNormalizer) VisitField(path string, v any) error {

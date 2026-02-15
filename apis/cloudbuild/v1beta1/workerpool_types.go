@@ -148,7 +148,8 @@ type CloudBuildWorkerPoolObservedState struct {
 }
 
 // CloudBuildWorkerPool is the Schema for the CloudBuild WorkerPool API
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=beta"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=beta"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:subresource:status

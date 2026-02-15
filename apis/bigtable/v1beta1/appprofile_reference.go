@@ -51,8 +51,10 @@ func (r *AppProfileRef) NormalizedExternal(ctx context.Context, reader client.Re
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseAppProfileExternal(r.External); err != nil {
+		if _, match, err := AppProfileIdentityFormat.Parse(r.External); err != nil {
 			return "", err
+		} else if !match {
+			return "", fmt.Errorf("format of AppProfile external=%q was not known (use %s)", r.External, AppProfileIdentityFormat.CanonicalForm())
 		}
 		return r.External, nil
 	}

@@ -25,7 +25,6 @@ type Result struct {
 	resources map[string]map[string][]string
 }
 
-
 func (r *Result) Print() {
 	log.Println("Following Resources should include `cnrm.cloud.google.com/deletion-policy: abandon` annotation")
 	r.lock.Lock()

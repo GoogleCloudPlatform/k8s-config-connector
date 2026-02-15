@@ -15,6 +15,8 @@
 apiVersion: apigee.cnrm.cloud.google.com/v1beta1
 kind: ApigeeEnvgroup
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: apgenvg-${uniqueId}
 spec:
   hostnames:
@@ -30,6 +32,8 @@ spec:
 apiVersion: apigee.cnrm.cloud.google.com/v1beta1
 kind: ApigeeEnvironment
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: apgenv-${uniqueId}
 spec:
   apigeeOrganizationRef:

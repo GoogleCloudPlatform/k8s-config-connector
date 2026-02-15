@@ -35,7 +35,13 @@ type ComputeGlobalNetworkEndpointGroupExpansion interface{}
 
 type ComputeInstanceGroupNamedPortExpansion interface{}
 
+type ComputeInterconnectExpansion interface{}
+
 type ComputeMachineImageExpansion interface{}
+
+type ComputeNetworkAttachmentExpansion interface{}
+
+type ComputeNetworkEdgeSecurityServiceExpansion interface{}
 
 type ComputeNetworkEndpointExpansion interface{}
 

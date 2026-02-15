@@ -145,6 +145,7 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	}
 
 	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory, generatedFileAnnotation, o.Multiversion)
+	mapperGenerator.WithIncludeSkippedOutput(o.GenerateOptions.IncludeSkippedOutput)
 
 	// Ensure that our first proto package is always imported with the "pb" alias.
 	firstService, err := api.GetFileDescriptorByPackage(o.ServiceNames[0])

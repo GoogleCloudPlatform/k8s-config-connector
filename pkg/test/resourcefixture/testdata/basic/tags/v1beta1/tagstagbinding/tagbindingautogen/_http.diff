@@ -6,9 +6,9 @@
 < GET https://cloudresourcemanager.googleapis.com/v3/tagBindings/?alt=json&pageSize=300&parent=%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}
 ---
 > GET https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}
-241c241
+242c242
 < DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}?alt=json
 ---
 > DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectNumber}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
-243a244
+244a245
 > X-Goog-Request-Params: name=tagBindings%2F%252F%252Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectNumber}%2FtagValues%2F${tagValueID}

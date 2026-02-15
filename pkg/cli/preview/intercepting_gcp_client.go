@@ -33,9 +33,10 @@ import (
 
 // BlockedGCPError is an error that occurs when a GCP API call is blocked.
 type BlockedGCPError struct {
-	Method string
-	URL    string
-	Body   string
+	Method     string
+	URL        string
+	Body       string
+	UpdateMask []string
 }
 
 var _ error = &BlockedGCPError{}
@@ -139,11 +140,19 @@ func (c *interceptingGCPClient) blockedHTTPMethod(req *http.Request) (*http.Resp
 		body = formattedBody.Bytes()
 	}
 
-	log.Info("blockedHTTPMethod", "req.method", req.Method, "req.url", req.URL.String())
+	// url.Parse automatically handles URL decoding (e.g., %2C -> ,)
+	rawUpdateMask := req.URL.Query().Get("updateMask")
+	updateMask := []string{}
+	if rawUpdateMask != "" {
+		updateMask = strings.Split(rawUpdateMask, ",")
+	}
+
+	log.V(2).Info("blockedHTTPMethod", "req.method", req.Method, "req.url", req.URL.String())
 	return nil, BlockedGCPError{
-		Method: req.Method,
-		URL:    req.URL.String(),
-		Body:   string(body),
+		Method:     req.Method,
+		URL:        req.URL.String(),
+		Body:       string(body),
+		UpdateMask: updateMask,
 	}
 }
 
@@ -176,9 +185,9 @@ func (c *interceptingGCPClient) RoundTrip(req *http.Request) (*http.Response, er
 		}
 		response, err := c.upstreamGCPClient.Do(req)
 		if response != nil {
-			log.Info("forwarded request", "req.method", req.Method, "req.url", req.URL, "response.status", response.Status)
+			log.V(2).Info("forwarded request", "req.method", req.Method, "req.url", req.URL, "response.status", response.Status)
 		} else if err != nil {
-			log.Error(err, "error forwarding request", "req.method", req.Method, "req.url", req.URL)
+			log.V(0).Error(err, "error forwarding request", "req.method", req.Method, "req.url", req.URL)
 		}
 
 		return response, err

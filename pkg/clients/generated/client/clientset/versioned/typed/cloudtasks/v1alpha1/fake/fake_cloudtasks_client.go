@@ -31,8 +31,8 @@ type FakeCloudtasksV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeCloudtasksV1alpha1) CloudTasksQueues(namespace string) v1alpha1.CloudTasksQueueInterface {
-	return &FakeCloudTasksQueues{c, namespace}
+func (c *FakeCloudtasksV1alpha1) TasksQueues(namespace string) v1alpha1.TasksQueueInterface {
+	return &FakeTasksQueues{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

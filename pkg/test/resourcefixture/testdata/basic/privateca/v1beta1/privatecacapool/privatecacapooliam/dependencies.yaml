@@ -15,6 +15,8 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: privatecacapool-dep
 spec:
   displayName: ExampleGSA
@@ -25,6 +27,8 @@ spec:
 apiVersion: privateca.cnrm.cloud.google.com/v1beta1
 kind: PrivateCACAPool
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   labels:
     label-two: "value-two"
   name: privatecacapool-${uniqueId}

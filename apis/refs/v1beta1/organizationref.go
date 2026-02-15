@@ -17,19 +17,75 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
+
+var OrganizationGVK = schema.GroupVersionKind{
+	Group:   "resourcemanager.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "Organization",
+}
+
+func init() {
+	Register(&OrganizationRef{})
+}
 
 // OrganizationRef represents the Organization that this resource belongs to.
 type OrganizationRef struct {
 	// The 'name' field of an organization, when not managed by Config Connector.
 	// +required
 	External string `json:"external,omitempty"`
+}
+
+var _ Ref = &OrganizationRef{}
+
+func (r *OrganizationRef) GetGVK() schema.GroupVersionKind {
+	return OrganizationGVK
+}
+
+func (r *OrganizationRef) GetNamespacedName() types.NamespacedName {
+	// OrganizationRef does not have Name or Namespace fields (because there is no CRD)
+	return types.NamespacedName{}
+}
+
+func (r *OrganizationRef) GetExternal() string {
+	return r.External
+}
+
+func (r *OrganizationRef) SetExternal(external string) {
+	r.External = external
+}
+
+// ValidateExternal validates the external reference.
+func (r *OrganizationRef) ValidateExternal(external string) error {
+	id := &OrganizationIdentity{}
+	if err := id.FromExternal(external); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *OrganizationRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &OrganizationIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *OrganizationRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External == "" {
+		return fmt.Errorf("must specify 'external' in 'organizationRef'")
+	}
+	return r.ValidateExternal(r.External)
 }
 
 // AsOrganizationRef converts a generic ResourceRef into a OrganizationRef.
@@ -42,16 +98,45 @@ func AsOrganizationRef(in *deprecatedrefs.ResourceRef) *OrganizationRef {
 	}
 }
 
-type Organization struct {
+type OrganizationIdentity struct {
 	OrganizationID string
+}
+
+// Organization is an alias for OrganizationIdentity
+// Deprecated: Use OrganizationIdentity instead.
+type Organization = OrganizationIdentity
+
+var _ identity.Identity = &OrganizationIdentity{}
+
+var OrganizationFormat = gcpurls.Template[OrganizationIdentity]("cloudresourcemanager.googleapis.com", "organizations/{organizationID}")
+
+func (i *OrganizationIdentity) Host() string {
+	return OrganizationFormat.Host()
+}
+
+func (i *OrganizationIdentity) String() string {
+	return OrganizationFormat.ToString(*i)
+}
+
+func (i *OrganizationIdentity) FromExternal(ref string) error {
+	parsed, match, err := OrganizationFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of Organization external=%q was not known (use %s): %w", ref, OrganizationFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of Organization external=%q was not known (use %s)", ref, OrganizationFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
 }
 
 // ResolveOrganizationFromAnnotation resolves the OrganizationID to use for a
 // resource, it should be used for resources which do not have
 // 'spec.organizationRef'.
-func ResolveOrganizationFromAnnotation(ctx context.Context, reader client.Reader, src client.Object) (*Organization, error) {
+func ResolveOrganizationFromAnnotation(ctx context.Context, reader client.Reader, src client.Object) (*OrganizationIdentity, error) {
 	if organizationID := src.GetAnnotations()["cnrm.cloud.google.com/organization-id"]; organizationID != "" {
-		return &Organization{OrganizationID: organizationID}, nil
+		return &OrganizationIdentity{OrganizationID: organizationID}, nil
 	}
 
 	return nil, fmt.Errorf("organization-id annotation not set on resource")
@@ -59,7 +144,8 @@ func ResolveOrganizationFromAnnotation(ctx context.Context, reader client.Reader
 
 // ResolveOrganization will resolve an OrganizationRef to an Organization, with
 // the OrganizationID.
-func ResolveOrganization(ctx context.Context, reader client.Reader, src client.Object, ref *OrganizationRef) (*Organization, error) {
+// Deprecated: Use Normalize instead.
+func ResolveOrganization(ctx context.Context, reader client.Reader, src client.Object, ref *OrganizationRef) (*OrganizationIdentity, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -68,11 +154,11 @@ func ResolveOrganization(ctx context.Context, reader client.Reader, src client.O
 		return nil, fmt.Errorf("must specify 'external' in 'organizationRef'")
 	}
 
-	tokens := strings.Split(ref.External, "/")
-	if len(tokens) == 2 && tokens[0] == "organizations" {
-		return &Organization{OrganizationID: tokens[1]}, nil
+	id := &OrganizationIdentity{}
+	if err := id.FromExternal(ref.External); err != nil {
+		return nil, err
 	}
-	return nil, fmt.Errorf("format of 'organizationRef.external'=%q was not known (use organizations/<organizationID>)", ref.External)
+	return id, nil
 }
 
 func ResolveOrganizationID(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (string, error) {

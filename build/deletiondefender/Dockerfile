@@ -14,6 +14,7 @@
 
 # This Dockerfile builds a thin image containing the deletiondefender binary
 ARG BUILDER_IMG
+ARG GKE_DISTROLESS_IMG
 
 # Build the deletiondefender binary
 FROM ${BUILDER_IMG} AS builder
@@ -34,7 +35,7 @@ RUN setcap cap_net_bind_service+eip deletiondefender
 RUN chown 1000 /configconnector
 
 # Copy the directory into a thin, distroless image (go/gke-distroless)
-FROM gcr.io/gke-release/gke-distroless/static:gke_distroless_20230307.00_p0 AS final
+FROM ${GKE_DISTROLESS_IMG} AS final
 WORKDIR /configconnector/
 COPY --from=packager /configconnector /configconnector
 ENV PATH="/configconnector/:${PATH}"

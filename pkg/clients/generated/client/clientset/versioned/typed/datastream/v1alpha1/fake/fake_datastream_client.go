@@ -39,6 +39,10 @@ func (c *FakeDatastreamV1alpha1) DatastreamPrivateConnections(namespace string) 
 	return &FakeDatastreamPrivateConnections{c, namespace}
 }
 
+func (c *FakeDatastreamV1alpha1) DatastreamRoutes(namespace string) v1alpha1.DatastreamRouteInterface {
+	return &FakeDatastreamRoutes{c, namespace}
+}
+
 func (c *FakeDatastreamV1alpha1) DatastreamStreams(namespace string) v1alpha1.DatastreamStreamInterface {
 	return &FakeDatastreamStreams{c, namespace}
 }

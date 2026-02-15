@@ -21,6 +21,8 @@
 
 package v1beta1
 
+type SpannerBackupScheduleExpansion interface{}
+
 type SpannerDatabaseExpansion interface{}
 
 type SpannerInstanceExpansion interface{}

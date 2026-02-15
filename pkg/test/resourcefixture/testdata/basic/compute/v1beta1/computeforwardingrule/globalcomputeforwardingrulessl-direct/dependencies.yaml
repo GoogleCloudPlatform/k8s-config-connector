@@ -15,6 +15,8 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computeaddress-${uniqueId}
 spec:
   description: a test global address
@@ -23,6 +25,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeHealthCheck
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computehealthcheck-${uniqueId}
 spec:
   checkIntervalSec: 10
@@ -33,6 +37,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computebackendservice-${uniqueId}
 spec:
   healthChecks:
@@ -44,6 +50,8 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: secret-${uniqueId}
 stringData:
   certificate: |
@@ -98,6 +106,8 @@ stringData:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSSLCertificate
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computesslcertificate-${uniqueId}
 spec:
   location: global
@@ -115,6 +125,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetSSLProxy
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computetargetsslproxy-${uniqueId}
 spec:
   description: "test description"
@@ -126,6 +138,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetSSLProxy
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computetargetsslproxy2-${uniqueId}
 spec:
   description: "other test description"

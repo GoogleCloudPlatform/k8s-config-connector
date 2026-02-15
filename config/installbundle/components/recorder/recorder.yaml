@@ -50,6 +50,8 @@ spec:
         env:
         - name: CONFIG_CONNECTOR_VERSION
           value: "0.0.0-dev"
+        - name: GOMEMLIMIT
+          value: 58MiB # Set to ~90% of the 64Mi limit
         image: recorder:latest
         imagePullPolicy: Always
         name: recorder

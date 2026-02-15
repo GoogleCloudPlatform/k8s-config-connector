@@ -79,6 +79,10 @@ def main():
         has_direct_controller = kind in direct_controller_kinds
         is_tf_resource = labels.get('cnrm.cloud.google.com/tf2crd') == 'true'
         is_dcl_resource = labels.get('cnrm.cloud.google.com/dcl2crd') == 'true'
+        default_controller_label = labels.get('cnrm.cloud.google.com/default-controller')
+
+        if default_controller_label and default_controller_label not in ['tf', 'dcl', 'direct']:
+            raise ValueError(f"Resource {kind}: Invalid value '{default_controller_label}' for cnrm.cloud.google.com/default-controller. Must be one of: tf, dcl, direct.")
 
         # Determine supported controllers
         supported_controllers = set()
@@ -96,6 +100,19 @@ def main():
         elif not supported_controllers:
             print(f"Skipping resource {group}/{kind} as no controller was found.")
             continue
+        elif default_controller_label:
+            if default_controller_label == 'direct':
+                if not has_direct_controller:
+                    raise ValueError(f"Resource {kind}: configured with default-controller=direct but direct controller implementation not found.")
+                default_controller = 'k8s.ReconcilerTypeDirect'
+            elif default_controller_label == 'dcl':
+                if not is_dcl_resource:
+                    raise ValueError(f"Resource {kind}: configured with default-controller=dcl but not marked as DCL resource.")
+                default_controller = 'k8s.ReconcilerTypeDCL'
+            elif default_controller_label == 'tf':
+                if not is_tf_resource:
+                    raise ValueError(f"Resource {kind}: configured with default-controller=tf but not marked as Terraform resource.")
+                default_controller = 'k8s.ReconcilerTypeTerraform'
         elif is_dcl_resource:
             default_controller = 'k8s.ReconcilerTypeDCL'
         elif is_tf_resource:

@@ -55,7 +55,9 @@ type modelNetworkEdgeSecurityService struct {
 	config *config.ControllerConfig
 }
 
-func (m *modelNetworkEdgeSecurityService) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelNetworkEdgeSecurityService) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.ComputeNetworkEdgeSecurityService{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -137,7 +139,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Create(ctx context.Context, createOp
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := ComputeNetworkEdgeSecurityServiceSpec_ToProto(mapCtx, &desired.Spec)
+	resource := ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -167,7 +169,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Create(ctx context.Context, createOp
 	}
 
 	status := &krm.ComputeNetworkEdgeSecurityServiceStatus{}
-	status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_FromProto(mapCtx, created)
+	status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -187,7 +189,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := ComputeNetworkEdgeSecurityServiceSpec_ToProto(mapCtx, &desired.Spec)
+	resource := ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -206,7 +208,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.ComputeNetworkEdgeSecurityServiceStatus{}
-		status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_v1alpha1_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -247,7 +249,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	}
 
 	status := &krm.ComputeNetworkEdgeSecurityServiceStatus{}
-	status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -264,7 +266,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Export(ctx context.Context) (*unstru
 
 	obj := &krm.ComputeNetworkEdgeSecurityService{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(ComputeNetworkEdgeSecurityServiceSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

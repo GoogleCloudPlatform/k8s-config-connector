@@ -56,7 +56,9 @@ type networkAttachmentModel struct {
 	config *config.ControllerConfig
 }
 
-func (m *networkAttachmentModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *networkAttachmentModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.ComputeNetworkAttachment{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -136,7 +138,7 @@ func (a *NetworkAttachmentAdapter) Create(ctx context.Context, createOp *directb
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := ComputeNetworkAttachmentSpec_ToProto(mapCtx, &desired.Spec)
+	resource := ComputeNetworkAttachmentSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -165,7 +167,7 @@ func (a *NetworkAttachmentAdapter) Create(ctx context.Context, createOp *directb
 	}
 
 	status := &krm.ComputeNetworkAttachmentStatus{}
-	status.ObservedState = ComputeNetworkAttachmentObservedState_FromProto(mapCtx, created)
+	status.ObservedState = ComputeNetworkAttachmentObservedState_v1alpha1_FromProto(mapCtx, created)
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -182,7 +184,7 @@ func (a *NetworkAttachmentAdapter) Update(ctx context.Context, updateOp *directb
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := ComputeNetworkAttachmentSpec_ToProto(mapCtx, &desired.Spec)
+	resource := ComputeNetworkAttachmentSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -227,7 +229,7 @@ func (a *NetworkAttachmentAdapter) Update(ctx context.Context, updateOp *directb
 	}
 
 	status := &krm.ComputeNetworkAttachmentStatus{}
-	status.ObservedState = ComputeNetworkAttachmentObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = ComputeNetworkAttachmentObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -244,7 +246,7 @@ func (a *NetworkAttachmentAdapter) Export(ctx context.Context) (*unstructured.Un
 
 	obj := &krm.ComputeNetworkAttachment{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(ComputeNetworkAttachmentSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ComputeNetworkAttachmentSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -158,7 +158,7 @@ service DevicesDeviceUsersServer {
     };
   };
 
-  // Looks up resource names of the DeviceUsers associated with the caller's credentials, as well as the properties provided in the request. This method must be called with end-user credentials with the scope: https://www.googleapis.com/auth/cloud-identity.devices.lookup If multiple properties are provided, only DeviceUsers having all of these properties are considered as matches - i.e. the query behaves like an AND. Different platforms require different amounts of information from the caller to ensure that the DeviceUser is uniquely identified. - iOS: Specifying the 'partner' and 'ios_device_id' fields is required. - Android: Specifying the 'android_id' field is required. - Desktop: Specifying the 'raw_resource_id' field is required.
+  // Looks up resource names of the DeviceUsers associated with the caller's credentials, as well as the properties provided in the request. This method must be called with end-user credentials with the scope: https://www.googleapis.com/auth/cloud-identity.devices.lookup If multiple properties are provided, only DeviceUsers having all of these properties are considered as matches - i.e. the query behaves like an AND. Different platforms require different amounts of information from the caller to ensure that the DeviceUser is uniquely identified. - iOS: If either the `partner` or `ios_device_id` field is provided, then both fields are required. - Android: Specifying the `android_id` field is required. - Desktop: Specifying the `raw_resource_id` field is required.
   rpc LookupDevicesDeviceUser(LookupDevicesDeviceUserRequest) returns (LookupSelfDeviceUsersResponse) {
     option (google.api.http) = {
       get: "/v1beta1/{parent=devices/*/deviceUsers}:lookup"
@@ -632,7 +632,7 @@ message BrowserInfo {
   optional bool is_built_in_dns_client_enabled = 3 [json_name="isBuiltInDnsClientEnabled"];
   // Current state of [bulk data analysis](https://chromeenterprise.google/policies/#OnBulkDataEntryEnterpriseConnector). Set to true if provider list from Chrome is non-empty.
   optional bool is_bulk_data_entry_analysis_enabled = 4 [json_name="isBulkDataEntryAnalysisEnabled"];
-  // Current state of [Chrome Cleanup](https://chromeenterprise.google/policies/#ChromeCleanupEnabled).
+  // Deprecated: This field is not used for Chrome version 118 and later. Current state of [Chrome Cleanup](https://chromeenterprise.google/policies/#ChromeCleanupEnabled).
   optional bool is_chrome_cleanup_enabled = 5 [json_name="isChromeCleanupEnabled"];
   // Current state of [Chrome Remote Desktop app](https://chromeenterprise.google/policies/#URLBlocklist).
   optional bool is_chrome_remote_desktop_app_blocked = 6 [json_name="isChromeRemoteDesktopAppBlocked"];
@@ -1013,7 +1013,7 @@ message GoogleAppsCloudidentityDevicesV1BrowserInfo {
   optional bool is_built_in_dns_client_enabled = 3 [json_name="isBuiltInDnsClientEnabled"];
   // Current state of [bulk data analysis](https://chromeenterprise.google/policies/#OnBulkDataEntryEnterpriseConnector). Set to true if provider list from Chrome is non-empty.
   optional bool is_bulk_data_entry_analysis_enabled = 4 [json_name="isBulkDataEntryAnalysisEnabled"];
-  // Current state of [Chrome Cleanup](https://chromeenterprise.google/policies/#ChromeCleanupEnabled).
+  // Deprecated: This field is not used for Chrome version 118 and later. Current state of [Chrome Cleanup](https://chromeenterprise.google/policies/#ChromeCleanupEnabled).
   optional bool is_chrome_cleanup_enabled = 5 [json_name="isChromeCleanupEnabled"];
   // Current state of [Chrome Remote Desktop app](https://chromeenterprise.google/policies/#URLBlocklist).
   optional bool is_chrome_remote_desktop_app_blocked = 6 [json_name="isChromeRemoteDesktopAppBlocked"];

@@ -63,7 +63,8 @@ type IAMAuditConfigStatus struct {
 // +kubebuilder:printcolumn:name="Status Age",type="date",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime"
 // +kubebuilder:subresource:status
 // +k8s:openapi-gen=true
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:resource:categories=gcp,shortName=gcpiamauditconfig;gcpiamauditconfigs
 type IAMAuditConfig struct {
 	metav1.TypeMeta   `json:",inline"`

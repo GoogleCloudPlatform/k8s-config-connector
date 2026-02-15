@@ -39,6 +39,10 @@ func (c *FakeIapV1beta1) IAPIdentityAwareProxyClients(namespace string) v1beta1.
 	return &FakeIAPIdentityAwareProxyClients{c, namespace}
 }
 
+func (c *FakeIapV1beta1) IAPSettingses(namespace string) v1beta1.IAPSettingsInterface {
+	return &FakeIAPSettingses{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeIapV1beta1) RESTClient() rest.Interface {

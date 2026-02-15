@@ -65,5 +65,11 @@ var (
 		Kind:    reflect.TypeOf(IAPIdentityAwareProxyClient{}).Name(),
 	}
 
+	IAPSettingsGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAPSettings{}).Name(),
+	}
+
 	iapAPIVersion = SchemeGroupVersion.String()
 )

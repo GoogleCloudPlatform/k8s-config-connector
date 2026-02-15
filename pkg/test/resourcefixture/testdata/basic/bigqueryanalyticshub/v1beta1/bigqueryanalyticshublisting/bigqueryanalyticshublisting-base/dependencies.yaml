@@ -15,6 +15,8 @@
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: bigquerydataset${uniqueId}
 spec:
   friendlyName: my-bigquerydataset
@@ -22,6 +24,8 @@ spec:
 apiVersion: bigqueryanalyticshub.cnrm.cloud.google.com/v1alpha1
 kind: BigQueryAnalyticsHubDataExchange
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: bigqueryanalyticshubdataexchange${uniqueId}
 spec:
   displayName: my_data_exchange

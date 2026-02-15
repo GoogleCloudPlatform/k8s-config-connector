@@ -70,7 +70,9 @@ type gkeHubAdapter struct {
 var _ directbase.Adapter = &gkeHubAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *gkeHubModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	gcpClient, err := newGCPClient(m.config)
 	if err != nil {
 		return nil, err

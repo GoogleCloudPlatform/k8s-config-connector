@@ -263,7 +263,8 @@ X-Xss-Protection: 0
     {
       "name": "tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}",
       "parent": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}",
-      "tagValue": "tagValues/${tagValueID}"
+      "tagValue": "tagValues/${tagValueID}",
+      "tagValueNamespacedName": "${projectId}/test-${uniqueId}/value1"
     }
   ]
 }

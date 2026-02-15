@@ -383,8 +383,14 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.creator"] = "test@google.com"
 	visitor.replacePaths[".status.lastModifier"] = "test@google.com"
 
+	// Specific to RunService
+	visitor.replacePaths[".status.terminalCondition.lastTransitionTime"] = "1970-01-01T00:00:00Z"
+
 	// Specific to Workflows
 	visitor.replacePaths[".status.observedState.validateTime"] = "1970-01-01T00:00:00Z"
+
+	// Specific to IAMServiceAccountKey
+	visitor.replacePaths[".status.validAfter"] = "1970-01-01T00:00:00Z"
 
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
@@ -1186,7 +1192,6 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Specific to Sql
 	{
-		visitor.ReplacePath(".ipAddresses[].ipAddress", "10.1.2.3")
 		visitor.ReplacePath(".serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
 		visitor.ReplacePath(".serverCaCert.commonName", "common-name")
 		visitor.ReplacePath(".serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")

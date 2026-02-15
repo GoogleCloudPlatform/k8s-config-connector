@@ -83,12 +83,20 @@ func ResolveRunJobRefs(ctx context.Context, kube client.Reader, desired *krm.Run
 			}
 		}
 		for _, v := range template.Volumes {
-			for _, sqlInstance := range v.CloudSQLInstance.InstanceRefs {
-				instanceRef, err := refs.ResolveSQLInstanceRef(ctx, kube, desired, sqlInstance)
+			if v.CloudSQLInstance != nil {
+				for _, sqlInstance := range v.CloudSQLInstance.InstanceRefs {
+					instanceRef, err := refs.ResolveSQLInstanceRef(ctx, kube, desired, sqlInstance)
+					if err != nil {
+						return err
+					}
+					sqlInstance.External = instanceRef.ConnectionName()
+				}
+			}
+			if v.GCS != nil && v.GCS.BucketRef != nil {
+				err = v.GCS.BucketRef.Normalize(ctx, kube, desired.GetNamespace())
 				if err != nil {
 					return err
 				}
-				sqlInstance.External = instanceRef.ConnectionName()
 			}
 		}
 	}

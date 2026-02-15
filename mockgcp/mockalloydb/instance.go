@@ -107,6 +107,9 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 		obj.AvailabilityType == pb.Instance_AVAILABILITY_TYPE_UNSPECIFIED {
 		obj.AvailabilityType = pb.Instance_REGIONAL
 	}
+	if obj.ConnectionPoolConfig != nil && obj.ConnectionPoolConfig.Enabled {
+		obj.ConnectionPoolConfig.PoolerCount = 1
+	}
 
 	// Set output-only fields.
 	now := timestamppb.Now()
@@ -222,6 +225,11 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.DatabaseFlags = req.Instance.GetDatabaseFlags()
 		case "availabilityType":
 			obj.AvailabilityType = req.Instance.GetAvailabilityType()
+		case "connectionPoolConfig":
+			obj.ConnectionPoolConfig = req.Instance.GetConnectionPoolConfig()
+			if obj.ConnectionPoolConfig != nil && obj.ConnectionPoolConfig.Enabled {
+				obj.ConnectionPoolConfig.PoolerCount = 1
+			}
 		case "readPoolConfig":
 			obj.ReadPoolConfig = req.Instance.GetReadPoolConfig()
 		case "machineConfig":

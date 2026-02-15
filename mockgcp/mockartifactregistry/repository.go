@@ -97,10 +97,18 @@ func (s *ArtifactRegistryV1) populateDefaults(ctx context.Context, obj *pb.Repos
 	}
 
 	if obj.VulnerabilityScanningConfig == nil {
-		obj.VulnerabilityScanningConfig = &pb.Repository_VulnerabilityScanningConfig{
-			EnablementState:       pb.Repository_VulnerabilityScanningConfig_SCANNING_DISABLED,
-			EnablementStateReason: "API containerscanning.googleapis.com is not enabled.",
-			LastEnableTime:        timestamppb.New(now),
+		if obj.Mode == pb.Repository_VIRTUAL_REPOSITORY {
+			obj.VulnerabilityScanningConfig = &pb.Repository_VulnerabilityScanningConfig{
+				EnablementState:       pb.Repository_VulnerabilityScanningConfig_SCANNING_UNSUPPORTED,
+				EnablementStateReason: "Repository mode VIRTUAL_REPOSITORY is not supported.",
+				LastEnableTime:        timestamppb.New(now),
+			}
+		} else {
+			obj.VulnerabilityScanningConfig = &pb.Repository_VulnerabilityScanningConfig{
+				EnablementState:       pb.Repository_VulnerabilityScanningConfig_SCANNING_DISABLED,
+				EnablementStateReason: "API containerscanning.googleapis.com is not enabled.",
+				LastEnableTime:        timestamppb.New(now),
+			}
 		}
 	}
 

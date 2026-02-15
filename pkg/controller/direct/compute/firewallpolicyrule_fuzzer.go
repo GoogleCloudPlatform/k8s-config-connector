@@ -29,8 +29,8 @@ func init() {
 
 func computeFirewallPolicyRuleFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.FirewallPolicyRule{},
-		ComputeFirewallPolicyRuleSpec_FromProto, ComputeFirewallPolicyRuleSpec_ToProto,
-		ComputeFirewallPolicyRuleStatus_FromProto, ComputeFirewallPolicyRuleStatus_ToProto,
+		ComputeFirewallPolicyRuleSpec_v1beta1_FromProto, ComputeFirewallPolicyRuleSpec_v1beta1_ToProto,
+		ComputeFirewallPolicyRuleStatus_v1beta1_FromProto, ComputeFirewallPolicyRuleStatus_v1beta1_ToProto,
 	)
 
 	f.SpecFields.Insert(".action")

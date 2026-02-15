@@ -714,6 +714,10 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/logging/docs/">{{logging_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/logging/logginglink.md">LoggingLink</a></td>
+</tr>
+<tr>
+  <td><a href="/logging/docs/">{{logging_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/logging/logginglogbucket.md">LoggingLogBucket</a></td>
 </tr>
 <tr>
@@ -743,6 +747,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/memorystore/docs/memcached/">{{memstore_memcache_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/memcache/memcacheinstance.md">MemcacheInstance</a></td>
+</tr>
+<tr>
+  <td><a href="/memorystore/docs/valkey/">Memorystore for Valkey</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/memorystore/memorystoreinstance.md">MemorystoreInstance</a></td>
 </tr>
 <tr>
   <td><a href="/monitoring/docs/">{{monitoring_name}}</a></td>

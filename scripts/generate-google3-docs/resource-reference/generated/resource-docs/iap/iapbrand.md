@@ -8,7 +8,7 @@
 
 
 Note: Brands can only be created once for a Google Cloud project and the underlying Google API
-doesn't not support DELETE or PATCH methods. Deleting a Brand managed by Config Connector will remove it from your cluster
+does not support DELETE or PATCH methods. Deleting a Brand managed by Config Connector will remove it from your cluster
 but will not delete it from Google Cloud.
 
 Note: The Identity and Access Management (IAM) service account used by Config Connector to authenticate with Google Cloud APIs

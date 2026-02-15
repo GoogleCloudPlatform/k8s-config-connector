@@ -31,6 +31,10 @@ type FakeStorageV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeStorageV1beta1) StorageAnywhereCaches(namespace string) v1beta1.StorageAnywhereCacheInterface {
+	return &FakeStorageAnywhereCaches{c, namespace}
+}
+
 func (c *FakeStorageV1beta1) StorageBuckets(namespace string) v1beta1.StorageBucketInterface {
 	return &FakeStorageBuckets{c, namespace}
 }

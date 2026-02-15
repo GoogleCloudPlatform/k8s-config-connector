@@ -30,6 +30,7 @@ import (
 	"github.com/fatih/color"
 	"golang.org/x/tools/go/ast/astutil"
 	"golang.org/x/tools/imports"
+	"k8s.io/klog/v2"
 )
 
 const (
@@ -100,7 +101,7 @@ func (c *ControllerBuilder) GenerateController(cArgs *ccTemplate.ControllerArgs)
 		return err
 	}
 	if _, err := os.Stat(controllerFilePath); err == nil {
-		fmt.Printf("file %s already exists, skipping\n", controllerFilePath)
+		klog.V(1).Infof("file %s already exists, skipping\n", controllerFilePath)
 		return nil
 	} else if !errors.Is(err, os.ErrNotExist) {
 		return fmt.Errorf("unexpected controller file: %w", err)

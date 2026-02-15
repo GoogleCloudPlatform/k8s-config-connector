@@ -16,6 +16,7 @@ kind: ServiceIdentity
 metadata:
   name: serviceidentity-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
@@ -26,6 +27,7 @@ apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: "${projectId}"
   name: gsa-${uniqueId}
 ---
@@ -33,6 +35,7 @@ apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: "${projectId}"
   name: gsa-${uniqueId}-updated
 ---
@@ -41,6 +44,7 @@ kind: KMSKeyRing
 metadata:
   name: kmskeyring-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   location: us-central1
@@ -51,6 +55,7 @@ metadata:
   labels:
     key-one: value-one
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: kmscryptokey-${uniqueId}
 spec:
@@ -64,6 +69,7 @@ metadata:
   labels:
     key-one: value-one
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: kmscryptokey-${uniqueId}-updated
 spec:
@@ -74,6 +80,8 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: iampolicymember-${uniqueId}-updated
 spec:
   memberFrom:
@@ -88,6 +96,8 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: iampolicymember-${uniqueId}
 spec:
   memberFrom:

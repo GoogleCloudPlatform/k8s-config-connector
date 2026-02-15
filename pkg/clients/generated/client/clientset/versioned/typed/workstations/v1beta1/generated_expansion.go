@@ -21,4 +21,8 @@
 
 package v1beta1
 
+type WorkstationExpansion interface{}
+
 type WorkstationClusterExpansion interface{}
+
+type WorkstationConfigExpansion interface{}

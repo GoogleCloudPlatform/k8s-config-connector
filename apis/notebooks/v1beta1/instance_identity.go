@@ -17,32 +17,53 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var InstanceIdentityFormat = gcpurls.Template[InstanceIdentity]("notebooks.googleapis.com", "projects/{project}/locations/{location}/instances/{instance}")
+
 // InstanceIdentity defines the resource reference to NotebookInstance, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type InstanceIdentity struct {
-	parent *InstanceParent
-	id     string
+	Project  string
+	Location string
+	Instance string
 }
 
 func (i *InstanceIdentity) String() string {
-	return i.parent.String() + "/instances/" + i.id
+	return InstanceIdentityFormat.ToString(*i)
 }
 
 func (i *InstanceIdentity) ID() string {
-	return i.id
+	return i.Instance
 }
 
 func (i *InstanceIdentity) Parent() *InstanceParent {
-	return i.parent
+	return &InstanceParent{
+		ProjectID: i.Project,
+		Location:  i.Location,
+	}
 }
 
+func (i *InstanceIdentity) FromExternal(ref string) error {
+	parsed, match, err := InstanceIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of Instance external=%q was not known (use %s): %w", ref, InstanceIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of Instance external=%q was not known (use %s)", ref, InstanceIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+// +k8s:deepcopy-gen=false
 type InstanceParent struct {
 	ProjectID string
 	Location  string
@@ -95,23 +116,16 @@ func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *Noteboo
 		}
 	}
 	return &InstanceIdentity{
-		parent: &InstanceParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
+		Project:  projectID,
+		Location: location,
+		Instance: resourceID,
 	}, nil
 }
 
 func ParseInstanceExternal(external string) (parent *InstanceParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "instances" {
-		return nil, "", fmt.Errorf("format of NotebookInstance external=%q was not known (use projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}})", external)
+	i := &InstanceIdentity{}
+	if err := i.FromExternal(external); err != nil {
+		return nil, "", err
 	}
-	parent = &InstanceParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return i.Parent(), i.ID(), nil
 }

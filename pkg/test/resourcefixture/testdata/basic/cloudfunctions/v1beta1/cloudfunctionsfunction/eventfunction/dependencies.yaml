@@ -15,6 +15,8 @@
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: pubsubtopic-${uniqueId}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -22,6 +24,7 @@ kind: ComputeNetwork
 metadata:
   name: default
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
 spec:
@@ -30,6 +33,8 @@ spec:
 apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
 kind: VPCAccessConnector
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: c-1-${uniqueId}
 spec:
   projectRef:
@@ -44,6 +49,8 @@ spec:
 apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
 kind: VPCAccessConnector
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: c-2-${uniqueId}
 spec:
   projectRef:

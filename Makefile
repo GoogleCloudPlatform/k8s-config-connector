@@ -20,6 +20,7 @@ RECORDER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/recorder:${SHORT_SHA}
 WEBHOOK_IMG ?= gcr.io/${PROJECT_ID}/cnrm/webhook:${SHORT_SHA}
 DELETION_DEFENDER_IMG ?= gcr.io/${PROJECT_ID}/cnrm/deletiondefender:${SHORT_SHA}
 UNMANAGED_DETECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/unmanageddetector:${SHORT_SHA}
+CONFIG_CONNECTOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/config-connector-cli:${SHORT_SHA}
 # Detects the location of the user golangci-lint cache.
 GOLANGCI_LINT_CACHE := /tmp/golangci-lint
 # When updating this, make sure to update the corresponding action in
@@ -29,6 +30,10 @@ GOLANGCI_LINT_VERSION := v2.7.1
 # Use Docker BuildKit when building images to allow usage of 'setcap' in
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
 DOCKER_BUILD := DOCKER_BUILDKIT=1 docker build
+
+KUSTOMIZE=go run sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
+
+GKE_DISTROLESS_IMG := gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
 
 CRD_OUTPUT_TMP := config/crds/tmp
 CRD_OUTPUT_STAGING := config/crds/tmp/staging
@@ -78,8 +83,8 @@ manifests: generate
 	# add kustomize patches on all CRDs
 	mkdir config/crds/resources
 	cp config/crds/kustomization.yaml kustomization.yaml
-	kustomize edit add resource config/crds/tmp_resources/*.yaml
-	kustomize build -o config/crds/resources
+	$(KUSTOMIZE) edit add resource config/crds/tmp_resources/*.yaml
+	$(KUSTOMIZE) build -o config/crds/resources
 	rm -rf config/crds/tmp_resources
 	rm kustomization.yaml
 
@@ -125,6 +130,10 @@ lint:
 		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
 		golangci-lint run -v --timeout=10m
 
+.PHONY: lint-custom
+lint-custom:
+	go run ./dev/linters/main.go ./pkg/... ./cmd/... ./config/... 2>&1 | go run ./dev/tools/lint-filter/main.go
+
 # Run go vet against code
 .PHONY: vet
 vet:
@@ -144,13 +153,14 @@ generate-including-dcl:
 # Generate code
 .PHONY: generate
 generate:
+	dev/tasks/generate-all
 	go generate ./pkg/apis/...
 	make -C operator generate
 	make fmt
 
 # Build the docker images
 .PHONY: docker-build
-docker-build: docker-build-manager docker-build-recorder docker-build-webhook docker-build-deletiondefender docker-build-unmanageddetector
+docker-build: docker-build-manager docker-build-recorder docker-build-webhook docker-build-deletiondefender docker-build-unmanageddetector docker-build-config-connector
 
 # build all the binaries into the builder docker image
 .PHONY: docker-build-builder
@@ -160,7 +170,7 @@ docker-build-builder:
 # Build the manager docker image
 .PHONY: docker-build-manager
 docker-build-manager: docker-build-builder
-	$(DOCKER_BUILD) -t ${CONTROLLER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/manager/Dockerfile
+	$(DOCKER_BUILD) -t ${CONTROLLER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/manager/Dockerfile
 	@echo "updating kustomize image patch file for manager resource"
 	cp config/installbundle/components/manager/base/manager_image_patch_template.yaml config/installbundle/components/manager/base/manager_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${CONTROLLER_IMG}"'@' ./config/installbundle/components/manager/base/manager_image_patch.yaml
@@ -168,7 +178,7 @@ docker-build-manager: docker-build-builder
 # Build the recorder docker image
 .PHONY: docker-build-recorder
 docker-build-recorder: docker-build-builder
-	$(DOCKER_BUILD) -t ${RECORDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/recorder/Dockerfile
+	$(DOCKER_BUILD) -t ${RECORDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/recorder/Dockerfile
 	@echo "updating kustomize image patch file for recorder resource"
 	cp config/installbundle/components/recorder/recorder_image_patch_template.yaml config/installbundle/components/recorder/recorder_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${RECORDER_IMG}"'@' ./config/installbundle/components/recorder/recorder_image_patch.yaml
@@ -176,24 +186,28 @@ docker-build-recorder: docker-build-builder
 # Build the webhook docker image
 .PHONY: docker-build-webhook
 docker-build-webhook: docker-build-builder
-	$(DOCKER_BUILD) -t ${WEBHOOK_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/webhook/Dockerfile
+	$(DOCKER_BUILD) -t ${WEBHOOK_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/webhook/Dockerfile
 	@echo "updating kustomize image patch file for webhook resource"
 	cp config/installbundle/components/webhook/webhook_image_patch_template.yaml config/installbundle/components/webhook/webhook_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${WEBHOOK_IMG}"'@' ./config/installbundle/components/webhook/webhook_image_patch.yaml
 
 .PHONY: docker-build-deletiondefender
 docker-build-deletiondefender: docker-build-builder
-	$(DOCKER_BUILD) -t ${DELETION_DEFENDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/deletiondefender/Dockerfile
+	$(DOCKER_BUILD) -t ${DELETION_DEFENDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/deletiondefender/Dockerfile
 	@echo "updating kustomize image patch file for deletion defender resource"
 	cp config/installbundle/components/deletiondefender/deletiondefender_image_patch_template.yaml config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${DELETION_DEFENDER_IMG}"'@' ./config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
 
 .PHONY: docker-build-unmanageddetector
 docker-build-unmanageddetector: docker-build-builder
-	$(DOCKER_BUILD) -t ${UNMANAGED_DETECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/unmanageddetector/Dockerfile
+	$(DOCKER_BUILD) -t ${UNMANAGED_DETECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/unmanageddetector/Dockerfile
 	@echo "updating kustomize image patch file for unmanaged detector resource"
 	cp config/installbundle/components/unmanageddetector/unmanageddetector_image_patch_template.yaml config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${UNMANAGED_DETECTOR_IMG}"'@' ./config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
+
+.PHONY: docker-build-config-connector
+docker-build-config-connector: docker-build-builder
+	$(DOCKER_BUILD) -t ${CONFIG_CONNECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/config-connector/Dockerfile
 
 # Push the docker image
 .PHONY: docker-push
@@ -203,6 +217,7 @@ docker-push:
 	docker push ${WEBHOOK_IMG}
 	docker push ${DELETION_DEFENDER_IMG}
 	docker push ${UNMANAGED_DETECTOR_IMG}
+	docker push ${CONFIG_CONNECTOR_IMG}
 
 __tooling-image:
 	docker buildx build build/tooling \
@@ -216,7 +231,7 @@ CONTROLLER_GEN=docker run --rm -v $(shell pwd):/wkdir kcc-tooling controller-gen
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 .PHONY: deploy
 deploy: manifests install
-	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	$(KUSTOMIZE) build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 # Install CRDs into a cluster
 .PHONY: install
@@ -227,13 +242,13 @@ install: manifests
 # faster than "make deploy". It is useful if you only want to quickly apply code change in controller
 .PHONY: deploy-controller
 deploy-controller: docker-build docker-push
-	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	$(KUSTOMIZE) build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 # Deploy controller only, this will skip CRD install in the configured K8s and usually runs much
 # faster than "make deploy". It is useful if you only want to quickly apply code change in controller
 .PHONY: deploy-controller-autopilot
 deploy-controller-autopilot: docker-build docker-push
-	kustomize build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	$(KUSTOMIZE) build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 # Generate CRD go clients
 .PHONY: generate-go-client
@@ -258,7 +273,7 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint manifests ensure fmt
+ready-pr: lint lint-custom manifests ensure fmt
 
 # Should run all needed commands to prepare a release.
 .PHONY: release-check
@@ -319,26 +334,26 @@ operator-manager-bin:
 all-manifests: crd-manifests rbac-manifests build-operator-manifests
 	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/standard/crds.yaml
 	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/standard/rbac.yaml
-	kustomize build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
+	$(KUSTOMIZE) build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
 	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/autopilot/crds.yaml
 	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/autopilot/rbac.yaml
-	kustomize build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
+	$(KUSTOMIZE) build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
 
 
 # Build kcc manifests for standard GKE clusters
 .PHONY: config-connector-manifests-standard
 config-connector-manifests-standard: build-operator-manifests
-	kustomize build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
+	$(KUSTOMIZE) build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
 
 # Build kcc manifests for autopilot clusters
 .PHONY: config-connector-manifests-autopilot
 config-connector-manifests-autopilot: build-operator-manifests
-	kustomize build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
+	$(KUSTOMIZE) build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
 
 .PHONY: build-operator-manifests
 build-operator-manifests:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases	
-	make -C operator docker-build
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
+	make -C operator docker-build GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 
 .PHONY: push-operator-manifest
 push-operator-manifest:
@@ -354,14 +369,14 @@ clean-release-manifests:
 	rm config/installbundle/release-manifests/autopilot/manifests.yaml
 
 .PHONY: deploy-kcc-standard
-deploy-kcc-standard: docker-build docker-push config-connector-manifests-standard push-operator-manifest 
+deploy-kcc-standard: docker-build docker-push config-connector-manifests-standard push-operator-manifest
 	kubectl apply -f config/installbundle/release-manifests/standard/manifests.yaml ${CONTEXT_FLAG}
-	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	$(KUSTOMIZE) build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 .PHONY: deploy-kcc-autopilot
 deploy-kcc-autopilot: docker-build docker-push config-connector-manifests-autopilot push-operator-manifest
 	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml ${CONTEXT_FLAG}
-	kustomize build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	$(KUSTOMIZE) build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 .PHONY: powertool-tests
 powertool-tests:
@@ -391,10 +406,4 @@ operator-e2e-tests:
 	export TEST_BILLING_ACCOUNT_ID=${BILLING_ACCOUNT}
 	cd operator/tests/e2e/ && go test --project-id=${PROJECT_ID}
 
-# Generate Go types for direct resources specified in the config files located under `dev/tools/controllerbuilder/config`.
-.PHONY: generate-types
-generate-types:
-	cd dev/tools/controllerbuilder && \
-	./generate-proto.sh && \
-	find config -name "*.yaml" -type f | xargs -I {} go run . generate-types --config {}
-	dev/tasks/fix-gofmt 
+

@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
@@ -26,20 +27,11 @@ import (
 
 var ComposerEnvironmentGVK = GroupVersion.WithKind("ComposerEnvironment")
 
-type Parent struct {
-	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// Immutable. The name of the location where the Environment will be created.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location is immutable."
-	// Required.
-	Location string `json:"location"`
-}
-
 // ComposerEnvironmentSpec defines the desired state of ComposerEnvironment
 // +kcc:spec:proto=google.cloud.orchestration.airflow.service.v1.Environment
 type ComposerEnvironmentSpec struct {
-	Parent `json:",inline"`
+	// The Project and location that this resource belongs to.
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The ComposerEnvironment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -119,7 +111,9 @@ type ComposerEnvironmentObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomposerenvironment;gcpcomposerenvironments
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"internal.cloud.google.com/additional-versions=v1alpha1"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

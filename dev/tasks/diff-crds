@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import os
+import subprocess
+import sys
+import argparse
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Diff CRDs against a base revision.")
+    parser.add_argument(
+        "--base",
+        default="upstream/master",
+        help="The base revision to compare against (default: upstream/master)",
+    )
+    args = parser.parse_args()
+
+    # Get repo root
+    try:
+        repo_root = subprocess.check_output(
+            ["git", "rev-parse", "--show-toplevel"], text=True
+        ).strip()
+    except subprocess.CalledProcessError as e:
+        print(f"Error getting repo root: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    os.chdir(repo_root)
+
+    # Get changed files safely handling spaces using -z
+    try:
+        diff_output = subprocess.check_output(
+            ["git", "diff", "-z", "--name-only", args.base, "--", "config/crds"],
+            text=True,
+        )
+    except subprocess.CalledProcessError as e:
+        print(f"Error getting diffs: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    if not diff_output:
+        return
+
+    # Split by null character and filter empty strings
+    files = [f for f in diff_output.split("\0") if f]
+
+    for crd_file in files:
+        # Check if file exists in base
+        if (
+            subprocess.call(
+                ["git", "cat-file", "-e", f"{args.base}:{crd_file}"],
+                stderr=subprocess.DEVNULL,
+            )
+            != 0
+        ):
+            print("***")
+            print(f"Added {crd_file}")
+            continue
+
+        # Pipeline: git show base:${CRD_FILE} | go run ./dev/tools/crd-to-simple-schema ...
+
+        git_show_cmd = ["git", "show", f"{args.base}:{crd_file}"]
+
+        go_run_cmd = [
+            "go",
+            "run",
+            "./dev/tools/crd-to-simple-schema",
+            "--crd-file=-",
+            f"--diff-crd-file={crd_file}",
+            "--flatten",
+            "--ignore-integer-type-differences",
+        ]
+
+        try:
+            # Create the git show process
+            p1 = subprocess.Popen(git_show_cmd, stdout=subprocess.PIPE)
+
+            # Create the go run process, connecting stdin to p1's stdout
+            # Capture stdout to buffer it
+            p2 = subprocess.Popen(
+                go_run_cmd,
+                stdin=p1.stdout,
+                stdout=subprocess.PIPE,
+                stderr=sys.stderr,
+                text=True,
+            )
+
+            # Allow p1 to receive a SIGPIPE if p2 exits.
+            p1.stdout.close()
+
+            # Wait for p2 to finish and get output
+            stdout_data, _ = p2.communicate()
+
+            if p2.returncode != 0:
+                sys.exit(p2.returncode)
+
+            if stdout_data:
+                print("***")
+                print(f"Diffs for CRD: {crd_file}")
+                print(stdout_data, end="")
+
+        except Exception as e:
+            print(f"Error running comparison for {crd_file}: {e}", file=sys.stderr)
+            sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

@@ -54,6 +54,9 @@ spec:
         ports:
         # Port used for readiness probe
         - containerPort: 23232
+        env:
+          - name: GOMEMLIMIT
+            value: 920MiB # Set to ~90% of the 1Gi limit
         resources:
           limits:
             memory: 1Gi

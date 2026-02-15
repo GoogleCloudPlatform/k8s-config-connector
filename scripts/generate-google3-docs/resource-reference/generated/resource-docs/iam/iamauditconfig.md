@@ -49,7 +49,7 @@ not allowed.
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/iam/reference/rest/v1/iamPolicies">/iam/reference/rest/v1/iamPolicies</a></td>
+<td><a href="/iam/docs/reference/rest/v2/policies">/iam/docs/reference/rest/v2/policies</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>

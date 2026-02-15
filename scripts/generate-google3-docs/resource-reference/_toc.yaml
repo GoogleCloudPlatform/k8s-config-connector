@@ -255,6 +255,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/identityplatform/identityplatformoauthidpconfig.md
 - title: "Cloud Logging"
   section:
+  - title: "LoggingLink"
+    path: /config-connector/docs/reference/resource-docs/logging/logginglink.md
   - title: "LoggingLogBucket"
     path: /config-connector/docs/reference/resource-docs/logging/logginglogbucket.md
   - title: "LoggingLogExclusion"
@@ -547,6 +549,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/redis/rediscluster.md
   - title: "RedisInstance"
     path: /config-connector/docs/reference/resource-docs/redis/redisinstance.md
+- title: "Memorystore for Valkey"
+  section:
+  - title: "MemorystoreInstance"
+    path: /config-connector/docs/reference/resource-docs/memorystore/memorystoreinstance.md
 - title: "Network Connectivity"
   section:
   - title: "NetworkConnectivityHub"

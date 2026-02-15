@@ -113,16 +113,19 @@ func validateConfig(spec *krm.AlloyDBInstanceSpec) error {
 	return nil
 }
 
-func (m *instanceModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *instanceModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.AlloyDBInstance{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewInstanceIdentity(ctx, reader, obj)
+	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := i.(*krm.AlloyDBInstanceIdentity)
 
 	// Get alloydb GCP client
 	gcpClient, err := m.client(ctx)
@@ -143,7 +146,7 @@ func (m *instanceModel) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type instanceAdapter struct {
-	id        *krm.InstanceIdentity
+	id        *krm.AlloyDBInstanceIdentity
 	gcpClient *gcp.AlloyDBAdminClient
 	reader    client.Reader
 	desired   *krm.AlloyDBInstance
@@ -158,7 +161,7 @@ var _ directbase.Adapter = &instanceAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *instanceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting instance", "name", a.id)
+	log.V(2).Info("getting instance", "name", a.id.String())
 
 	req := &alloydbpb.GetInstanceRequest{Name: a.id.String()}
 	instancepb, err := a.gcpClient.GetInstance(ctx, req)
@@ -204,7 +207,7 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	instanceType := a.desired.Spec.InstanceTypeRef.External
 	if instanceType == "SECONDARY" {
 		req := &alloydbpb.CreateSecondaryInstanceRequest{
-			Parent:     a.id.Parent().String(),
+			Parent:     a.id.ParentString(),
 			InstanceId: a.id.ID(),
 			Instance:   resource,
 		}
@@ -221,7 +224,7 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 		log.V(2).Info("successfully created secondary instance", "name", a.id)
 	} else {
 		req := &alloydbpb.CreateInstanceRequest{
-			Parent:     a.id.Parent().String(),
+			Parent:     a.id.ParentString(),
 			InstanceId: a.id.ID(),
 			Instance:   resource,
 		}
@@ -392,6 +395,16 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		log.V(2).Info("'spec.availabilityType' field is updated (-old +new)", cmp.Diff(actual.AvailabilityType, desired.AvailabilityType))
 		updatePaths = append(updatePaths, "availability_type")
 	}
+	if desired.ConnectionPoolConfig != nil {
+		if desired.ConnectionPoolConfig.Enabled != nil && !reflect.DeepEqual(actual.ConnectionPoolConfig.Enabled, desired.ConnectionPoolConfig.Enabled) {
+			log.V(2).Info("'spec.connectionPoolConfig.enabled' field is updated (-old +new)", cmp.Diff(actual.ConnectionPoolConfig.Enabled, desired.ConnectionPoolConfig.Enabled))
+			updatePaths = append(updatePaths, "connection_pool_config.enabled")
+		}
+		if desired.ConnectionPoolConfig.Flags != nil && !reflect.DeepEqual(actual.ConnectionPoolConfig.Flags, desired.ConnectionPoolConfig.Flags) {
+			log.V(2).Info("'spec.connectionPoolConfig.flags' field is updated (-old +new)", cmp.Diff(actual.ConnectionPoolConfig.Flags, desired.ConnectionPoolConfig.Flags))
+			updatePaths = append(updatePaths, "connection_pool_config.flags")
+		}
+	}
 	// TODO: Test "copied" behavior for read pool
 	// TODO: Test "overridden" behavior for read pool
 	// Default value of databaseFlags is unknown for a read instance unless we
@@ -473,6 +486,7 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		if path, changed := boolPtrChanged(actualObs.TrackActiveQueries, desiredObs.TrackActiveQueries, "observability_config.track_active_queries", log); changed {
 			updatePaths = append(updatePaths, path)
 		}
+		// TrackClientAcddress is in v1beta but is not in v1
 		if path, changed := boolPtrChanged(actualObs.TrackClientAddress, desiredObs.TrackClientAddress, "observability_config.track_client_address", log); changed {
 			updatePaths = append(updatePaths, path)
 		}

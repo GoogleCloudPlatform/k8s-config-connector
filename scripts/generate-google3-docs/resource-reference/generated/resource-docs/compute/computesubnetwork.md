@@ -135,9 +135,7 @@ stackType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. An optional description of this resource. Provide this property when
-you create the resource. This field can be set only at resource
-creation time.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. An optional description of this resource. Provide this property when you create the resource. This field can be set only at resource creation time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -147,10 +145,7 @@ creation time.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The range of internal addresses that are owned by this subnetwork.
-Provide this property when you create the subnetwork. For example,
-10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and
-non-overlapping within a network. Only IPv4 is supported.{% endverbatim %}</p>
+            <p>{% verbatim %}The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -160,9 +155,7 @@ non-overlapping within a network. Only IPv4 is supported.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The access type of IPv6 address this subnet holds. It's immutable and can only be specified during creation
-or the first time the subnet is updated into IPV4_IPV6 dual stack. If the ipv6_type is EXTERNAL then this subnet
-cannot enable direct path. Possible values: ["EXTERNAL", "INTERNAL"].{% endverbatim %}</p>
+            <p>{% verbatim %}The access type of IPv6 address this subnet holds. It's immutable and can only be specified during creation or the first time the subnet is updated into IPV4_IPV6 dual stack. If the ipv6_type is EXTERNAL then this subnet cannot enable direct path. Possible values: ["EXTERNAL", "INTERNAL"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -172,10 +165,7 @@ cannot enable direct path. Possible values: ["EXTERNAL", "INTERNAL"].{% endverba
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}This field denotes the VPC flow logging options for this subnetwork. If
-logging is enabled, logs are exported to Cloud Logging. Flow logging
-isn't supported if the subnet 'purpose' field is set to subnetwork is
-'REGIONAL_MANAGED_PROXY' or 'GLOBAL_MANAGED_PROXY'.{% endverbatim %}</p>
+            <p>{% verbatim %}This field denotes the VPC flow logging options for this subnetwork. If logging is enabled, logs are exported to Cloud Logging. Flow logging isn't supported if the subnet 'purpose' field is set to subnetwork is 'REGIONAL_MANAGED_PROXY' or 'GLOBAL_MANAGED_PROXY'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -185,10 +175,7 @@ isn't supported if the subnet 'purpose' field is set to subnetwork is
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Can only be specified if VPC flow logging for this subnetwork is enabled.
-Toggles the aggregation interval for collecting flow logs. Increasing the
-interval time will reduce the amount of generated flow logs for long
-lasting connections. Default is an interval of 5 seconds per connection. Default value: "INTERVAL_5_SEC" Possible values: ["INTERVAL_5_SEC", "INTERVAL_30_SEC", "INTERVAL_1_MIN", "INTERVAL_5_MIN", "INTERVAL_10_MIN", "INTERVAL_15_MIN"].{% endverbatim %}</p>
+            <p>{% verbatim %}Can only be specified if VPC flow logging for this subnetwork is enabled. Toggles the aggregation interval for collecting flow logs. Increasing the interval time will reduce the amount of generated flow logs for long lasting connections. Default is an interval of 5 seconds per connection. Check the AggregationInterval enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -198,9 +185,7 @@ lasting connections. Default is an interval of 5 seconds per connection. Default
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Export filter used to define which VPC flow logs should be logged, as as CEL expression. See
-https://cloud.google.com/vpc/docs/flow-logs#filtering for details on how to format this field.
-The default value is 'true', which evaluates to include everything.{% endverbatim %}</p>
+            <p>{% verbatim %}Can only be specified if VPC flow logs for this subnetwork is enabled. The filter expression is used to define which VPC flow logs should be exported to Cloud Logging.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -210,11 +195,7 @@ The default value is 'true', which evaluates to include everything.{% endverbati
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}Can only be specified if VPC flow logging for this subnetwork is enabled.
-The value of the field must be in [0, 1]. Set the sampling rate of VPC
-flow logs within the subnetwork where 1.0 means all collected logs are
-reported and 0.0 means no logs are reported. Default is 0.5 which means
-half of all collected logs are reported.{% endverbatim %}</p>
+            <p>{% verbatim %}Can only be specified if VPC flow logging for this subnetwork is enabled. The value of the field must be in [0, 1]. Set the sampling rate of VPC flow logs within the subnetwork where 1.0 means all collected logs are reported and 0.0 means no logs are reported. Default is 0.5 unless otherwise specified by the org policy, which means half of all collected logs are reported.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -224,9 +205,7 @@ half of all collected logs are reported.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Can only be specified if VPC flow logging for this subnetwork is enabled.
-Configures whether metadata fields should be added to the reported VPC
-flow logs. Default value: "INCLUDE_ALL_METADATA" Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA", "CUSTOM_METADATA"].{% endverbatim %}</p>
+            <p>{% verbatim %}Can only be specified if VPC flow logs for this subnetwork is enabled. Configures whether all, none or a subset of metadata fields should be added to the reported VPC flow logs. Default is EXCLUDE_ALL_METADATA. Check the Metadata enum for the list of possible values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -236,8 +215,7 @@ flow logs. Default value: "INCLUDE_ALL_METADATA" Possible values: ["EXCLUDE_ALL_
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}List of metadata fields that should be added to reported logs.
-Can only be specified if VPC flow logs for this subnetwork is enabled and "metadata" is set to CUSTOM_METADATA.{% endverbatim %}</p>
+            <p>{% verbatim %}Can only be specified if VPC flow logs for this subnetwork is enabled and "metadata" was set to CUSTOM_METADATA.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -257,8 +235,7 @@ Can only be specified if VPC flow logs for this subnetwork is enabled and "metad
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The network this subnet belongs to. Only networks that are in the
-distributed mode can have subnetworks.{% endverbatim %}</p>
+            <p>{% verbatim %}The network this subnet belongs to. Only networks that are in the distributed mode can have subnetworks.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -268,7 +245,7 @@ distributed mode can have subnetworks.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -278,7 +255,7 @@ distributed mode can have subnetworks.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a ComputeNetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -288,7 +265,7 @@ distributed mode can have subnetworks.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a ComputeNetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -298,8 +275,7 @@ distributed mode can have subnetworks.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}When enabled, VMs in this subnetwork without external IP addresses can
-access Google APIs and services by using Private Google Access.{% endverbatim %}</p>
+            <p>{% verbatim %}When enabled, VMs in this subnetwork without external IP addresses can access Google APIs and services by using Private Google Access.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -319,12 +295,7 @@ access Google APIs and services by using Private Google Access.{% endverbatim %}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The purpose of the resource. This field can be either 'PRIVATE_RFC_1918', 'REGIONAL_MANAGED_PROXY', 'GLOBAL_MANAGED_PROXY', or 'PRIVATE_SERVICE_CONNECT'.
-A subnet with purpose set to 'REGIONAL_MANAGED_PROXY' is a user-created subnetwork that is reserved for regional Envoy-based load balancers.
-A subnetwork in a given region with purpose set to 'GLOBAL_MANAGED_PROXY' is a proxy-only subnet and is shared between all the cross-regional Envoy-based load balancers.
-A subnetwork with purpose set to 'PRIVATE_SERVICE_CONNECT' reserves the subnet for hosting a Private Service Connect published service.
-Note that 'REGIONAL_MANAGED_PROXY' is the preferred setting for all regional Envoy load balancers.
-If unspecified, the purpose defaults to 'PRIVATE_RFC_1918'.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The purpose of the resource. This field can be either 'PRIVATE_RFC_1918', 'REGIONAL_MANAGED_PROXY', 'GLOBAL_MANAGED_PROXY', or 'PRIVATE_SERVICE_CONNECT'. A subnet with purpose set to 'REGIONAL_MANAGED_PROXY' is a user-created subnetwork that is reserved for regional Envoy-based load balancers. A subnetwork in a given region with purpose set to 'GLOBAL_MANAGED_PROXY' is a proxy-only subnet and is shared between all the cross-regional Envoy-based load balancers. A subnetwork with purpose set to 'PRIVATE_SERVICE_CONNECT' reserves the subnet for hosting a Private Service Connect published service. Note that 'REGIONAL_MANAGED_PROXY' is the preferred setting for all regional Envoy load balancers. If unspecified, the purpose defaults to 'PRIVATE_RFC_1918'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -354,11 +325,7 @@ If unspecified, the purpose defaults to 'PRIVATE_RFC_1918'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The role of subnetwork.
-Currently, this field is only used when 'purpose' is 'REGIONAL_MANAGED_PROXY'.
-The value can be set to 'ACTIVE' or 'BACKUP'.
-An 'ACTIVE' subnetwork is one that is currently being used for Envoy-based load balancers in a region.
-A 'BACKUP' subnetwork is one that is ready to be promoted to 'ACTIVE' or is currently draining. Possible values: ["ACTIVE", "BACKUP"].{% endverbatim %}</p>
+            <p>{% verbatim %}The role of subnetwork. Currently, this field is only used when 'purpose' is 'REGIONAL_MANAGED_PROXY'. The value can be set to 'ACTIVE' or 'BACKUP'. An 'ACTIVE' subnetwork is one that is currently being used for Envoy-based load balancers in a region. A 'BACKUP' subnetwork is one that is ready to be promoted to 'ACTIVE' or is currently draining. Possible values: ["ACTIVE", "BACKUP"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -388,10 +355,7 @@ A 'BACKUP' subnetwork is one that is ready to be promoted to 'ACTIVE' or is curr
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The range of IP addresses belonging to this subnetwork secondary
-range. Provide this property when you create the subnetwork.
-Ranges must be unique and non-overlapping with all primary and
-secondary IP ranges within a network. Only IPv4 is supported.{% endverbatim %}</p>
+            <p>{% verbatim %}The range of IP addresses belonging to this subnetwork secondary range. Provide this property when you create the subnetwork. Ranges must be unique and non-overlapping with all primary and secondary IP ranges within a network. Only IPv4 is supported. The range can be any range listed in the Valid ranges list.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -401,10 +365,7 @@ secondary IP ranges within a network. Only IPv4 is supported.{% endverbatim %}</
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name associated with this subnetwork secondary range, used
-when adding an alias IP range to a VM instance. The name must
-be 1-63 characters long, and comply with RFC1035. The name
-must be unique within the subnetwork.{% endverbatim %}</p>
+            <p>{% verbatim %}The name associated with this subnetwork secondary range, used when adding an alias IP range to a VM instance. The name must be 1-63 characters long, and comply with RFC1035. The name must be unique within the subnetwork.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -414,8 +375,7 @@ must be unique within the subnetwork.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The stack type for this subnet to identify whether the IPv6 feature is enabled or not.
-If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].{% endverbatim %}</p>
+            <p>{% verbatim %}The stack type for this subnet to identify whether the IPv6 feature is enabled or not. If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -455,7 +415,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -525,8 +485,7 @@ selfLink: string
         <td><code>gatewayAddress</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The gateway address for default routes to reach destination addresses
-outside this subnetwork.{% endverbatim %}</p>
+            <p>{% verbatim %}The gateway address for default routes to reach destination addresses outside this subnetwork.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -554,7 +513,7 @@ outside this subnetwork.{% endverbatim %}</p>
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Server-defined URL for the resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

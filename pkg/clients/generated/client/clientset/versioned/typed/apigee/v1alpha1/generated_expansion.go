@@ -23,16 +23,6 @@ package v1alpha1
 
 type ApigeeAddonsConfigExpansion interface{}
 
-type ApigeeEndpointAttachmentExpansion interface{}
-
-type ApigeeEnvgroupExpansion interface{}
-
-type ApigeeEnvgroupAttachmentExpansion interface{}
-
-type ApigeeInstanceExpansion interface{}
-
-type ApigeeInstanceAttachmentExpansion interface{}
-
 type ApigeeNATAddressExpansion interface{}
 
 type ApigeeSyncAuthorizationExpansion interface{}

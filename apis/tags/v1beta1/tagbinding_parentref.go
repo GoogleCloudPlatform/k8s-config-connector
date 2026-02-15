@@ -19,16 +19,21 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	storage "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // ParentRef is a reference to a parent resource.
-// +kcc:ref=Project
+// +kcc:ref=Project;StorageBucket
 type TagsTagBindingParentRef struct {
+	// Kind to which we are binding the tag.  Defaults to Project if not specified.
+	// +optional
+	// +kubebuilder:validation:Optional
+	Kind string `json:"kind,omitempty"`
+
 	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	Name string `json:"name,omitempty"`
 
@@ -44,7 +49,7 @@ type TagsTagBindingParentRef struct {
 var _ refs.Ref = &TagsTagBindingParentRef{}
 
 func (r *TagsTagBindingParentRef) GetGVK() schema.GroupVersionKind {
-	_, id := r.resolveReference()
+	_, id, _ := r.resolveReference()
 
 	if id == nil {
 		return schema.GroupVersionKind{}
@@ -69,7 +74,10 @@ func (r *TagsTagBindingParentRef) SetExternal(ref string) {
 }
 
 func (r *TagsTagBindingParentRef) ValidateExternal(ref string) error {
-	_, id := r.resolveReference()
+	_, id, err := r.resolveReference()
+	if err != nil {
+		return err
+	}
 	if id == nil {
 		return fmt.Errorf("unknown format for external reference %q", r.External)
 	}
@@ -81,7 +89,10 @@ func (r *TagsTagBindingParentRef) ValidateExternal(ref string) error {
 }
 
 func (r *TagsTagBindingParentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	service, id := r.resolveReference()
+	service, id, err := r.resolveReference()
+	if err != nil {
+		return err
+	}
 	if id == nil {
 		return fmt.Errorf("unknown format for external reference %q", r.External)
 	}
@@ -96,24 +107,65 @@ func (r *TagsTagBindingParentRef) Normalize(ctx context.Context, reader client.R
 	return nil
 }
 
-func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref) {
-	if suffix, ok := strings.CutPrefix(r.External, "//storage.googleapis.com/"); ok {
-		service := "storage.googleapis.com"
-
-		tokens := strings.Split(suffix, "/")
-		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "buckets" {
-			return service, &storage.StorageBucketRef{
-				External:  suffix,
-				Name:      r.Name,
-				Namespace: r.Namespace,
-			}
+func (r *TagsTagBindingParentRef) resolveReference() (string, refs.Ref, error) {
+	kind := r.Kind
+	if kind == "" {
+		if r.External != "" && (strings.HasPrefix(r.External, "organizations/") || strings.Contains(r.External, "/organizations/")) {
+			kind = "Organization"
+		} else {
+			kind = "Project"
 		}
-		return "", nil
 	}
 
-	return "cloudresourcemanager.googleapis.com", &refs.ProjectRef{
-		Name:      r.Name,
-		Namespace: r.Namespace,
-		External:  r.External,
+	if kind == "Project" {
+		if r.External != "" && !isProjectExternal(r.External) {
+			return "", nil, fmt.Errorf("unknown format for a Project reference in %q, please set Kind for non-project references or use projects/{project} for project references", r.External)
+		}
 	}
+
+	ref, err := refs.NewRefByKind(kind)
+	if err != nil {
+		return "", nil, err
+	}
+
+	if err := refs.SetRefFields(ref, r.Name, r.Namespace, r.External); err != nil {
+		return "", nil, err
+	}
+
+	// Get host/service
+	extRef, ok := ref.(refs.ExternalRef)
+	if !ok {
+		return "", nil, fmt.Errorf("kind %q does not implement ExternalRef", kind)
+	}
+
+	id, err := extRef.ParseExternalToIdentity()
+	if err != nil {
+		return "", nil, err
+	}
+
+	// Update External to canonical form (without host)
+	if err := refs.SetRefFields(ref, r.Name, r.Namespace, id.String()); err != nil {
+		return "", nil, err
+	}
+
+	idV2, ok := id.(identity.IdentityV2)
+	if !ok {
+		return "", ref, fmt.Errorf("identity for kind %q does not implement IdentityV2", kind)
+	}
+
+	return idV2.Host(), ref, nil
+}
+
+func isProjectExternal(external string) bool {
+	if strings.HasPrefix(external, "//cloudresourcemanager.googleapis.com/") {
+		return true
+	}
+	if strings.HasPrefix(external, "projects/") {
+		return len(strings.Split(external, "/")) == 2
+	}
+	// "123456789" is also a valid project external (project number)
+	if !strings.Contains(external, "/") {
+		return true
+	}
+	return false
 }

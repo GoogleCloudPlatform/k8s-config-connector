@@ -70,7 +70,9 @@ func (m *model) tableService(ctx context.Context) (*bigquery.TablesService, erro
 	return gcpService.Tables, err
 }
 
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.BigQueryTable{}
 	copied := u.DeepCopy()
 	if err := label.ComputeLabels(copied); err != nil {
@@ -80,7 +82,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewTableIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +92,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, err
 	}
 	adapter := &Adapter{
-		id:         id,
+		id:         id.(*krm.BigQueryTableIdentity),
 		gcpService: gcpService,
 		desired:    obj,
 		reader:     reader,
@@ -114,7 +116,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id              *krm.TableIdentity
+	id              *krm.BigQueryTableIdentity
 	gcpService      *bigquery.TablesService
 	desired         *krm.BigQueryTable
 	actual          *bigquery.Table
@@ -128,7 +130,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting BigQueryTable", "name", a.id.String())
 	parent := a.id.Parent()
-	getCall := a.gcpService.Get(parent.ProjectID, parent.DatasetID, a.id.ID())
+	getCall := a.gcpService.Get(parent.Project, parent.Dataset, a.id.ID())
 	table, err := getCall.Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -158,14 +160,14 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		schemaBack := table.Schema
 		table.Schema = nil
 		log.V(2).Info("Creating BigQuery without schema", "name", table.TableReference.TableId)
-		res, err := a.gcpService.Insert(parent.ProjectID, parent.DatasetID, table).Do()
+		res, err := a.gcpService.Insert(parent.Project, parent.Dataset, table).Do()
 		if err != nil {
 			return fmt.Errorf("error creating Table %s: %w", a.id.ID(), err)
 		}
 		log.V(2).Info("successfully created Table", "name", res.Id)
 		table.Schema = schemaBack
 		log.V(2).Info("Updating BigQuery Table back with schema", "name", res.TableReference.TableId)
-		res, err = a.gcpService.Update(parent.ProjectID, parent.DatasetID, res.TableReference.TableId, table).Do()
+		res, err = a.gcpService.Update(parent.Project, parent.Dataset, res.TableReference.TableId, table).Do()
 		if err != nil {
 			return fmt.Errorf("error updating Table during CREATE table with both schema and view specified %s: %w", a.id.ID(), err)
 		}
@@ -174,7 +176,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 			return err
 		}
 	} else {
-		insertCall := a.gcpService.Insert(parent.ProjectID, parent.DatasetID, table)
+		insertCall := a.gcpService.Insert(parent.Project, parent.Dataset, table)
 		created, err := insertCall.Do()
 		if err != nil {
 			return fmt.Errorf("error creating Table %s: %w", a.id.ID(), err)
@@ -248,14 +250,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	if len(a.unmanagedFields) > 0 {
 		// Make PATCH call without unmanaged fields to avoid accidental override.
-		res, err := a.gcpService.Patch(parent.ProjectID, parent.DatasetID, a.id.ID(), table).Do()
+		res, err := a.gcpService.Patch(parent.Project, parent.Dataset, a.id.ID(), table).Do()
 		if err != nil {
 			return fmt.Errorf("error patching Table %s: %w", a.id.ID(), err)
 		}
 		return a.UpdateStatusForUpdate(ctx, updateOp, res)
 	}
 	// If not unmanaged field is specify, we use PUT to keep backward compatibility with TF controller.
-	res, err := a.gcpService.Update(parent.ProjectID, parent.DatasetID, a.id.ID(), table).Do()
+	res, err := a.gcpService.Update(parent.Project, parent.Dataset, a.id.ID(), table).Do()
 	if err != nil {
 		return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
 	}
@@ -349,7 +351,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Table", "name", a.id.String())
 	parent := a.id.Parent()
-	if err := a.gcpService.Delete(parent.ProjectID, parent.DatasetID, a.id.ID()).Do(); err != nil {
+	if err := a.gcpService.Delete(parent.Project, parent.Dataset, a.id.ID()).Do(); err != nil {
 		if direct.IsNotFound(err) {
 			log.V(2).Info("skipping delete for non-existent BigQuery Table, assuming it was already deleted", "name", a.id.String())
 			return true, nil
@@ -368,8 +370,8 @@ func (a *Adapter) customTableLogic(table *bigquery.Table) {
 	parent := a.id.Parent()
 	// Adding TableReference object as the API requires this object to be populated to be valid.
 	table.TableReference = &bigquery.TableReference{
-		ProjectId: parent.ProjectID,
-		DatasetId: parent.DatasetID,
+		ProjectId: parent.Project,
+		DatasetId: parent.Dataset,
 		TableId:   a.id.ID(),
 	}
 }

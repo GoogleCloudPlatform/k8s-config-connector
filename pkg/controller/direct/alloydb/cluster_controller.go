@@ -19,9 +19,8 @@ import (
 	"fmt"
 	"strings"
 
-	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
+	computev1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -103,7 +102,9 @@ func (m *modelCluster) MapSecretToResources(ctx context.Context, reader client.R
 	return requests, nil
 }
 
-func (m *modelCluster) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelCluster) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.AlloyDBCluster{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -273,14 +274,14 @@ func (a *ClusterAdapter) resolveKRMDefaultsForUpdate() {
 	// This is needed for only update because the returned actual state has both
 	// fields set to the same value.
 	if obj.Spec.NetworkRef == nil && obj.Spec.NetworkConfig != nil && obj.Spec.NetworkConfig.NetworkRef != nil {
-		obj.Spec.NetworkRef = &computev1beta1.ComputeNetworkRef{
+		obj.Spec.NetworkRef = &computev1.ComputeNetworkRef{
 			External: obj.Spec.NetworkConfig.NetworkRef.External,
 		}
 	} else if (obj.Spec.NetworkConfig == nil || obj.Spec.NetworkConfig.NetworkRef == nil) && obj.Spec.NetworkRef != nil {
 		if obj.Spec.NetworkConfig == nil {
 			obj.Spec.NetworkConfig = &krm.Cluster_NetworkConfig{}
 		}
-		obj.Spec.NetworkConfig.NetworkRef = &computev1beta1.ComputeNetworkRef{
+		obj.Spec.NetworkConfig.NetworkRef = &computev1.ComputeNetworkRef{
 			External: obj.Spec.NetworkRef.External,
 		}
 	}
@@ -499,6 +500,7 @@ func (a *ClusterAdapter) resolveGCPDefaults(desired *alloydbpb.Cluster, actual *
 		desired.ContinuousBackupConfig.RecoveryWindowDays = 14
 	}
 
+	// GeminiConfig deprecated in v1beta and removed in v1
 	if desired.GeminiConfig == nil {
 		desired.GeminiConfig = &alloydbpb.GeminiClusterConfig{}
 	}

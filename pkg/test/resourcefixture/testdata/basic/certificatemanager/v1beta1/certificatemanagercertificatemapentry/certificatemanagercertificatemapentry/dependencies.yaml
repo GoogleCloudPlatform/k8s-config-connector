@@ -15,6 +15,8 @@
 apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
 kind: CertificateManagerCertificateMap
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: certificatemanagercertificatemap-${uniqueId}
 spec:
   description: sample certificate-map for creating certificate-map-entry
@@ -25,6 +27,8 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: secret-${uniqueId}
 stringData:
   privateKey: |
@@ -60,6 +64,8 @@ stringData:
 apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
 kind: CertificateManagerCertificate
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   labels:
     label-one: "value-one"
   name: certificatemanagercertificate-${uniqueId}

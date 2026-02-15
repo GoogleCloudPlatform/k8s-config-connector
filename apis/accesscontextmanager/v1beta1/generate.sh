@@ -21,11 +21,10 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
+
 go run . generate-types \
-    --service google.identity.accesscontextmanager.v1 \
-    --api-version accesscontextmanager.cnrm.cloud.google.com/v1beta1  \
-    --resource AccessContextManagerAccessPolicy:AccessPolicy \
-    --resource AccessContextManagerAccessLevel:AccessLevel
+    --config ${REPO_ROOT}/apis/accesscontextmanager/v1beta1/generatetypes.yaml
 
 go run . generate-mapper \
     --service google.identity.accesscontextmanager.v1 \

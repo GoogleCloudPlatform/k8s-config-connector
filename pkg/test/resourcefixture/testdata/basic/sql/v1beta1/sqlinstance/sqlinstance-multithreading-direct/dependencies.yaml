@@ -16,6 +16,8 @@
 apiVersion: v1
 kind: Secret
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: secret-${uniqueId}
 data:
   password: MTIzNCFAIyRhc2Rm

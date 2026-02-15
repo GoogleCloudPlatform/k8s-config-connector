@@ -5,21 +5,21 @@
 description = "Generates a detailed summary of changes for a new release."
 
 prelude = """
-CRD_COUNT=$(ls -1 crds/ | wc -l)
-echo "Found $CRD_COUNT CRDs in the crds/ directory."
+CRD_COUNT=$(ls -1 config/crds/resources/ | wc -l)
+echo "Found $CRD_COUNT CRDs in the config/crds/resources/ directory."
 """
 
 prompt = """
 Please act as a release notes generator for the Config Connector project.
 Your task is to analyze the git diff provided below and generate a structured summary based on the provided template.
 
-The total number of CRDs in the crds/ directory is $CRD_COUNT. Use this number for the [COUNT] field.
+The total number of CRDs in the config/crds/resources/ directory is $CRD_COUNT. Use this number for the [COUNT] field.
 
 Here is the template from @dev/release/template.md.
 
 Please fill in the template with the information you extract from the diff.
 Instructions for filling the template:
-- **[COUNT]**: Use the value of the CRD_COUNT environment variable, which is the total number of files in the crds/ directory.
+- **[COUNT]**: Use the value of the CRD_COUNT environment variable, which is the total number of files in the config/crds/resources/ directory.
 - **[OLD_VERSION]**, **[NEW_VERSION]**: Determine these from changes to 'cnrm.cloud.google.com/version:' annotations in the diff.
 - **[RENAMED_FILE_OLD]** and **[RENAMED_FILE_NEW]**: Find file renames from 'v1alpha1' to 'v1beta1'.
 - **[NEW_CRD_FILE]**: Find newly created CRD files.

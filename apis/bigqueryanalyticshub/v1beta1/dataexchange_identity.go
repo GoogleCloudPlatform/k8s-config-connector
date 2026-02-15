@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,70 +19,102 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-type DataExchangeIdentity struct {
-	id     string
-	parent *DataExchangeParent
+var (
+	_ identity.IdentityV2 = &BigQueryAnalyticsHubDataExchangeIdentity{}
+	_ identity.Resource   = &BigQueryAnalyticsHubDataExchange{}
+)
+
+var BigQueryAnalyticsHubDataExchangeIdentityFormat = gcpurls.Template[BigQueryAnalyticsHubDataExchangeIdentity]("analyticshub.googleapis.com", "projects/{project}/locations/{location}/dataExchanges/{dataExchange}")
+
+// +k8s:deepcopy-gen=false
+type BigQueryAnalyticsHubDataExchangeIdentity struct {
+	Project      string
+	Location     string
+	DataExchange string
 }
 
-func (i *DataExchangeIdentity) String() string {
-	return i.parent.String() + "/dataExchanges/" + i.id
+func (i *BigQueryAnalyticsHubDataExchangeIdentity) String() string {
+	return BigQueryAnalyticsHubDataExchangeIdentityFormat.ToString(*i)
 }
 
-func (r *DataExchangeIdentity) Parent() *DataExchangeParent {
-	return r.parent
-}
-
-func (r *DataExchangeIdentity) ID() string {
-	return r.id
-}
-
-type DataExchangeParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *DataExchangeParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-func NewDataExchangeIdentity(ctx context.Context, reader client.Reader, obj *BigQueryAnalyticsHubDataExchange, u *unstructured.Unstructured) (*DataExchangeIdentity, error) {
-	// Get Parent
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+func (i *BigQueryAnalyticsHubDataExchangeIdentity) FromExternal(ref string) error {
+	parsed, match, err := BigQueryAnalyticsHubDataExchangeIdentityFormat.Parse(ref)
 	if err != nil {
+		return fmt.Errorf("format of BigQueryAnalyticsHubDataExchange external=%q was not known (use %s): %w", ref, BigQueryAnalyticsHubDataExchangeIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of BigQueryAnalyticsHubDataExchange external=%q was not known (use %s)", ref, BigQueryAnalyticsHubDataExchangeIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *BigQueryAnalyticsHubDataExchangeIdentity) Host() string {
+	return BigQueryAnalyticsHubDataExchangeIdentityFormat.Host()
+}
+
+func ParseDataExchangeIdentity(external string) (*BigQueryAnalyticsHubDataExchangeIdentity, error) {
+	id := &BigQueryAnalyticsHubDataExchangeIdentity{}
+	if err := id.FromExternal(external); err != nil {
 		return nil, err
 	}
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+	return id, nil
+}
+
+func (i *BigQueryAnalyticsHubDataExchangeIdentity) ID() string {
+	return i.DataExchange
+}
+
+func getIdentityFromBigQueryAnalyticsHubDataExchangeSpec(ctx context.Context, reader client.Reader, obj client.Object) (*BigQueryAnalyticsHubDataExchangeIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	identity := &BigQueryAnalyticsHubDataExchangeIdentity{
+		Project:      projectID,
+		Location:     location,
+		DataExchange: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *BigQueryAnalyticsHubDataExchange) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromBigQueryAnalyticsHubDataExchangeSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		actualIdentity, err := ParseDataExchangeIdentity(externalRef)
-		if err != nil {
+		// Validate desired with actual
+		statusIdentity := &BigQueryAnalyticsHubDataExchangeIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualIdentity.parent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.parent.ProjectID, projectID)
-		}
-		if actualIdentity.id != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualIdentity.id)
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change BigQueryAnalyticsHubDataExchange identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 
-	return &DataExchangeIdentity{
-		parent: &DataExchangeParent{ProjectID: projectID},
-		id:     resourceID,
-	}, nil
+	return specIdentity, nil
 }

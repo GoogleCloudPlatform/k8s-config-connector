@@ -31,6 +31,8 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
+
 # Generate the KCC type structs from the GCP proto definitions
 go run . generate-types \
   --service google.example.api.v1 \
@@ -192,11 +194,10 @@ To fix this, you need to update the source protos from the `googleapis` reposito
     ```bash
     git ls-remote https://github.com/googleapis/googleapis.git HEAD
     ```
-2.  **Update `git.versions`:** Open the file `mockgcp/git.versions` and update the commit hash for the `https://github.com/googleapis/googleapis` entry with the new hash you found.
+2.  **Update `git.versions`:** Open the file `apis/git.versions` and update the commit hash for the `https://github.com/googleapis/googleapis` entry with the new hash you found.
 3.  **Regenerate the compiled protos:** Run the `make gen-proto` target. This command specifically executes the `dev/tools/controllerbuilder/generate-proto.sh` script, which will:
     *   Fetch the `googleapis` repository at the specific commit you defined in `git.versions` into the `.build/third_party/googleapis` directory.
     *   Re-compile all the necessary `.proto` files into the single descriptor file at `.build/googleapis.pb`.
     This process can take several minutes.
     *(Note: If `make gen-proto` is not available, running `make all` will also perform this step, but it will run many other tasks as well.)*
 4.  **Re-run `generate.sh`:** Once the `.build/googleapis.pb` file has been regenerated, you can re-run the `generate.sh` script for your service. It should now be able to find the proto message.
-

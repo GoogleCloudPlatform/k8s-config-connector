@@ -28,7 +28,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/iam/reference/rest/v1/projects.serviceAccounts">/iam/reference/rest/v1/projects.serviceAccounts</a></td>
+<td><a href="/iam/docs/reference/rest/v1/projects.serviceAccounts">/iam/docs/reference/rest/v1/projects.serviceAccounts</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>

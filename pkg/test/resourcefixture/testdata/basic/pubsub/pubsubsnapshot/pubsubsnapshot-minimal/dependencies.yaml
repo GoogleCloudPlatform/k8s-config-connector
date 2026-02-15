@@ -16,6 +16,7 @@ apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   labels:
     label-one: "value-one"
@@ -27,6 +28,7 @@ metadata:
   labels:
     label-one: "value-one"
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: pubsubsubscription-${uniqueId}
 spec:

@@ -39,6 +39,14 @@ func (c *FakeKmsV1beta1) KMSCryptoKeys(namespace string) v1beta1.KMSCryptoKeyInt
 	return &FakeKMSCryptoKeys{c, namespace}
 }
 
+func (c *FakeKmsV1beta1) KMSImportJobs(namespace string) v1beta1.KMSImportJobInterface {
+	return &FakeKMSImportJobs{c, namespace}
+}
+
+func (c *FakeKmsV1beta1) KMSKeyHandles(namespace string) v1beta1.KMSKeyHandleInterface {
+	return &FakeKMSKeyHandles{c, namespace}
+}
+
 func (c *FakeKmsV1beta1) KMSKeyRings(namespace string) v1beta1.KMSKeyRingInterface {
 	return &FakeKMSKeyRings{c, namespace}
 }

@@ -34,13 +34,7 @@ VERSION=${NEW_VERSION} STALE_VERSION=${STALE_VERSION} ./dev/tasks/propose-tag
 git add .
 git commit -m "Release ${NEW_VERSION}"
 
-# Step 4: Synchronize CRDs
-echo "Synchronizing CRDs..."
-VERSION=${NEW_VERSION} ./dev/tasks/sync-crds-folder.sh
-git add .
-git commit -m "Update alpha CRDs for Release ${NEW_VERSION}"
-
-# Step 5: Run Unit Tests
+# Step 4: Run Unit Tests
 echo "Running unit tests..."
 cd operator
 # We use an if statement to handle the failure case without exiting due to set -e
@@ -49,14 +43,20 @@ if ! (go test ./pkg/controllers/...); then
   WRITE_GOLDEN_OUTPUT="true" go test ./pkg/controllers/...
   git add .
   git commit -m "Update golden files for operator controllers"
-  
+
   echo "Retrying unit tests..."
   go test ./pkg/controllers/...
 fi
 
-# Step 6: Format Code
-echo "Formatting code..."
+echo "Validating resource reference docs..."
 cd ..
+# With VALIDATE_URLS=="true", the doc validation test also validates
+# whether the embedded URLs in the template files are accessible.
+# If failed, fix the inaccessible URLs in the template files and rerun `make resource-docs`.
+VALIDATE_URLS="true" go test ./scripts/generate-google3-docs/...
+
+# Step 5: Format Code
+echo "Formatting code..."
 make fmt
 git add .
 # Only commit if there are changes

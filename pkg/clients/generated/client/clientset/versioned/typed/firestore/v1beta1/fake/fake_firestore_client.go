@@ -31,6 +31,10 @@ type FakeFirestoreV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeFirestoreV1beta1) FirestoreDatabases(namespace string) v1beta1.FirestoreDatabaseInterface {
+	return &FakeFirestoreDatabases{c, namespace}
+}
+
 func (c *FakeFirestoreV1beta1) FirestoreIndexes(namespace string) v1beta1.FirestoreIndexInterface {
 	return &FakeFirestoreIndexes{c, namespace}
 }

@@ -16,6 +16,7 @@ apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
   name: project-${uniqueId}
 spec:
@@ -30,6 +31,7 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/disable-dependent-services: "false"
   name: containeranalysis.googleapis.com
 spec:
@@ -40,6 +42,7 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/disable-dependent-services: "false"
   name: binaryauthorization.googleapis.com
 spec:
@@ -50,6 +53,7 @@ apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
 kind: ContainerAnalysisNote
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: project-${uniqueId}
   name: containeranalysisnote-${uniqueId}
 spec:
@@ -59,6 +63,8 @@ spec:
 apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
 kind: BinaryAuthorizationAttestor
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: binaryauthorizationattestor-${uniqueId}
 spec:
   projectRef:

@@ -156,12 +156,20 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 404 Not Found
-Content-Type: application/json
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "dataExchange \"projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Failed to find data exchange in projects/${projectNumber}: dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -177,19 +185,22 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2FUS
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "description": "",
-  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "my_data_exchange",
-  "documentation": "",
-  "icon": "",
-  "listingCount": 0,
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
-  "primaryContact": "",
-  "sharingEnvironmentConfig": null
+  "logLinkedDatasetQueryUserEmail": false,
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "sharingEnvironmentConfig": {
+    "defaultExchangeConfig": {}
+  }
 }
 
 ---
@@ -198,14 +209,23 @@ GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/da
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 404 Not Found
-Content-Type: application/json
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "listing \"projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Failed to find listing: projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -214,6 +234,7 @@ POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/d
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 {
   "bigqueryDataset": {
@@ -224,29 +245,40 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2FUS%2FdataExc
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
+  "allowOnlyMetadataSharing": false,
   "bigqueryDataset": {
-    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-    "restrictedExportPolicy": null,
-    "selectedResources": []
+    "dataset": "projects/${projectNumber}/datasets/bigquerydataset${uniqueId}",
+    "effectiveReplicas": [
+      {
+        "location": "us",
+        "primaryState": "PRIMARY_REPLICA",
+        "replicaState": "READY_TO_USE"
+      }
+    ],
+    "restrictedExportPolicy": {
+      "enabled": false,
+      "restrictDirectTableAccess": false,
+      "restrictQueryResult": false
+    }
   },
-  "categories": [],
-  "dataProvider": null,
-  "description": "",
-  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "dataProvider": {},
+  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "my_data_exchange",
-  "documentation": "",
-  "icon": "",
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
-  "primaryContact": "",
-  "publisher": null,
-  "requestAccess": "",
-  "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
-  "restrictedExportConfig": null,
-  "state": "STATE_UNSPECIFIED"
+  "logLinkedDatasetQueryUserEmail": false,
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "publisher": {},
+  "resourceType": "BIGQUERY_DATASET",
+  "restrictedExportConfig": {},
+  "state": "ACTIVE"
 }
 
 ---
@@ -255,31 +287,43 @@ GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/da
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
+  "allowOnlyMetadataSharing": false,
   "bigqueryDataset": {
-    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-    "restrictedExportPolicy": null,
-    "selectedResources": []
+    "dataset": "projects/${projectNumber}/datasets/bigquerydataset${uniqueId}",
+    "effectiveReplicas": [
+      {
+        "location": "us",
+        "primaryState": "PRIMARY_REPLICA",
+        "replicaState": "READY_TO_USE"
+      }
+    ],
+    "restrictedExportPolicy": {
+      "enabled": false,
+      "restrictDirectTableAccess": false,
+      "restrictQueryResult": false
+    }
   },
-  "categories": [],
-  "dataProvider": null,
-  "description": "",
-  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "dataProvider": {},
+  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "my_data_exchange",
-  "documentation": "",
-  "icon": "",
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
-  "primaryContact": "",
-  "publisher": null,
-  "requestAccess": "",
-  "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
-  "restrictedExportConfig": null,
-  "state": "STATE_UNSPECIFIED"
+  "logLinkedDatasetQueryUserEmail": false,
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "publisher": {},
+  "resourceType": "BIGQUERY_DATASET",
+  "restrictedExportConfig": {},
+  "state": "ACTIVE"
 }
 
 ---
@@ -288,6 +332,7 @@ PATCH https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: listing.name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 {
   "bigqueryDataset": {
@@ -299,29 +344,40 @@ X-Goog-Request-Params: listing.name=projects%2F${projectId}%2Flocations%2FUS%2Fd
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
+  "allowOnlyMetadataSharing": false,
   "bigqueryDataset": {
-    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-    "restrictedExportPolicy": null,
-    "selectedResources": []
+    "dataset": "projects/${projectNumber}/datasets/bigquerydataset${uniqueId}",
+    "effectiveReplicas": [
+      {
+        "location": "us",
+        "primaryState": "PRIMARY_REPLICA",
+        "replicaState": "READY_TO_USE"
+      }
+    ],
+    "restrictedExportPolicy": {
+      "enabled": false,
+      "restrictDirectTableAccess": false,
+      "restrictQueryResult": false
+    }
   },
-  "categories": [],
-  "dataProvider": null,
-  "description": "",
-  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "dataProvider": {},
+  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "updated_name",
-  "documentation": "",
-  "icon": "",
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
-  "primaryContact": "",
-  "publisher": null,
-  "requestAccess": "",
-  "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
-  "restrictedExportConfig": null,
-  "state": "STATE_UNSPECIFIED"
+  "logLinkedDatasetQueryUserEmail": false,
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "publisher": {},
+  "resourceType": "BIGQUERY_DATASET",
+  "restrictedExportConfig": {},
+  "state": "ACTIVE"
 }
 
 ---
@@ -330,31 +386,43 @@ GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/da
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
+  "allowOnlyMetadataSharing": false,
   "bigqueryDataset": {
-    "dataset": "projects/${projectId}/datasets/bigquerydataset${uniqueId}",
-    "restrictedExportPolicy": null,
-    "selectedResources": []
+    "dataset": "projects/${projectNumber}/datasets/bigquerydataset${uniqueId}",
+    "effectiveReplicas": [
+      {
+        "location": "us",
+        "primaryState": "PRIMARY_REPLICA",
+        "replicaState": "READY_TO_USE"
+      }
+    ],
+    "restrictedExportPolicy": {
+      "enabled": false,
+      "restrictDirectTableAccess": false,
+      "restrictQueryResult": false
+    }
   },
-  "categories": [],
-  "dataProvider": null,
-  "description": "",
-  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "dataProvider": {},
+  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "updated_name",
-  "documentation": "",
-  "icon": "",
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
-  "primaryContact": "",
-  "publisher": null,
-  "requestAccess": "",
-  "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
-  "restrictedExportConfig": null,
-  "state": "STATE_UNSPECIFIED"
+  "logLinkedDatasetQueryUserEmail": false,
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}/listings/bigqueryanalyticshublisting${uniqueId}",
+  "publisher": {},
+  "resourceType": "BIGQUERY_DATASET",
+  "restrictedExportConfig": {},
+  "state": "ACTIVE"
 }
 
 ---
@@ -363,11 +431,16 @@ DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}%2Flistings%2Fbigqueryanalyticshublisting${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-Grpc-Metadata-X-Http-Code: 204
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -379,19 +452,22 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "description": "",
-  "discoveryType": "DISCOVERY_TYPE_UNSPECIFIED",
+  "discoveryType": "DISCOVERY_TYPE_PRIVATE",
   "displayName": "my_data_exchange",
-  "documentation": "",
-  "icon": "",
-  "listingCount": 0,
-  "name": "projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
-  "primaryContact": "",
-  "sharingEnvironmentConfig": null
+  "logLinkedDatasetQueryUserEmail": false,
+  "name": "projects/${projectNumber}/locations/us/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}",
+  "sharingEnvironmentConfig": {
+    "defaultExchangeConfig": {}
+  }
 }
 
 ---
@@ -402,9 +478,13 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-Grpc-Metadata-X-Http-Code: 204
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 

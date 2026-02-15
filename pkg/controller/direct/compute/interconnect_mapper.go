@@ -25,15 +25,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ComputeInterconnectObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Interconnect) *krm.ComputeInterconnectObservedState {
+func ComputeInterconnectObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Interconnect) *krm.ComputeInterconnectObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ComputeInterconnectObservedState{}
 	out.AvailableFeatures = in.AvailableFeatures
-	out.CircuitInfos = direct.Slice_FromProto(mapCtx, in.CircuitInfos, InterconnectCircuitInfo_FromProto)
+	out.CircuitInfos = direct.Slice_FromProto(mapCtx, in.CircuitInfos, InterconnectCircuitInfo_v1alpha1_FromProto)
 	out.CreationTimestamp = in.CreationTimestamp
-	out.ExpectedOutages = direct.Slice_FromProto(mapCtx, in.ExpectedOutages, InterconnectOutageNotification_FromProto)
+	out.ExpectedOutages = direct.Slice_FromProto(mapCtx, in.ExpectedOutages, InterconnectOutageNotification_v1alpha1_FromProto)
 	out.GoogleIPAddress = in.GoogleIpAddress
 	out.GoogleReferenceID = in.GoogleReferenceId
 	out.ID = in.Id
@@ -48,15 +48,15 @@ func ComputeInterconnectObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.State = in.State
 	return out
 }
-func ComputeInterconnectObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInterconnectObservedState) *pb.Interconnect {
+func ComputeInterconnectObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInterconnectObservedState) *pb.Interconnect {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Interconnect{}
 	out.AvailableFeatures = in.AvailableFeatures
-	out.CircuitInfos = direct.Slice_ToProto(mapCtx, in.CircuitInfos, InterconnectCircuitInfo_ToProto)
+	out.CircuitInfos = direct.Slice_ToProto(mapCtx, in.CircuitInfos, InterconnectCircuitInfo_v1alpha1_ToProto)
 	out.CreationTimestamp = in.CreationTimestamp
-	out.ExpectedOutages = direct.Slice_ToProto(mapCtx, in.ExpectedOutages, InterconnectOutageNotification_ToProto)
+	out.ExpectedOutages = direct.Slice_ToProto(mapCtx, in.ExpectedOutages, InterconnectOutageNotification_v1alpha1_ToProto)
 	out.GoogleIpAddress = in.GoogleIPAddress
 	out.GoogleReferenceId = in.GoogleReferenceID
 	out.Id = in.ID
@@ -71,7 +71,7 @@ func ComputeInterconnectObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.State = in.State
 	return out
 }
-func ComputeInterconnectSpec_FromProto(mapCtx *direct.MapContext, in *pb.Interconnect) *krm.ComputeInterconnectSpec {
+func ComputeInterconnectSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Interconnect) *krm.ComputeInterconnectSpec {
 	if in == nil {
 		return nil
 	}
@@ -84,7 +84,7 @@ func ComputeInterconnectSpec_FromProto(mapCtx *direct.MapContext, in *pb.Interco
 	out.Labels = in.Labels
 	out.LinkType = in.LinkType
 	out.Location = in.Location
-	out.Macsec = InterconnectMacsec_FromProto(mapCtx, in.GetMacsec())
+	out.Macsec = InterconnectMacsec_v1alpha1_FromProto(mapCtx, in.GetMacsec())
 	out.MacsecEnabled = in.MacsecEnabled
 	// MISSING: Name
 	out.NocContactEmail = in.NocContactEmail
@@ -93,7 +93,7 @@ func ComputeInterconnectSpec_FromProto(mapCtx *direct.MapContext, in *pb.Interco
 	out.RequestedLinkCount = in.RequestedLinkCount
 	return out
 }
-func ComputeInterconnectSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInterconnectSpec) *pb.Interconnect {
+func ComputeInterconnectSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeInterconnectSpec) *pb.Interconnect {
 	if in == nil {
 		return nil
 	}
@@ -106,7 +106,7 @@ func ComputeInterconnectSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeI
 	out.Labels = in.Labels
 	out.LinkType = in.LinkType
 	out.Location = in.Location
-	if oneof := InterconnectMacsec_ToProto(mapCtx, in.Macsec); oneof != nil {
+	if oneof := InterconnectMacsec_v1alpha1_ToProto(mapCtx, in.Macsec); oneof != nil {
 		out.Macsec = &pb.InterconnectMacsec{FailOpen: oneof.FailOpen, PreSharedKeys: oneof.PreSharedKeys}
 	}
 	out.MacsecEnabled = in.MacsecEnabled
@@ -117,53 +117,6 @@ func ComputeInterconnectSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeI
 	out.RequestedLinkCount = in.RequestedLinkCount
 	return out
 }
-func InterconnectCircuitInfo_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectCircuitInfo) *krm.InterconnectCircuitInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.InterconnectCircuitInfo{}
-	out.CustomerDemarcID = in.CustomerDemarcId
-	out.GoogleCircuitID = in.GoogleCircuitId
-	out.GoogleDemarcID = in.GoogleDemarcId
-	return out
-}
-func InterconnectCircuitInfo_ToProto(mapCtx *direct.MapContext, in *krm.InterconnectCircuitInfo) *pb.InterconnectCircuitInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.InterconnectCircuitInfo{}
-	out.CustomerDemarcId = in.CustomerDemarcID
-	out.GoogleCircuitId = in.GoogleCircuitID
-	out.GoogleDemarcId = in.GoogleDemarcID
-	return out
-}
-func InterconnectMacsec_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectMacsec) *krm.InterconnectMacsec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.InterconnectMacsec{}
-	out.FailOpen = in.FailOpen
-	out.PreSharedKeys = direct.Slice_FromProto(mapCtx, in.PreSharedKeys, InterconnectMacsecPreSharedKey_FromProto)
-	return out
-}
-func InterconnectMacsec_ToProto(mapCtx *direct.MapContext, in *krm.InterconnectMacsec) *pb.InterconnectMacsec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.InterconnectMacsec{}
-	out.FailOpen = in.FailOpen
-	out.PreSharedKeys = direct.Slice_ToProto(mapCtx, in.PreSharedKeys, InterconnectMacsecPreSharedKey_ToProto)
-	return out
-}
-func InterconnectMacsecPreSharedKey_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectMacsecPreSharedKey) *krm.InterconnectMacsecPreSharedKey {
-	if in == nil {
-		return nil
-	}
-	out := &krm.InterconnectMacsecPreSharedKey{}
-	out.Name = in.Name
-	out.StartTime = in.StartTime
-	return out
-}
 func InterconnectMacsecPreSharedKey_ToProto(mapCtx *direct.MapContext, in *krm.InterconnectMacsecPreSharedKey) *pb.InterconnectMacsecPreSharedKey {
 	if in == nil {
 		return nil
@@ -171,35 +124,5 @@ func InterconnectMacsecPreSharedKey_ToProto(mapCtx *direct.MapContext, in *krm.I
 	out := &pb.InterconnectMacsecPreSharedKey{}
 	out.Name = in.Name
 	out.StartTime = in.StartTime
-	return out
-}
-func InterconnectOutageNotification_FromProto(mapCtx *direct.MapContext, in *pb.InterconnectOutageNotification) *krm.InterconnectOutageNotification {
-	if in == nil {
-		return nil
-	}
-	out := &krm.InterconnectOutageNotification{}
-	out.AffectedCircuits = in.AffectedCircuits
-	out.Description = in.Description
-	out.EndTime = in.EndTime
-	out.IssueType = in.IssueType
-	out.Name = in.Name
-	out.Source = in.Source
-	out.StartTime = in.StartTime
-	out.State = in.State
-	return out
-}
-func InterconnectOutageNotification_ToProto(mapCtx *direct.MapContext, in *krm.InterconnectOutageNotification) *pb.InterconnectOutageNotification {
-	if in == nil {
-		return nil
-	}
-	out := &pb.InterconnectOutageNotification{}
-	out.AffectedCircuits = in.AffectedCircuits
-	out.Description = in.Description
-	out.EndTime = in.EndTime
-	out.IssueType = in.IssueType
-	out.Name = in.Name
-	out.Source = in.Source
-	out.StartTime = in.StartTime
-	out.State = in.State
 	return out
 }

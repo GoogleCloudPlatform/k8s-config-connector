@@ -115,6 +115,11 @@ func (in *ArtifactRegistryRepositorySpec) DeepCopyInto(out *ArtifactRegistryRepo
 		*out = new(RepositoryDockerConfig)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Format != nil {
+		in, out := &in.Format, &out.Format
+		*out = new(string)
+		**out = **in
+	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
 		*out = new(v1alpha1.ResourceRef)
@@ -211,6 +216,11 @@ func (in *RepositoryCleanupPolicies) DeepCopyInto(out *RepositoryCleanupPolicies
 		in, out := &in.Condition, &out.Condition
 		*out = new(RepositoryCondition)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.Id != nil {
+		in, out := &in.Id, &out.Id
+		*out = new(string)
+		**out = **in
 	}
 	if in.MostRecentVersions != nil {
 		in, out := &in.MostRecentVersions, &out.MostRecentVersions
@@ -370,7 +380,7 @@ func (in *RepositoryMostRecentVersions) DeepCopyInto(out *RepositoryMostRecentVe
 	*out = *in
 	if in.KeepCount != nil {
 		in, out := &in.KeepCount, &out.KeepCount
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.PackageNamePrefixes != nil {
@@ -484,7 +494,7 @@ func (in *RepositoryUpstreamPolicies) DeepCopyInto(out *RepositoryUpstreamPolici
 	}
 	if in.Priority != nil {
 		in, out := &in.Priority, &out.Priority
-		*out = new(int64)
+		*out = new(int32)
 		**out = **in
 	}
 	if in.RepositoryRef != nil {

@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(PubSubSchema{}).Name(),
 	}
 
+	PubSubSnapshotGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(PubSubSnapshot{}).Name(),
+	}
+
 	PubSubSubscriptionGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

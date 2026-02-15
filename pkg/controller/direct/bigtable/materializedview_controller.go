@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigtable"
 	bigtablepb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
@@ -33,7 +34,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -60,7 +60,9 @@ func (m *modelMaterializedView) client(ctx context.Context, parentProject string
 	return gcpClient, err
 }
 
-func (m *modelMaterializedView) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelMaterializedView) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.BigtableMaterializedView{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -157,7 +159,10 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 
 	spec := a.desired.Spec
 	updateMask := &fieldmaskpb.FieldMask{}
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	if (spec.DeletionProtection != nil) && (*spec.DeletionProtection != a.actual.DeletionProtection) {
+		report.AddField("deletion_protection", a.actual.DeletionProtection, spec.DeletionProtection)
 		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
 	}
 
@@ -165,6 +170,7 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
+		structuredreporting.ReportDiff(ctx, report)
 
 		spec := a.desired.Spec
 		spec.Query = &a.actual.Query // immutable

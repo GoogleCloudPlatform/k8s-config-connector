@@ -17,100 +17,86 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var (
+	_ identity.IdentityV2 = &DatasetIdentity{}
+	_ identity.Resource   = &BigQueryDataset{}
+)
+
+var (
+	DatasetIdentityFormat = gcpurls.Template[DatasetIdentity]("bigquery.googleapis.com", "projects/{project}/datasets/{dataset}")
 )
 
 // DatasetIdentity defines the resource reference to BigQueryDataset, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type DatasetIdentity struct {
-	parent *DatasetParent
-	id     string
+	Project string
+	Dataset string
 }
 
 func (i *DatasetIdentity) String() string {
-	return i.parent.String() + "/datasets/" + i.id
+	return DatasetIdentityFormat.ToString(*i)
 }
 
-func (i *DatasetIdentity) ID() string {
-	return i.id
+func (i *DatasetIdentity) FromExternal(ref string) error {
+	parsed, match, err := DatasetIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of BigQueryDataset external=%q was not known (use %s): %w", ref, DatasetIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of BigQueryDataset external=%q was not known (use %s)", ref, DatasetIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
 }
 
-func (i *DatasetIdentity) Parent() *DatasetParent {
-	return i.parent
+func (i *DatasetIdentity) Host() string {
+	return DatasetIdentityFormat.Host()
 }
 
-type DatasetParent struct {
-	ProjectID string
+func getIdentityFromBigQueryDatasetSpec(ctx context.Context, reader client.Reader, obj client.Object) (*DatasetIdentity, error) {
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+	}
+
+	return &DatasetIdentity{
+		Project: projectID,
+		Dataset: resourceID,
+	}, nil
 }
 
-func (p *DatasetParent) String() string {
-	return "projects/" + p.ProjectID
-}
-
-// New builds a DatasetIdentity from the Config Connector Dataset object.
-func NewDatasetIdentity(ctx context.Context, reader client.Reader, obj *BigQueryDataset) (*DatasetIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (obj *BigQueryDataset) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromBigQueryDatasetSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
-	}
-	if projectRef == nil {
-		return nil, fmt.Errorf("cannot resolve projectRef: obj.Spec.ProjectRef not defined")
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseDatasetExternal(externalRef)
-		if err != nil {
+		statusIdentity := &DatasetIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change BigQueryDataset identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
-	return &DatasetIdentity{
-		parent: &DatasetParent{
-			ProjectID: projectID,
-		},
-		id: resourceID,
-	}, nil
-}
-
-func ParseDatasetExternal(external string) (parent *DatasetParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "datasets" {
-		return nil, "", fmt.Errorf("format of BigQueryDataset external=%q was not known (use projects/<projectId>/datasets/<datasetID>)", external)
-	}
-	parent = &DatasetParent{
-		ProjectID: tokens[1],
-	}
-
-	resourceID = tokens[3]
-
-	return parent, resourceID, nil
+	return specIdentity, nil
 }

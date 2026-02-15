@@ -26,7 +26,7 @@ import (
 
 const (
 	ApigeeEndpointAttachmentIDToken  = "endpointAttachments"
-	ApigeeEndpointAttachmentIDFormat = ApigeeOrganizationIDFormat + "/" + ApigeeEndpointAttachmentIDToken + "/{{attachmentID}}"
+	ApigeeEndpointAttachmentIDFormat = ApigeeOrganizationURLFormat + "/" + ApigeeEndpointAttachmentIDToken + "/{{attachmentID}}"
 )
 
 var _ identity.Identity = &ApigeeEndpointAttachmentIdentity{}

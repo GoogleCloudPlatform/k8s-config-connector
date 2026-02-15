@@ -27,6 +27,12 @@ mkdir -p "${BINDIR}"
 
 MCP_SERVER_PATH="${BINDIR}/github-mcp-server"
 
+if [[ -z "${GITHUB_READ_ONLY:-}" ]]; then
+    GITHUB_READ_ONLY=1
+fi
+export GITHUB_READ_ONLY
+
+
 if [[ ! -f "${MCP_SERVER_PATH}" ]]; then
     mkdir -p .build/mcp/src
     cd .build/mcp/src

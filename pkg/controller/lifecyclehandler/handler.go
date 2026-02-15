@@ -78,6 +78,7 @@ func (r *LifecycleHandler) updateStatus(ctx context.Context, resource *k8s.Resou
 	if err := util.Marshal(u, resource); err != nil {
 		return err
 	}
+	k8s.SanitizeSpecManagedFields(resource)
 	return resourceoverrides.Handler.PostUpdateStatusTransform(resource)
 }
 
@@ -110,6 +111,7 @@ func (r *LifecycleHandler) updateAPIServer(ctx context.Context, resource *k8s.Re
 	if err := util.Marshal(u, resource); err != nil {
 		return fmt.Errorf("error syncing updated resource metadata: %w", err)
 	}
+	k8s.SanitizeSpecManagedFields(resource)
 	if !u.GetDeletionTimestamp().IsZero() && len(u.GetFinalizers()) == 0 {
 		// This resource is set for garbage collection and any status updates would be racey.
 		// Status updates for successful deletions must be handled independently.

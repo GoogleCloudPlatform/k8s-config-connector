@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ComputeTargetTCPProxySpec_FromProto(mapCtx *direct.MapContext, in *pb.TargetTcpProxy) *krm.ComputeTargetTCPProxySpec {
+func ComputeTargetTCPProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetTcpProxy) *krm.ComputeTargetTCPProxySpec {
 	if in == nil {
 		return nil
 	}
@@ -34,7 +34,7 @@ func ComputeTargetTCPProxySpec_FromProto(mapCtx *direct.MapContext, in *pb.Targe
 	}
 	return out
 }
-func ComputeTargetTCPProxySpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetTCPProxySpec) *pb.TargetTcpProxy {
+func ComputeTargetTCPProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetTCPProxySpec) *pb.TargetTcpProxy {
 	if in == nil {
 		return nil
 	}
@@ -48,7 +48,7 @@ func ComputeTargetTCPProxySpec_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	}
 	return out
 }
-func ComputeTargetTCPProxyStatus_FromProto(mapCtx *direct.MapContext, in *pb.TargetTcpProxy) *krm.ComputeTargetTCPProxyStatus {
+func ComputeTargetTCPProxyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TargetTcpProxy) *krm.ComputeTargetTCPProxyStatus {
 	if in == nil {
 		return nil
 	}
@@ -59,7 +59,7 @@ func ComputeTargetTCPProxyStatus_FromProto(mapCtx *direct.MapContext, in *pb.Tar
 	out.SelfLink = in.SelfLink
 	return out
 }
-func ComputeTargetTCPProxyStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetTCPProxyStatus) *pb.TargetTcpProxy {
+func ComputeTargetTCPProxyStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetTCPProxyStatus) *pb.TargetTcpProxy {
 	if in == nil {
 		return nil
 	}

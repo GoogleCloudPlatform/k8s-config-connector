@@ -31,6 +31,10 @@ type FakeBigquerydatapolicyV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeBigquerydatapolicyV1alpha1) BigQueryDataPolicies(namespace string) v1alpha1.BigQueryDataPolicyInterface {
+	return &FakeBigQueryDataPolicies{c, namespace}
+}
+
 func (c *FakeBigquerydatapolicyV1alpha1) BigQueryDataPolicyDataPolicies(namespace string) v1alpha1.BigQueryDataPolicyDataPolicyInterface {
 	return &FakeBigQueryDataPolicyDataPolicies{c, namespace}
 }

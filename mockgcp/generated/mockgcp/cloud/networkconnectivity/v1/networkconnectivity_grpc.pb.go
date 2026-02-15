@@ -233,6 +233,209 @@ var ProjectsLocationsServer_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "mockgcp/cloud/networkconnectivity/v1/networkconnectivity.proto",
 }
 
+// ProjectsLocationsAutomatedDnsRecordsServerClient is the client API for ProjectsLocationsAutomatedDnsRecordsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ProjectsLocationsAutomatedDnsRecordsServerClient interface {
+	// Creates a new AutomatedDnsRecord in a given project and location.
+	CreateProjectsLocationsAutomatedDnsRecord(ctx context.Context, in *CreateProjectsLocationsAutomatedDnsRecordRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes a single AutomatedDnsRecord.
+	DeleteProjectsLocationsAutomatedDnsRecord(ctx context.Context, in *DeleteProjectsLocationsAutomatedDnsRecordRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Gets details of a single AutomatedDnsRecord.
+	GetProjectsLocationsAutomatedDnsRecord(ctx context.Context, in *GetProjectsLocationsAutomatedDnsRecordRequest, opts ...grpc.CallOption) (*AutomatedDnsRecord, error)
+	// Lists AutomatedDnsRecords in a given project and location.
+	ListProjectsLocationsAutomatedDnsRecords(ctx context.Context, in *ListProjectsLocationsAutomatedDnsRecordsRequest, opts ...grpc.CallOption) (*ListAutomatedDnsRecordsResponse, error)
+}
+
+type projectsLocationsAutomatedDnsRecordsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewProjectsLocationsAutomatedDnsRecordsServerClient(cc grpc.ClientConnInterface) ProjectsLocationsAutomatedDnsRecordsServerClient {
+	return &projectsLocationsAutomatedDnsRecordsServerClient{cc}
+}
+
+func (c *projectsLocationsAutomatedDnsRecordsServerClient) CreateProjectsLocationsAutomatedDnsRecord(ctx context.Context, in *CreateProjectsLocationsAutomatedDnsRecordRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/CreateProjectsLocationsAutomatedDnsRecord", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsAutomatedDnsRecordsServerClient) DeleteProjectsLocationsAutomatedDnsRecord(ctx context.Context, in *DeleteProjectsLocationsAutomatedDnsRecordRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/DeleteProjectsLocationsAutomatedDnsRecord", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsAutomatedDnsRecordsServerClient) GetProjectsLocationsAutomatedDnsRecord(ctx context.Context, in *GetProjectsLocationsAutomatedDnsRecordRequest, opts ...grpc.CallOption) (*AutomatedDnsRecord, error) {
+	out := new(AutomatedDnsRecord)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/GetProjectsLocationsAutomatedDnsRecord", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsAutomatedDnsRecordsServerClient) ListProjectsLocationsAutomatedDnsRecords(ctx context.Context, in *ListProjectsLocationsAutomatedDnsRecordsRequest, opts ...grpc.CallOption) (*ListAutomatedDnsRecordsResponse, error) {
+	out := new(ListAutomatedDnsRecordsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/ListProjectsLocationsAutomatedDnsRecords", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ProjectsLocationsAutomatedDnsRecordsServerServer is the server API for ProjectsLocationsAutomatedDnsRecordsServer service.
+// All implementations must embed UnimplementedProjectsLocationsAutomatedDnsRecordsServerServer
+// for forward compatibility
+type ProjectsLocationsAutomatedDnsRecordsServerServer interface {
+	// Creates a new AutomatedDnsRecord in a given project and location.
+	CreateProjectsLocationsAutomatedDnsRecord(context.Context, *CreateProjectsLocationsAutomatedDnsRecordRequest) (*longrunningpb.Operation, error)
+	// Deletes a single AutomatedDnsRecord.
+	DeleteProjectsLocationsAutomatedDnsRecord(context.Context, *DeleteProjectsLocationsAutomatedDnsRecordRequest) (*longrunningpb.Operation, error)
+	// Gets details of a single AutomatedDnsRecord.
+	GetProjectsLocationsAutomatedDnsRecord(context.Context, *GetProjectsLocationsAutomatedDnsRecordRequest) (*AutomatedDnsRecord, error)
+	// Lists AutomatedDnsRecords in a given project and location.
+	ListProjectsLocationsAutomatedDnsRecords(context.Context, *ListProjectsLocationsAutomatedDnsRecordsRequest) (*ListAutomatedDnsRecordsResponse, error)
+	mustEmbedUnimplementedProjectsLocationsAutomatedDnsRecordsServerServer()
+}
+
+// UnimplementedProjectsLocationsAutomatedDnsRecordsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedProjectsLocationsAutomatedDnsRecordsServerServer struct {
+}
+
+func (UnimplementedProjectsLocationsAutomatedDnsRecordsServerServer) CreateProjectsLocationsAutomatedDnsRecord(context.Context, *CreateProjectsLocationsAutomatedDnsRecordRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateProjectsLocationsAutomatedDnsRecord not implemented")
+}
+func (UnimplementedProjectsLocationsAutomatedDnsRecordsServerServer) DeleteProjectsLocationsAutomatedDnsRecord(context.Context, *DeleteProjectsLocationsAutomatedDnsRecordRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProjectsLocationsAutomatedDnsRecord not implemented")
+}
+func (UnimplementedProjectsLocationsAutomatedDnsRecordsServerServer) GetProjectsLocationsAutomatedDnsRecord(context.Context, *GetProjectsLocationsAutomatedDnsRecordRequest) (*AutomatedDnsRecord, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProjectsLocationsAutomatedDnsRecord not implemented")
+}
+func (UnimplementedProjectsLocationsAutomatedDnsRecordsServerServer) ListProjectsLocationsAutomatedDnsRecords(context.Context, *ListProjectsLocationsAutomatedDnsRecordsRequest) (*ListAutomatedDnsRecordsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectsLocationsAutomatedDnsRecords not implemented")
+}
+func (UnimplementedProjectsLocationsAutomatedDnsRecordsServerServer) mustEmbedUnimplementedProjectsLocationsAutomatedDnsRecordsServerServer() {
+}
+
+// UnsafeProjectsLocationsAutomatedDnsRecordsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ProjectsLocationsAutomatedDnsRecordsServerServer will
+// result in compilation errors.
+type UnsafeProjectsLocationsAutomatedDnsRecordsServerServer interface {
+	mustEmbedUnimplementedProjectsLocationsAutomatedDnsRecordsServerServer()
+}
+
+func RegisterProjectsLocationsAutomatedDnsRecordsServerServer(s grpc.ServiceRegistrar, srv ProjectsLocationsAutomatedDnsRecordsServerServer) {
+	s.RegisterService(&ProjectsLocationsAutomatedDnsRecordsServer_ServiceDesc, srv)
+}
+
+func _ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateProjectsLocationsAutomatedDnsRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsAutomatedDnsRecordsServerServer).CreateProjectsLocationsAutomatedDnsRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/CreateProjectsLocationsAutomatedDnsRecord",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsAutomatedDnsRecordsServerServer).CreateProjectsLocationsAutomatedDnsRecord(ctx, req.(*CreateProjectsLocationsAutomatedDnsRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProjectsLocationsAutomatedDnsRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsAutomatedDnsRecordsServerServer).DeleteProjectsLocationsAutomatedDnsRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/DeleteProjectsLocationsAutomatedDnsRecord",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsAutomatedDnsRecordsServerServer).DeleteProjectsLocationsAutomatedDnsRecord(ctx, req.(*DeleteProjectsLocationsAutomatedDnsRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsAutomatedDnsRecordsServer_GetProjectsLocationsAutomatedDnsRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProjectsLocationsAutomatedDnsRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsAutomatedDnsRecordsServerServer).GetProjectsLocationsAutomatedDnsRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/GetProjectsLocationsAutomatedDnsRecord",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsAutomatedDnsRecordsServerServer).GetProjectsLocationsAutomatedDnsRecord(ctx, req.(*GetProjectsLocationsAutomatedDnsRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectsLocationsAutomatedDnsRecordsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsAutomatedDnsRecordsServerServer).ListProjectsLocationsAutomatedDnsRecords(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer/ListProjectsLocationsAutomatedDnsRecords",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsAutomatedDnsRecordsServerServer).ListProjectsLocationsAutomatedDnsRecords(ctx, req.(*ListProjectsLocationsAutomatedDnsRecordsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ProjectsLocationsAutomatedDnsRecordsServer_ServiceDesc is the grpc.ServiceDesc for ProjectsLocationsAutomatedDnsRecordsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ProjectsLocationsAutomatedDnsRecordsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsAutomatedDnsRecordsServer",
+	HandlerType: (*ProjectsLocationsAutomatedDnsRecordsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateProjectsLocationsAutomatedDnsRecord",
+			Handler:    _ProjectsLocationsAutomatedDnsRecordsServer_CreateProjectsLocationsAutomatedDnsRecord_Handler,
+		},
+		{
+			MethodName: "DeleteProjectsLocationsAutomatedDnsRecord",
+			Handler:    _ProjectsLocationsAutomatedDnsRecordsServer_DeleteProjectsLocationsAutomatedDnsRecord_Handler,
+		},
+		{
+			MethodName: "GetProjectsLocationsAutomatedDnsRecord",
+			Handler:    _ProjectsLocationsAutomatedDnsRecordsServer_GetProjectsLocationsAutomatedDnsRecord_Handler,
+		},
+		{
+			MethodName: "ListProjectsLocationsAutomatedDnsRecords",
+			Handler:    _ProjectsLocationsAutomatedDnsRecordsServer_ListProjectsLocationsAutomatedDnsRecords_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/networkconnectivity/v1/networkconnectivity.proto",
+}
+
 // ProjectsLocationsGlobalServerClient is the client API for ProjectsLocationsGlobalServer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.

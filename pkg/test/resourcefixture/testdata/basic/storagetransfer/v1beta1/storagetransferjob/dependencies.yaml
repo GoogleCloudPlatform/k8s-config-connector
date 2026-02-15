@@ -15,16 +15,22 @@
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: storagebucket-sink-${uniqueId}
 ---
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: storagebucket-source-${uniqueId}
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: iampolicymember-source-${uniqueId}
 spec:
   member: serviceAccount:project-${projectNumber}@storage-transfer-service.iam.gserviceaccount.com
@@ -37,6 +43,8 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: iampolicymember-sink-${uniqueId}
 spec:
   member: serviceAccount:project-${projectNumber}@storage-transfer-service.iam.gserviceaccount.com

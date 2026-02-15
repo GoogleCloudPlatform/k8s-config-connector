@@ -29,7 +29,7 @@ type TagsTagKeySpec struct {
 	// // Required. Defines the parent path of the resource.
 	// *parent.ProjectAndLocationRef `json:",inline"`
 
-	// The TagsTagKey name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Immutable. The resource name of the TagKey's parent. A TagKey can be
