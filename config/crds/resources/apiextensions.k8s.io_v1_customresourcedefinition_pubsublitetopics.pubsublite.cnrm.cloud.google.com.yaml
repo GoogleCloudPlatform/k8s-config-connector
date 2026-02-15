@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: PubSubLiteTopic
+    listKind: PubSubLiteTopicList
     plural: pubsublitetopics
     shortNames:
     - gcppubsublitetopic
@@ -43,20 +44,22 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: PubSubLiteTopic is the Schema for the PubSubLiteTopic API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: PubSubLiteTopicSpec defines the desired state of PubSubLiteTopic
             properties:
               partitionConfig:
                 description: The settings for this topic's partitions.
@@ -65,26 +68,32 @@ spec:
                     description: The capacity configuration.
                     properties:
                       publishMibPerSec:
-                        description: Subscribe throughput capacity per partition in
-                          MiB/s. Must be >= 4 and <= 16.
-                        type: integer
-                      subscribeMibPerSec:
                         description: Publish throughput capacity per partition in
                           MiB/s. Must be >= 4 and <= 16.
+                        format: int32
+                        type: integer
+                      subscribeMibPerSec:
+                        description: Subscribe throughput capacity per partition in
+                          MiB/s. Must be >= 4 and <= 32.
+                        format: int32
                         type: integer
                     required:
                     - publishMibPerSec
                     - subscribeMibPerSec
                     type: object
                   count:
-                    description: The number of partitions in the topic. Must be at
-                      least 1.
+                    description: |-
+                      The number of partitions in the topic. Must be at least 1.
+
+                       Once a topic has been created the number of partitions can be increased
+                       but not decreased. Message ordering is not guaranteed across a topic
+                       resize. For more information see
+                       https://cloud.google.com/pubsub/lite/docs/topics#scaling_capacity
+                    format: int64
                     type: integer
-                required:
-                - count
                 type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: Required. Defines the parent path of the resource.
                 oneOf:
                 - not:
                     required:
@@ -101,13 +110,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               region:
@@ -117,33 +127,29 @@ spec:
                 description: The settings for this topic's Reservation usage.
                 properties:
                   throughputReservation:
-                    description: The Reservation to use for this topic's throughput
-                      capacity.
+                    description: 'The Reservation to use for this topic''s throughput
+                      capacity. Structured like: projects/{project_number}/locations/{location}/reservations/{reservation_id}'
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The PubSubLiteTopic name. If not given, the metadata.name
+                  will be used.
                 type: string
               retentionConfig:
-                description: The settings for a topic's message retention.
+                description: The settings for this topic's message retention.
                 properties:
                   perPartitionBytes:
-                    description: |-
-                      The provisioned storage, in bytes, per partition. If the number of bytes stored
-                      in any of the topic's partitions grows beyond this value, older messages will be
-                      dropped to make room for newer ones, regardless of the value of period.
-                    type: string
+                    description: The provisioned storage, in bytes, per partition.
+                      If the number of bytes stored in any of the topic's partitions
+                      grows beyond this value, older messages will be dropped to make
+                      room for newer ones, regardless of the value of `period`.
+                    format: int64
+                    type: integer
                   period:
-                    description: |-
-                      How long a published message is retained. If unset, messages will be retained as
-                      long as the bytes retained for each partition is below perPartitionBytes. A
-                      duration in seconds with up to nine fractional digits, terminated by 's'.
-                      Example: "3.5s".
+                    description: How long a published message is retained. If unset,
+                      messages will be retained as long as the bytes retained for
+                      each partition is below `per_partition_bytes`.
                     type: string
-                required:
-                - perPartitionBytes
                 type: object
               zone:
                 description: The zone of the pubsub lite topic.
@@ -153,10 +159,12 @@ spec:
             - zone
             type: object
           status:
+            description: PubSubLiteTopicStatus defines the config connector machine
+              state of PubSubLiteTopic
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -180,12 +188,17 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the PubSubLiteTopic resource in
+                  GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
         required:
@@ -195,9 +208,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
