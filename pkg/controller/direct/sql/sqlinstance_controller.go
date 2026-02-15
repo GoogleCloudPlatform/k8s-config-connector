@@ -434,7 +434,25 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, op *directbase.
 }
 
 func (m *sqlInstanceModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
+	// Format: //cloudsql.googleapis.com/projects/<project>/instances/<id>
+	if !strings.HasPrefix(url, "//cloudsql.googleapis.com/") {
+		return nil, nil
+	}
+
+	tokens := strings.Split(strings.TrimPrefix(url, "//cloudsql.googleapis.com/"), "/")
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "instances" {
+		gcpClient, err := newGCPClient(ctx, m.config)
+		if err != nil {
+			return nil, fmt.Errorf("building gcp client: %w", err)
+		}
+
+		return &sqlInstanceAdapter{
+			projectID:          tokens[1],
+			resourceID:         tokens[3],
+			sqlInstancesClient: gcpClient.sqlInstancesClient(),
+		}, nil
+	}
+
 	return nil, nil
 }
 
