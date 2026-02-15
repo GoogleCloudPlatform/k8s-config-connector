@@ -78,6 +78,7 @@
 [refs] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.migration.source" should be a reference
 [refs] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.migration.target" should be a reference
 [refs] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceFilter.instances" should be a reference
+[refs] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.ipFilter.vpcNetworkSources[].network" should be a reference
 [refs] crd=tagstagkeys.tags.cnrm.cloud.google.com version=v1beta1: field ".spec.parent" should be a reference
 [refs] crd=tpuvirtualmachines.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" should be a reference
 [refs] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.entitytype" should be a reference
