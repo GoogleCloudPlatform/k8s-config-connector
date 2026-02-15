@@ -1,0 +1,4 @@
+- exec: gcloud compute network-firewall-policies create test-${uniqueId} --global --description="Test Network Firewall Policy" --project=${projectId}
+- exec: gcloud compute network-firewall-policies describe test-${uniqueId} --global --project=${projectId}
+- exec: gcloud compute network-firewall-policies list --global --project=${projectId}
+- exec: gcloud compute network-firewall-policies delete test-${uniqueId} --global --project=${projectId} --quiet

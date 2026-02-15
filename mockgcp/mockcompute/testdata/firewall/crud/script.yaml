@@ -1,0 +1,7 @@
+- exec: gcloud compute networks create network-${uniqueId} --subnet-mode=auto --bgp-routing-mode=regional
+- exec: gcloud compute firewall-rules create firewall-${uniqueId} --network=network-${uniqueId} --allow=tcp:80 --source-ranges=0.0.0.0/0 --description="test firewall"
+- exec: gcloud compute firewall-rules describe firewall-${uniqueId}
+- exec: gcloud compute firewall-rules update firewall-${uniqueId} --allow=tcp:80,tcp:443
+- exec: gcloud compute firewall-rules describe firewall-${uniqueId}
+- exec: gcloud compute firewall-rules delete firewall-${uniqueId} --quiet
+- exec: gcloud compute networks delete network-${uniqueId} --quiet
