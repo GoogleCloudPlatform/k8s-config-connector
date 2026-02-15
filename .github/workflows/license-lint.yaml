@@ -15,7 +15,15 @@
 name: license-lint
 on:
   push:
+    paths:
+      - "go.mod"
+      - "go.sum"
+      - "vendor/**" # if we ever use vendor we can target the paths too
   pull_request:
+    paths:
+      - "go.mod"
+      - "go.sum"
+      - "vendor/**" # if we ever use vendor we can target the paths too
 jobs:
   license-lint:
     name: "license-lint"
@@ -29,7 +37,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set up Go
-        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        uses: actions/setup-go@v4
         with:
           go-version-file: 'go.mod'
       - name: license-lint
