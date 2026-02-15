@@ -25,6 +25,8 @@ const (
 	unknown = "unknown"
 )
 
+var kccVersion = "development"
+
 func GetVersion() string {
 	version := "" // todo acpana in the future factor this out for major releases
 	vcsrevision := unknown
@@ -47,5 +49,5 @@ func GetVersion() string {
 	}
 
 	version = fmt.Sprintf("devel (%s)", vcsrevision)
-	return fmt.Sprintf("%s/%s (%s/%s) %s%s/%s", name, version, runtime.GOOS, runtime.GOARCH, vcsrevision, vcsdirty, vcstimestamp)
+	return fmt.Sprintf("%s/%s KCC-%s (%s/%s) %s%s/%s", name, version, kccVersion, runtime.GOOS, runtime.GOARCH, vcsrevision, vcsdirty, vcstimestamp)
 }
