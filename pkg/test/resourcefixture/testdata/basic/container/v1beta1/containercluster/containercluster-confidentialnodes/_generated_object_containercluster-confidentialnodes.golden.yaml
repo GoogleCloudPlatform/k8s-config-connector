@@ -16,6 +16,9 @@ metadata:
   name: containercluster-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  confidentialNodes:
+    confidentialInstanceType: SEV
+    enabled: true
   initialNodeCount: 1
   location: us-west2
   nodeConfig:

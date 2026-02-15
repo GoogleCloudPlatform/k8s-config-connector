@@ -43,6 +43,10 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "binaryAuthorization": {
       "enabled": false
     },
+    "confidentialNodes": {
+      "confidentialInstanceType": "SEV",
+      "enabled": true
+    },
     "controlPlaneEndpointsConfig": {
       "dnsEndpointConfig": {
         "allowExternalTraffic": false
@@ -224,6 +228,10 @@ X-Xss-Protection: 0
   "clusterTelemetry": {
     "type": "ENABLED"
   },
+  "confidentialNodes": {
+    "confidentialInstanceType": "SEV",
+    "enabled": true
+  },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
@@ -585,6 +593,10 @@ X-Xss-Protection: 0
   "clusterTelemetry": {
     "type": "ENABLED"
   },
+  "confidentialNodes": {
+    "confidentialInstanceType": "SEV",
+    "enabled": true
+  },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
@@ -946,6 +958,10 @@ X-Xss-Protection: 0
   "clusterTelemetry": {
     "type": "ENABLED"
   },
+  "confidentialNodes": {
+    "confidentialInstanceType": "SEV",
+    "enabled": true
+  },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
@@ -1306,6 +1322,10 @@ X-Xss-Protection: 0
   "clusterIpv4Cidr": "10.112.0.0/14",
   "clusterTelemetry": {
     "type": "ENABLED"
+  },
+  "confidentialNodes": {
+    "confidentialInstanceType": "SEV",
+    "enabled": true
   },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {

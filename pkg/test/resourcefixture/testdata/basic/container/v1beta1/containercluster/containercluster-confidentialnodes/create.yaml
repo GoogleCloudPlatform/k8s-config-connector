@@ -19,6 +19,9 @@ metadata:
 spec:
   location: us-west2
   initialNodeCount: 1
+  confidentialNodes:
+    enabled: true
+    confidentialInstanceType: SEV
   nodeConfig:
     machineType: n2d-standard-2
     confidentialNodes:
