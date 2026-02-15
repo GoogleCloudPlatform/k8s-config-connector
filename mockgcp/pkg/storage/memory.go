@@ -163,3 +163,45 @@ func (s *typeStorage) List(ctx context.Context, options ListOptions, callback fu
 	}
 	return nil
 }
+
+// For returns a TypedStorage for the given proto message type.
+func For[T proto.Message](storage Storage) TypedStorage[T] {
+	memoryStorage, ok := storage.(*InMemoryStorage)
+	if !ok {
+		panic("For[T] only works with InMemoryStorage")
+	}
+
+	var t T
+	name := t.ProtoReflect().Descriptor().FullName()
+
+	typeStorage := memoryStorage.getTypeStorage(name)
+	return &typedStorageAdapter[T]{
+		typeStorage: typeStorage,
+	}
+}
+
+type typedStorageAdapter[T proto.Message] struct {
+	typeStorage *typeStorage
+}
+
+func (s *typedStorageAdapter[T]) Create(ctx context.Context, fqn string, create T) error {
+	return s.typeStorage.Create(ctx, fqn, create)
+}
+
+func (s *typedStorageAdapter[T]) Update(ctx context.Context, fqn string, update T) error {
+	return s.typeStorage.Update(ctx, fqn, update)
+}
+
+func (s *typedStorageAdapter[T]) Get(ctx context.Context, fqn string, dest T) error {
+	return s.typeStorage.Get(ctx, fqn, dest)
+}
+
+func (s *typedStorageAdapter[T]) List(ctx context.Context, options ListOptions, callback func(obj T) error) error {
+	return s.typeStorage.List(ctx, options, func(obj proto.Message) error {
+		return callback(obj.(T))
+	})
+}
+
+func (s *typedStorageAdapter[T]) Delete(ctx context.Context, fqn string, dest T) error {
+	return s.typeStorage.Delete(ctx, fqn, dest)
+}

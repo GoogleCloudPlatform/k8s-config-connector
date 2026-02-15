@@ -35,17 +35,24 @@ func init() {
 // MockService represents a mocked pubsub service.
 type MockService struct {
 	*common.MockEnvironment
-	storage    storage.Storage
 	operations *operations.Operations
+
+	topics        storage.TypedStorage[*pb.Topic]
+	snapshots     storage.TypedStorage[*pb.Snapshot]
+	schemas       storage.TypedStorage[*pb.Schema]
+	subscriptions storage.TypedStorage[*pb.Subscription]
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
+func New(env *common.MockEnvironment, store storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
-		storage:         storage,
-		operations:      operations.NewOperationsService(storage),
+		operations:      operations.NewOperationsService(store),
 	}
+	s.topics = storage.For[*pb.Topic](store)
+	s.snapshots = storage.For[*pb.Snapshot](store)
+	s.schemas = storage.For[*pb.Schema](store)
+	s.subscriptions = storage.For[*pb.Subscription](store)
 	return s
 }
 
