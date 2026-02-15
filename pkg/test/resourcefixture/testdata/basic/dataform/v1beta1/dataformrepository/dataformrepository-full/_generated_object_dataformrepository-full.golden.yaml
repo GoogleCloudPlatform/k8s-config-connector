@@ -39,3 +39,4 @@ status:
     type: Ready
   externalRef: //dataform.googleapis.com/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}
   observedGeneration: 2
+  observedState: {}

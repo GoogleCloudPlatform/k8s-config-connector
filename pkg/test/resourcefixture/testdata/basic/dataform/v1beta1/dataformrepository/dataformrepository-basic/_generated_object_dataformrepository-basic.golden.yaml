@@ -22,3 +22,4 @@ status:
     type: Ready
   externalRef: //dataform.googleapis.com/projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}
   observedGeneration: 1
+  observedState: {}
