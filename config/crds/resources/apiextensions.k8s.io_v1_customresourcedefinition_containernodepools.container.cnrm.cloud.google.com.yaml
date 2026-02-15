@@ -347,6 +347,10 @@ spec:
                       This configuration can''t be changed (or added/removed) after
                       pool creation without deleting and recreating the entire pool.'
                     properties:
+                      confidentialInstanceType:
+                        description: Immutable. Confidential instance type for the
+                          cluster nodes. Valid values are SEV and SEV_SNP.
+                        type: string
                       enabled:
                         description: Immutable. Whether Confidential Nodes feature
                           is enabled for all nodes in this pool.
