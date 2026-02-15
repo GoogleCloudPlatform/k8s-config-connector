@@ -474,6 +474,35 @@ spec:
                 required:
                 - enabled
                 type: object
+              controlPlaneDiskEncryptionKeyRef:
+                description: Immutable. The name of the Customer Managed Encryption
+                  Key used to encrypt the control plane's boot disk.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               controlPlaneEndpointsConfig:
                 description: Configuration for all of the cluster's control plane
                   endpoints. Currently supports only DNS endpoint configuration and
