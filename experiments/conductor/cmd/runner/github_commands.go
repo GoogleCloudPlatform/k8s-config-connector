@@ -63,6 +63,7 @@ const (
 	COMMIT_MSG_51A = "{{kind}}: Move existing test to subdirectory before creating maximal test"
 	COMMIT_MSG_51B = "{{kind}}: Create maximal test"
 	COMMIT_MSG_51C = "{{kind}}: Enable test with mockgcp"
+	COMMIT_MSG_52  = "{{kind}}: Add update step to existing maximal tests"
 )
 
 var REGEX_MSG_9A = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_9A))
@@ -103,6 +104,7 @@ var REGEX_MSG_48 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_48))
 var REGEX_MSG_50 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_50))
 var REGEX_MSG_51A = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_51A))
 var REGEX_MSG_51 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_51B, COMMIT_MSG_51C))
+var REGEX_MSG_52 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_52))
 
 func skipPost21A(msg string) bool {
 	return REGEX_MSG_21A.MatchString(msg)
