@@ -1,0 +1,13 @@
+apiVersion: metastore.cnrm.cloud.google.com/v1alpha1
+kind: MetastoreService
+metadata:
+  name: metastoreservice-aux-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  hiveMetastoreConfig:
+    version: "3.1.2"
+    auxiliaryVersions:
+      aux-1:
+        version: "2.3.6"

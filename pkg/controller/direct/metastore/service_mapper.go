@@ -41,7 +41,7 @@ func AuxiliaryVersionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Auxiliar
 	out := &krmv1alpha1.AuxiliaryVersionConfig{}
 	out.Version = direct.LazyPtr(in.GetVersion())
 	out.ConfigOverrides = in.ConfigOverrides
-	// MISSING: NetworkConfig
+	out.NetworkConfig = NetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
 	return out
 }
 func AuxiliaryVersionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.AuxiliaryVersionConfig) *pb.AuxiliaryVersionConfig {
@@ -51,7 +51,7 @@ func AuxiliaryVersionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.A
 	out := &pb.AuxiliaryVersionConfig{}
 	out.Version = direct.ValueOf(in.Version)
 	out.ConfigOverrides = in.ConfigOverrides
-	// MISSING: NetworkConfig
+	out.NetworkConfig = NetworkConfig_ToProto(mapCtx, in.NetworkConfig)
 	return out
 }
 func BackendMetastore_FromProto(mapCtx *direct.MapContext, in *pb.BackendMetastore) *krmv1alpha1.BackendMetastore {
@@ -99,7 +99,15 @@ func HiveMetastoreConfig_FromProto(mapCtx *direct.MapContext, in *pb.HiveMetasto
 	out.ConfigOverrides = in.ConfigOverrides
 	out.KerberosConfig = KerberosConfig_FromProto(mapCtx, in.GetKerberosConfig())
 	out.EndpointProtocol = direct.Enum_FromProto(mapCtx, in.GetEndpointProtocol())
-	// MISSING: AuxiliaryVersions
+
+	if len(in.GetAuxiliaryVersions()) > 0 {
+		out.AuxiliaryVersions = make(map[string]krmv1alpha1.AuxiliaryVersionConfig)
+		for k, v := range in.GetAuxiliaryVersions() {
+			if val := AuxiliaryVersionConfig_FromProto(mapCtx, v); val != nil {
+				out.AuxiliaryVersions[k] = *val
+			}
+		}
+	}
 	return out
 }
 func HiveMetastoreConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.HiveMetastoreConfig) *pb.HiveMetastoreConfig {
@@ -111,7 +119,13 @@ func HiveMetastoreConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Hive
 	out.ConfigOverrides = in.ConfigOverrides
 	out.KerberosConfig = KerberosConfig_ToProto(mapCtx, in.KerberosConfig)
 	out.EndpointProtocol = direct.Enum_ToProto[pb.HiveMetastoreConfig_EndpointProtocol](mapCtx, in.EndpointProtocol)
-	// MISSING: AuxiliaryVersions
+
+	if len(in.AuxiliaryVersions) > 0 {
+		out.AuxiliaryVersions = make(map[string]*pb.AuxiliaryVersionConfig)
+		for k, v := range in.AuxiliaryVersions {
+			out.AuxiliaryVersions[k] = AuxiliaryVersionConfig_ToProto(mapCtx, &v)
+		}
+	}
 	return out
 }
 func KerberosConfig_FromProto(mapCtx *direct.MapContext, in *pb.KerberosConfig) *krmv1alpha1.KerberosConfig {
