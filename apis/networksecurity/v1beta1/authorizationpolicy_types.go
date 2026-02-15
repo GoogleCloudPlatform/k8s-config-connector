@@ -100,7 +100,7 @@ type NetworkSecurityAuthorizationPolicyStatus struct {
 }
 
 // NetworkSecurityAuthorizationPolicyObservedState is the state of the NetworkSecurityAuthorizationPolicy resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.networksecurity.v1beta1.AuthorizationPolicy
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1beta1.AuthorizationPolicy
 //type NetworkSecurityAuthorizationPolicyObservedState struct {
 //}
 

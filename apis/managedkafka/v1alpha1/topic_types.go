@@ -78,7 +78,7 @@ type ManagedKafkaTopicStatus struct {
 }
 
 // ManagedKafkaTopicObservedState is the state of the ManagedKafkaTopic resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.managedkafka.v1.Topic
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.Topic
 // NOTYET: the resource does not have any output only fields
 // type ManagedKafkaTopicObservedState struct {
 // }

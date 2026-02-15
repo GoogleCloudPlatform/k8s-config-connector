@@ -574,6 +574,60 @@ func RemoteRepositoryConfig_YumRepository_PublicRepository_ToProto(mapCtx *direc
 	out.RepositoryPath = direct.ValueOf(in.RepositoryPath)
 	return out
 }
+func RepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.RepositoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RepositoryObservedState{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	// MISSING: Name
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	out.SizeBytes = direct.LazyPtr(in.GetSizeBytes())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	// MISSING: CleanupPolicyDryRun
+	out.VulnerabilityScanningConfig = Repository_VulnerabilityScanningConfigObservedState_FromProto(mapCtx, in.GetVulnerabilityScanningConfig())
+	// MISSING: DisallowUnspecifiedMode
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	out.RegistryURI = direct.LazyPtr(in.GetRegistryUri())
+	return out
+}
+func RepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RepositoryObservedState) *pb.Repository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository{}
+	// MISSING: MavenConfig
+	// MISSING: DockerConfig
+	// MISSING: VirtualRepositoryConfig
+	// MISSING: RemoteRepositoryConfig
+	// MISSING: Name
+	// MISSING: Format
+	// MISSING: Description
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: KMSKeyName
+	// MISSING: Mode
+	// MISSING: CleanupPolicies
+	out.SizeBytes = direct.ValueOf(in.SizeBytes)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	// MISSING: CleanupPolicyDryRun
+	out.VulnerabilityScanningConfig = Repository_VulnerabilityScanningConfigObservedState_ToProto(mapCtx, in.VulnerabilityScanningConfig)
+	// MISSING: DisallowUnspecifiedMode
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	out.RegistryUri = direct.ValueOf(in.RegistryURI)
+	return out
+}
 func Repository_DockerRepositoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_DockerRepositoryConfig) *krm.Repository_DockerRepositoryConfig {
 	if in == nil {
 		return nil

@@ -153,6 +153,10 @@ type ContinuousBackupConfig struct {
 	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.alloydb.v1beta.ContinuousBackupInfo
+type ContinuousBackupInfo struct {
+}
+
 // +kcc:proto=google.cloud.alloydb.v1beta.EncryptionInfo
 type EncryptionInfo struct {
 }
@@ -362,6 +366,10 @@ type MaintenanceUpdatePolicy_DenyMaintenancePeriod struct {
 	//  * All zeros for 00:00:00 UTC
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.DenyMaintenancePeriod.time
 	Time *TimeOfDay `json:"time,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1beta.MigrationSource
+type MigrationSource struct {
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.SslConfig

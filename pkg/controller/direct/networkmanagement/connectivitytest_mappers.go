@@ -256,3 +256,15 @@ func Endpoint_CloudRunRevisionEndpoint_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	return out
 }
+
+func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *status.Status {
+	// Not reachable
+	mapCtx.NotImplemented()
+	return nil
+}
+
+func Status_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.Status {
+	// Not reachable
+	mapCtx.NotImplemented()
+	return nil
+}

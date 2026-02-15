@@ -229,6 +229,41 @@ type Repository_VulnerabilityScanningConfig struct {
 	EnablementConfig *string `json:"enablementConfig,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.Repository
+type RepositoryObservedState struct {
+	// Output only. The time when the repository was created.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the repository was last updated.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The size, in bytes, of all artifact storage in this
+	//  repository. Repositories that are generally available or in public preview
+	//   use this to calculate storage costs.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.size_bytes
+	SizeBytes *int64 `json:"sizeBytes,omitempty"`
+
+	// Output only. If set, the repository satisfies physical zone separation.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.satisfies_pzs
+	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+
+	// Optional. Config and state for vulnerability scanning of resources within
+	//  this Repository.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.vulnerability_scanning_config
+	VulnerabilityScanningConfig *Repository_VulnerabilityScanningConfigObservedState `json:"vulnerabilityScanningConfig,omitempty"`
+
+	// Output only. If set, the repository satisfies physical zone isolation.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	// Output only. The repository endpoint, for example:
+	//  `us-docker.pkg.dev/my-proj/my-repo`.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.registry_uri
+	RegistryURI *string `json:"registryURI,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.devtools.artifactregistry.v1.Repository.VulnerabilityScanningConfig
 type Repository_VulnerabilityScanningConfigObservedState struct {
 	// Output only. The last time this repository config was enabled.

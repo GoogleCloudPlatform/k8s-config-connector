@@ -34,18 +34,28 @@ const (
 	KCCProtoIgnoreAnnotation = "+kcc:proto:ignore"
 )
 
-// GetProtoMessageFromAnnotation will extract a proto message annotation, including the spec and observedstate "subclasses"
-func GetProtoMessageFromAnnotation(commentLine string) (string, bool) {
+// GetAnnotation will extract a proto message annotation from a comment line
+func GetAnnotation(commentLine string, key string) (string, bool) {
 	trimmed := strings.TrimPrefix(commentLine, "//")
 	trimmed = strings.TrimSpace(trimmed)
+
+	if suffix, ok := strings.CutPrefix(trimmed, key+"="); ok {
+		return strings.TrimSpace(suffix), true
+	}
+	return "", false
+}
+
+// GetProtoMessageFromAnnotation will extract a proto message annotation, including the spec and observedstate "subclasses"
+func GetProtoMessageFromAnnotation(commentLine string) (string, bool) {
 	for _, annotation := range []string{
 		KCCProtoMessageAnnotationMisc,
 		KCCProtoMessageAnnotationSpec,
 		KCCProtoMessageAnnotationObservedState,
 		KCCProtoMessageAnnotationStatus,
 	} {
-		if strings.HasPrefix(trimmed, annotation+"=") {
-			return strings.TrimSpace(strings.TrimPrefix(trimmed, annotation+"=")), true
+		v, ok := GetAnnotation(commentLine, annotation)
+		if ok {
+			return v, true
 		}
 	}
 	return "", false

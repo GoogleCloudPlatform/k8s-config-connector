@@ -662,6 +662,28 @@ func ContinuousBackupConfig_ToProto(mapCtx *direct.MapContext, in *krm.Continuou
 	out.EncryptionConfig = EncryptionConfig_ToProto(mapCtx, in.EncryptionConfig)
 	return out
 }
+func ContinuousBackupInfo_FromProto(mapCtx *direct.MapContext, in *pb.ContinuousBackupInfo) *krm.ContinuousBackupInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContinuousBackupInfo{}
+	// MISSING: EncryptionInfo
+	// MISSING: EnabledTime
+	// MISSING: Schedule
+	// MISSING: EarliestRestorableTime
+	return out
+}
+func ContinuousBackupInfo_ToProto(mapCtx *direct.MapContext, in *krm.ContinuousBackupInfo) *pb.ContinuousBackupInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContinuousBackupInfo{}
+	// MISSING: EncryptionInfo
+	// MISSING: EnabledTime
+	// MISSING: Schedule
+	// MISSING: EarliestRestorableTime
+	return out
+}
 func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.EncryptionConfig {
 	if in == nil {
 		return nil
@@ -1220,6 +1242,26 @@ func MaintenanceUpdatePolicy_DenyMaintenancePeriod_ToProto(mapCtx *direct.MapCon
 	out.StartDate = Date_ToProto(mapCtx, in.StartDate)
 	out.EndDate = Date_ToProto(mapCtx, in.EndDate)
 	out.Time = TimeOfDay_ToProto(mapCtx, in.Time)
+	return out
+}
+func MigrationSource_FromProto(mapCtx *direct.MapContext, in *pb.MigrationSource) *krm.MigrationSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationSource{}
+	// MISSING: HostPort
+	// MISSING: ReferenceID
+	// MISSING: SourceType
+	return out
+}
+func MigrationSource_ToProto(mapCtx *direct.MapContext, in *krm.MigrationSource) *pb.MigrationSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MigrationSource{}
+	// MISSING: HostPort
+	// MISSING: ReferenceID
+	// MISSING: SourceType
 	return out
 }
 func MigrationSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MigrationSource) *krm.MigrationSourceObservedState {
