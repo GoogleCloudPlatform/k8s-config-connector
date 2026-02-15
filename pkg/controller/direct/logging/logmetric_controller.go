@@ -310,11 +310,16 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		return err
 	}
 
+	if a.desired.Spec.Filter != a.actual.Filter {
+		if a.desired.Spec.Filter == "" {
+			return fmt.Errorf("filter cannot be empty on update")
+
 	// actualUpdate may not contain the description for the metric descriptor.
 	if latest.Description != "" {
 		if status.MetricDescriptor != nil {
 			status.MetricDescriptor.Description = &latest.Description
 		}
+		update.Filter = a.actual.Filter
 	}
 
 	return setStatus(u, status)
