@@ -40,7 +40,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 		replacements.ReplacePath(".maintenancePolicy.resourceVersion", "abcd1234")
 
-		replacements.SortSlice(".monitoringConfig.componentConfig.enableSystemComponents")
+		replacements.SortSlice(".monitoringConfig.componentConfig.enableComponents")
 	}
 }
 
