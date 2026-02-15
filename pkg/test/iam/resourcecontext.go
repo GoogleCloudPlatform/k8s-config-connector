@@ -61,6 +61,11 @@ var (
 			UpdateBindingRole: "roles/pubsub.viewer",
 		},
 		{
+			Kind:              "SpannerDatabase",
+			CreateBindingRole: "roles/spanner.databaseReader",
+			UpdateBindingRole: "roles/spanner.databaseUser",
+		},
+		{
 			Kind:              "SpannerInstance",
 			CreateBindingRole: "roles/spanner.databaseReader",
 			UpdateBindingRole: "roles/spanner.databaseUser",
