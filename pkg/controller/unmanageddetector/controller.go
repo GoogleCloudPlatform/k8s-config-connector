@@ -47,8 +47,12 @@ type Reconciler struct {
 	gvk schema.GroupVersionKind
 }
 
-func Add(ctx context.Context, mgr manager.Manager, gvk schema.GroupVersionKind) error {
+func Add(ctx context.Context, mgr manager.Manager, gvk schema.GroupVersionKind, opt controller.Options) error {
 	logger := crlog.FromContext(ctx)
+
+	if opt.MaxConcurrentReconciles == 0 {
+		opt.MaxConcurrentReconciles = k8s.ControllerMaxConcurrentReconciles
+	}
 
 	kind := gvk.Kind
 	apiVersion := gvk.GroupVersion().String()
@@ -67,7 +71,7 @@ func Add(ctx context.Context, mgr manager.Manager, gvk schema.GroupVersionKind) 
 	if _, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles}).
+		WithOptions(opt).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(Predicate{})).
 		Build(r); err != nil {
 		return fmt.Errorf("error creating new controller: %w", err)

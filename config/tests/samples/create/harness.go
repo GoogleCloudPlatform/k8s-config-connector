@@ -716,6 +716,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	})
 	kccConfig.ManagerOptions.Logger = filterLogs(log)
 	kccConfig.ManagerOptions.Controller.SkipNameValidation = ptr.To(true)
+	kccConfig.SkipNameValidation = true
 
 	krmtotf.SetUserAgentForTerraformProvider()
 
@@ -732,7 +733,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	}
 
 	// Register the deletion defender controller.
-	if err := registration.AddDeletionDefender(mgr, &controller.Deps{}); err != nil {
+	if err := registration.AddDeletionDefender(mgr, &controller.Deps{SkipNameValidation: kccConfig.SkipNameValidation}); err != nil {
 		t.Fatalf("error adding registration controller for deletion defender controllers: %v", err)
 	}
 	// Start the manager, Start(...) is a blocking operation so it needs to be done asynchronously.
