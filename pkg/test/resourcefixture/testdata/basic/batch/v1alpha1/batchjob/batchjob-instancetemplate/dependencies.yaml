@@ -1,0 +1,28 @@
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  labels:
+    label-one: "value-one"
+  name: computenetwork-${uniqueId}
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceTemplate
+metadata:
+  name: batchjob-instancetemplate-${uniqueId}
+  labels:
+    label-one: "value-one"
+spec:
+  description: a basic instance template example
+  machineType: n1-standard-1
+  region: us-central1
+  disk:
+    - sourceImage: "projects/debian-cloud/global/images/family/debian-11"
+      autoDelete: true
+      boot: true
+  networkInterface:
+    - networkRef:
+        name: computenetwork-${uniqueId}
