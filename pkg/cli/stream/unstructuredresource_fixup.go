@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/randomid"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 const namePath = "metadata.name"
@@ -46,6 +47,9 @@ func (s *UnstructuredResourceFixupStream) Next(ctx context.Context) (*unstructur
 		return nil, err
 	}
 	if err := defaultNameIfNotPresent(u); err != nil {
+		return nil, err
+	}
+	if err := handleSpecialCases(u); err != nil {
 		return nil, err
 	}
 	if err := ensureNameIsK8sLegal(u); err != nil {
@@ -96,6 +100,26 @@ func ensureNameIsK8sLegal(u *unstructured.Unstructured) error {
 	}
 	if err := unstructured.SetNestedField(u.Object, k8sName, strings.Split(namePath, ".")...); err != nil {
 		return fmt.Errorf("error setting %v to '%v': %w", namePath, k8sName, err)
+	}
+	return nil
+}
+
+// Some resources need additional handling
+func handleSpecialCases(u *unstructured.Unstructured) error {
+	resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+	switch u.GroupVersionKind().GroupKind() {
+	// Table name is only unique in a dataset, avoid collisions
+	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryTable"}:
+		datasetID, _, _ := unstructured.NestedString(u.Object, "spec", "datasetRef", "external")
+		tableID := resourceID
+
+		if datasetID == "" {
+			return fmt.Errorf("unexpected empty value for spec.datasetRef.external in BigQueryTable resource")
+		}
+		if tableID == "" {
+			return fmt.Errorf("unexpected empty value for spec.resourceID in BigQueryTable resource")
+		}
+		u.SetName(datasetID + "-" + tableID)
 	}
 	return nil
 }
