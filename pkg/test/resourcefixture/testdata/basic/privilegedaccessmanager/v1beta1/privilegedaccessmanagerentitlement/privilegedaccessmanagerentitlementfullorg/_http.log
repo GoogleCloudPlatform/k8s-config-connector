@@ -696,7 +696,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://privilegedaccessmanager.googleapis.com/v1/organizations/${organizationID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://privilegedaccessmanager.googleapis.com/v1/organizations/${organizationID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
