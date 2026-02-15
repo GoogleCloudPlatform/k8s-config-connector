@@ -26,7 +26,7 @@ import (
 	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
+	pb "cloud.google.com/go/container/apiv1/containerpb"
 )
 
 func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolRequest) (*pb.NodePool, error) {
