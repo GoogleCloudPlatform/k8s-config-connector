@@ -12,18 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package jsonunmarshalreuse_test
 
 import (
-	"golang.org/x/tools/go/analysis/multichecker"
+	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/linters/jsonunmarshalreuse"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/linters/loglint"
+	"golang.org/x/tools/go/analysis/analysistest"
 )
 
-func main() {
-	multichecker.Main(
-		loglint.Analyzer,
-		jsonunmarshalreuse.Analyzer,
-	)
+func TestAnalyzer(t *testing.T) {
+	testdata := analysistest.TestData()
+	analysistest.Run(t, testdata, jsonunmarshalreuse.Analyzer, "a")
 }
