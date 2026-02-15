@@ -1,0 +1,69 @@
+I'm building logic between go struct ${KIND} and proto ${PACKAGE}.${PROTO}, you should help me.
+
+Edit "./apis/${SERVICE}/v1alpha1/${PROTO,,}_types.go", add the following code to go struct `${KIND}Spec`
+```
+Parent `json:",inline"`
+```
+
+Now, add the go struct `Parent`, it should represent the parent URL of ${PACKAGE}.${PROTO}, which normally has project, and location.
+
+Here is an example for kind `BigQueryConnectionConnectionSpec` and the proto `google.cloud.bigquery.connection.v1.Connection` 
+```
+
+var BigQueryConnectionConnectionGVK = GroupVersion.WithKind("BigQueryConnectionConnection")
+
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
+	// Immutable.
+	// +required
+	Location string `json:"location"`
+}
+
+// BigQueryConnectionConnectionSpec defines the desired state to connect BigQuery to external resources
+// +kcc:proto=google.cloud.bigquery.connection.v1.Connection
+type BigQueryConnectionConnectionSpec struct {
+	Parent `json:",inline"`
+
+	// Immutable. Optional.
+	// The BigQuery Connection ID used for resource creation or acquisition.
+	// For creation: If specified, this value is used as the connection ID. If not provided, a UUID will be generated and assigned as the connection ID.
+	// For acquisition: This field must be provided to identify the connection resource to acquire.
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	// User provided display name for the connection.
+	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// User provided description.
+	Description *string `json:"description,omitempty"`
+
+	// Cloud SQL properties.
+	CloudSQLSpec *CloudSqlPropertiesSpec `json:"cloudSQL,omitempty"`
+
+	// Amazon Web Services (AWS) properties.
+	AwsSpec *AwsPropertiesSpec `json:"aws,omitempty"`
+
+	// Azure properties.
+	AzureSpec *AzurePropertiesSpec `json:"azure,omitempty"`
+
+	/* NOTYET
+	// Optional. Salesforce DataCloud properties. This field is intended for
+	//  use only by Salesforce partner projects. This field contains properties
+	//  for your Salesforce DataCloud connection.
+	SalesforceDataCloud *SalesforceDataCloudProperties `json:"salesforceDataCloud,omitempty"`
+	*/
+
+	// Use Cloud Resource properties.
+	CloudResourceSpec *CloudResourcePropertiesSpec `json:"cloudResource,omitempty"`
+
+	// Cloud Spanner properties.
+	CloudSpannerSpec *CloudSpannerPropertiesSpec `json:"cloudSpanner,omitempty"`
+
+	// Spark properties.
+	SparkSpec *SparkPropertiesSpec `json:"spark,omitempty"`
+}
+```
+
+If you succeed, print `{ "result": "success", "message": "YOU SHOULD WRITE THIS MESSAGE ON WHAT YOU DID'}`
