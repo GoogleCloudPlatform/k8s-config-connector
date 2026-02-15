@@ -1846,6 +1846,14 @@ func ResourceContainerCluster() *schema.Resource {
 				},
 			},
 
+			"control_plane_disk_encryption_key": {
+				Type:             schema.TypeString,
+				Optional:         true,
+				ForceNew:         true,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+				Description:      `The name of the Customer Managed Encryption Key used to encrypt the control plane's boot disk.`,
+			},
+
 			"release_channel": {
 				Type:        schema.TypeList,
 				Optional:    true,
@@ -2304,6 +2312,13 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	if v, ok := d.GetOk("database_encryption"); ok {
 		cluster.DatabaseEncryption = expandDatabaseEncryption(v)
+	}
+
+	if v, ok := d.GetOk("control_plane_disk_encryption_key"); ok {
+		if cluster.UserManagedKeysConfig == nil {
+			cluster.UserManagedKeysConfig = &container.UserManagedKeysConfig{}
+		}
+		cluster.UserManagedKeysConfig.ControlPlaneDiskEncryptionKey = v.(string)
 	}
 
 	if v, ok := d.GetOk("workload_identity_config"); ok {
@@ -2775,6 +2790,12 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 
 	if err := d.Set("database_encryption", flattenDatabaseEncryption(cluster.DatabaseEncryption)); err != nil {
 		return err
+	}
+
+	if cluster.UserManagedKeysConfig != nil {
+		if err := d.Set("control_plane_disk_encryption_key", cluster.UserManagedKeysConfig.ControlPlaneDiskEncryptionKey); err != nil {
+			return err
+		}
 	}
 
 	if err := d.Set("pod_security_policy_config", flattenPodSecurityPolicyConfig(cluster.PodSecurityPolicyConfig)); err != nil {
