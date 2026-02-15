@@ -85,6 +85,7 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, op *directbase.
 	}
 	return &EnvironmentAdapter{
 		id:        id,
+		reader:    reader,
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
@@ -97,6 +98,7 @@ func (m *modelEnvironment) AdapterForURL(ctx context.Context, url string) (direc
 
 type EnvironmentAdapter struct {
 	id        *krm.EnvironmentIdentity
+	reader    client.Reader
 	gcpClient *gcp.EnvironmentsClient
 	desired   *krm.ComposerEnvironment
 	actual    *composerpb.Environment
@@ -130,6 +132,11 @@ func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Environment", "name", a.id)
 	mapCtx := &direct.MapContext{}
+
+	// Resolve references
+	if err := ResolveComposerEnvironmentRefs(ctx, a.reader, a.desired); err != nil {
+		return err
+	}
 
 	desired := a.desired.DeepCopy()
 	resource := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
@@ -166,6 +173,11 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Environment", "name", a.id)
 	mapCtx := &direct.MapContext{}
+
+	// Resolve references
+	if err := ResolveComposerEnvironmentRefs(ctx, a.reader, a.desired); err != nil {
+		return err
+	}
 
 	desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
