@@ -76,6 +76,10 @@ spec:
                       The format for the entries should follow the format as Kind.group :
                       e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
                     type: object
+                  resourceNameLabelMetrics:
+                    description: ResourceNameLabelMetrics enables metrics reporting
+                      with resource name labels.
+                    type: boolean
                 type: object
               googleServiceAccount:
                 description: |-
