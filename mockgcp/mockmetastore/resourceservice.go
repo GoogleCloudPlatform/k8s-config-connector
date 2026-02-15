@@ -126,6 +126,9 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	if hiveConfig.ConfigOverrides == nil {
 		hiveConfig.ConfigOverrides = make(map[string]string)
 	}
+	if hiveConfig.ConfigOverrides["hive.metastore.warehouse.dir"] == "" {
+		hiveConfig.ConfigOverrides["hive.metastore.warehouse.dir"] = "gs://gcs-bucket-" + name.Name + "/hive-warehouse"
+	}
 
 	obj.MetastoreConfig = &pb.Service_HiveMetastoreConfig{
 		HiveMetastoreConfig: hiveConfig,
