@@ -1,0 +1,9 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubScope
+metadata:
+  name: gkehubscope-sample
+spec:
+  projectRef:
+    external: ${project_id}
+  labels:
+    env: dev
