@@ -23,4 +23,3 @@ spec:
     external: projects/${PROJECT_ID?}
   location: global
   format: JSON
-  

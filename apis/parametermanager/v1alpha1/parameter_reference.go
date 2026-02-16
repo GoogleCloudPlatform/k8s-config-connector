@@ -28,7 +28,7 @@ var _ refsv1beta1.Ref = &ParameterRef{}
 // ParameterRef is a reference to a ParameterManagerParameter resource.
 type ParameterRef struct {
 	// A reference to an externally managed ParameterManagerParameter resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/parameters/{{parameterID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ParameterManagerParameter resource.

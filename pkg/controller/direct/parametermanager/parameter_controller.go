@@ -60,7 +60,7 @@ func (m *modelParameter) client(ctx context.Context, location string) (*gcp.Clie
 		return nil, err
 	}
 
-	// Add regional endpoint if location is specified
+	// Add regional endpoint if region is specified
 	if location != "" && location != "global" {
 		endpoint := fmt.Sprintf("parametermanager.%s.rep.googleapis.com:443", location)
 		opts = append(opts, option.WithEndpoint(endpoint))
@@ -100,10 +100,6 @@ func (m *modelParameter) AdapterForObject(ctx context.Context, reader client.Rea
 
 	if format == "" {
 		obj.Spec.Format = direct.LazyPtr("UNFORMATTED")
-	} else {
-		if format != "UNFORMATTED" && format != "JSON" && format != "YAML" {
-			return nil, fmt.Errorf("invalid format %q, only UNFORMATTED, JSON, and YAML are supported", format)
-		}
 	}
 
 	mapCtx := &direct.MapContext{}
@@ -123,9 +119,6 @@ func (m *modelParameter) AdapterForObject(ctx context.Context, reader client.Rea
 	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
 	location := obj.Spec.ProjectAndLocationRef.Location
-	if location == "" {
-		location = "global"
-	}
 
 	// Get parmetermanager GCP client
 	gcpClient, err := m.client(ctx, location)
