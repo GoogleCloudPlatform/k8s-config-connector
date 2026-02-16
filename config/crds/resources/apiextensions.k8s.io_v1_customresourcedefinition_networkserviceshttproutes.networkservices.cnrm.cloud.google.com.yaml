@@ -249,6 +249,8 @@ spec:
                                       - name
                                     - required:
                                       - namespace
+                                    - required:
+                                      - kind
                                   required:
                                   - external
                                 properties:
@@ -433,6 +435,8 @@ spec:
                                         - name
                                       - required:
                                         - namespace
+                                      - required:
+                                        - kind
                                     required:
                                     - external
                                   properties:
