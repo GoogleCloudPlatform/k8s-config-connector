@@ -112,6 +112,8 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".destination.cloud_run_revision.service_uri")
 	f.Unimplemented_NotYetTriaged(".source.cloud_run_revision.service_uri")
 	f.Unimplemented_NotYetTriaged(".probing_details.probed_all_devices")
+	f.Unimplemented_NotYetTriaged(".destination.gke_pod")
+	f.Unimplemented_NotYetTriaged(".source.gke_pod")
 
 	return f
 }

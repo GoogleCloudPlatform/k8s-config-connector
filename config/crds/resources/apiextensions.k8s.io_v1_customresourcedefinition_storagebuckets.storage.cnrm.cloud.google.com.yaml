@@ -186,6 +186,13 @@ spec:
               ipFilter:
                 description: The bucket's IP filter configuration.
                 properties:
+                  allowAllServiceAgentAccess:
+                    description: Whether or not to allow all P4SA access to the bucket.
+                    type: boolean
+                  allowCrossOrgVpcs:
+                    description: Whether or not to allow VPCs from orgs different
+                      than the bucket's parent org to access the bucket.
+                    type: boolean
                   mode:
                     description: 'The mode of the IP filter. Possible values: ENABLED,
                       DISABLED.'
@@ -379,6 +386,12 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+              publicAccessPrevention:
+                description: Prevents public access to a bucket.
+                type: string
+              requesterPays:
+                description: Enables Requester Pays on a storage bucket.
+                type: boolean
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`

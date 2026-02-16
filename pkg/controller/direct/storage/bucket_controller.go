@@ -134,8 +134,7 @@ func (a *BucketAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 	}
 	log.V(2).Info("successfully created Bucket", "name", a.id.Bucket)
 
-	status := &krm.StorageBucketStatus{}
-	status.ObservedState = StorageBucketObservedState_FromProto(mapCtx, created)
+	status := StorageBucketStatus_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -164,8 +163,7 @@ func (a *BucketAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	}
 	log.V(2).Info("successfully updated Bucket", "name", a.id.Bucket)
 
-	status := &krm.StorageBucketStatus{}
-	status.ObservedState = StorageBucketObservedState_FromProto(mapCtx, updated)
+	status := StorageBucketStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

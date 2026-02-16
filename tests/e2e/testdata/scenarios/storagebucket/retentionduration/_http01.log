@@ -1,60 +1,9 @@
 GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The specified bucket does not exist.",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The specified bucket does not exist."
-  }
-}
-
----
-
-POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "lifecycle": {
-    "rule": [
-      {
-        "action": {
-          "type": "Delete"
-        },
-        "condition": {
-          "age": 7
-        }
-      }
-    ]
-  },
-  "name": "bucket-${uniqueId}",
-  "softDeletePolicy": {
-    "retentionDurationSeconds": "0"
-  },
-  "versioning": {
-    "enabled": true
-  }
-}
-
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
-Pragma: no-cache
+Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin

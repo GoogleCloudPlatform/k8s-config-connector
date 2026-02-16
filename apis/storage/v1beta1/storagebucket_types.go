@@ -196,6 +196,16 @@ type BucketIPFilter struct {
 	// +optional
 	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter.vpc_network_sources
 	VpcNetworkSources []BucketIPFilterVpcNetworkSource `json:"vpcNetworkSources,omitempty"`
+
+	/* Whether or not to allow VPCs from orgs different than the bucket's parent org to access the bucket. */
+	// +optional
+	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter.allow_cross_org_vpcs
+	AllowCrossOrgVpcs *bool `json:"allowCrossOrgVpcs,omitempty"`
+
+	/* Whether or not to allow all P4SA access to the bucket. */
+	// +optional
+	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter.allow_all_service_agent_access
+	AllowAllServiceAgentAccess *bool `json:"allowAllServiceAgentAccess,omitempty"`
 }
 
 // +kcc:proto=google.storage.v2.Bucket_IpFilter_VpcNetworkSource
@@ -314,6 +324,14 @@ type StorageBucketSpec struct {
 	/* Enables uniform bucket-level access on a bucket. */
 	// +optional
 	UniformBucketLevelAccess *bool `json:"uniformBucketLevelAccess,omitempty"`
+
+	/* Prevents public access to a bucket. */
+	// +optional
+	PublicAccessPrevention *string `json:"publicAccessPrevention,omitempty"`
+
+	/* Enables Requester Pays on a storage bucket. */
+	// +optional
+	RequesterPays *bool `json:"requesterPays,omitempty"`
 
 	/* The bucket's Access & Storage Logs configuration. */
 	// +optional

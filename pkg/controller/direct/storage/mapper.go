@@ -15,6 +15,8 @@
 package storage
 
 import (
+	"fmt"
+
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -30,7 +32,15 @@ func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketS
 	out.StorageClass = direct.ValueOf(in.StorageClass)
 	if in.IPFilter != nil {
 		out.IpFilter = &gcp.BucketIpFilter{
-			Mode: direct.ValueOf(in.IPFilter.Mode),
+			Mode:                       direct.ValueOf(in.IPFilter.Mode),
+			AllowCrossOrgVpcs:          direct.ValueOf(in.IPFilter.AllowCrossOrgVpcs),
+			AllowAllServiceAgentAccess: direct.ValueOf(in.IPFilter.AllowAllServiceAgentAccess),
+		}
+		if in.IPFilter.AllowCrossOrgVpcs != nil {
+			out.IpFilter.ForceSendFields = append(out.IpFilter.ForceSendFields, "AllowCrossOrgVpcs")
+		}
+		if in.IPFilter.AllowAllServiceAgentAccess != nil {
+			out.IpFilter.ForceSendFields = append(out.IpFilter.ForceSendFields, "AllowAllServiceAgentAccess")
 		}
 		if in.IPFilter.PublicNetworkSource != nil {
 			out.IpFilter.PublicNetworkSource = &gcp.BucketIpFilterPublicNetworkSource{
@@ -49,11 +59,13 @@ func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketS
 		out.Autoclass = &gcp.BucketAutoclass{
 			Enabled: in.Autoclass.Enabled,
 		}
+		out.Autoclass.ForceSendFields = append(out.Autoclass.ForceSendFields, "Enabled")
 	}
 	if in.Versioning != nil {
 		out.Versioning = &gcp.BucketVersioning{
 			Enabled: in.Versioning.Enabled,
 		}
+		out.Versioning.ForceSendFields = append(out.Versioning.ForceSendFields, "Enabled")
 	}
 	if in.Website != nil {
 		out.Website = &gcp.BucketWebsite{
@@ -72,15 +84,26 @@ func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketS
 			IsLocked:        direct.ValueOf(in.RetentionPolicy.IsLocked),
 			RetentionPeriod: in.RetentionPolicy.RetentionPeriod,
 		}
+		if in.RetentionPolicy.IsLocked != nil {
+			out.RetentionPolicy.ForceSendFields = append(out.RetentionPolicy.ForceSendFields, "IsLocked")
+		}
 	}
 	if in.SoftDeletePolicy != nil {
 		out.SoftDeletePolicy = &gcp.BucketSoftDeletePolicy{
 			RetentionDurationSeconds: direct.ValueOf(in.SoftDeletePolicy.RetentionDurationSeconds),
 		}
+		out.SoftDeletePolicy.ForceSendFields = append(out.SoftDeletePolicy.ForceSendFields, "RetentionDurationSeconds")
+	}
+
+	if in.RequesterPays != nil {
+		out.Billing = &gcp.BucketBilling{
+			RequesterPays: *in.RequesterPays,
+		}
+		out.Billing.ForceSendFields = append(out.Billing.ForceSendFields, "RequesterPays")
 	}
 
 	// Map top-level IAM fields to nested IamConfiguration
-	if in.BucketPolicyOnly != nil || in.UniformBucketLevelAccess != nil {
+	if in.BucketPolicyOnly != nil || in.UniformBucketLevelAccess != nil || in.PublicAccessPrevention != nil {
 		if out.IamConfiguration == nil {
 			out.IamConfiguration = &gcp.BucketIamConfiguration{}
 		}
@@ -88,11 +111,16 @@ func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketS
 			out.IamConfiguration.BucketPolicyOnly = &gcp.BucketIamConfigurationBucketPolicyOnly{
 				Enabled: *in.BucketPolicyOnly,
 			}
+			out.IamConfiguration.BucketPolicyOnly.ForceSendFields = append(out.IamConfiguration.BucketPolicyOnly.ForceSendFields, "Enabled")
 		}
 		if in.UniformBucketLevelAccess != nil {
 			out.IamConfiguration.UniformBucketLevelAccess = &gcp.BucketIamConfigurationUniformBucketLevelAccess{
 				Enabled: *in.UniformBucketLevelAccess,
 			}
+			out.IamConfiguration.UniformBucketLevelAccess.ForceSendFields = append(out.IamConfiguration.UniformBucketLevelAccess.ForceSendFields, "Enabled")
+		}
+		if in.PublicAccessPrevention != nil {
+			out.IamConfiguration.PublicAccessPrevention = *in.PublicAccessPrevention
 		}
 	}
 
@@ -148,7 +176,9 @@ func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *gcp.Bucket) *krm
 	out.StorageClass = direct.LazyPtr(in.StorageClass)
 	if in.IpFilter != nil {
 		out.IPFilter = &krm.BucketIPFilter{
-			Mode: direct.LazyPtr(in.IpFilter.Mode),
+			Mode:                       direct.LazyPtr(in.IpFilter.Mode),
+			AllowCrossOrgVpcs:          direct.LazyPtr(in.IpFilter.AllowCrossOrgVpcs),
+			AllowAllServiceAgentAccess: direct.LazyPtr(in.IpFilter.AllowAllServiceAgentAccess),
 		}
 		if in.IpFilter.PublicNetworkSource != nil {
 			out.IPFilter.PublicNetworkSource = &krm.BucketIPFilterPublicNetworkSource{
@@ -197,12 +227,19 @@ func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *gcp.Bucket) *krm
 		}
 	}
 
+	if in.Billing != nil {
+		out.RequesterPays = direct.LazyPtr(in.Billing.RequesterPays)
+	}
+
 	if in.IamConfiguration != nil {
 		if in.IamConfiguration.BucketPolicyOnly != nil {
 			out.BucketPolicyOnly = direct.LazyPtr(in.IamConfiguration.BucketPolicyOnly.Enabled)
 		}
 		if in.IamConfiguration.UniformBucketLevelAccess != nil {
 			out.UniformBucketLevelAccess = direct.LazyPtr(in.IamConfiguration.UniformBucketLevelAccess.Enabled)
+		}
+		if in.IamConfiguration.PublicAccessPrevention != "" {
+			out.PublicAccessPrevention = direct.LazyPtr(in.IamConfiguration.PublicAccessPrevention)
 		}
 	}
 
@@ -262,6 +299,19 @@ func StorageBucketObservedState_FromProto(mapCtx *direct.MapContext, in *gcp.Buc
 			EffectiveTime:            direct.LazyPtr(in.SoftDeletePolicy.EffectiveTime),
 			RetentionDurationSeconds: direct.LazyPtr(in.SoftDeletePolicy.RetentionDurationSeconds),
 		}
+	}
+	return out
+}
+
+func StorageBucketStatus_FromProto(mapCtx *direct.MapContext, in *gcp.Bucket) *krm.StorageBucketStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageBucketStatus{}
+	out.ObservedState = StorageBucketObservedState_FromProto(mapCtx, in)
+	out.SelfLink = direct.LazyPtr(in.SelfLink)
+	if in.Name != "" {
+		out.Url = direct.LazyPtr(fmt.Sprintf("gs://%s", in.Name))
 	}
 	return out
 }

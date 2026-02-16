@@ -29,10 +29,13 @@ import (
 // IDEA: Load all the samples, and check that we have all the KRM paths covered
 
 func FillWithRandom(t *testing.T, randStream *rand.Rand, msg proto.Message) {
-	fillWithRandom0(t, randStream, msg.ProtoReflect())
+	fillWithRandom0(t, randStream, msg.ProtoReflect(), 0)
 }
 
-func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Message) {
+func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Message, depth int) {
+	if depth > 10 {
+		return
+	}
 	descriptor := msg.Descriptor()
 	if string(descriptor.FullName()) == "google.protobuf.Duration" {
 		count := randStream.Intn(10)
@@ -77,7 +80,7 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 				listVal := msg.Mutable(field).List()
 				for j := 0; j < count; j++ {
 					el := listVal.AppendMutable()
-					fillWithRandom0(t, randStream, el.Message())
+					fillWithRandom0(t, randStream, el.Message(), depth+1)
 				}
 			case protoreflect.StringKind:
 				listVal := msg.Mutable(field).List()
@@ -154,7 +157,7 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 					for j := 0; j < count; j++ {
 						k := randomString(randStream)
 						el := mapVal.Mutable(protoreflect.ValueOf(k).MapKey())
-						fillWithRandom0(t, randStream, el.Message())
+						fillWithRandom0(t, randStream, el.Message(), depth+1)
 					}
 				}
 			case "int32->message":
@@ -162,7 +165,7 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 				for j := 0; j < count; j++ {
 					k := randStream.Int31n(10000)
 					el := mapVal.Mutable(protoreflect.ValueOf(k).MapKey())
-					fillWithRandom0(t, randStream, el.Message())
+					fillWithRandom0(t, randStream, el.Message(), depth+1)
 				}
 			case "string->int64":
 				mapVal := msg.Mutable(field).Map()
@@ -188,7 +191,7 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 		switch field.Kind() {
 		case protoreflect.MessageKind:
 			fieldVal := msg.Mutable(field)
-			fillWithRandom0(t, randStream, fieldVal.Message())
+			fillWithRandom0(t, randStream, fieldVal.Message(), depth+1)
 
 		case protoreflect.BoolKind:
 			msg.Set(field, protoreflect.ValueOfBool(randStream.Intn(2) == 1))
