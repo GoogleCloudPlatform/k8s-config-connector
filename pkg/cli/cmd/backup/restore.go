@@ -16,6 +16,7 @@ package backup
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"sort"
@@ -89,7 +90,7 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 	var objects []*unstructured.Unstructured
 	for {
 		attrs, err := it.Next()
-		if err == iterator.Done {
+		if errors.Is(err, iterator.Done) {
 			break
 		}
 		if err != nil {
