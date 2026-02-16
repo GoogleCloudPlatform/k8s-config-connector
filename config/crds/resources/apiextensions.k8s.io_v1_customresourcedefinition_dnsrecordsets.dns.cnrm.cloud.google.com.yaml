@@ -270,6 +270,7 @@ spec:
                                 - external
                               required:
                               - name
+                              - kind
                             - not:
                                 anyOf:
                                 - required:
@@ -829,6 +830,7 @@ spec:
                                 - external
                               required:
                               - name
+                              - kind
                             - not:
                                 anyOf:
                                 - required:
@@ -880,6 +882,7 @@ spec:
                       - external
                     required:
                     - name
+                    - kind
                   - not:
                       anyOf:
                       - required:

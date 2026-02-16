@@ -66,6 +66,7 @@ spec:
                     - external
                   required:
                   - name
+                  - kind
                 - not:
                     anyOf:
                     - required:

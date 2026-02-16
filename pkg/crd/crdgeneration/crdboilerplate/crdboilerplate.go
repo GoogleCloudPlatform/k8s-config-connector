@@ -162,11 +162,11 @@ func GetMultiKindResourceReferenceSchemaBoilerplate(externalRefDescription strin
 		},
 
 		// Enforces the following rules:
-		// * either 'name' or 'external' (but not both) must be specified
-		// * 'namespace' can only be specified if 'name' is specified
+		// * either 'name' + 'kind' or 'external' (but not both) must be specified
+		// * 'namespace' can only be specified if 'name' + 'kind' are specified
 		OneOf: []apiextensions.JSONSchemaProps{
 			{
-				Required: []string{"name"},
+				Required: []string{"name", "kind"},
 				Not: &apiextensions.JSONSchemaProps{
 					Required: []string{"external"},
 				},
