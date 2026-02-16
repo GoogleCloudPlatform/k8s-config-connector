@@ -31,3 +31,12 @@ type FeatureProjectRef struct {
 	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
 	Namespace string `json:"namespace,omitempty"`
 }
+
+type GKEHubScopeRef struct {
+	/* The name of the scope. Allowed value: The Google Cloud resource name of a `GKEHubScope` resource (format: `projects/{{project}}/locations/{{location}}/scopes/{{name}}`). */
+	External string `json:"external,omitempty"`
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	Name string `json:"name,omitempty"`
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	Namespace string `json:"namespace,omitempty"`
+}

@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	v1pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1"
 	v1betapb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta"
 	v1beta1pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -40,6 +41,7 @@ type MockService struct {
 
 	operations *operations.Operations
 
+	v1      *GKEHubV1
 	v1beta  *GKEHubFeature
 	v1beta1 *GKEHubMembership
 }
@@ -51,6 +53,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
+	s.v1 = &GKEHubV1{MockService: s}
 	s.v1beta = &GKEHubFeature{MockService: s}
 	s.v1beta1 = &GKEHubMembership{MockService: s}
 	return s
@@ -61,12 +64,21 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
+	v1pb.RegisterProjectsLocationsScopesServerServer(grpcServer, s.v1)
+	v1pb.RegisterProjectsLocationsScopesNamespacesServerServer(grpcServer, s.v1)
 	v1betapb.RegisterGkeHubServer(grpcServer, s.v1beta)
 	v1beta1pb.RegisterGkeHubMembershipServiceServer(grpcServer, s.v1beta1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{}, v1betapb.RegisterGkeHubHandler, v1beta1pb.RegisterGkeHubMembershipServiceHandler, s.operations.RegisterOperationsPath("/v1beta/{prefix=**}/operations/{name}"), s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"))
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		v1pb.RegisterProjectsLocationsScopesServerHandler,
+		v1pb.RegisterProjectsLocationsScopesNamespacesServerHandler,
+		v1betapb.RegisterGkeHubHandler,
+		v1beta1pb.RegisterGkeHubMembershipServiceHandler,
+		s.operations.RegisterOperationsPath("/v1beta/{prefix=**}/operations/{name}"),
+		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"),
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
 	}
