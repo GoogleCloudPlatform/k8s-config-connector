@@ -24,7 +24,7 @@ func TestSortResources(t *testing.T) {
 	resources := []*unstructured.Unstructured{
 		{
 			Object: map[string]interface{}{
-				"kind": "IAMPolicyMember",
+				"kind":       "IAMPolicyMember",
 				"apiVersion": "iam.cnrm.cloud.google.com/v1beta1",
 				"metadata": map[string]interface{}{
 					"name": "policy-member",
@@ -33,7 +33,7 @@ func TestSortResources(t *testing.T) {
 		},
 		{
 			Object: map[string]interface{}{
-				"kind": "ComputeNetwork",
+				"kind":       "ComputeNetwork",
 				"apiVersion": "compute.cnrm.cloud.google.com/v1beta1",
 				"metadata": map[string]interface{}{
 					"name": "network",
@@ -42,7 +42,7 @@ func TestSortResources(t *testing.T) {
 		},
 		{
 			Object: map[string]interface{}{
-				"kind": "Project",
+				"kind":       "Project",
 				"apiVersion": "resourcemanager.cnrm.cloud.google.com/v1beta1",
 				"metadata": map[string]interface{}{
 					"name": "project",
@@ -51,7 +51,7 @@ func TestSortResources(t *testing.T) {
 		},
 		{
 			Object: map[string]interface{}{
-				"kind": "PubSubTopic",
+				"kind":       "PubSubTopic",
 				"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
 				"metadata": map[string]interface{}{
 					"name": "topic",
