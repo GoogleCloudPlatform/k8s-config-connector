@@ -15,11 +15,16 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var (
@@ -47,6 +52,46 @@ func (i *StorageBucketIdentity) String() string {
 
 func (i *StorageBucketIdentity) BucketName() string {
 	return i.Bucket
+}
+
+func (i *StorageBucketIdentity) Parent() *parent.ProjectParent {
+	return &parent.ProjectParent{
+		ProjectID: i.Project,
+	}
+}
+
+func (i *StorageBucketIdentity) ID() string {
+	return i.Bucket
+}
+
+func (i *StorageBucketIdentity) HasKnownId() bool {
+	return i.Bucket != ""
+}
+
+func NewBucketIdentity(ctx context.Context, reader client.Reader, obj *StorageBucket) (*StorageBucketIdentity, error) {
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		id := &StorageBucketIdentity{}
+		if err := id.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+		return id, nil
+	}
+
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+
+	return &StorageBucketIdentity{
+		Project: projectID,
+		Bucket:  resourceID,
+	}, nil
 }
 
 // Deprecated: prefer FromExternal

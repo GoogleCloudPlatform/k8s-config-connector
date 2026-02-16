@@ -1,0 +1,14 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  labels:
+    label-one: "value-one"
+  name: storagebucket-sample-${uniqueId}
+spec:
+  location: us-central1
+  storageClass: STANDARD
+  ipFilter:
+    mode: ENABLED
+    publicNetworkSource:
+      allowedIpRanges:
+      - "1.1.1.1/32"

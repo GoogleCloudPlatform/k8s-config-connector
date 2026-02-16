@@ -8,25 +8,25 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.7
-	cloud.google.com/go/aiplatform v1.112.0
+	cloud.google.com/go/aiplatform v1.115.0
 	cloud.google.com/go/alloydb v1.20.0
 	cloud.google.com/go/analytics v0.30.1
 	cloud.google.com/go/apigateway v1.7.7
 	cloud.google.com/go/apikeys v1.2.7
 	cloud.google.com/go/apphub v0.4.0
-	cloud.google.com/go/artifactregistry v1.17.1
+	cloud.google.com/go/artifactregistry v1.19.0
 	cloud.google.com/go/asset v1.22.0
 	cloud.google.com/go/assuredworkloads v1.13.0
 	cloud.google.com/go/backupdr v1.6.0
 	cloud.google.com/go/batch v1.14.0
-	cloud.google.com/go/bigquery v1.72.0
+	cloud.google.com/go/bigquery v1.73.1
 	cloud.google.com/go/billing v1.21.0
 	cloud.google.com/go/certificatemanager v1.9.6
 	cloud.google.com/go/cloudbuild v1.25.0
 	cloud.google.com/go/clouddms v1.8.8
 	cloud.google.com/go/cloudquotas v1.4.0
 	cloud.google.com/go/cloudtasks v1.13.7
-	cloud.google.com/go/compute v1.52.0
+	cloud.google.com/go/compute v1.54.0
 	cloud.google.com/go/configdelivery v0.1.1
 	cloud.google.com/go/datacatalog v1.26.1
 	cloud.google.com/go/dataflow v0.11.1
@@ -36,23 +36,23 @@ require (
 	cloud.google.com/go/datastream v1.15.1
 	cloud.google.com/go/deploy v1.27.3
 	cloud.google.com/go/discoveryengine v1.22.0
-	cloud.google.com/go/documentai v1.39.0
+	cloud.google.com/go/documentai v1.40.0
 	cloud.google.com/go/edgecontainer v1.4.4
 	cloud.google.com/go/essentialcontacts v1.7.7
 	cloud.google.com/go/eventarc v1.18.0
-	cloud.google.com/go/firestore v1.20.0
+	cloud.google.com/go/firestore v1.21.0
 	cloud.google.com/go/gkebackup v1.8.1
 	cloud.google.com/go/gkemulticloud v1.6.0
 	cloud.google.com/go/iam v1.5.3
 	cloud.google.com/go/iap v1.11.3
-	cloud.google.com/go/kms v1.23.2
-	cloud.google.com/go/logging v1.13.1
+	cloud.google.com/go/kms v1.25.0
+	cloud.google.com/go/logging v1.13.2
 	cloud.google.com/go/managedkafka v0.8.1
 	cloud.google.com/go/memorystore v0.4.0
 	cloud.google.com/go/metastore v1.14.8
 	cloud.google.com/go/monitoring v1.24.3
 	cloud.google.com/go/netapp v1.11.0
-	cloud.google.com/go/networkmanagement v1.21.0
+	cloud.google.com/go/networkmanagement v1.22.0
 	cloud.google.com/go/networksecurity v0.11.0
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.12.7
@@ -65,13 +65,13 @@ require (
 	cloud.google.com/go/recaptchaenterprise/v2 v2.21.0
 	cloud.google.com/go/redis v1.18.3
 	cloud.google.com/go/resourcemanager v1.10.7
-	cloud.google.com/go/run v1.13.0
+	cloud.google.com/go/run v1.15.0
 	cloud.google.com/go/secretmanager v1.16.0
 	cloud.google.com/go/securesourcemanager v1.4.1
 	cloud.google.com/go/security v1.19.2
 	cloud.google.com/go/spanner v1.87.0
-	cloud.google.com/go/speech v1.28.1
-	cloud.google.com/go/storage v1.58.0
+	cloud.google.com/go/speech v1.29.0
+	cloud.google.com/go/storage v1.59.0
 	cloud.google.com/go/vmwareengine v1.3.6
 	cloud.google.com/go/workflows v1.14.3
 	cloud.google.com/go/workstations v1.1.6
@@ -90,7 +90,7 @@ require (
 	github.com/go-logr/zapr v1.3.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
-	github.com/googleapis/gax-go/v2 v2.15.0
+	github.com/googleapis/gax-go/v2 v2.16.0
 	github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/hashicorp/hcl v1.0.0
@@ -116,12 +116,12 @@ require (
 	golang.org/x/oauth2 v0.34.0
 	golang.org/x/sync v0.19.0
 	golang.org/x/time v0.14.0
-	google.golang.org/api v0.258.0
-	google.golang.org/genproto v0.0.0-20250922171735-9219d122eba9
-	google.golang.org/genproto/googleapis/api v0.0.0-20251111163417-95abcf5c77ba
+	google.golang.org/api v0.259.0
+	google.golang.org/genproto v0.0.0-20260209200024-4cfbd4190f57
+	google.golang.org/genproto/googleapis/api v0.0.0-20260203192932-546029d2fa20
 	google.golang.org/genproto/googleapis/api/serviceusage v0.0.0-20250519155744-55703ea1f237
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20251213004720-97cd9d5aeac2
-	google.golang.org/grpc v1.77.0
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260203192932-546029d2fa20
+	google.golang.org/grpc v1.78.0
 	google.golang.org/protobuf v1.36.11
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0
 	gopkg.in/yaml.v2 v2.4.0
@@ -141,7 +141,7 @@ require (
 require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
-	cloud.google.com/go/osconfig v1.15.1 // indirect
+	cloud.google.com/go/osconfig v1.16.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.30.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.54.0 // indirect
@@ -171,9 +171,9 @@ require (
 	cloud.google.com/go v0.123.0 // indirect
 	cloud.google.com/go/auth v0.18.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
-	cloud.google.com/go/bigtable v1.41.0
+	cloud.google.com/go/bigtable v1.42.0
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
-	cloud.google.com/go/longrunning v0.7.0
+	cloud.google.com/go/longrunning v0.8.0
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/MakeNowJust/heredoc v1.0.0 // indirect; indsirect
@@ -286,11 +286,11 @@ require (
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.63.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.61.0 // indirect
-	go.opentelemetry.io/otel v1.38.0 // indirect
-	go.opentelemetry.io/otel/metric v1.38.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.38.0 // indirect
-	go.opentelemetry.io/otel/sdk/metric v1.38.0 // indirect
-	go.opentelemetry.io/otel/trace v1.38.0 // indirect
+	go.opentelemetry.io/otel v1.39.0 // indirect
+	go.opentelemetry.io/otel/metric v1.39.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.39.0 // indirect
+	go.opentelemetry.io/otel/sdk/metric v1.39.0 // indirect
+	go.opentelemetry.io/otel/trace v1.39.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.46.0 // indirect
 	golang.org/x/exp v0.0.0-20251125195548-87e1e737ad39 // indirect
