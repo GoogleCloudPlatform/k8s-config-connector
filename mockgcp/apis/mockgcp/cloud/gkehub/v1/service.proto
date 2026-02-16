@@ -1,0 +1,2419 @@
+syntax = "proto3";
+package mockgcp.cloud.gkehub.v1;
+import "google/api/annotations.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "cloud.google.com/go/gkehub/apiv1/gkehubpb;gkehubpb";
+
+service OrganizationsServer {
+}
+
+service OrganizationsLocationsServer {
+}
+
+service OrganizationsLocationsFleetsServer {
+
+  // Returns all fleets within an organization or a project that the caller has access to.
+  rpc ListOrganizationsLocationsFleets(ListOrganizationsLocationsFleetsRequest) returns (ListFleetsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=organizations/*/locations/*}/fleets"
+    };
+  };
+}
+
+service ProjectsServer {
+}
+
+service ProjectsLocationsServer {
+
+  // Gets information about a location.
+  rpc GetProjectsLocation(GetProjectsLocationRequest) returns (Location) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*}"
+    };
+  };
+
+  // Lists information about the supported locations for this service. This method can be called in two ways: * **List all public locations:** Use the path `GET /v1/locations`. * **List project-visible locations:** Use the path `GET /v1/projects/{project_id}/locations`. This may include public locations as well as private or other locations specifically visible to the project.
+  rpc ListProjectsLocations(ListProjectsLocationsRequest) returns (ListLocationsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*}/locations"
+    };
+  };
+}
+
+service ProjectsLocationsFeaturesServer {
+
+  // Adds a new Feature.
+  rpc CreateProjectsLocationsFeature(CreateProjectsLocationsFeatureRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/features"
+      body: "projects_locations_feature"
+    };
+  };
+
+  // Removes a Feature.
+  rpc DeleteProjectsLocationsFeature(DeleteProjectsLocationsFeatureRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/features/*}"
+    };
+  };
+
+  // Gets details of a single Feature.
+  rpc GetProjectsLocationsFeature(GetProjectsLocationsFeatureRequest) returns (Feature) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/features/*}"
+    };
+  };
+
+  // Lists Features in a given project and location.
+  rpc ListProjectsLocationsFeatures(ListProjectsLocationsFeaturesRequest) returns (ListFeaturesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/features"
+    };
+  };
+
+  // Updates an existing Feature.
+  rpc PatchProjectsLocationsFeature(PatchProjectsLocationsFeatureRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/features/*}"
+      body: "projects_locations_feature"
+    };
+  };
+}
+
+service ProjectsLocationsFleetsServer {
+
+  // Creates a fleet.
+  rpc CreateProjectsLocationsFleet(CreateProjectsLocationsFleetRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/fleets"
+      body: "projects_locations_fleet"
+    };
+  };
+
+  // Removes a Fleet. There must be no memberships remaining in the Fleet.
+  rpc DeleteProjectsLocationsFleet(DeleteProjectsLocationsFleetRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/fleets/*}"
+    };
+  };
+
+  // Returns the details of a fleet.
+  rpc GetProjectsLocationsFleet(GetProjectsLocationsFleetRequest) returns (Fleet) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/fleets/*}"
+    };
+  };
+
+  // Returns all fleets within an organization or a project that the caller has access to.
+  rpc ListProjectsLocationsFleets(ListProjectsLocationsFleetsRequest) returns (ListFleetsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/fleets"
+    };
+  };
+
+  // Updates a fleet.
+  rpc PatchProjectsLocationsFleet(PatchProjectsLocationsFleetRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/fleets/*}"
+      body: "projects_locations_fleet"
+    };
+  };
+}
+
+service ProjectsLocationsMembershipsServer {
+
+  // Creates a new Membership. **This is currently only supported for GKE clusters on Google Cloud**. To register other clusters, follow the instructions at https://cloud.google.com/anthos/multicluster-management/connect/registering-a-cluster.
+  rpc CreateProjectsLocationsMembership(CreateProjectsLocationsMembershipRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/memberships"
+      body: "projects_locations_membership"
+    };
+  };
+
+  // Removes a Membership. **This is currently only supported for GKE clusters on Google Cloud**. To unregister other clusters, follow the instructions at https://cloud.google.com/anthos/multicluster-management/connect/unregistering-a-cluster.
+  rpc DeleteProjectsLocationsMembership(DeleteProjectsLocationsMembershipRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/memberships/*}"
+    };
+  };
+
+  // Generates the manifest for deployment of the GKE connect agent. **This method is used internally by Google-provided libraries.** Most clients should not need to call this method directly.
+  rpc GenerateConnectManifestProjectsLocationsMembership(GenerateConnectManifestProjectsLocationsMembershipRequest) returns (GenerateConnectManifestResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/memberships/*}:generateConnectManifest"
+    };
+  };
+
+  // Gets the details of a Membership.
+  rpc GetProjectsLocationsMembership(GetProjectsLocationsMembershipRequest) returns (Membership) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/memberships/*}"
+    };
+  };
+
+  // Lists Memberships in a given project and location.
+  rpc ListProjectsLocationsMemberships(ListProjectsLocationsMembershipsRequest) returns (ListMembershipsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/memberships"
+    };
+  };
+
+  // Updates an existing Membership.
+  rpc PatchProjectsLocationsMembership(PatchProjectsLocationsMembershipRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/memberships/*}"
+      body: "projects_locations_membership"
+    };
+  };
+}
+
+service ProjectsLocationsMembershipsBindingsServer {
+
+  // Creates a MembershipBinding.
+  rpc CreateProjectsLocationsMembershipsBinding(CreateProjectsLocationsMembershipsBindingRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/memberships/*}/bindings"
+      body: "projects_locations_memberships_binding"
+    };
+  };
+
+  // Deletes a MembershipBinding.
+  rpc DeleteProjectsLocationsMembershipsBinding(DeleteProjectsLocationsMembershipsBindingRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/memberships/*/bindings/*}"
+    };
+  };
+
+  // Returns the details of a MembershipBinding.
+  rpc GetProjectsLocationsMembershipsBinding(GetProjectsLocationsMembershipsBindingRequest) returns (MembershipBinding) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/memberships/*/bindings/*}"
+    };
+  };
+
+  // Lists MembershipBindings.
+  rpc ListProjectsLocationsMembershipsBindings(ListProjectsLocationsMembershipsBindingsRequest) returns (ListMembershipBindingsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*/memberships/*}/bindings"
+    };
+  };
+
+  // Updates a MembershipBinding.
+  rpc PatchProjectsLocationsMembershipsBinding(PatchProjectsLocationsMembershipsBindingRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/memberships/*/bindings/*}"
+      body: "projects_locations_memberships_binding"
+    };
+  };
+}
+
+service ProjectsLocationsMembershipsRbacrolebindingsServer {
+
+  // Creates a Membership RBACRoleBinding.
+  rpc CreateProjectsLocationsMembershipsRbacrolebinding(CreateProjectsLocationsMembershipsRbacrolebindingRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/memberships/*}/rbacrolebindings"
+      body: "projects_locations_memberships_rbacrolebinding"
+    };
+  };
+
+  // Deletes a Membership RBACRoleBinding.
+  rpc DeleteProjectsLocationsMembershipsRbacrolebinding(DeleteProjectsLocationsMembershipsRbacrolebindingRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/memberships/*/rbacrolebindings/*}"
+    };
+  };
+
+  // Generates a YAML of the RBAC policies for the specified RoleBinding and its associated impersonation resources.
+  rpc GenerateMembershipRBACRoleBindingYAMLProjectsLocationsMembershipsRbacrolebinding(GenerateMembershipRBACRoleBindingYAMLProjectsLocationsMembershipsRbacrolebindingRequest) returns (GenerateMembershipRBACRoleBindingYAMLResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/memberships/*}/rbacrolebindings:generateMembershipRBACRoleBindingYAML"
+      body: "projects_locations_memberships_rbacrolebinding"
+    };
+  };
+
+  // Returns the details of a Membership RBACRoleBinding.
+  rpc GetProjectsLocationsMembershipsRbacrolebinding(GetProjectsLocationsMembershipsRbacrolebindingRequest) returns (RBACRoleBinding) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/memberships/*/rbacrolebindings/*}"
+    };
+  };
+
+  // Lists all Membership RBACRoleBindings.
+  rpc ListProjectsLocationsMembershipsRbacrolebindings(ListProjectsLocationsMembershipsRbacrolebindingsRequest) returns (ListMembershipRBACRoleBindingsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*/memberships/*}/rbacrolebindings"
+    };
+  };
+
+  // Updates a Membership RBACRoleBinding.
+  rpc PatchProjectsLocationsMembershipsRbacrolebinding(PatchProjectsLocationsMembershipsRbacrolebindingRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/memberships/*/rbacrolebindings/*}"
+      body: "projects_locations_memberships_rbacrolebinding"
+    };
+  };
+}
+
+service ProjectsLocationsScopesServer {
+
+  // Creates a Scope.
+  rpc CreateProjectsLocationsScope(CreateProjectsLocationsScopeRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/scopes"
+      body: "projects_locations_scope"
+    };
+  };
+
+  // Deletes a Scope.
+  rpc DeleteProjectsLocationsScope(DeleteProjectsLocationsScopeRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/scopes/*}"
+    };
+  };
+
+  // Returns the details of a Scope.
+  rpc GetProjectsLocationsScope(GetProjectsLocationsScopeRequest) returns (Scope) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/scopes/*}"
+    };
+  };
+
+  // Lists Scopes.
+  rpc ListProjectsLocationsScopes(ListProjectsLocationsScopesRequest) returns (ListScopesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/scopes"
+    };
+  };
+
+  // Lists Memberships bound to a Scope. The response includes relevant Memberships from all regions.
+  rpc ListMembershipsProjectsLocationsScope(ListMembershipsProjectsLocationsScopeRequest) returns (ListBoundMembershipsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{scope_name=*}:listMemberships"
+    };
+  };
+
+  // Lists permitted Scopes.
+  rpc ListPermittedProjectsLocationsScope(ListPermittedProjectsLocationsScopeRequest) returns (ListPermittedScopesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/scopes:listPermitted"
+    };
+  };
+
+  // Updates a scopes.
+  rpc PatchProjectsLocationsScope(PatchProjectsLocationsScopeRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/scopes/*}"
+      body: "projects_locations_scope"
+    };
+  };
+}
+
+service ProjectsLocationsScopesNamespacesServer {
+
+  // Creates a fleet namespace.
+  rpc CreateProjectsLocationsScopesNamespace(CreateProjectsLocationsScopesNamespaceRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/scopes/*}/namespaces"
+      body: "projects_locations_scopes_namespace"
+    };
+  };
+
+  // Deletes a fleet namespace.
+  rpc DeleteProjectsLocationsScopesNamespace(DeleteProjectsLocationsScopesNamespaceRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/scopes/*/namespaces/*}"
+    };
+  };
+
+  // Returns the details of a fleet namespace.
+  rpc GetProjectsLocationsScopesNamespace(GetProjectsLocationsScopesNamespaceRequest) returns (Namespace) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/scopes/*/namespaces/*}"
+    };
+  };
+
+  // Lists fleet namespaces.
+  rpc ListProjectsLocationsScopesNamespaces(ListProjectsLocationsScopesNamespacesRequest) returns (ListScopeNamespacesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*/scopes/*}/namespaces"
+    };
+  };
+
+  // Updates a fleet namespace.
+  rpc PatchProjectsLocationsScopesNamespace(PatchProjectsLocationsScopesNamespaceRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/scopes/*/namespaces/*}"
+      body: "projects_locations_scopes_namespace"
+    };
+  };
+}
+
+service ProjectsLocationsScopesRbacrolebindingsServer {
+
+  // Creates a Scope RBACRoleBinding.
+  rpc CreateProjectsLocationsScopesRbacrolebinding(CreateProjectsLocationsScopesRbacrolebindingRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*/scopes/*}/rbacrolebindings"
+      body: "projects_locations_scopes_rbacrolebinding"
+    };
+  };
+
+  // Deletes a Scope RBACRoleBinding.
+  rpc DeleteProjectsLocationsScopesRbacrolebinding(DeleteProjectsLocationsScopesRbacrolebindingRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/scopes/*/rbacrolebindings/*}"
+    };
+  };
+
+  // Returns the details of a Scope RBACRoleBinding.
+  rpc GetProjectsLocationsScopesRbacrolebinding(GetProjectsLocationsScopesRbacrolebindingRequest) returns (RBACRoleBinding) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/scopes/*/rbacrolebindings/*}"
+    };
+  };
+
+  // Lists all Scope RBACRoleBindings.
+  rpc ListProjectsLocationsScopesRbacrolebindings(ListProjectsLocationsScopesRbacrolebindingsRequest) returns (ListScopeRBACRoleBindingsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*/scopes/*}/rbacrolebindings"
+    };
+  };
+
+  // Updates a Scope RBACRoleBinding.
+  rpc PatchProjectsLocationsScopesRbacrolebinding(PatchProjectsLocationsScopesRbacrolebindingRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/scopes/*/rbacrolebindings/*}"
+      body: "projects_locations_scopes_rbacrolebinding"
+    };
+  };
+}
+
+// Spec for App Dev Experience Feature.
+message AppDevExperienceFeatureSpec {
+}
+
+// State for App Dev Exp Feature.
+message AppDevExperienceFeatureState {
+  // Status of subcomponent that detects configured Service Mesh resources.
+  Status networking_install_succeeded = 1 [json_name="networkingInstallSucceeded"];
+}
+
+// ApplianceCluster contains information specific to GDC Edge Appliance Clusters.
+message ApplianceCluster {
+  // Immutable. Self-link of the Google Cloud resource for the Appliance Cluster. For example: //transferappliance.googleapis.com/projects/my-project/locations/us-west1-a/appliances/my-appliance
+  string resource_link = 1 [json_name="resourceLink"];
+}
+
+// Specifies the audit configuration for a service. The configuration determines which permission types are logged, and what identities, if any, are exempted from logging. An AuditConfig must have one or more AuditLogConfigs. If there are AuditConfigs for both `allServices` and a specific service, the union of the two AuditConfigs is used for that service: the log_types specified in each AuditConfig are enabled, and the exempted_members in each AuditLogConfig are exempted. Example Policy with multiple AuditConfigs: { "audit_configs": [ { "service": "allServices", "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" }, { "log_type": "ADMIN_READ" } ] }, { "service": "sampleservice.googleapis.com", "audit_log_configs": [ { "log_type": "DATA_READ" }, { "log_type": "DATA_WRITE", "exempted_members": [ "user:aliya@example.com" ] } ] } ] } For sampleservice, this policy enables DATA_READ, DATA_WRITE and ADMIN_READ logging. It also exempts `jose@example.com` from DATA_READ logging, and `aliya@example.com` from DATA_WRITE logging.
+message AuditConfig {
+  // The configuration for logging of each type of permission.
+  repeated AuditLogConfig audit_log_configs = 1 [json_name="auditLogConfigs"];
+  // Specifies a service that will be enabled for audit logging. For example, `storage.googleapis.com`, `cloudsql.googleapis.com`. `allServices` is a special value that covers all services.
+  string service = 2 [json_name="service"];
+}
+
+// Provides the configuration for logging a type of permissions. Example: { "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" } ] } This enables 'DATA_READ' and 'DATA_WRITE' logging, while exempting jose@example.com from DATA_READ logging.
+message AuditLogConfig {
+  // Specifies the identities that do not cause logging for this type of permission. Follows the same format of Binding.members.
+  repeated string exempted_members = 1 [json_name="exemptedMembers"];
+  // The log type that this config enables.
+  string log_type = 2 [json_name="logType"];
+}
+
+// Authority encodes how Google will recognize identities from this Membership. See the workload identity documentation for more details: https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
+message Authority {
+  // Output only. An identity provider that reflects the `issuer` in the workload identity pool.
+  string identity_provider = 1 [json_name="identityProvider"];
+  // Optional. A JSON Web Token (JWT) issuer URI. `issuer` must start with `https://` and be a valid URL with length <2000 characters, it must use `location` rather than `zone` for GKE clusters. If set, then Google will allow valid OIDC tokens from this issuer to authenticate within the workload_identity_pool. OIDC discovery will be performed on this URI to validate tokens from the issuer. Clearing `issuer` disables Workload Identity. `issuer` cannot be directly modified; it must be cleared (and Workload Identity disabled) before using a new issuer (and re-enabling Workload Identity).
+  string issuer = 2 [json_name="issuer"];
+  // Optional. OIDC verification keys for this Membership in JWKS format (RFC 7517). When this field is set, OIDC discovery will NOT be performed on `issuer`, and instead OIDC tokens will be validated using this field.
+  bytes oidc_jwks = 3 [json_name="oidcJwks"];
+  // Optional. Output only. The identity provider for the scope-tenancy workload identity pool.
+  string scope_tenancy_identity_provider = 4 [json_name="scopeTenancyIdentityProvider"];
+  // Optional. Output only. The name of the scope-tenancy workload identity pool. This pool is set in the fleet-level feature.
+  string scope_tenancy_workload_identity_pool = 5 [json_name="scopeTenancyWorkloadIdentityPool"];
+  // Output only. The name of the workload identity pool in which `issuer` will be recognized. There is a single Workload Identity Pool per Hub that is shared between all Memberships that belong to that Hub. For a Hub hosted in {PROJECT_ID}, the workload pool format is `{PROJECT_ID}.hub.id.goog`, although this is subject to change in newer versions of this API.
+  string workload_identity_pool = 6 [json_name="workloadIdentityPool"];
+}
+
+// BinaryAuthorizationConfig defines the fleet level configuration of binary authorization feature.
+message BinaryAuthorizationConfig {
+  // Optional. Mode of operation for binauthz policy evaluation.
+  string evaluation_mode = 1 [json_name="evaluationMode"];
+  // Optional. Binauthz policies that apply to this cluster.
+  repeated PolicyBinding policy_bindings = 2 [json_name="policyBindings"];
+}
+
+// Associates `members`, or principals, with a `role`.
+message Binding {
+  // The condition that is associated with this binding. If the condition evaluates to `true`, then this binding applies to the current request. If the condition evaluates to `false`, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the principals in this binding. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+  Expr condition = 1 [json_name="condition"];
+  // Specifies the principals requesting access for a Google Cloud resource. `members` can have the following values: * `allUsers`: A special identifier that represents anyone who is on the internet; with or without a Google account. * `allAuthenticatedUsers`: A special identifier that represents anyone who is authenticated with a Google account or a service account. Does not include identities that come from external identity providers (IdPs) through identity federation. * `user:{emailid}`: An email address that represents a specific Google account. For example, `alice@example.com` . * `serviceAccount:{emailid}`: An email address that represents a Google service account. For example, `my-other-app@appspot.gserviceaccount.com`. * `serviceAccount:{projectid}.svc.id.goog[{namespace}/{kubernetes-sa}]`: An identifier for a [Kubernetes service account](https://cloud.google.com/kubernetes-engine/docs/how-to/kubernetes-service-accounts). For example, `my-project.svc.id.goog[my-namespace/my-kubernetes-sa]`. * `group:{emailid}`: An email address that represents a Google group. For example, `admins@example.com`. * `domain:{domain}`: The G Suite domain (primary) that represents all the users of that domain. For example, `google.com` or `example.com`. * `principal://iam.googleapis.com/locations/global/workforcePools/{pool_id}/subject/{subject_attribute_value}`: A single identity in a workforce identity pool. * `principalSet://iam.googleapis.com/locations/global/workforcePools/{pool_id}/group/{group_id}`: All workforce identities in a group. * `principalSet://iam.googleapis.com/locations/global/workforcePools/{pool_id}/attribute.{attribute_name}/{attribute_value}`: All workforce identities with a specific attribute value. * `principalSet://iam.googleapis.com/locations/global/workforcePools/{pool_id}/*`: All identities in a workforce identity pool. * `principal://iam.googleapis.com/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/subject/{subject_attribute_value}`: A single identity in a workload identity pool. * `principalSet://iam.googleapis.com/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/group/{group_id}`: A workload identity pool group. * `principalSet://iam.googleapis.com/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/attribute.{attribute_name}/{attribute_value}`: All identities in a workload identity pool with a certain attribute. * `principalSet://iam.googleapis.com/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/*`: All identities in a workload identity pool. * `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus unique identifier) representing a user that has been recently deleted. For example, `alice@example.com?uid=123456789012345678901`. If the user is recovered, this value reverts to `user:{emailid}` and the recovered user retains the role in the binding. * `deleted:serviceAccount:{emailid}?uid={uniqueid}`: An email address (plus unique identifier) representing a service account that has been recently deleted. For example, `my-other-app@appspot.gserviceaccount.com?uid=123456789012345678901`. If the service account is undeleted, this value reverts to `serviceAccount:{emailid}` and the undeleted service account retains the role in the binding. * `deleted:group:{emailid}?uid={uniqueid}`: An email address (plus unique identifier) representing a Google group that has been recently deleted. For example, `admins@example.com?uid=123456789012345678901`. If the group is recovered, this value reverts to `group:{emailid}` and the recovered group retains the role in the binding. * `deleted:principal://iam.googleapis.com/locations/global/workforcePools/{pool_id}/subject/{subject_attribute_value}`: Deleted single identity in a workforce identity pool. For example, `deleted:principal://iam.googleapis.com/locations/global/workforcePools/my-pool-id/subject/my-subject-attribute-value`.
+  repeated string members = 2 [json_name="members"];
+  // Role that is assigned to the list of `members`, or principals. For example, `roles/viewer`, `roles/editor`, or `roles/owner`. For an overview of the IAM roles and permissions, see the [IAM documentation](https://cloud.google.com/iam/docs/roles-overview). For a list of the available pre-defined roles, see [here](https://cloud.google.com/iam/docs/understanding-roles).
+  string role = 3 [json_name="role"];
+}
+
+// The request message for Operations.CancelOperation.
+message CancelOperationRequest {
+}
+
+// **ClusterUpgrade**: The configuration for the fleet-level ClusterUpgrade feature.
+message ClusterUpgradeFleetSpec {
+  // Allow users to override some properties of each GKE upgrade.
+  repeated ClusterUpgradeGKEUpgradeOverride gke_upgrade_overrides = 1 [json_name="gkeUpgradeOverrides"];
+  // Required. Post conditions to evaluate to mark an upgrade COMPLETE. Required.
+  ClusterUpgradePostConditions post_conditions = 2 [json_name="postConditions"];
+  // This fleet consumes upgrades that have COMPLETE status code in the upstream fleets. See UpgradeStatus.Code for code definitions. The fleet name should be either fleet project number or id. This is defined as repeated for future proof reasons. Initial implementation will enforce at most one upstream fleet.
+  repeated string upstream_fleets = 3 [json_name="upstreamFleets"];
+}
+
+// **ClusterUpgrade**: The state for the fleet-level ClusterUpgrade feature.
+message ClusterUpgradeFleetState {
+  // This fleets whose upstream_fleets contain the current fleet. The fleet name should be either fleet project number or id.
+  repeated string downstream_fleets = 1 [json_name="downstreamFleets"];
+  // Feature state for GKE clusters.
+  ClusterUpgradeGKEUpgradeFeatureState gke_state = 2 [json_name="gkeState"];
+  // A list of memberships ignored by the feature. For example, manually upgraded clusters can be ignored if they are newer than the default versions of its release channel. The membership resource is in the format: `projects/{p}/locations/{l}/membership/{m}`.
+  map<string, ClusterUpgradeIgnoredMembership> ignored = 3 [json_name="ignored"];
+}
+
+// GKEUpgrade represents a GKE provided upgrade, e.g., control plane upgrade.
+message ClusterUpgradeGKEUpgrade {
+  // Name of the upgrade, e.g., "k8s_control_plane". It should be a valid upgrade name. It must not exceet 99 characters.
+  string name = 1 [json_name="name"];
+  // Version of the upgrade, e.g., "1.22.1-gke.100". It should be a valid version. It must not exceet 99 characters.
+  string version = 2 [json_name="version"];
+}
+
+// GKEUpgradeFeatureCondition describes the condition of the feature for GKE clusters at a certain point of time.
+message ClusterUpgradeGKEUpgradeFeatureCondition {
+  // Reason why the feature is in this status.
+  string reason = 1 [json_name="reason"];
+  // Status of the condition, one of True, False, Unknown.
+  string status = 2 [json_name="status"];
+  // Type of the condition, for example, "ready".
+  string type = 3 [json_name="type"];
+  // Last timestamp the condition was updated.
+  .google.protobuf.Timestamp update_time = 4 [json_name="updateTime"];
+}
+
+// GKEUpgradeFeatureState contains feature states for GKE clusters in the scope.
+message ClusterUpgradeGKEUpgradeFeatureState {
+  // Current conditions of the feature.
+  repeated ClusterUpgradeGKEUpgradeFeatureCondition conditions = 1 [json_name="conditions"];
+  // Upgrade state. It will eventually replace `state`.
+  repeated ClusterUpgradeGKEUpgradeState upgrade_state = 2 [json_name="upgradeState"];
+}
+
+// Properties of a GKE upgrade that can be overridden by the user. For example, a user can skip soaking by overriding the soaking to 0.
+message ClusterUpgradeGKEUpgradeOverride {
+  // Required. Post conditions to override for the specified upgrade (name + version). Required.
+  ClusterUpgradePostConditions post_conditions = 1 [json_name="postConditions"];
+  // Required. Which upgrade to override. Required.
+  ClusterUpgradeGKEUpgrade upgrade = 2 [json_name="upgrade"];
+}
+
+// GKEUpgradeState is a GKEUpgrade and its state at the scope and fleet level.
+message ClusterUpgradeGKEUpgradeState {
+  // Number of GKE clusters in each status code.
+  map<string, int64> stats = 1 [json_name="stats"];
+  // Status of the upgrade.
+  ClusterUpgradeUpgradeStatus status = 2 [json_name="status"];
+  // Which upgrade to track the state.
+  ClusterUpgradeGKEUpgrade upgrade = 3 [json_name="upgrade"];
+}
+
+// IgnoredMembership represents a membership ignored by the feature. A membership can be ignored because it was manually upgraded to a newer version than RC default.
+message ClusterUpgradeIgnoredMembership {
+  // Time when the membership was first set to ignored.
+  .google.protobuf.Timestamp ignored_time = 1 [json_name="ignoredTime"];
+  // Reason why the membership is ignored.
+  string reason = 2 [json_name="reason"];
+}
+
+// ScopeGKEUpgradeState is a GKEUpgrade and its state per-membership.
+message ClusterUpgradeMembershipGKEUpgradeState {
+  // Status of the upgrade.
+  ClusterUpgradeUpgradeStatus status = 1 [json_name="status"];
+  // Which upgrade to track the state.
+  ClusterUpgradeGKEUpgrade upgrade = 2 [json_name="upgrade"];
+}
+
+// Per-membership state for this feature.
+message ClusterUpgradeMembershipState {
+  // Whether this membership is ignored by the feature. For example, manually upgraded clusters can be ignored if they are newer than the default versions of its release channel.
+  ClusterUpgradeIgnoredMembership ignored = 1 [json_name="ignored"];
+  // Actual upgrade state against desired.
+  repeated ClusterUpgradeMembershipGKEUpgradeState upgrades = 2 [json_name="upgrades"];
+}
+
+// Post conditional checks after an upgrade has been applied on all eligible clusters.
+message ClusterUpgradePostConditions {
+  // Required. Amount of time to "soak" after a rollout has been finished before marking it COMPLETE. Cannot exceed 30 days. Required.
+  .google.protobuf.Duration soaking = 1 [json_name="soaking"];
+}
+
+// UpgradeStatus provides status information for each upgrade.
+message ClusterUpgradeUpgradeStatus {
+  // Status code of the upgrade.
+  string code = 1 [json_name="code"];
+  // Reason for this status.
+  string reason = 2 [json_name="reason"];
+  // Last timestamp the status was updated.
+  .google.protobuf.Timestamp update_time = 3 [json_name="updateTime"];
+}
+
+// CommonFeatureSpec contains Fleet-wide configuration information
+message CommonFeatureSpec {
+  // Appdevexperience specific spec.
+  AppDevExperienceFeatureSpec appdevexperience = 1 [json_name="appdevexperience"];
+  // ClusterUpgrade (fleet-based) feature spec.
+  ClusterUpgradeFleetSpec clusterupgrade = 2 [json_name="clusterupgrade"];
+  // DataplaneV2 feature spec.
+  DataplaneV2FeatureSpec dataplanev2 = 3 [json_name="dataplanev2"];
+  // FleetObservability feature spec.
+  FleetObservabilityFeatureSpec fleetobservability = 4 [json_name="fleetobservability"];
+  // Multicluster Ingress-specific spec.
+  MultiClusterIngressFeatureSpec multiclusteringress = 5 [json_name="multiclusteringress"];
+  // RBAC Role Binding Actuation feature spec
+  RBACRoleBindingActuationFeatureSpec rbacrolebindingactuation = 6 [json_name="rbacrolebindingactuation"];
+  // Workload Identity feature spec.
+  WorkloadIdentityFeatureSpec workloadidentity = 7 [json_name="workloadidentity"];
+}
+
+// CommonFeatureState contains Fleet-wide Feature status information.
+message CommonFeatureState {
+  // Appdevexperience specific state.
+  AppDevExperienceFeatureState appdevexperience = 1 [json_name="appdevexperience"];
+  // ClusterUpgrade fleet-level state.
+  ClusterUpgradeFleetState clusterupgrade = 2 [json_name="clusterupgrade"];
+  // FleetObservability feature state.
+  FleetObservabilityFeatureState fleetobservability = 3 [json_name="fleetobservability"];
+  // RBAC Role Binding Actuation feature state
+  RBACRoleBindingActuationFeatureState rbacrolebindingactuation = 4 [json_name="rbacrolebindingactuation"];
+  // Output only. The "running state" of the Feature in this Fleet.
+  FeatureState state = 5 [json_name="state"];
+  // WorkloadIdentity fleet-level state.
+  WorkloadIdentityFeatureState workloadidentity = 6 [json_name="workloadidentity"];
+}
+
+// CommonFleetDefaultMemberConfigSpec contains default configuration information for memberships of a fleet
+message CommonFleetDefaultMemberConfigSpec {
+  // Config Management-specific spec.
+  ConfigManagementMembershipSpec configmanagement = 1 [json_name="configmanagement"];
+  // Identity Service-specific spec.
+  IdentityServiceMembershipSpec identityservice = 2 [json_name="identityservice"];
+  // Anthos Service Mesh-specific spec
+  ServiceMeshMembershipSpec mesh = 3 [json_name="mesh"];
+  // Policy Controller spec.
+  PolicyControllerMembershipSpec policycontroller = 4 [json_name="policycontroller"];
+}
+
+// CompliancePostureConfig defines the settings needed to enable/disable features for the Compliance Posture.
+message CompliancePostureConfig {
+  // List of enabled compliance standards.
+  repeated ComplianceStandard compliance_standards = 1 [json_name="complianceStandards"];
+  // Defines the enablement mode for Compliance Posture.
+  string mode = 2 [json_name="mode"];
+}
+
+message ComplianceStandard {
+  // Name of the compliance standard.
+  string standard = 1 [json_name="standard"];
+}
+
+// Configuration for Config Sync
+message ConfigManagementConfigSync {
+  // Optional. Configuration for deployment overrides. Applies only to Config Sync deployments with containers that are not a root or namespace reconciler: `reconciler-manager`, `otel-collector`, `resource-group-controller-manager`, `admission-webhook`. To override a root or namespace reconciler, use the rootsync or reposync fields at https://docs.cloud.google.com/kubernetes-engine/config-sync/docs/reference/rootsync-reposync-fields#override-resources instead.
+  repeated ConfigManagementDeploymentOverride deployment_overrides = 1 [json_name="deploymentOverrides"];
+  // Optional. Enables the installation of Config Sync. If set to true, the Feature will manage Config Sync resources, and apply the other ConfigSync fields if they exist. If set to false, the Feature will ignore all other ConfigSync fields and delete the Config Sync resources. If omitted, ConfigSync is considered enabled if the git or oci field is present.
+  bool enabled = 2 [json_name="enabled"];
+  // Optional. Git repo configuration for the cluster.
+  ConfigManagementGitConfig git = 3 [json_name="git"];
+  // Optional. The Email of the Google Cloud Service Account (GSA) used for exporting Config Sync metrics to Cloud Monitoring and Cloud Monarch when Workload Identity is enabled. The GSA should have the Monitoring Metric Writer (roles/monitoring.metricWriter) IAM role. The Kubernetes ServiceAccount `default` in the namespace `config-management-monitoring` should be bound to the GSA. Deprecated: If Workload Identity Federation for GKE is enabled, Google Cloud Service Account is no longer needed for exporting Config Sync metrics: https://cloud.google.com/kubernetes-engine/enterprise/config-sync/docs/how-to/monitor-config-sync-cloud-monitoring#custom-monitoring.
+  string metrics_gcp_service_account_email = 4 [json_name="metricsGcpServiceAccountEmail"];
+  // Optional. OCI repo configuration for the cluster
+  ConfigManagementOciConfig oci = 5 [json_name="oci"];
+  // Optional. Set to true to enable the Config Sync admission webhook to prevent drifts. If set to false, disables the Config Sync admission webhook and does not prevent drifts. Defaults to false. See https://docs.cloud.google.com/kubernetes-engine/config-sync/docs/how-to/prevent-config-drift for details.
+  bool prevent_drift = 6 [json_name="preventDrift"];
+  // Optional. Specifies whether the Config Sync repo is in `hierarchical` or `unstructured` mode. Defaults to `hierarchical`. See https://docs.cloud.google.com/kubernetes-engine/config-sync/docs/concepts/configs#organize-configs for an explanation.
+  string source_format = 7 [json_name="sourceFormat"];
+  // Optional. Set to true to stop syncing configs for a single cluster. Default to false.
+  bool stop_syncing = 8 [json_name="stopSyncing"];
+}
+
+// The state of ConfigSync's deployment on a cluster
+message ConfigManagementConfigSyncDeploymentState {
+  // Deployment state of admission-webhook
+  string admission_webhook = 1 [json_name="admissionWebhook"];
+  // Deployment state of the git-sync pod
+  string git_sync = 2 [json_name="gitSync"];
+  // Deployment state of the importer pod
+  string importer = 3 [json_name="importer"];
+  // Deployment state of the monitor pod
+  string monitor = 4 [json_name="monitor"];
+  // Deployment state of otel-collector
+  string otel_collector = 5 [json_name="otelCollector"];
+  // Deployment state of reconciler-manager pod
+  string reconciler_manager = 6 [json_name="reconcilerManager"];
+  // Deployment state of resource-group-controller-manager
+  string resource_group_controller_manager = 7 [json_name="resourceGroupControllerManager"];
+  // Deployment state of root-reconciler
+  string root_reconciler = 8 [json_name="rootReconciler"];
+  // Deployment state of the syncer pod
+  string syncer = 9 [json_name="syncer"];
+}
+
+// Errors pertaining to the installation of Config Sync
+message ConfigManagementConfigSyncError {
+  // A string representing the user facing error message
+  string error_message = 1 [json_name="errorMessage"];
+}
+
+// State information for ConfigSync
+message ConfigManagementConfigSyncState {
+  // Output only. Whether syncing resources to the cluster is stopped at the cluster level.
+  string cluster_level_stop_syncing_state = 1 [json_name="clusterLevelStopSyncingState"];
+  // Output only. The number of RootSync and RepoSync CRs in the cluster.
+  int32 cr_count = 2 [json_name="crCount"];
+  // Output only. Information about the deployment of ConfigSync, including the version of the various Pods deployed
+  ConfigManagementConfigSyncDeploymentState deployment_state = 3 [json_name="deploymentState"];
+  // Output only. Errors pertaining to the installation of Config Sync.
+  repeated ConfigManagementConfigSyncError errors = 4 [json_name="errors"];
+  // Output only. The state of the Reposync CRD
+  string reposync_crd = 5 [json_name="reposyncCrd"];
+  // Output only. The state of the RootSync CRD
+  string rootsync_crd = 6 [json_name="rootsyncCrd"];
+  // Output only. The state of CS This field summarizes the other fields in this message.
+  string state = 7 [json_name="state"];
+  // Output only. The state of ConfigSync's process to sync configs to a cluster
+  ConfigManagementSyncState sync_state = 8 [json_name="syncState"];
+  // Output only. The version of ConfigSync deployed
+  ConfigManagementConfigSyncVersion version = 9 [json_name="version"];
+}
+
+// Specific versioning information pertaining to ConfigSync's Pods
+message ConfigManagementConfigSyncVersion {
+  // Version of the deployed admission-webhook pod
+  string admission_webhook = 1 [json_name="admissionWebhook"];
+  // Version of the deployed git-sync pod
+  string git_sync = 2 [json_name="gitSync"];
+  // Version of the deployed importer pod
+  string importer = 3 [json_name="importer"];
+  // Version of the deployed monitor pod
+  string monitor = 4 [json_name="monitor"];
+  // Version of the deployed otel-collector pod
+  string otel_collector = 5 [json_name="otelCollector"];
+  // Version of the deployed reconciler-manager pod
+  string reconciler_manager = 6 [json_name="reconcilerManager"];
+  // Version of the deployed resource-group-controller-manager pod
+  string resource_group_controller_manager = 7 [json_name="resourceGroupControllerManager"];
+  // Version of the deployed reconciler container in root-reconciler pod
+  string root_reconciler = 8 [json_name="rootReconciler"];
+  // Version of the deployed syncer pod
+  string syncer = 9 [json_name="syncer"];
+}
+
+// Configuration for a container override.
+message ConfigManagementContainerOverride {
+  // Required. The name of the container.
+  string container_name = 1 [json_name="containerName"];
+  // Optional. The cpu limit of the container. Use the following CPU resource units: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu.
+  string cpu_limit = 2 [json_name="cpuLimit"];
+  // Optional. The cpu request of the container. Use the following CPU resource units: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu.
+  string cpu_request = 3 [json_name="cpuRequest"];
+  // Optional. The memory limit of the container. Use the following memory resource units: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory.
+  string memory_limit = 4 [json_name="memoryLimit"];
+  // Optional. The memory request of the container. Use the following memory resource units: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory.
+  string memory_request = 5 [json_name="memoryRequest"];
+}
+
+// Configuration for a deployment override.
+message ConfigManagementDeploymentOverride {
+  // Optional. The containers of the deployment resource to be overridden.
+  repeated ConfigManagementContainerOverride containers = 1 [json_name="containers"];
+  // Required. The name of the deployment resource to be overridden.
+  string deployment_name = 2 [json_name="deploymentName"];
+  // Required. The namespace of the deployment resource to be overridden.
+  string deployment_namespace = 3 [json_name="deploymentNamespace"];
+}
+
+// Model for a config file in the git repo with an associated Sync error
+message ConfigManagementErrorResource {
+  // Group/version/kind of the resource that is causing an error
+  ConfigManagementGroupVersionKind resource_gvk = 1 [json_name="resourceGvk"];
+  // Metadata name of the resource that is causing an error
+  string resource_name = 2 [json_name="resourceName"];
+  // Namespace of the resource that is causing an error
+  string resource_namespace = 3 [json_name="resourceNamespace"];
+  // Path in the git repo of the erroneous config
+  string source_path = 4 [json_name="sourcePath"];
+}
+
+// State of Policy Controller installation.
+message ConfigManagementGatekeeperDeploymentState {
+  // Status of gatekeeper-audit deployment.
+  string gatekeeper_audit = 1 [json_name="gatekeeperAudit"];
+  // Status of gatekeeper-controller-manager pod.
+  string gatekeeper_controller_manager_state = 2 [json_name="gatekeeperControllerManagerState"];
+  // Status of the pod serving the mutation webhook.
+  string gatekeeper_mutation = 3 [json_name="gatekeeperMutation"];
+}
+
+// Git repo configuration for a single cluster.
+message ConfigManagementGitConfig {
+  // Optional. The Google Cloud Service Account Email used for auth when secret_type is `gcpserviceaccount`.
+  string gcp_service_account_email = 1 [json_name="gcpServiceAccountEmail"];
+  // Optional. URL for the HTTPS proxy to be used when communicating with the Git repo. Only specify when secret_type is `cookiefile`, `token`, or `none`.
+  string https_proxy = 2 [json_name="httpsProxy"];
+  // Optional. The path within the Git repository that represents the top level of the repo to sync. Default: the root directory of the repository.
+  string policy_dir = 3 [json_name="policyDir"];
+  // Required. Type of secret configured for access to the Git repo. Must be one of `ssh`, `cookiefile`, `gcenode`, `token`, `gcpserviceaccount`, `githubapp` or `none`. The validation of this is case-sensitive.
+  string secret_type = 4 [json_name="secretType"];
+  // Optional. The branch of the repository to sync from. Default: master.
+  string sync_branch = 5 [json_name="syncBranch"];
+  // Required. The URL of the Git repository to use as the source of truth.
+  string sync_repo = 6 [json_name="syncRepo"];
+  // Optional. Git revision (tag or hash) to check out. Default HEAD.
+  string sync_rev = 7 [json_name="syncRev"];
+  // Optional. Period in seconds between consecutive syncs. Default: 15.
+  int64 sync_wait_secs = 8 [json_name="syncWaitSecs"];
+}
+
+// A Kubernetes object's GVK
+message ConfigManagementGroupVersionKind {
+  // Kubernetes Group
+  string group = 1 [json_name="group"];
+  // Kubernetes Kind
+  string kind = 2 [json_name="kind"];
+  // Kubernetes Version
+  string version = 3 [json_name="version"];
+}
+
+// Configuration for Hierarchy Controller
+message ConfigManagementHierarchyControllerConfig {
+  // Whether hierarchical resource quota is enabled in this cluster.
+  bool enable_hierarchical_resource_quota = 1 [json_name="enableHierarchicalResourceQuota"];
+  // Whether pod tree labels are enabled in this cluster.
+  bool enable_pod_tree_labels = 2 [json_name="enablePodTreeLabels"];
+  // Whether Hierarchy Controller is enabled in this cluster.
+  bool enabled = 3 [json_name="enabled"];
+}
+
+// Deployment state for Hierarchy Controller
+message ConfigManagementHierarchyControllerDeploymentState {
+  // The deployment state for Hierarchy Controller extension (e.g. v0.7.0-hc.1)
+  string extension = 1 [json_name="extension"];
+  // The deployment state for open source HNC (e.g. v0.7.0-hc.0)
+  string hnc = 2 [json_name="hnc"];
+}
+
+// State for Hierarchy Controller
+message ConfigManagementHierarchyControllerState {
+  // The deployment state for Hierarchy Controller
+  ConfigManagementHierarchyControllerDeploymentState state = 1 [json_name="state"];
+  // The version for Hierarchy Controller
+  ConfigManagementHierarchyControllerVersion version = 2 [json_name="version"];
+}
+
+// Version for Hierarchy Controller
+message ConfigManagementHierarchyControllerVersion {
+  // Version for Hierarchy Controller extension
+  string extension = 1 [json_name="extension"];
+  // Version for open source HNC
+  string hnc = 2 [json_name="hnc"];
+}
+
+// Errors pertaining to the installation of ACM
+message ConfigManagementInstallError {
+  // A string representing the user facing error message
+  string error_message = 1 [json_name="errorMessage"];
+}
+
+// **Anthos Config Management**: Configuration for a single cluster. Intended to parallel the ConfigManagement CR.
+message ConfigManagementMembershipSpec {
+  // Optional. User-specified cluster name used by the Config Sync cluster-name-selector annotation or ClusterSelector object, for applying configs to only a subset of clusters. Read more about the cluster-name-selector annotation and ClusterSelector object at https://docs.cloud.google.com/kubernetes-engine/config-sync/docs/how-to/cluster-scoped-objects#limiting-configs. Only set this field if a name different from the cluster's fleet membership name is used by the Config Sync cluster-name-selector annotation or ClusterSelector.
+  string cluster = 1 [json_name="cluster"];
+  // Optional. Config Sync configuration for the cluster.
+  ConfigManagementConfigSync config_sync = 2 [json_name="configSync"];
+  // Optional. Hierarchy Controller configuration for the cluster. Deprecated: Configuring Hierarchy Controller through the configmanagement feature is no longer recommended. Use https://github.com/kubernetes-sigs/hierarchical-namespaces instead.
+  ConfigManagementHierarchyControllerConfig hierarchy_controller = 3 [json_name="hierarchyController"];
+  // Optional. Deprecated: From version 1.21.0, automatic Feature management is unavailable, and Config Sync only supports manual upgrades.
+  string management = 4 [json_name="management"];
+  // Optional. Policy Controller configuration for the cluster. Deprecated: Configuring Policy Controller through the configmanagement feature is no longer recommended. Use the policycontroller feature instead.
+  ConfigManagementPolicyController policy_controller = 5 [json_name="policyController"];
+  // Optional. Version of Config Sync to install. Defaults to the latest supported Config Sync version if the config_sync field is enabled. See supported versions at https://cloud.google.com/kubernetes-engine/config-sync/docs/get-support-config-sync#version_support_policy.
+  string version = 6 [json_name="version"];
+}
+
+// **Anthos Config Management**: State for a single cluster.
+message ConfigManagementMembershipState {
+  // Output only. This field is set to the `cluster_name` field of the Membership Spec if it is not empty. Otherwise, it is set to the cluster's fleet membership name.
+  string cluster_name = 1 [json_name="clusterName"];
+  // Output only. Current sync status
+  ConfigManagementConfigSyncState config_sync_state = 2 [json_name="configSyncState"];
+  // Output only. Hierarchy Controller status
+  ConfigManagementHierarchyControllerState hierarchy_controller_state = 3 [json_name="hierarchyControllerState"];
+  // Output only. The Kubernetes API server version of the cluster.
+  string kubernetes_api_server_version = 4 [json_name="kubernetesApiServerVersion"];
+  // Output only. Membership configuration in the cluster. This represents the actual state in the cluster, while the MembershipSpec in the FeatureSpec represents the intended state
+  ConfigManagementMembershipSpec membership_spec = 5 [json_name="membershipSpec"];
+  // Output only. Current install status of ACM's Operator
+  ConfigManagementOperatorState operator_state = 6 [json_name="operatorState"];
+  // Output only. PolicyController status
+  ConfigManagementPolicyControllerState policy_controller_state = 7 [json_name="policyControllerState"];
+}
+
+// OCI repo configuration for a single cluster
+message ConfigManagementOciConfig {
+  // Optional. The Google Cloud Service Account Email used for auth when secret_type is `gcpserviceaccount`.
+  string gcp_service_account_email = 1 [json_name="gcpServiceAccountEmail"];
+  // Optional. The absolute path of the directory that contains the local resources. Default: the root directory of the image.
+  string policy_dir = 2 [json_name="policyDir"];
+  // Required. Type of secret configured for access to the OCI repo. Must be one of `gcenode`, `gcpserviceaccount`, `k8sserviceaccount` or `none`. The validation of this is case-sensitive.
+  string secret_type = 3 [json_name="secretType"];
+  // Required. The OCI image repository URL for the package to sync from. e.g. `LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY_NAME/PACKAGE_NAME`.
+  string sync_repo = 4 [json_name="syncRepo"];
+  // Optional. Period in seconds between consecutive syncs. Default: 15.
+  int64 sync_wait_secs = 5 [json_name="syncWaitSecs"];
+}
+
+// State information for an ACM's Operator
+message ConfigManagementOperatorState {
+  // The state of the Operator's deployment
+  string deployment_state = 1 [json_name="deploymentState"];
+  // Install errors.
+  repeated ConfigManagementInstallError errors = 2 [json_name="errors"];
+  // The semenatic version number of the operator
+  string version = 3 [json_name="version"];
+}
+
+// Configuration for Policy Controller
+message ConfigManagementPolicyController {
+  // Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether.
+  int64 audit_interval_seconds = 1 [json_name="auditIntervalSeconds"];
+  // Enables the installation of Policy Controller. If false, the rest of PolicyController fields take no effect.
+  bool enabled = 2 [json_name="enabled"];
+  // The set of namespaces that are excluded from Policy Controller checks. Namespaces do not need to currently exist on the cluster.
+  repeated string exemptable_namespaces = 3 [json_name="exemptableNamespaces"];
+  // Logs all denies and dry run failures.
+  bool log_denies_enabled = 4 [json_name="logDeniesEnabled"];
+  // Monitoring specifies the configuration of monitoring.
+  ConfigManagementPolicyControllerMonitoring monitoring = 5 [json_name="monitoring"];
+  // Enable or disable mutation in policy controller. If true, mutation CRDs, webhook and controller deployment will be deployed to the cluster.
+  bool mutation_enabled = 6 [json_name="mutationEnabled"];
+  // Enables the ability to use Constraint Templates that reference to objects other than the object currently being evaluated.
+  bool referential_rules_enabled = 7 [json_name="referentialRulesEnabled"];
+  // Installs the default template library along with Policy Controller.
+  bool template_library_installed = 8 [json_name="templateLibraryInstalled"];
+  // Output only. Last time this membership spec was updated.
+  .google.protobuf.Timestamp update_time = 9 [json_name="updateTime"];
+}
+
+// State for the migration of PolicyController from ACM -> PoCo Hub.
+message ConfigManagementPolicyControllerMigration {
+  // Last time this membership spec was copied to PoCo feature.
+  .google.protobuf.Timestamp copy_time = 1 [json_name="copyTime"];
+  // Stage of the migration.
+  string stage = 2 [json_name="stage"];
+}
+
+// PolicyControllerMonitoring specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: ["cloudmonitoring", "prometheus"]
+message ConfigManagementPolicyControllerMonitoring {
+  // Specifies the list of backends Policy Controller will export to. An empty list would effectively disable metrics export.
+  repeated string backends = 1 [json_name="backends"];
+}
+
+// State for PolicyControllerState.
+message ConfigManagementPolicyControllerState {
+  // The state about the policy controller installation.
+  ConfigManagementGatekeeperDeploymentState deployment_state = 1 [json_name="deploymentState"];
+  // Record state of ACM -> PoCo Hub migration for this feature.
+  ConfigManagementPolicyControllerMigration migration = 2 [json_name="migration"];
+  // The version of Gatekeeper Policy Controller deployed.
+  ConfigManagementPolicyControllerVersion version = 3 [json_name="version"];
+}
+
+// The build version of Gatekeeper Policy Controller is using.
+message ConfigManagementPolicyControllerVersion {
+  // The gatekeeper image tag that is composed of ACM version, git tag, build number.
+  string version = 1 [json_name="version"];
+}
+
+// An ACM created error representing a problem syncing configurations
+message ConfigManagementSyncError {
+  // An ACM defined error code
+  string code = 1 [json_name="code"];
+  // A description of the error
+  string error_message = 2 [json_name="errorMessage"];
+  // A list of config(s) associated with the error, if any
+  repeated ConfigManagementErrorResource error_resources = 3 [json_name="errorResources"];
+}
+
+// State indicating an ACM's progress syncing configurations to a cluster
+message ConfigManagementSyncState {
+  // Sync status code
+  string code = 1 [json_name="code"];
+  // A list of errors resulting from problematic configs. This list will be truncated after 100 errors, although it is unlikely for that many errors to simultaneously exist.
+  repeated ConfigManagementSyncError errors = 2 [json_name="errors"];
+  // Token indicating the state of the importer.
+  string import_token = 3 [json_name="importToken"];
+  // Deprecated: use last_sync_time instead. Timestamp of when ACM last successfully synced the repo The time format is specified in https://golang.org/pkg/time/#Time.String
+  string last_sync = 4 [json_name="lastSync"];
+  // Timestamp type of when ACM last successfully synced the repo
+  .google.protobuf.Timestamp last_sync_time = 5 [json_name="lastSyncTime"];
+  // Token indicating the state of the repo.
+  string source_token = 6 [json_name="sourceToken"];
+  // Token indicating the state of the syncer.
+  string sync_token = 7 [json_name="syncToken"];
+}
+
+// ConnectAgentResource represents a Kubernetes resource manifest for Connect Agent deployment.
+message ConnectAgentResource {
+  // YAML manifest of the resource.
+  string manifest = 1 [json_name="manifest"];
+  // Kubernetes type of the resource.
+  TypeMeta type = 2 [json_name="type"];
+}
+
+// **Dataplane V2**: Spec
+message DataplaneV2FeatureSpec {
+  // Enable dataplane-v2 based encryption for multiple clusters.
+  bool enable_encryption = 1 [json_name="enableEncryption"];
+}
+
+// DefaultClusterConfig describes the default cluster configurations to be applied to all clusters born-in-fleet.
+message DefaultClusterConfig {
+  // Optional. Enable/Disable binary authorization features for the cluster.
+  BinaryAuthorizationConfig binary_authorization_config = 1 [json_name="binaryAuthorizationConfig"];
+  // Optional. Enable/Disable Compliance Posture features for the cluster. Note that on UpdateFleet, only full replacement of this field is allowed. Users are not allowed for partial updates through field mask.
+  CompliancePostureConfig compliance_posture_config = 2 [json_name="compliancePostureConfig"];
+  // Enable/Disable Security Posture features for the cluster.
+  SecurityPostureConfig security_posture_config = 3 [json_name="securityPostureConfig"];
+}
+
+// EdgeCluster contains information specific to Google Edge Clusters.
+message EdgeCluster {
+  // Immutable. Self-link of the Google Cloud resource for the Edge Cluster. For example: //edgecontainer.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
+  string resource_link = 1 [json_name="resourceLink"];
+}
+
+// A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); }
+message Empty {
+}
+
+// Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec. Example (Comparison): title: "Summary size limit" description: "Determines if a summary is less than 100 chars" expression: "document.summary.size() < 100" Example (Equality): title: "Requestor is owner" description: "Determines if requestor is the document owner" expression: "document.owner == request.auth.claims.email" Example (Logic): title: "Public documents" description: "Determine whether the document should be publicly visible" expression: "document.type != 'private' && document.type != 'internal'" Example (Data Manipulation): title: "Notification string" description: "Create a notification string with a timestamp." expression: "'New message received at ' + string(document.create_time)" The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information.
+message Expr {
+  // Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
+  string description = 1 [json_name="description"];
+  // Textual representation of an expression in Common Expression Language syntax.
+  string expression = 2 [json_name="expression"];
+  // Optional. String indicating the location of the expression for error reporting, e.g. a file name and a position in the file.
+  string location = 3 [json_name="location"];
+  // Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression.
+  string title = 4 [json_name="title"];
+}
+
+// Feature represents the settings and status of any Fleet Feature.
+message Feature {
+  // Output only. When the Feature resource was created.
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Output only. When the Feature resource was deleted.
+  .google.protobuf.Timestamp delete_time = 2 [json_name="deleteTime"];
+  // Optional. Feature configuration applicable to all memberships of the fleet.
+  CommonFleetDefaultMemberConfigSpec fleet_default_member_config = 3 [json_name="fleetDefaultMemberConfig"];
+  // Labels for this Feature.
+  map<string, string> labels = 4 [json_name="labels"];
+  // Optional. Membership-specific configuration for this Feature. If this Feature does not support any per-Membership configuration, this field may be unused. The keys indicate which Membership the configuration is for, in the form: `projects/{p}/locations/{l}/memberships/{m}` Where {p} is the project, {l} is a valid location and {m} is a valid Membership in this project at that location. {p} WILL match the Feature's project. {p} will always be returned as the project number, but the project ID is also accepted during input. If the same Membership is specified in the map twice (using the project ID form, and the project number form), exactly ONE of the entries will be saved, with no guarantees as to which. For this reason, it is recommended the same format be used for all entries when mutating a Feature.
+  map<string, MembershipFeatureSpec> membership_specs = 5 [json_name="membershipSpecs"];
+  // Output only. Membership-specific Feature status. If this Feature does report any per-Membership status, this field may be unused. The keys indicate which Membership the state is for, in the form: `projects/{p}/locations/{l}/memberships/{m}` Where {p} is the project number, {l} is a valid location and {m} is a valid Membership in this project at that location. {p} MUST match the Feature's project number.
+  map<string, MembershipFeatureState> membership_states = 6 [json_name="membershipStates"];
+  // Output only. The full, unique name of this Feature resource in the format `projects/*/locations/*/features/*`.
+  string name = 7 [json_name="name"];
+  // Output only. State of the Feature resource itself.
+  FeatureResourceState resource_state = 8 [json_name="resourceState"];
+  // Optional. Scope-specific configuration for this Feature. If this Feature does not support any per-Scope configuration, this field may be unused. The keys indicate which Scope the configuration is for, in the form: `projects/{p}/locations/global/scopes/{s}` Where {p} is the project, {s} is a valid Scope in this project. {p} WILL match the Feature's project. {p} will always be returned as the project number, but the project ID is also accepted during input. If the same Scope is specified in the map twice (using the project ID form, and the project number form), exactly ONE of the entries will be saved, with no guarantees as to which. For this reason, it is recommended the same format be used for all entries when mutating a Feature.
+  map<string, ScopeFeatureSpec> scope_specs = 9 [json_name="scopeSpecs"];
+  // Output only. Scope-specific Feature status. If this Feature does report any per-Scope status, this field may be unused. The keys indicate which Scope the state is for, in the form: `projects/{p}/locations/global/scopes/{s}` Where {p} is the project, {s} is a valid Scope in this project. {p} WILL match the Feature's project.
+  map<string, ScopeFeatureState> scope_states = 10 [json_name="scopeStates"];
+  // Optional. Fleet-wide Feature configuration. If this Feature does not support any Fleet-wide configuration, this field may be unused.
+  CommonFeatureSpec spec = 11 [json_name="spec"];
+  // Output only. The Fleet-wide Feature state.
+  CommonFeatureState state = 12 [json_name="state"];
+  // Output only. List of locations that could not be reached while fetching this feature.
+  repeated string unreachable = 13 [json_name="unreachable"];
+  // Output only. When the Feature resource was last updated.
+  .google.protobuf.Timestamp update_time = 14 [json_name="updateTime"];
+}
+
+// FeatureResourceState describes the state of a Feature *resource* in the GkeHub API. See `FeatureState` for the "running state" of the Feature in the Fleet and across Memberships.
+message FeatureResourceState {
+  // The current state of the Feature resource in the Hub API.
+  string state = 1 [json_name="state"];
+}
+
+// FeatureState describes the high-level state of a Feature. It may be used to describe a Feature's state at the environ-level, or per-membershop, depending on the context.
+message FeatureState {
+  // The high-level, machine-readable status of this Feature.
+  string code = 1 [json_name="code"];
+  // A human-readable description of the current status.
+  string description = 2 [json_name="description"];
+  // The time this status and any related Feature-specific details were updated.
+  .google.protobuf.Timestamp update_time = 3 [json_name="updateTime"];
+}
+
+// Fleet contains the Fleet-wide metadata and configuration.
+message Fleet {
+  // Output only. When the Fleet was created.
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Optional. The default cluster configurations to apply across the fleet.
+  DefaultClusterConfig default_cluster_config = 2 [json_name="defaultClusterConfig"];
+  // Output only. When the Fleet was deleted.
+  .google.protobuf.Timestamp delete_time = 3 [json_name="deleteTime"];
+  // Optional. A user-assigned display name of the Fleet. When present, it must be between 4 to 30 characters. Allowed characters are: lowercase and uppercase letters, numbers, hyphen, single-quote, double-quote, space, and exclamation point. Example: `Production Fleet`
+  string display_name = 4 [json_name="displayName"];
+  // Optional. Labels for this Fleet.
+  map<string, string> labels = 5 [json_name="labels"];
+  // Output only. The full, unique resource name of this fleet in the format of `projects/{project}/locations/{location}/fleets/{fleet}`. Each Google Cloud project can have at most one fleet resource, named "default".
+  string name = 6 [json_name="name"];
+  // Output only. State of the namespace resource.
+  FleetLifecycleState state = 7 [json_name="state"];
+  // Output only. Google-generated UUID for this resource. This is unique across all Fleet resources. If a Fleet resource is deleted and another resource with the same name is created, it gets a different uid.
+  string uid = 8 [json_name="uid"];
+  // Output only. When the Fleet was last updated.
+  .google.protobuf.Timestamp update_time = 9 [json_name="updateTime"];
+}
+
+// FleetLifecycleState describes the state of a Fleet resource.
+message FleetLifecycleState {
+  // Output only. The current state of the Fleet resource.
+  string code = 1 [json_name="code"];
+}
+
+// All error details of the fleet observability feature.
+message FleetObservabilityFeatureError {
+  // The code of the error.
+  string code = 1 [json_name="code"];
+  // A human-readable description of the current status.
+  string description = 2 [json_name="description"];
+}
+
+// **Fleet Observability**: The Hub-wide input for the FleetObservability feature.
+message FleetObservabilityFeatureSpec {
+  // Specified if fleet logging feature is enabled for the entire fleet. If UNSPECIFIED, fleet logging feature is disabled for the entire fleet.
+  FleetObservabilityLoggingConfig logging_config = 1 [json_name="loggingConfig"];
+}
+
+// **FleetObservability**: Hub-wide Feature for FleetObservability feature. state.
+message FleetObservabilityFeatureState {
+  // The feature state of default logging.
+  FleetObservabilityFleetObservabilityLoggingState logging = 1 [json_name="logging"];
+  // The feature state of fleet monitoring.
+  FleetObservabilityFleetObservabilityMonitoringState monitoring = 2 [json_name="monitoring"];
+}
+
+// Base state for fleet observability feature.
+message FleetObservabilityFleetObservabilityBaseFeatureState {
+  // The high-level, machine-readable status of this Feature.
+  string code = 1 [json_name="code"];
+  // Errors after reconciling the monitoring and logging feature if the code is not OK.
+  repeated FleetObservabilityFeatureError errors = 2 [json_name="errors"];
+}
+
+// Feature state for logging feature.
+message FleetObservabilityFleetObservabilityLoggingState {
+  // The base feature state of fleet default log.
+  FleetObservabilityFleetObservabilityBaseFeatureState default_log = 1 [json_name="defaultLog"];
+  // The base feature state of fleet scope log.
+  FleetObservabilityFleetObservabilityBaseFeatureState scope_log = 2 [json_name="scopeLog"];
+}
+
+// Feature state for monitoring feature.
+message FleetObservabilityFleetObservabilityMonitoringState {
+  // The base feature state of fleet monitoring feature.
+  FleetObservabilityFleetObservabilityBaseFeatureState state = 1 [json_name="state"];
+}
+
+// LoggingConfig defines the configuration for different types of logs.
+message FleetObservabilityLoggingConfig {
+  // Specified if applying the default routing config to logs not specified in other configs.
+  FleetObservabilityRoutingConfig default_config = 1 [json_name="defaultConfig"];
+  // Specified if applying the routing config to all logs for all fleet scopes.
+  FleetObservabilityRoutingConfig fleet_scope_logs_config = 2 [json_name="fleetScopeLogsConfig"];
+}
+
+// **FleetObservability**: The membership-specific input for FleetObservability feature.
+message FleetObservabilityMembershipSpec {
+}
+
+// **FleetObservability**: Membership-specific Feature state for fleetobservability.
+message FleetObservabilityMembershipState {
+}
+
+// RoutingConfig configures the behaviour of fleet logging feature.
+message FleetObservabilityRoutingConfig {
+  // mode configures the logs routing mode.
+  string mode = 1 [json_name="mode"];
+}
+
+// GenerateConnectManifestResponse contains manifest information for installing/upgrading a Connect agent.
+message GenerateConnectManifestResponse {
+  // The ordered list of Kubernetes resources that need to be applied to the cluster for GKE Connect agent installation/upgrade.
+  repeated ConnectAgentResource manifest = 1 [json_name="manifest"];
+}
+
+// Response for GenerateRBACRoleBindingYAML.
+message GenerateMembershipRBACRoleBindingYAMLResponse {
+  // a yaml text blob including the RBAC policies.
+  string role_bindings_yaml = 1 [json_name="roleBindingsYaml"];
+}
+
+// GkeCluster contains information specific to GKE clusters.
+message GkeCluster {
+  // Output only. If cluster_missing is set then it denotes that the GKE cluster no longer exists in the GKE Control Plane.
+  bool cluster_missing = 1 [json_name="clusterMissing"];
+  // Immutable. Self-link of the Google Cloud resource for the GKE cluster. For example: //container.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster Zonal clusters are also supported.
+  string resource_link = 2 [json_name="resourceLink"];
+}
+
+// The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
+message GoogleRpcStatus {
+  // The status code, which should be an enum value of google.rpc.Code.
+  int32 code = 1 [json_name="code"];
+  // A list of messages that carry the error details. There is a common set of message types for APIs to use.
+  repeated .google.protobuf.Any details = 2 [json_name="details"];
+  // A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  string message = 3 [json_name="message"];
+}
+
+// Configuration of an auth method for a member/cluster. Only one authentication method (e.g., OIDC and LDAP) can be set per AuthMethod.
+message IdentityServiceAuthMethod {
+  // AzureAD specific Configuration.
+  IdentityServiceAzureADConfig azuread_config = 1 [json_name="azureadConfig"];
+  // GoogleConfig specific configuration.
+  IdentityServiceGoogleConfig google_config = 2 [json_name="googleConfig"];
+  // LDAP specific configuration.
+  IdentityServiceLdapConfig ldap_config = 3 [json_name="ldapConfig"];
+  // Identifier for auth config.
+  string name = 4 [json_name="name"];
+  // OIDC specific configuration.
+  IdentityServiceOidcConfig oidc_config = 5 [json_name="oidcConfig"];
+  // Proxy server address to use for auth method.
+  string proxy = 6 [json_name="proxy"];
+  // SAML specific configuration.
+  IdentityServiceSamlConfig saml_config = 7 [json_name="samlConfig"];
+}
+
+// Configuration for the AzureAD Auth flow.
+message IdentityServiceAzureADConfig {
+  // ID for the registered client application that makes authentication requests to the Azure AD identity provider.
+  string client_id = 1 [json_name="clientId"];
+  // Input only. Unencrypted AzureAD client secret will be passed to the GKE Hub CLH.
+  string client_secret = 2 [json_name="clientSecret"];
+  // Output only. Encrypted AzureAD client secret.
+  bytes encrypted_client_secret = 3 [json_name="encryptedClientSecret"];
+  // Optional. Format of the AzureAD groups that the client wants for auth.
+  string group_format = 4 [json_name="groupFormat"];
+  // The redirect URL that kubectl uses for authorization.
+  string kubectl_redirect_uri = 5 [json_name="kubectlRedirectUri"];
+  // Kind of Azure AD account to be authenticated. Supported values are or for accounts belonging to a specific tenant.
+  string tenant = 6 [json_name="tenant"];
+  // Optional. Claim in the AzureAD ID Token that holds the user details.
+  string user_claim = 7 [json_name="userClaim"];
+}
+
+// Configuration options for the AIS diagnostic interface.
+message IdentityServiceDiagnosticInterface {
+  // Determines whether to enable the diagnostic interface.
+  bool enabled = 1 [json_name="enabled"];
+  // Determines the expiration time of the diagnostic interface enablement. When reached, requests to the interface would be automatically rejected.
+  .google.protobuf.Timestamp expiration_time = 2 [json_name="expirationTime"];
+}
+
+// Configuration for the Google Plugin Auth flow.
+message IdentityServiceGoogleConfig {
+  // Disable automatic configuration of Google Plugin on supported platforms.
+  bool disable = 1 [json_name="disable"];
+}
+
+// Contains the properties for locating and authenticating groups in the directory.
+message IdentityServiceGroupConfig {
+  // Required. The location of the subtree in the LDAP directory to search for group entries.
+  string base_dn = 1 [json_name="baseDn"];
+  // Optional. Optional filter to be used when searching for groups a user belongs to. This can be used to explicitly match only certain groups in order to reduce the amount of groups returned for each user. This defaults to "(objectClass=Group)".
+  string filter = 2 [json_name="filter"];
+  // Optional. The identifying name of each group a user belongs to. For example, if this is set to "distinguishedName" then RBACs and other group expectations should be written as full DNs. This defaults to "distinguishedName".
+  string id_attribute = 3 [json_name="idAttribute"];
+}
+
+// Holds non-protocol-related configuration options.
+message IdentityServiceIdentityServiceOptions {
+  // Configuration options for the AIS diagnostic interface.
+  IdentityServiceDiagnosticInterface diagnostic_interface = 1 [json_name="diagnosticInterface"];
+  // Determines the lifespan of STS tokens issued by Anthos Identity Service.
+  .google.protobuf.Duration session_duration = 2 [json_name="sessionDuration"];
+}
+
+// Configuration for the LDAP Auth flow.
+message IdentityServiceLdapConfig {
+  // Optional. Contains the properties for locating and authenticating groups in the directory.
+  IdentityServiceGroupConfig group = 1 [json_name="group"];
+  // Required. Server settings for the external LDAP server.
+  IdentityServiceServerConfig server = 2 [json_name="server"];
+  // Required. Contains the credentials of the service account which is authorized to perform the LDAP search in the directory. The credentials can be supplied by the combination of the DN and password or the client certificate.
+  IdentityServiceServiceAccountConfig service_account = 3 [json_name="serviceAccount"];
+  // Required. Defines where users exist in the LDAP directory.
+  IdentityServiceUserConfig user = 4 [json_name="user"];
+}
+
+// **Anthos Identity Service**: Configuration for a single Membership.
+message IdentityServiceMembershipSpec {
+  // A member may support multiple auth methods.
+  repeated IdentityServiceAuthMethod auth_methods = 1 [json_name="authMethods"];
+  // Optional. non-protocol-related configuration options.
+  IdentityServiceIdentityServiceOptions identity_service_options = 2 [json_name="identityServiceOptions"];
+}
+
+// **Anthos Identity Service**: State for a single Membership.
+message IdentityServiceMembershipState {
+  // The reason of the failure.
+  string failure_reason = 1 [json_name="failureReason"];
+  // Installed AIS version. This is the AIS version installed on this member. The values makes sense iff state is OK.
+  string installed_version = 2 [json_name="installedVersion"];
+  // Last reconciled membership configuration
+  IdentityServiceMembershipSpec member_config = 3 [json_name="memberConfig"];
+  // Deployment state on this member
+  string state = 4 [json_name="state"];
+}
+
+// Configuration for OIDC Auth flow.
+message IdentityServiceOidcConfig {
+  // PEM-encoded CA for OIDC provider.
+  string certificate_authority_data = 1 [json_name="certificateAuthorityData"];
+  // ID for OIDC client application.
+  string client_id = 2 [json_name="clientId"];
+  // Input only. Unencrypted OIDC client secret will be passed to the GKE Hub CLH.
+  string client_secret = 3 [json_name="clientSecret"];
+  // Flag to denote if reverse proxy is used to connect to auth provider. This flag should be set to true when provider is not reachable by Google Cloud Console.
+  bool deploy_cloud_console_proxy = 4 [json_name="deployCloudConsoleProxy"];
+  // Enable access token.
+  bool enable_access_token = 5 [json_name="enableAccessToken"];
+  // Output only. Encrypted OIDC Client secret
+  bytes encrypted_client_secret = 6 [json_name="encryptedClientSecret"];
+  // Comma-separated list of key-value pairs.
+  string extra_params = 7 [json_name="extraParams"];
+  // Prefix to prepend to group name.
+  string group_prefix = 8 [json_name="groupPrefix"];
+  // Claim in OIDC ID token that holds group information.
+  string groups_claim = 9 [json_name="groupsClaim"];
+  // URI for the OIDC provider. This should point to the level below .well-known/openid-configuration.
+  string issuer_uri = 10 [json_name="issuerUri"];
+  // Registered redirect uri to redirect users going through OAuth flow using kubectl plugin.
+  string kubectl_redirect_uri = 11 [json_name="kubectlRedirectUri"];
+  // Comma-separated list of identifiers.
+  string scopes = 12 [json_name="scopes"];
+  // Claim in OIDC ID token that holds username.
+  string user_claim = 13 [json_name="userClaim"];
+  // Prefix to prepend to user name.
+  string user_prefix = 14 [json_name="userPrefix"];
+}
+
+// Configuration for the SAML Auth flow.
+message IdentityServiceSamlConfig {
+  // Optional. The mapping of additional user attributes like nickname, birthday and address etc.. `key` is the name of this additional attribute. `value` is a string presenting as CEL(common expression language, go/cel) used for getting the value from the resources. Take nickname as an example, in this case, `key` is "attribute.nickname" and `value` is "assertion.nickname".
+  map<string, string> attribute_mapping = 1 [json_name="attributeMapping"];
+  // Optional. Prefix to prepend to group name.
+  string group_prefix = 2 [json_name="groupPrefix"];
+  // Optional. The SAML attribute to read groups from. This value is expected to be a string and will be passed along as-is (with the option of being prefixed by the `group_prefix`).
+  string groups_attribute = 3 [json_name="groupsAttribute"];
+  // Required. The list of IdP certificates to validate the SAML response against.
+  repeated string identity_provider_certificates = 4 [json_name="identityProviderCertificates"];
+  // Required. The entity ID of the SAML IdP.
+  string identity_provider_id = 5 [json_name="identityProviderId"];
+  // Required. The URI where the SAML IdP exposes the SSO service.
+  string identity_provider_sso_uri = 6 [json_name="identityProviderSsoUri"];
+  // Optional. The SAML attribute to read username from. If unspecified, the username will be read from the NameID element of the assertion in SAML response. This value is expected to be a string and will be passed along as-is (with the option of being prefixed by the `user_prefix`).
+  string user_attribute = 7 [json_name="userAttribute"];
+  // Optional. Prefix to prepend to user name.
+  string user_prefix = 8 [json_name="userPrefix"];
+}
+
+// Server settings for the external LDAP server.
+message IdentityServiceServerConfig {
+  // Optional. Contains a Base64 encoded, PEM formatted certificate authority certificate for the LDAP server. This must be provided for the "ldaps" and "startTLS" connections.
+  bytes certificate_authority_data = 1 [json_name="certificateAuthorityData"];
+  // Optional. Defines the connection type to communicate with the LDAP server. If `starttls` or `ldaps` is specified, the certificate_authority_data should not be empty.
+  string connection_type = 2 [json_name="connectionType"];
+  // Required. Defines the hostname or IP of the LDAP server. Port is optional and will default to 389, if unspecified. For example, "ldap.server.example" or "10.10.10.10:389".
+  string host = 3 [json_name="host"];
+}
+
+// Contains the credentials of the service account which is authorized to perform the LDAP search in the directory. The credentials can be supplied by the combination of the DN and password or the client certificate.
+message IdentityServiceServiceAccountConfig {
+  // Credentials for basic auth.
+  IdentityServiceSimpleBindCredentials simple_bind_credentials = 1 [json_name="simpleBindCredentials"];
+}
+
+// The structure holds the LDAP simple binding credential.
+message IdentityServiceSimpleBindCredentials {
+  // Required. The distinguished name(DN) of the service account object/user.
+  string dn = 1 [json_name="dn"];
+  // Output only. The encrypted password of the service account object/user.
+  bytes encrypted_password = 2 [json_name="encryptedPassword"];
+  // Required. Input only. The password of the service account object/user.
+  string password = 3 [json_name="password"];
+}
+
+// Defines where users exist in the LDAP directory.
+message IdentityServiceUserConfig {
+  // Required. The location of the subtree in the LDAP directory to search for user entries.
+  string base_dn = 1 [json_name="baseDn"];
+  // Optional. Filter to apply when searching for the user. This can be used to further restrict the user accounts which are allowed to login. This defaults to "(objectClass=User)".
+  string filter = 2 [json_name="filter"];
+  // Optional. Determines which attribute to use as the user's identity after they are authenticated. This is distinct from the loginAttribute field to allow users to login with a username, but then have their actual identifier be an email address or full Distinguished Name (DN). For example, setting loginAttribute to "sAMAccountName" and identifierAttribute to "userPrincipalName" would allow a user to login as "bsmith", but actual RBAC policies for the user would be written as "bsmith@example.com". Using "userPrincipalName" is recommended since this will be unique for each user. This defaults to "userPrincipalName".
+  string id_attribute = 3 [json_name="idAttribute"];
+  // Optional. The name of the attribute which matches against the input username. This is used to find the user in the LDAP database e.g. "(=)" and is combined with the optional filter field. This defaults to "userPrincipalName".
+  string login_attribute = 4 [json_name="loginAttribute"];
+}
+
+// KubernetesMetadata provides informational metadata for Memberships representing Kubernetes clusters.
+message KubernetesMetadata {
+  // Output only. Kubernetes API server version string as reported by `/version`.
+  string kubernetes_api_server_version = 1 [json_name="kubernetesApiServerVersion"];
+  // Output only. The total memory capacity as reported by the sum of all Kubernetes nodes resources, defined in MB.
+  int32 memory_mb = 2 [json_name="memoryMb"];
+  // Output only. Node count as reported by Kubernetes nodes resources.
+  int32 node_count = 3 [json_name="nodeCount"];
+  // Output only. Node providerID as reported by the first node in the list of nodes on the Kubernetes endpoint. On Kubernetes platforms that support zero-node clusters (like GKE-on-GCP), the node_count will be zero and the node_provider_id will be empty.
+  string node_provider_id = 4 [json_name="nodeProviderId"];
+  // Output only. The time at which these details were last updated. This update_time is different from the Membership-level update_time since EndpointDetails are updated internally for API consumers.
+  .google.protobuf.Timestamp update_time = 5 [json_name="updateTime"];
+  // Output only. vCPU count as reported by Kubernetes nodes resources.
+  int32 vcpu_count = 6 [json_name="vcpuCount"];
+}
+
+// KubernetesResource contains the YAML manifests and configuration for Membership Kubernetes resources in the cluster. After CreateMembership or UpdateMembership, these resources should be re-applied in the cluster.
+message KubernetesResource {
+  // Output only. The Kubernetes resources for installing the GKE Connect agent This field is only populated in the Membership returned from a successful long-running operation from CreateMembership or UpdateMembership. It is not populated during normal GetMembership or ListMemberships requests. To get the resource manifest after the initial registration, the caller should make a UpdateMembership call with an empty field mask.
+  repeated ResourceManifest connect_resources = 1 [json_name="connectResources"];
+  // Input only. The YAML representation of the Membership CR. This field is ignored for GKE clusters where Hub can read the CR directly. Callers should provide the CR that is currently present in the cluster during CreateMembership or UpdateMembership, or leave this field empty if none exists. The CR manifest is used to validate the cluster has not been registered with another Membership.
+  string membership_cr_manifest = 2 [json_name="membershipCrManifest"];
+  // Output only. Additional Kubernetes resources that need to be applied to the cluster after Membership creation, and after every update. This field is only populated in the Membership returned from a successful long-running operation from CreateMembership or UpdateMembership. It is not populated during normal GetMembership or ListMemberships requests. To get the resource manifest after the initial registration, the caller should make a UpdateMembership call with an empty field mask.
+  repeated ResourceManifest membership_resources = 3 [json_name="membershipResources"];
+  // Optional. Options for Kubernetes resource generation.
+  ResourceOptions resource_options = 4 [json_name="resourceOptions"];
+}
+
+// List of Memberships bound to a Scope.
+message ListBoundMembershipsResponse {
+  // The list of Memberships bound to the given Scope.
+  repeated Membership memberships = 1 [json_name="memberships"];
+  // A token to request the next page of resources from the `ListBoundMemberships` method. The value of an empty string means that there are no more resources to return.
+  string next_page_token = 2 [json_name="nextPageToken"];
+  // List of locations that could not be reached while fetching this list.
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+
+// Response message for the `GkeHub.ListFeatures` method.
+message ListFeaturesResponse {
+  // A token to request the next page of resources from the `ListFeatures` method. The value of an empty string means that there are no more resources to return.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of matching Features
+  repeated Feature resources = 2 [json_name="resources"];
+}
+
+// Response message for the `GkeHub.ListFleetsResponse` method.
+message ListFleetsResponse {
+  // The list of matching fleets.
+  repeated Fleet fleets = 1 [json_name="fleets"];
+  // A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages. The token is only valid for 1h.
+  string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// The response message for Locations.ListLocations.
+message ListLocationsResponse {
+  // A list of locations that matches the specified filter in the request.
+  repeated Location locations = 1 [json_name="locations"];
+  // The standard List next-page token.
+  string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// List of MembershipBindings.
+message ListMembershipBindingsResponse {
+  // The list of membership_bindings
+  repeated MembershipBinding membership_bindings = 1 [json_name="membershipBindings"];
+  // A token to request the next page of resources from the `ListMembershipBindings` method. The value of an empty string means that there are no more resources to return.
+  string next_page_token = 2 [json_name="nextPageToken"];
+  // List of locations that could not be reached while fetching this list.
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+
+// List of Membership RBACRoleBindings.
+message ListMembershipRBACRoleBindingsResponse {
+  // A token to request the next page of resources from the `ListMembershipRBACRoleBindings` method. The value of an empty string means that there are no more resources to return.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of Membership RBACRoleBindings.
+  repeated RBACRoleBinding rbacrolebindings = 2 [json_name="rbacrolebindings"];
+  // List of locations that could not be reached while fetching this list.
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+
+// Response message for the `GkeHub.ListMemberships` method.
+message ListMembershipsResponse {
+  // A token to request the next page of resources from the `ListMemberships` method. The value of an empty string means that there are no more resources to return.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of matching Memberships.
+  repeated Membership resources = 2 [json_name="resources"];
+  // List of locations that could not be reached while fetching this list.
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+
+// The response message for Operations.ListOperations.
+message ListOperationsResponse {
+  // The standard List next-page token.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // A list of operations that matches the specified filter in the request.
+  repeated .google.longrunning.Operation operations = 2 [json_name="operations"];
+  // Unordered list. Unreachable resources. Populated when the request sets `ListOperationsRequest.return_partial_success` and reads across collections. For example, when attempting to list all resources across all supported locations.
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+
+// List of permitted Scopes.
+message ListPermittedScopesResponse {
+  // A token to request the next page of resources from the `ListPermittedScopes` method. The value of an empty string means that there are no more resources to return.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of permitted Scopes
+  repeated Scope scopes = 2 [json_name="scopes"];
+}
+
+// List of fleet namespaces.
+message ListScopeNamespacesResponse {
+  // A token to request the next page of resources from the `ListNamespaces` method. The value of an empty string means that there are no more resources to return.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of fleet namespaces
+  repeated Namespace scope_namespaces = 2 [json_name="scopeNamespaces"];
+}
+
+// List of Scope RBACRoleBindings.
+message ListScopeRBACRoleBindingsResponse {
+  // A token to request the next page of resources from the `ListScopeRBACRoleBindings` method. The value of an empty string means that there are no more resources to return.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of Scope RBACRoleBindings.
+  repeated RBACRoleBinding rbacrolebindings = 2 [json_name="rbacrolebindings"];
+}
+
+// List of Scopes.
+message ListScopesResponse {
+  // A token to request the next page of resources from the `ListScopes` method. The value of an empty string means that there are no more resources to return.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of Scopes
+  repeated Scope scopes = 2 [json_name="scopes"];
+}
+
+// A resource that represents a Google Cloud location.
+message Location {
+  // The friendly name for this location, typically a nearby city name. For example, "Tokyo".
+  string display_name = 1 [json_name="displayName"];
+  // Cross-service attributes for the location. For example {"cloud.googleapis.com/region": "us-east1"}
+  map<string, string> labels = 2 [json_name="labels"];
+  // The canonical id for this location. For example: `"us-east1"`.
+  string location_id = 3 [json_name="locationId"];
+  // Service-specific metadata. For example the available capacity at the given location.
+  map<string, .google.protobuf.Any> metadata = 4 [json_name="metadata"];
+  // Resource name for the location, which may vary between implementations. For example: `"projects/example-project/locations/us-east1"`
+  string name = 5 [json_name="name"];
+}
+
+// Membership contains information about a member cluster.
+message Membership {
+  // Optional. How to identify workloads from this Membership. See the documentation on Workload Identity for more details: https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
+  Authority authority = 1 [json_name="authority"];
+  // Output only. The tier of the cluster.
+  string cluster_tier = 2 [json_name="clusterTier"];
+  // Output only. When the Membership was created.
+  .google.protobuf.Timestamp create_time = 3 [json_name="createTime"];
+  // Output only. When the Membership was deleted.
+  .google.protobuf.Timestamp delete_time = 4 [json_name="deleteTime"];
+  // Output only. Description of this membership, limited to 63 characters. Must match the regex: `a-zA-Z0-9*` This field is present for legacy purposes.
+  string description = 5 [json_name="description"];
+  // Optional. Endpoint information to reach this member.
+  MembershipEndpoint endpoint = 6 [json_name="endpoint"];
+  // Optional. An externally-generated and managed ID for this Membership. This ID may be modified after creation, but this is not recommended. The ID must match the regex: `a-zA-Z0-9*` If this Membership represents a Kubernetes cluster, this value should be set to the UID of the `kube-system` namespace object.
+  string external_id = 7 [json_name="externalId"];
+  // Optional. Labels for this membership. These labels are not leveraged by multi-cluster features, instead, we prefer cluster labels, which can be set on GKE cluster or other cluster types.
+  map<string, string> labels = 8 [json_name="labels"];
+  // Output only. For clusters using Connect, the timestamp of the most recent connection established with Google Cloud. This time is updated every several minutes, not continuously. For clusters that do not use GKE Connect, or that have never connected successfully, this field will be unset.
+  .google.protobuf.Timestamp last_connection_time = 9 [json_name="lastConnectionTime"];
+  // Output only. The type of the membership.
+  string membership_type = 10 [json_name="membershipType"];
+  // Optional. The monitoring config information for this membership.
+  MonitoringConfig monitoring_config = 11 [json_name="monitoringConfig"];
+  // Output only. The full, unique name of this Membership resource in the format `projects/*/locations/*/memberships/{membership_id}`, set during creation. `membership_id` must be a valid RFC 1123 compliant DNS label: 1. At most 63 characters in length 2. It must consist of lower case alphanumeric characters or `-` 3. It must start and end with an alphanumeric character Which can be expressed as the regex: `[a-z0-9]([-a-z0-9]*[a-z0-9])?`, with a maximum length of 63 characters.
+  string name = 12 [json_name="name"];
+  // Output only. State of the Membership resource.
+  MembershipState state = 13 [json_name="state"];
+  // Output only. Google-generated UUID for this resource. This is unique across all Membership resources. If a Membership resource is deleted and another resource with the same name is created, it gets a different unique_id.
+  string unique_id = 14 [json_name="uniqueId"];
+  // Output only. When the Membership was last updated.
+  .google.protobuf.Timestamp update_time = 15 [json_name="updateTime"];
+}
+
+// MembershipBinding is a subresource of a Membership, representing what Fleet Scopes (or other, future Fleet resources) a Membership is bound to.
+message MembershipBinding {
+  // Output only. When the membership binding was created.
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Output only. When the membership binding was deleted.
+  .google.protobuf.Timestamp delete_time = 2 [json_name="deleteTime"];
+  // Optional. Labels for this MembershipBinding.
+  map<string, string> labels = 3 [json_name="labels"];
+  // The resource name for the membershipbinding itself `projects/{project}/locations/{location}/memberships/{membership}/bindings/{membershipbinding}`
+  string name = 4 [json_name="name"];
+  // A Scope resource name in the format `projects/*/locations/*/scopes/*`.
+  string scope = 5 [json_name="scope"];
+  // Output only. State of the membership binding resource.
+  MembershipBindingLifecycleState state = 6 [json_name="state"];
+  // Output only. Google-generated UUID for this resource. This is unique across all membershipbinding resources. If a membershipbinding resource is deleted and another resource with the same name is created, it gets a different uid.
+  string uid = 7 [json_name="uid"];
+  // Output only. When the membership binding was last updated.
+  .google.protobuf.Timestamp update_time = 8 [json_name="updateTime"];
+}
+
+// MembershipBindingLifecycleState describes the state of a Binding resource.
+message MembershipBindingLifecycleState {
+  // Output only. The current state of the MembershipBinding resource.
+  string code = 1 [json_name="code"];
+}
+
+// MembershipEndpoint contains information needed to contact a Kubernetes API, endpoint and any additional Kubernetes metadata.
+message MembershipEndpoint {
+  // Optional. Specific information for a GDC Edge Appliance cluster.
+  ApplianceCluster appliance_cluster = 1 [json_name="applianceCluster"];
+  // Optional. Specific information for a Google Edge cluster.
+  EdgeCluster edge_cluster = 2 [json_name="edgeCluster"];
+  // Optional. Specific information for a GKE-on-GCP cluster.
+  GkeCluster gke_cluster = 3 [json_name="gkeCluster"];
+  // Output only. Whether the lifecycle of this membership is managed by a google cluster platform service.
+  bool google_managed = 4 [json_name="googleManaged"];
+  // Output only. Useful Kubernetes-specific metadata.
+  KubernetesMetadata kubernetes_metadata = 5 [json_name="kubernetesMetadata"];
+  // Optional. The in-cluster Kubernetes Resources that should be applied for a correctly registered cluster, in the steady state. These resources: * Ensure that the cluster is exclusively registered to one and only one Hub Membership. * Propagate Workload Pool Information available in the Membership Authority field. * Ensure proper initial configuration of default Hub Features.
+  KubernetesResource kubernetes_resource = 6 [json_name="kubernetesResource"];
+  // Optional. Specific information for a GKE Multi-Cloud cluster.
+  MultiCloudCluster multi_cloud_cluster = 7 [json_name="multiCloudCluster"];
+  // Optional. Specific information for a GKE On-Prem cluster. An onprem user-cluster who has no resourceLink is not allowed to use this field, it should have a nil "type" instead.
+  OnPremCluster on_prem_cluster = 8 [json_name="onPremCluster"];
+}
+
+// MembershipFeatureSpec contains configuration information for a single Membership.
+message MembershipFeatureSpec {
+  // Config Management-specific spec.
+  ConfigManagementMembershipSpec configmanagement = 1 [json_name="configmanagement"];
+  // Fleet observability membership spec
+  FleetObservabilityMembershipSpec fleetobservability = 2 [json_name="fleetobservability"];
+  // Identity Service-specific spec.
+  IdentityServiceMembershipSpec identityservice = 3 [json_name="identityservice"];
+  // Anthos Service Mesh-specific spec
+  ServiceMeshMembershipSpec mesh = 4 [json_name="mesh"];
+  // Whether this per-Membership spec was inherited from a fleet-level default. This field can be updated by users by either overriding a Membership config (updated to USER implicitly) or setting to FLEET explicitly.
+  Origin origin = 5 [json_name="origin"];
+  // Policy Controller spec.
+  PolicyControllerMembershipSpec policycontroller = 6 [json_name="policycontroller"];
+}
+
+// MembershipFeatureState contains Feature status information for a single Membership.
+message MembershipFeatureState {
+  // Appdevexperience specific state.
+  AppDevExperienceFeatureState appdevexperience = 1 [json_name="appdevexperience"];
+  // ClusterUpgrade state.
+  ClusterUpgradeMembershipState clusterupgrade = 2 [json_name="clusterupgrade"];
+  // Config Management-specific state.
+  ConfigManagementMembershipState configmanagement = 3 [json_name="configmanagement"];
+  // Fleet observability membership state.
+  FleetObservabilityMembershipState fleetobservability = 4 [json_name="fleetobservability"];
+  // Identity Service-specific state.
+  IdentityServiceMembershipState identityservice = 5 [json_name="identityservice"];
+  // Policycontroller-specific state.
+  PolicyControllerMembershipState policycontroller = 6 [json_name="policycontroller"];
+  // Service Mesh-specific state.
+  ServiceMeshMembershipState servicemesh = 7 [json_name="servicemesh"];
+  // The high-level state of this Feature for a single membership.
+  FeatureState state = 8 [json_name="state"];
+  // Workload Identity membership specific state.
+  WorkloadIdentityMembershipState workloadidentity = 9 [json_name="workloadidentity"];
+}
+
+// MembershipState describes the state of a Membership resource.
+message MembershipState {
+  // Output only. The current state of the Membership resource.
+  string code = 1 [json_name="code"];
+}
+
+// MonitoringConfig informs Fleet-based applications/services/UIs how the metrics for the underlying cluster is reported to cloud monitoring services. It can be set from empty to non-empty, but can't be mutated directly to prevent accidentally breaking the constinousty of metrics.
+message MonitoringConfig {
+  // Optional. Cluster name used to report metrics. For Anthos on VMWare/Baremetal/MultiCloud clusters, it would be in format {cluster_type}/{cluster_name}, e.g., "awsClusters/cluster_1".
+  string cluster = 1 [json_name="cluster"];
+  // Optional. For GKE and Multicloud clusters, this is the UUID of the cluster resource. For VMWare and Baremetal clusters, this is the kube-system UID.
+  string cluster_hash = 2 [json_name="clusterHash"];
+  // Optional. Kubernetes system metrics, if available, are written to this prefix. This defaults to kubernetes.io for GKE, and kubernetes.io/anthos for Anthos eventually. Noted: Anthos MultiCloud will have kubernetes.io prefix today but will migration to be under kubernetes.io/anthos.
+  string kubernetes_metrics_prefix = 3 [json_name="kubernetesMetricsPrefix"];
+  // Optional. Location used to report Metrics
+  string location = 4 [json_name="location"];
+  // Optional. Project used to report Metrics
+  string project_id = 5 [json_name="projectId"];
+}
+
+// MultiCloudCluster contains information specific to GKE Multi-Cloud clusters.
+message MultiCloudCluster {
+  // Output only. If cluster_missing is set then it denotes that API(gkemulticloud.googleapis.com) resource for this GKE Multi-Cloud cluster no longer exists.
+  bool cluster_missing = 1 [json_name="clusterMissing"];
+  // Immutable. Self-link of the Google Cloud resource for the GKE Multi-Cloud cluster. For example: //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/awsClusters/my-cluster //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/azureClusters/my-cluster //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/attachedClusters/my-cluster
+  string resource_link = 2 [json_name="resourceLink"];
+}
+
+// **Multi-cluster Ingress**: The configuration for the MultiClusterIngress feature.
+message MultiClusterIngressFeatureSpec {
+  // Fully-qualified Membership name which hosts the MultiClusterIngress CRD. Example: `projects/foo-proj/locations/global/memberships/bar`
+  string config_membership = 1 [json_name="configMembership"];
+}
+
+// Namespace represents a namespace across the Fleet
+message Namespace {
+  // Output only. When the namespace was created.
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Output only. When the namespace was deleted.
+  .google.protobuf.Timestamp delete_time = 2 [json_name="deleteTime"];
+  // Optional. Labels for this Namespace.
+  map<string, string> labels = 3 [json_name="labels"];
+  // The resource name for the namespace `projects/{project}/locations/{location}/namespaces/{namespace}`
+  string name = 4 [json_name="name"];
+  // Optional. Namespace-level cluster namespace labels. These labels are applied to the related namespace of the member clusters bound to the parent Scope. Scope-level labels (`namespace_labels` in the Fleet Scope resource) take precedence over Namespace-level labels if they share a key. Keys and values must be Kubernetes-conformant.
+  map<string, string> namespace_labels = 5 [json_name="namespaceLabels"];
+  // Required. Scope associated with the namespace
+  string scope = 6 [json_name="scope"];
+  // Output only. State of the namespace resource.
+  NamespaceLifecycleState state = 7 [json_name="state"];
+  // Output only. Google-generated UUID for this resource. This is unique across all namespace resources. If a namespace resource is deleted and another resource with the same name is created, it gets a different uid.
+  string uid = 8 [json_name="uid"];
+  // Output only. When the namespace was last updated.
+  .google.protobuf.Timestamp update_time = 9 [json_name="updateTime"];
+}
+
+// NamespaceLifecycleState describes the state of a Namespace resource.
+message NamespaceLifecycleState {
+  // Output only. The current state of the Namespace resource.
+  string code = 1 [json_name="code"];
+}
+
+// OnPremCluster contains information specific to GKE On-Prem clusters.
+message OnPremCluster {
+  // Immutable. Whether the cluster is an admin cluster.
+  bool admin_cluster = 1 [json_name="adminCluster"];
+  // Output only. If cluster_missing is set then it denotes that API(gkeonprem.googleapis.com) resource for this GKE On-Prem cluster no longer exists.
+  bool cluster_missing = 2 [json_name="clusterMissing"];
+  // Immutable. The on prem cluster's type.
+  string cluster_type = 3 [json_name="clusterType"];
+  // Immutable. Self-link of the Google Cloud resource for the GKE On-Prem cluster. For example: //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/vmwareClusters/my-cluster //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/bareMetalClusters/my-cluster
+  string resource_link = 4 [json_name="resourceLink"];
+}
+
+// Represents the metadata of the long-running operation.
+message OperationMetadata {
+  // Output only. API version used to start the operation.
+  string api_version = 1 [json_name="apiVersion"];
+  // Output only. Identifies whether the user has requested cancellation of the operation. Operations that have successfully been cancelled have google.longrunning.Operation.error value with a google.rpc.Status.code of 1, corresponding to `Code.CANCELLED`.
+  bool cancel_requested = 2 [json_name="cancelRequested"];
+  // Output only. The time the operation was created.
+  .google.protobuf.Timestamp create_time = 3 [json_name="createTime"];
+  // Output only. The time the operation finished running.
+  .google.protobuf.Timestamp end_time = 4 [json_name="endTime"];
+  // Output only. Human-readable status of the operation, if any.
+  string status_detail = 5 [json_name="statusDetail"];
+  // Output only. Server-defined resource path for the target of the operation.
+  string target = 6 [json_name="target"];
+  // Output only. Name of the verb executed by the operation.
+  string verb = 7 [json_name="verb"];
+}
+
+// Origin defines where this MembershipFeatureSpec originated from.
+message Origin {
+  // Type specifies which type of origin is set.
+  string type = 1 [json_name="type"];
+}
+
+// An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources. A `Policy` is a collection of `bindings`. A `binding` binds one or more `members`, or principals, to a single `role`. Principals can be user accounts, service accounts, Google groups, and domains (such as G Suite). A `role` is a named list of permissions; each `role` can be an IAM predefined role or a user-created custom role. For some types of Google Cloud resources, a `binding` can also specify a `condition`, which is a logical expression that allows access to a resource only if the expression evaluates to `true`. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies). **JSON example:** ``` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 } ``` **YAML example:** ``` bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3 ``` For a description of IAM and its features, see the [IAM documentation](https://cloud.google.com/iam/docs/).
+message Policy {
+  // Specifies cloud audit logging configuration for this policy.
+  repeated AuditConfig audit_configs = 1 [json_name="auditConfigs"];
+  // Associates a list of `members`, or principals, with a `role`. Optionally, may specify a `condition` that determines how and when the `bindings` are applied. Each of the `bindings` must contain at least one principal. The `bindings` in a `Policy` can refer to up to 1,500 principals; up to 250 of these principals can be Google groups. Each occurrence of a principal counts towards these limits. For example, if the `bindings` grant 50 different roles to `user:alice@example.com`, and not to any other principal, then you can add another 1,450 principals to the `bindings` in the `Policy`.
+  repeated Binding bindings = 2 [json_name="bindings"];
+  // `etag` is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. It is strongly suggested that systems make use of the `etag` in the read-modify-write cycle to perform policy updates in order to avoid race conditions: An `etag` is returned in the response to `getIamPolicy`, and systems are expected to put that etag in the request to `setIamPolicy` to ensure that their change will be applied to the same version of the policy. **Important:** If you use IAM Conditions, you must include the `etag` field whenever you call `setIamPolicy`. If you omit this field, then IAM allows you to overwrite a version `3` policy with a version `1` policy, and all of the conditions in the version `3` policy are lost.
+  bytes etag = 3 [json_name="etag"];
+  // Specifies the format of the policy. Valid values are `0`, `1`, and `3`. Requests that specify an invalid value are rejected. Any operation that affects conditional role bindings must specify version `3`. This requirement applies to the following operations: * Getting a policy that includes a conditional role binding * Adding a conditional role binding to a policy * Changing a conditional role binding in a policy * Removing any role binding, with or without a condition, from a policy that includes conditions **Important:** If you use IAM Conditions, you must include the `etag` field whenever you call `setIamPolicy`. If you omit this field, then IAM allows you to overwrite a version `3` policy with a version `1` policy, and all of the conditions in the version `3` policy are lost. If a policy does not include any conditions, operations on that policy may specify any valid version or leave the field unset. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+  int32 version = 4 [json_name="version"];
+}
+
+// Binauthz policy that applies to this cluster.
+message PolicyBinding {
+  // The relative resource name of the binauthz platform policy to audit. GKE platform policies have the following format: `projects/{project_number}/platforms/gke/policies/{policy_id}`.
+  string name = 1 [json_name="name"];
+}
+
+// BundleInstallSpec is the specification configuration for a single managed bundle.
+message PolicyControllerBundleInstallSpec {
+  // The set of namespaces to be exempted from the bundle.
+  repeated string exempted_namespaces = 1 [json_name="exemptedNamespaces"];
+}
+
+// Configuration for Policy Controller
+message PolicyControllerHubConfig {
+  // Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether.
+  int64 audit_interval_seconds = 1 [json_name="auditIntervalSeconds"];
+  // The maximum number of audit violations to be stored in a constraint. If not set, the internal default (currently 20) will be used.
+  int64 constraint_violation_limit = 2 [json_name="constraintViolationLimit"];
+  // Map of deployment configs to deployments ("admission", "audit", "mutation').
+  map<string, PolicyControllerPolicyControllerDeploymentConfig> deployment_configs = 3 [json_name="deploymentConfigs"];
+  // The set of namespaces that are excluded from Policy Controller checks. Namespaces do not need to currently exist on the cluster.
+  repeated string exemptable_namespaces = 4 [json_name="exemptableNamespaces"];
+  // The install_spec represents the intended state specified by the latest request that mutated install_spec in the feature spec, not the lifecycle state of the feature observed by the Hub feature controller that is reported in the feature state.
+  string install_spec = 5 [json_name="installSpec"];
+  // Logs all denies and dry run failures.
+  bool log_denies_enabled = 6 [json_name="logDeniesEnabled"];
+  // Monitoring specifies the configuration of monitoring.
+  PolicyControllerMonitoringConfig monitoring = 7 [json_name="monitoring"];
+  // Enables the ability to mutate resources using Policy Controller.
+  bool mutation_enabled = 8 [json_name="mutationEnabled"];
+  // Specifies the desired policy content on the cluster
+  PolicyControllerPolicyContentSpec policy_content = 9 [json_name="policyContent"];
+  // Enables the ability to use Constraint Templates that reference to objects other than the object currently being evaluated.
+  bool referential_rules_enabled = 10 [json_name="referentialRulesEnabled"];
+}
+
+// **Policy Controller**: Configuration for a single cluster. Intended to parallel the PolicyController CR.
+message PolicyControllerMembershipSpec {
+  // Policy Controller configuration for the cluster.
+  PolicyControllerHubConfig policy_controller_hub_config = 1 [json_name="policyControllerHubConfig"];
+  // Version of Policy Controller installed.
+  string version = 2 [json_name="version"];
+}
+
+// **Policy Controller**: State for a single cluster.
+message PolicyControllerMembershipState {
+  // Currently these include (also serving as map keys): 1. "admission" 2. "audit" 3. "mutation"
+  map<string, PolicyControllerOnClusterState> component_states = 1 [json_name="componentStates"];
+  // The overall content state observed by the Hub Feature controller.
+  PolicyControllerPolicyContentState policy_content_state = 2 [json_name="policyContentState"];
+  // The overall Policy Controller lifecycle state observed by the Hub Feature controller.
+  string state = 3 [json_name="state"];
+}
+
+// MonitoringConfig specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: ["cloudmonitoring", "prometheus"]
+message PolicyControllerMonitoringConfig {
+  // Specifies the list of backends Policy Controller will export to. An empty list would effectively disable metrics export.
+  repeated string backends = 1 [json_name="backends"];
+}
+
+// OnClusterState represents the state of a sub-component of Policy Controller.
+message PolicyControllerOnClusterState {
+  // Surface potential errors or information logs.
+  string details = 1 [json_name="details"];
+  // The lifecycle state of this component.
+  string state = 2 [json_name="state"];
+}
+
+// PolicyContentSpec defines the user's desired content configuration on the cluster.
+message PolicyControllerPolicyContentSpec {
+  // map of bundle name to BundleInstallSpec. The bundle name maps to the `bundleName` key in the `policycontroller.gke.io/constraintData` annotation on a constraint.
+  map<string, PolicyControllerBundleInstallSpec> bundles = 1 [json_name="bundles"];
+  // Configures the installation of the Template Library.
+  PolicyControllerTemplateLibraryConfig template_library = 2 [json_name="templateLibrary"];
+}
+
+// The state of the policy controller policy content
+message PolicyControllerPolicyContentState {
+  // The state of the any bundles included in the chosen version of the manifest
+  map<string, PolicyControllerOnClusterState> bundle_states = 1 [json_name="bundleStates"];
+  // The state of the referential data sync configuration. This could represent the state of either the syncSet object(s) or the config object, depending on the version of PoCo configured by the user.
+  PolicyControllerOnClusterState referential_sync_config_state = 2 [json_name="referentialSyncConfigState"];
+  // The state of the template library
+  PolicyControllerOnClusterState template_library_state = 3 [json_name="templateLibraryState"];
+}
+
+// Deployment-specific configuration.
+message PolicyControllerPolicyControllerDeploymentConfig {
+  // Container resource requirements.
+  PolicyControllerResourceRequirements container_resources = 1 [json_name="containerResources"];
+  // Pod affinity configuration.
+  string pod_affinity = 2 [json_name="podAffinity"];
+  // Pod anti-affinity enablement. Deprecated: use `pod_affinity` instead.
+  bool pod_anti_affinity = 3 [json_name="podAntiAffinity"];
+  // Pod tolerations of node taints.
+  repeated PolicyControllerToleration pod_tolerations = 4 [json_name="podTolerations"];
+  // Pod replica count.
+  int64 replica_count = 5 [json_name="replicaCount"];
+}
+
+// ResourceList contains container resource requirements.
+message PolicyControllerResourceList {
+  // CPU requirement expressed in Kubernetes resource units.
+  string cpu = 1 [json_name="cpu"];
+  // Memory requirement expressed in Kubernetes resource units.
+  string memory = 2 [json_name="memory"];
+}
+
+// ResourceRequirements describes the compute resource requirements.
+message PolicyControllerResourceRequirements {
+  // Limits describes the maximum amount of compute resources allowed for use by the running container.
+  PolicyControllerResourceList limits = 1 [json_name="limits"];
+  // Requests describes the amount of compute resources reserved for the container by the kube-scheduler.
+  PolicyControllerResourceList requests = 2 [json_name="requests"];
+}
+
+// The config specifying which default library templates to install.
+message PolicyControllerTemplateLibraryConfig {
+  // Configures the manner in which the template library is installed on the cluster.
+  string installation = 1 [json_name="installation"];
+}
+
+// Toleration of a node taint.
+message PolicyControllerToleration {
+  // Matches a taint effect.
+  string effect = 1 [json_name="effect"];
+  // Matches a taint key (not necessarily unique).
+  string key = 2 [json_name="key"];
+  // Matches a taint operator.
+  string operator = 3 [json_name="operator"];
+  // Matches a taint value.
+  string value = 4 [json_name="value"];
+}
+
+// RBACRoleBinding represents a rbacrolebinding across the Fleet
+message RBACRoleBinding {
+  // Output only. When the rbacrolebinding was created.
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Output only. When the rbacrolebinding was deleted.
+  .google.protobuf.Timestamp delete_time = 2 [json_name="deleteTime"];
+  // group is the group, as seen by the kubernetes cluster.
+  string group = 3 [json_name="group"];
+  // Optional. Labels for this RBACRolebinding.
+  map<string, string> labels = 4 [json_name="labels"];
+  // The resource name for the rbacrolebinding `projects/{project}/locations/{location}/scopes/{scope}/rbacrolebindings/{rbacrolebinding}` or `projects/{project}/locations/{location}/memberships/{membership}/rbacrolebindings/{rbacrolebinding}`
+  string name = 5 [json_name="name"];
+  // Required. Role to bind to the principal
+  Role role = 6 [json_name="role"];
+  // Output only. State of the rbacrolebinding resource.
+  RBACRoleBindingLifecycleState state = 7 [json_name="state"];
+  // Output only. Google-generated UUID for this resource. This is unique across all rbacrolebinding resources. If a rbacrolebinding resource is deleted and another resource with the same name is created, it gets a different uid.
+  string uid = 8 [json_name="uid"];
+  // Output only. When the rbacrolebinding was last updated.
+  .google.protobuf.Timestamp update_time = 9 [json_name="updateTime"];
+  // user is the name of the user as seen by the kubernetes cluster, example "alice" or "alice@domain.tld"
+  string user = 10 [json_name="user"];
+}
+
+// **RBAC RoleBinding Actuation**: The Hub-wide input for the RBACRoleBindingActuation feature.
+message RBACRoleBindingActuationFeatureSpec {
+  // The list of allowed custom roles (ClusterRoles). If a ClusterRole is not part of this list, it cannot be used in a Scope RBACRoleBinding. If a ClusterRole in this list is in use, it cannot be removed from the list.
+  repeated string allowed_custom_roles = 1 [json_name="allowedCustomRoles"];
+}
+
+// **RBAC RoleBinding Actuation**: An empty state left as an example Hub-wide Feature state.
+message RBACRoleBindingActuationFeatureState {
+}
+
+// RBACRoleBindingLifecycleState describes the state of a RbacRoleBinding resource.
+message RBACRoleBindingLifecycleState {
+  // Output only. The current state of the rbacrolebinding resource.
+  string code = 1 [json_name="code"];
+}
+
+// ResourceManifest represents a single Kubernetes resource to be applied to the cluster.
+message ResourceManifest {
+  // Output only. Whether the resource provided in the manifest is `cluster_scoped`. If unset, the manifest is assumed to be namespace scoped. This field is used for REST mapping when applying the resource in a cluster.
+  bool cluster_scoped = 1 [json_name="clusterScoped"];
+  // Output only. YAML manifest of the resource.
+  string manifest = 2 [json_name="manifest"];
+}
+
+// ResourceOptions represent options for Kubernetes resource generation.
+message ResourceOptions {
+  // Optional. The Connect agent version to use for connect_resources. Defaults to the latest GKE Connect version. The version must be a currently supported version, obsolete versions will be rejected.
+  string connect_version = 1 [json_name="connectVersion"];
+  // Optional. Git version of the Kubernetes cluster. This is only used to gate the Connect Agent migration to svc.id.goog on GDC-SO 1.33.100 patch and above.
+  string k8s_git_version = 2 [json_name="k8sGitVersion"];
+  // Optional. Major and minor version of the Kubernetes cluster. This is only used to determine which version to use for the CustomResourceDefinition resources, `apiextensions/v1beta1` or`apiextensions/v1`.
+  string k8s_version = 3 [json_name="k8sVersion"];
+  // Optional. Use `apiextensions/v1beta1` instead of `apiextensions/v1` for CustomResourceDefinition resources. This option should be set for clusters with Kubernetes apiserver versions <1.16.
+  bool v1beta1_crd = 4 [json_name="v1beta1Crd"];
+}
+
+// Role is the type for Kubernetes roles
+message Role {
+  // Optional. custom_role is the name of a custom KubernetesClusterRole to use.
+  string custom_role = 1 [json_name="customRole"];
+  // predefined_role is the Kubernetes default role to use
+  string predefined_role = 2 [json_name="predefinedRole"];
+}
+
+// Scope represents a Scope in a Fleet.
+message Scope {
+  // Output only. When the scope was created.
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Output only. When the scope was deleted.
+  .google.protobuf.Timestamp delete_time = 2 [json_name="deleteTime"];
+  // Optional. Labels for this Scope.
+  map<string, string> labels = 3 [json_name="labels"];
+  // The resource name for the scope `projects/{project}/locations/{location}/scopes/{scope}`
+  string name = 4 [json_name="name"];
+  // Optional. Scope-level cluster namespace labels. For the member clusters bound to the Scope, these labels are applied to each namespace under the Scope. Scope-level labels take precedence over Namespace-level labels (`namespace_labels` in the Fleet Namespace resource) if they share a key. Keys and values must be Kubernetes-conformant.
+  map<string, string> namespace_labels = 5 [json_name="namespaceLabels"];
+  // Output only. State of the scope resource.
+  ScopeLifecycleState state = 6 [json_name="state"];
+  // Output only. Google-generated UUID for this resource. This is unique across all scope resources. If a scope resource is deleted and another resource with the same name is created, it gets a different uid.
+  string uid = 7 [json_name="uid"];
+  // Output only. When the scope was last updated.
+  .google.protobuf.Timestamp update_time = 8 [json_name="updateTime"];
+}
+
+// ScopeFeatureSpec contains feature specs for a fleet scope.
+message ScopeFeatureSpec {
+}
+
+// ScopeFeatureState contains Scope-wide Feature status information.
+message ScopeFeatureState {
+  // Output only. The "running state" of the Feature in this Scope.
+  FeatureState state = 1 [json_name="state"];
+}
+
+// ScopeLifecycleState describes the state of a Scope resource.
+message ScopeLifecycleState {
+  // Output only. The current state of the scope resource.
+  string code = 1 [json_name="code"];
+}
+
+// SecurityPostureConfig defines the flags needed to enable/disable features for the Security Posture API.
+message SecurityPostureConfig {
+  // Sets which mode to use for Security Posture features.
+  string mode = 1 [json_name="mode"];
+  // Sets which mode to use for vulnerability scanning.
+  string vulnerability_mode = 2 [json_name="vulnerabilityMode"];
+}
+
+// Condition being reported.
+message ServiceMeshCondition {
+  // Unique identifier of the condition which describes the condition recognizable to the user.
+  string code = 1 [json_name="code"];
+  // A short summary about the issue.
+  string details = 2 [json_name="details"];
+  // Links contains actionable information.
+  string documentation_link = 3 [json_name="documentationLink"];
+  // Severity level of the condition.
+  string severity = 4 [json_name="severity"];
+}
+
+// Status of control plane management.
+message ServiceMeshControlPlaneManagement {
+  // Explanation of state.
+  repeated ServiceMeshStatusDetails details = 1 [json_name="details"];
+  // Output only. Implementation of managed control plane.
+  string implementation = 2 [json_name="implementation"];
+  // LifecycleState of control plane management.
+  string state = 3 [json_name="state"];
+}
+
+// Status of data plane management. Only reported per-member.
+message ServiceMeshDataPlaneManagement {
+  // Explanation of the status.
+  repeated ServiceMeshStatusDetails details = 1 [json_name="details"];
+  // Lifecycle status of data plane management.
+  string state = 2 [json_name="state"];
+}
+
+// **Service Mesh**: Spec for a single Membership for the servicemesh feature
+message ServiceMeshMembershipSpec {
+  // Optional. Specifies the API that will be used for configuring the mesh workloads.
+  string config_api = 1 [json_name="configApi"];
+  // Deprecated: use `management` instead Enables automatic control plane management.
+  string control_plane = 2 [json_name="controlPlane"];
+  // Optional. Enables automatic Service Mesh management.
+  string management = 3 [json_name="management"];
+}
+
+// **Service Mesh**: State for a single Membership, as analyzed by the Service Mesh Hub Controller.
+message ServiceMeshMembershipState {
+  // Output only. List of conditions reported for this membership.
+  repeated ServiceMeshCondition conditions = 1 [json_name="conditions"];
+  // Output only. Status of control plane management
+  ServiceMeshControlPlaneManagement control_plane_management = 2 [json_name="controlPlaneManagement"];
+  // Output only. Status of data plane management.
+  ServiceMeshDataPlaneManagement data_plane_management = 3 [json_name="dataPlaneManagement"];
+}
+
+// Structured and human-readable details for a status.
+message ServiceMeshStatusDetails {
+  // A machine-readable code that further describes a broad status.
+  string code = 1 [json_name="code"];
+  // Human-readable explanation of code.
+  string details = 2 [json_name="details"];
+}
+
+// Request message for `SetIamPolicy` method.
+message SetIamPolicyRequest {
+  // REQUIRED: The complete policy to be applied to the `resource`. The size of the policy is limited to a few 10s of KB. An empty policy is a valid policy but certain Google Cloud services (such as Projects) might reject them.
+  Policy policy = 1 [json_name="policy"];
+  // OPTIONAL: A FieldMask specifying which fields of the policy to modify. Only the fields in the mask will be modified. If no mask is provided, the following default mask is used: `paths: "bindings, etag"`
+  string update_mask = 2 [json_name="updateMask"];
+}
+
+// Status specifies state for the subcomponent.
+message Status {
+  // Code specifies AppDevExperienceFeature's subcomponent ready state.
+  string code = 1 [json_name="code"];
+  // Description is populated if Code is Failed, explaining why it has failed.
+  string description = 2 [json_name="description"];
+}
+
+// Request message for `TestIamPermissions` method.
+message TestIamPermissionsRequest {
+  // The set of permissions to check for the `resource`. Permissions with wildcards (such as `*` or `storage.*`) are not allowed. For more information see [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
+  repeated string permissions = 1 [json_name="permissions"];
+}
+
+// Response message for `TestIamPermissions` method.
+message TestIamPermissionsResponse {
+  // A subset of `TestPermissionsRequest.permissions` that the caller is allowed.
+  repeated string permissions = 1 [json_name="permissions"];
+}
+
+// TypeMeta is the type information needed for content unmarshalling of Kubernetes resources in the manifest.
+message TypeMeta {
+  // APIVersion of the resource (e.g. v1).
+  string api_version = 1 [json_name="apiVersion"];
+  // Kind of the resource (e.g. Deployment).
+  string kind = 2 [json_name="kind"];
+}
+
+// **WorkloadIdentity**: Global feature specification.
+message WorkloadIdentityFeatureSpec {
+  // Pool to be used for Workload Identity. This pool in trust-domain mode is used with Fleet Tenancy, so that sameness can be enforced. ex: projects/example/locations/global/workloadidentitypools/custompool
+  string scope_tenancy_pool = 1 [json_name="scopeTenancyPool"];
+}
+
+// **WorkloadIdentity**: Global feature state.
+message WorkloadIdentityFeatureState {
+  // The state of the IAM namespaces for the fleet.
+  map<string, WorkloadIdentityNamespaceStateDetail> namespace_state_details = 1 [json_name="namespaceStateDetails"];
+  // Deprecated, this field will be erased after code is changed to use the new field.
+  map<string, string> namespace_states = 2 [json_name="namespaceStates"];
+  // The full name of the scope-tenancy pool for the fleet.
+  string scope_tenancy_workload_identity_pool = 3 [json_name="scopeTenancyWorkloadIdentityPool"];
+  // The full name of the svc.id.goog pool for the fleet.
+  string workload_identity_pool = 4 [json_name="workloadIdentityPool"];
+  // The state of the Workload Identity Pools for the fleet.
+  map<string, WorkloadIdentityWorkloadIdentityPoolStateDetail> workload_identity_pool_state_details = 5 [json_name="workloadIdentityPoolStateDetails"];
+}
+
+// IdentityProviderStateDetail represents the state of an Identity Provider.
+message WorkloadIdentityIdentityProviderStateDetail {
+  // The state of the Identity Provider.
+  string code = 1 [json_name="code"];
+  // A human-readable description of the current state or returned error.
+  string description = 2 [json_name="description"];
+}
+
+// **WorkloadIdentity**: The membership-specific state for WorkloadIdentity feature.
+message WorkloadIdentityMembershipState {
+  // Deprecated, this field will be erased after code is changed to use the new field.
+  string description = 1 [json_name="description"];
+  // The state of the Identity Providers corresponding to the membership.
+  map<string, WorkloadIdentityIdentityProviderStateDetail> identity_provider_state_details = 2 [json_name="identityProviderStateDetails"];
+}
+
+// NamespaceStateDetail represents the state of a IAM namespace.
+message WorkloadIdentityNamespaceStateDetail {
+  // The state of the IAM namespace.
+  string code = 1 [json_name="code"];
+  // A human-readable description of the current state or returned error.
+  string description = 2 [json_name="description"];
+}
+
+// WorkloadIdentityPoolStateDetail represents the state of the Workload Identity Pools for the fleet.
+message WorkloadIdentityWorkloadIdentityPoolStateDetail {
+  // The state of the Workload Identity Pool.
+  string code = 1 [json_name="code"];
+  // A human-readable description of the current state or returned error.
+  string description = 2 [json_name="description"];
+}
+
+message ListOrganizationsLocationsFleetsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
+}
+
+message GetProjectsLocationRequest {
+  string name = 1;
+}
+
+message ListProjectsLocationsRequest {
+  string extra_location_types = 1;
+  string filter = 2;
+  string name = 3;
+  int32 page_size = 4;
+  string page_token = 5;
+}
+
+message CreateProjectsLocationsFeatureRequest {
+  string feature_id = 1;
+  string parent = 2;
+  string request_id = 3;
+  Feature projects_locations_feature = 4;
+}
+
+message DeleteProjectsLocationsFeatureRequest {
+  bool force = 1;
+  string name = 2;
+  string request_id = 3;
+}
+
+message GetProjectsLocationsFeatureRequest {
+  string name = 1;
+  bool return_partial_success = 2;
+}
+
+message ListProjectsLocationsFeaturesRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+  bool return_partial_success = 6;
+}
+
+message PatchProjectsLocationsFeatureRequest {
+  string name = 1;
+  string request_id = 2;
+  string update_mask = 3;
+  Feature projects_locations_feature = 4;
+}
+
+message CreateProjectsLocationsFleetRequest {
+  string parent = 1;
+  Fleet projects_locations_fleet = 2;
+}
+
+message DeleteProjectsLocationsFleetRequest {
+  string name = 1;
+}
+
+message GetProjectsLocationsFleetRequest {
+  string name = 1;
+}
+
+message ListProjectsLocationsFleetsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
+}
+
+message PatchProjectsLocationsFleetRequest {
+  string name = 1;
+  string update_mask = 2;
+  Fleet projects_locations_fleet = 3;
+}
+
+message CreateProjectsLocationsMembershipRequest {
+  string membership_id = 1;
+  string parent = 2;
+  string request_id = 3;
+  Membership projects_locations_membership = 4;
+}
+
+message DeleteProjectsLocationsMembershipRequest {
+  bool force = 1;
+  string name = 2;
+  string request_id = 3;
+}
+
+message GenerateConnectManifestProjectsLocationsMembershipRequest {
+  string image_pull_secret_content = 1;
+  bool is_upgrade = 2;
+  string name = 3;
+  string namespace = 4;
+  string proxy = 5;
+  string registry = 6;
+  string version = 7;
+}
+
+message GetProjectsLocationsMembershipRequest {
+  string name = 1;
+}
+
+message ListProjectsLocationsMembershipsRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+
+message PatchProjectsLocationsMembershipRequest {
+  string name = 1;
+  string request_id = 2;
+  string update_mask = 3;
+  Membership projects_locations_membership = 4;
+}
+
+message CreateProjectsLocationsMembershipsBindingRequest {
+  string membership_binding_id = 1;
+  string parent = 2;
+  MembershipBinding projects_locations_memberships_binding = 3;
+}
+
+message DeleteProjectsLocationsMembershipsBindingRequest {
+  string name = 1;
+}
+
+message GetProjectsLocationsMembershipsBindingRequest {
+  string name = 1;
+}
+
+message ListProjectsLocationsMembershipsBindingsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  string parent = 4;
+}
+
+message PatchProjectsLocationsMembershipsBindingRequest {
+  string name = 1;
+  string update_mask = 2;
+  MembershipBinding projects_locations_memberships_binding = 3;
+}
+
+message CreateProjectsLocationsMembershipsRbacrolebindingRequest {
+  string parent = 1;
+  string rbacrolebinding_id = 2;
+  RBACRoleBinding projects_locations_memberships_rbacrolebinding = 3;
+}
+
+message DeleteProjectsLocationsMembershipsRbacrolebindingRequest {
+  string name = 1;
+}
+
+message GenerateMembershipRBACRoleBindingYAMLProjectsLocationsMembershipsRbacrolebindingRequest {
+  string parent = 1;
+  string rbacrolebinding_id = 2;
+  RBACRoleBinding projects_locations_memberships_rbacrolebinding = 3;
+}
+
+message GetProjectsLocationsMembershipsRbacrolebindingRequest {
+  string name = 1;
+}
+
+message ListProjectsLocationsMembershipsRbacrolebindingsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
+}
+
+message PatchProjectsLocationsMembershipsRbacrolebindingRequest {
+  string name = 1;
+  string update_mask = 2;
+  RBACRoleBinding projects_locations_memberships_rbacrolebinding = 3;
+}
+
+message CreateProjectsLocationsScopeRequest {
+  string parent = 1;
+  string scope_id = 2;
+  Scope projects_locations_scope = 3;
+}
+
+message DeleteProjectsLocationsScopeRequest {
+  string name = 1;
+}
+
+message GetProjectsLocationsScopeRequest {
+  string name = 1;
+}
+
+message ListProjectsLocationsScopesRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
+}
+
+message ListMembershipsProjectsLocationsScopeRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  string scope_name = 4;
+}
+
+message ListPermittedProjectsLocationsScopeRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
+}
+
+message PatchProjectsLocationsScopeRequest {
+  string name = 1;
+  string update_mask = 2;
+  Scope projects_locations_scope = 3;
+}
+
+message CreateProjectsLocationsScopesNamespaceRequest {
+  string parent = 1;
+  string scope_namespace_id = 2;
+  Namespace projects_locations_scopes_namespace = 3;
+}
+
+message DeleteProjectsLocationsScopesNamespaceRequest {
+  string name = 1;
+}
+
+message GetProjectsLocationsScopesNamespaceRequest {
+  string name = 1;
+}
+
+message ListProjectsLocationsScopesNamespacesRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
+}
+
+message PatchProjectsLocationsScopesNamespaceRequest {
+  string name = 1;
+  string update_mask = 2;
+  Namespace projects_locations_scopes_namespace = 3;
+}
+
+message CreateProjectsLocationsScopesRbacrolebindingRequest {
+  string parent = 1;
+  string rbacrolebinding_id = 2;
+  RBACRoleBinding projects_locations_scopes_rbacrolebinding = 3;
+}
+
+message DeleteProjectsLocationsScopesRbacrolebindingRequest {
+  string name = 1;
+}
+
+message GetProjectsLocationsScopesRbacrolebindingRequest {
+  string name = 1;
+}
+
+message ListProjectsLocationsScopesRbacrolebindingsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
+}
+
+message PatchProjectsLocationsScopesRbacrolebindingRequest {
+  string name = 1;
+  string update_mask = 2;
+  RBACRoleBinding projects_locations_scopes_rbacrolebinding = 3;
+}
