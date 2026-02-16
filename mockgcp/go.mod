@@ -14,6 +14,7 @@ require (
 	cloud.google.com/go/analytics v0.30.1
 	cloud.google.com/go/apigateway v1.7.7
 	cloud.google.com/go/batch v1.14.0
+	cloud.google.com/go/bigquery v1.72.0
 	cloud.google.com/go/bigtable v1.41.0
 	cloud.google.com/go/billing v1.21.0
 	cloud.google.com/go/clouddms v1.8.8
@@ -27,6 +28,8 @@ require (
 	cloud.google.com/go/iap v1.11.3
 	cloud.google.com/go/logging v1.13.1
 	cloud.google.com/go/longrunning v0.7.0
+	cloud.google.com/go/managedkafka v0.8.1
+	cloud.google.com/go/netapp v1.11.0
 	cloud.google.com/go/networksecurity v0.11.0
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.12.7
