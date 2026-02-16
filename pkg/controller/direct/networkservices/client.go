@@ -23,6 +23,8 @@ import (
 
 	api "cloud.google.com/go/networkservices/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/networkservices/v1"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -44,6 +46,19 @@ func (m *gcpClient) newNetworkServicesClient(ctx context.Context) (*api.Client, 
 	client, err := api.NewRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building networkservices client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newNetworkServicesRESTClient(ctx context.Context) (*networkservices.Service, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := networkservices.NewService(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building networkservices REST client: %w", err)
 	}
 	return client, err
 }
