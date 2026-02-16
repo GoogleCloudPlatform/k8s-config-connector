@@ -1,0 +1,13 @@
+label: Config Connector GKEHubScopeRBACRoleBinding
+markdownDescription: Creates yaml for a GKEHubScopeRBACRoleBinding resource
+insertText: |
+  apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+  kind: GKEHubScopeRBACRoleBinding
+  metadata:
+    name: \${1:gkehubscoperbacrolebinding-name}
+  spec:
+    scopeRef:
+      name: \${2:gkehubscope-name}
+    role:
+      predefinedRole: \${3:VIEW}
+    user: \${4:alice@example.com}

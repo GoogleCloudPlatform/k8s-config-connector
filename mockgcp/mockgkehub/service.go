@@ -15,6 +15,7 @@
 // +tool:mockgcp-service
 // http.host: gkehub.googleapis.com
 // proto.service: google.cloud.gkehub.v1beta.GkeHub
+// proto.service: mockgcp.cloud.gkehub.v1beta.GkeHubScopes
 // proto.service: google.cloud.gkehub.v1beta1.GkeHubMembershipService
 
 package mockgkehub
@@ -41,6 +42,7 @@ type MockService struct {
 	operations *operations.Operations
 
 	v1beta  *GKEHubFeature
+	scopes  *GKEHubScopes
 	v1beta1 *GKEHubMembership
 }
 
@@ -52,6 +54,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.v1beta = &GKEHubFeature{MockService: s}
+	s.scopes = &GKEHubScopes{MockService: s}
 	s.v1beta1 = &GKEHubMembership{MockService: s}
 	return s
 }
@@ -62,11 +65,17 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	v1betapb.RegisterGkeHubServer(grpcServer, s.v1beta)
+	v1betapb.RegisterGkeHubScopesServer(grpcServer, s.scopes)
 	v1beta1pb.RegisterGkeHubMembershipServiceServer(grpcServer, s.v1beta1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{}, v1betapb.RegisterGkeHubHandler, v1beta1pb.RegisterGkeHubMembershipServiceHandler, s.operations.RegisterOperationsPath("/v1beta/{prefix=**}/operations/{name}"), s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"))
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		v1betapb.RegisterGkeHubHandler,
+		v1betapb.RegisterGkeHubScopesHandler,
+		v1beta1pb.RegisterGkeHubMembershipServiceHandler,
+		s.operations.RegisterOperationsPath("/v1beta/{prefix=**}/operations/{name}"),
+		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
 	}
