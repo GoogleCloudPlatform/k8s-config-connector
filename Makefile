@@ -130,6 +130,10 @@ lint:
 		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
 		golangci-lint run -v --timeout=10m
 
+.PHONY: lint-custom
+lint-custom:
+	go run ./dev/linters/main.go ./pkg/... ./cmd/... ./config/... 2>&1 | go run ./dev/tools/lint-filter/main.go
+
 # Run go vet against code
 .PHONY: vet
 vet:
@@ -269,7 +273,7 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint manifests ensure fmt
+ready-pr: lint lint-custom manifests ensure fmt
 
 # Should run all needed commands to prepare a release.
 .PHONY: release-check
