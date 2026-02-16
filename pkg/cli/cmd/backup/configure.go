@@ -209,6 +209,9 @@ metadata:
 spec:
   schedule: "{{.Schedule}}"
   jobTemplate:
+    metadata:
+      labels:
+        app: cnrm-backup
     spec:
       template:
         metadata:
@@ -218,7 +221,7 @@ spec:
           serviceAccountName: cnrm-backup-manager
           containers:
           - name: backup
-            image: gcr.io/gcb-release/cnrm/controller:latest
+            image: gcr.io/gke-release/cnrm/controller:1.143.0
             command: ["config-connector", "backup", "create", "--bucket", "{{.Bucket}}", "--project", "{{.ProjectID}}"]
           restartPolicy: OnFailure
 `

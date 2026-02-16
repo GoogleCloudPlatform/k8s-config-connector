@@ -67,19 +67,31 @@ func runStatus(ctx context.Context, options *statusOptions) error {
 	} else {
 		found := false
 		for _, job := range jobs.Items {
-			if job.Labels["app"] == "cnrm-backup" || job.Name == "cnrm-backup-daily" {
+			// Check for our label or the known name of the CronJob's child jobs
+			isBackupJob := job.Labels["app"] == "cnrm-backup"
+			if !isBackupJob {
+				for _, owner := range job.OwnerReferences {
+					if owner.Kind == "CronJob" && owner.Name == "cnrm-backup-daily" {
+						isBackupJob = true
+						break
+					}
+				}
+			}
+
+			if isBackupJob {
 				found = true
-				status := "Running"
+				status := "Pending/Running"
 				if job.Status.Succeeded > 0 {
 					status = "Succeeded"
 				} else if job.Status.Failed > 0 {
 					status = "Failed"
 				}
-				completionTime := ""
+
+				completionTime := "In Progress"
 				if job.Status.CompletionTime != nil {
 					completionTime = job.Status.CompletionTime.Format(time.RFC3339)
 				}
-				fmt.Printf("- %s: %s (Completed at: %s)\n", job.Name, status, completionTime)
+				fmt.Printf("- %s: %s (Completed: %s)\n", job.Name, status, completionTime)
 			}
 		}
 		if !found {

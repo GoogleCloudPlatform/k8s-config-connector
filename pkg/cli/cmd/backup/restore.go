@@ -177,28 +177,54 @@ func validateResources(ctx context.Context, kubeClient *kubecli.Client, objects 
 }
 
 func sortResources(objects []*unstructured.Unstructured) {
-	// Simple priority-based sort
-	// Priority 1: Projects, Folders, Organizations
-	// Priority 2: Networks
-	// Priority 3: Everything else
-	getPriority := func(kind string) int {
-		switch kind {
-		case "Project", "Folder", "Organization":
-			return 1
-		case "ComputeNetwork", "ComputeSubnetwork":
-			return 2
-		default:
-			return 3
+	// Priority-based sort to handle dependencies
+	// Priority 1: High-level containers (Project, Folder, Organization)
+	// Priority 2: Networking infrastructure (Network, Subnetwork)
+	// Priority 3: General resources
+	// Priority 4: IAM and dependent resources (IAMPolicy, IAMPolicyMember, etc.)
+	getPriority := func(obj *unstructured.Unstructured) int {
+		kind := obj.GetKind()
+		group := obj.GroupVersionKind().Group
+
+		// Priority 1: Containers
+		if group == "resourcemanager.cnrm.cloud.google.com" {
+			switch kind {
+			case "Project", "Folder", "Organization":
+				return 1
+			}
 		}
+
+		// Priority 2: Networking
+		if group == "compute.cnrm.cloud.google.com" {
+			switch kind {
+			case "ComputeNetwork", "ComputeSubnetwork":
+				return 2
+			}
+		}
+
+		// Priority 4: IAM and Policy-like resources (should be last)
+		if group == "iam.cnrm.cloud.google.com" {
+			return 4
+		}
+		if strings.HasSuffix(kind, "Policy") || strings.HasSuffix(kind, "PolicyMember") || strings.HasSuffix(kind, "Binding") {
+			return 4
+		}
+
+		// Priority 3: Everything else
+		return 3
 	}
 
 	sort.SliceStable(objects, func(i, j int) bool {
-		pi := getPriority(objects[i].GetKind())
-		pj := getPriority(objects[j].GetKind())
+		pi := getPriority(objects[i])
+		pj := getPriority(objects[j])
 		if pi != pj {
 			return pi < pj
 		}
-		return objects[i].GetKind() < objects[j].GetKind()
+		// Within the same priority, sort by kind then name for consistency
+		if objects[i].GetKind() != objects[j].GetKind() {
+			return objects[i].GetKind() < objects[j].GetKind()
+		}
+		return objects[i].GetName() < objects[j].GetName()
 	})
 }
 

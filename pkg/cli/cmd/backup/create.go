@@ -135,12 +135,28 @@ func backupResource(ctx context.Context, kubeClient *kubecli.Client, gcsClient *
 }
 
 func backupObject(ctx context.Context, gcsClient *storage.Client, bucket, timestamp string, obj unstructured.Unstructured) error {
-	// Sanitization
+	// Sanitization - Remove live fields
 	unstructured.RemoveNestedField(obj.Object, "metadata", "uid")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "resourceVersion")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "generation")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "managedFields")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "creationTimestamp")
+
+	// Remove status
+	unstructured.RemoveNestedField(obj.Object, "status")
+
+	// Remove common system annotations
+	annotations := obj.GetAnnotations()
+	if annotations != nil {
+		delete(annotations, "kubectl.kubernetes.io/last-applied-configuration")
+		delete(annotations, "deployment.kubernetes.io/revision")
+		delete(annotations, "cnrm.cloud.google.com/state-into-spec") // Sometimes added by KCC
+		if len(annotations) == 0 {
+			unstructured.RemoveNestedField(obj.Object, "metadata", "annotations")
+		} else {
+			obj.SetAnnotations(annotations)
+		}
+	}
 
 	data, err := yaml.Marshal(obj.Object)
 	if err != nil {
