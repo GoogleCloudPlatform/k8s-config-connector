@@ -55,7 +55,7 @@ func (s *NetworkServicesServer) GetEdgeCacheService(w http.ResponseWriter, r *ht
 func (s *NetworkServicesServer) CreateEdgeCacheService(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
 	project := pathParams["project"]
 	parent := fmt.Sprintf("projects/%s/locations/global", project)
-	
+
 	id := r.URL.Query().Get("edgeCacheServiceId")
 	if id == "" {
 		http.Error(w, "edgeCacheServiceId is required", http.StatusBadRequest)
@@ -148,7 +148,7 @@ func (s *NetworkServicesServer) PatchEdgeCacheService(w http.ResponseWriter, r *
 		Target:     fqn,
 		Verb:       "update",
 	}
-	
+
 	lroPrefix := fmt.Sprintf("projects/%s/locations/global", project)
 	lro, err := s.operations.StartLRO(r.Context(), lroPrefix, opMetadata, func() (proto.Message, error) {
 		return existing, nil
@@ -181,7 +181,7 @@ func (s *NetworkServicesServer) DeleteEdgeCacheService(w http.ResponseWriter, r 
 		Target:     fqn,
 		Verb:       "delete",
 	}
-	
+
 	lroPrefix := fmt.Sprintf("projects/%s/locations/global", project)
 	lro, err := s.operations.StartLRO(r.Context(), lroPrefix, opMetadata, func() (proto.Message, error) {
 		return &pb.EdgeCacheService{}, nil // Should be Empty but we'll use empty service for now
