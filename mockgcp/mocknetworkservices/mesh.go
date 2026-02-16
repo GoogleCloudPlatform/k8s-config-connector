@@ -62,6 +62,7 @@ func (s *NetworkServicesServer) CreateMesh(ctx context.Context, req *pb.CreateMe
 
 	obj := proto.Clone(req.Mesh).(*pb.Mesh)
 	obj.Name = fqn
+	obj.SelfLink = buildSelfLink(ctx, fqn)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -107,6 +108,7 @@ func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMe
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+	obj.SelfLink = buildSelfLink(ctx, fqn)
 	return s.operations.NewLRO(ctx)
 }
 

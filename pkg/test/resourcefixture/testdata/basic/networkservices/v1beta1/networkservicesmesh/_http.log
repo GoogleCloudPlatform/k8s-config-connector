@@ -76,7 +76,8 @@ X-Xss-Protection: 0
     "foo": "bar",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+  "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
 }
 
 ---
@@ -137,7 +138,8 @@ X-Xss-Protection: 0
     "foo1": "bar1",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
+  "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
 }
 
 ---
