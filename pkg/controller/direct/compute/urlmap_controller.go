@@ -21,6 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -48,11 +49,29 @@ type urlMapAdapter struct {
 var _ directbase.Adapter = &urlMapAdapter{}
 
 func (m *urlMapModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
-	// TODO: Implement
-	return nil, nil
+	return &urlMapAdapter{reader: op.Reader}, nil
 }
 
 func (m *urlMapModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Implement
+	return nil, nil
+}
+
+func (a *urlMapAdapter) Find(ctx context.Context) (bool, error) {
+	return false, nil
+}
+
+func (a *urlMapAdapter) Create(ctx context.Context, op *directbase.CreateOperation) error {
+	return nil
+}
+
+func (a *urlMapAdapter) Update(ctx context.Context, op *directbase.UpdateOperation) error {
+	return nil
+}
+
+func (a *urlMapAdapter) Delete(ctx context.Context, op *directbase.DeleteOperation) (bool, error) {
+	return false, nil
+}
+
+func (a *urlMapAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	return nil, nil
 }
