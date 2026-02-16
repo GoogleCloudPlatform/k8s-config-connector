@@ -1,0 +1,212 @@
+syntax = "proto3";
+
+package google.cloud.networkservices.v1;
+
+import "google/api/resource.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "cloud.google.com/go/networkservices/apiv1/networkservicespb;networkservicespb";
+
+message EdgeCacheService {
+  option (google.api.resource) = {
+    type: "networkservices.googleapis.com/EdgeCacheService"
+    pattern: "projects/{project}/locations/global/edgeCacheServices/{edge_cache_service}"
+  };
+
+  string name = 1;
+  google.protobuf.Timestamp create_time = 2;
+  google.protobuf.Timestamp update_time = 3;
+  string description = 4;
+  map<string, string> labels = 5;
+  bool disable_quic = 6;
+  bool disable_http2 = 7;
+  bool require_tls = 8;
+  repeated string edge_ssl_certificates = 9;
+  repeated string ipv4_addresses = 10;
+  repeated string ipv6_addresses = 11;
+  EdgeCacheRouting routing = 12;
+  EdgeCacheLogConfig log_config = 13;
+  string edge_security_policy = 14;
+  string ssl_policy = 15;
+}
+
+message EdgeCacheOrigin {
+  option (google.api.resource) = {
+    type: "networkservices.googleapis.com/EdgeCacheOrigin"
+    pattern: "projects/{project}/locations/global/edgeCacheOrigins/{edge_cache_origin}"
+  };
+
+  string name = 1;
+  google.protobuf.Timestamp create_time = 2;
+  google.protobuf.Timestamp update_time = 3;
+  string description = 4;
+  map<string, string> labels = 5;
+  string origin_address = 6;
+  string protocol = 7;
+  int32 port = 8;
+  string max_attempts = 9;
+  google.protobuf.Duration response_timeout = 10;
+}
+
+message EdgeCacheLogConfig {
+  bool enable = 1;
+  double sample_rate = 2;
+}
+
+message EdgeCacheRouting {
+  repeated HostRule host_rules = 1;
+  repeated PathMatcher path_matchers = 2;
+}
+
+message HostRule {
+  string description = 1;
+  repeated string hosts = 2;
+  string path_matcher = 3;
+}
+
+message PathMatcher {
+  string name = 1;
+  string description = 2;
+  repeated RouteRule route_rules = 3;
+}
+
+message RouteRule {
+  string priority = 1;
+  string description = 2;
+  repeated RouteMatch match_rules = 3;
+  string origin = 4;
+  RouteAction route_action = 5;
+  RouteRedirect url_redirect = 6;
+  HeaderAction header_action = 7;
+}
+
+message RouteMatch {
+  string full_path_match = 1;
+  string prefix_match = 2;
+  string path_template_match = 3;
+  bool ignore_case = 4;
+  repeated HeaderMatch header_matches = 5;
+  repeated QueryParameterMatch query_parameter_matches = 6;
+}
+
+message HeaderMatch {
+  string header_name = 1;
+  string exact_match = 2;
+  string prefix_match = 3;
+  string suffix_match = 4;
+  bool present_match = 5;
+  bool invert_match = 6;
+}
+
+message QueryParameterMatch {
+  string name = 1;
+  string exact_match = 2;
+  bool present_match = 3;
+}
+
+message RouteAction {
+  CDNPolicy cdn_policy = 1;
+  CORSPolicy cors_policy = 2;
+  URLRewrite url_rewrite = 3;
+}
+
+message CDNPolicy {
+  enum CacheMode {
+    CACHE_MODE_UNSPECIFIED = 0;
+    CACHE_ALL_STATIC = 1;
+    USE_ORIGIN_HEADERS = 2;
+    FORCE_CACHE_ALL = 3;
+    BYPASS_CACHE = 4;
+  }
+  CacheMode cache_mode = 1;
+  string client_ttl = 2;
+  string default_ttl = 3;
+  string max_ttl = 4;
+  CacheKeyPolicy cache_key_policy = 5;
+  bool negative_caching = 6;
+  map<int32, string> negative_caching_policy = 7;
+  
+  enum SignedRequestMode {
+    SIGNED_REQUEST_MODE_UNSPECIFIED = 0;
+    DISABLED = 1;
+    REQUIRE_SIGNATURES = 2;
+    REQUIRE_TOKENS = 3;
+  }
+  SignedRequestMode signed_request_mode = 8;
+  string signed_request_keyset = 9;
+  string signed_request_maximum_expiration_ttl = 10;
+  AddSignatures add_signatures = 11;
+  SignedTokenOptions signed_token_options = 12;
+}
+
+message CacheKeyPolicy {
+  bool include_protocol = 1;
+  bool exclude_host = 2;
+  bool exclude_query_string = 3;
+  repeated string included_query_parameters = 4;
+  repeated string excluded_query_parameters = 5;
+  repeated string included_header_names = 6;
+  repeated string included_cookie_names = 7;
+}
+
+message AddSignatures {
+  enum Action {
+    ACTION_UNSPECIFIED = 0;
+    GENERATE_COOKIE = 1;
+    GENERATE_TOKEN_HLS_COOKIELESS = 2;
+    PROPAGATE_TOKEN_HLS_COOKIELESS = 3;
+  }
+  repeated Action actions = 1;
+  string keyset = 2;
+  string token_ttl = 3;
+  string token_query_parameter = 4;
+  repeated string copied_parameters = 5;
+}
+
+message SignedTokenOptions {
+  repeated string allowed_signature_algorithms = 1;
+  string token_query_parameter = 2;
+}
+
+message CORSPolicy {
+  repeated string allow_origins = 1;
+  repeated string allow_methods = 2;
+  repeated string allow_headers = 3;
+  repeated string expose_headers = 4;
+  string max_age = 5;
+  bool allow_credentials = 6;
+  bool disabled = 7;
+}
+
+message URLRewrite {
+  string path_prefix_rewrite = 1;
+  string host_rewrite = 2;
+  string path_template_rewrite = 3;
+}
+
+message RouteRedirect {
+  string host_redirect = 1;
+  string path_redirect = 2;
+  string prefix_redirect = 3;
+  string redirect_response_code = 4;
+  bool https_redirect = 5;
+  bool strip_query = 6;
+}
+
+message HeaderAction {
+  repeated HeaderAdd request_header_to_add = 1;
+  repeated HeaderRemove request_header_to_remove = 2;
+  repeated HeaderAdd response_header_to_add = 3;
+  repeated HeaderRemove response_header_to_remove = 4;
+}
+
+message HeaderAdd {
+  string header_name = 1;
+  string header_value = 2;
+  bool replace = 3;
+}
+
+message HeaderRemove {
+  string header_name = 1;
+}
