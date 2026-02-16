@@ -63,6 +63,7 @@ func init() {
 	AddLicensesCommand(rootCmd)
 	rootCmd.AddCommand(applyCmd)
 	rootCmd.AddCommand(NewPreviewCmd())
+	rootCmd.AddCommand(NewBackupCmd())
 
 	powertools.AddCommands(rootCmd)
 
