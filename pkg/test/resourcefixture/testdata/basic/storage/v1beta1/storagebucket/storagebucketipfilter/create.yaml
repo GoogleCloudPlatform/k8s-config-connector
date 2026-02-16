@@ -10,5 +10,5 @@ spec:
   ipFilter:
     mode: ENABLED
     publicNetworkSource:
-      allowedIpRanges:
+      allowedIPRanges:
       - "1.1.1.1/32"

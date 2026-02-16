@@ -23,5 +23,3 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 go run . generate-types --service google.storage.v2 --api-version storage.cnrm.cloud.google.com/v1beta1 --resource StorageBucket:Bucket --skip-scaffold-files
-
-go run . generate-mapper --service google.storage.v2 --api-version storage.cnrm.cloud.google.com/v1beta1

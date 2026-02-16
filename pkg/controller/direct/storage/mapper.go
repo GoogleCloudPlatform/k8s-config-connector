@@ -28,18 +28,18 @@ func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketS
 	out := &gcp.Bucket{}
 	out.Location = direct.ValueOf(in.Location)
 	out.StorageClass = direct.ValueOf(in.StorageClass)
-	if in.IpFilter != nil {
+	if in.IPFilter != nil {
 		out.IpFilter = &gcp.BucketIpFilter{
-			Mode: direct.ValueOf(in.IpFilter.Mode),
+			Mode: direct.ValueOf(in.IPFilter.Mode),
 		}
-		if in.IpFilter.PublicNetworkSource != nil {
+		if in.IPFilter.PublicNetworkSource != nil {
 			out.IpFilter.PublicNetworkSource = &gcp.BucketIpFilterPublicNetworkSource{
-				AllowedIpCidrRanges: in.IpFilter.PublicNetworkSource.AllowedIpRanges,
+				AllowedIpCidrRanges: in.IPFilter.PublicNetworkSource.AllowedIPRanges,
 			}
 		}
-		for _, vpc := range in.IpFilter.VpcNetworkSources {
+		for _, vpc := range in.IPFilter.VpcNetworkSources {
 			gcpVpc := &gcp.BucketIpFilterVpcNetworkSources{
-				AllowedIpCidrRanges: vpc.AllowedIpRanges,
+				AllowedIpCidrRanges: vpc.AllowedIPRanges,
 				Network:             vpc.NetworkRef.External,
 			}
 			out.IpFilter.VpcNetworkSources = append(out.IpFilter.VpcNetworkSources, gcpVpc)
@@ -147,20 +147,20 @@ func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *gcp.Bucket) *krm
 	out.Location = direct.LazyPtr(in.Location)
 	out.StorageClass = direct.LazyPtr(in.StorageClass)
 	if in.IpFilter != nil {
-		out.IpFilter = &krm.BucketIPFilter{
+		out.IPFilter = &krm.BucketIPFilter{
 			Mode: direct.LazyPtr(in.IpFilter.Mode),
 		}
 		if in.IpFilter.PublicNetworkSource != nil {
-			out.IpFilter.PublicNetworkSource = &krm.BucketIPFilterPublicNetworkSource{
-				AllowedIpRanges: in.IpFilter.PublicNetworkSource.AllowedIpCidrRanges,
+			out.IPFilter.PublicNetworkSource = &krm.BucketIPFilterPublicNetworkSource{
+				AllowedIPRanges: in.IpFilter.PublicNetworkSource.AllowedIpCidrRanges,
 			}
 		}
 		for _, vpc := range in.IpFilter.VpcNetworkSources {
 			krmVpc := krm.BucketIPFilterVpcNetworkSource{
-				AllowedIpRanges: vpc.AllowedIpCidrRanges,
+				AllowedIPRanges: vpc.AllowedIpCidrRanges,
 				NetworkRef:      computev1beta1.ComputeNetworkRef{External: vpc.Network},
 			}
-			out.IpFilter.VpcNetworkSources = append(out.IpFilter.VpcNetworkSources, krmVpc)
+			out.IPFilter.VpcNetworkSources = append(out.IPFilter.VpcNetworkSources, krmVpc)
 		}
 	}
 	if in.Autoclass != nil {

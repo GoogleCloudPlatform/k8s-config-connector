@@ -207,7 +207,7 @@ type BucketIPFilterVpcNetworkSource struct {
 	/* The list of VPC network source IPs to allow access from. */
 	// +optional
 	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter_VpcNetworkSource.allowed_ip_cidr_ranges
-	AllowedIpRanges []string `json:"allowedIpRanges,omitempty"`
+	AllowedIPRanges []string `json:"allowedIPRanges,omitempty"`
 }
 
 // +kcc:proto=google.storage.v2.Bucket_IpFilter_PublicNetworkSource
@@ -215,7 +215,7 @@ type BucketIPFilterPublicNetworkSource struct {
 	/* The list of public network source IPs to allow access from. */
 	// +optional
 	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter_PublicNetworkSource.allowed_ip_cidr_ranges
-	AllowedIpRanges []string `json:"allowedIpRanges,omitempty"`
+	AllowedIPRanges []string `json:"allowedIPRanges,omitempty"`
 }
 
 // +kcc:proto=google.storage.v2.BucketVersioning
@@ -338,7 +338,7 @@ type StorageBucketSpec struct {
 	/* The bucket's IP filter configuration. */
 	// +optional
 	// +kcc:proto:field=google.storage.v2.Bucket.ip_filter
-	IpFilter *BucketIPFilter `json:"ipFilter,omitempty"`
+	IPFilter *BucketIPFilter `json:"ipFilter,omitempty"`
 
 	/* The Storage Class of the new bucket. Supported values include: STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. */
 	// +optional

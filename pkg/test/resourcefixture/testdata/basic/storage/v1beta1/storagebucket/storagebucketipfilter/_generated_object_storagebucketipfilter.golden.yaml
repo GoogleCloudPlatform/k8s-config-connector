@@ -13,12 +13,21 @@ metadata:
   name: storagebucket-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  iamConfiguration:
+    publicAccessPrevention: enforced
+    uniformBucketLevelAccess:
+      enabled: true
   ipFilter:
     mode: ENABLED
     publicNetworkSource:
-      allowedIpRanges:
+      allowedIPRanges:
       - 1.1.1.1/32
       - 2.2.2.2/32
+    vpcNetworkSources:
+    - allowedIPRanges:
+      - 10.0.0.0/24
+      networkRef:
+        name: ${networkID}
   location: us-central1
   storageClass: STANDARD
 status:

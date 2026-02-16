@@ -10,6 +10,15 @@ spec:
   ipFilter:
     mode: ENABLED
     publicNetworkSource:
-      allowedIpRanges:
+      allowedIPRanges:
       - "1.1.1.1/32"
       - "2.2.2.2/32"
+    vpcNetworkSources:
+    - networkRef:
+        name: storagebucket-dep-${uniqueId}
+      allowedIPRanges:
+      - "10.0.0.0/24"
+  iamConfiguration:
+    uniformBucketLevelAccess:
+      enabled: true
+    publicAccessPrevention: enforced

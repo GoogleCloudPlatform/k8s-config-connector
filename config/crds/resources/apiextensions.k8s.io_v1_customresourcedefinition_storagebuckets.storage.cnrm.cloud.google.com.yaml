@@ -7,11 +7,9 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
-    cnrm.cloud.google.com/default-controller: direct
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: storagebuckets.storage.cnrm.cloud.google.com
 spec:
   group: storage.cnrm.cloud.google.com
@@ -195,7 +193,7 @@ spec:
                   publicNetworkSource:
                     description: The public network source IPs to allow access from.
                     properties:
-                      allowedIpRanges:
+                      allowedIPRanges:
                         description: The list of public network source IPs to allow
                           access from.
                         items:
@@ -206,7 +204,7 @@ spec:
                     description: The VPC network sources IPs to allow access from.
                     items:
                       properties:
-                        allowedIpRanges:
+                        allowedIPRanges:
                           description: The list of VPC network source IPs to allow
                             access from.
                           items:
