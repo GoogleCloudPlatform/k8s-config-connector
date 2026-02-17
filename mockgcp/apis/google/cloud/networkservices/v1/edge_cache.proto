@@ -93,6 +93,11 @@ message RouteRule {
   RouteAction route_action = 5;
   RouteRedirect url_redirect = 6;
   HeaderAction header_action = 7;
+  RouteMethods route_methods = 8;
+}
+
+message RouteMethods {
+  repeated string allowed_methods = 1;
 }
 
 message RouteMatch {
@@ -152,6 +157,7 @@ message CDNPolicy {
   string signed_request_maximum_expiration_ttl = 10;
   AddSignatures add_signatures = 11;
   SignedTokenOptions signed_token_options = 12;
+  string compression_mode = 13;
 }
 
 message CacheKeyPolicy {
