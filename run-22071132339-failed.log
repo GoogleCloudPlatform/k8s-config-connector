@@ -1,0 +1,52 @@
+lint	golangci-lint	﻿2026-02-16T16:51:17.7871870Z ##[group]Run golangci/golangci-lint-action@v9
+lint	golangci-lint	2026-02-16T16:51:17.7872166Z with:
+lint	golangci-lint	2026-02-16T16:51:17.7872331Z   version: v2.7.1
+lint	golangci-lint	2026-02-16T16:51:17.7872529Z   args: --timeout=10m
+lint	golangci-lint	2026-02-16T16:51:17.7872728Z   install-mode: binary
+lint	golangci-lint	2026-02-16T16:51:17.7872911Z   install-only: false
+lint	golangci-lint	2026-02-16T16:51:17.7873249Z   github-token: ***
+lint	golangci-lint	2026-02-16T16:51:17.7873441Z   verify: true
+lint	golangci-lint	2026-02-16T16:51:17.7873618Z   only-new-issues: false
+lint	golangci-lint	2026-02-16T16:51:17.7873820Z   skip-cache: false
+lint	golangci-lint	2026-02-16T16:51:17.7873994Z   skip-save-cache: false
+lint	golangci-lint	2026-02-16T16:51:17.7874396Z   cache-invalidation-interval: 7
+lint	golangci-lint	2026-02-16T16:51:17.7874620Z   problem-matchers: false
+lint	golangci-lint	2026-02-16T16:51:17.7874816Z env:
+lint	golangci-lint	2026-02-16T16:51:17.7874962Z   GOTOOLCHAIN: local
+lint	golangci-lint	2026-02-16T16:51:17.7875141Z ##[endgroup]
+lint	golangci-lint	2026-02-16T16:51:17.9258510Z ##[group]Restore cache
+lint	golangci-lint	2026-02-16T16:51:17.9262703Z Checking for go.mod: go.mod
+lint	golangci-lint	2026-02-16T16:51:17.9267671Z (node:1980) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+lint	golangci-lint	2026-02-16T16:51:17.9268562Z (Use `node --trace-deprecation ...` to show where the warning was created)
+lint	golangci-lint	2026-02-16T16:51:18.1844706Z Cache hit for: golangci-lint.cache-Linux-2928-536882fbb927c7cfe3fb04bfb6b25f5b20945e5f
+lint	golangci-lint	2026-02-16T16:51:18.1952307Z (node:1980) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+lint	golangci-lint	2026-02-16T16:51:19.2979611Z Received 1370504 of 1370504 (100.0%), 1.6 MBs/sec
+lint	golangci-lint	2026-02-16T16:51:19.2980276Z Cache Size: ~1 MB (1370504 B)
+lint	golangci-lint	2026-02-16T16:51:19.3007000Z [command]/usr/bin/tar -xf /home/runner/work/_temp/91bfbb97-27de-435b-a23b-8a8202073f19/cache.tzst -P -C /home/runner/work/k8s-config-connector/k8s-config-connector --use-compress-program unzstd
+lint	golangci-lint	2026-02-16T16:51:19.6953065Z Cache restored successfully
+lint	golangci-lint	2026-02-16T16:51:19.6960229Z Restored cache for golangci-lint from key 'golangci-lint.cache-Linux-2928-536882fbb927c7cfe3fb04bfb6b25f5b20945e5f' in 1769ms
+lint	golangci-lint	2026-02-16T16:51:19.6962055Z ##[endgroup]
+lint	golangci-lint	2026-02-16T16:51:19.6962405Z ##[group]Install
+lint	golangci-lint	2026-02-16T16:51:19.6964251Z Finding needed golangci-lint version...
+lint	golangci-lint	2026-02-16T16:51:19.6968410Z Installation mode: binary
+lint	golangci-lint	2026-02-16T16:51:19.6969302Z Installing golangci-lint binary v2.7.1...
+lint	golangci-lint	2026-02-16T16:51:19.6970817Z Downloading binary https://github.com/golangci/golangci-lint/releases/download/v2.7.1/golangci-lint-2.7.1-linux-amd64.tar.gz ...
+lint	golangci-lint	2026-02-16T16:51:20.0191184Z [command]/usr/bin/tar xz --overwrite --warning=no-unknown-keyword --overwrite -C /home/runner -f /home/runner/work/_temp/a9ce5d03-e19c-4cf7-b19b-c5fba7606e4e
+lint	golangci-lint	2026-02-16T16:51:20.2614761Z Installed golangci-lint into /home/runner/golangci-lint-2.7.1-linux-amd64/golangci-lint in 565ms
+lint	golangci-lint	2026-02-16T16:51:20.2618093Z ##[endgroup]
+lint	golangci-lint	2026-02-16T16:51:20.2621435Z ##[group]run golangci-lint
+lint	golangci-lint	2026-02-16T16:51:20.2626416Z Running [/home/runner/golangci-lint-2.7.1-linux-amd64/golangci-lint config path] in [/home/runner/work/k8s-config-connector/k8s-config-connector] ...
+lint	golangci-lint	2026-02-16T16:51:20.3687018Z Running [/home/runner/golangci-lint-2.7.1-linux-amd64/golangci-lint config verify] in [/home/runner/work/k8s-config-connector/k8s-config-connector] ...
+lint	golangci-lint	2026-02-16T16:51:20.5129953Z Running [/home/runner/golangci-lint-2.7.1-linux-amd64/golangci-lint run  --timeout=10m] in [/home/runner/work/k8s-config-connector/k8s-config-connector] ...
+lint	golangci-lint	2026-02-16T16:59:22.4249508Z ##[error]pkg/cli/cmd/backup/restore.go:92:6: comparing with == will fail on wrapped errors. Use errors.Is to check for a specific error (errorlint)
+lint	golangci-lint	2026-02-16T16:59:22.4257100Z 		if err == iterator.Done {
+lint	golangci-lint	2026-02-16T16:59:22.4257372Z 		   ^
+lint	golangci-lint	2026-02-16T16:59:22.4258478Z ##[error]pkg/cli/cmd/backup/status.go:114:7: comparing with == will fail on wrapped errors. Use errors.Is to check for a specific error (errorlint)
+lint	golangci-lint	2026-02-16T16:59:22.4259538Z 			if err == iterator.Done {
+lint	golangci-lint	2026-02-16T16:59:22.4259768Z 			   ^
+lint	golangci-lint	2026-02-16T16:59:22.4259926Z 2 issues:
+lint	golangci-lint	2026-02-16T16:59:22.4260092Z * errorlint: 2
+lint	golangci-lint	2026-02-16T16:59:22.4260669Z 
+lint	golangci-lint	2026-02-16T16:59:22.4269187Z ##[error]issues found
+lint	golangci-lint	2026-02-16T16:59:22.4269923Z Ran golangci-lint in 481909ms
+lint	golangci-lint	2026-02-16T16:59:22.4270324Z ##[endgroup]
