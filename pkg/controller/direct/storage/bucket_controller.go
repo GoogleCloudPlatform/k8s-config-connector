@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	gcp "google.golang.org/api/storage/v1"
 
@@ -72,6 +73,10 @@ func (m *modelBucket) AdapterForObject(ctx context.Context, op *directbase.Adapt
 		return nil, err
 	}
 
+	if err := resolveReferences(ctx, reader, obj); err != nil {
+		return nil, err
+	}
+
 	// Get storage GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -82,6 +87,22 @@ func (m *modelBucket) AdapterForObject(ctx context.Context, op *directbase.Adapt
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
+}
+
+func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.StorageBucket) error {
+	if obj.Spec.IPFilter != nil {
+		for i := range obj.Spec.IPFilter.VpcNetworkSources {
+			if err := obj.Spec.IPFilter.VpcNetworkSources[i].NetworkRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+				return err
+			}
+		}
+	}
+	if obj.Spec.Encryption != nil {
+		if err := obj.Spec.Encryption.KmsKeyRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (m *modelBucket) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {

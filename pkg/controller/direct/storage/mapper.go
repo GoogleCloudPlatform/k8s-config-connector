@@ -18,6 +18,7 @@ import (
 	"fmt"
 
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	gcp "google.golang.org/api/storage/v1"
@@ -30,13 +31,27 @@ func StorageBucketSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageBucketS
 	out := &gcp.Bucket{}
 	out.Location = direct.ValueOf(in.Location)
 	out.StorageClass = direct.ValueOf(in.StorageClass)
+	out.DefaultEventBasedHold = direct.ValueOf(in.DefaultEventBasedHold)
+	if in.DefaultEventBasedHold != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "DefaultEventBasedHold")
+	}
+	if in.CustomPlacementConfig != nil {
+		out.CustomPlacementConfig = &gcp.BucketCustomPlacementConfig{
+			DataLocations: in.CustomPlacementConfig.DataLocations,
+		}
+	}
+	if in.Encryption != nil {
+		out.Encryption = &gcp.BucketEncryption{
+			DefaultKmsKeyName: in.Encryption.KmsKeyRef.External,
+		}
+	}
 	if in.IPFilter != nil {
 		out.IpFilter = &gcp.BucketIpFilter{
 			Mode:                       direct.ValueOf(in.IPFilter.Mode),
-			AllowCrossOrgVpcs:          direct.ValueOf(in.IPFilter.AllowCrossOrgVPCs),
+			AllowCrossOrgVpcs:          direct.ValueOf(in.IPFilter.AllowCrossOrgVpcs),
 			AllowAllServiceAgentAccess: direct.ValueOf(in.IPFilter.AllowAllServiceAgentAccess),
 		}
-		if in.IPFilter.AllowCrossOrgVPCs != nil {
+		if in.IPFilter.AllowCrossOrgVpcs != nil {
 			out.IpFilter.ForceSendFields = append(out.IpFilter.ForceSendFields, "AllowCrossOrgVpcs")
 		}
 		if in.IPFilter.AllowAllServiceAgentAccess != nil {
@@ -174,10 +189,21 @@ func StorageBucketSpec_FromProto(mapCtx *direct.MapContext, in *gcp.Bucket) *krm
 	out := &krm.StorageBucketSpec{}
 	out.Location = direct.LazyPtr(in.Location)
 	out.StorageClass = direct.LazyPtr(in.StorageClass)
+	out.DefaultEventBasedHold = direct.LazyPtr(in.DefaultEventBasedHold)
+	if in.CustomPlacementConfig != nil {
+		out.CustomPlacementConfig = &krm.BucketCustomPlacementConfig{
+			DataLocations: in.CustomPlacementConfig.DataLocations,
+		}
+	}
+	if in.Encryption != nil {
+		out.Encryption = &krm.BucketEncryption{
+			KmsKeyRef: refsv1beta1.KMSCryptoKeyRef{External: in.Encryption.DefaultKmsKeyName},
+		}
+	}
 	if in.IpFilter != nil {
 		out.IPFilter = &krm.BucketIPFilter{
 			Mode:                       direct.LazyPtr(in.IpFilter.Mode),
-			AllowCrossOrgVPCs:          direct.LazyPtr(in.IpFilter.AllowCrossOrgVpcs),
+			AllowCrossOrgVpcs:          direct.LazyPtr(in.IpFilter.AllowCrossOrgVpcs),
 			AllowAllServiceAgentAccess: direct.LazyPtr(in.IpFilter.AllowAllServiceAgentAccess),
 		}
 		if in.IpFilter.PublicNetworkSource != nil {

@@ -213,7 +213,7 @@ type Bucket_IPFilter struct {
 	//  VPC network source will be checked to belong to the same org as the
 	//  bucket as well as validated for existence.
 	// +kcc:proto:field=google.storage.v2.Bucket.IpFilter.allow_cross_org_vpcs
-	AllowCrossOrgVPCs *bool `json:"allowCrossOrgVPCs,omitempty"`
+	AllowCrossOrgVpcs *bool `json:"allowCrossOrgVpcs,omitempty"`
 
 	// Whether or not to allow all P4SA access to the bucket. When set to true,
 	//  IP filter config validation will not apply.
