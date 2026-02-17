@@ -180,10 +180,12 @@ func Field_FromProto(mapCtx *direct.MapContext, in *pb.Value) any {
 	// 	return v.BytesValue
 	// case *pb.Value_TimestampValue:
 	// 	return v.TimestampValue
-	// case *pb.Value_ReferenceValue:
-	// 	return v.ReferenceValue
-	// case *pb.Value_GeoPointValue:
-	// 	return v.GeoPointValue
+	case *pb.Value_ReferenceValue:
+		return v.ReferenceValue
+	case *pb.Value_FieldReferenceValue:
+		return v.FieldReferenceValue
+	case *pb.Value_GeoPointValue:
+		return v.GeoPointValue
 
 	case *pb.Value_ArrayValue:
 		arr := make([]any, len(v.ArrayValue.Values))
@@ -246,6 +248,12 @@ func Field_ToProto(mapCtx *direct.MapContext, in any) *pb.Value {
 		return &pb.Value{ValueType: &pb.Value_IntegerValue{IntegerValue: in}}
 	case float64:
 		return &pb.Value{ValueType: &pb.Value_DoubleValue{DoubleValue: in}}
+	case *pb.Value_ReferenceValue:
+		return &pb.Value{ValueType: in}
+	case *pb.Value_FieldReferenceValue:
+		return &pb.Value{ValueType: in}
+	case *pb.Value_GeoPointValue:
+		return &pb.Value{ValueType: in}
 	case []any:
 		arr := make([]*pb.Value, len(in))
 		for i, elem := range in {

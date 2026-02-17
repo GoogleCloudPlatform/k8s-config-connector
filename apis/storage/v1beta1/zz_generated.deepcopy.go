@@ -375,8 +375,8 @@ func (in *BucketIPFilter) DeepCopyInto(out *BucketIPFilter) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.AllowCrossOrgVpcs != nil {
-		in, out := &in.AllowCrossOrgVpcs, &out.AllowCrossOrgVpcs
+	if in.AllowCrossOrgVPCs != nil {
+		in, out := &in.AllowCrossOrgVPCs, &out.AllowCrossOrgVPCs
 		*out = new(bool)
 		**out = **in
 	}
@@ -940,8 +940,8 @@ func (in *Bucket_IPFilter) DeepCopyInto(out *Bucket_IPFilter) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.AllowCrossOrgVpcs != nil {
-		in, out := &in.AllowCrossOrgVpcs, &out.AllowCrossOrgVpcs
+	if in.AllowCrossOrgVPCs != nil {
+		in, out := &in.AllowCrossOrgVPCs, &out.AllowCrossOrgVPCs
 		*out = new(bool)
 		**out = **in
 	}

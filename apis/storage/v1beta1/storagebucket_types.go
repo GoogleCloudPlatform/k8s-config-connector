@@ -200,7 +200,7 @@ type BucketIPFilter struct {
 	/* Whether or not to allow VPCs from orgs different than the bucket's parent org to access the bucket. */
 	// +optional
 	// +kcc:proto:field=google.storage.v2.Bucket_IpFilter.allow_cross_org_vpcs
-	AllowCrossOrgVpcs *bool `json:"allowCrossOrgVpcs,omitempty"`
+	AllowCrossOrgVPCs *bool `json:"allowCrossOrgVPCs,omitempty"`
 
 	/* Whether or not to allow all P4SA access to the bucket. */
 	// +optional

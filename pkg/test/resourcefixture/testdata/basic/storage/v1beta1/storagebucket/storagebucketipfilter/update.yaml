@@ -18,6 +18,8 @@ spec:
         name: storagebucket-dep-${uniqueId}
       allowedIPRanges:
       - "10.0.0.0/24"
+    allowAllServiceAgentAccess: true
+    allowCrossOrgVPCs: true
   iamConfiguration:
     uniformBucketLevelAccess:
       enabled: true

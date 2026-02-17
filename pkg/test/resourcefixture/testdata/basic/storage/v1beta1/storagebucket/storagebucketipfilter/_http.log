@@ -322,6 +322,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "allowCrossOrgVpcs": true,
     "mode": "ENABLED",
     "publicNetworkSource": {
       "allowedIpCidrRanges": [
@@ -437,6 +439,8 @@ Vary: X-Origin
   },
   "id": "000000000000000000000",
   "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "allowCrossOrgVpcs": true,
     "mode": "ENABLED",
     "publicNetworkSource": {
       "allowedIpCidrRanges": [
@@ -498,6 +502,8 @@ Vary: X-Origin
   },
   "id": "000000000000000000000",
   "ipFilter": {
+    "allowAllServiceAgentAccess": true,
+    "allowCrossOrgVpcs": true,
     "mode": "ENABLED",
     "publicNetworkSource": {
       "allowedIpCidrRanges": [

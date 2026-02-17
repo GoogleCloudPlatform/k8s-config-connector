@@ -189,7 +189,7 @@ spec:
                   allowAllServiceAgentAccess:
                     description: Whether or not to allow all P4SA access to the bucket.
                     type: boolean
-                  allowCrossOrgVpcs:
+                  allowCrossOrgVPCs:
                     description: Whether or not to allow VPCs from orgs different
                       than the bucket's parent org to access the bucket.
                     type: boolean
