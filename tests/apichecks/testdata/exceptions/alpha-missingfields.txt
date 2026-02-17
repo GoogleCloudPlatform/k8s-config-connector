@@ -1844,7 +1844,6 @@
 [missing_field] crd=networkservicesedgecacheorigins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeout.maxAttemptsTimeout" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheorigins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeout.readTimeout" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheorigins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeout.responseTimeout" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.disableHttp2" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.disableQuic" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.edgeSecurityPolicy" is not set in unstructured objects
@@ -1887,10 +1886,6 @@
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.cdnPolicy.cacheKeyPolicy.includedCookieNames[]" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.cdnPolicy.cacheKeyPolicy.includedHeaderNames[]" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.cdnPolicy.cacheKeyPolicy.includedQueryParameters[]" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.cdnPolicy.cacheMode" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.cdnPolicy.clientTtl" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.cdnPolicy.defaultTtl" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.cdnPolicy.maxTtl" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.cdnPolicy.negativeCaching" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.cdnPolicy.negativeCachingPolicy" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.cdnPolicy.signedRequestKeyset" is not set in unstructured objects
