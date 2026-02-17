@@ -2339,14 +2339,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "storage.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "StorageBucket",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "storage.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "StorageDefaultObjectAccessControl",
 	}: {
 		Terraform: true,

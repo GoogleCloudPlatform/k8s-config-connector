@@ -1,0 +1,26 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  labels:
+    label-one: "value-one"
+  name: storagebucket-sample-${uniqueId}
+spec:
+  location: us-central1
+  storageClass: STANDARD
+  ipFilter:
+    mode: ENABLED
+    publicNetworkSource:
+      allowedIPRanges:
+      - "1.1.1.1/32"
+      - "2.2.2.2/32"
+    vpcNetworkSources:
+    - networkRef:
+        name: storagebucket-dep-${uniqueId}
+      allowedIPRanges:
+      - "10.0.0.0/24"
+    allowAllServiceAgentAccess: true
+    allowCrossOrgVPCs: true
+  iamConfiguration:
+    uniformBucketLevelAccess:
+      enabled: true
+    publicAccessPrevention: enforced
