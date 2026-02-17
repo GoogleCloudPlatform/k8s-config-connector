@@ -22,6 +22,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+
+	constants "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -396,6 +398,16 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config, namespa
 			}
 			// Not tracking CC and CCC objects.
 			if strings.HasSuffix(gvr.Group, "core.cnrm.cloud.google.com") {
+				continue
+			}
+
+			// Not tracking non-CNRM objects.
+			if !strings.Contains(gvr.Group, "cnrm.cloud.google.com") {
+				continue
+			}
+
+			// Not tracking ignored CRDs.
+			if _, ok := constants.IgnoredCRDList[strings.ToLower(gvr.Resource)+"."+strings.ToLower(gvr.Group)]; ok {
 				continue
 			}
 			var resources *unstructured.UnstructuredList
