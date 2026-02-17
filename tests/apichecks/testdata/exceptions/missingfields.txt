@@ -1330,7 +1330,6 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.imageType" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.cpuCfsQuota" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.cpuCfsQuotaPeriod" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.cpuManagerPolicy" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.podPidsLimit" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.labels" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.localNvmeSsdBlockConfig.localSsdCount" is not set in unstructured objects
@@ -1379,7 +1378,6 @@
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscaling.locationPolicy" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscaling.totalMaxNodeCount" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscaling.totalMinNodeCount" is not set in unstructured objects
-[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.initialNodeCount" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.management.autoRepair" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.management.autoUpgrade" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.maxPodsPerNode" is not set in unstructured objects
@@ -1413,11 +1411,9 @@
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.imageType" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.cpuCfsQuota" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.cpuCfsQuotaPeriod" is not set in unstructured objects
-[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.cpuManagerPolicy" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.kubeletConfig.podPidsLimit" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.labels" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.cgroupMode" is not set in unstructured objects
-[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.linuxNodeConfig.sysctls" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.localNvmeSsdBlockConfig.localSsdCount" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.localSsdCount" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeConfig.loggingVariant" is not set in unstructured objects
