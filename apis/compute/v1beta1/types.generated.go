@@ -22,8 +22,81 @@
 // resource: ComputeSecurityPolicy:SecurityPolicy
 // resource: ComputeSubnetwork:Subnetwork
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
+// resource: ComputeURLMap:UrlMap
 
 package v1beta1
+
+// +kcc:proto=google.cloud.compute.v1.CorsPolicy
+type CorsPolicy struct {
+	// In response to a preflight request, setting this to true indicates that the actual request can include user credentials. This field translates to the Access-Control-Allow-Credentials header. Default is false.
+	// +kcc:proto:field=google.cloud.compute.v1.CorsPolicy.allow_credentials
+	AllowCredentials *bool `json:"allowCredentials,omitempty"`
+
+	// Specifies the content for the Access-Control-Allow-Headers header.
+	// +kcc:proto:field=google.cloud.compute.v1.CorsPolicy.allow_headers
+	AllowHeaders []string `json:"allowHeaders,omitempty"`
+
+	// Specifies the content for the Access-Control-Allow-Methods header.
+	// +kcc:proto:field=google.cloud.compute.v1.CorsPolicy.allow_methods
+	AllowMethods []string `json:"allowMethods,omitempty"`
+
+	// Specifies a regular expression that matches allowed origins. For more information, see regular expression syntax . An origin is allowed if it matches either an item in allowOrigins or an item in allowOriginRegexes. Regular expressions can only be used when the loadBalancingScheme is set to INTERNAL_SELF_MANAGED.
+	// +kcc:proto:field=google.cloud.compute.v1.CorsPolicy.allow_origin_regexes
+	AllowOriginRegexes []string `json:"allowOriginRegexes,omitempty"`
+
+	// Specifies the list of origins that is allowed to do CORS requests. An origin is allowed if it matches either an item in allowOrigins or an item in allowOriginRegexes.
+	// +kcc:proto:field=google.cloud.compute.v1.CorsPolicy.allow_origins
+	AllowOrigins []string `json:"allowOrigins,omitempty"`
+
+	// If true, disables the CORS policy. The default value is false, which indicates that the CORS policy is in effect.
+	// +kcc:proto:field=google.cloud.compute.v1.CorsPolicy.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+
+	// Specifies the content for the Access-Control-Expose-Headers header.
+	// +kcc:proto:field=google.cloud.compute.v1.CorsPolicy.expose_headers
+	ExposeHeaders []string `json:"exposeHeaders,omitempty"`
+
+	// Specifies how long results of a preflight request can be cached in seconds. This field translates to the Access-Control-Max-Age header.
+	// +kcc:proto:field=google.cloud.compute.v1.CorsPolicy.max_age
+	MaxAge *int32 `json:"maxAge,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.CustomErrorResponsePolicy
+type CustomErrorResponsePolicy struct {
+	// Specifies rules for returning error responses. In a given policy, if you specify rules for both a range of error codes as well as rules for specific error codes then rules with specific error codes have a higher priority. For example, assume that you configure a rule for 401 (Un-authorized) code, and another for all 4 series error codes (4XX). If the backend service returns a 401, then the rule for 401 will be applied. However if the backend service returns a 403, the rule for 4xx takes effect.
+	// +kcc:proto:field=google.cloud.compute.v1.CustomErrorResponsePolicy.error_response_rules
+	ErrorResponseRules []CustomErrorResponsePolicyCustomErrorResponseRule `json:"errorResponseRules,omitempty"`
+
+	// The full or partial URL to the BackendBucket resource that contains the custom error content. Examples are: - https://www.googleapis.com/compute/v1/projects/project/global/backendBuckets/myBackendBucket - compute/v1/projects/project/global/backendBuckets/myBackendBucket - global/backendBuckets/myBackendBucket If errorService is not specified at lower levels like pathMatcher, pathRule and routeRule, an errorService specified at a higher level in the UrlMap will be used. If UrlMap.defaultCustomErrorResponsePolicy contains one or more errorResponseRules[], it must specify errorService. If load balancer cannot reach the backendBucket, a simple Not Found Error will be returned, with the original response code (or overrideResponseCode if configured). errorService is not supported for internal or regional HTTP/HTTPS load balancers.
+	// +kcc:proto:field=google.cloud.compute.v1.CustomErrorResponsePolicy.error_service
+	ErrorService *string `json:"errorService,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.CustomErrorResponsePolicyCustomErrorResponseRule
+type CustomErrorResponsePolicyCustomErrorResponseRule struct {
+	// Valid values include: - A number between 400 and 599: For example 401 or 503, in which case the load balancer applies the policy if the error code exactly matches this value. - 5xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 500 to 599. - 4xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 400 to 499. Values must be unique within matchResponseCodes and across all errorResponseRules of CustomErrorResponsePolicy.
+	// +kcc:proto:field=google.cloud.compute.v1.CustomErrorResponsePolicyCustomErrorResponseRule.match_response_codes
+	MatchResponseCodes []string `json:"matchResponseCodes,omitempty"`
+
+	// The HTTP status code returned with the response containing the custom error content. If overrideResponseCode is not supplied, the same response code returned by the original backend bucket or backend service is returned to the client.
+	// +kcc:proto:field=google.cloud.compute.v1.CustomErrorResponsePolicyCustomErrorResponseRule.override_response_code
+	OverrideResponseCode *int32 `json:"overrideResponseCode,omitempty"`
+
+	// The full path to a file within backendBucket . For example: /errors/defaultError.html path must start with a leading slash. path cannot have trailing slashes. If the file is not available in backendBucket or the load balancer cannot reach the BackendBucket, a simple Not Found Error is returned to the client. The value must be from 1 to 1024 characters
+	// +kcc:proto:field=google.cloud.compute.v1.CustomErrorResponsePolicyCustomErrorResponseRule.path
+	Path *string `json:"path,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.Duration
+type Duration struct {
+	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
+	// +kcc:proto:field=google.cloud.compute.v1.Duration.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	// Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
+	// +kcc:proto:field=google.cloud.compute.v1.Duration.seconds
+	Seconds *int64 `json:"seconds,omitempty"`
+}
 
 // +kcc:proto=google.cloud.compute.v1.Expr
 type Expr struct {
@@ -54,6 +127,370 @@ type FirewallPolicyRuleSecureTag struct {
 	//  Check the State enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleSecureTag.state
 	State *string `json:"state,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HostRule
+type HostRule struct {
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.HostRule.description
+	Description *string `json:"description,omitempty"`
+
+	// The list of host patterns to match. They must be valid hostnames with optional port numbers in the format host:port. * matches any string of ([a-z0-9-.]*). In that case, * must be the first character, and if followed by anything, the immediate following character must be either - or .. * based matching is not supported when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.
+	// +kcc:proto:field=google.cloud.compute.v1.HostRule.hosts
+	Hosts []string `json:"hosts,omitempty"`
+
+	// The name of the PathMatcher to use to match the path portion of the URL if the hostRule matches the URL's host portion.
+	// +kcc:proto:field=google.cloud.compute.v1.HostRule.path_matcher
+	PathMatcher *string `json:"pathMatcher,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HttpFaultAbort
+type HTTPFaultAbort struct {
+	// The HTTP status code used to abort the request. The value must be from 200 to 599 inclusive. For gRPC protocol, the gRPC status code is mapped to HTTP status code according to this mapping table. HTTP status 200 is mapped to gRPC status UNKNOWN. Injecting an OK status is currently not supported by Traffic Director.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpFaultAbort.http_status
+	HTTPStatus *uint32 `json:"httpStatus,omitempty"`
+
+	// The percentage of traffic for connections, operations, or requests that is aborted as part of fault injection. The value must be from 0.0 to 100.0 inclusive.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpFaultAbort.percentage
+	Percentage *float64 `json:"percentage,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HttpFaultDelay
+type HTTPFaultDelay struct {
+	// Specifies the value of the fixed delay interval.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpFaultDelay.fixed_delay
+	FixedDelay *Duration `json:"fixedDelay,omitempty"`
+
+	// The percentage of traffic for connections, operations, or requests for which a delay is introduced as part of fault injection. The value must be from 0.0 to 100.0 inclusive.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpFaultDelay.percentage
+	Percentage *float64 `json:"percentage,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HttpFaultInjection
+type HTTPFaultInjection struct {
+	// The specification for how client requests are aborted as part of fault injection.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpFaultInjection.abort
+	Abort *HTTPFaultAbort `json:"abort,omitempty"`
+
+	// The specification for how client requests are delayed as part of fault injection, before being sent to a backend service.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpFaultInjection.delay
+	Delay *HTTPFaultDelay `json:"delay,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HttpHeaderAction
+type HTTPHeaderAction struct {
+	// Headers to add to a matching request before forwarding the request to the backendService.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderAction.request_headers_to_add
+	RequestHeadersToAdd []HTTPHeaderOption `json:"requestHeadersToAdd,omitempty"`
+
+	// A list of header names for headers that need to be removed from the request before forwarding the request to the backendService.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderAction.request_headers_to_remove
+	RequestHeadersToRemove []string `json:"requestHeadersToRemove,omitempty"`
+
+	// Headers to add the response before sending the response back to the client.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderAction.response_headers_to_add
+	ResponseHeadersToAdd []HTTPHeaderOption `json:"responseHeadersToAdd,omitempty"`
+
+	// A list of header names for headers that need to be removed from the response before sending the response back to the client.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderAction.response_headers_to_remove
+	ResponseHeadersToRemove []string `json:"responseHeadersToRemove,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HttpHeaderMatch
+type HTTPHeaderMatch struct {
+	// The value should exactly match contents of exactMatch. Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderMatch.exact_match
+	ExactMatch *string `json:"exactMatch,omitempty"`
+
+	// The name of the HTTP header to match. For matching against the HTTP request's authority, use a headerMatch with the header name ":authority". For matching a request's method, use the headerName ":method". When the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true, only non-binary user-specified custom metadata and the `content-type` header are supported. The following transport-level headers cannot be used in header matching rules: `:authority`, `:method`, `:path`, `:scheme`, `user-agent`, `accept-encoding`, `content-encoding`, `grpc-accept-encoding`, `grpc-encoding`, `grpc-previous-rpc-attempts`, `grpc-tags-bin`, `grpc-timeout` and `grpc-trace-bin`.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderMatch.header_name
+	HeaderName *string `json:"headerName,omitempty"`
+
+	// If set to false, the headerMatch is considered a match if the preceding match criteria are met. If set to true, the headerMatch is considered a match if the preceding match criteria are NOT met. The default setting is false.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderMatch.invert_match
+	InvertMatch *bool `json:"invertMatch,omitempty"`
+
+	// The value of the header must start with the contents of prefixMatch. Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderMatch.prefix_match
+	PrefixMatch *string `json:"prefixMatch,omitempty"`
+
+	// A header with the contents of headerName must exist. The match takes place whether or not the request's header has a value. Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderMatch.present_match
+	PresentMatch *bool `json:"presentMatch,omitempty"`
+
+	// The header value must be an integer and its value must be in the range specified in rangeMatch. If the header does not contain an integer, number or is empty, the match fails. For example for a range [-5, 0] - -3 will match. - 0 will not match. - 0.25 will not match. - -3someString will not match. Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set. rangeMatch is not supported for load balancers that have loadBalancingScheme set to EXTERNAL.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderMatch.range_match
+	RangeMatch *Int64RangeMatch `json:"rangeMatch,omitempty"`
+
+	// The value of the header must match the regular expression specified in regexMatch. For more information about regular expression syntax, see Syntax. For matching against a port specified in the HTTP request, use a headerMatch with headerName set to PORT and a regular expression that satisfies the RFC2616 Host header's port specifier. Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set. Regular expressions can only be used when the loadBalancingScheme is set to INTERNAL_SELF_MANAGED.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderMatch.regex_match
+	RegexMatch *string `json:"regexMatch,omitempty"`
+
+	// The value of the header must end with the contents of suffixMatch. Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderMatch.suffix_match
+	SuffixMatch *string `json:"suffixMatch,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HttpHeaderOption
+type HTTPHeaderOption struct {
+	// The name of the header.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderOption.header_name
+	HeaderName *string `json:"headerName,omitempty"`
+
+	// The value of the header to add.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderOption.header_value
+	HeaderValue *string `json:"headerValue,omitempty"`
+
+	// If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header. The default value is true, unless a variable is present in headerValue, in which case the default value is false. .
+	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderOption.replace
+	Replace *bool `json:"replace,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HttpQueryParameterMatch
+type HTTPQueryParameterMatch struct {
+	// The queryParameterMatch matches if the value of the parameter exactly matches the contents of exactMatch. Only one of presentMatch, exactMatch, or regexMatch must be set.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpQueryParameterMatch.exact_match
+	ExactMatch *string `json:"exactMatch,omitempty"`
+
+	// The name of the query parameter to match. The query parameter must exist in the request, in the absence of which the request match fails.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpQueryParameterMatch.name
+	Name *string `json:"name,omitempty"`
+
+	// Specifies that the queryParameterMatch matches if the request contains the query parameter, irrespective of whether the parameter has a value or not. Only one of presentMatch, exactMatch, or regexMatch must be set.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpQueryParameterMatch.present_match
+	PresentMatch *bool `json:"presentMatch,omitempty"`
+
+	// The queryParameterMatch matches if the value of the parameter matches the regular expression specified by regexMatch. For more information about regular expression syntax, see Syntax. Only one of presentMatch, exactMatch, or regexMatch must be set. Regular expressions can only be used when the loadBalancingScheme is set to INTERNAL_SELF_MANAGED.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpQueryParameterMatch.regex_match
+	RegexMatch *string `json:"regexMatch,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HttpRedirectAction
+type HTTPRedirectAction struct {
+	// The host that is used in the redirect response instead of the one that was supplied in the request. The value must be from 1 to 255 characters.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRedirectAction.host_redirect
+	HostRedirect *string `json:"hostRedirect,omitempty"`
+
+	// If set to true, the URL scheme in the redirected request is set to HTTPS. If set to false, the URL scheme of the redirected request remains the same as that of the request. This must only be set for URL maps used in TargetHttpProxys. Setting this true for TargetHttpsProxy is not permitted. The default is set to false.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRedirectAction.https_redirect
+	HTTPSRedirect *bool `json:"httpsRedirect,omitempty"`
+
+	// The path that is used in the redirect response instead of the one that was supplied in the request. pathRedirect cannot be supplied together with prefixRedirect. Supply one alone or neither. If neither is supplied, the path of the original request is used for the redirect. The value must be from 1 to 1024 characters.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRedirectAction.path_redirect
+	PathRedirect *string `json:"pathRedirect,omitempty"`
+
+	// The prefix that replaces the prefixMatch specified in the HttpRouteRuleMatch, retaining the remaining portion of the URL before redirecting the request. prefixRedirect cannot be supplied together with pathRedirect. Supply one alone or neither. If neither is supplied, the path of the original request is used for the redirect. The value must be from 1 to 1024 characters.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRedirectAction.prefix_redirect
+	PrefixRedirect *string `json:"prefixRedirect,omitempty"`
+
+	// The HTTP Status code to use for this RedirectAction. Supported values are: - MOVED_PERMANENTLY_DEFAULT, which is the default value and corresponds to 301. - FOUND, which corresponds to 302. - SEE_OTHER which corresponds to 303. - TEMPORARY_REDIRECT, which corresponds to 307. In this case, the request method is retained. - PERMANENT_REDIRECT, which corresponds to 308. In this case, the request method is retained.
+	//  Check the RedirectResponseCode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRedirectAction.redirect_response_code
+	RedirectResponseCode *string `json:"redirectResponseCode,omitempty"`
+
+	// If set to true, any accompanying query portion of the original URL is removed before redirecting the request. If set to false, the query portion of the original URL is retained. The default is set to false.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRedirectAction.strip_query
+	StripQuery *bool `json:"stripQuery,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HttpRetryPolicy
+type HTTPRetryPolicy struct {
+	// Specifies the allowed number retries. This number must be > 0. If not specified, defaults to 1.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRetryPolicy.num_retries
+	NumRetries *uint32 `json:"numRetries,omitempty"`
+
+	// Specifies a non-zero timeout per retry attempt. If not specified, will use the timeout set in the HttpRouteAction field. If timeout in the HttpRouteAction field is not set, this field uses the largest timeout among all backend services associated with the route. Not supported when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRetryPolicy.per_try_timeout
+	PerTryTimeout *Duration `json:"perTryTimeout,omitempty"`
+
+	// Specifies one or more conditions when this retry policy applies. Valid values are: - 5xx: retry is attempted if the instance or endpoint responds with any 5xx response code, or if the instance or endpoint does not respond at all. For example, disconnects, reset, read timeout, connection failure, and refused streams. - gateway-error: Similar to 5xx, but only applies to response codes 502, 503 or 504. - connect-failure: a retry is attempted on failures connecting to the instance or endpoint. For example, connection timeouts. - retriable-4xx: a retry is attempted if the instance or endpoint responds with a 4xx response code. The only error that you can retry is error code 409. - refused-stream: a retry is attempted if the instance or endpoint resets the stream with a REFUSED_STREAM error code. This reset type indicates that it is safe to retry. - cancelled: a retry is attempted if the gRPC status code in the response header is set to cancelled. - deadline-exceeded: a retry is attempted if the gRPC status code in the response header is set to deadline-exceeded. - internal: a retry is attempted if the gRPC status code in the response header is set to internal. - resource-exhausted: a retry is attempted if the gRPC status code in the response header is set to resource-exhausted. - unavailable: a retry is attempted if the gRPC status code in the response header is set to unavailable. Only the following codes are supported when the URL map is bound to target gRPC proxy that has validateForProxyless field set to true. - cancelled - deadline-exceeded - internal - resource-exhausted - unavailable
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRetryPolicy.retry_conditions
+	RetryConditions []string `json:"retryConditions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HttpRouteAction
+type HTTPRouteAction struct {
+	// The specification for allowing client-side cross-origin requests. For more information about the W3C recommendation for cross-origin resource sharing (CORS), see Fetch API Living Standard. Not supported when the URL map is bound to a target gRPC proxy.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteAction.cors_policy
+	CorsPolicy *CorsPolicy `json:"corsPolicy,omitempty"`
+
+	// The specification for fault injection introduced into traffic to test the resiliency of clients to backend service failure. As part of fault injection, when clients send requests to a backend service, delays can be introduced by a load balancer on a percentage of requests before sending those requests to the backend service. Similarly requests from clients can be aborted by the load balancer for a percentage of requests. timeout and retry_policy is ignored by clients that are configured with a fault_injection_policy if: 1. The traffic is generated by fault injection AND 2. The fault injection is not a delay fault injection. Fault injection is not supported with the classic Application Load Balancer . To see which load balancers support fault injection, see Load balancing: Routing and traffic management features.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteAction.fault_injection_policy
+	FaultInjectionPolicy *HTTPFaultInjection `json:"faultInjectionPolicy,omitempty"`
+
+	// Specifies the maximum duration (timeout) for streams on the selected route. Unlike the timeout field where the timeout duration starts from the time the request has been fully processed (known as *end-of-stream*), the duration in this field is computed from the beginning of the stream until the response has been processed, including all retries. A stream that does not complete in this duration is closed. If not specified, this field uses the maximum maxStreamDuration value among all backend services associated with the route. This field is only allowed if the Url map is used with backend services with loadBalancingScheme set to INTERNAL_SELF_MANAGED.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteAction.max_stream_duration
+	MaxStreamDuration *Duration `json:"maxStreamDuration,omitempty"`
+
+	// Specifies the policy on how requests intended for the route's backends are shadowed to a separate mirrored backend service. The load balancer does not wait for responses from the shadow service. Before sending traffic to the shadow service, the host / authority header is suffixed with -shadow. Not supported when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteAction.request_mirror_policy
+	RequestMirrorPolicy *RequestMirrorPolicy `json:"requestMirrorPolicy,omitempty"`
+
+	// Specifies the retry policy associated with this route.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteAction.retry_policy
+	RetryPolicy *HTTPRetryPolicy `json:"retryPolicy,omitempty"`
+
+	// Specifies the timeout for the selected route. Timeout is computed from the time the request has been fully processed (known as *end-of-stream*) up until the response has been processed. Timeout includes all retries. If not specified, this field uses the largest timeout among all backend services associated with the route. Not supported when the URL map is bound to a target gRPC proxy that has validateForProxyless field set to true.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteAction.timeout
+	Timeout *Duration `json:"timeout,omitempty"`
+
+	// The spec to modify the URL of the request, before forwarding the request to the matched service. urlRewrite is the only action supported in UrlMaps for classic Application Load Balancers. Not supported when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteAction.url_rewrite
+	URLRewrite *URLRewrite `json:"urlRewrite,omitempty"`
+
+	// A list of weighted backend services to send traffic to when a route match occurs. The weights determine the fraction of traffic that flows to their corresponding backend service. If all traffic needs to go to a single backend service, there must be one weightedBackendService with weight set to a non-zero number. After a backend service is identified and before forwarding the request to the backend service, advanced routing actions such as URL rewrites and header transformations are applied depending on additional settings specified in this HttpRouteAction.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteAction.weighted_backend_services
+	WeightedBackendServices []WeightedBackendService `json:"weightedBackendServices,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HttpRouteRule
+type HTTPRouteRule struct {
+	// customErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendServiceor BackendBucket responds with an error. If a policy for an error code is not configured for the RouteRule, a policy for the error code configured in pathMatcher.defaultCustomErrorResponsePolicy is applied. If one is not specified in pathMatcher.defaultCustomErrorResponsePolicy, the policy configured in UrlMap.defaultCustomErrorResponsePolicy takes effect. For example, consider a UrlMap with the following configuration: - UrlMap.defaultCustomErrorResponsePolicy are configured with policies for 5xx and 4xx errors - A RouteRule for /coming_soon/ is configured for the error code 404. If the request is for www.myotherdomain.com and a 404 is encountered, the policy under UrlMap.defaultCustomErrorResponsePolicy takes effect. If a 404 response is encountered for the request www.example.com/current_events/, the pathMatcher's policy takes effect. If however, the request for www.example.com/coming_soon/ encounters a 404, the policy in RouteRule.customErrorResponsePolicy takes effect. If any of the requests in this example encounter a 500 error code, the policy at UrlMap.defaultCustomErrorResponsePolicy takes effect. When used in conjunction with routeRules.routeAction.retryPolicy, retries take precedence. Only once all retries are exhausted, the customErrorResponsePolicy is applied. While attempting a retry, if load balancer is successful in reaching the service, the customErrorResponsePolicy is ignored and the response from the service is returned to the client. customErrorResponsePolicy is supported only for global external Application Load Balancers.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRule.custom_error_response_policy
+	CustomErrorResponsePolicy *CustomErrorResponsePolicy `json:"customErrorResponsePolicy,omitempty"`
+
+	// The short description conveying the intent of this routeRule. The description can have a maximum length of 1024 characters.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRule.description
+	Description *string `json:"description,omitempty"`
+
+	// Specifies changes to request and response headers that need to take effect for the selected backendService. The headerAction value specified here is applied before the matching pathMatchers[].headerAction and after pathMatchers[].routeRules[].routeAction.weightedBackendService.backendServiceWeightAction[].headerAction HeaderAction is not supported for load balancers that have their loadBalancingScheme set to EXTERNAL. Not supported when the URL map is bound to a target gRPC proxy that has validateForProxyless field set to true.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRule.header_action
+	HeaderAction *HTTPHeaderAction `json:"headerAction,omitempty"`
+
+	// The list of criteria for matching attributes of a request to this routeRule. This list has OR semantics: the request matches this routeRule when any of the matchRules are satisfied. However predicates within a given matchRule have AND semantics. All predicates within a matchRule must match for the request to match the rule.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRule.match_rules
+	MatchRules []HTTPRouteRuleMatch `json:"matchRules,omitempty"`
+
+	// For routeRules within a given pathMatcher, priority determines the order in which a load balancer interprets routeRules. RouteRules are evaluated in order of priority, from the lowest to highest number. The priority of a rule decreases as its number increases (1, 2, 3, N+1). The first rule that matches the request is applied. You cannot configure two or more routeRules with the same priority. Priority for each rule must be set to a number from 0 to 2147483647 inclusive. Priority numbers can have gaps, which enable you to add or remove rules in the future without affecting the rest of the rules. For example, 1, 2, 3, 4, 5, 9, 12, 16 is a valid series of priority numbers to which you could add rules numbered from 6 to 8, 10 to 11, and 13 to 15 in the future without any impact on existing rules.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRule.priority
+	Priority *int32 `json:"priority,omitempty"`
+
+	// In response to a matching matchRule, the load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend. Only one of urlRedirect, service or routeAction.weightedBackendService can be set. URL maps for classic Application Load Balancers only support the urlRewrite action within a route rule's routeAction.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRule.route_action
+	RouteAction *HTTPRouteAction `json:"routeAction,omitempty"`
+
+	// The full or partial URL of the backend service resource to which traffic is directed if this rule is matched. If routeAction is also specified, advanced routing actions, such as URL rewrites, take effect before sending the request to the backend. Only one of urlRedirect, service or routeAction.weightedBackendService can be set.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRule.service
+	Service *string `json:"service,omitempty"`
+
+	// When this rule is matched, the request is redirected to a URL specified by urlRedirect. Only one of urlRedirect, service or routeAction.weightedBackendService can be set. Not supported when the URL map is bound to a target gRPC proxy.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRule.url_redirect
+	URLRedirect *HTTPRedirectAction `json:"urlRedirect,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.HttpRouteRuleMatch
+type HTTPRouteRuleMatch struct {
+	// For satisfying the matchRule condition, the path of the request must exactly match the value specified in fullPathMatch after removing any query parameters and anchor that may be part of the original URL. fullPathMatch must be from 1 to 1024 characters. Only one of prefixMatch, fullPathMatch or regexMatch must be specified.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRuleMatch.full_path_match
+	FullPathMatch *string `json:"fullPathMatch,omitempty"`
+
+	// Specifies a list of header match criteria, all of which must match corresponding headers in the request.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRuleMatch.header_matches
+	HeaderMatches []HTTPHeaderMatch `json:"headerMatches,omitempty"`
+
+	// Specifies that prefixMatch and fullPathMatch matches are case sensitive. The default value is false. ignoreCase must not be used with regexMatch. Not supported when the URL map is bound to a target gRPC proxy.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRuleMatch.ignore_case
+	IgnoreCase *bool `json:"ignoreCase,omitempty"`
+
+	// Opaque filter criteria used by the load balancer to restrict routing configuration to a limited set of xDS compliant clients. In their xDS requests to the load balancer, xDS clients present node metadata. When there is a match, the relevant routing configuration is made available to those proxies. For each metadataFilter in this list, if its filterMatchCriteria is set to MATCH_ANY, at least one of the filterLabels must match the corresponding label provided in the metadata. If its filterMatchCriteria is set to MATCH_ALL, then all of its filterLabels must match with corresponding labels provided in the metadata. If multiple metadata filters are specified, all of them need to be satisfied in order to be considered a match. metadataFilters specified here is applied after those specified in ForwardingRule that refers to the UrlMap this HttpRouteRuleMatch belongs to. metadataFilters only applies to load balancers that have loadBalancingScheme set to INTERNAL_SELF_MANAGED. Not supported when the URL map is bound to a target gRPC proxy that has validateForProxyless field set to true.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRuleMatch.metadata_filters
+	MetadataFilters []MetadataFilter `json:"metadataFilters,omitempty"`
+
+	// If specified, the route is a pattern match expression that must match the :path header once the query string is removed. A pattern match allows you to match - The value must be between 1 and 1024 characters - The pattern must start with a leading slash ("/") - There may be no more than 5 operators in pattern Precisely one of prefix_match, full_path_match, regex_match or path_template_match must be set.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRuleMatch.path_template_match
+	PathTemplateMatch *string `json:"pathTemplateMatch,omitempty"`
+
+	// For satisfying the matchRule condition, the request's path must begin with the specified prefixMatch. prefixMatch must begin with a /. The value must be from 1 to 1024 characters. Only one of prefixMatch, fullPathMatch or regexMatch must be specified.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRuleMatch.prefix_match
+	PrefixMatch *string `json:"prefixMatch,omitempty"`
+
+	// Specifies a list of query parameter match criteria, all of which must match corresponding query parameters in the request. Not supported when the URL map is bound to a target gRPC proxy.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRuleMatch.query_parameter_matches
+	QueryParameterMatches []HTTPQueryParameterMatch `json:"queryParameterMatches,omitempty"`
+
+	// For satisfying the matchRule condition, the path of the request must satisfy the regular expression specified in regexMatch after removing any query parameters and anchor supplied with the original URL. For more information about regular expression syntax, see Syntax. Only one of prefixMatch, fullPathMatch or regexMatch must be specified. Regular expressions can only be used when the loadBalancingScheme is set to INTERNAL_SELF_MANAGED.
+	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRuleMatch.regex_match
+	RegexMatch *string `json:"regexMatch,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.Int64RangeMatch
+type Int64RangeMatch struct {
+	// The end of the range (exclusive) in signed long integer format.
+	// +kcc:proto:field=google.cloud.compute.v1.Int64RangeMatch.range_end
+	RangeEnd *int64 `json:"rangeEnd,omitempty"`
+
+	// The start of the range (inclusive) in signed long integer format.
+	// +kcc:proto:field=google.cloud.compute.v1.Int64RangeMatch.range_start
+	RangeStart *int64 `json:"rangeStart,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.PathMatcher
+type PathMatcher struct {
+	// defaultCustomErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendServiceor BackendBucket responds with an error. This policy takes effect at the PathMatcher level and applies only when no policy has been defined for the error code at lower levels like RouteRule and PathRule within this PathMatcher. If an error code does not have a policy defined in defaultCustomErrorResponsePolicy, then a policy defined for the error code in UrlMap.defaultCustomErrorResponsePolicy takes effect. For example, consider a UrlMap with the following configuration: - UrlMap.defaultCustomErrorResponsePolicy is configured with policies for 5xx and 4xx errors - A RouteRule for /coming_soon/ is configured for the error code 404. If the request is for www.myotherdomain.com and a 404 is encountered, the policy under UrlMap.defaultCustomErrorResponsePolicy takes effect. If a 404 response is encountered for the request www.example.com/current_events/, the pathMatcher's policy takes effect. If however, the request for www.example.com/coming_soon/ encounters a 404, the policy in RouteRule.customErrorResponsePolicy takes effect. If any of the requests in this example encounter a 500 error code, the policy at UrlMap.defaultCustomErrorResponsePolicy takes effect. When used in conjunction with pathMatcher.defaultRouteAction.retryPolicy, retries take precedence. Only once all retries are exhausted, the defaultCustomErrorResponsePolicy is applied. While attempting a retry, if load balancer is successful in reaching the service, the defaultCustomErrorResponsePolicy is ignored and the response from the service is returned to the client. defaultCustomErrorResponsePolicy is supported only for global external Application Load Balancers.
+	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.default_custom_error_response_policy
+	DefaultCustomErrorResponsePolicy *CustomErrorResponsePolicy `json:"defaultCustomErrorResponsePolicy,omitempty"`
+
+	// defaultRouteAction takes effect when none of the pathRules or routeRules match. The load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend. Only one of defaultUrlRedirect, defaultService or defaultRouteAction.weightedBackendService can be set. URL maps for classic Application Load Balancers only support the urlRewrite action within a path matcher's defaultRouteAction.
+	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.default_route_action
+	DefaultRouteAction *HTTPRouteAction `json:"defaultRouteAction,omitempty"`
+
+	// The full or partial URL to the BackendService resource. This URL is used if none of the pathRules or routeRules defined by this PathMatcher are matched. For example, the following are all valid URLs to a BackendService resource: - https://www.googleapis.com/compute/v1/projects/project /global/backendServices/backendService - compute/v1/projects/project/global/backendServices/backendService - global/backendServices/backendService If defaultRouteAction is also specified, advanced routing actions, such as URL rewrites, take effect before sending the request to the backend. Only one of defaultUrlRedirect, defaultService or defaultRouteAction.weightedBackendService can be set. Authorization requires one or more of the following Google IAM permissions on the specified resource default_service: - compute.backendBuckets.use - compute.backendServices.use
+	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.default_service
+	DefaultService *string `json:"defaultService,omitempty"`
+
+	// When none of the specified pathRules or routeRules match, the request is redirected to a URL specified by defaultUrlRedirect. Only one of defaultUrlRedirect, defaultService or defaultRouteAction.weightedBackendService can be set. Not supported when the URL map is bound to a target gRPC proxy.
+	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.default_url_redirect
+	DefaultURLRedirect *HTTPRedirectAction `json:"defaultURLRedirect,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.description
+	Description *string `json:"description,omitempty"`
+
+	// Specifies changes to request and response headers that need to take effect for the selected backend service. HeaderAction specified here are applied after the matching HttpRouteRule HeaderAction and before the HeaderAction in the UrlMap HeaderAction is not supported for load balancers that have their loadBalancingScheme set to EXTERNAL. Not supported when the URL map is bound to a target gRPC proxy that has validateForProxyless field set to true.
+	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.header_action
+	HeaderAction *HTTPHeaderAction `json:"headerAction,omitempty"`
+
+	// The name to which this PathMatcher is referred by the HostRule.
+	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.name
+	Name *string `json:"name,omitempty"`
+
+	// The list of path rules. Use this list instead of routeRules when routing based on simple path matching is all that's required. The order by which path rules are specified does not matter. Matches are always done on the longest-path-first basis. For example: a pathRule with a path /a/b/c/* will match before /a/b/* irrespective of the order in which those paths appear in this list. Within a given pathMatcher, only one of pathRules or routeRules must be set.
+	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.path_rules
+	PathRules []PathRule `json:"pathRules,omitempty"`
+
+	// The list of HTTP route rules. Use this list instead of pathRules when advanced route matching and routing actions are desired. routeRules are evaluated in order of priority, from the lowest to highest number. Within a given pathMatcher, you can set only one of pathRules or routeRules.
+	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.route_rules
+	RouteRules []HTTPRouteRule `json:"routeRules,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.PathRule
+type PathRule struct {
+	// customErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendServiceor BackendBucket responds with an error. If a policy for an error code is not configured for the PathRule, a policy for the error code configured in pathMatcher.defaultCustomErrorResponsePolicy is applied. If one is not specified in pathMatcher.defaultCustomErrorResponsePolicy, the policy configured in UrlMap.defaultCustomErrorResponsePolicy takes effect. For example, consider a UrlMap with the following configuration: - UrlMap.defaultCustomErrorResponsePolicy are configured with policies for 5xx and 4xx errors - A PathRule for /coming_soon/ is configured for the error code 404. If the request is for www.myotherdomain.com and a 404 is encountered, the policy under UrlMap.defaultCustomErrorResponsePolicy takes effect. If a 404 response is encountered for the request www.example.com/current_events/, the pathMatcher's policy takes effect. If however, the request for www.example.com/coming_soon/ encounters a 404, the policy in PathRule.customErrorResponsePolicy takes effect. If any of the requests in this example encounter a 500 error code, the policy at UrlMap.defaultCustomErrorResponsePolicy takes effect. customErrorResponsePolicy is supported only for global external Application Load Balancers.
+	// +kcc:proto:field=google.cloud.compute.v1.PathRule.custom_error_response_policy
+	CustomErrorResponsePolicy *CustomErrorResponsePolicy `json:"customErrorResponsePolicy,omitempty"`
+
+	// The list of path patterns to match. Each must start with / and the only place a * is allowed is at the end following a /. The string fed to the path matcher does not include any text after the first ? or #, and those chars are not allowed here.
+	// +kcc:proto:field=google.cloud.compute.v1.PathRule.paths
+	Paths []string `json:"paths,omitempty"`
+
+	// In response to a matching path, the load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend. Only one of urlRedirect, service or routeAction.weightedBackendService can be set. URL maps for classic Application Load Balancers only support the urlRewrite action within a path rule's routeAction.
+	// +kcc:proto:field=google.cloud.compute.v1.PathRule.route_action
+	RouteAction *HTTPRouteAction `json:"routeAction,omitempty"`
+
+	// The full or partial URL of the backend service resource to which traffic is directed if this rule is matched. If routeAction is also specified, advanced routing actions, such as URL rewrites, take effect before sending the request to the backend. Only one of urlRedirect, service or routeAction.weightedBackendService can be set.
+	// +kcc:proto:field=google.cloud.compute.v1.PathRule.service
+	Service *string `json:"service,omitempty"`
+
+	// When a path pattern is matched, the request is redirected to a URL specified by urlRedirect. Only one of urlRedirect, service or routeAction.weightedBackendService can be set. Not supported when the URL map is bound to a target gRPC proxy.
+	// +kcc:proto:field=google.cloud.compute.v1.PathRule.url_redirect
+	URLRedirect *HTTPRedirectAction `json:"urlRedirect,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.RequestMirrorPolicy
+type RequestMirrorPolicy struct {
+	// The full or partial URL to the BackendService resource being mirrored to. The backend service configured for a mirroring policy must reference backends that are of the same type as the original backend service matched in the URL map. Serverless NEG backends are not currently supported as a mirrored backend service.
+	// +kcc:proto:field=google.cloud.compute.v1.RequestMirrorPolicy.backend_service
+	BackendService *string `json:"backendService,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig
@@ -234,4 +671,76 @@ type SubnetworkParams struct {
 	// Tag keys/values directly bound to this resource. Tag keys and values have the same definition as resource manager tags. The field is allowed for INSERT only. The keys/values to set on the resource should be specified in either ID { : } or Namespaced format { : }. For example the following are valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123" : "tagValues/456"} * {"123/environment" : "production", "345/abc" : "xyz"} Note: * Invalid combinations of ID & namespaced format is not supported. For instance: {"123/environment" : "tagValues/444"} is invalid.
 	// +kcc:proto:field=google.cloud.compute.v1.SubnetworkParams.resource_manager_tags
 	ResourceManagerTags map[string]string `json:"resourceManagerTags,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.UrlMapTest
+type URLMapTest struct {
+	// Description of this test case.
+	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTest.description
+	Description *string `json:"description,omitempty"`
+
+	// The expected output URL evaluated by the load balancer containing the scheme, host, path and query parameters. For rules that forward requests to backends, the test passes only when expectedOutputUrl matches the request forwarded by the load balancer to backends. For rules with urlRewrite, the test verifies that the forwarded request matches hostRewrite and pathPrefixRewrite in the urlRewrite action. When service is specified, expectedOutputUrl`s scheme is ignored. For rules with urlRedirect, the test passes only if expectedOutputUrl matches the URL in the load balancer's redirect response. If urlRedirect specifies https_redirect, the test passes only if the scheme in expectedOutputUrl is also set to HTTPS. If urlRedirect specifies strip_query, the test passes only if expectedOutputUrl does not contain any query parameters. expectedOutputUrl is optional when service is specified.
+	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTest.expected_output_url
+	ExpectedOutputURL *string `json:"expectedOutputURL,omitempty"`
+
+	// For rules with urlRedirect, the test passes only if expectedRedirectResponseCode matches the HTTP status code in load balancer's redirect response. expectedRedirectResponseCode cannot be set when service is set.
+	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTest.expected_redirect_response_code
+	ExpectedRedirectResponseCode *int32 `json:"expectedRedirectResponseCode,omitempty"`
+
+	// HTTP headers for this request. If headers contains a host header, then host must also match the header value.
+	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTest.headers
+	Headers []URLMapTestHeader `json:"headers,omitempty"`
+
+	// Host portion of the URL. If headers contains a host header, then host must also match the header value.
+	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTest.host
+	Host *string `json:"host,omitempty"`
+
+	// Path portion of the URL.
+	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTest.path
+	Path *string `json:"path,omitempty"`
+
+	// Expected BackendService or BackendBucket resource the given URL should be mapped to. The service field cannot be set if expectedRedirectResponseCode is set.
+	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTest.service
+	Service *string `json:"service,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.UrlMapTestHeader
+type URLMapTestHeader struct {
+	// Header name.
+	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTestHeader.name
+	Name *string `json:"name,omitempty"`
+
+	// Header value.
+	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTestHeader.value
+	Value *string `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.UrlRewrite
+type URLRewrite struct {
+	// Before forwarding the request to the selected service, the request's host header is replaced with contents of hostRewrite. The value must be from 1 to 255 characters.
+	// +kcc:proto:field=google.cloud.compute.v1.UrlRewrite.host_rewrite
+	HostRewrite *string `json:"hostRewrite,omitempty"`
+
+	// Before forwarding the request to the selected backend service, the matching portion of the request's path is replaced by pathPrefixRewrite. The value must be from 1 to 1024 characters.
+	// +kcc:proto:field=google.cloud.compute.v1.UrlRewrite.path_prefix_rewrite
+	PathPrefixRewrite *string `json:"pathPrefixRewrite,omitempty"`
+
+	// If specified, the pattern rewrites the URL path (based on the :path header) using the HTTP template syntax. A corresponding path_template_match must be specified. Any template variables must exist in the path_template_match field. - -At least one variable must be specified in the path_template_match field - You can omit variables from the rewritten URL - The * and ** operators cannot be matched unless they have a corresponding variable name - e.g. {format=*} or {var=**}. For example, a path_template_match of /static/{format=**} could be rewritten as /static/content/{format} to prefix /content to the URL. Variables can also be re-ordered in a rewrite, so that /{country}/{format}/{suffix=**} can be rewritten as /content/{format}/{country}/{suffix}. At least one non-empty routeRules[].matchRules[].path_template_match is required. Only one of path_prefix_rewrite or path_template_rewrite may be specified.
+	// +kcc:proto:field=google.cloud.compute.v1.UrlRewrite.path_template_rewrite
+	PathTemplateRewrite *string `json:"pathTemplateRewrite,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.WeightedBackendService
+type WeightedBackendService struct {
+	// The full or partial URL to the default BackendService resource. Before forwarding the request to backendService, the load balancer applies any relevant headerActions specified as part of this backendServiceWeight.
+	// +kcc:proto:field=google.cloud.compute.v1.WeightedBackendService.backend_service
+	BackendService *string `json:"backendService,omitempty"`
+
+	// Specifies changes to request and response headers that need to take effect for the selected backendService. headerAction specified here take effect before headerAction in the enclosing HttpRouteRule, PathMatcher and UrlMap. headerAction is not supported for load balancers that have their loadBalancingScheme set to EXTERNAL. Not supported when the URL map is bound to a target gRPC proxy that has validateForProxyless field set to true.
+	// +kcc:proto:field=google.cloud.compute.v1.WeightedBackendService.header_action
+	HeaderAction *HTTPHeaderAction `json:"headerAction,omitempty"`
+
+	// Specifies the fraction of traffic sent to a backend service, computed as weight / (sum of all weightedBackendService weights in routeAction) . The selection of a backend service is determined only for new traffic. Once a user's request has been directed to a backend service, subsequent requests are sent to the same backend service as determined by the backend service's session affinity policy. Don't configure session affinity if you're using weighted traffic splitting. If you do, the weighted traffic splitting configuration takes precedence. The value must be from 0 to 1000.
+	// +kcc:proto:field=google.cloud.compute.v1.WeightedBackendService.weight
+	Weight *uint32 `json:"weight,omitempty"`
 }
