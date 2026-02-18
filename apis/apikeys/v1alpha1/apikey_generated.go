@@ -100,7 +100,6 @@ type APIKeySpec struct {
 
 // +kcc:observedstate:proto=google.api.apikeys.v2.Key
 type APIKeyObservedState struct {
-	/*NOTYET
 	// Output only. The resource name of the key.
 	//  The `name` has the form:
 	//  `projects/<PROJECT_NUMBER>/locations/global/keys/<KEY_ID>`.
@@ -110,7 +109,6 @@ type APIKeyObservedState struct {
 	//  NOTE: Key is a global resource; hence the only supported value for
 	//  location is `global`.
 	Name *string `json:"name,omitempty"`
-	*/
 
 	// Output only. Unique id in UUID4 format.
 	Uid *string `json:"uid,omitempty"`
