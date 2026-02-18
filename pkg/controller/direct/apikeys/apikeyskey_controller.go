@@ -26,7 +26,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apikeys/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -61,20 +61,18 @@ var keyMapping = NewMapping(&pb.Key{}, &krm.APIKeysKey{},
 	Ignore("name"),        // TODO: Should be ResourceID?
 	Ignore("annotations"), // TODO: Should not ignore
 ).
-	MapNested(&pb.Restrictions{}, &krm.KeyRestrictions{}, "apiTargets",
+	MapNested(&pb.Restrictions{}, &krm.Restrictions{}, "apiTargets",
 		"androidKeyRestrictions", "browserKeyRestrictions", "iosKeyRestrictions", "serverKeyRestrictions").
-	MapNested(&pb.AndroidKeyRestrictions{}, &krm.KeyAndroidKeyRestrictions{}, "allowedApplications").
-	MapNested(&pb.AndroidApplication{}, &krm.KeyAllowedApplications{}, "packageName", "sha1Fingerprint").
-	MapNested(&pb.ApiTarget{}, &krm.KeyApiTargets{}, "methods", "service").
-	MapNested(&pb.BrowserKeyRestrictions{}, &krm.KeyBrowserKeyRestrictions{}, "allowedReferrers").
-	MapNested(&pb.IosKeyRestrictions{}, &krm.KeyIosKeyRestrictions{}, "allowedBundleIds").
-	MapNested(&pb.ServerKeyRestrictions{}, &krm.KeyServerKeyRestrictions{}, "allowedIps").
+	MapNested(&pb.AndroidKeyRestrictions{}, &krm.AndroidKeyRestrictions{}, "allowedApplications").
+	MapNested(&pb.AndroidApplication{}, &krm.AndroidApplication{}, "packageName", "sha1Fingerprint").
+	MapNested(&pb.ApiTarget{}, &krm.ApiTarget{}, "methods", "service").
+	MapNested(&pb.BrowserKeyRestrictions{}, &krm.BrowserKeyRestrictions{}, "allowedReferrers").
+	MapNested(&pb.IosKeyRestrictions{}, &krm.IosKeyRestrictions{}, "allowedBundleIds").
+	MapNested(&pb.ServerKeyRestrictions{}, &krm.ServerKeyRestrictions{}, "allowedIps").
 	MustBuild()
 
 type adapter struct {
-	projectID string
-	location  string
-	keyID     string
+	identity *krm.APIKeysKeyIdentity
 
 	desired *krm.APIKeysKey
 	actual  *krm.APIKeysKey
@@ -101,7 +99,7 @@ func (m *model) client(ctx context.Context) (*api.Client, error) {
 // AdapterForObject implements the Model interface.
 func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
-	_ = op.Reader
+	reader := op.Reader
 	gcp, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -113,27 +111,16 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	projectID := obj.Spec.ProjectRef.External
-	if projectID == "" {
-		return nil, fmt.Errorf("unable to determine project")
+	identity, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
 	}
-
-	// TODO: Use name or request resourceID to be set on create?
-	keyID := direct.ValueOf(obj.Spec.ResourceID)
-	if keyID == "" {
-		return nil, fmt.Errorf("unable to determine resourceID")
-	}
-
-	// This is a slightly unusual resource; the location is in the URL,
-	// but the location is always "global".
-	location := "global"
+	id := identity.(*krm.APIKeysKeyIdentity)
 
 	return &adapter{
-		projectID: projectID,
-		location:  location,
-		keyID:     keyID,
-		desired:   obj,
-		gcp:       gcp,
+		identity: id,
+		desired:  obj,
+		gcp:      gcp,
 	}, nil
 }
 
@@ -143,7 +130,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 
 // Find implements the Adapter interface.
 func (a *adapter) Find(ctx context.Context) (bool, error) {
-	if a.keyID == "" {
+	if a.identity.Key == "" {
 		return false, nil
 	}
 
@@ -198,8 +185,8 @@ func (a *adapter) buildCreateRequest() (*pb.CreateKeyRequest, error) {
 	}
 
 	return &pb.CreateKeyRequest{
-		Parent: fmt.Sprintf("projects/%s/locations/%s", a.projectID, a.location),
-		KeyId:  a.keyID,
+		Parent: fmt.Sprintf("projects/%s/locations/%s", a.identity.Project, a.identity.Location),
+		KeyId:  a.identity.Key,
 		Key:    desired,
 	}, nil
 }
@@ -290,7 +277,7 @@ func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	u := &unstructured.Unstructured{
 		Object: make(map[string]interface{}),
 	}
-	u.SetName(a.keyID)
+	u.SetName(a.identity.Key)
 	u.SetGroupVersionKind(krm.APIKeysKeyGVK)
 	u.SetLabels(a.actual.Labels)
 	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
@@ -301,5 +288,5 @@ func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 }
 
 func (a *adapter) fullyQualifiedName() string {
-	return fmt.Sprintf("projects/%s/locations/%s/keys/%s", a.projectID, a.location, a.keyID)
+	return a.identity.String()
 }
