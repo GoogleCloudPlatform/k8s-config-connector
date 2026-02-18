@@ -91,6 +91,27 @@ jobs:
           path: /tmp/artifacts/
 
 
+  smoketest-with-kind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/smoketest-with-kind"
+        run: |
+          ./dev/ci/presubmits/smoketest-with-kind
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-smoketest-with-kind
+          path: /tmp/artifacts/
+
+
   test-mockgcp:
     runs-on: ubuntu-latest
     timeout-minutes: 60

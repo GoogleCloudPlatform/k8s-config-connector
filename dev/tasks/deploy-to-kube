@@ -22,74 +22,76 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-if [[ -z "${VERSION:-}" ]]; then
-  echo "VERSION must be set"
+if [[ -z "${IMAGE_TAG:-}" ]]; then
+  echo "IMAGE_TAG must be set"
   exit 1
 fi
 
 kustomize build operator/config/default | \
-  sed -e "s@image: operator:.*@image: gcr.io/gke-release/cnrm/operator:${VERSION}@g" | \
+  sed -e "s@image: operator:.*@image: gcr.io/gke-release/cnrm/operator:${IMAGE_TAG}@g" | \
+  sed -e "s@imagePullPolicy: Always@imagePullPolicy: IfNotPresent@g" | \
   kubectl apply --server-side -n configconnector-operator-system -f -
 
 echo "Waiting for configconnector-operator statefulset to become ready"
 kubectl wait -n configconnector-operator-system --for=jsonpath='{.status.readyReplicas}'=1 statefulset/configconnector-operator
 
-# Configure in namespace mode, per instructions at https://cloud.google.com/config-connector/docs/how-to/install-namespaced
-echo "Configuring namespace mode"
+# # Configure in namespace mode, per instructions at https://cloud.google.com/config-connector/docs/how-to/install-namespaced
+# echo "Configuring namespace mode"
+# cat <<EOF | kubectl apply --server-side -f -
+# apiVersion: core.cnrm.cloud.google.com/v1beta1
+# kind: ConfigConnector
+# metadata:
+#   # the name is restricted to ensure that there is only ConfigConnector resource installed in your cluster
+#   name: configconnector.core.cnrm.cloud.google.com
+# spec:
+#   mode: namespaced
+#   stateIntoSpec: Absent
+#   credentialSecretName: kcc-google-service-account
+# EOF
+
+# Configure in cluster mode so we can use a (fake) google service account
+echo "Creating namespace cnrm-system"
+kubectl create ns cnrm-system --dry-run=client -oyaml | kubectl apply --server-side -f -
+
+echo "Configuring ConfigConnector in cluster mode"
 cat <<EOF | kubectl apply --server-side -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kcc-google-service-account
+  namespace: cnrm-system
+type: Opaque
+stringData:
+   key.json: |
+    {
+      "type": "service_account",
+      "project_id": "fake-project-id",
+      "private_key_id": "fake-private-key-id",
+      "private_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEAsGHDAdHZfi81LgVeeMHXYLgNDpcFYhoBykYtTDdNyA5AixID\n8JdKlCmZ6qLNnZrbs4JlBJfmzw6rjUC5bVBFg5NwYVBu3+3Msa4rgLsTGsjPH9rt\nC+QFnFhcmzg3zz8eeXBqJdhw7wmn1Xa9SsC3h6YWveBk98ecyE7yGe8J8xGphjk7\nEQ/KBmRK/EJD0ZwuYW1W4Bv5f5fca7qvi9rCprEmL8//uy0qCwoJj2jU3zc5p72M\npkSZb1XlYxxTEo/h9WCEvWS9pGhy6fJ0sA2RsBHqU4Y5O7MJEei9yu5fVSZUi05f\n/ggfUID+cFEq0Z/A98whKPEBBJ/STdEaqEEkBwIDAQABAoIBAED6EsvF0dihbXbh\ntXbI+h4AT5cTXYFRUV2B0sgkC3xqe65/2YG1Sl0gojoE9bhcxxjvLWWuy/F1Vw93\nS5gQnTsmgpzm86F8yg6euhn3UMdqOJtknDToMITzLFJmOHEZsJFOL1x3ysrUhMan\nsn4qVrIbJn+WfbumBoToSFnzbHflacOh06ZRbYa2bpSPMfGGFtwqQjRadn5+pync\nlCjaupcg209sM0qEk/BDSzHvWL1VgLMdiKBx574TSwS0o569+7vPNt92Ydi7kARo\nreOzkkF4L3xNhKZnmls2eGH6A8cp1KZXoMLFuO+IwvBMA0O29LsUlKJU4PjBrf+7\nwaslnMECgYEA5bJv0L6DKZQD3RCBLue4/mDg0GHZqAhJBS6IcaXeaWeH6PgGZggV\nMGkWnULltJIYFwtaueTfjWqciAeocKx+rqoRjuDMOGgcrEf6Y+b5AqF+IjQM66Ll\nIYPUt3FCIc69z5LNEtyP4DSWsFPJ5UhAoG4QRlDTqT5q0gKHFjeLdeECgYEAxJRk\nkrsWmdmUs5NH9pyhTdEDIc59EuJ8iOqOLzU8xUw6/s2GSClopEFJeeEoIWhLuPY3\nX3bFt4ppl/ksLh05thRs4wXRxqhnokjD3IcGu3l6Gb5QZTYwb0VfN+q2tWVEE8Qc\nPQURheUsM2aP/gpJVQvNsWVmkT0Ijc3J8bR2hucCgYEAjOF4e0ueHu5NwFTTJvWx\nHTRGLwkU+l66ipcT0MCvPW7miRk2s3XZqSuLV0Ekqi/A3sF0D/g0tQPipfwsb48c\n0/wzcLKoDyCsFW7AQG315IswVcIe+peaeYfl++1XZmzrNlkPtrXY+ObIVbXOavZ5\nzOw0xyvj5jYGRnCOci33N4ECgYA91EKx2ABq0YGw3aEj0u31MMlgZ7b1KqFq2wNv\nm7oKgEiJ/hC/P673AsXefNAHeetfOKn/77aOXQ2LTEb2FiEhwNjiquDpL+ywoVxh\nT2LxsmqSEEbvHpUrWlFxn/Rpp3k7ElKjaqWxTHyTii2+BHQ+OKEwq6kQA3deSpy6\n1jz1fwKBgQDLqbdq5FA63PWqApfNVykXukg9MASIcg/0fjADFaHTPDvJjhFutxRP\nppI5Q95P12CQ/eRBZKJnRlkhkL8tfPaWPzzOpCTjID7avRhx2oLmstmYuXx0HluE\ncqXLbAV9WDpIJ3Bpa/S8tWujWhLDmixn2JeAdurWS+naH9U9e4I6Rw==\n-----END RSA PRIVATE KEY-----\n",
+      "client_email": "fake-service-account@fake-project-id.iam.gserviceaccount.com",
+      "client_id": "fake-client-id",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/fake-service-account@fake-project-id.iam.gserviceaccount.com"
+    }
+---
+
 apiVersion: core.cnrm.cloud.google.com/v1beta1
 kind: ConfigConnector
 metadata:
   # the name is restricted to ensure that there is only ConfigConnector resource installed in your cluster
   name: configconnector.core.cnrm.cloud.google.com
 spec:
-  mode: namespaced
+  mode: cluster
   stateIntoSpec: Absent
+  credentialSecretName: kcc-google-service-account
 EOF
 
-# Create namespace
-NS=config-control
-echo "Creating namespace ${NS}"
-kubectl create ns ${NS} --dry-run=client -oyaml | kubectl apply --server-side -f -
 
-echo "Creating ConfigConnectorContext in namespace ${NS} (with fake google service account)"
-cat <<EOF | kubectl apply --server-side -f -
-apiVersion: core.cnrm.cloud.google.com/v1beta1
-kind: ConfigConnectorContext
-metadata:
-  # you can only have one ConfigConnectorContext per namespace
-  name: configconnectorcontext.core.cnrm.cloud.google.com
-  namespace: ${NS}
-spec:
-  googleServiceAccount: "fake@fake.iam.gserviceaccount.com"
-  stateIntoSpec: Absent
-EOF
 
-echo "Waiting for KCC bound to namespace ${NS} to become ready"
-# We don't wait, because prom-to-sd is currently crashing
-#kubectl wait -n cnrm-system --for=condition=Ready -l cnrm.cloud.google.com/scoped-namespace=${NS} pod
+echo "Waiting for StorageBucket CRD to be created"
+kubectl wait  --for=create crd/storagebuckets.storage.cnrm.cloud.google.com
 
-echo "Creating StorageBucket in namespace ${NS}"
-cat <<EOF | kubectl apply -f -
-apiVersion: storage.cnrm.cloud.google.com/v1beta1
-kind: StorageBucket
-metadata:
-  name: "kcc-test-${NS}"
-  namespace: "${NS}"
-spec:
-  lifecycleRule:
-    - action:
-        type: Delete
-      condition:
-        age: 7
-        withState: ANY
-  versioning:
-    enabled: true
-  uniformBucketLevelAccess: true
-EOF
-
-# Wait for StorageBucket creation attempt
-# We can't kubectl wait, because we currently expect this to fail because we haven't set up IAM permissions
-echo "Sleeping to allow for attempt at StorageBucket creation"
-sleep 5
-kubectl describe storagebucket -n ${NS}
+echo "Waiting for StorageBucket CRD to become ready"
+kubectl wait  --for=jsonpath='{.status.acceptedNames.kind}'=StorageBucket crd/storagebuckets.storage.cnrm.cloud.google.com
