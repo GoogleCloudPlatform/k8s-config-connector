@@ -123,7 +123,7 @@ secretRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service. If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number from `status.observedState.version`{% endverbatim %}</p>
+            <p>{% verbatim %}The service-generated SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service. If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number from `status.observedState.version`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -550,6 +550,36 @@ metadata:
   name: secretmanagersecretversion-dep
 data:
   secretData: SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=
+---
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecretVersion
+metadata:
+  name: regionalsecret-kcc-asia-south1-version # kubectl name
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  enabled: true
+  secretData: 
+    value: test-secret-asia-south1
+  secretRef:
+    name: regionalsecret-kcc-asia-south1 # kubectl name of secret
+---
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecretVersion
+metadata:
+  name: regionalsecret-kcc-us-central1-version # kubectl name
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  enabled: true
+  secretData: 
+    value: test-secret-us-central1
+  secretRef:
+    name: regionalsecret-kcc-us-central1 # kubectl name of secret
 ---
 apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecret
