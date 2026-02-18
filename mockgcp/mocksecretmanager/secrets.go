@@ -36,6 +36,17 @@ type SecretsV1 struct {
 	pb.UnimplementedSecretManagerServiceServer
 }
 
+func (s *MockService) parseKey(key string, input string) (string, error) {
+	parts := strings.Split(input, "/")
+	for i, part := range parts {
+		if part == key && i+1 < len(parts) {
+			// Found the locations part, return the next element which should be the location ID
+			return parts[i+1], nil
+		}
+	}
+	return "", nil
+}
+
 // Creates a new [Secret][google.cloud.secretmanager.v1.Secret] containing no [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
 func (s *SecretsV1) CreateSecret(ctx context.Context, req *pb.CreateSecretRequest) (*pb.Secret, error) {
 	secretID := req.SecretId
@@ -43,7 +54,12 @@ func (s *SecretsV1) CreateSecret(ctx context.Context, req *pb.CreateSecretReques
 		return nil, status.Errorf(codes.InvalidArgument, "SecretId is required")
 	}
 
-	parent, err := projects.ParseProjectName(req.Parent)
+	projectStr, err := s.parseKey("projects", req.Parent)
+	if err != nil {
+		return nil, err
+	}
+
+	parent, err := projects.ParseProjectIDOrNumber(projectStr)
 	if err != nil {
 		return nil, err
 	}
@@ -53,17 +69,27 @@ func (s *SecretsV1) CreateSecret(ctx context.Context, req *pb.CreateSecretReques
 		return nil, err
 	}
 
+	// Returns blank if location not found
+	location, err := s.parseKey("locations", req.Parent)
+	if err != nil {
+		return nil, err
+	}
+
 	name := secretName{
 		Project:    project,
+		Location:   location,
 		SecretName: secretID,
 	}
+
 	fqn := name.String()
 
 	obj := proto.Clone(req.Secret).(*pb.Secret)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
-	if obj.Replication == nil {
-		return nil, fmt.Errorf("Secret.replication must be specified.")
+	if location == "" || location == "global" {
+		if obj.Replication == nil {
+			return nil, fmt.Errorf("Secret.replication must be specified.")
+		}
 	}
 	obj.Etag = computeEtag(obj)
 	if err := s.populateDefaultsForSecret(ctx, obj); err != nil {
@@ -204,11 +230,15 @@ func (s *SecretsV1) DeleteSecret(ctx context.Context, req *pb.DeleteSecretReques
 
 type secretName struct {
 	Project    *projects.ProjectData
+	Location   string
 	SecretName string
 }
 
 func (n *secretName) String() string {
-	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/secrets/" + n.SecretName
+	if n.Location == "" || n.Location == "global" {
+		return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/secrets/" + n.SecretName
+	}
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/secrets/" + n.SecretName
 }
 
 // parseSecretName parses a string into a secretName.
@@ -228,11 +258,30 @@ func (s *MockService) parseSecretName(name string) (*secretName, error) {
 
 		name := &secretName{
 			Project:    project,
+			Location:   "global",
 			SecretName: tokens[3],
 		}
 
 		return name, nil
-	} else {
-		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "secrets" {
+		projectName, err := projects.ParseProjectName("projects/" + tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		project, err := s.Projects.GetProject(projectName)
+		if err != nil {
+			return nil, err
+		}
+
+		name := &secretName{
+			Project:    project,
+			Location:   tokens[3],
+			SecretName: tokens[5],
+		}
+
+		return name, nil
+	}
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }

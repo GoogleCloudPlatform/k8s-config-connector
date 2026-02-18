@@ -48,12 +48,19 @@ type modelSecretVersion struct {
 	config config.ControllerConfig
 }
 
-func (m *modelSecretVersion) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelSecretVersion) client(ctx context.Context, location string) (*gcp.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
+
+	// Add regional endpoint if location is specified
+	if location != "" && location != "global" {
+		endpoint := fmt.Sprintf("secretmanager.%s.rep.googleapis.com:443", location)
+		opts = append(opts, option.WithEndpoint(endpoint))
+	}
+
 	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building SecretVersion client: %w", err)
@@ -75,7 +82,7 @@ func (m *modelSecretVersion) AdapterForObject(ctx context.Context, op *directbas
 	}
 
 	// Get secretmanager GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Parent().Location())
 	if err != nil {
 		return nil, err
 	}
