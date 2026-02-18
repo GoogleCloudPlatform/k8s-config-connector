@@ -44,12 +44,12 @@ type MemorystoreInstanceEndpointStatus struct {
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *MemorystoreInstanceObservedState `json:"observedState,omitempty"`
+	ObservedState *MemorystoreInstanceEndpointObservedState `json:"observedState,omitempty"`
 }
 
-// MemorystoreInstanceObservedState is the state of the MemorystoreInstance resource as most recently observed in GCP.
+// MemorystoreInstanceEndpointObservedState is the state of the MemorystoreInstance resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance
-type MemorystoreInstanceObservedState struct {
+type MemorystoreInstanceEndpointObservedState struct {
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints
 	Endpoints []EndpointObservedState `json:"endpoints,omitempty"`
