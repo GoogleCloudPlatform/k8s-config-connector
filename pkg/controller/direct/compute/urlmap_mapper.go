@@ -25,7 +25,6 @@ func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMa
 		return nil
 	}
 	out := &krm.ComputeURLMapSpec{}
-	out.DefaultCustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetDefaultCustomErrorResponsePolicy())
 	out.DefaultRouteAction = HTTPRouteAction_v1beta1_FromProto(mapCtx, in.GetDefaultRouteAction())
 	out.DefaultService = ComputeURLMapServiceRef_v1beta1_FromProto(mapCtx, in.DefaultService)
 	out.DefaultURLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetDefaultUrlRedirect())
@@ -42,7 +41,6 @@ func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 		return nil
 	}
 	out := &pb.UrlMap{}
-	out.DefaultCustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.DefaultCustomErrorResponsePolicy)
 	out.DefaultRouteAction = HTTPRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
 	out.DefaultService = ComputeURLMapServiceRef_v1beta1_ToProto(mapCtx, in.DefaultService)
 	out.DefaultUrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.DefaultURLRedirect)
@@ -59,7 +57,6 @@ func PathMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PathMatcher
 		return nil
 	}
 	out := &krm.PathMatcher{}
-	out.DefaultCustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetDefaultCustomErrorResponsePolicy())
 	out.DefaultRouteAction = HTTPRouteAction_v1beta1_FromProto(mapCtx, in.GetDefaultRouteAction())
 	out.DefaultService = ComputeURLMapServiceRef_v1beta1_FromProto(mapCtx, in.DefaultService)
 	out.DefaultURLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetDefaultUrlRedirect())
@@ -76,7 +73,6 @@ func PathMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PathMatcher)
 		return nil
 	}
 	out := &pb.PathMatcher{}
-	out.DefaultCustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.DefaultCustomErrorResponsePolicy)
 	out.DefaultRouteAction = HTTPRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
 	out.DefaultService = ComputeURLMapServiceRef_v1beta1_ToProto(mapCtx, in.DefaultService)
 	out.DefaultUrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.DefaultURLRedirect)
@@ -93,7 +89,6 @@ func PathRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PathRule) *krm
 		return nil
 	}
 	out := &krm.PathRule{}
-	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetCustomErrorResponsePolicy())
 	out.Paths = in.Paths
 	out.RouteAction = HTTPRouteAction_v1beta1_FromProto(mapCtx, in.GetRouteAction())
 	out.Service = ComputeURLMapServiceRef_v1beta1_FromProto(mapCtx, in.Service)
@@ -106,7 +101,6 @@ func PathRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PathRule) *pb.P
 		return nil
 	}
 	out := &pb.PathRule{}
-	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.CustomErrorResponsePolicy)
 	out.Paths = in.Paths
 	out.RouteAction = HTTPRouteAction_v1beta1_ToProto(mapCtx, in.RouteAction)
 	out.Service = ComputeURLMapServiceRef_v1beta1_ToProto(mapCtx, in.Service)
@@ -119,7 +113,6 @@ func HTTPRouteRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute
 		return nil
 	}
 	out := &krm.HTTPRouteRule{}
-	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetCustomErrorResponsePolicy())
 	out.Description = in.Description
 	out.HeaderAction = HTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
 	out.MatchRules = direct.Slice_FromProto(mapCtx, in.MatchRules, HTTPRouteRuleMatch_v1beta1_FromProto)
@@ -135,7 +128,6 @@ func HTTPRouteRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPRouteR
 		return nil
 	}
 	out := &pb.HttpRouteRule{}
-	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.CustomErrorResponsePolicy)
 	out.Description = in.Description
 	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
 	out.MatchRules = direct.Slice_ToProto(mapCtx, in.MatchRules, HTTPRouteRuleMatch_v1beta1_ToProto)

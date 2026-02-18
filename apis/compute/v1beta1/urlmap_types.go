@@ -34,10 +34,6 @@ type ComputeURLMapSpec struct {
 	// The ComputeURLMap name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// defaultCustomErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendServiceor BackendBucket responds with an error. This policy takes effect at the load balancer level and applies only when no policy has been defined for the error code at lower levels like PathMatcher, RouteRule and PathRule within this UrlMap.
-	// +kcc:proto:field=google.cloud.compute.v1.UrlMap.default_custom_error_response_policy
-	DefaultCustomErrorResponsePolicy *CustomErrorResponsePolicy `json:"defaultCustomErrorResponsePolicy,omitempty"`
-
 	// defaultRouteAction takes effect when none of the hostRules match. The load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend.
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMap.default_route_action
 	DefaultRouteAction *HTTPRouteAction `json:"defaultRouteAction,omitempty"`
@@ -78,10 +74,6 @@ type ComputeURLMapServiceRef struct {
 
 // +kcc:proto=google.cloud.compute.v1.PathMatcher
 type PathMatcher struct {
-	// defaultCustomErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendServiceor BackendBucket responds with an error.
-	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.default_custom_error_response_policy
-	DefaultCustomErrorResponsePolicy *CustomErrorResponsePolicy `json:"defaultCustomErrorResponsePolicy,omitempty"`
-
 	// defaultRouteAction takes effect when none of the pathRules or routeRules match.
 	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.default_route_action
 	DefaultRouteAction *HTTPRouteAction `json:"defaultRouteAction,omitempty"`
@@ -117,10 +109,6 @@ type PathMatcher struct {
 
 // +kcc:proto=google.cloud.compute.v1.PathRule
 type PathRule struct {
-	// customErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendServiceor BackendBucket responds with an error.
-	// +kcc:proto:field=google.cloud.compute.v1.PathRule.custom_error_response_policy
-	CustomErrorResponsePolicy *CustomErrorResponsePolicy `json:"customErrorResponsePolicy,omitempty"`
-
 	// The list of path patterns to match.
 	// +kcc:proto:field=google.cloud.compute.v1.PathRule.paths
 	Paths []string `json:"paths,omitempty"`
@@ -140,10 +128,6 @@ type PathRule struct {
 
 // +kcc:proto=google.cloud.compute.v1.HttpRouteRule
 type HTTPRouteRule struct {
-	// customErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendServiceor BackendBucket responds with an error.
-	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRule.custom_error_response_policy
-	CustomErrorResponsePolicy *CustomErrorResponsePolicy `json:"customErrorResponsePolicy,omitempty"`
-
 	// The short description conveying the intent of this routeRule.
 	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRule.description
 	Description *string `json:"description,omitempty"`
