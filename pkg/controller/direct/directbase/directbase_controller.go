@@ -432,7 +432,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			if createOp.HasSetReadyCondition {
 				return createOp.RequeueRequested, err
 			}
-			return false, r.handleUpdateFailed(ctx, u, fmt.Errorf("error creating: %w", err))
+			return false, createOp.RecordCreateError(ctx, nil, fmt.Errorf("error creating: %w", err))
 		}
 		hasSetReadyCondition = createOp.HasSetReadyCondition
 		requeueRequested = createOp.RequeueRequested
@@ -446,7 +446,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			if updateOp.HasSetReadyCondition {
 				return updateOp.RequeueRequested, err
 			}
-			return false, r.handleUpdateFailed(ctx, u, fmt.Errorf("error updating: %w", err))
+			return false, updateOp.RecordUpdateError(ctx, nil, fmt.Errorf("error updating: %w", err))
 		}
 		hasSetReadyCondition = updateOp.HasSetReadyCondition
 		requeueRequested = updateOp.RequeueRequested
