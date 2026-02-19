@@ -356,6 +356,9 @@ type InstanceSettings struct {
 	/* The edition of the instance, can be ENTERPRISE or ENTERPRISE_PLUS. */
 	// +optional
 	Edition *string `json:"edition,omitempty"`
+	/* The number of backups to retain. Supported for Second Generation instances. */
+	// +optional
+	RetainedBackups *int64 `json:"retainedBackups,omitempty"`
 
 	/* Configuration of Query Insights. */
 	// +optional

@@ -158,6 +158,7 @@ func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string)
 		DeletionProtectionEnabled: direct.ValueOf(in.DeletionProtectionEnabled),
 		DenyMaintenancePeriods:    InstanceDenyMaintenancePeriodsKRMToGCP(in.DenyMaintenancePeriod),
 		Edition:                   direct.ValueOf(in.Edition),
+		RetainedBackups:           direct.ValueOf(in.RetainedBackups),
 		// EnableDataplexIntegration is not supported in KRM API.
 		// EnableGoogleMlIntegration is not supported in KRM API.
 		InsightsConfig:           InstanceInsightsConfigKRMToGCP(in.InsightsConfig),
