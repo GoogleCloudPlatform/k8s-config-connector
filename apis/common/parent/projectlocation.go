@@ -70,6 +70,7 @@ type ProjectAndLocationRef struct {
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location is immutable."
 	Location string `json:"location"`
 }
 

@@ -23,6 +23,8 @@ package v1beta1
 
 type PubSubSchemaExpansion interface{}
 
+type PubSubSnapshotExpansion interface{}
+
 type PubSubSubscriptionExpansion interface{}
 
 type PubSubTopicExpansion interface{}

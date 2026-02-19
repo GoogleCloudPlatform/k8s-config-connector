@@ -31,7 +31,9 @@ import (
 
 type StorageV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	StorageFoldersGetter
 	StorageHMACKeysGetter
+	StorageManagedFoldersGetter
 }
 
 // StorageV1alpha1Client is used to interact with features provided by the storage.cnrm.cloud.google.com group.
@@ -39,8 +41,16 @@ type StorageV1alpha1Client struct {
 	restClient rest.Interface
 }
 
+func (c *StorageV1alpha1Client) StorageFolders(namespace string) StorageFolderInterface {
+	return newStorageFolders(c, namespace)
+}
+
 func (c *StorageV1alpha1Client) StorageHMACKeys(namespace string) StorageHMACKeyInterface {
 	return newStorageHMACKeys(c, namespace)
+}
+
+func (c *StorageV1alpha1Client) StorageManagedFolders(namespace string) StorageManagedFolderInterface {
+	return newStorageManagedFolders(c, namespace)
 }
 
 // NewForConfig creates a new StorageV1alpha1Client for the given config.

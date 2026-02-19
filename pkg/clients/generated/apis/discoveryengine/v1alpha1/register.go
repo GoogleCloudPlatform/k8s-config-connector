@@ -59,5 +59,17 @@ var (
 		Kind:    reflect.TypeOf(DiscoveryEngineDataStore{}).Name(),
 	}
 
+	DiscoveryEngineDataStoreTargetSiteGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DiscoveryEngineDataStoreTargetSite{}).Name(),
+	}
+
+	DiscoveryEngineEngineGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DiscoveryEngineEngine{}).Name(),
+	}
+
 	discoveryengineAPIVersion = SchemeGroupVersion.String()
 )

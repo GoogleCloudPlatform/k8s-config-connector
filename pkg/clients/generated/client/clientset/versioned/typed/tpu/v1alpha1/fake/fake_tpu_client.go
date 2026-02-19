@@ -35,6 +35,10 @@ func (c *FakeTpuV1alpha1) TPUNodes(namespace string) v1alpha1.TPUNodeInterface {
 	return &FakeTPUNodes{c, namespace}
 }
 
+func (c *FakeTpuV1alpha1) TPUVirtualMachines(namespace string) v1alpha1.TPUVirtualMachineInterface {
+	return &FakeTPUVirtualMachines{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeTpuV1alpha1) RESTClient() rest.Interface {

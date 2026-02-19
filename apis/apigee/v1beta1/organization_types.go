@@ -27,7 +27,7 @@ var ApigeeOrganizationGVK = GroupVersion.WithKind("ApigeeOrganization")
 // ApigeeOrganizationSpec defines the desired state of ApigeeOrganization
 // +kcc:spec:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Organization
 type ApigeeOrganizationSpec struct {
-	// The ApigeeOrganization name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Addon configurations of the Apigee organization.

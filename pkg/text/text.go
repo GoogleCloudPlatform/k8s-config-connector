@@ -20,6 +20,14 @@ import (
 	"unicode"
 )
 
+var (
+	snakeCaseRegex1     = regexp.MustCompile("(.)([A-Z][a-z]+)")
+	snakeCaseRegex2     = regexp.MustCompile("([a-z0-9])([A-Z])")
+	pascalCaseRegex     = regexp.MustCompile("^[A-Z][a-z]*([A-Z][a-z]*)*$")
+	snakeCaseCheckRegex = regexp.MustCompile("^[a-z1-9]+(_[a-z1-9]+)*$")
+	specialCharRegex    = regexp.MustCompile(`[^0-9A-Za-z ]+`)
+)
+
 // TODO: there must be some package out there that does this well
 func Pluralize(singular string) string {
 	// special case for IAPSettings, as "settings" is already a plural of "setting", adding another "es" would be unnecessary
@@ -85,8 +93,8 @@ func SnakeCaseToLowerCase(s string) string {
 // change is made. Any transitions in the input from lowercase to uppercase are interpreted as camelCase-style word
 // transitions, and are replaced with an underscore.
 func AsSnakeCase(s string) string {
-	res := regexp.MustCompile("(.)([A-Z][a-z]+)").ReplaceAllString(s, "${1}_${2}")
-	return strings.ToLower(regexp.MustCompile("([a-z0-9])([A-Z])").ReplaceAllString(res, "${1}_${2}"))
+	res := snakeCaseRegex1.ReplaceAllString(s, "${1}_${2}")
+	return strings.ToLower(snakeCaseRegex2.ReplaceAllString(res, "${1}_${2}"))
 }
 
 // Convert a CamelCaseString to kebab-case-string.
@@ -151,16 +159,13 @@ func AppendStrAsNewParagraph(base, str string) string {
 }
 
 func IsPascalCase(s string) bool {
-	sampleRegex := regexp.MustCompile("^[A-Z][a-z]*([A-Z][a-z]*)*$")
-	return sampleRegex.Match([]byte(s))
+	return pascalCaseRegex.Match([]byte(s))
 }
 
 func IsSnakeCase(s string) bool {
-	stringRegex := regexp.MustCompile("^[a-z1-9]+(_[a-z1-9]+)*$")
-	return stringRegex.Match([]byte(s))
+	return snakeCaseCheckRegex.Match([]byte(s))
 }
 
 func RemoveSpecialCharacters(s string) string {
-	specialCharRegex := regexp.MustCompile(`[^0-9A-Za-z ]+`)
 	return specialCharRegex.ReplaceAllString(s, "")
 }

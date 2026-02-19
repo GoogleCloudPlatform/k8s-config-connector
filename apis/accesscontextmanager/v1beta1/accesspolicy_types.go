@@ -24,7 +24,7 @@ var AccessContextManagerAccessPolicyGVK = GroupVersion.WithKind("AccessContextMa
 // AccessContextManagerAccessPolicySpec defines the desired state of AccessContextManagerAccessPolicy
 // +kcc:spec:proto=google.identity.accesscontextmanager.v1.AccessPolicy
 type AccessContextManagerAccessPolicySpec struct {
-	// The AccessContextManagerAccessPolicy name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. Human readable title. Does not affect behavior.

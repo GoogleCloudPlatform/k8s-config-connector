@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,9 +15,15 @@
 package main
 
 import (
-	"golang.org/x/tools/go/analysis/singlechecker"
+	"golang.org/x/tools/go/analysis/multichecker"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/linters/jsonunmarshalreuse"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/linters/loglint"
 )
 
 func main() {
-	singlechecker.Main(Analyzer)
+	multichecker.Main(
+		loglint.Analyzer,
+		jsonunmarshalreuse.Analyzer,
+	)
 }

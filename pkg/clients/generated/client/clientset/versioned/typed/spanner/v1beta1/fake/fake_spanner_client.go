@@ -31,6 +31,10 @@ type FakeSpannerV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeSpannerV1beta1) SpannerBackupSchedules(namespace string) v1beta1.SpannerBackupScheduleInterface {
+	return &FakeSpannerBackupSchedules{c, namespace}
+}
+
 func (c *FakeSpannerV1beta1) SpannerDatabases(namespace string) v1beta1.SpannerDatabaseInterface {
 	return &FakeSpannerDatabases{c, namespace}
 }

@@ -48,12 +48,16 @@ func register(t RegisteredTemplate) {
 	registry = append(registry, t)
 }
 
+type FieldMeta struct {
+	segment    string
+	fieldIndex []int
+}
+
 // URLTemplate handles parsing and formatting of URLs based on a template.
 type URLTemplate[T any] struct {
-	host                string
-	template            string
-	segments            []string
-	segmentToFieldIndex []int
+	host     string
+	template string
+	fields   []FieldMeta
 }
 
 // Template creates a new URLTemplate for the given host and template string.
@@ -61,54 +65,34 @@ type URLTemplate[T any] struct {
 // The generic type T must be a struct with fields matching the placeholders in the template.
 // Field names are matched case-insensitively against the placeholders.
 func Template[T any](host, template string) *URLTemplate[T] {
-	t := &URLTemplate[T]{
-		host:     host,
-		template: template,
-		segments: strings.Split(template, "/"),
-	}
-
 	var zero T
 	typ := reflect.TypeOf(zero)
 	if typ.Kind() != reflect.Struct {
 		panic(fmt.Sprintf("type %T must be a struct", zero))
 	}
+	// Generate a map of field name to index/path
+	nameMap := make(map[string][]int)
+	generateNameMap(nameMap, typ, make([]int, 0))
 
-	t.segmentToFieldIndex = make([]int, len(t.segments))
-	for i, segment := range t.segments {
+	segments := strings.Split(template, "/")
+	fields := make([]FieldMeta, len(segments))
+	for i, segment := range segments {
+		fields[i].segment = segment
 		if strings.HasPrefix(segment, "{") && strings.HasSuffix(segment, "}") {
-			key := segment[1 : len(segment)-1]
-			fieldIdx := -1
-
-			// Find matching field
-			// We look for all fields that match case-insensitively.
-			// If we find multiple, we panic to avoid ambiguity.
-			var matches []int
-			for j := 0; j < typ.NumField(); j++ {
-				f := typ.Field(j)
-				if strings.EqualFold(f.Name, key) {
-					matches = append(matches, j)
-				}
-			}
-
-			if len(matches) == 1 {
-				fieldIdx = matches[0]
-			} else if len(matches) > 1 {
-				panic(fmt.Sprintf("multiple fields match %q in struct %T", key, zero))
-			}
-
-			if fieldIdx == -1 {
+			key := strings.ToLower(segment[1 : len(segment)-1])
+			path, present := nameMap[key]
+			if !present {
 				panic(fmt.Sprintf("field %q not found in struct %T", key, zero))
 			}
-
-			// Verify field is a string
-			if typ.Field(fieldIdx).Type.Kind() != reflect.String {
-				panic(fmt.Sprintf("field %q in struct %T is not a string", key, zero))
-			}
-
-			t.segmentToFieldIndex[i] = fieldIdx
+			fields[i].fieldIndex = path
 		} else {
-			t.segmentToFieldIndex[i] = -1
+			fields[i].fieldIndex = []int{-1}
 		}
+	}
+	t := &URLTemplate[T]{
+		host:     host,
+		template: template,
+		fields:   fields,
 	}
 
 	register(t)
@@ -133,15 +117,16 @@ func (t *URLTemplate[T]) Parse(s string) (*T, bool, error) {
 	s = strings.Trim(s, "/")
 	parts := strings.Split(s, "/")
 
-	if len(parts) != len(t.segments) {
+	if len(parts) != len(t.fields) {
 		return nil, false, nil
 	}
 
 	var result T
 	val := reflect.ValueOf(&result).Elem()
+	typ := reflect.TypeOf(result)
 
 	for i, part := range parts {
-		fieldIdx := t.segmentToFieldIndex[i]
+		fieldIdx := t.fields[i].fieldIndex[0]
 		if fieldIdx != -1 {
 			// Variable
 			if part == "" {
@@ -149,10 +134,25 @@ func (t *URLTemplate[T]) Parse(s string) (*T, bool, error) {
 			}
 			f := val.Field(fieldIdx)
 			// We checked type in Template()
-			f.SetString(part)
+			if typ.Field(fieldIdx).Type.Kind() == reflect.String {
+				f.SetString(part)
+			} else {
+				s := f.Addr()
+				if s.IsNil() {
+					panic(fmt.Sprintf("field %q is nil", typ.Field(fieldIdx).Type.Kind()))
+				}
+				tp := typ.Field(fieldIdx).Type
+				c := s.Convert(reflect.PointerTo(tp))
+				subIdx := t.fields[i].fieldIndex[1]
+				if tp.Field(subIdx).Type.Kind() == reflect.String {
+					f.Field(subIdx).SetString(part)
+				} else {
+					panic(fmt.Sprintf("field %q on %v(%T)(%d) in struct %T is not a string", tp, c, c, c.NumMethod(), result))
+				}
+			}
 		} else {
 			// Static
-			if part != t.segments[i] {
+			if part != t.fields[i].segment {
 				return nil, false, nil
 			}
 		}
@@ -176,8 +176,9 @@ func (t *URLTemplate[T]) ToString(v T) string {
 	var parts []string
 	val := reflect.ValueOf(v)
 
-	for i, segment := range t.segments {
-		fieldIdx := t.segmentToFieldIndex[i]
+	for _, field := range t.fields {
+		segment := field.segment
+		fieldIdx := field.fieldIndex[0]
 		if fieldIdx != -1 {
 			f := val.Field(fieldIdx)
 			parts = append(parts, f.String())
@@ -186,4 +187,23 @@ func (t *URLTemplate[T]) ToString(v T) string {
 		}
 	}
 	return strings.Join(parts, "/")
+}
+
+func generateNameMap(nameMap map[string][]int, structType reflect.Type, path []int) {
+	for j := 0; j < structType.NumField(); j++ {
+		f := structType.Field(j)
+		if structType.Field(j).Type.Kind() == reflect.String {
+			name := strings.ToLower(f.Name)
+			if _, present := nameMap[name]; present {
+				panic(fmt.Sprintf("multiple fields match %q in struct %T", name, structType))
+			}
+			nameMap[name] = append(path, j)
+		} else if structType.Field(j).Type.Kind() == reflect.Struct {
+			innerType := structType.Field(j).Type
+			innerPath := append(path, j)
+			generateNameMap(nameMap, innerType, innerPath)
+		} else {
+			panic(fmt.Sprintf("field %q in struct %T is not a string or a struct", f.Name, structType))
+		}
+	}
 }

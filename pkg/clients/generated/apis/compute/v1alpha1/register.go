@@ -95,10 +95,28 @@ var (
 		Kind:    reflect.TypeOf(ComputeInstanceGroupNamedPort{}).Name(),
 	}
 
+	ComputeInterconnectGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeInterconnect{}).Name(),
+	}
+
 	ComputeMachineImageGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(ComputeMachineImage{}).Name(),
+	}
+
+	ComputeNetworkAttachmentGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeNetworkAttachment{}).Name(),
+	}
+
+	ComputeNetworkEdgeSecurityServiceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeNetworkEdgeSecurityService{}).Name(),
 	}
 
 	ComputeNetworkEndpointGVK = schema.GroupVersionKind{

@@ -101,22 +101,6 @@ type ExecutionReference struct {
 	CompletionStatus *string `json:"completionStatus,omitempty"`
 }
 
-// +kcc:proto=google.cloud.run.v2.GCSVolumeSource
-type GCSVolumeSource struct {
-	// Cloud Storage Bucket name.
-	// +kcc:proto:field=google.cloud.run.v2.GCSVolumeSource.bucket
-	Bucket *string `json:"bucket,omitempty"`
-
-	// If true, the volume will be mounted as read only for all mounts.
-	// +kcc:proto:field=google.cloud.run.v2.GCSVolumeSource.read_only
-	ReadOnly *bool `json:"readOnly,omitempty"`
-
-	// A list of additional flags to pass to the gcsfuse CLI.
-	//  Options should be specified without the leading "--".
-	// +kcc:proto:field=google.cloud.run.v2.GCSVolumeSource.mount_options
-	MountOptions []string `json:"mountOptions,omitempty"`
-}
-
 // +kcc:proto=google.cloud.run.v2.GRPCAction
 type GrpcAction struct {
 	// Optional. Port number of the gRPC service. Number must be in the range 1 to

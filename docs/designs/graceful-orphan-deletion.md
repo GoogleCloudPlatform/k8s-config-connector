@@ -68,7 +68,9 @@ This pseudocode reflects the necessary changes in the resource-specific model an
 
 ```go
 // In the model implementation for a resource...
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+    u := op.GetUnstructured()
+    reader := op.Reader
     // If the resource is being deleted AND has a status.externalRef,
     // construct a specialized adapter that can perform Find/Delete using only that identifier.
     // This bypasses spec dependency resolution entirely.

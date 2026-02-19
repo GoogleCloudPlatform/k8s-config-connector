@@ -32,8 +32,11 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type FhirstoreBigqueryDestination struct {
 	/* BigQuery URI to a dataset, up to 2000 characters long, in the format bq://projectId.bqDatasetId. */

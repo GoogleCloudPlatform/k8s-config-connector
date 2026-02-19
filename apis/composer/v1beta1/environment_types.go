@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
@@ -26,20 +27,11 @@ import (
 
 var ComposerEnvironmentGVK = GroupVersion.WithKind("ComposerEnvironment")
 
-type Parent struct {
-	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// Immutable. The name of the location where the Environment will be created.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location is immutable."
-	// Required.
-	Location string `json:"location"`
-}
-
 // ComposerEnvironmentSpec defines the desired state of ComposerEnvironment
 // +kcc:spec:proto=google.cloud.orchestration.airflow.service.v1.Environment
 type ComposerEnvironmentSpec struct {
-	Parent `json:",inline"`
+	// The Project and location that this resource belongs to.
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The ComposerEnvironment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

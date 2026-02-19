@@ -1,0 +1,127 @@
+POST https://parametermanager.googleapis.com/v1/projects/${projectId}/locations/global/parameters?alt=json&parameterId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "format": "JSON",
+  "kmsKey": "projects/${projectId}/locations/global/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}",
+  "labels": {
+    "key": "value"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "format": "JSON",
+  "kmsKey": "projects/${projectId}/locations/global/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/parameters/test-${uniqueId}",
+  "policyMember": {
+    "iamPolicyUidPrincipal": "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://parametermanager.googleapis.com/v1/projects/${projectId}/locations/global/parameters/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "format": "JSON",
+  "kmsKey": "projects/${projectId}/locations/global/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}",
+  "labels": {
+    "key": "value"
+  },
+  "name": "projects/${projectId}/locations/global/parameters/test-${uniqueId}",
+  "policyMember": {
+    "iamPolicyUidPrincipal": "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://parametermanager.googleapis.com/v1/projects/${projectId}/locations/global/parameters/test-${uniqueId}?alt=json&updateMask=kmsKey%2Clabels
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "format": "JSON",
+  "kmsKey": "projects/${projectId}/locations/global/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key2-${uniqueId}",
+  "labels": {
+    "key": "value2"
+  },
+  "name": "projects/${projectId}/locations/global/parameters/test-${uniqueId}",
+  "policyMember": {
+    "iamPolicyUidPrincipal": "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "format": "JSON",
+  "kmsKey": "projects/${projectId}/locations/global/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key2-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/parameters/test-${uniqueId}",
+  "policyMember": {
+    "iamPolicyUidPrincipal": "principal://parametermanager.googleapis.com/projects/${projectNumber}/uid/locations/global/parameters/${uniqueId}"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://parametermanager.googleapis.com/v1/projects/${projectId}/locations/global/parameters/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

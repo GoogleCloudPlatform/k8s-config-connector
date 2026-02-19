@@ -575,6 +575,9 @@ spec:
                 type: object
               location:
                 type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               logsPolicy:
                 description: Log preservation policy for the Job.
                 properties:

@@ -43,6 +43,7 @@ export RECORDER_IMG=${IMAGE_PREFIX}recorder:${IMAGE_TAG}
 export WEBHOOK_IMG=${IMAGE_PREFIX}webhook:${IMAGE_TAG}
 export DELETION_DEFENDER_IMG=${IMAGE_PREFIX}deletiondefender:${IMAGE_TAG}
 export UNMANAGED_DETECTOR_IMG=${IMAGE_PREFIX}unmanageddetector:${IMAGE_TAG}
+export CONFIG_CONNECTOR_IMG=${IMAGE_PREFIX}config-connector-cli:${IMAGE_TAG}
 
 export OPERATOR_IMG=${IMAGE_PREFIX}operator:${IMAGE_TAG}
 

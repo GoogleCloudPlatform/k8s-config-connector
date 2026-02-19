@@ -18,6 +18,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -594,13 +595,29 @@ type Volume struct {
 	// +kcc:proto:field=google.cloud.run.v2.Volume.empty_dir
 	EmptyDir *EmptyDirVolumeSource `json:"emptyDir,omitempty"`
 
-	// For NFS Voumes, contains the path to the nfs Volume
+	// For Nfs Volumes, contains the path to the nfs Volume
 	// +kcc:proto:field=google.cloud.run.v2.Volume.nfs
-	// Nfs *NfsVolumeSource `json:"nfs,omitempty"`
+	Nfs *NfsVolumeSource `json:"nfs,omitempty"`
 
 	// Persistent storage backed by a Google Cloud Storage bucket.
 	// +kcc:proto:field=google.cloud.run.v2.Volume.gcs
-	// GCS *GCSVolumeSource `json:"gcs,omitempty"`
+	GCS *GCSVolumeSource `json:"gcs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.run.v2.GCSVolumeSource
+type GCSVolumeSource struct {
+	// Cloud Storage Bucket name.
+	// +kcc:proto:field=google.cloud.run.v2.GCSVolumeSource.bucket
+	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef,omitempty"`
+
+	// If true, the volume will be mounted as read only for all mounts.
+	// +kcc:proto:field=google.cloud.run.v2.GCSVolumeSource.read_only
+	ReadOnly *bool `json:"readOnly,omitempty"`
+
+	// A list of additional flags to pass to the gcsfuse CLI.
+	//  Options should be specified without the leading "--".
+	// +kcc:proto:field=google.cloud.run.v2.GCSVolumeSource.mount_options
+	MountOptions []string `json:"mountOptions,omitempty"`
 }
 
 // +kcc:proto=google.cloud.run.v2.VpcAccess

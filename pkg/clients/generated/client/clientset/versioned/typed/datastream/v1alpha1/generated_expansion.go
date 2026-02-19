@@ -25,4 +25,6 @@ type DatastreamConnectionProfileExpansion interface{}
 
 type DatastreamPrivateConnectionExpansion interface{}
 
+type DatastreamRouteExpansion interface{}
+
 type DatastreamStreamExpansion interface{}

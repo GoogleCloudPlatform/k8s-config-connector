@@ -35,7 +35,7 @@ type Parent struct {
 // +kcc:spec:proto=google.cloud.essentialcontacts.v1.Contact
 type EssentialContactsContactSpec struct {
 	Parent `json:",inline"`
-	// The EssentialContactsContact name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The email address to send notifications to. The email address
 	//  does not need to be a Google Account.

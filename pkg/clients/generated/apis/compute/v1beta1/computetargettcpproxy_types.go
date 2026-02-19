@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type ComputeTargetTCPProxySpec struct {
 	/* A reference to the ComputeBackendService resource. */
@@ -55,7 +58,7 @@ type ComputeTargetTCPProxySpec struct {
 	// +optional
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
-	/* Immutable. The ComputeTargetTCPProxy name. If not given, the metadata.name will be used. */
+	/* The ComputeTargetTCPProxy name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }

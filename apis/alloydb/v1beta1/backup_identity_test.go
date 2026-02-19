@@ -30,26 +30,26 @@ func TestBackupParse(t *testing.T) {
 	}{
 		{
 			name:      "Normal parse",
-			input:     "projects/myProject/locations/mylocation/backups/mybackup",
-			parsedMap: map[string]string{"projects": "myProject", "locations": "mylocation", "backups": "mybackup"},
+			input:     "projects/my-project/locations/mylocation/backups/mybackup",
+			parsedMap: map[string]string{"projects": "my-project", "locations": "mylocation", "backups": "mybackup"},
 			hasError:  false,
 		},
 		{
 			name:      "Normal parse with leading slash",
-			input:     "/projects/p1/locations/l1/backups/b1",
-			parsedMap: map[string]string{"projects": "p1", "locations": "l1", "backups": "b1"},
+			input:     "/projects/p12345/locations/l1/backups/b1",
+			parsedMap: map[string]string{"projects": "p12345", "locations": "l1", "backups": "b1"},
 			hasError:  false,
 		},
 		{
 			name:      "Normal parse with domain",
-			input:     "alloydb.googleapis.com/projects/first/locations/second/backups/third",
-			parsedMap: map[string]string{"projects": "first", "locations": "second", "backups": "third"},
+			input:     "alloydb.googleapis.com/projects/project1/locations/second/backups/third",
+			parsedMap: map[string]string{"projects": "project1", "locations": "second", "backups": "third"},
 			hasError:  false,
 		},
 		{
 			name:      "Normal parse with slashed domain",
-			input:     "//alloydb.googleapis.com/projects/athos/locations/porthos/backups/aramis",
-			parsedMap: map[string]string{"projects": "athos", "locations": "porthos", "backups": "aramis"},
+			input:     "//alloydb.googleapis.com/projects/project2/locations/porthos/backups/aramis",
+			parsedMap: map[string]string{"projects": "project2", "locations": "porthos", "backups": "aramis"},
 			hasError:  false,
 		},
 		{
@@ -79,7 +79,7 @@ func TestBackupParse(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		err, result := util.ParseIdentityMap(tc.input, parser, 2)
+		err, result := util.ParseIdentityMap(tc.input, parser, 3)
 		if tc.hasError {
 			if err == nil {
 				t.Fatalf("Test %s expected error but did not get one", tc.name)

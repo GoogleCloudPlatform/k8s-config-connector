@@ -45,7 +45,7 @@ Your role is to review the changes to ensure the promotion was successful.
 
 -   **API Version in Files:** 
     - Check the git diff to ensure that the resource's `apiVersion` in test files and Go code have been correctly updated from `v1alpha1` to `v1beta1`.
-    - Verify that the CRD file in `config/crds/` now includes both `v1alpha1` and `v1beta1` versions, and the `v1beta1`
+    - Verify that the CRD file in `config/crds/resources/` now includes both `v1alpha1` and `v1beta1` versions, and the `v1beta1`
     is marked as the storage version. 
     - Verify that the Go files for the resource under the `apis/.../v1alpha1` directory have been removed.
 -   **Tests Pass:** 

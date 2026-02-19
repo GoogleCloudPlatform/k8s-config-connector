@@ -90,7 +90,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed BigQueryAnalyticsHubDataExchange
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dataexchanges/{{dataexchangeID}}".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dataExchanges/{{dataExchangeID}}".
                     type: string
                   name:
                     description: The name of a BigQueryAnalyticsHubDataExchange resource.
@@ -274,7 +274,7 @@ spec:
                                 external:
                                   description: A reference to an externally-managed
                                     BigQueryTable resource. Should be in the format
-                                    "projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}".
+                                    "projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}}".
                                   type: string
                                 name:
                                   description: The name of a BigQueryTable resource.
@@ -417,7 +417,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed BigQueryAnalyticsHubDataExchange
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dataexchanges/{{dataexchangeID}}".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dataExchanges/{{dataExchangeID}}".
                     type: string
                   name:
                     description: The name of a BigQueryAnalyticsHubDataExchange resource.
@@ -601,7 +601,7 @@ spec:
                                 external:
                                   description: A reference to an externally-managed
                                     BigQueryTable resource. Should be in the format
-                                    "projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}".
+                                    "projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}}".
                                   type: string
                                 name:
                                   description: The name of a BigQueryTable resource.

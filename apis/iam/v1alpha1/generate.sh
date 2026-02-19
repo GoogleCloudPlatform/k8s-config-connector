@@ -23,10 +23,14 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types  --service google.iam.v2 --api-version iam.cnrm.cloud.google.com/v1alpha1 \
+go run . generate-types \
+  --service google.iam.v2 \
+  --api-version iam.cnrm.cloud.google.com/v1alpha1 \
   --resource IAMDenyPolicy:Policy
 
-go run . generate-mapper --service google.iam.v2 --api-version iam.cnrm.cloud.google.com/v1alpha1
+go run . generate-mapper \
+  --service google.iam.v2 \
+  --api-version iam.cnrm.cloud.google.com/v1alpha1
 
 
 cd ${REPO_ROOT}

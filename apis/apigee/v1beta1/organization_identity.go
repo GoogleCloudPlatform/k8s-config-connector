@@ -61,12 +61,10 @@ var _ identity.Resource = &ApigeeOrganization{}
 func (obj *ApigeeOrganization) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
 	// Get resource ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	// Server-generated ID; do not fallback to name
+	// if resourceID == "" {
+	// 	resourceID = obj.GetName()
+	// }
 	id := &ApigeeOrganizationIdentity{
 		ResourceID: resourceID,
 	}

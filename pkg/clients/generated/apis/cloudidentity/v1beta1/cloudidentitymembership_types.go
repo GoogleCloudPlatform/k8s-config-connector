@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type MembershipExpiryDetail struct {
 	/* The time at which the `MembershipRole` will expire. */
@@ -42,23 +45,22 @@ type MembershipExpiryDetail struct {
 }
 
 type MembershipMemberKey struct {
-	/* The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
-	// +optional
-	Id *string `json:"id,omitempty"`
+	/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
+	Id string `json:"id"`
 
-	/* The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
+	/* Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
 	// +optional
 	Namespace *string `json:"namespace,omitempty"`
 }
 
 type MembershipMemberRestrictionEvaluation struct {
-	/* Output only. The current state of the restriction Possible values: ENCRYPTION_STATE_UNSPECIFIED, UNSUPPORTED_BY_DEVICE, ENCRYPTED, NOT_ENCRYPTED */
+	/* Output only. The current state of the restriction */
 	// +optional
 	State *string `json:"state,omitempty"`
 }
 
 type MembershipPreferredMemberKey struct {
-	/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of a group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
+	/* Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`. */
 	Id string `json:"id"`
 
 	/* Immutable. The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`. */
@@ -77,6 +79,7 @@ type MembershipRoles struct {
 	// +optional
 	ExpiryDetail *MembershipExpiryDetail `json:"expiryDetail,omitempty"`
 
+	/* The name of the `MembershipRole`. Must be one of `OWNER`, `MANAGER`, `MEMBER`. */
 	Name string `json:"name"`
 
 	/* Evaluations of restrictions applied to parent group on this membership. */
@@ -88,14 +91,14 @@ type CloudIdentityMembershipSpec struct {
 	/* Immutable. */
 	GroupRef v1alpha1.ResourceRef `json:"groupRef"`
 
-	/* Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned. */
+	/* Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned. Do not set. This is a legacy OUTPUT-ONLY field. */
 	// +optional
 	MemberKey *MembershipMemberKey `json:"memberKey,omitempty"`
 
-	/* Immutable. Required. Immutable. The `EntityKey` of the member. */
+	/* Required. Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned. */
 	PreferredMemberKey MembershipPreferredMemberKey `json:"preferredMemberKey"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* Immutable. Optional. The service-generated name of the resource. Format: {membershipID}. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -133,6 +136,10 @@ type CloudIdentityMembershipStatus struct {
 	// +optional
 	DisplayName *MembershipDisplayNameStatus `json:"displayName,omitempty"`
 
+	/* A unique Config Connector specifier for the resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
@@ -150,7 +157,6 @@ type CloudIdentityMembershipStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcloudidentitymembership;gcpcloudidentitymemberships
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"

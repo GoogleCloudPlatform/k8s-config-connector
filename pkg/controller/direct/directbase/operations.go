@@ -135,6 +135,19 @@ func (o *DeleteOperation) GetUnstructured() *unstructured.Unstructured {
 	return o.object
 }
 
+type AdapterForObjectOperation struct {
+	Reader client.Reader
+	Object *unstructured.Unstructured
+}
+
+func (o *AdapterForObjectOperation) GetUnstructured() *unstructured.Unstructured {
+	return o.Object
+}
+
+func (o *AdapterForObjectOperation) IsDeleting() bool {
+	return !o.Object.GetDeletionTimestamp().IsZero()
+}
+
 // UpdateStatus writes the status and ready condition to the object's status subresource.
 // We split out the readyCondition so that we will not write it from the reconcile loop if we wrote it here.
 func (o *operationBase) UpdateStatus(ctx context.Context, typedStatus any, readyCondition *v1alpha1.Condition) error {
