@@ -1132,7 +1132,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	DnsConfig *ClusterDnsConfig `json:"dnsConfig,omitempty"`
 
-	/* Immutable. Enable Autopilot for this cluster. */
+	/* Enable Autopilot for this cluster. */
 	// +optional
 	EnableAutopilot *bool `json:"enableAutopilot,omitempty"`
 

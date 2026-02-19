@@ -569,7 +569,7 @@ spec:
                     type: string
                 type: object
               enableAutopilot:
-                description: Immutable. Enable Autopilot for this cluster.
+                description: Enable Autopilot for this cluster.
                 type: boolean
               enableBinaryAuthorization:
                 description: DEPRECATED. Deprecated in favor of binary_authorization.
