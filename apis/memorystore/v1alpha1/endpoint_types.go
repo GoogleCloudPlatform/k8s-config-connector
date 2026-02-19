@@ -27,6 +27,8 @@ var MemorystoreInstanceEndpointGVK = GroupVersion.WithKind("MemorystoreInstanceE
 // +kcc:spec:proto=google.cloud.memorystore.v1.Instance
 type MemorystoreInstanceEndpointSpec struct {
 	// The MemorystoreInstance reference.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="instanceRef is immutable"
+	// +required
 	InstanceRef *refsv1beta1.MemorystoreInstanceRef `json:"instanceRef,omitempty"`
 
 	// Optional. Endpoints for the instance.
@@ -59,6 +61,7 @@ type MemorystoreInstanceEndpointObservedState struct {
 type EndpointConnectionDetail struct {
 	// Detailed information of a PSC connection that is created by the user.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_connection
+	// +required
 	PscConnection *PscConnection `json:"pscConnection,omitempty"`
 }
 

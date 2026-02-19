@@ -113,6 +113,8 @@ spec:
                             required:
                             - forwardingRuleRef
                             type: object
+                        required:
+                        - pscConnection
                         type: object
                       type: array
                   type: object
@@ -146,6 +148,11 @@ spec:
                     description: The namespace of a MemorystoreInstance resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: instanceRef is immutable
+                  rule: self == oldSelf
+            required:
+            - instanceRef
             type: object
           status:
             description: MemorystoreInstanceEndpointStatus defines the config connector
