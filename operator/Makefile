@@ -55,9 +55,13 @@ ensure-channels:
 
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
-manifests: ensure-channels
+manifests:
 	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 $(CRD_OPTIONS) paths="./pkg/apis/..." output:crd:artifacts:config=config/crd/bases
-	go run scripts/generate-image-configmap/main.go
+	@if [ -f "${CHANNEL_MANIFEST}" ]; then \
+		go run scripts/generate-image-configmap/main.go; \
+	else \
+		echo "Skipping image configmap generation as channel manifest ${CHANNEL_MANIFEST} is missing"; \
+	fi
 
 # Run go fmt against code
 .PHONY: fmt
