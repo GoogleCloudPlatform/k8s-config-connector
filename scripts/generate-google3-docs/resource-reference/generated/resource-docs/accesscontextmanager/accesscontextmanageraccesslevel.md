@@ -130,7 +130,7 @@ title: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed AccessContextManagerAccessPolicy resource. As per https://docs.cloud.google.com/asset-inventory/docs/asset-names Should be in the format "accessPolicies/{{accesspolicyID}}".{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `accessPolicies/{{value}}`, where `{{value}}` is the `name` field of an `AccessContextManagerAccessPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -170,7 +170,7 @@ title: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}How the conditions list should be combined to determine if a request is granted this AccessLevel. If AND is used, each Condition in conditions must be satisfied for the AccessLevel to be applied. If OR is used, at least one Condition in conditions must be satisfied for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"].{% endverbatim %}</p>
+            <p>{% verbatim %}How the conditions list should be combined. Default: "AND". Possible values: ["AND", "OR"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -270,7 +270,7 @@ title: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The minimum allowed OS version. If not set, any version of this OS satisfies the constraint. Format: "major.minor.patch" such as "10.5.301", "9.2.1".{% endverbatim %}</p>
+            <p>{% verbatim %}Minimum allowed OS version (e.g., "10.5.301").{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
