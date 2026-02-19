@@ -88,24 +88,34 @@ spec:
                               from 0 to 23. An API may choose to allow the value "24:00:00"
                               for scenarios like business closing time.
                             format: int32
+                            maximum: 23
+                            minimum: 0
                             type: integer
                           minutes:
                             description: Minutes of hour of day. Must be from 0 to
                               59.
                             format: int32
+                            maximum: 59
+                            minimum: 0
                             type: integer
                           nanos:
                             description: Fractions of seconds in nanoseconds. Must
                               be from 0 to 999,999,999.
                             format: int32
+                            maximum: 999999999
+                            minimum: 0
                             type: integer
                           seconds:
                             description: Seconds of minutes of the time. Must normally
                               be from 0 to 59. An API may allow the value 60 if it
                               allows leap-seconds.
                             format: int32
+                            maximum: 59
+                            minimum: 0
                             type: integer
                         type: object
+                    required:
+                    - startTime
                     type: object
                   retention:
                     description: Optional. How long to keep automated backups before
@@ -114,6 +124,8 @@ spec:
                     pattern: ^[-+]?([0-9]*(\.[0-9]*)?(ns|us|µs|μs|ms|s|m|h))+$
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - rule: self.AutomatedBackupMode=='ENABLED' && has(self.FixedFrequencySchedule)
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -228,6 +240,7 @@ spec:
                     items:
                       pattern: ^gs\:\/\/[^\/]+\/.+$
                       type: string
+                    minItems: 1
                     type: array
                 type: object
               labels:
@@ -278,6 +291,8 @@ spec:
                           resource.
                         type: string
                     type: object
+                required:
+                - backupRef
                 type: object
               mode:
                 description: Optional. The mode config for the instance.
@@ -380,6 +395,9 @@ spec:
             - location
             - projectRef
             type: object
+            x-kubernetes-validations:
+            - rule: '(has(self.GcsBackupSource) ? 1 : 0) + (has(self.ManagedBackupSource)
+                ? 1 : 0) <= 1'
           status:
             description: MemorystoreInstanceStatus defines the config connector machine
               state of MemorystoreInstance
@@ -413,6 +431,7 @@ spec:
               externalRef:
                 description: A unique specifier for the MemorystoreInstance resource
                   in GCP.
+                pattern: ^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -588,24 +607,34 @@ spec:
                               from 0 to 23. An API may choose to allow the value "24:00:00"
                               for scenarios like business closing time.
                             format: int32
+                            maximum: 23
+                            minimum: 0
                             type: integer
                           minutes:
                             description: Minutes of hour of day. Must be from 0 to
                               59.
                             format: int32
+                            maximum: 59
+                            minimum: 0
                             type: integer
                           nanos:
                             description: Fractions of seconds in nanoseconds. Must
                               be from 0 to 999,999,999.
                             format: int32
+                            maximum: 999999999
+                            minimum: 0
                             type: integer
                           seconds:
                             description: Seconds of minutes of the time. Must normally
                               be from 0 to 59. An API may allow the value 60 if it
                               allows leap-seconds.
                             format: int32
+                            maximum: 59
+                            minimum: 0
                             type: integer
                         type: object
+                    required:
+                    - startTime
                     type: object
                   retention:
                     description: Optional. How long to keep automated backups before
@@ -614,6 +643,8 @@ spec:
                     pattern: ^[-+]?([0-9]*(\.[0-9]*)?(ns|us|µs|μs|ms|s|m|h))+$
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - rule: self.AutomatedBackupMode=='ENABLED' && has(self.FixedFrequencySchedule)
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -728,6 +759,7 @@ spec:
                     items:
                       pattern: ^gs\:\/\/[^\/]+\/.+$
                       type: string
+                    minItems: 1
                     type: array
                 type: object
               labels:
@@ -778,6 +810,8 @@ spec:
                           resource.
                         type: string
                     type: object
+                required:
+                - backupRef
                 type: object
               mode:
                 description: Optional. The mode config for the instance.
@@ -880,6 +914,9 @@ spec:
             - location
             - projectRef
             type: object
+            x-kubernetes-validations:
+            - rule: '(has(self.GcsBackupSource) ? 1 : 0) + (has(self.ManagedBackupSource)
+                ? 1 : 0) <= 1'
           status:
             description: MemorystoreInstanceStatus defines the config connector machine
               state of MemorystoreInstance
@@ -913,6 +950,7 @@ spec:
               externalRef:
                 description: A unique specifier for the MemorystoreInstance resource
                   in GCP.
+                pattern: ^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

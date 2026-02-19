@@ -24,6 +24,7 @@ var MemorystoreInstanceBackupGVK = GroupVersion.WithKind("MemorystoreInstanceBac
 
 // MemorystoreInstanceBackupSpec defines the desired state of MemorystoreInstanceBackup
 // +kcc:spec:proto=google.cloud.memorystore.v1.Backup
+// +kubebuilder:validation:XValidation:rule="(has(self.BackupCollection) ? 1 : 0) + (has(self.InstanceRef) ? 1 : 0) == 1"
 type MemorystoreInstanceBackupSpec struct {
 	// The project that this resource belongs to.
 	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+$
@@ -33,6 +34,7 @@ type MemorystoreInstanceBackupSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// The resource name of the MemorystoreInstance from which the backup is created.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	InstanceRef *refsv1beta1.MemorystoreInstanceRef `json:"instanceRef,omitempty"`
 
 	// Optional. TTL for the backup to expire. Value range is 1 day to 100 years.
