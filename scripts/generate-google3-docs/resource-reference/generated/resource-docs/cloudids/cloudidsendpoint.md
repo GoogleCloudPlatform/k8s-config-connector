@@ -21,7 +21,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} Service Documentation</td>
-<td><a href="/intrusion-detection-system/docs">/intrusion-detection-system/docs/</a></td>
+<td><a href="/intrusion-detection-system/docs/">/intrusion-detection-system/docs/</a></td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
