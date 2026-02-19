@@ -17,43 +17,71 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// EdgeCacheServiceIdentity defines the resource reference to NetworkServicesEdgeCacheService, which "External" field
-// holds the GCP identifier for the KRM object.
+const (
+	// EdgeCacheServiceIdentityURL is the format for the externalRef of a EdgeCacheService.
+	EdgeCacheServiceIdentityURL = "projects/{project}/locations/global/edgeCacheServices/{edgeCacheService}"
+)
+
+var _ identity.Identity = &EdgeCacheServiceIdentity{}
+var _ identity.Parent = &EdgeCacheServiceParent{}
+var _ identity.Resource = &NetworkServicesEdgeCacheService{}
+
+var edgeCacheServiceURL = gcpurls.Template[EdgeCacheServiceIdentity](
+	"networkservices.googleapis.com",
+	EdgeCacheServiceIdentityURL,
+)
+
+// EdgeCacheServiceIdentity represents the identity of a NetworkServicesEdgeCacheService.
+// +k8s:deepcopy-gen=false
 type EdgeCacheServiceIdentity struct {
-	parent *EdgeCacheServiceParent
-	id     string
+	Project          string
+	EdgeCacheService string
 }
 
 func (i *EdgeCacheServiceIdentity) String() string {
-	return i.parent.String() + "/edgeCacheServices/" + i.id
+	return edgeCacheServiceURL.ToString(*i)
 }
 
-func (i *EdgeCacheServiceIdentity) ID() string {
-	return i.id
+func (i *EdgeCacheServiceIdentity) FromExternal(ref string) error {
+	out, match, err := edgeCacheServiceURL.Parse(ref)
+	if err != nil {
+		return err
+	}
+	if !match {
+		return fmt.Errorf("format of EdgeCacheService external=%q was not known (use %s)", ref, edgeCacheServiceURL.CanonicalForm())
+	}
+	*i = *out
+	return nil
 }
 
-func (i *EdgeCacheServiceIdentity) Parent() *EdgeCacheServiceParent {
-	return i.parent
+func (i *EdgeCacheServiceIdentity) GetID() string {
+	return i.EdgeCacheService
+}
+
+func (i *EdgeCacheServiceIdentity) GetParent() (identity.Parent, error) {
+	return &EdgeCacheServiceParent{
+		ProjectID: i.Project,
+	}, nil
 }
 
 type EdgeCacheServiceParent struct {
 	ProjectID string
 }
 
-func (p *EdgeCacheServiceParent) String() string {
+func (p *EdgeCacheServiceParent) GetURL() string {
 	return "projects/" + p.ProjectID + "/locations/global"
 }
 
-// NewEdgeCacheServiceIdentity builds a EdgeCacheServiceIdentity from the Config Connector EdgeCacheService object.
-func NewEdgeCacheServiceIdentity(ctx context.Context, reader client.Reader, obj *NetworkServicesEdgeCacheService) (*EdgeCacheServiceIdentity, error) {
-
+// GetIdentity builds a EdgeCacheServiceIdentity from the Config Connector EdgeCacheService object.
+func (obj *NetworkServicesEdgeCacheService) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
@@ -73,38 +101,28 @@ func NewEdgeCacheServiceIdentity(ctx context.Context, reader client.Reader, obj 
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
+	specIdentity := &EdgeCacheServiceIdentity{
+		Project:          projectID,
+		EdgeCacheService: resourceID,
+	}
+
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseEdgeCacheServiceExternal(externalRef)
-		if err != nil {
-			return nil, err
+		statusIdentity := &EdgeCacheServiceIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
-	return &EdgeCacheServiceIdentity{
-		parent: &EdgeCacheServiceParent{
-			ProjectID: projectID,
-		},
-		id: resourceID,
-	}, nil
-}
 
-func ParseEdgeCacheServiceExternal(external string) (parent *EdgeCacheServiceParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[3] != "global" || tokens[4] != "edgeCacheServices" {
-		return nil, "", fmt.Errorf("format of NetworkServicesEdgeCacheService external=%q was not known (use projects/{{projectID}}/locations/global/edgeCacheServices/{{edgeCacheServiceID}})", external)
+		if statusIdentity.Project != specIdentity.Project {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", statusIdentity.Project, specIdentity.Project)
+		}
+		if statusIdentity.EdgeCacheService != specIdentity.EdgeCacheService {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				specIdentity.EdgeCacheService, statusIdentity.EdgeCacheService)
+		}
+		return statusIdentity, nil
 	}
-	parent = &EdgeCacheServiceParent{
-		ProjectID: tokens[1],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return specIdentity, nil
 }

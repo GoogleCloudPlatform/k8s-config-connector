@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
@@ -56,10 +57,11 @@ func (m *modelEdgeCacheService) AdapterForObject(ctx context.Context, op *direct
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewEdgeCacheServiceIdentity(ctx, reader, obj)
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := identity.(*krm.EdgeCacheServiceIdentity)
 
 	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
@@ -138,7 +140,11 @@ func (a *EdgeCacheServiceAdapter) Create(ctx context.Context, createOp *directba
 	}
 	resource.Labels["managed-by-cnrm"] = "true"
 
-	url := fmt.Sprintf("https://networkservices.googleapis.com/v1/%s/edgeCacheServices?edgeCacheServiceId=%s", a.id.Parent().String(), a.id.ID())
+	parent, err := a.id.GetParent()
+	if err != nil {
+		return err
+	}
+	url := fmt.Sprintf("https://networkservices.googleapis.com/v1/%s/edgeCacheServices?edgeCacheServiceId=%s", parent.GetURL(), a.id.GetID())
 	body, err := json.Marshal(resource)
 	if err != nil {
 		return fmt.Errorf("marshalling resource: %w", err)
@@ -198,7 +204,8 @@ func (a *EdgeCacheServiceAdapter) Update(ctx context.Context, updateOp *directba
 	}
 	resource.Labels["managed-by-cnrm"] = "true"
 
-	url := fmt.Sprintf("https://networkservices.googleapis.com/v1/%s", a.id.String())
+	updateMask := populateEdgeCacheServiceUpdateMask(a.desired)
+	url := fmt.Sprintf("https://networkservices.googleapis.com/v1/%s?updateMask=%s", a.id.String(), updateMask)
 	body, err := json.Marshal(resource)
 	if err != nil {
 		return fmt.Errorf("marshalling resource: %w", err)
@@ -236,6 +243,39 @@ func (a *EdgeCacheServiceAdapter) Update(ctx context.Context, updateOp *directba
 		return mapCtx.Err()
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+func populateEdgeCacheServiceUpdateMask(r *krm.NetworkServicesEdgeCacheService) string {
+	var updateMask []string
+	if r.Spec.Description != nil {
+		updateMask = append(updateMask, "description")
+	}
+	if r.Spec.DisableHttp2 != nil {
+		updateMask = append(updateMask, "disableHttp2")
+	}
+	if r.Spec.DisableQuic != nil {
+		updateMask = append(updateMask, "disableQuic")
+	}
+	if r.Spec.EdgeSecurityPolicy != nil {
+		updateMask = append(updateMask, "edgeSecurityPolicy")
+	}
+	if r.Spec.EdgeSslCertificates != nil {
+		updateMask = append(updateMask, "edgeSslCertificates")
+	}
+	// r.ObjectMeta.Labels is never nil
+	updateMask = append(updateMask, "labels")
+	if r.Spec.LogConfig != nil {
+		updateMask = append(updateMask, "logConfig")
+	}
+	if r.Spec.RequireTls != nil {
+		updateMask = append(updateMask, "requireTls")
+	}
+	// r.Spec.Routing is never nil
+	updateMask = append(updateMask, "routing")
+	if r.Spec.SslPolicy != nil {
+		updateMask = append(updateMask, "sslPolicy")
+	}
+	return strings.Join(updateMask, ",")
 }
 
 func (a *EdgeCacheServiceAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {

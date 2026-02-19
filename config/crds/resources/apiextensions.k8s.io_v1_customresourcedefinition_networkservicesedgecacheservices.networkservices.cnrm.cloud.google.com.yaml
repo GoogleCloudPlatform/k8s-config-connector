@@ -588,11 +588,6 @@ spec:
                                           When the cache mode is set to "USE_ORIGIN_HEADERS" or "BYPASS_CACHE", you must omit this field.
                                           A duration in seconds terminated by 's'. Example: "3s".
                                         type: string
-                                      compressionMode:
-                                        description: 'Specifies the compression mode
-                                          for this route. Possible values: ["DISABLED",
-                                          "AUTOMATIC"].'
-                                        type: string
                                       defaultTtl:
                                         description: |-
                                           Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-max-age).
@@ -789,22 +784,6 @@ spec:
                                           specified.
                                         type: string
                                     type: object
-                                type: object
-                              routeMethods:
-                                description: The list of allowed HTTP methods for
-                                  this route.
-                                properties:
-                                  allowedMethods:
-                                    description: |-
-                                      The list of allowed HTTP methods for this route.
-                                      Supported methods include: GET, HEAD, POST, PUT, DELETE, PATCH, OPTIONS.
-
-                                      Media CDN defaults to allowing GET, HEAD, and OPTIONS if routeMethods is not specified.
-                                    items:
-                                      type: string
-                                    type: array
-                                required:
-                                - allowedMethods
                                 type: object
                               urlRedirect:
                                 description: The URL redirect configuration for requests

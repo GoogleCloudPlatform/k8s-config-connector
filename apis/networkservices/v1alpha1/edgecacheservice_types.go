@@ -277,11 +277,6 @@ type EdgecacheserviceCdnPolicy struct {
 	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheRouteAction.CDNPolicy.signed_token_options
 	SignedTokenOptions *EdgecacheserviceSignedTokenOptions `json:"signedTokenOptions,omitempty"`
-
-	/* Specifies the compression mode for this route. Possible values: ["DISABLED", "AUTOMATIC"]. */
-	// +optional
-	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheRouteAction.CDNPolicy.compression_mode
-	CompressionMode *string `json:"compressionMode,omitempty"`
 }
 
 type EdgecacheserviceCorsPolicy struct {
@@ -605,20 +600,6 @@ type EdgecacheserviceRouteRule struct {
 	// +optional
 	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheRule.RouteRule.url_redirect
 	UrlRedirect *EdgecacheserviceUrlRedirect `json:"urlRedirect,omitempty"`
-
-	/* The list of allowed HTTP methods for this route. */
-	// +optional
-	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheRule.RouteRule.route_methods
-	RouteMethods *EdgecacheserviceRouteMethods `json:"routeMethods,omitempty"`
-}
-
-type EdgecacheserviceRouteMethods struct {
-	/* The list of allowed HTTP methods for this route.
-	Supported methods include: GET, HEAD, POST, PUT, DELETE, PATCH, OPTIONS.
-
-	Media CDN defaults to allowing GET, HEAD, and OPTIONS if routeMethods is not specified. */
-	// +kcc:proto:field=google.cloud.networkservices.v1.EdgeCacheRule.RouteRule.RouteMethods.allowed_methods
-	AllowedMethods []string `json:"allowedMethods"`
 }
 
 type EdgecacheserviceRouting struct {
