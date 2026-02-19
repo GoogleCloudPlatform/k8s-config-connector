@@ -616,6 +616,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	}
 	setDefaultBool(&ipConfiguration.Ipv4Enabled, true)
 	setDefaultBool(&ipConfiguration.RequireSsl, false)
+	setDefaultBool(&ipConfiguration.EnablePrivatePathForGoogleCloudServices, false)
 	if ipConfiguration.SslMode == pb.IpConfiguration_SSL_MODE_UNSPECIFIED {
 		if ipConfiguration.RequireSsl.Value {
 			ipConfiguration.SslMode = pb.IpConfiguration_TRUSTED_CLIENT_CERTIFICATE_REQUIRED
