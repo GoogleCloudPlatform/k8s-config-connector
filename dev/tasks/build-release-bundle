@@ -18,7 +18,7 @@ set -o nounset
 set -o pipefail
 
 # runs the config-connector build across all desired systems and architectures and creates a release tarball
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd ${REPO_ROOT}
 
 VERSION=${VERSION:-dev}
