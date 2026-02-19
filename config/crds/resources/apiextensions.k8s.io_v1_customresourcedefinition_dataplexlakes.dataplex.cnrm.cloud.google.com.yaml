@@ -88,7 +88,7 @@ spec:
                     type: object
                 type: object
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:

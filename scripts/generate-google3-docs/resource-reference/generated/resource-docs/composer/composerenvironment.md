@@ -1758,7 +1758,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The Project that this resource belongs to.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The Project that this resource belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

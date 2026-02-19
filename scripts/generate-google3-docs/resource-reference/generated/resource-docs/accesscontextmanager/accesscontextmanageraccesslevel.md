@@ -170,7 +170,7 @@ title: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}How the conditions list should be combined. Default: "AND". Possible values: ["AND", "OR"].{% endverbatim %}</p>
+            <p>{% verbatim %}How the conditions list should be combined to determine if a request is granted this AccessLevel. If AND is used, each Condition in conditions must be satisfied for the AccessLevel to be applied. If OR is used, at least one Condition in conditions must be satisfied for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -270,7 +270,7 @@ title: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Minimum allowed OS version (e.g., "10.5.301").{% endverbatim %}</p>
+            <p>{% verbatim %}The minimum allowed OS version. If not set, any version of this OS satisfies the constraint. Format: "major.minor.patch" such as "10.5.301", "9.2.1".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
