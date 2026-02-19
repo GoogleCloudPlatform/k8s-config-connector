@@ -111,7 +111,8 @@ spec:
                 type: string
             type: object
             x-kubernetes-validations:
-            - rule: '(has(self.BackupCollection) ? 1 : 0) + (has(self.InstanceRef)
+            - message: only set either backupCollection or instanceRef
+              rule: '(has(self.backupCollection) ? 1 : 0) + (has(self.instanceRef)
                 ? 1 : 0) == 1'
           status:
             description: MemorystoreInstanceBackupStatus defines the config connector

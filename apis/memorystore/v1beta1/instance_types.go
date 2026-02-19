@@ -25,7 +25,7 @@ var MemorystoreInstanceGVK = GroupVersion.WithKind("MemorystoreInstance")
 
 // MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
 // +kcc:spec:proto=google.cloud.memorystore.v1.Instance
-// +kubebuilder:validation:XValidation:rule="(has(self.GcsBackupSource) ? 1 : 0) + (has(self.ManagedBackupSource) ? 1 : 0) <= 1"
+// +kubebuilder:validation:XValidation:rule="(has(self.gcsBackupSource) ? 1 : 0) + (has(self.managedBackupSource) ? 1 : 0) <= 1",message="only set either gcsBackupSource or managedBackupSource"
 type MemorystoreInstanceSpec struct {
 
 	// The MemorystoreInstance name. If not given, the metadata.name will be used.
@@ -104,6 +104,8 @@ type MemorystoreInstanceSpec struct {
 }
 
 type Parent struct {
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ProjectRef field is immutable"
+	// Immutable.
 	// +required
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
@@ -169,7 +171,7 @@ type MemorystoreInstanceObservedState struct {
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.AutomatedBackupConfig
-// +kubebuilder:validation:XValidation:rule="self.AutomatedBackupMode=='ENABLED' && has(self.FixedFrequencySchedule)"
+// +kubebuilder:validation:XValidation:rule="self.automatedBackupMode=='ENABLED' && has(self.fixedFrequencySchedule)"
 type AutomatedBackupConfig struct {
 	// Optional. Trigger automated backups at a fixed frequency.
 	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.fixed_frequency_schedule

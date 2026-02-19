@@ -24,7 +24,7 @@ var MemorystoreInstanceBackupGVK = GroupVersion.WithKind("MemorystoreInstanceBac
 
 // MemorystoreInstanceBackupSpec defines the desired state of MemorystoreInstanceBackup
 // +kcc:spec:proto=google.cloud.memorystore.v1.Backup
-// +kubebuilder:validation:XValidation:rule="(has(self.BackupCollection) ? 1 : 0) + (has(self.InstanceRef) ? 1 : 0) == 1"
+// +kubebuilder:validation:XValidation:rule="(has(self.backupCollection) ? 1 : 0) + (has(self.instanceRef) ? 1 : 0) == 1",message="only set either backupCollection or instanceRef"
 type MemorystoreInstanceBackupSpec struct {
 	// The project that this resource belongs to.
 	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+$

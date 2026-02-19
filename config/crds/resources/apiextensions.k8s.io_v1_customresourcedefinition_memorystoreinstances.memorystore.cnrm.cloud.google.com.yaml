@@ -125,7 +125,7 @@ spec:
                     type: string
                 type: object
                 x-kubernetes-validations:
-                - rule: self.AutomatedBackupMode=='ENABLED' && has(self.FixedFrequencySchedule)
+                - rule: self.automatedBackupMode=='ENABLED' && has(self.fixedFrequencySchedule)
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -330,7 +330,7 @@ spec:
                     type: object
                 type: object
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Immutable.
                 oneOf:
                 - not:
                     required:
@@ -361,6 +361,9 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: ProjectRef field is immutable
+                  rule: self == oldSelf
               replicaCount:
                 description: Optional. Number of replica nodes per shard. If omitted
                   the default is 0 replicas.
@@ -396,7 +399,8 @@ spec:
             - projectRef
             type: object
             x-kubernetes-validations:
-            - rule: '(has(self.GcsBackupSource) ? 1 : 0) + (has(self.ManagedBackupSource)
+            - message: only set either gcsBackupSource or managedBackupSource
+              rule: '(has(self.gcsBackupSource) ? 1 : 0) + (has(self.managedBackupSource)
                 ? 1 : 0) <= 1'
           status:
             description: MemorystoreInstanceStatus defines the config connector machine
@@ -644,7 +648,7 @@ spec:
                     type: string
                 type: object
                 x-kubernetes-validations:
-                - rule: self.AutomatedBackupMode=='ENABLED' && has(self.FixedFrequencySchedule)
+                - rule: self.automatedBackupMode=='ENABLED' && has(self.fixedFrequencySchedule)
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -849,7 +853,7 @@ spec:
                     type: object
                 type: object
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Immutable.
                 oneOf:
                 - not:
                     required:
@@ -880,6 +884,9 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: ProjectRef field is immutable
+                  rule: self == oldSelf
               replicaCount:
                 description: Optional. Number of replica nodes per shard. If omitted
                   the default is 0 replicas.
@@ -915,7 +922,8 @@ spec:
             - projectRef
             type: object
             x-kubernetes-validations:
-            - rule: '(has(self.GcsBackupSource) ? 1 : 0) + (has(self.ManagedBackupSource)
+            - message: only set either gcsBackupSource or managedBackupSource
+              rule: '(has(self.gcsBackupSource) ? 1 : 0) + (has(self.managedBackupSource)
                 ? 1 : 0) <= 1'
           status:
             description: MemorystoreInstanceStatus defines the config connector machine
