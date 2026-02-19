@@ -133,7 +133,6 @@ func (a *forwardingRuleAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	u := createOp.GetUnstructured()
 	var err error
 
 	err = resolveForwardingRuleRefs(ctx, a.reader, a.desired)
@@ -229,11 +228,10 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 		SelfLink:          created.SelfLink,
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return setStatus(u, status)
+	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	u := updateOp.GetUnstructured()
 	var err error
 
 	if a.id.ResourceID == "" {
@@ -346,7 +344,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 		CreationTimestamp: updated.CreationTimestamp,
 		SelfLink:          updated.SelfLink,
 	}
-	return setStatus(u, status)
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *forwardingRuleAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {

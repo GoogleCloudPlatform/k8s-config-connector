@@ -59,7 +59,9 @@ type computeURLMapAdapter struct {
 
 var _ directbase.Adapter = &computeURLMapAdapter{}
 
-func (m *computeURLMapModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *computeURLMapModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.ComputeURLMap{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -125,7 +127,6 @@ func (a *computeURLMapAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *computeURLMapAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	u := createOp.GetUnstructured()
 	var err error
 
 	err = resolveComputeURLMapRefs(ctx, a.reader, a.desired)
@@ -182,7 +183,7 @@ func (a *computeURLMapAdapter) Create(ctx context.Context, createOp *directbase.
 		MapId:             int64PtrFromUint64Ptr(created.Id),
 		SelfLink:          created.SelfLink,
 	}
-	return setStatus(u, status)
+	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 func int64PtrFromUint64Ptr(v *uint64) *int64 {
@@ -194,7 +195,6 @@ func int64PtrFromUint64Ptr(v *uint64) *int64 {
 }
 
 func (a *computeURLMapAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	u := updateOp.GetUnstructured()
 	var err error
 
 	if a.id.ResourceID == "" {
@@ -275,7 +275,7 @@ func (a *computeURLMapAdapter) Update(ctx context.Context, updateOp *directbase.
 		MapId:             int64PtrFromUint64Ptr(updated.Id),
 		SelfLink:          updated.SelfLink,
 	}
-	return setStatus(u, status)
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *computeURLMapAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {

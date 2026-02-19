@@ -23,7 +23,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -76,22 +75,4 @@ func resolveResourceName(ctx context.Context, reader client.Reader, key client.O
 	}
 
 	return resource, nil
-}
-
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
-	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
-	}
-
-	old, _, _ := unstructured.NestedMap(u.Object, "status")
-	if old != nil {
-		status["conditions"] = old["conditions"]
-		status["observedGeneration"] = old["observedGeneration"]
-		status["externalRef"] = old["externalRef"]
-	}
-
-	u.Object["status"] = status
-
-	return nil
 }
