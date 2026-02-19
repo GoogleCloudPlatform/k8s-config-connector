@@ -115,11 +115,7 @@ type AccessContextManagerAccessLevelList struct {
 
 // +kcc:proto=google.identity.accesscontextmanager.v1.BasicLevel
 type BasicLevel struct {
-	/* How the conditions list should be combined to determine if a request
-	is granted this AccessLevel. If AND is used, each Condition in
-	conditions must be satisfied for the AccessLevel to be applied. If
-	OR is used, at least one Condition in conditions must be satisfied
-	for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"]. */
+	/* How the conditions list should be combined. Default: "AND". Possible values: ["AND", "OR"]. */
 	// +optional
 	CombiningFunction *string `json:"combiningFunction,omitempty"`
 
@@ -218,9 +214,7 @@ type Member struct {
 
 // +kcc:proto=google.identity.accesscontextmanager.v1.OsConstraint
 type OsConstraints struct {
-	/* The minimum allowed OS version. If not set, any version
-	of this OS satisfies the constraint.
-	Format: "major.minor.patch" such as "10.5.301", "9.2.1". */
+	/* Minimum allowed OS version (e.g., "10.5.301"). */
 	// +optional
 	MinimumVersion *string `json:"minimumVersion,omitempty"`
 

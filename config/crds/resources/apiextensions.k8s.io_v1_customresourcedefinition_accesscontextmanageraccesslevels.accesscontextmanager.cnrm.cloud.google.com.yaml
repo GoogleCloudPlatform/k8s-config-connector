@@ -83,9 +83,9 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed AccessContextManagerAccessPolicy
-                      resource. As per https://docs.cloud.google.com/asset-inventory/docs/asset-names
-                      Should be in the format "accessPolicies/{{accesspolicyID}}".
+                    description: 'Allowed value: string of the format `accessPolicies/{{value}}`,
+                      where `{{value}}` is the `name` field of an `AccessContextManagerAccessPolicy`
+                      resource.'
                     type: string
                   name:
                     description: The name of a AccessContextManagerAccessPolicy resource.
@@ -99,12 +99,8 @@ spec:
                 description: A `BasicLevel` composed of `Conditions`.
                 properties:
                   combiningFunction:
-                    description: 'How the conditions list should be combined to determine
-                      if a request is granted this AccessLevel. If AND is used, each
-                      Condition in conditions must be satisfied for the AccessLevel
-                      to be applied. If OR is used, at least one Condition in conditions
-                      must be satisfied for the AccessLevel to be applied. Default
-                      value: "AND" Possible values: ["AND", "OR"].'
+                    description: 'How the conditions list should be combined. Default:
+                      "AND". Possible values: ["AND", "OR"].'
                     type: string
                   conditions:
                     description: A set of requirements for the AccessLevel to be granted.
@@ -137,10 +133,8 @@ spec:
                               items:
                                 properties:
                                   minimumVersion:
-                                    description: 'The minimum allowed OS version.
-                                      If not set, any version of this OS satisfies
-                                      the constraint. Format: "major.minor.patch"
-                                      such as "10.5.301", "9.2.1".'
+                                    description: Minimum allowed OS version (e.g.,
+                                      "10.5.301").
                                     type: string
                                   osType:
                                     description: 'The operating system type of the
