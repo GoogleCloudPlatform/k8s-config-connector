@@ -186,6 +186,23 @@ spec:
                 description: The Instance name. If not given, the metadata.name will
                   be used.
                 type: string
+              schemaBundles:
+                additionalProperties:
+                  description: BigtableInstanceSchemaBundle defines a schema bundle
+                    for a BigtableInstance.
+                  properties:
+                    protoDescriptor:
+                      description: The proto descriptor for the schema bundle. The
+                        schema descriptor must be a file descriptor set, which can
+                        be generated using `protoc --descriptor_set_out=myschema.fd
+                        myschema.proto`. The file descriptor set must be base64 encoded.
+                      type: string
+                  required:
+                  - protoDescriptor
+                  type: object
+                description: A map of schema bundles. The key is the schema bundle
+                  ID.
+                type: object
             type: object
           status:
             description: BigtableInstanceStatus defines the config connector machine

@@ -24,6 +24,15 @@ var (
 	BigtableInstanceGVK = GroupVersion.WithKind("BigtableInstance")
 )
 
+// BigtableInstanceSchemaBundle defines a schema bundle for a BigtableInstance.
+type BigtableInstanceSchemaBundle struct {
+	// The proto descriptor for the schema bundle.
+	// The schema descriptor must be a file descriptor set, which can be generated using `protoc --descriptor_set_out=myschema.fd myschema.proto`.
+	// The file descriptor set must be base64 encoded.
+	// +required
+	ProtoDescriptor string `json:"protoDescriptor"`
+}
+
 // BigtableInstanceSpec defines the desired state of BigtableInstance
 // +kcc:spec:proto=google.bigtable.admin.v2.Instance
 type BigtableInstanceSpec struct {
@@ -46,6 +55,10 @@ type BigtableInstanceSpec struct {
 	// DEPRECATED. It is recommended to leave this field unspecified since the distinction between "DEVELOPMENT" and "PRODUCTION" instances is going away, and all instances will become "PRODUCTION" instances. This means that new and existing "DEVELOPMENT" instances will be converted to "PRODUCTION" instances. It is recommended for users to use "PRODUCTION" instances in any case, since a 1-node "PRODUCTION" instance is functionally identical to a "DEVELOPMENT" instance, but without the accompanying restrictions. The instance type to create. One of "DEVELOPMENT" or "PRODUCTION". Defaults to "PRODUCTION".
 	// +optional
 	InstanceType *string `json:"instanceType,omitempty"`
+
+	// A map of schema bundles. The key is the schema bundle ID.
+	// +optional
+	SchemaBundles map[string]BigtableInstanceSchemaBundle `json:"schemaBundles,omitempty"`
 
 	/*NOTYET
 	// Labels are a flexible and lightweight mechanism for organizing cloud

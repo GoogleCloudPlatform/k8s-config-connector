@@ -30,7 +30,8 @@ go run . generate-types \
   --resource BigtableBackup:Backup \
   --resource BigtableCluster:Cluster \
   --resource BigtableLogicalView:LogicalView \
-  --resource BigtableMaterializedView:MaterializedView
+  --resource BigtableMaterializedView:MaterializedView \
+  --resource BigtableSchemaBundle:SchemaBundle
 
 go run . generate-mapper \
   --service google.bigtable.admin.v2 \
