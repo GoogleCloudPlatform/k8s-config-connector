@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -27,6 +28,12 @@ var AssuredWorkloadsWorkloadGVK = GroupVersion.WithKind("AssuredWorkloadsWorkloa
 type AssuredWorkloadsWorkloadSpec struct {
 	// The AssuredWorkloadsWorkload name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Immutable. The Organization that this resource belongs to.
+	OrganizationRef *refs.OrganizationRef `json:"organizationRef"`
+
+	// Immutable. The location for the workload.
+	Location string `json:"location"`
 
 	// Required. The user-assigned display name of the Workload.
 	//  When present it must be between 4 to 30 characters.

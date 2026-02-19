@@ -113,6 +113,20 @@ spec:
                 description: Optional. Indicates the sovereignty status of the given
                   workload. Currently meant to be used by Europe/Canada customers.
                 type: boolean
+              location:
+                description: Immutable. The location for the workload.
+                type: string
+              organizationRef:
+                description: Immutable. The Organization that this resource belongs
+                  to.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
               partner:
                 description: Optional. Compliance Regime associated with this workload.
                 type: string
@@ -145,6 +159,9 @@ spec:
                       type: string
                   type: object
                 type: array
+            required:
+            - location
+            - organizationRef
             type: object
           status:
             description: AssuredWorkloadsWorkloadStatus defines the config connector

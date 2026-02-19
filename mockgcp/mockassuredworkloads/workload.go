@@ -51,26 +51,12 @@ func (s *AssuredWorkloadsV1) GetWorkload(ctx context.Context, req *pb.GetWorkloa
 }
 
 func (s *AssuredWorkloadsV1) CreateWorkload(ctx context.Context, req *pb.CreateWorkloadRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/workloads/" + "dummy" // WorkloadID is not in the request, it is generated or in req.Workload?
-	// Actually, looking at the proto, CreateWorkloadRequest has a Workload, but where is the ID?
-	// Some services have a Separate ID field.
-
-	// Let's check CreateWorkloadRequest in the proto.
-	/*
-		message CreateWorkloadRequest {
-		  string parent = 1;
-		  Workload workload = 2;
-		  string external_id = 3;
-		}
-	*/
-	// It has external_id.
-
 	workloadID := req.ExternalId
 	if workloadID == "" {
 		workloadID = fmt.Sprintf("workload-%d", time.Now().UnixNano())
 	}
 
-	reqName = req.Parent + "/workloads/" + workloadID
+	reqName := req.Parent + "/workloads/" + workloadID
 	name, err := s.parseWorkloadName(reqName)
 	if err != nil {
 		return nil, err
