@@ -141,21 +141,29 @@ func resourcesWithServerGeneratedResourceIDFromCRDs() ([]schema.GroupVersionKind
 			return nil, fmt.Errorf("error unmarshalling CRD file %s: %w", crdPath, err)
 		}
 
-		jsonSchema := k8s.GetOpenAPIV3SchemaFromCRD(&crd)
-		if jsonSchema == nil {
-			continue
+		found := false
+		for _, version := range crd.Spec.Versions {
+			jsonSchema := version.Schema.OpenAPIV3Schema
+			if jsonSchema == nil {
+				continue
+			}
+
+			spec, ok := jsonSchema.Properties["spec"]
+			if !ok {
+				continue
+			}
+			resourceID, ok := spec.Properties["resourceID"]
+			if !ok {
+				continue
+			}
+			description := strings.ToLower(resourceID.Description)
+			if strings.Contains(description, "service-generated") || strings.Contains(description, "server-generated") {
+				found = true
+				break
+			}
 		}
 
-		spec, ok := jsonSchema.Properties["spec"]
-		if !ok {
-			continue
-		}
-		resourceID, ok := spec.Properties["resourceID"]
-		if !ok {
-			continue
-		}
-		description := strings.ToLower(resourceID.Description)
-		if strings.Contains(description, "service-generated") || strings.Contains(description, "server-generated") {
+		if found {
 			gvk := schema.GroupVersionKind{
 				Group:   crd.Spec.Group,
 				Version: k8s.GetVersionFromCRD(&crd),
