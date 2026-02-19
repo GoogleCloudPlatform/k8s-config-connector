@@ -868,7 +868,6 @@ func ResourceContainerCluster() *schema.Resource {
 			"enable_autopilot": {
 				Type:        schema.TypeBool,
 				Optional:    true,
-				ForceNew:    true,
 				Description: `Enable Autopilot for this cluster.`,
 				// ConflictsWith: many fields, see https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#comparison. The conflict is only set one-way, on other fields w/ this field.
 			},
