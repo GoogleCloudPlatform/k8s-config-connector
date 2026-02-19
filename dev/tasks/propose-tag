@@ -99,12 +99,14 @@ if [[ -n "${STALE_VERSION:-}" ]]; then
 
   # Remove the STALE_VERSION package for standard and autopilot
   rm -rf ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/cluster
-  rm -f ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/crds.yaml
-  rm -f ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/namespaced/0-cnrm-system.yaml
+  rm ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/crds.yaml
+  rm ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/namespaced/0-cnrm-system.yaml
   rm -rf ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/cluster
-  rm -f ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/crds.yaml
-  rm -f ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/namespaced/0-cnrm-system.yaml
+  rm ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/crds.yaml
+  rm ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/namespaced/0-cnrm-system.yaml
 fi
 
 # Format
+GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector
+GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ${REPO_ROOT}/operator/channels/packages/configconnector
 cd ${REPO_ROOT}; make fmt
