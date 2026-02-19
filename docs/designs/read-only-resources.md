@@ -11,7 +11,6 @@ There are several scenarios where users need KCC to be aware of a GCP resource w
 *   **Split Management / Shared Resources:** A central team manages a resource (e.g., a shared VPC Network or a Folder) using one KCC instance (or another tool like Terraform), while tenant teams need to reference that resource in their own namespaces. Tenant controllers need to read the resource's status (e.g., `status.selfLink`, `status.id`) to resolve dependencies but should not be able to modify it.
 *   **Migration/Adoption:** Users may want to import existing resources into KCC for visibility or to use as references for other resources, without risking accidental modifications or deletions during the transition period.
 *   **Security/Compliance:** Certain critical resources must be modified only through specific pipelines, but their state needs to be visible in the Kubernetes cluster for auditing or policy enforcement.
-*   **Multi-Master Scenarios:** In a namespaced mode setup, multiple KCC managers might exist. To prevent conflicts, only one manager should be the "writer" (actuator) for a specific GCP resource, while others can be "readers."
 
 Currently, users can use `cnrm.cloud.google.com/deletion-policy: abandon` to prevent deletion, or `cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"` to stop periodic reconciliation. However, neither fully prevents actuation:
 *   `deletion-policy: abandon` still allows updates and creation.
@@ -23,7 +22,7 @@ There is a need for a resource-level control to explicitly disable all actuation
 
 *   **Explicit Control:** Provide a clear, resource-level annotation to control the actuation mode.
 *   **Read-Only Semantics:** Ensure that when a resource is in "read-only" mode, KCC performs **no** write operations (Create, Update, Delete) against the GCP API.
-*   **Status Fidelity:** Ensure that KCC continues to update the resource's `status` (including `observedGeneration` and `conditions`) to reflect the actual state of the GCP resource.
+*   **Status Fidelity:** Ensure that KCC continues to update the KRM resource's `status` (including `observedGeneration` and `conditions`) to reflect the actual state of the GCP resource.
 *   **Precedence:** Define a clear precedence order for actuation configuration (Resource > Namespace/Context > Cluster/System).
 
 ## 4. Non-Goals
@@ -33,7 +32,7 @@ There is a need for a resource-level control to explicitly disable all actuation
 
 ## 5. Proposed Solution
 
-We propose introducing a new annotation, `cnrm.cloud.google.com/actuation-mode`, which controls the controller's actuation behavior for the annotated resource.
+I propose introducing a new annotation, `cnrm.cloud.google.com/actuation-mode`, which controls an individual controller's actuation behavior for the annotated resource.
 
 ### 5.1. Annotation
 
@@ -185,3 +184,8 @@ As noted in Motivation, this combination is insufficient because `reconcile-inte
 ### 9.3. New CRD `ReadOnlyResource`
 
 Creating a separate CRD (e.g., `ComputeNetworkReadOnly`) would be too heavy-handed and require duplicating the entire schema. An annotation is lightweight and works with all existing resources.
+
+## 10. Future Work
+
+Expansion for the primary KCC manager can be considered, especially in the context of HA/ DR work with the
+multi-cluster lease experiment.
