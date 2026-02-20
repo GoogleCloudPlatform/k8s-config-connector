@@ -85,4 +85,25 @@ done
 GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${VERSION}
 GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ${REPO_ROOT}/operator/channels/packages/configconnector/${VERSION}
 
-echo "Channel manifests generated."
+# Verify the version in generated manifests
+echo "Verifying version ${VERSION} in generated manifests..."
+for channeldir in channels autopilot-channels; do
+  MANIFEST_PATH="${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/namespaced/0-cnrm-system.yaml"
+  echo "Checking ${MANIFEST_PATH}..."
+  if ! grep -q "cnrm.cloud.google.com/version: ${VERSION}" "${MANIFEST_PATH}"; then
+    echo "ERROR: Version ${VERSION} not found in ${MANIFEST_PATH}"
+    # Log some context for debugging
+    echo "Current annotations in ${MANIFEST_PATH}:"
+    grep "cnrm.cloud.google.com/version:" "${MANIFEST_PATH}" || echo "No version annotation found."
+    exit 1
+  fi
+  echo "Found version ${VERSION} in ${MANIFEST_PATH}:"
+  grep "cnrm.cloud.google.com/version: ${VERSION}" "${MANIFEST_PATH}" | head -n 1
+done
+
+echo "Channel manifests generated and verified successfully."
+echo "Generated files summary:"
+for channeldir in channels autopilot-channels; do
+  echo "--- ${channeldir} ---"
+  find ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION} -type f | sed "s@${REPO_ROOT}/@@"
+done
