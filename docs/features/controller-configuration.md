@@ -66,7 +66,7 @@ spec:
 
 Config Connector determines which controller to use following this order of precedence:
 
-1.  **Resource Annotation (Legacy):** If the `cnrm.cloud.google.com/reconciler` annotation is present on the resource. Config Connector still honors this legacy behavior for backward compatibility, but it is moving away from it and you should use `ConfigConnectorContext` to override controllers.
+1.  **Resource Annotation (Legacy):** If the `alpha.cnrm.cloud.google.com/reconciler` annotation is present on the resource. Config Connector still honors this legacy behavior for backward compatibility, but it is moving away from it and you should use `ConfigConnectorContext` to override controllers.
 2.  **ConfigConnectorContext Override:** If an entry for the resource's `Kind.group` exists in the namespace's `ConfigConnectorContext`.
 3.  **Static Default:** The default controller implementation defined within the Config Connector version you are running.
 
