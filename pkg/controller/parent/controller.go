@@ -189,7 +189,7 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 func (r *ParentReconciler) determineControllerType(ctx context.Context, u *unstructured.Unstructured) (k8s.ReconcilerType, error) {
 	// Check for resource annotation
 	annotations := u.GetAnnotations()
-	if annotations[k8s.AlphaReconcilerAnnotation] == "direct" {
+	if annotations[k8s.AlphaReconcilerAnnotation] == "direct" || annotations[k8s.ReconcilerTypeAnnotation] == "direct" {
 		return k8s.ReconcilerTypeDirect, nil
 	}
 

@@ -4,7 +4,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/last-changed-cookie: normalized-cookie
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/reconciler: direct
+    alpha.cnrm.cloud.google.com/reconciler: direct
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender

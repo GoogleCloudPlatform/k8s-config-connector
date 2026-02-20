@@ -17,7 +17,7 @@ kind: SQLInstance
 metadata:
   name: sqlinstance-primary-direct-${uniqueId}
   annotations:
-    cnrm.cloud.google.com/reconciler: "direct"
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   databaseVersion: MYSQL_8_0
   region: us-central1
