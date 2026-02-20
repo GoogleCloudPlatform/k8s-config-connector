@@ -3,6 +3,7 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/deletion-policy: abandon
+    cnrm.cloud.google.com/last-changed-cookie: normalized-cookie
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
   - cnrm.cloud.google.com/finalizer

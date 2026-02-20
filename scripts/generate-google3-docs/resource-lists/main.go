@@ -106,7 +106,16 @@ func resourcesWithServerGeneratedResourceID(smLoader *servicemappingloader.Servi
 	if err != nil {
 		return nil, fmt.Errorf("error getting DCL-based resources with a server-generated resource ID: %w", err)
 	}
-	return k8s.SortGVKsByKind(append(tfResources, dclResources...)), nil
+	// todo: temporarily list current direct resources with generated ID until we can generate them by code
+	// This is needed otherwise "make resource-docs" will revert the resource-lists
+	directResources := []schema.GroupVersionKind{
+		{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataCatalogPolicyTag"},
+		{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataCatalogTaxonomy"},
+		{Group: "essentialcontacts.cnrm.cloud.google.com", Version: "v1beta1", Kind: "EssentialContactsContact"},
+		{Group: "tags.cnrm.cloud.google.com", Version: "v1beta1", Kind: "TagsTagBinding"},
+		{Group: "tags.cnrm.cloud.google.com", Version: "v1beta1", Kind: "TagsTagKey"},
+		{Group: "tags.cnrm.cloud.google.com", Version: "v1beta1", Kind: "TagsTagValue"}}
+	return k8s.SortGVKsByKind(append(append(tfResources, dclResources...), directResources...)), nil
 }
 
 func tfBasedResourcesWithServerGeneratedResourceID(smLoader *servicemappingloader.ServiceMappingLoader) []schema.GroupVersionKind {

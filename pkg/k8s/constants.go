@@ -135,6 +135,8 @@ var (
 
 	BlueprintAttributionAnnotation = FormatAnnotation("blueprint")
 
+	LastChangedCookieAnnotation = FormatAnnotation("last-changed-cookie")
+
 	AlphaReconcilerAnnotation = "alpha.cnrm.cloud.google.com/reconciler"
 
 	// TODO(kcc-eng): Adjust the timeout back down after b/237398742 is fixed.
