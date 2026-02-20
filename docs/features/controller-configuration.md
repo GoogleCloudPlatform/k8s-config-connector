@@ -12,8 +12,8 @@ While Config Connector selects the most appropriate default controller for each 
 
 There are two primary resources for configuring Config Connector:
 
-1.  **ConfigConnector (CC):** A cluster-scoped resource that controls cluster-wide options.
-2.  **ConfigConnectorContext (CCC):** A namespace-scoped resource that controls options for a specific namespace. In namespaced mode, CCC settings take precedence over CC settings for that namespace.
+1.  **ConfigConnector (CC):** A cluster-scoped resource that controls cluster-wide options, such as the operational mode (cluster vs. namespaced). **Note:** ConfigConnector does not currently support controller overrides at the cluster level.
+2.  **ConfigConnectorContext (CCC):** A namespace-scoped resource that controls options for a specific namespace. In namespaced mode, CCC is where you define controller overrides for resource types within that namespace.
 
 ### ConfigConnectorContext Reference
 
@@ -72,12 +72,20 @@ Config Connector determines which controller to use following this order of prec
 
 ## Verifying the Controller
 
-To verify which controller is actively reconciling your resource, you can inspect the logs of the `cnrm-controller-manager` pod:
+To determine which controller is being used for a resource, you should check the following in order:
+
+1.  **ConfigConnectorContext Overrides:** Check the `ConfigConnectorContext` in the resource's namespace for any `experiments.controllerOverrides`.
+2.  **Static Configuration:** If no override is present, Config Connector uses the default defined in [pkg/controller/resourceconfig/static_config.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/resourceconfig/static_config.go). This file lists the `DefaultController` for every supported resource Kind.
+
+### Inspecting Logs
+
+You can also verify the routing decision by inspecting the logs of the `cnrm-controller-manager` pod. Look for the message `"routing to controller"` which includes the selected controller type.
+
+To view these logs (ensure you have appropriate verbosity enabled, typically `V(1)`):
 
 ```bash
-# Check logs for a specific resource
-kubectl -n cnrm-system logs pod/cnrm-controller-manager-0 | grep -e "my-resource-name"
+kubectl -n cnrm-system logs pod/cnrm-controller-manager-0 | grep "routing to controller"
 ```
 
-*   **Direct Controllers** log message: `"Running reconcile"`
-*   **Legacy Controllers (TF/DCL)** log message: `"starting reconcile"`
+The log entry will look similar to this:
+`Info  routing to controller {"type": "direct", "resource": {"namespace": "my-namespace", "name": "my-resource"}}`
