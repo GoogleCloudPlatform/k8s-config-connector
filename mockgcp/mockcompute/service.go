@@ -108,6 +108,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterRoutesServer(grpcServer, &RoutesV1{MockService: s})
 
+	pb.RegisterRoutersServer(grpcServer, &routersV1{MockService: s})
+
 	pb.RegisterServiceAttachmentsServer(grpcServer, &RegionalServiceAttachmentV1{MockService: s})
 
 	pb.RegisterFirewallPoliciesServer(grpcServer, &FirewallPoliciesV1{MockService: s})
@@ -244,6 +246,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterGlobalAddressesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterRoutersHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 

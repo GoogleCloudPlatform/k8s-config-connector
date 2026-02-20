@@ -15,9 +15,28 @@
 package compute
 
 import (
+	"context"
+	"fmt"
 	"reflect"
 	"strings"
+
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+func resolveResourceName(ctx context.Context, reader client.Reader, key client.ObjectKey, gvk schema.GroupVersionKind) (*unstructured.Unstructured, error) {
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(gvk)
+	if err := reader.Get(ctx, key, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, fmt.Errorf("referenced %s %v not found", gvk.Kind, key)
+		}
+		return nil, fmt.Errorf("error reading referenced %s %v: %w", gvk.Kind, key, err)
+	}
+	return obj, nil
+}
 
 /*
 IsSelfLinkEqual Terraform and mock uses the /beta/ endpoints, while direct controller uses /v1/.

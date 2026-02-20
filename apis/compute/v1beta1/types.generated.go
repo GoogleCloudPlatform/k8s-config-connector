@@ -20,6 +20,7 @@
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
 // resource: ComputeForwardingRule:ForwardingRule
 // resource: ComputeResourcePolicy:ResourcePolicy
+// resource: ComputeRouterNAT:RouterNat
 // resource: ComputeSecurityPolicy:SecurityPolicy
 // resource: ComputeSubnetwork:Subnetwork
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
