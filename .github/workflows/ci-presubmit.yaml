@@ -25,11 +25,34 @@ on:
     types: [checks_requested]
     branches: ["master", "release-*"]
 
+permissions:
+  contents: read
+  packages: write
 
 jobs:
 
+  build-e2e-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: 'go.mod'
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push e2e test image
+        run: |
+          docker build -t ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }} -f build/test-e2e/Dockerfile .
+          docker push ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
+
+
   capture-pprof:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -51,6 +74,7 @@ jobs:
 
   fuzz-roundtrippers:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -114,6 +138,7 @@ jobs:
 
   run-linters:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -135,6 +160,7 @@ jobs:
 
   smoketest-with-kind:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -156,6 +182,7 @@ jobs:
 
   test-mockgcp:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -181,6 +208,7 @@ jobs:
 
   test-pause:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -201,14 +229,12 @@ jobs:
 
 
   tests-e2e-direct-iam:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-direct-iam"
         run: |
           ./dev/ci/presubmits/tests-e2e-direct-iam
@@ -223,14 +249,12 @@ jobs:
 
 
   tests-e2e-fixtures:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures
@@ -245,14 +269,12 @@ jobs:
 
 
   tests-e2e-fixtures-accesscontextmanager:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-accesscontextmanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-accesscontextmanager
@@ -267,14 +289,12 @@ jobs:
 
 
   tests-e2e-fixtures-aiplatform:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-aiplatform"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-aiplatform
@@ -289,14 +309,12 @@ jobs:
 
 
   tests-e2e-fixtures-alloydb:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-alloydb"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-alloydb
@@ -311,14 +329,12 @@ jobs:
 
 
   tests-e2e-fixtures-analytics:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-analytics"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-analytics
@@ -333,14 +349,12 @@ jobs:
 
 
   tests-e2e-fixtures-apigateway:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apigateway"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-apigateway
@@ -355,14 +369,12 @@ jobs:
 
 
   tests-e2e-fixtures-apigee:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apigee"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-apigee
@@ -377,14 +389,12 @@ jobs:
 
 
   tests-e2e-fixtures-apikeys:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apikeys"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-apikeys
@@ -399,14 +409,12 @@ jobs:
 
 
   tests-e2e-fixtures-appengine:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-appengine"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-appengine
@@ -421,14 +429,12 @@ jobs:
 
 
   tests-e2e-fixtures-apphub:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apphub"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-apphub
@@ -443,14 +449,12 @@ jobs:
 
 
   tests-e2e-fixtures-artifactregistry:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-artifactregistry"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-artifactregistry
@@ -465,14 +469,12 @@ jobs:
 
 
   tests-e2e-fixtures-asset:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-asset"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-asset
@@ -487,14 +489,12 @@ jobs:
 
 
   tests-e2e-fixtures-assuredworkloads:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-assuredworkloads"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-assuredworkloads
@@ -509,14 +509,12 @@ jobs:
 
 
   tests-e2e-fixtures-backupdr:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-backupdr"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-backupdr
@@ -531,14 +529,12 @@ jobs:
 
 
   tests-e2e-fixtures-batch:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-batch"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-batch
@@ -553,14 +549,12 @@ jobs:
 
 
   tests-e2e-fixtures-beyondcorp:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-beyondcorp"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-beyondcorp
@@ -575,14 +569,12 @@ jobs:
 
 
   tests-e2e-fixtures-bigquery:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquery"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigquery
@@ -597,14 +589,12 @@ jobs:
 
 
   tests-e2e-fixtures-bigqueryanalyticshub:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigqueryanalyticshub"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigqueryanalyticshub
@@ -619,14 +609,12 @@ jobs:
 
 
   tests-e2e-fixtures-bigquerybiglake:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerybiglake"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigquerybiglake
@@ -641,14 +629,12 @@ jobs:
 
 
   tests-e2e-fixtures-bigqueryconnection:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigqueryconnection"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigqueryconnection
@@ -663,14 +649,12 @@ jobs:
 
 
   tests-e2e-fixtures-bigquerydatapolicy:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerydatapolicy"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigquerydatapolicy
@@ -685,14 +669,12 @@ jobs:
 
 
   tests-e2e-fixtures-bigquerydatatransfer:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerydatatransfer"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigquerydatatransfer
@@ -707,14 +689,12 @@ jobs:
 
 
   tests-e2e-fixtures-bigqueryreservation:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigqueryreservation"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigqueryreservation
@@ -729,14 +709,12 @@ jobs:
 
 
   tests-e2e-fixtures-bigtable:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigtable"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-bigtable
@@ -751,14 +729,12 @@ jobs:
 
 
   tests-e2e-fixtures-billing:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-billing"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-billing
@@ -773,14 +749,12 @@ jobs:
 
 
   tests-e2e-fixtures-billingbudgets:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-billingbudgets"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-billingbudgets
@@ -795,14 +769,12 @@ jobs:
 
 
   tests-e2e-fixtures-binaryauthorization:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-binaryauthorization"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-binaryauthorization
@@ -817,14 +789,12 @@ jobs:
 
 
   tests-e2e-fixtures-certificatemanager:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-certificatemanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-certificatemanager
@@ -839,14 +809,12 @@ jobs:
 
 
   tests-e2e-fixtures-cloudasset:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudasset"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudasset
@@ -861,14 +829,12 @@ jobs:
 
 
   tests-e2e-fixtures-cloudbuild:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudbuild"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudbuild
@@ -883,14 +849,12 @@ jobs:
 
 
   tests-e2e-fixtures-clouddeploy:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-clouddeploy"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-clouddeploy
@@ -905,14 +869,12 @@ jobs:
 
 
   tests-e2e-fixtures-clouddms:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-clouddms"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-clouddms
@@ -927,14 +889,12 @@ jobs:
 
 
   tests-e2e-fixtures-cloudfunctions:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudfunctions"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudfunctions
@@ -949,14 +909,12 @@ jobs:
 
 
   tests-e2e-fixtures-cloudfunctions2:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudfunctions2"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudfunctions2
@@ -971,14 +929,12 @@ jobs:
 
 
   tests-e2e-fixtures-cloudidentity:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudidentity"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudidentity
@@ -993,14 +949,12 @@ jobs:
 
 
   tests-e2e-fixtures-cloudids:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudids"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudids
@@ -1015,14 +969,12 @@ jobs:
 
 
   tests-e2e-fixtures-cloudiot:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudiot"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudiot
@@ -1037,14 +989,12 @@ jobs:
 
 
   tests-e2e-fixtures-cloudquota:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudquota"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudquota
@@ -1059,14 +1009,12 @@ jobs:
 
 
   tests-e2e-fixtures-cloudscheduler:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudscheduler"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudscheduler
@@ -1081,14 +1029,12 @@ jobs:
 
 
   tests-e2e-fixtures-cloudtasks:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudtasks"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-cloudtasks
@@ -1103,14 +1049,12 @@ jobs:
 
 
   tests-e2e-fixtures-colab:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-colab"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-colab
@@ -1125,14 +1069,12 @@ jobs:
 
 
   tests-e2e-fixtures-composer:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-composer"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-composer
@@ -1147,14 +1089,12 @@ jobs:
 
 
   tests-e2e-fixtures-compute:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-compute"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-compute
@@ -1169,14 +1109,12 @@ jobs:
 
 
   tests-e2e-fixtures-configcontroller:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-configcontroller"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-configcontroller
@@ -1191,14 +1129,12 @@ jobs:
 
 
   tests-e2e-fixtures-configdelivery:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-configdelivery"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-configdelivery
@@ -1213,14 +1149,12 @@ jobs:
 
 
   tests-e2e-fixtures-container:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-container"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-container
@@ -1235,14 +1169,12 @@ jobs:
 
 
   tests-e2e-fixtures-containeranalysis:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-containeranalysis"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-containeranalysis
@@ -1257,14 +1189,12 @@ jobs:
 
 
   tests-e2e-fixtures-containerattached:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-containerattached"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-containerattached
@@ -1279,14 +1209,12 @@ jobs:
 
 
   tests-e2e-fixtures-datacatalog:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datacatalog"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-datacatalog
@@ -1301,14 +1229,12 @@ jobs:
 
 
   tests-e2e-fixtures-dataflow:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataflow"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dataflow
@@ -1323,14 +1249,12 @@ jobs:
 
 
   tests-e2e-fixtures-dataform:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataform"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dataform
@@ -1345,14 +1269,12 @@ jobs:
 
 
   tests-e2e-fixtures-datafusion:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datafusion"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-datafusion
@@ -1367,14 +1289,12 @@ jobs:
 
 
   tests-e2e-fixtures-dataplex:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataplex"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dataplex
@@ -1389,14 +1309,12 @@ jobs:
 
 
   tests-e2e-fixtures-dataproc:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataproc"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dataproc
@@ -1411,14 +1329,12 @@ jobs:
 
 
   tests-e2e-fixtures-datastore:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datastore"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-datastore
@@ -1433,14 +1349,12 @@ jobs:
 
 
   tests-e2e-fixtures-datastream:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datastream"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-datastream
@@ -1455,14 +1369,12 @@ jobs:
 
 
   tests-e2e-fixtures-deploymentmanager:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-deploymentmanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-deploymentmanager
@@ -1477,14 +1389,12 @@ jobs:
 
 
   tests-e2e-fixtures-dialogflow:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dialogflow"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dialogflow
@@ -1499,14 +1409,12 @@ jobs:
 
 
   tests-e2e-fixtures-dialogflowcx:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dialogflowcx"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dialogflowcx
@@ -1521,14 +1429,12 @@ jobs:
 
 
   tests-e2e-fixtures-discoveryengine:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-discoveryengine"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-discoveryengine
@@ -1543,14 +1449,12 @@ jobs:
 
 
   tests-e2e-fixtures-dlp:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dlp"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dlp
@@ -1565,14 +1469,12 @@ jobs:
 
 
   tests-e2e-fixtures-dns:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dns"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-dns
@@ -1587,14 +1489,12 @@ jobs:
 
 
   tests-e2e-fixtures-documentai:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-documentai"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-documentai
@@ -1609,14 +1509,12 @@ jobs:
 
 
   tests-e2e-fixtures-edgecontainer:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-edgecontainer"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-edgecontainer
@@ -1631,14 +1529,12 @@ jobs:
 
 
   tests-e2e-fixtures-edgenetwork:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-edgenetwork"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-edgenetwork
@@ -1653,14 +1549,12 @@ jobs:
 
 
   tests-e2e-fixtures-essentialcontacts:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-essentialcontacts"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-essentialcontacts
@@ -1675,14 +1569,12 @@ jobs:
 
 
   tests-e2e-fixtures-eventarc:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-eventarc"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-eventarc
@@ -1697,14 +1589,12 @@ jobs:
 
 
   tests-e2e-fixtures-filestore:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-filestore"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-filestore
@@ -1719,14 +1609,12 @@ jobs:
 
 
   tests-e2e-fixtures-firebase:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firebase"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-firebase
@@ -1741,14 +1629,12 @@ jobs:
 
 
   tests-e2e-fixtures-firebasedatabase:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firebasedatabase"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-firebasedatabase
@@ -1763,14 +1649,12 @@ jobs:
 
 
   tests-e2e-fixtures-firebasehosting:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firebasehosting"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-firebasehosting
@@ -1785,14 +1669,12 @@ jobs:
 
 
   tests-e2e-fixtures-firebasestorage:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firebasestorage"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-firebasestorage
@@ -1807,14 +1689,12 @@ jobs:
 
 
   tests-e2e-fixtures-firestore:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firestore"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-firestore
@@ -1829,14 +1709,12 @@ jobs:
 
 
   tests-e2e-fixtures-gkebackup:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-gkebackup"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-gkebackup
@@ -1851,14 +1729,12 @@ jobs:
 
 
   tests-e2e-fixtures-gkehub:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-gkehub"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-gkehub
@@ -1873,14 +1749,12 @@ jobs:
 
 
   tests-e2e-fixtures-healthcare:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-healthcare"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-healthcare
@@ -1895,14 +1769,12 @@ jobs:
 
 
   tests-e2e-fixtures-iam:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-iam"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-iam
@@ -1917,14 +1789,12 @@ jobs:
 
 
   tests-e2e-fixtures-iap:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-iap"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-iap
@@ -1939,14 +1809,12 @@ jobs:
 
 
   tests-e2e-fixtures-identityplatform:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-identityplatform"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-identityplatform
@@ -1961,14 +1829,12 @@ jobs:
 
 
   tests-e2e-fixtures-kms:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-kms"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-kms
@@ -1983,14 +1849,12 @@ jobs:
 
 
   tests-e2e-fixtures-logging:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-logging"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-logging
@@ -2005,14 +1869,12 @@ jobs:
 
 
   tests-e2e-fixtures-managedkafka:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-managedkafka"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-managedkafka
@@ -2027,14 +1889,12 @@ jobs:
 
 
   tests-e2e-fixtures-memcache:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-memcache"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-memcache
@@ -2049,14 +1909,12 @@ jobs:
 
 
   tests-e2e-fixtures-memorystore:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-memorystore"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-memorystore
@@ -2071,14 +1929,12 @@ jobs:
 
 
   tests-e2e-fixtures-metastore:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-metastore"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-metastore
@@ -2093,14 +1949,12 @@ jobs:
 
 
   tests-e2e-fixtures-mlengine:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-mlengine"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-mlengine
@@ -2115,14 +1969,12 @@ jobs:
 
 
   tests-e2e-fixtures-monitoring:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-monitoring"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-monitoring
@@ -2137,14 +1989,12 @@ jobs:
 
 
   tests-e2e-fixtures-netapp:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-netapp"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-netapp
@@ -2159,14 +2009,12 @@ jobs:
 
 
   tests-e2e-fixtures-networkconnectivity:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networkconnectivity"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-networkconnectivity
@@ -2181,14 +2029,12 @@ jobs:
 
 
   tests-e2e-fixtures-networkmanagement:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networkmanagement"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-networkmanagement
@@ -2203,14 +2049,12 @@ jobs:
 
 
   tests-e2e-fixtures-networksecurity:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networksecurity"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-networksecurity
@@ -2225,14 +2069,12 @@ jobs:
 
 
   tests-e2e-fixtures-networkservices:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networkservices"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-networkservices
@@ -2247,14 +2089,12 @@ jobs:
 
 
   tests-e2e-fixtures-notebooks:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-notebooks"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-notebooks
@@ -2269,14 +2109,12 @@ jobs:
 
 
   tests-e2e-fixtures-orgpolicy:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-orgpolicy"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-orgpolicy
@@ -2291,14 +2129,12 @@ jobs:
 
 
   tests-e2e-fixtures-osconfig:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-osconfig"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-osconfig
@@ -2313,14 +2149,12 @@ jobs:
 
 
   tests-e2e-fixtures-oslogin:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-oslogin"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-oslogin
@@ -2335,14 +2169,12 @@ jobs:
 
 
   tests-e2e-fixtures-parametermanager:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-parametermanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-parametermanager
@@ -2357,14 +2189,12 @@ jobs:
 
 
   tests-e2e-fixtures-privateca:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-privateca"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-privateca
@@ -2379,14 +2209,12 @@ jobs:
 
 
   tests-e2e-fixtures-privilegedaccessmanager:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-privilegedaccessmanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-privilegedaccessmanager
@@ -2401,14 +2229,12 @@ jobs:
 
 
   tests-e2e-fixtures-pubsub:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-pubsub"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-pubsub
@@ -2423,14 +2249,12 @@ jobs:
 
 
   tests-e2e-fixtures-pubsublite:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-pubsublite"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-pubsublite
@@ -2445,14 +2269,12 @@ jobs:
 
 
   tests-e2e-fixtures-recaptchaenterprise:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-recaptchaenterprise"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-recaptchaenterprise
@@ -2467,14 +2289,12 @@ jobs:
 
 
   tests-e2e-fixtures-redis:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-redis"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-redis
@@ -2489,14 +2309,12 @@ jobs:
 
 
   tests-e2e-fixtures-resourcemanager:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-resourcemanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-resourcemanager
@@ -2511,14 +2329,12 @@ jobs:
 
 
   tests-e2e-fixtures-run:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-run"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-run
@@ -2533,14 +2349,12 @@ jobs:
 
 
   tests-e2e-fixtures-secretmanager:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-secretmanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-secretmanager
@@ -2555,14 +2369,12 @@ jobs:
 
 
   tests-e2e-fixtures-securesourcemanager:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-securesourcemanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-securesourcemanager
@@ -2577,14 +2389,12 @@ jobs:
 
 
   tests-e2e-fixtures-securitycenter:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-securitycenter"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-securitycenter
@@ -2599,14 +2409,12 @@ jobs:
 
 
   tests-e2e-fixtures-servicedirectory:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-servicedirectory"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-servicedirectory
@@ -2621,14 +2429,12 @@ jobs:
 
 
   tests-e2e-fixtures-servicenetworking:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-servicenetworking"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-servicenetworking
@@ -2643,14 +2449,12 @@ jobs:
 
 
   tests-e2e-fixtures-serviceusage:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-serviceusage"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-serviceusage
@@ -2665,14 +2469,12 @@ jobs:
 
 
   tests-e2e-fixtures-sourcerepo:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-sourcerepo"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-sourcerepo
@@ -2687,14 +2489,12 @@ jobs:
 
 
   tests-e2e-fixtures-spanner:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-spanner"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-spanner
@@ -2709,14 +2509,12 @@ jobs:
 
 
   tests-e2e-fixtures-speech:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-speech"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-speech
@@ -2731,14 +2529,12 @@ jobs:
 
 
   tests-e2e-fixtures-sql:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-sql"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-sql
@@ -2753,14 +2549,12 @@ jobs:
 
 
   tests-e2e-fixtures-storage:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-storage"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-storage
@@ -2775,14 +2569,12 @@ jobs:
 
 
   tests-e2e-fixtures-storagetransfer:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-storagetransfer"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-storagetransfer
@@ -2797,14 +2589,12 @@ jobs:
 
 
   tests-e2e-fixtures-tags:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-tags"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-tags
@@ -2819,14 +2609,12 @@ jobs:
 
 
   tests-e2e-fixtures-tpu:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-tpu"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-tpu
@@ -2841,14 +2629,12 @@ jobs:
 
 
   tests-e2e-fixtures-vertexai:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-vertexai"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-vertexai
@@ -2863,14 +2649,12 @@ jobs:
 
 
   tests-e2e-fixtures-vmwareengine:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-vmwareengine"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-vmwareengine
@@ -2885,14 +2669,12 @@ jobs:
 
 
   tests-e2e-fixtures-vpcaccess:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-vpcaccess"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-vpcaccess
@@ -2907,14 +2689,12 @@ jobs:
 
 
   tests-e2e-fixtures-workflowexecutions:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-workflowexecutions"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-workflowexecutions
@@ -2929,14 +2709,12 @@ jobs:
 
 
   tests-e2e-fixtures-workflows:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-workflows"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-workflows
@@ -2951,14 +2729,12 @@ jobs:
 
 
   tests-e2e-fixtures-workstations:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-workstations"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-workstations
@@ -2973,14 +2749,12 @@ jobs:
 
 
   tests-e2e-samples-alloydb:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-alloydb"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-alloydb
@@ -2995,14 +2769,12 @@ jobs:
 
 
   tests-e2e-samples-apigateway:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-apigateway"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-apigateway
@@ -3017,14 +2789,12 @@ jobs:
 
 
   tests-e2e-samples-apigee:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-apigee"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-apigee
@@ -3039,14 +2809,12 @@ jobs:
 
 
   tests-e2e-samples-bigquery:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-bigquery"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-bigquery
@@ -3061,14 +2829,12 @@ jobs:
 
 
   tests-e2e-samples-bigqueryconnection:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-bigqueryconnection"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-bigqueryconnection
@@ -3083,14 +2849,12 @@ jobs:
 
 
   tests-e2e-samples-bigquerydatapolicy:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-bigquerydatapolicy"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-bigquerydatapolicy
@@ -3105,14 +2869,12 @@ jobs:
 
 
   tests-e2e-samples-bigquerydatatransfer:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-bigquerydatatransfer"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-bigquerydatatransfer
@@ -3127,14 +2889,12 @@ jobs:
 
 
   tests-e2e-samples-cloudbuild:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-cloudbuild"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-cloudbuild
@@ -3149,14 +2909,12 @@ jobs:
 
 
   tests-e2e-samples-cloudidentity:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-cloudidentity"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-cloudidentity
@@ -3171,14 +2929,12 @@ jobs:
 
 
   tests-e2e-samples-compute:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-compute"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-compute
@@ -3193,14 +2949,12 @@ jobs:
 
 
   tests-e2e-samples-dataflow:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-dataflow"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-dataflow
@@ -3215,14 +2969,12 @@ jobs:
 
 
   tests-e2e-samples-dataproc:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-dataproc"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-dataproc
@@ -3237,14 +2989,12 @@ jobs:
 
 
   tests-e2e-samples-gkehub:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-gkehub"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-gkehub
@@ -3259,14 +3009,12 @@ jobs:
 
 
   tests-e2e-samples-iam:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-iam"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-iam
@@ -3281,14 +3029,12 @@ jobs:
 
 
   tests-e2e-samples-kms:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-kms"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-kms
@@ -3303,14 +3049,12 @@ jobs:
 
 
   tests-e2e-samples-orgpolicy:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-orgpolicy"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-orgpolicy
@@ -3325,14 +3069,12 @@ jobs:
 
 
   tests-e2e-samples-redis:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-redis"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-redis
@@ -3347,14 +3089,12 @@ jobs:
 
 
   tests-e2e-samples-secretmanager:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-secretmanager"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-secretmanager
@@ -3369,14 +3109,12 @@ jobs:
 
 
   tests-e2e-samples-spanner:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-spanner"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-spanner
@@ -3391,14 +3129,12 @@ jobs:
 
 
   tests-e2e-samples-sql:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-sql"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-sql
@@ -3413,14 +3149,12 @@ jobs:
 
 
   tests-e2e-samples-storage:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-storage"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-storage
@@ -3435,14 +3169,12 @@ jobs:
 
 
   tests-e2e-samples-unclassified:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-unclassified"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-unclassified
@@ -3457,14 +3189,12 @@ jobs:
 
 
   tests-e2e-samples-workstations:
-    runs-on: ubuntu-latest
-    needs: unit-tests
+    needs: [unit-tests, build-e2e-image]
+    container:
+      image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: 'go.mod'
       - name: "Run dev/ci/presubmits/tests-e2e-samples-workstations"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-workstations
@@ -3480,6 +3210,7 @@ jobs:
 
   tests-gcptracker:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -3501,6 +3232,7 @@ jobs:
 
   tests-scenarios-acquisition:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -3522,6 +3254,7 @@ jobs:
 
   tests-scenarios-gkehubfeaturemembership:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -3543,6 +3276,7 @@ jobs:
 
   tests-scenarios-powertool:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -3564,6 +3298,7 @@ jobs:
 
   tests-scenarios-unclassified:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -3612,6 +3347,7 @@ jobs:
 
   validate-generated-files:
     runs-on: ubuntu-latest
+    needs: unit-tests
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4

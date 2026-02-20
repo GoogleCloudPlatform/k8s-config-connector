@@ -95,9 +95,13 @@ fi
 echo "Using TEST_TIMEOUT=${TEST_TIMEOUT}"
 
 if [[ -z "${PREBUILT_TEST_BINARY:-}" ]]; then
-  echo "Prebuilding e2e tests"
-  PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
-  go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+  if [[ -f "/usr/local/bin/tests-e2e" ]]; then
+    PREBUILT_TEST_BINARY="/usr/local/bin/tests-e2e"
+  else
+    echo "Prebuilding e2e tests"
+    PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
+    go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+  fi
 fi
 
 if [[ -n "${SKIP_TEST_APIGROUP:-}" ]]; then

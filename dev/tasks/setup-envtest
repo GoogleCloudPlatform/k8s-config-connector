@@ -21,6 +21,13 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
 if [[ -z "${KUBEBUILDER_ASSETS:-}" ]]; then
+  # Check if we are in the e2e-test-env container
+  if [[ -d "/root/.local/share/kubebuilder-envtest/k8s" ]]; then
+    export KUBEBUILDER_ASSETS=$(find /root/.local/share/kubebuilder-envtest/k8s -maxdepth 1 -mindepth 1 -type d | head -n 1)
+  fi
+fi
+
+if [[ -z "${KUBEBUILDER_ASSETS:-}" ]]; then
   echo "Downloading envtest assets..."
   export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
 fi
