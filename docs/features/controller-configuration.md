@@ -6,7 +6,7 @@ Config Connector uses different underlying implementations (controllers) to mana
 *   **Terraform-based Controllers (Legacy):** Older implementations that wrap the Terraform Google provider.
 *   **DCL-based Controllers (Legacy):** Older implementations that wrap the Google Cloud Declarative Library (DCL).
 
-While Config Connector automatically selects the most appropriate default controller for each resource, you can override this behavior at either the namespace level (using `ConfigConnectorContext`) or the per-resource level (using annotations).
+While Config Connector selects the most appropriate default controller for each resource, you can override this behavior at the namespace level (using `ConfigConnectorContext`).
 
 ## Configuration Resources
 
@@ -62,25 +62,11 @@ spec:
       BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
 ```
 
-## Per-resource Configuration
-
-You can also override the controller for an individual resource using an annotation. This takes precedence over namespace-level overrides.
-
-To use a direct controller for a specific resource, set the following annotation:
-
-```yaml
-metadata:
-  annotations:
-    cnrm.cloud.google.com/reconciler: "direct"
-```
-
-> **Note:** The `alpha.cnrm.cloud.google.com/reconciler` annotation is also supported for backward compatibility but its use is discouraged.
-
 ## Precedence
 
 Config Connector determines which controller to use following this order of precedence:
 
-1.  **Resource Annotation:** If the `cnrm.cloud.google.com/reconciler` annotation is present on the resource.
+1.  **Resource Annotation (Legacy):** If the `cnrm.cloud.google.com/reconciler` annotation is present on the resource. Config Connector still honors this legacy behavior for backward compatibility, but it is moving away from it and you should use `ConfigConnectorContext` to override controllers.
 2.  **ConfigConnectorContext Override:** If an entry for the resource's `Kind.group` exists in the namespace's `ConfigConnectorContext`.
 3.  **Static Default:** The default controller implementation defined within the Config Connector version you are running.
 
