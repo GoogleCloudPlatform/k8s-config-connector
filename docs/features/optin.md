@@ -43,6 +43,13 @@ spec:
 The only supported value for the annotation is "direct", to enable the
 direct controller.
 
+### Namespace-level Overrides
+
+You can also enable direct controllers for all resources of a specific kind
+within a namespace using the `experiments.controllerOverrides` field in the
+`ConfigConnectorContext` resource. For more details, see the
+[Controller Configuration](./controller-configuration.md) documentation.
+
 While adding an annotation to enable experimental direct controllers for resources
 that do not yet support experimental direct controllers should be harmless, we
 recommend against doing so. Adding such an annotation can be confusing and
