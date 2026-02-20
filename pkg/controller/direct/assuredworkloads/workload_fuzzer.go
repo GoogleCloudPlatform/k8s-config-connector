@@ -35,14 +35,29 @@ func assuredWorkloadsWorkloadFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecField(".billing_account")
 	f.SpecField(".resource_settings")
+	f.SpecField(".display_name")
+	f.SpecField(".compliance_regime")
+	f.SpecField(".enable_sovereign_controls")
+	f.SpecField(".partner")
+	f.SpecField(".provisioned_resources_parent")
+	f.SpecField(".kms_settings")
 
 	f.StatusField(".create_time")
 	f.StatusField(".resources")
 	f.StatusField(".kaj_enrollment_state")
 	f.StatusField(".saa_enrollment_response")
 	f.StatusField(".compliant_but_disallowed_services")
+
+	// Fields in Spec but not in ObservedState cannot be roundtripped through ObservedState.
+	f.Unimplemented_NotYetTriaged(".display_name")
+	f.Unimplemented_NotYetTriaged(".compliance_regime")
+	f.Unimplemented_NotYetTriaged(".enable_sovereign_controls")
 	f.Unimplemented_NotYetTriaged(".provisioned_resources_parent")
 	f.Unimplemented_NotYetTriaged(".kms_settings")
+	f.Unimplemented_NotYetTriaged(".partner")
+	f.Unimplemented_NotYetTriaged(".billing_account")
+	f.Unimplemented_NotYetTriaged(".resource_settings")
+	f.Unimplemented_NotYetTriaged(".saa_enrollment_response.setup_errors")
 
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_Etag()

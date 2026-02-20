@@ -31,7 +31,9 @@ func Workload_SaaEnrollmentResponse_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krm.Workload_SaaEnrollmentResponse{}
 	out.SetupErrors = direct.EnumSlice_FromProto(mapCtx, in.SetupErrors)
-	out.SetupStatus = direct.Enum_FromProto(mapCtx, in.GetSetupStatus())
+	if in.SetupStatus != nil {
+		out.SetupStatus = direct.ZeroBasedEnum_FromProto(mapCtx, in.GetSetupStatus())
+	}
 	return out
 }
 
@@ -41,6 +43,8 @@ func Workload_SaaEnrollmentResponse_ToProto(mapCtx *direct.MapContext, in *krm.W
 	}
 	out := &pb.Workload_SaaEnrollmentResponse{}
 	out.SetupErrors = direct.EnumSlice_ToProto[pb.Workload_SaaEnrollmentResponse_SetupError](mapCtx, in.SetupErrors)
-	out.SetupStatus = direct.PtrTo(direct.Enum_ToProto[pb.Workload_SaaEnrollmentResponse_SetupState](mapCtx, in.SetupStatus))
+	if in.SetupStatus != nil {
+		out.SetupStatus = direct.PtrTo(direct.Enum_ToProto[pb.Workload_SaaEnrollmentResponse_SetupState](mapCtx, in.SetupStatus))
+	}
 	return out
 }
