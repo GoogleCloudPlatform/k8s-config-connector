@@ -30,13 +30,8 @@ func Workload_SaaEnrollmentResponse_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.Workload_SaaEnrollmentResponse{}
-	if in.SetupErrors != nil {
-		out.SetupErrors = []string{}
-		for _, e := range in.SetupErrors {
-			out.SetupErrors = append(out.SetupErrors, e.String())
-		}
-	}
-	out.SetupStatus = direct.LazyPtr(in.SetupStatus.String())
+	out.SetupErrors = direct.EnumSlice_FromProto(mapCtx, in.SetupErrors)
+	out.SetupStatus = direct.Enum_FromProto(mapCtx, in.GetSetupStatus())
 	return out
 }
 
@@ -45,13 +40,7 @@ func Workload_SaaEnrollmentResponse_ToProto(mapCtx *direct.MapContext, in *krm.W
 		return nil
 	}
 	out := &pb.Workload_SaaEnrollmentResponse{}
-	out.SetupErrors = []pb.Workload_SaaEnrollmentResponse_SetupError{}
-	for _, e := range in.SetupErrors {
-		setupErr := pb.Workload_SaaEnrollmentResponse_SetupError_value[e]
-		out.SetupErrors = append(out.SetupErrors, pb.Workload_SaaEnrollmentResponse_SetupError(setupErr))
-	}
-
-	setupState := pb.Workload_SaaEnrollmentResponse_SetupState_value[direct.ValueOf(in.SetupStatus)]
-	out.SetupStatus = direct.LazyPtr(pb.Workload_SaaEnrollmentResponse_SetupState(setupState))
+	out.SetupErrors = direct.EnumSlice_ToProto[pb.Workload_SaaEnrollmentResponse_SetupError](mapCtx, in.SetupErrors)
+	out.SetupStatus = direct.PtrTo(direct.Enum_ToProto[pb.Workload_SaaEnrollmentResponse_SetupState](mapCtx, in.SetupStatus))
 	return out
 }
