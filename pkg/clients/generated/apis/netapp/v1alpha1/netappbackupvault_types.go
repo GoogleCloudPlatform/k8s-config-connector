@@ -53,23 +53,10 @@ type NetAppBackupVaultSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type KMSAutokeyConfigSpec struct {
-	/* Immutable. The folder that this resource belongs to. Exactly one of folderRef or projectRef must be specified. */
+type BackupvaultObservedStateStatus struct {
+	/* Output only. The time when the backup vault was created. */
 	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
-
-	/* Immutable. The project that this resource belongs to. Exactly one of folderRef or projectRef must be specified. */
-	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
-
-	/* The Project that this resource belongs to. */
-	// +optional
-	KeyProject *AutokeyconfigKeyProject `json:"keyProject,omitempty"`
-
-	/* How Autokey determines which key project to use when provisioning CMEK keys. */
-	// +optional
-	KeyProjectResolutionMode *string `json:"keyProjectResolutionMode,omitempty"`
-}
+	CreateTime *string `json:"createTime,omitempty"`
 
 	/* Output only. The backup vault state. */
 	// +optional
