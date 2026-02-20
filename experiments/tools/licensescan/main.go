@@ -28,6 +28,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -57,6 +58,7 @@ func buildRootCommand() *cobra.Command {
 	cmd.AddCommand(buildLicenseScanCommand())
 	cmd.AddCommand(buildLicenseVerifyCommand())
 	cmd.AddCommand(buildLicenseGenerateCommand())
+	cmd.AddCommand(buildLicenseReportCommand())
 
 	klog.InitFlags(nil)
 
@@ -255,6 +257,73 @@ func RunLicenseVerify(ctx context.Context, opts RunLicenseVerifyOptions) error {
 	return nil
 }
 
+// buildLicenseReportCommand builds the 'report' command.
+// The 'report' command provides a summary of all licenses found in the metadata.
+func buildLicenseReportCommand() *cobra.Command {
+	var opts RunLicenseReportOptions
+
+	cmd := &cobra.Command{
+		Use: "report",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return RunLicenseReport(cmd.Context(), opts)
+		},
+	}
+
+	return cmd
+}
+
+type RunLicenseReportOptions struct {
+}
+
+func RunLicenseReport(ctx context.Context, opts RunLicenseReportOptions) error {
+	counts := make(map[string]int)
+	err := fs.WalkDir(modulesFS, "modules", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if !d.IsDir() && strings.HasSuffix(path, ".yaml") {
+			b, err := modulesFS.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			info := &moduleInfo{}
+			if err := yaml.Unmarshal(b, info); err != nil {
+				return err
+			}
+			license := strings.TrimSpace(info.License)
+			if license == "" {
+				counts["MISSING"]++
+			} else {
+				parts := strings.Split(license, ",")
+				for _, p := range parts {
+					p = strings.TrimSpace(p)
+					if p == "" {
+						continue
+					}
+					counts[p]++
+				}
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+
+	var licenses []string
+	for l := range counts {
+		licenses = append(licenses, l)
+	}
+	sort.Strings(licenses)
+
+	fmt.Printf("%-20s | %s\n", "License", "Count")
+	fmt.Printf("%-20s | %s\n", "--------------------", "-----")
+	for _, l := range licenses {
+		fmt.Printf("%-20s | %d\n", l, counts[l])
+	}
+	return nil
+}
+
 var mustShipCodeByLicense = map[string]bool{
 	"APACHE-2.0":       false,
 	"BSD-3-CLAUSE":     false,
@@ -263,6 +332,7 @@ var mustShipCodeByLicense = map[string]bool{
 	"UNICODE-DFS-2016": false,
 	"MPL-2.0":          true,
 	"PUBLICDOMAIN":     false,
+	"CC0-1.0":          false,
 	"ISC":              false,
 	"HPND":             false,
 	"CC-BY-3.0":        false,
