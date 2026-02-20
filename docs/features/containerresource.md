@@ -101,7 +101,6 @@ spec:
 | `containers`                | `[]ContainerResourceSpec`| A list of containers whose resource requirements are to be customized. Mutually exclusive with `verticalPodAutoscalerMode: Enabled`.                                           |
 | `replicas`                  | `int64`                  | The number of desired replicas. This field only takes effect if the `metadata.name` is `cnrm-webhook-manager`.                                                                  |
 | `verticalPodAutoscalerMode` | `string`                 | Mode of Vertical Pod Autoscaler for the controller. Allowed values: `Enabled`, `Disabled`. Defaults to `Disabled`. Mutually exclusive with `containers`.                        |
-| `metadataHost`              | `string`                 | Overrides the GCP metadata server hostname (injected as `GCE_METADATA_HOST`). Useful for IPv6-only clusters where the default `169.254.169.254` is unreachable.                |
 
 ### NamespacedControllerResourceSpec
 
@@ -112,17 +111,17 @@ spec:
 
 ### ContainerResourceSpec
 
-| Field       | Type                   | Description                                                              |
-| ----------- | ---------------------- | ------------------------------------------------------------------------ |
-| `name`      | `string`               | The name of the container (e.g., `manager`, `webhook`, `prom-to-sd`).    |
+| Field       | Type                   | Description                                                                                              |
+| ----------- | ---------------------- | -------------------------------------------------------------------------------------------------------- |
+| `name`      | `string`               | The name of the container whose resource requirements will be customized (e.g., `manager`, `webhook`, `prom-to-sd`). |
 | `resources` | `ResourceRequirements` | Specifies the resource customization (requests and limits) for this container. |
 
 ### ResourceRequirements
 
-| Field      | Type           | Description                                                                                                                                                                                          |
-| ---------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `limits`   | `ResourceList` | Describes the maximum amount of compute resources allowed. More info: [Kubernetes Resources](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)                        |
-| `requests` | `ResourceList` | Describes the minimum amount of compute resources required. If omitted, it defaults to `limits` if specified. More info: [Kubernetes Resources](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/) |
+| Field      | Type           | Description                                                                                                                                                                                                                                   |
+| ---------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `limits`   | `ResourceList` | Describes the maximum amount of compute resources allowed. More info: [Kubernetes Resources](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)                                                                 |
+| `requests` | `ResourceList` | Describes the minimum amount of compute resources required. If omitted, it defaults to `limits` if specified, otherwise to an implementation-defined value. More info: [Kubernetes Resources](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/) |
 
 ## Enabling Vertical Pod Autoscaler
 
