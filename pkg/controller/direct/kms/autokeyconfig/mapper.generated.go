@@ -33,7 +33,6 @@ func AutokeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *k
 			External: in.KeyProject,
 		}
 	}
-	out.KeyProjectResolutionMode = direct.Enum_FromProto(mapCtx, in.GetKeyProjectResolutionMode())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
@@ -47,7 +46,6 @@ func AutokeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutokeyConfig) *pb
 	if in.KeyProject != nil {
 		out.KeyProject = in.KeyProject.External
 	}
-	out.KeyProjectResolutionMode = direct.Enum_ToProto[pb.AutokeyConfig_KeyProjectResolutionMode](mapCtx, in.KeyProjectResolutionMode)
 	out.State = direct.Enum_ToProto[pb.AutokeyConfig_State](mapCtx, in.State)
 	return out
 }
@@ -91,7 +89,7 @@ func KMSAutokeyConfig_FromFields(mapCtx *direct.MapContext, id *krm.KMSAutokeyCo
 	if keyProject != nil {
 		out.KeyProject = "projects/" + keyProject.ProjectID // keyProject expects project of the form `projects/<projectId>` or `projects/<projectNumber>`
 	}
-	if desired != nil {
+	if desired != nil && desired.Spec.KeyProjectResolutionMode != nil {
 		out.KeyProjectResolutionMode = direct.Enum_ToProto[pb.AutokeyConfig_KeyProjectResolutionMode](mapCtx, desired.Spec.KeyProjectResolutionMode)
 	}
 	return out

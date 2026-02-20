@@ -80,7 +80,8 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("unable to resolve parent for AutokeyConfig %s: %w", obj.GetName(), err)
 	}
 	var keyProject *refs.ProjectIdentity
-	if obj.Spec.KeyProjectRef != nil {
+	manageKeyProject := id.Parent() != nil && id.Parent().FolderID != ""
+	if manageKeyProject && obj.Spec.KeyProjectRef != nil {
 		var err error
 		keyProject, err = refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.KeyProjectRef)
 		if err != nil {
@@ -147,7 +148,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return mapCtx.Err()
 	}
 
-	manageKeyProject := a.desiredKeyProject != nil
+	manageKeyProject := a.desiredKeyProject != nil && a.isFolderScope()
 	manageResolutionMode := a.desired != nil && a.desired.Spec.KeyProjectResolutionMode != nil
 	updated, err := a.updateAutokeyConfig(ctx, resource, manageKeyProject, manageResolutionMode)
 	if err != nil {
@@ -162,6 +163,13 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	externalRef := a.id.String()
 	status.ExternalRef = &externalRef
 	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+func (a *Adapter) isFolderScope() bool {
+	if a.id == nil || a.id.Parent() == nil {
+		return false
+	}
+	return a.id.Parent().FolderID != ""
 }
 
 func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.AutokeyConfig, manageKeyProject, manageResolutionMode bool) (*kmspb.AutokeyConfig, error) {
@@ -243,13 +251,16 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	// make a copy of the a.actual i.e. from krm.AutokeyConfig to kmspb.AutokeyConfig
 	tempKrmAutokeyResource := AutokeyConfig_FromProto(mapCtx, a.actual)
 	resource := AutokeyConfig_ToProto(mapCtx, tempKrmAutokeyResource)
-	resource.KeyProject = ""
+	manageKeyProject := a.isFolderScope()
+	if manageKeyProject {
+		resource.KeyProject = ""
+	}
 	resource.KeyProjectResolutionMode = kmspb.AutokeyConfig_KEY_PROJECT_RESOLUTION_MODE_UNSPECIFIED
-	updated, err := a.updateAutokeyConfig(ctx, resource, true, true)
+	updated, err := a.updateAutokeyConfig(ctx, resource, manageKeyProject, true)
 	if err != nil {
 		return false, fmt.Errorf("updating AutokeyConfig %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted AutokeyConfig in KCC by resetting the key_project", "name", a.id)
+	log.V(2).Info("successfully deleted AutokeyConfig in KCC by resetting managed fields", "name", a.id)
 	status := &krm.KMSAutokeyConfigStatus{}
 	// The state in ObservedState is expected to be UNINITIALIZED as we have set the key_project to empty
 	status.ObservedState = KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)

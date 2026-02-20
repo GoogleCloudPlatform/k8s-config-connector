@@ -30,7 +30,7 @@ var KMSAutokeyConfigGVK = GroupVersion.WithKind("KMSAutokeyConfig")
 // +kcc:spec:proto=google.cloud.kms.v1.AutokeyConfig
 type KMSAutokeyConfigSpec struct {
 
-	// NOTE: ResourceID field is not required for AutokeyConfig as its ID has the format folders/<folderID>/autokeyConfig i.e., it doesnt have any unique ID of its own and relies on folderID for uniqueness.
+	// NOTE: ResourceID field is not required for AutokeyConfig as its ID has the format folders/<folderID>/autokeyConfig or projects/<projectID>/autokeyConfig i.e., it doesnt have any unique ID of its own and relies on parent for uniqueness.
 
 	// Immutable. The folder that this resource belongs to. Exactly one of folderRef or projectRef must be specified.
 	// +optional
