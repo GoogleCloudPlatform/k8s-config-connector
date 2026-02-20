@@ -9,17 +9,18 @@ There are two ways to configure container resources, depending on whether you ar
 
 ## Configurable Pods and Containers
 
-The following table lists the workloads (StatefulSet or Deployment) and containers that can be configured.
+The following table lists the Config Connector components and the resources used to customize them.
 
-| Pod Name                       | Mode Support            | Workload Type | Container Name(s)        |
-| ------------------------------ | ----------------------- | ------------- | ------------------------ |
-| `cnrm-controller-manager`      | Cluster and Namespaced  | StatefulSet   | `manager`, `prom-to-sd`  |
-| `cnrm-webhook-manager`         | Cluster only            | Deployment    | `webhook`                |
-| `cnrm-deletiondefender`        | Cluster only            | StatefulSet   | `deletiondefender`       |
-| `cnrm-resource-stats-recorder` | Cluster only            | Deployment    | `recorder`, `prom-to-sd` |
-| `cnrm-unmanaged-detector`      | Cluster only            | StatefulSet   | `unmanageddetector`      |
+| Pod Name | KCC Mode Support | Customization Resource | Workload Type | Container Name(s) |
+| :--- | :--- | :--- | :--- | :--- |
+| `cnrm-controller-manager` | Cluster | `ControllerResource` | StatefulSet | `manager`, `prom-to-sd` |
+| | Namespaced | `NamespacedControllerResource` | StatefulSet | `manager`, `prom-to-sd` |
+| `cnrm-webhook-manager` | Cluster and Namespaced | `ControllerResource` | Deployment | `webhook` |
+| `cnrm-deletiondefender` | Cluster and Namespaced | `ControllerResource` | StatefulSet | `deletiondefender` |
+| `cnrm-resource-stats-recorder` | Cluster and Namespaced | `ControllerResource` | Deployment | `recorder`, `prom-to-sd` |
+| `cnrm-unmanaged-detector` | Namespaced only | `ControllerResource` | StatefulSet | `unmanageddetector` |
 
-Note: In Namespaced Mode, only the `cnrm-controller-manager` pod can be customized using `NamespacedControllerResource` because other components are shared across the cluster.
+**Note:** Components that are shared across the entire cluster (e.g., webhooks, deletion defender) are always customized using a cluster-scoped `ControllerResource`, even if Config Connector is running in Namespaced Mode. Only the per-namespace `cnrm-controller-manager` pods are customized using `NamespacedControllerResource` in Namespaced Mode.
 
 ## Configuring Resources in Cluster Mode
 
