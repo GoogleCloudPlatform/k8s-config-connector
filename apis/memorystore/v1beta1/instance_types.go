@@ -25,7 +25,6 @@ var MemorystoreInstanceGVK = GroupVersion.WithKind("MemorystoreInstance")
 
 // MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
 // +kcc:spec:proto=google.cloud.memorystore.v1.Instance
-// +kubebuilder:validation:XValidation:rule="(has(self.gcsBackupSource) ? 1 : 0) + (has(self.managedBackupSource) ? 1 : 0) <= 1",message="only set either gcsBackupSource or managedBackupSource"
 type MemorystoreInstanceSpec struct {
 
 	// The MemorystoreInstance name. If not given, the metadata.name will be used.
@@ -104,12 +103,10 @@ type MemorystoreInstanceSpec struct {
 }
 
 type Parent struct {
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ProjectRef field is immutable"
 	// Immutable.
 	// +required
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
 	// Immutable.
 	// +required
 	Location string `json:"location"`
@@ -125,7 +122,6 @@ type MemorystoreInstanceStatus struct {
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// A unique specifier for the MemorystoreInstance resource in GCP.
-	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
@@ -166,12 +162,10 @@ type MemorystoreInstanceObservedState struct {
 	// Output only. The backup collection full resource name. Example:
 	//  projects/{project}/locations/{location}/backupCollections/{collection}
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.backup_collection
-	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+$
 	BackupCollection *string `json:"backupCollection,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.AutomatedBackupConfig
-// +kubebuilder:validation:XValidation:rule="self.automatedBackupMode=='ENABLED' && has(self.fixedFrequencySchedule)"
 type AutomatedBackupConfig struct {
 	// Optional. Trigger automated backups at a fixed frequency.
 	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.fixed_frequency_schedule
@@ -179,15 +173,14 @@ type AutomatedBackupConfig struct {
 
 	// Optional. The automated backup mode. If the mode is disabled, the other
 	//  fields will be ignored.
+	//  See valid values https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#automatedbackupmode
 	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.automated_backup_mode
-	// +kubebuilder:validation:Enum=DISABLED;ENABLED
 	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
 
 	// Optional. How long to keep automated backups before the backups are
 	//  deleted. The value should be between 1 day and 365 days. If not specified,
 	//  the default value is 35 days.
 	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.retention
-	// +kubebuilder:validation:Pattern=^[-+]?([0-9]*(\.[0-9]*)?(ns|us|µs|μs|ms|s|m|h))+$
 	Retention *string `json:"retention,omitempty"`
 }
 
@@ -196,7 +189,6 @@ type AutomatedBackupConfig_FixedFrequencySchedule struct {
 	// Required. The start time of every automated backup in UTC. It must be set
 	//  to the start of an hour. This field is required.
 	// +kcc:proto:field=google.cloud.memorystore.v1.AutomatedBackupConfig.FixedFrequencySchedule.start_time
-	// +required
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
 
@@ -216,8 +208,6 @@ type Instance_ConnectionDetail struct {
 type Instance_GCSBackupSource struct {
 	// Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.GcsBackupSource.uris
-	// +kubebuilder:validation:items:Pattern=`^gs\:\/\/[^\/]+\/.+$`
-	// +kubebuilder:validation:MinItems=1
 	Uris []string `json:"uris,omitempty"`
 }
 
@@ -238,7 +228,6 @@ type Instance_ManagedBackupSource struct {
 	//  projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
 	//  In this case, it assumes the backup is under memorystore.googleapis.com.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ManagedBackupSource.backup
-	// +required
 	BackupRef *refs.MemorystoreInstanceBackupRef `json:"backupRef,omitempty"`
 }
 
@@ -345,27 +334,19 @@ type TimeOfDay struct {
 	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
 	//  to allow the value "24:00:00" for scenarios like business closing time.
 	// +kcc:proto:field=google.type.TimeOfDay.hours
-	// +kubebuilder:validation:Minimum=0
-	// +kubebuilder:validation:Maximum=23
 	Hours *int32 `json:"hours,omitempty"`
 
 	// Minutes of hour of day. Must be from 0 to 59.
 	// +kcc:proto:field=google.type.TimeOfDay.minutes
-	// +kubebuilder:validation:Minimum=0
-	// +kubebuilder:validation:Maximum=59
 	Minutes *int32 `json:"minutes,omitempty"`
 
 	// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
 	//  allow the value 60 if it allows leap-seconds.
 	// +kcc:proto:field=google.type.TimeOfDay.seconds
-	// +kubebuilder:validation:Minimum=0
-	// +kubebuilder:validation:Maximum=59
 	Seconds *int32 `json:"seconds,omitempty"`
 
 	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
 	// +kcc:proto:field=google.type.TimeOfDay.nanos
-	// +kubebuilder:validation:Minimum=0
-	// +kubebuilder:validation:Maximum=999999999
 	Nanos *int32 `json:"nanos,omitempty"`
 }
 

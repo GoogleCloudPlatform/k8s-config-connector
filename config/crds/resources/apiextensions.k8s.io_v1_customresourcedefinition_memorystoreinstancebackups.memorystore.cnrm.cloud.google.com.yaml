@@ -65,7 +65,6 @@ spec:
             properties:
               backupCollection:
                 description: The project that this resource belongs to.
-                pattern: ^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+$
                 type: string
               instanceRef:
                 description: The resource name of the MemorystoreInstance from which
@@ -97,9 +96,6 @@ spec:
                     description: The namespace of a MemorystoreInstance resource.
                     type: string
                 type: object
-                x-kubernetes-validations:
-                - message: the field is immutable
-                  rule: self == oldSelf
               resourceID:
                 description: The MemorystoreInstanceBackup name. If not given, the
                   metadata.name will be used.
@@ -107,13 +103,8 @@ spec:
               ttl:
                 description: Optional. TTL for the backup to expire. Value range is
                   1 day to 100 years. If not specified, the default value is 100 years.
-                pattern: ^[-+]?([0-9]*(\.[0-9]*)?(ns|us|µs|μs|ms|s|m|h))+$
                 type: string
             type: object
-            x-kubernetes-validations:
-            - message: only set either backupCollection or instanceRef
-              rule: '(has(self.backupCollection) ? 1 : 0) + (has(self.instanceRef)
-                ? 1 : 0) == 1'
           status:
             description: MemorystoreInstanceBackupStatus defines the config connector
               machine state of MemorystoreInstanceBackup
@@ -147,7 +138,6 @@ spec:
               externalRef:
                 description: A unique specifier for the MemorystoreInstanceBackup
                   resource in GCP.
-                pattern: ^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+\/backups\/[^/]+$
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -168,7 +158,6 @@ spec:
                         createTime:
                           description: Output only. The time when the backup file
                             was created.
-                          format: date-time
                           type: string
                         fileName:
                           description: 'Output only. e.g: <shard-id>.rdb'
@@ -180,36 +169,27 @@ spec:
                       type: object
                     type: array
                   backupType:
-                    description: Output only. Type of the backup.
-                    enum:
-                    - ON_DEMAND
-                    - AUTOMATED
+                    description: Output only. Type of the backup. See valid values
+                      https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.backupCollections.backups#BackupType
                     type: string
                   createTime:
                     description: Output only. The time when the backup was created.
-                    format: date-time
                     type: string
                   engineVersion:
                     description: Output only. valkey-7.5/valkey-8.0, etc.
                     type: string
                   expireTime:
                     description: Output only. The time when the backup will expire.
-                    format: date-time
                     type: string
                   instance:
                     description: Output only. Instance resource path of this backup.
-                    pattern: ^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
                     type: string
                   instanceUid:
                     description: Output only. Instance uid of this backup.
                     type: string
                   nodeType:
-                    description: Output only. Node type of the instance.
-                    enum:
-                    - SHARED_CORE_NANO
-                    - HIGHMEM_MEDIUM
-                    - HIGHMEM_XLARGE
-                    - STANDARD_SMALL
+                    description: Output only. Node type of the instance. See valid
+                      values https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/NodeType
                     type: string
                   replicaCount:
                     description: Output only. Number of replicas for the instance.
@@ -220,12 +200,8 @@ spec:
                     format: int32
                     type: integer
                   state:
-                    description: Output only. State of the backup.
-                    enum:
-                    - CREATING
-                    - ACTIVE
-                    - DELETING
-                    - SUSPENDED
+                    description: Output only. State of the backup. See valid values
+                      https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.backupCollections.backups#State
                     type: string
                   totalSizeBytes:
                     description: Output only. Total size of the backup in bytes.

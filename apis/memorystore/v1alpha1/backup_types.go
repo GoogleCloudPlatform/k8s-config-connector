@@ -24,22 +24,18 @@ var MemorystoreInstanceBackupGVK = GroupVersion.WithKind("MemorystoreInstanceBac
 
 // MemorystoreInstanceBackupSpec defines the desired state of MemorystoreInstanceBackup
 // +kcc:spec:proto=google.cloud.memorystore.v1.Backup
-// +kubebuilder:validation:XValidation:rule="(has(self.backupCollection) ? 1 : 0) + (has(self.instanceRef) ? 1 : 0) == 1",message="only set either backupCollection or instanceRef"
 type MemorystoreInstanceBackupSpec struct {
 	// The project that this resource belongs to.
-	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+$
 	BackupCollection *string `json:"backupCollection,omitempty"`
 
 	// The MemorystoreInstanceBackup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// The resource name of the MemorystoreInstance from which the backup is created.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	InstanceRef *refsv1beta1.MemorystoreInstanceRef `json:"instanceRef,omitempty"`
 
 	// Optional. TTL for the backup to expire. Value range is 1 day to 100 years.
 	// If not specified, the default value is 100 years.
-	// +kubebuilder:validation:Pattern=^[-+]?([0-9]*(\.[0-9]*)?(ns|us|µs|μs|ms|s|m|h))+$
 	Ttl *string `json:"ttl,omitempty"`
 }
 
@@ -53,7 +49,6 @@ type MemorystoreInstanceBackupStatus struct {
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// A unique specifier for the MemorystoreInstanceBackup resource in GCP.
-	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+\/backups\/[^/]+$
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
@@ -65,12 +60,10 @@ type MemorystoreInstanceBackupStatus struct {
 type MemorystoreInstanceBackupObservedState struct {
 	// Output only. The time when the backup was created.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Backup.create_time
-	// +kubebuilder:validation:Format=date-time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. Instance resource path of this backup.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Backup.instance
-	// +kubebuilder:validation:Pattern=^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
 	Instance *string `json:"instance,omitempty"`
 
 	// Output only. Instance uid of this backup.
@@ -83,7 +76,6 @@ type MemorystoreInstanceBackupObservedState struct {
 
 	// Output only. The time when the backup will expire.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Backup.expire_time
-	// +kubebuilder:validation:Format=date-time
 	ExpireTime *string `json:"expireTime,omitempty"`
 
 	// Output only. valkey-7.5/valkey-8.0, etc.
@@ -95,8 +87,8 @@ type MemorystoreInstanceBackupObservedState struct {
 	BackupFiles []BackupFileObservedState `json:"backupFiles,omitempty"`
 
 	// Output only. Node type of the instance.
+	// See valid values https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/NodeType
 	// +kcc:proto:field=google.cloud.memorystore.v1.Backup.node_type
-	// +kubebuilder:validation:Enum=SHARED_CORE_NANO;HIGHMEM_MEDIUM;HIGHMEM_XLARGE;STANDARD_SMALL
 	NodeType *string `json:"nodeType,omitempty"`
 
 	// Output only. Number of replicas for the instance.
@@ -108,13 +100,13 @@ type MemorystoreInstanceBackupObservedState struct {
 	ShardCount *int32 `json:"shardCount,omitempty"`
 
 	// Output only. Type of the backup.
+	// See valid values https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.backupCollections.backups#BackupType
 	// +kcc:proto:field=google.cloud.memorystore.v1.Backup.backup_type
-	// +kubebuilder:validation:Enum=ON_DEMAND;AUTOMATED
 	BackupType *string `json:"backupType,omitempty"`
 
 	// Output only. State of the backup.
+	// See valid values https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.backupCollections.backups#State
 	// +kcc:proto:field=google.cloud.memorystore.v1.Backup.state
-	// +kubebuilder:validation:Enum=CREATING;ACTIVE;DELETING;SUSPENDED
 	State *string `json:"state,omitempty"`
 
 	// Output only. System assigned unique identifier of the backup.
@@ -134,7 +126,6 @@ type BackupFileObservedState struct {
 
 	// Output only. The time when the backup file was created.
 	// +kcc:proto:field=google.cloud.memorystore.v1.BackupFile.create_time
-	// +kubebuilder:validation:Format=date-time
 	CreateTime *string `json:"createTime,omitempty"`
 }
 

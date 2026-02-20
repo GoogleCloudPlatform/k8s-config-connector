@@ -70,10 +70,8 @@ spec:
                 properties:
                   automatedBackupMode:
                     description: Optional. The automated backup mode. If the mode
-                      is disabled, the other fields will be ignored.
-                    enum:
-                    - DISABLED
-                    - ENABLED
+                      is disabled, the other fields will be ignored. See valid values
+                      https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#automatedbackupmode
                     type: string
                   fixedFrequencySchedule:
                     description: Optional. Trigger automated backups at a fixed frequency.
@@ -88,44 +86,31 @@ spec:
                               from 0 to 23. An API may choose to allow the value "24:00:00"
                               for scenarios like business closing time.
                             format: int32
-                            maximum: 23
-                            minimum: 0
                             type: integer
                           minutes:
                             description: Minutes of hour of day. Must be from 0 to
                               59.
                             format: int32
-                            maximum: 59
-                            minimum: 0
                             type: integer
                           nanos:
                             description: Fractions of seconds in nanoseconds. Must
                               be from 0 to 999,999,999.
                             format: int32
-                            maximum: 999999999
-                            minimum: 0
                             type: integer
                           seconds:
                             description: Seconds of minutes of the time. Must normally
                               be from 0 to 59. An API may allow the value 60 if it
                               allows leap-seconds.
                             format: int32
-                            maximum: 59
-                            minimum: 0
                             type: integer
                         type: object
-                    required:
-                    - startTime
                     type: object
                   retention:
                     description: Optional. How long to keep automated backups before
                       the backups are deleted. The value should be between 1 day and
                       365 days. If not specified, the default value is 35 days.
-                    pattern: ^[-+]?([0-9]*(\.[0-9]*)?(ns|us|µs|μs|ms|s|m|h))+$
                     type: string
                 type: object
-                x-kubernetes-validations:
-                - rule: self.automatedBackupMode=='ENABLED' && has(self.fixedFrequencySchedule)
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -238,9 +223,7 @@ spec:
                   uris:
                     description: 'Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2'
                     items:
-                      pattern: ^gs\:\/\/[^\/]+\/.+$
                       type: string
-                    minItems: 1
                     type: array
                 type: object
               labels:
@@ -251,9 +234,6 @@ spec:
               location:
                 description: Immutable.
                 type: string
-                x-kubernetes-validations:
-                - message: Location field is immutable
-                  rule: self == oldSelf
               managedBackupSource:
                 description: Optional. Backups that generated and managed by memorystore
                   service.
@@ -291,8 +271,6 @@ spec:
                           resource.
                         type: string
                     type: object
-                required:
-                - backupRef
                 type: object
               mode:
                 description: Optional. The mode config for the instance.
@@ -361,9 +339,6 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-                x-kubernetes-validations:
-                - message: ProjectRef field is immutable
-                  rule: self == oldSelf
               replicaCount:
                 description: Optional. Number of replica nodes per shard. If omitted
                   the default is 0 replicas.
@@ -398,10 +373,6 @@ spec:
             - location
             - projectRef
             type: object
-            x-kubernetes-validations:
-            - message: only set either gcsBackupSource or managedBackupSource
-              rule: '(has(self.gcsBackupSource) ? 1 : 0) + (has(self.managedBackupSource)
-                ? 1 : 0) <= 1'
           status:
             description: MemorystoreInstanceStatus defines the config connector machine
               state of MemorystoreInstance
@@ -435,7 +406,6 @@ spec:
               externalRef:
                 description: A unique specifier for the MemorystoreInstance resource
                   in GCP.
-                pattern: ^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -452,7 +422,6 @@ spec:
                   backupCollection:
                     description: 'Output only. The backup collection full resource
                       name. Example: projects/{project}/locations/{location}/backupCollections/{collection}'
-                    pattern: ^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+$
                     type: string
                   createTime:
                     description: Output only. Creation timestamp of the instance.
@@ -593,10 +562,8 @@ spec:
                 properties:
                   automatedBackupMode:
                     description: Optional. The automated backup mode. If the mode
-                      is disabled, the other fields will be ignored.
-                    enum:
-                    - DISABLED
-                    - ENABLED
+                      is disabled, the other fields will be ignored. See valid values
+                      https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#automatedbackupmode
                     type: string
                   fixedFrequencySchedule:
                     description: Optional. Trigger automated backups at a fixed frequency.
@@ -611,44 +578,31 @@ spec:
                               from 0 to 23. An API may choose to allow the value "24:00:00"
                               for scenarios like business closing time.
                             format: int32
-                            maximum: 23
-                            minimum: 0
                             type: integer
                           minutes:
                             description: Minutes of hour of day. Must be from 0 to
                               59.
                             format: int32
-                            maximum: 59
-                            minimum: 0
                             type: integer
                           nanos:
                             description: Fractions of seconds in nanoseconds. Must
                               be from 0 to 999,999,999.
                             format: int32
-                            maximum: 999999999
-                            minimum: 0
                             type: integer
                           seconds:
                             description: Seconds of minutes of the time. Must normally
                               be from 0 to 59. An API may allow the value 60 if it
                               allows leap-seconds.
                             format: int32
-                            maximum: 59
-                            minimum: 0
                             type: integer
                         type: object
-                    required:
-                    - startTime
                     type: object
                   retention:
                     description: Optional. How long to keep automated backups before
                       the backups are deleted. The value should be between 1 day and
                       365 days. If not specified, the default value is 35 days.
-                    pattern: ^[-+]?([0-9]*(\.[0-9]*)?(ns|us|µs|μs|ms|s|m|h))+$
                     type: string
                 type: object
-                x-kubernetes-validations:
-                - rule: self.automatedBackupMode=='ENABLED' && has(self.fixedFrequencySchedule)
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -761,9 +715,7 @@ spec:
                   uris:
                     description: 'Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2'
                     items:
-                      pattern: ^gs\:\/\/[^\/]+\/.+$
                       type: string
-                    minItems: 1
                     type: array
                 type: object
               labels:
@@ -774,9 +726,6 @@ spec:
               location:
                 description: Immutable.
                 type: string
-                x-kubernetes-validations:
-                - message: Location field is immutable
-                  rule: self == oldSelf
               managedBackupSource:
                 description: Optional. Backups that generated and managed by memorystore
                   service.
@@ -814,8 +763,6 @@ spec:
                           resource.
                         type: string
                     type: object
-                required:
-                - backupRef
                 type: object
               mode:
                 description: Optional. The mode config for the instance.
@@ -884,9 +831,6 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-                x-kubernetes-validations:
-                - message: ProjectRef field is immutable
-                  rule: self == oldSelf
               replicaCount:
                 description: Optional. Number of replica nodes per shard. If omitted
                   the default is 0 replicas.
@@ -921,10 +865,6 @@ spec:
             - location
             - projectRef
             type: object
-            x-kubernetes-validations:
-            - message: only set either gcsBackupSource or managedBackupSource
-              rule: '(has(self.gcsBackupSource) ? 1 : 0) + (has(self.managedBackupSource)
-                ? 1 : 0) <= 1'
           status:
             description: MemorystoreInstanceStatus defines the config connector machine
               state of MemorystoreInstance
@@ -958,7 +898,6 @@ spec:
               externalRef:
                 description: A unique specifier for the MemorystoreInstance resource
                   in GCP.
-                pattern: ^projects\/[^/]+\/locations\/[^/]+\/instances\/[^/]+$
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -975,7 +914,6 @@ spec:
                   backupCollection:
                     description: 'Output only. The backup collection full resource
                       name. Example: projects/{project}/locations/{location}/backupCollections/{collection}'
-                    pattern: ^projects\/[^/]+\/locations\/[^/]+\/backupCollections\/[^/]+$
                     type: string
                   createTime:
                     description: Output only. Creation timestamp of the instance.
