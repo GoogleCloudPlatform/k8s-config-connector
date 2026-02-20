@@ -70,11 +70,7 @@ spec:
                 properties:
                   instanceRole:
                     description: Required. The role of the instance in cross instance
-                      replication.
-                    enum:
-                    - PRIMARY
-                    - SECONDARY
-                    - NONE
+                      replication. see valid values https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#instancerole
                     type: string
                   primaryInstance:
                     description: |-
@@ -104,7 +100,6 @@ spec:
                           external:
                             description: A reference to an externally managed MemorystoreInstance
                               resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
-                            pattern: ^projects\/[a-z]([-a-z0-9]*[a-z0-9])?\/locations\/[a-z]([-a-z0-9]*[a-z0-9])?\/instances\/[a-z][0-9a-z-]*$
                             type: string
                           name:
                             description: The name of a MemorystoreInstance resource.
@@ -143,7 +138,6 @@ spec:
                             external:
                               description: A reference to an externally managed MemorystoreInstance
                                 resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
-                              pattern: ^projects\/[a-z]([-a-z0-9]*[a-z0-9])?\/locations\/[a-z]([-a-z0-9]*[a-z0-9])?\/instances\/[a-z][0-9a-z-]*$
                               type: string
                             name:
                               description: The name of a MemorystoreInstance resource.
@@ -158,12 +152,6 @@ spec:
                 required:
                 - instanceRole
                 type: object
-                x-kubernetes-validations:
-                - rule: (self.instanceRole=="NONE" && !has(self.primaryInstance) &&
-                    !has(self.secondaryInstances)) || (self.instanceRole=="PRIMARY"
-                    && !has(self.primaryInstance) && has(self.secondaryInstances))
-                    || (self.instanceRole=="SECONDARY" && has(self.primaryInstance)
-                    && !has(self.secondaryInstances))
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -275,9 +263,6 @@ spec:
               location:
                 description: Immutable.
                 type: string
-                x-kubernetes-validations:
-                - message: Location field is immutable
-                  rule: self == oldSelf
               mode:
                 description: Optional. The mode config for the instance.
                 type: string
@@ -477,7 +462,6 @@ spec:
                       updateTime:
                         description: Output only. The last time cross instance replication
                           config was updated.
-                        format: date-time
                         type: string
                     type: object
                   endpoints:
@@ -616,11 +600,7 @@ spec:
                 properties:
                   instanceRole:
                     description: Required. The role of the instance in cross instance
-                      replication.
-                    enum:
-                    - PRIMARY
-                    - SECONDARY
-                    - NONE
+                      replication. see valid values https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#instancerole
                     type: string
                   primaryInstance:
                     description: |-
@@ -650,7 +630,6 @@ spec:
                           external:
                             description: A reference to an externally managed MemorystoreInstance
                               resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
-                            pattern: ^projects\/[a-z]([-a-z0-9]*[a-z0-9])?\/locations\/[a-z]([-a-z0-9]*[a-z0-9])?\/instances\/[a-z][0-9a-z-]*$
                             type: string
                           name:
                             description: The name of a MemorystoreInstance resource.
@@ -689,7 +668,6 @@ spec:
                             external:
                               description: A reference to an externally managed MemorystoreInstance
                                 resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
-                              pattern: ^projects\/[a-z]([-a-z0-9]*[a-z0-9])?\/locations\/[a-z]([-a-z0-9]*[a-z0-9])?\/instances\/[a-z][0-9a-z-]*$
                               type: string
                             name:
                               description: The name of a MemorystoreInstance resource.
@@ -704,12 +682,6 @@ spec:
                 required:
                 - instanceRole
                 type: object
-                x-kubernetes-validations:
-                - rule: (self.instanceRole=="NONE" && !has(self.primaryInstance) &&
-                    !has(self.secondaryInstances)) || (self.instanceRole=="PRIMARY"
-                    && !has(self.primaryInstance) && has(self.secondaryInstances))
-                    || (self.instanceRole=="SECONDARY" && has(self.primaryInstance)
-                    && !has(self.secondaryInstances))
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -821,9 +793,6 @@ spec:
               location:
                 description: Immutable.
                 type: string
-                x-kubernetes-validations:
-                - message: Location field is immutable
-                  rule: self == oldSelf
               mode:
                 description: Optional. The mode config for the instance.
                 type: string
@@ -1023,7 +992,6 @@ spec:
                       updateTime:
                         description: Output only. The last time cross instance replication
                           config was updated.
-                        format: date-time
                         type: string
                     type: object
                   endpoints:

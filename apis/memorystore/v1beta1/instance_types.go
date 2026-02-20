@@ -95,7 +95,6 @@ type Parent struct {
 	// +required
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
 	// Immutable.
 	// +required
 	Location string `json:"location"`
@@ -154,11 +153,10 @@ type MemorystoreInstanceObservedState struct {
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.CrossInstanceReplicationConfig
-// +kubebuilder:validation:XValidation:rule=(self.instanceRole=="NONE" && !has(self.primaryInstance) && !has(self.secondaryInstances)) || (self.instanceRole=="PRIMARY" && !has(self.primaryInstance) && has(self.secondaryInstances)) || (self.instanceRole=="SECONDARY" && has(self.primaryInstance) && !has(self.secondaryInstances))
 type CrossInstanceReplicationConfig struct {
 	// Required. The role of the instance in cross instance replication.
+	// see valid values https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#instancerole
 	// +required
-	// +kubebuilder:validation:Enum=PRIMARY;SECONDARY;NONE
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.instance_role
 	InstanceRole *string `json:"instanceRole,omitempty"`
 
@@ -336,7 +334,6 @@ type DiscoveryEndpointObservedState struct {
 type CrossInstanceReplicationConfigObservedState struct {
 	// Output only. The last time cross instance replication config was updated.
 	// +kcc:proto:field=google.cloud.memorystore.v1.CrossInstanceReplicationConfig.update_time
-	// +kubebuilder:validation:Format=date-time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. An output only view of all the member instances participating
