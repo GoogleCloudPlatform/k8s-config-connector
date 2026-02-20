@@ -66,7 +66,7 @@ type AssuredWorkloadsWorkloadSpec struct {
 
 	// Optional. Labels applied to the workload.
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.labels
-	// Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 
 	// Input only. The parent resource for the resources managed by this Assured Workload. May
 	//  be either empty or a folder resource which is a child of the
@@ -75,7 +75,7 @@ type AssuredWorkloadsWorkloadSpec struct {
 	//  Format:
 	//  folders/{folder_id}
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.provisioned_resources_parent
-	// ProvisionedResourcesParent *string `json:"provisionedResourcesParent,omitempty"`
+	ProvisionedResourcesParent *string `json:"provisionedResourcesParent,omitempty"`
 
 	// DEPRECATED
 	// Input only. Settings used to create a CMEK crypto key. When set, a project with a KMS
@@ -84,7 +84,7 @@ type AssuredWorkloadsWorkloadSpec struct {
 	//  In order to create a Keyring, callers should specify,
 	//  ENCRYPTION_KEYS_PROJECT or KEYRING in ResourceSettings.resource_type field.
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.kms_settings
-	// KMSSettings *Workload_KMSSettings `json:"kmsSettings,omitempty"`
+	KMSSettings *Workload_KMSSettings `json:"kmsSettings,omitempty"`
 
 	// Input only. Resource properties that are used to customize workload resources.
 	//  These properties (such as custom project id) will be used to create

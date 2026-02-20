@@ -84,3 +84,79 @@ func TestWorkload_SaaEnrollmentResponse_FromProto(t *testing.T) {
 		t.Errorf("expected SetupStatus %v, got %v", "STATUS_COMPLETE", out.SetupStatus)
 	}
 }
+
+func TestAssuredWorkloadsWorkloadSpec_ToProto(t *testing.T) {
+	mapCtx := &direct.MapContext{}
+	in := &krm.AssuredWorkloadsWorkloadSpec{
+		DisplayName:             direct.PtrTo("Test Workload"),
+		ComplianceRegime:        direct.PtrTo("FEDRAMP_MODERATE"),
+		EnableSovereignControls: direct.PtrTo(true),
+		Labels: map[string]string{
+			"key1": "value1",
+		},
+	}
+
+	out := AssuredWorkloadsWorkloadSpec_ToProto(mapCtx, in)
+
+	if mapCtx.Err() != nil {
+		t.Fatalf("unexpected error: %v", mapCtx.Err())
+	}
+
+	if out == nil {
+		t.Fatal("expected non-nil output")
+	}
+
+	if out.DisplayName != "Test Workload" {
+		t.Errorf("expected DisplayName %q, got %q", "Test Workload", out.DisplayName)
+	}
+
+	if out.ComplianceRegime != pb.Workload_FEDRAMP_MODERATE {
+		t.Errorf("expected ComplianceRegime %v, got %v", pb.Workload_FEDRAMP_MODERATE, out.ComplianceRegime)
+	}
+
+	if !out.EnableSovereignControls {
+		t.Errorf("expected EnableSovereignControls true, got false")
+	}
+
+	if !reflect.DeepEqual(out.Labels, in.Labels) {
+		t.Errorf("expected Labels %v, got %v", in.Labels, out.Labels)
+	}
+}
+
+func TestAssuredWorkloadsWorkloadSpec_FromProto(t *testing.T) {
+	mapCtx := &direct.MapContext{}
+	in := &pb.Workload{
+		DisplayName:             "Test Workload",
+		ComplianceRegime:        pb.Workload_FEDRAMP_MODERATE,
+		EnableSovereignControls: true,
+		Labels: map[string]string{
+			"key1": "value1",
+		},
+	}
+
+	out := AssuredWorkloadsWorkloadSpec_FromProto(mapCtx, in)
+
+	if mapCtx.Err() != nil {
+		t.Fatalf("unexpected error: %v", mapCtx.Err())
+	}
+
+	if out == nil {
+		t.Fatal("expected non-nil output")
+	}
+
+	if direct.ValueOf(out.DisplayName) != "Test Workload" {
+		t.Errorf("expected DisplayName %q, got %q", "Test Workload", direct.ValueOf(out.DisplayName))
+	}
+
+	if direct.ValueOf(out.ComplianceRegime) != "FEDRAMP_MODERATE" {
+		t.Errorf("expected ComplianceRegime %q, got %q", "FEDRAMP_MODERATE", direct.ValueOf(out.ComplianceRegime))
+	}
+
+	if !direct.ValueOf(out.EnableSovereignControls) {
+		t.Errorf("expected EnableSovereignControls true, got false")
+	}
+
+	if !reflect.DeepEqual(out.Labels, in.Labels) {
+		t.Errorf("expected Labels %v, got %v", in.Labels, out.Labels)
+	}
+}

@@ -23,6 +23,7 @@ package assuredworkloads
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	gcp "cloud.google.com/go/assuredworkloads/apiv1"
 	pb "cloud.google.com/go/assuredworkloads/apiv1/assuredworkloadspb"
@@ -167,7 +168,19 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if direct.ValueOf(desired.Spec.DisplayName) != a.actual.DisplayName {
 		paths = append(paths, "display_name")
 	}
-	// TODO: Add other updatable fields if any.
+
+	desiredLabels := desired.Spec.Labels
+	if desiredLabels == nil {
+		desiredLabels = make(map[string]string)
+	}
+	actualLabels := a.actual.Labels
+	if actualLabels == nil {
+		actualLabels = make(map[string]string)
+	}
+
+	if !reflect.DeepEqual(desiredLabels, actualLabels) {
+		paths = append(paths, "labels")
+	}
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)

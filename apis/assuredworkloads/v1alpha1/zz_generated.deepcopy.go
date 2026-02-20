@@ -154,6 +154,23 @@ func (in *AssuredWorkloadsWorkloadSpec) DeepCopyInto(out *AssuredWorkloadsWorklo
 		*out = new(billingv1alpha1.BillingAccountRef)
 		**out = **in
 	}
+	if in.Labels != nil {
+		in, out := &in.Labels, &out.Labels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
+	if in.ProvisionedResourcesParent != nil {
+		in, out := &in.ProvisionedResourcesParent, &out.ProvisionedResourcesParent
+		*out = new(string)
+		**out = **in
+	}
+	if in.KMSSettings != nil {
+		in, out := &in.KMSSettings, &out.KMSSettings
+		*out = new(Workload_KMSSettings)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.ResourceSettings != nil {
 		in, out := &in.ResourceSettings, &out.ResourceSettings
 		*out = make([]Workload_ResourceSettings, len(*in))

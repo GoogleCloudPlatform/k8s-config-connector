@@ -12,3 +12,9 @@ spec:
     external: "billingAccounts/000000-000000-000000"
   enableSovereignControls: true
   partner: "PARTNER_UNSPECIFIED"
+  labels:
+    label-one: "value-one"
+  resourceSettings:
+  - resourceID: "my-custom-project"
+    resourceType: "CONSUMER_PROJECT"
+    displayName: "Custom Project"

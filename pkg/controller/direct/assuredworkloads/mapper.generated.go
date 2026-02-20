@@ -36,9 +36,6 @@ func AssuredWorkloadsWorkloadObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.Resources = direct.Slice_FromProto(mapCtx, in.Resources, Workload_ResourceInfo_FromProto)
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
-	// MISSING: KMSSettings
 	out.KajEnrollmentState = direct.Enum_FromProto(mapCtx, in.GetKajEnrollmentState())
 	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponse_FromProto(mapCtx, in.GetSaaEnrollmentResponse())
 	out.CompliantButDisallowedServices = in.CompliantButDisallowedServices
@@ -53,9 +50,6 @@ func AssuredWorkloadsWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.Resources = direct.Slice_ToProto(mapCtx, in.Resources, Workload_ResourceInfo_ToProto)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
-	// MISSING: KMSSettings
 	out.KajEnrollmentState = direct.Enum_ToProto[pb.Workload_KajEnrollmentState](mapCtx, in.KajEnrollmentState)
 	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponse_ToProto(mapCtx, in.SaaEnrollmentResponse)
 	out.CompliantButDisallowedServices = in.CompliantButDisallowedServices
@@ -73,9 +67,9 @@ func AssuredWorkloadsWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.Wo
 		out.BillingAccountRef = &krmbillingv1alpha1.BillingAccountRef{External: in.GetBillingAccount()}
 	}
 	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
-	// MISSING: KMSSettings
+	out.Labels = in.Labels
+	out.ProvisionedResourcesParent = direct.LazyPtr(in.GetProvisionedResourcesParent())
+	out.KMSSettings = Workload_KMSSettings_FromProto(mapCtx, in.GetKmsSettings())
 	out.ResourceSettings = direct.Slice_FromProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_FromProto)
 	out.EnableSovereignControls = direct.LazyPtr(in.GetEnableSovereignControls())
 	out.Partner = direct.Enum_FromProto(mapCtx, in.GetPartner())
@@ -93,9 +87,9 @@ func AssuredWorkloadsWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ass
 		out.BillingAccount = in.BillingAccountRef.External
 	}
 	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
-	// MISSING: KMSSettings
+	out.Labels = in.Labels
+	out.ProvisionedResourcesParent = direct.ValueOf(in.ProvisionedResourcesParent)
+	out.KmsSettings = Workload_KMSSettings_ToProto(mapCtx, in.KMSSettings)
 	out.ResourceSettings = direct.Slice_ToProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_ToProto)
 	out.EnableSovereignControls = direct.ValueOf(in.EnableSovereignControls)
 	out.Partner = direct.Enum_ToProto[pb.Workload_Partner](mapCtx, in.Partner)
