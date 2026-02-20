@@ -231,6 +231,15 @@ type ComputeTargetVPNGatewayRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+type ComputeRouterRef struct {
+	/* The ComputeRouter name in the form "projects/{{project}}/regions/{{region}}/routers/{{name}}" when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeRouter` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeRouter` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
 type ComputeFirewallPolicyRef struct {
 	// A reference to an externally managed ComputeFirewallPolicy resource.
 	// Should be in the format `locations/global/firewallPolicies/{{firewallPolicyID}}`.
