@@ -8,27 +8,46 @@ Config Connector uses different underlying implementations (controller types) to
 
 While Config Connector selects a default controller for each resource, you can override this behavior at the namespace level (using `ConfigConnectorContext`) for supported resources.
 
+## Critical User Journeys
+
+This guide helps you achieve the following tasks:
+
+*   **[Verify which controller is managing my resource](#verifying-the-controller):** Learn how to check the active controller through logs or static configuration.
+*   **[Identify supported controller types for a resource](#finding-supported-controller-types):** Discover which controller implementations (Direct, TF, DCL) are available for a given resource kind.
+*   **[Override the default controller](#example):** Step-by-step example of using `ConfigConnectorContext` to switch a resource to a different controller type.
+
 ## Configuration Resources
 
 There are two primary resources for configuring Config Connector:
 
-1.  **ConfigConnector (CC):** A cluster-scoped resource that controls cluster-wide options, such as the operational mode (cluster vs. namespaced). **Note:** ConfigConnector does not currently support controller overrides at the cluster level.
-2.  **ConfigConnectorContext (CCC):** A namespace-scoped resource that controls options for a specific namespace. In namespaced mode, CCC is where you define controller overrides for resource types within that namespace.
+1.  **ConfigConnector (CC):** A cluster-scoped resource that controls cluster-wide options, such as the operational mode (cluster vs. namespaced).
+    *   **Note:** `ConfigConnector` does not currently support controller type overrides at the cluster level. In cluster mode, overrides can only be applied at the individual resource level using legacy annotations.
+2.  **ConfigConnectorContext (CCC):** A namespace-scoped resource that controls options for a specific namespace.
+    *   **Note:** Controller overrides via `ConfigConnectorContext` are only supported when Config Connector is running in **namespaced mode**.
 
 ### ConfigConnectorContext Reference
 
 The `ConfigConnectorContext` resource allows you to configure identity, billing, and experimental features for all Config Connector resources within a specific namespace.
 
+#### Identity and Billing
 | Field | Type | Description |
 | :--- | :--- | :--- |
 | `googleServiceAccount` | `string` | **Required.** The Google Service Account to be used by Config Connector to authenticate with Google Cloud APIs in the associated namespace. |
 | `requestProjectPolicy` | `enum` | Specifies which project to use for preconditions, quota, and billing. Supported values: `SERVICE_ACCOUNT_PROJECT` (default), `RESOURCE_PROJECT`, or `BILLING_PROJECT`. |
 | `billingProject` | `string` | The project ID to use for billing when `requestProjectPolicy` is set to `BILLING_PROJECT`. |
-| `stateIntoSpec` | `enum` | Overrides the default `cnrm.cloud.google.com/state-into-spec` annotation. Supported values: `Absent`, `Merge`. |
+
+#### Reconciliation and Actuation
+| Field | Type | Description |
+| :--- | :--- | :--- |
 | `actuationMode` | `enum` | Controls how resources are actuated. Supported values: `Reconciling` (default), `Paused`. |
+| `stateIntoSpec` | `enum` | Overrides the default `cnrm.cloud.google.com/state-into-spec` annotation. Supported values: `Absent`, `Merge`. |
+
+#### Experimental and Advanced
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `experiments.controllerOverrides` | `map[string]string` | Allows overriding the controller for specific resource types within the namespace. |
 | `managerNamespace` | `string` | **Immutable.** Instructs Config Connector to deploy controller managers in a specific namespace instead of the standard `cnrm-system`. |
 | `version` | `string` | Specifies the exact addon version to be deployed. |
-| `experiments.controllerOverrides` | `map[string]string` | Allows overriding the controller for specific resource types within the namespace. |
 
 ## Controller Overrides
 
@@ -77,7 +96,24 @@ Config Connector determines which controller to use following this order of prec
 To determine which controller is being used for a resource, you should check the following in order:
 
 1.  **ConfigConnectorContext Overrides:** Check the `ConfigConnectorContext` in the resource's namespace for any `experiments.controllerOverrides`.
-2.  **Static Configuration:** If no override is present, Config Connector uses the default defined in [pkg/controller/resourceconfig/static_config.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/resourceconfig/static_config.go). This file lists both the `DefaultController` and the `SupportedControllers` for every supported resource Kind. You can check this file to see which controller types are available for override for a specific resource.
+2.  **Static Configuration:** If no override is present, Config Connector uses the default defined in [pkg/controller/resourceconfig/static_config.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/resourceconfig/static_config.go).
+
+### Finding Supported Controller Types
+
+To find which controller types are available for a specific resource Kind, consult the [pkg/controller/resourceconfig/static_config.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/resourceconfig/static_config.go) file in the repository.
+
+For each resource, the file defines:
+*   **`DefaultController`:** The controller type used if no override is specified.
+*   **`SupportedControllers`:** The list of all controller types that can be successfully used as an override for that resource.
+
+**Example entry in `static_config.go`:**
+```go
+{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}: {
+    DefaultController: k8s.ReconcilerTypeTerraform, 
+    SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect, k8s.ReconcilerTypeTerraform}
+},
+```
+In this example, `BigQueryDataset` defaults to `tf` but can be overridden to `direct`.
 
 ### Inspecting Logs
 
