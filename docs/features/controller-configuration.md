@@ -1,6 +1,6 @@
 # Controller Configuration
 
-Config Connector uses different underlying implementations (controllers) to manage Google Cloud resources. These include:
+Config Connector uses different underlying implementations (controller types) to manage Google Cloud resources. These include:
 
 *   **Direct Controllers:** Newer implementations that call Google Cloud APIs directly. These are generally preferred for their simplicity and better integration.
 *   **Terraform-based Controllers (Legacy):** Older implementations that wrap the Terraform Google provider.
