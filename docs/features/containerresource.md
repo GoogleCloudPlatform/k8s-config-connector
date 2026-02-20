@@ -68,7 +68,7 @@ spec:
 
 ## Configuring Resources in Namespaced Mode
 
-To customize resources in namespaced mode, create a `NamespacedControllerResource` object. The `metadata.name` of the `NamespacedControllerResource` object must be `cnrm-controller-manager`, and the `metadata.namespace` must match the namespace where Config Connector is installed for that namespace.
+To customize resources in namespaced mode, create a `NamespacedControllerResource` object. The `metadata.name` of the `NamespacedControllerResource` object must match the name of the pod you are configuring, and the `metadata.namespace` must match the namespace where Config Connector is installed for that namespace.
 
 ### Example: Customizing `cnrm-controller-manager` in a specific namespace
 
@@ -78,7 +78,7 @@ The following example shows how to customize the CPU and memory for the `manager
 apiVersion: customize.core.cnrm.cloud.google.com/v1beta1
 kind: NamespacedControllerResource
 metadata:
-  name: cnrm-controller-manager
+  name: cnrm-controller-manager # name should not contain the namespace ID suffix
   namespace: config-control
 spec:
   containers:
@@ -90,37 +90,6 @@ spec:
         requests:
           cpu: 100m
           memory: 256Mi
-```
-
-## Enabling Vertical Pod Autoscaler
-
-You can enable the Vertical Pod Autoscaler (VPA) for Config Connector pods by setting the `verticalPodAutoscalerMode` field to `Enabled`. 
-
-When VPA is enabled, Config Connector automatically creates a `VerticalPodAutoscaler` resource for the target workload with `updateMode: Auto`. The operator will also periodically fetch recommendations from the VPA and apply them to the pod specifications to ensure they remain in sync with VPA's suggestions.
-
-**Important:** `verticalPodAutoscalerMode: Enabled` is mutually exclusive with specifying `containers` in the same object.
-
-### Example: Enabling VPA for `cnrm-controller-manager` in Cluster Mode
-
-```yaml
-apiVersion: customize.core.cnrm.cloud.google.com/v1beta1
-kind: ControllerResource
-metadata:
-  name: cnrm-controller-manager
-spec:
-  verticalPodAutoscalerMode: Enabled
-```
-
-### Example: Enabling VPA for `cnrm-controller-manager` in Namespaced Mode
-
-```yaml
-apiVersion: customize.core.cnrm.cloud.google.com/v1beta1
-kind: NamespacedControllerResource
-metadata:
-  name: cnrm-controller-manager
-  namespace: config-control
-spec:
-  verticalPodAutoscalerMode: Enabled
 ```
 
 ## Configuration Options
@@ -154,3 +123,36 @@ spec:
 | ---------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `limits`   | `ResourceList` | Describes the maximum amount of compute resources allowed. More info: [Kubernetes Resources](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)                        |
 | `requests` | `ResourceList` | Describes the minimum amount of compute resources required. If omitted, it defaults to `limits` if specified. More info: [Kubernetes Resources](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/) |
+
+## Enabling Vertical Pod Autoscaler
+
+You can enable the Vertical Pod Autoscaler (VPA) for Config Connector pods by setting the `verticalPodAutoscalerMode` field to `Enabled`. 
+
+When VPA is enabled, Config Connector automatically creates a `VerticalPodAutoscaler` resource for the target workload with `updateMode: Auto`. The operator will also periodically fetch recommendations from the VPA and apply them to the pod specifications to ensure they remain in sync with VPA's suggestions.
+
+**Important:** `verticalPodAutoscalerMode: Enabled` is mutually exclusive with specifying `containers` in the same object. When VPA is enabled, the `containers` field should be empty or omitted.
+
+### Example: Enabling VPA for `cnrm-controller-manager` in Cluster Mode
+
+```yaml
+apiVersion: customize.core.cnrm.cloud.google.com/v1beta1
+kind: ControllerResource
+metadata:
+  name: cnrm-controller-manager
+spec:
+  verticalPodAutoscalerMode: Enabled
+  containers: []
+```
+
+### Example: Enabling VPA for `cnrm-controller-manager` in Namespaced Mode
+
+```yaml
+apiVersion: customize.core.cnrm.cloud.google.com/v1beta1
+kind: NamespacedControllerResource
+metadata:
+  name: cnrm-controller-manager # name should not contain the namespace ID suffix
+  namespace: config-control
+spec:
+  verticalPodAutoscalerMode: Enabled
+  containers: []
+```
