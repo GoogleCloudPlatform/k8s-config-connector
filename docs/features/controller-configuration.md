@@ -88,4 +88,4 @@ kubectl -n cnrm-system logs pod/cnrm-controller-manager-0 | grep "routing to con
 ```
 
 The log entry will look similar to this:
-`Info  routing to controller {"type": "direct", "resource": {"namespace": "my-namespace", "name": "my-resource"}}`
+`Info  routing to controller {"resource": {"namespace": "my-namespace", "name": "my-resource"}, "type": "direct"}`
