@@ -6,7 +6,7 @@ Config Connector uses different underlying implementations (controller types) to
 *   **Terraform-based Controllers (Legacy):** Older implementations that wrap the Terraform Google provider.
 *   **DCL-based Controllers (Legacy):** Older implementations that wrap the Google Cloud Declarative Library (DCL).
 
-While Config Connector selects the most appropriate default controller for each resource, you can override this behavior at the namespace level (using `ConfigConnectorContext`).
+While Config Connector selects a default controller for each resource, you can override this behavior at the namespace level (using `ConfigConnectorContext`) for supported resources.
 
 ## Configuration Resources
 
@@ -33,6 +33,8 @@ The `ConfigConnectorContext` resource allows you to configure identity, billing,
 ## Controller Overrides
 
 The `experiments.controllerOverrides` field in `ConfigConnectorContext` allows you to specify which controller to use for a given resource kind within the namespace, overriding the system default.
+
+**Note:** Not all resources support all controller types. You can only override the controller with a type that is explicitly supported for that resource. See [Verifying the Controller](#verifying-the-controller) for how to check supported types.
 
 The key for each entry must follow the format `Kind.group`, and the value must be one of the supported controller types: `direct`, `tf`, or `dcl`.
 
@@ -75,7 +77,7 @@ Config Connector determines which controller to use following this order of prec
 To determine which controller is being used for a resource, you should check the following in order:
 
 1.  **ConfigConnectorContext Overrides:** Check the `ConfigConnectorContext` in the resource's namespace for any `experiments.controllerOverrides`.
-2.  **Static Configuration:** If no override is present, Config Connector uses the default defined in [pkg/controller/resourceconfig/static_config.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/resourceconfig/static_config.go). This file lists the `DefaultController` for every supported resource Kind.
+2.  **Static Configuration:** If no override is present, Config Connector uses the default defined in [pkg/controller/resourceconfig/static_config.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/resourceconfig/static_config.go). This file lists both the `DefaultController` and the `SupportedControllers` for every supported resource Kind. You can check this file to see which controller types are available for override for a specific resource.
 
 ### Inspecting Logs
 
