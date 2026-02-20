@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type NotificationchannelAuthToken struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
@@ -94,18 +97,15 @@ type MonitoringNotificationChannelSpec struct {
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`
 
-	/* If true, the notification channel will be deleted regardless
-	of its use in alert policies (the policies will be updated
-	to remove the channel). If false, channels that are still
-	referenced by an existing alerting policy will fail to be
-	deleted in a delete operation. */
+	/* If true, the notification channel will be deleted regardless of its use in alert policies (the policies will be updated to remove the channel). If false, channels that are still referenced by an existing alerting policy will fail to be deleted in a delete operation. */
 	// +optional
 	ForceDelete *bool `json:"forceDelete,omitempty"`
 
+	/* Configuration fields that define the channel and its behavior. The permissible and required labels are specified in the NotificationChannelDescriptor.labels of the NotificationChannelDescriptor corresponding to the type field. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* Immutable. Optional. The service-generated name of theresource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -127,9 +127,7 @@ type MonitoringNotificationChannelStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MonitoringNotificationChannel's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The full REST resource name for this channel. The syntax is:
-	projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]
-	The [CHANNEL_ID] is automatically assigned by the server on creation. */
+	/* The full REST resource name for this channel. The syntax is: projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID] The [CHANNEL_ID] is automatically assigned by the server on creation. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 

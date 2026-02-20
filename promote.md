@@ -18,7 +18,7 @@ The first step is to create the new API version.
 - Adds crucial annotations to the primary type's `_types.go` file:
     - `// +kubebuilder:storageversion`: Marks the new version as the storage version for the CRD.
     - `// +kubebuilder:metadata:labels: "internal.cloud.google.com/additional-versions={source_version}"`: Ensures the CRD definition preserves the previous version, which is critical for backward compatibility.
-- Runs `dev/tasks/generate-crds` to validate the changes and update the CRD files in the `crds/` directory.
+- Runs `dev/tasks/generate-crds` to validate the changes and update the CRD files in the `config/crds/resources/` directory.
 
 **Example:**
 To promote the `storage` API to `v1beta1`, you can instruct Gemini:

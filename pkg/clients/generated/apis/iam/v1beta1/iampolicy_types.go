@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type PolicyAuditConfigs struct {
 	/* Required. The configuration for logging of each type of permission. */
@@ -83,7 +86,7 @@ type IAMPolicySpec struct {
 	// +optional
 	Bindings []PolicyBindings `json:"bindings,omitempty"`
 
-	/* Immutable. Required. The GCP resource to set the IAM policy on. */
+	/* Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...) */
 	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
 }
 

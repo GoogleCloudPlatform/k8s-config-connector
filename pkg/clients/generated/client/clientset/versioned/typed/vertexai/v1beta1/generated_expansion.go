@@ -26,3 +26,5 @@ type VertexAIDatasetExpansion interface{}
 type VertexAIEndpointExpansion interface{}
 
 type VertexAIIndexExpansion interface{}
+
+type VertexAIMetadataStoreExpansion interface{}

@@ -26,13 +26,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	api "google.golang.org/api/apigee/v1"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -49,7 +49,9 @@ type modelApigeeEnvgroup struct {
 	config *config.ControllerConfig
 }
 
-func (m *modelApigeeEnvgroup) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelApigeeEnvgroup) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {
 		return nil, err
@@ -165,9 +167,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	// Sorts the Hostname lists so that the comparison is deterministic
 	if !reflect.DeepEqual(asSortedCopy(req.Hostnames), asSortedCopy(a.actual.Hostnames)) {
-		log.V(2).Info("change detected: hostnames")
+		report.AddField("hostnames", a.actual.Hostnames, req.Hostnames)
 		updateMask.Paths = append(updateMask.Paths, "hostnames")
 	}
 
@@ -180,6 +184,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	clusterName := a.id.String()
 	op, err := a.envgroupsClient.Patch(clusterName, req).UpdateMask(strings.Join(updateMask.Paths, ",")).Context(ctx).Do()

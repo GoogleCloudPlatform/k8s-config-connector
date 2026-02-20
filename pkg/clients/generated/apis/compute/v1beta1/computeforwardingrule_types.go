@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type ForwardingruleFilterLabels struct {
 	/* Immutable. Name of the metadata label. The length must be between 1 and 1024 characters, inclusive. */
@@ -382,9 +385,7 @@ type ComputeForwardingRuleStatus struct {
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 
-	/* The internal fully qualified service name for this Forwarding Rule.
-
-	This field is only used for INTERNAL load balancing. */
+	/* The internal fully qualified service name for this Forwarding Rule. This field is only used for INTERNAL load balancing. */
 	// +optional
 	ServiceName *string `json:"serviceName,omitempty"`
 }

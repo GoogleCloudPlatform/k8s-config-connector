@@ -274,7 +274,7 @@ spec:
                                 external:
                                   description: A reference to an externally-managed
                                     BigQueryTable resource. Should be in the format
-                                    "projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}".
+                                    "projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}}".
                                   type: string
                                 name:
                                   description: The name of a BigQueryTable resource.
@@ -601,7 +601,7 @@ spec:
                                 external:
                                   description: A reference to an externally-managed
                                     BigQueryTable resource. Should be in the format
-                                    "projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}".
+                                    "projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}}".
                                   type: string
                                 name:
                                   description: The name of a BigQueryTable resource.

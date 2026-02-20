@@ -32,8 +32,11 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+var _ = apiextensionsv1.JSON{}
 
 type OrganizationAddonsConfig struct {
 	/* Configuration for the Advanced API Ops add-on. */
@@ -62,9 +65,10 @@ type ApigeeOrganizationSpec struct {
 	// +optional
 	AddonsConfig *OrganizationAddonsConfig `json:"addonsConfig,omitempty"`
 
-	/* Immutable. Required. Primary GCP region for analytics data storage. For valid values, see (https://cloud.google.com/apigee/docs/api-platform/get-started/create-org). */
+	/* Required. DEPRECATED: This field will eventually be deprecated and replaced with a differently-named field. Primary Google Cloud region for analytics data storage. For valid values, see [Create an Apigee organization](https://cloud.google.com/apigee/docs/api-platform/get-started/create-org). */
 	AnalyticsRegion string `json:"analyticsRegion"`
 
+	/* Compute Engine network used for Service Networking to be peered with Apigee runtime instances. See [Getting started with the Service Networking API](https://cloud.google.com/service-infrastructure/docs/service-networking/getting-started). Valid only when [RuntimeType](#RuntimeType) is set to `CLOUD`. The value must be set before the creation of a runtime instance and can be updated only when there are no runtime instances. For example: `default`. Apigee also supports shared VPC (that is, the host network project is not the same as the one that is peering with Apigee). See [Shared VPC overview](https://cloud.google.com/vpc/docs/shared-vpc). To use a shared VPC network, use the following format: `projects/{host-project-id}/{region}/networks/{network-name}`. For example: `projects/my-sharedvpc-host/global/networks/mynetwork` **Note:** Not supported for Apigee hybrid. */
 	// +optional
 	AuthorizedNetworkRef *v1alpha1.ResourceRef `json:"authorizedNetworkRef,omitempty"`
 
@@ -72,11 +76,11 @@ type ApigeeOrganizationSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Display name for the Apigee organization. */
+	/* Display name for the Apigee organization. Unused, but reserved for future use. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Immutable. The Project that this resource belongs to. */
+	/* Required. Name of the GCP project in which to associate the Apigee organization. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Properties defined in the Apigee organization profile. */
@@ -87,22 +91,26 @@ type ApigeeOrganizationSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* Cloud KMS key name used for encrypting the data that is stored and replicated across runtime instances. Update is not allowed after the organization is created. If not specified or [RuntimeType](#RuntimeType) is `TRIAL`, a Google-Managed encryption key will be used. For example: "projects/foo/locations/us/keyRings/bar/cryptoKeys/baz". **Note:** Not supported for Apigee hybrid. */
 	// +optional
 	RuntimeDatabaseEncryptionKeyRef *v1alpha1.ResourceRef `json:"runtimeDatabaseEncryptionKeyRef,omitempty"`
 
-	/* Immutable. Required. Runtime type of the Apigee organization based on the Apigee subscription purchased. Possible values: RUNTIME_TYPE_UNSPECIFIED, CLOUD, HYBRID */
+	/* Required. Runtime type of the Apigee organization based on the Apigee subscription purchased. */
 	RuntimeType string `json:"runtimeType"`
+}
+
+type OrganizationObservedStateStatus struct {
 }
 
 type ApigeeOrganizationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ApigeeOrganization's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. Billing type of the Apigee organization. See (https://cloud.google.com/apigee/pricing). Possible values: BILLING_TYPE_UNSPECIFIED, SUBSCRIPTION, EVALUATION */
+	/* Billing type of the Apigee organization. See [Apigee pricing](https://cloud.google.com/apigee/pricing). */
 	// +optional
 	BillingType *string `json:"billingType,omitempty"`
 
-	/* Output only. Base64-encoded public certificate for the root CA of the Apigee organization. Valid only when (#RuntimeType) is `CLOUD`. */
+	/* Output only. Base64-encoded public certificate for the root CA of the Apigee organization. Valid only when [RuntimeType](#RuntimeType) is `CLOUD`. */
 	// +optional
 	CaCertificate *string `json:"caCertificate,omitempty"`
 
@@ -118,6 +126,10 @@ type ApigeeOrganizationStatus struct {
 	// +optional
 	ExpiresAt *int64 `json:"expiresAt,omitempty"`
 
+	/* A unique specifier for the ApigeeOrganization resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* Output only. Time that the Apigee organization was last modified in milliseconds since epoch. */
 	// +optional
 	LastModifiedAt *int64 `json:"lastModifiedAt,omitempty"`
@@ -126,15 +138,19 @@ type ApigeeOrganizationStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *OrganizationObservedStateStatus `json:"observedState,omitempty"`
+
 	/* Output only. Project ID associated with the Apigee organization. */
 	// +optional
 	ProjectId *string `json:"projectId,omitempty"`
 
-	/* Output only. State of the organization. Values other than ACTIVE means the resource is not ready to use. Possible values: SNAPSHOT_STATE_UNSPECIFIED, MISSING, OK_DOCSTORE, OK_SUBMITTED, OK_EXTERNAL, DELETED */
+	/* Output only. State of the organization. Values other than ACTIVE means the resource is not ready to use. */
 	// +optional
 	State *string `json:"state,omitempty"`
 
-	/* Output only. DEPRECATED: This will eventually be replaced by BillingType. Subscription type of the Apigee organization. Valid values include trial (free, limited, and for evaluation purposes only) or paid (full subscription has been purchased). See (https://cloud.google.com/apigee/pricing/). Possible values: SUBSCRIPTION_TYPE_UNSPECIFIED, PAID, TRIAL */
+	/* Output only. DEPRECATED: This will eventually be replaced by BillingType. Subscription type of the Apigee organization. Valid values include trial (free, limited, and for evaluation purposes only) or paid (full subscription has been purchased). See [Apigee pricing](https://cloud.google.com/apigee/pricing/). */
 	// +optional
 	SubscriptionType *string `json:"subscriptionType,omitempty"`
 }
@@ -145,7 +161,6 @@ type ApigeeOrganizationStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

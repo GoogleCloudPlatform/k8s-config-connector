@@ -100,7 +100,9 @@ func (m *model{{.ProtoResource}}) client(ctx context.Context) (*gcp.Client, erro
 	return gcpClient, err
 }
 
-func (m *model{{.ProtoResource}}) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model{{.ProtoResource}}) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.{{.Kind}}{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
