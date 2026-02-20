@@ -120,10 +120,10 @@ func ParseSpannerDatabaseExternal(external string) (*SpannerDatabaseIdentity, er
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "databases" {
-		return nil, fmt.Errorf("format of SpannerInstance external=%q was not known (use projects/{{projectId}}/instances/{{instanceID}}/databases/{{databaseID}})", external)
+		return nil, fmt.Errorf("format of SpannerDatabase external=%q was not known (use projects/{{projectId}}/instances/{{instanceID}}/databases/{{databaseID}})", external)
 	}
 	return &SpannerDatabaseIdentity{
-		parent: &SpannerInstanceIdentity{parent: &SpannerInstanceParent{ProjectID: tokens[1]}, id: tokens[3]},
+		parent: &SpannerInstanceIdentity{Project: tokens[1], Instance: tokens[3]},
 		id:     tokens[5],
 	}, nil
 }

@@ -21,6 +21,8 @@ df -h /
 
 sudo rm -rf /opt/hostedtoolcache/*  # remove pre-installed tool versions
 sudo rm -rf /usr/share/dotnet
+sudo rm -rf /usr/local/lib/android # remove Android SDK
+sudo rm -rf /usr/share/swift       # remove Swift
 sudo docker system prune -af || true
 
 echo "After cleanup:"

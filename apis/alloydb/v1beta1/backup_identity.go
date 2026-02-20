@@ -71,10 +71,9 @@ func (obj *AlloyDBBackup) GetIdentity(ctx context.Context, reader client.Reader)
 	// Get desired resource ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
-	// Server-generated ID; do not fallback to name
-	// if resourceID == "" {
-	// 	resourceID = obj.GetName()
-	// }
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
 
 	var specIdentity *BackupIdentity
 	if resourceID != "" {

@@ -132,9 +132,24 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	obj.Name = PtrTo(name.Bucket)
 	obj.ProjectNumber = PtrTo(uint64(project.Number))
 
-	obj.Location = PtrTo("US")
-	obj.LocationType = PtrTo("multi-region")
-	obj.Rpo = PtrTo("DEFAULT")
+	if obj.Location == nil {
+		obj.Location = PtrTo("US")
+	}
+
+	switch obj.GetLocation() {
+	case "ASIA1", "EUR4", "EUR5", "EUR7", "EUR8", "NAM4":
+		obj.LocationType = PtrTo("dual-region")
+		obj.Rpo = PtrTo("DEFAULT")
+	case "EU", "US", "ASIA":
+		obj.LocationType = PtrTo("multi-region")
+		obj.Rpo = PtrTo("DEFAULT")
+	default:
+		obj.Location = PtrTo(strings.ToUpper(obj.GetLocation()))
+		obj.LocationType = PtrTo("region")
+		obj.Rpo = nil
+		obj.SatisfiesPZI = PtrTo(true)
+	}
+
 	obj.SelfLink = PtrTo(fmt.Sprintf("https://www.googleapis.com/storage/v1/b/%s", name.Bucket))
 	obj.StorageClass = PtrTo("STANDARD")
 	obj.TimeCreated = now
@@ -142,17 +157,6 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	obj.Metageneration = PtrTo(int64(1))
 
 	obj.Generation = PtrTo(time.Now().UnixNano())
-
-	if location := req.GetBucket().GetLocation(); location != "" {
-		tokens := strings.Split(location, "-")
-		if len(tokens) == 2 {
-			// Looks like a region e.g. us-central1
-			obj.Location = PtrTo(strings.ToUpper(location))
-			obj.Rpo = nil
-			obj.LocationType = PtrTo("region")
-			obj.SatisfiesPZI = PtrTo(true)
-		}
-	}
 
 	obj.Etag = PtrTo(computeEtag(obj))
 	if obj.Lifecycle != nil && proto.Equal(obj.Lifecycle, &pb.BucketLifecycle{}) {

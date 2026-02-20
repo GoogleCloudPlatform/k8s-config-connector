@@ -69,8 +69,8 @@ func NewBackupScheduleIdentity(ctx context.Context, reader client.Reader, obj *S
 	}
 
 	databaseID := parent.ID()
-	projectID := parent.Parent().Parent().ProjectID
-	instanceID := parent.Parent().ID()
+	projectID := parent.Parent().Project
+	instanceID := parent.Parent().Instance
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
