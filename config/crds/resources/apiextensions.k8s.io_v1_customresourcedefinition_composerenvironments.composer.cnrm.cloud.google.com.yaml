@@ -997,7 +997,7 @@ spec:
                 - message: Location is immutable.
                   rule: self == oldSelf
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -2173,7 +2173,7 @@ spec:
                 - message: Location is immutable.
                   rule: self == oldSelf
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:

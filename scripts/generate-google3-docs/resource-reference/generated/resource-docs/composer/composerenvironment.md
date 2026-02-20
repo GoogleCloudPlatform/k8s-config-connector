@@ -1748,7 +1748,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The name of the location where the Environment will be created. Required.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -680,7 +680,7 @@ spec:
                 format: int64
                 type: integer
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
