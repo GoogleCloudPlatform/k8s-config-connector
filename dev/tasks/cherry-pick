@@ -54,12 +54,24 @@ def main():
     pr_info_results = run(["gh", "pr", "view", pr_number, "--json", "commits,title,body"])
     pr_info = json.loads(pr_info_results.stdout)
 
+    if not pr_info.get('commits'):
+        print(f"Error: No commits found for PR #{pr_number}.")
+        sys.exit(1)
+
     pr_title = f"cherry-pick: {release_branch}: {pr_info['title']}"
     pr_body = "Cherry picking PR #" + pr_number + "\n\n" + pr_info['body']
 
     branch_name = f"cherry-pick-{pr_number}-{release_branch}"
     github_username = run(["gh", "api", "user", "-q", ".login"]).stdout.strip()
     user_fork = f"https://github.com/{github_username}/k8s-config-connector"
+
+    # Ensure 'upstream' remote exists
+    remotes = run(["git", "remote"]).stdout.split()
+    if "upstream" not in remotes:
+        print("Error: 'upstream' remote not found.")
+        print("This script expects a remote named 'upstream' pointing to the main repository.")
+        print("Please add it with: git remote add upstream https://github.com/GoogleCloudPlatform/k8s-config-connector.git")
+        sys.exit(1)
 
     # Fetch latest from upstream to ensure we have the latest release branch
     print("Fetching latest from upstream...")
@@ -97,22 +109,23 @@ def main():
         os.chdir(tmpdir)
 
         # Cherry-pick the commits
-        print(f"Cherry-picking {len(pr_info['commits'])} commits...")
-        for commit in pr_info['commits']:
-            try:
-                run(["git", "cherry-pick", commit['oid']])
-            except subprocess.CalledProcessError:
-                print(f"\n!!! Cherry-pick failed for commit {commit['oid']} !!!")
-                print(f"The temporary worktree has been preserved at: {tmpdir}")
-                print("Please resolve the conflicts manually in that directory, then:")
-                print("  1. git cherry-pick --continue")
-                print(f"  2. git push {user_fork} {branch_name}")
-                print(f"  3. gh pr create --title \"{pr_title}\" --body \"{pr_body}\" --base {release_branch} --head {github_username}:{branch_name}")
-                print("\nWhen finished, remember to remove the worktree:")
-                print(f"  cd {repo_root}")
-                print(f"  git worktree remove {tmpdir}")
-                keep_worktree = True
-                sys.exit(1)
+        commit_oids = [c['oid'] for c in pr_info['commits']]
+        print(f"Cherry-picking {len(commit_oids)} commits: {', '.join(commit_oids)}")
+        try:
+            run(["git", "cherry-pick"] + commit_oids)
+        except subprocess.CalledProcessError:
+            print(f"\n!!! Cherry-pick failed !!!")
+            print(f"The temporary worktree has been preserved at: {tmpdir}")
+            print("Please resolve the conflicts manually in that directory, then:")
+            print("  1. git cherry-pick --continue")
+            print("     (Repeat if there are more conflicts in subsequent commits)")
+            print(f"  2. git push {user_fork} {branch_name}")
+            print(f"  3. gh pr create --title \"{pr_title}\" --body \"{pr_body}\" --base {release_branch} --head {github_username}:{branch_name}")
+            print("\nWhen finished, remember to remove the worktree:")
+            print(f"  cd {repo_root}")
+            print(f"  git worktree remove {tmpdir}")
+            keep_worktree = True
+            sys.exit(1)
 
         # Push the new branch
         print(f"Pushing branch {branch_name} to {user_fork}...")
