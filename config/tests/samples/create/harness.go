@@ -714,8 +714,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		ctrlManagerShutdown.Wait()
 		t.Log("controller-runtime manager is shutdown")
 	})
-	// kccConfig.ManagerOptions.Logger = filterLogs(log)
-	kccConfig.ManagerOptions.Logger = log
+	kccConfig.ManagerOptions.Logger = filterLogs(log)
 	kccConfig.ManagerOptions.Controller.SkipNameValidation = ptr.To(true)
 
 	krmtotf.SetUserAgentForTerraformProvider()
