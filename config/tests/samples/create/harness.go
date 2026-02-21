@@ -714,7 +714,8 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		ctrlManagerShutdown.Wait()
 		t.Log("controller-runtime manager is shutdown")
 	})
-	kccConfig.ManagerOptions.Logger = filterLogs(log)
+	// kccConfig.ManagerOptions.Logger = filterLogs(log)
+	kccConfig.ManagerOptions.Logger = log
 	kccConfig.ManagerOptions.Controller.SkipNameValidation = ptr.To(true)
 
 	krmtotf.SetUserAgentForTerraformProvider()
@@ -834,6 +835,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case "core.cnrm.cloud.google.com":
 				continue
 			case "certificatemanager.cnrm.cloud.google.com":
+				continue
+			case "modelarmor.cnrm.cloud.google.com":
 				continue
 			}
 

@@ -52,7 +52,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 
 func (s *MockService) ExpectedHosts() []string {
 	// todo: hardcode regional endpoint for now
-	return []string{"modelarmor.us-central1.rep.googleapis.com"}
+	return []string{"modelarmor.us-central1.rep.googleapis.com", "modelarmor.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
