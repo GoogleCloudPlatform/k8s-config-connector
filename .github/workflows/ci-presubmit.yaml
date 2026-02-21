@@ -229,6 +229,7 @@ jobs:
 
 
   tests-e2e-direct-iam:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -249,6 +250,7 @@ jobs:
 
 
   tests-e2e-fixtures:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -269,6 +271,7 @@ jobs:
 
 
   tests-e2e-fixtures-accesscontextmanager:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -289,6 +292,7 @@ jobs:
 
 
   tests-e2e-fixtures-aiplatform:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -309,6 +313,7 @@ jobs:
 
 
   tests-e2e-fixtures-alloydb:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -329,6 +334,7 @@ jobs:
 
 
   tests-e2e-fixtures-analytics:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -349,6 +355,7 @@ jobs:
 
 
   tests-e2e-fixtures-apigateway:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -369,6 +376,7 @@ jobs:
 
 
   tests-e2e-fixtures-apigee:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -389,6 +397,7 @@ jobs:
 
 
   tests-e2e-fixtures-apikeys:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -409,6 +418,7 @@ jobs:
 
 
   tests-e2e-fixtures-appengine:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -429,6 +439,7 @@ jobs:
 
 
   tests-e2e-fixtures-apphub:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -449,6 +460,7 @@ jobs:
 
 
   tests-e2e-fixtures-artifactregistry:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -469,6 +481,7 @@ jobs:
 
 
   tests-e2e-fixtures-asset:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -489,6 +502,7 @@ jobs:
 
 
   tests-e2e-fixtures-assuredworkloads:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -509,6 +523,7 @@ jobs:
 
 
   tests-e2e-fixtures-backupdr:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -529,6 +544,7 @@ jobs:
 
 
   tests-e2e-fixtures-batch:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -549,6 +565,7 @@ jobs:
 
 
   tests-e2e-fixtures-beyondcorp:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -569,6 +586,7 @@ jobs:
 
 
   tests-e2e-fixtures-bigquery:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -589,6 +607,7 @@ jobs:
 
 
   tests-e2e-fixtures-bigqueryanalyticshub:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -609,6 +628,7 @@ jobs:
 
 
   tests-e2e-fixtures-bigquerybiglake:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -629,6 +649,7 @@ jobs:
 
 
   tests-e2e-fixtures-bigqueryconnection:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -649,6 +670,7 @@ jobs:
 
 
   tests-e2e-fixtures-bigquerydatapolicy:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -669,6 +691,7 @@ jobs:
 
 
   tests-e2e-fixtures-bigquerydatatransfer:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -689,6 +712,7 @@ jobs:
 
 
   tests-e2e-fixtures-bigqueryreservation:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -709,6 +733,7 @@ jobs:
 
 
   tests-e2e-fixtures-bigtable:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -729,6 +754,7 @@ jobs:
 
 
   tests-e2e-fixtures-billing:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -749,6 +775,7 @@ jobs:
 
 
   tests-e2e-fixtures-billingbudgets:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -769,6 +796,7 @@ jobs:
 
 
   tests-e2e-fixtures-binaryauthorization:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -789,6 +817,7 @@ jobs:
 
 
   tests-e2e-fixtures-certificatemanager:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -809,6 +838,7 @@ jobs:
 
 
   tests-e2e-fixtures-cloudasset:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -829,6 +859,7 @@ jobs:
 
 
   tests-e2e-fixtures-cloudbuild:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -849,6 +880,7 @@ jobs:
 
 
   tests-e2e-fixtures-clouddeploy:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -869,6 +901,7 @@ jobs:
 
 
   tests-e2e-fixtures-clouddms:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -889,6 +922,7 @@ jobs:
 
 
   tests-e2e-fixtures-cloudfunctions:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -909,6 +943,7 @@ jobs:
 
 
   tests-e2e-fixtures-cloudfunctions2:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -929,6 +964,7 @@ jobs:
 
 
   tests-e2e-fixtures-cloudidentity:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -949,6 +985,7 @@ jobs:
 
 
   tests-e2e-fixtures-cloudids:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -969,6 +1006,7 @@ jobs:
 
 
   tests-e2e-fixtures-cloudiot:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -989,6 +1027,7 @@ jobs:
 
 
   tests-e2e-fixtures-cloudquota:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1009,6 +1048,7 @@ jobs:
 
 
   tests-e2e-fixtures-cloudscheduler:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1029,6 +1069,7 @@ jobs:
 
 
   tests-e2e-fixtures-cloudtasks:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1049,6 +1090,7 @@ jobs:
 
 
   tests-e2e-fixtures-colab:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1069,6 +1111,7 @@ jobs:
 
 
   tests-e2e-fixtures-composer:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1089,6 +1132,7 @@ jobs:
 
 
   tests-e2e-fixtures-compute:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1109,6 +1153,7 @@ jobs:
 
 
   tests-e2e-fixtures-configcontroller:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1129,6 +1174,7 @@ jobs:
 
 
   tests-e2e-fixtures-configdelivery:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1149,6 +1195,7 @@ jobs:
 
 
   tests-e2e-fixtures-container:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1169,6 +1216,7 @@ jobs:
 
 
   tests-e2e-fixtures-containeranalysis:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1189,6 +1237,7 @@ jobs:
 
 
   tests-e2e-fixtures-containerattached:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1209,6 +1258,7 @@ jobs:
 
 
   tests-e2e-fixtures-datacatalog:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1229,6 +1279,7 @@ jobs:
 
 
   tests-e2e-fixtures-dataflow:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1249,6 +1300,7 @@ jobs:
 
 
   tests-e2e-fixtures-dataform:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1269,6 +1321,7 @@ jobs:
 
 
   tests-e2e-fixtures-datafusion:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1289,6 +1342,7 @@ jobs:
 
 
   tests-e2e-fixtures-dataplex:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1309,6 +1363,7 @@ jobs:
 
 
   tests-e2e-fixtures-dataproc:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1329,6 +1384,7 @@ jobs:
 
 
   tests-e2e-fixtures-datastore:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1349,6 +1405,7 @@ jobs:
 
 
   tests-e2e-fixtures-datastream:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1369,6 +1426,7 @@ jobs:
 
 
   tests-e2e-fixtures-deploymentmanager:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1389,6 +1447,7 @@ jobs:
 
 
   tests-e2e-fixtures-dialogflow:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1409,6 +1468,7 @@ jobs:
 
 
   tests-e2e-fixtures-dialogflowcx:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1429,6 +1489,7 @@ jobs:
 
 
   tests-e2e-fixtures-discoveryengine:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1449,6 +1510,7 @@ jobs:
 
 
   tests-e2e-fixtures-dlp:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1469,6 +1531,7 @@ jobs:
 
 
   tests-e2e-fixtures-dns:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1489,6 +1552,7 @@ jobs:
 
 
   tests-e2e-fixtures-documentai:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1509,6 +1573,7 @@ jobs:
 
 
   tests-e2e-fixtures-edgecontainer:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1529,6 +1594,7 @@ jobs:
 
 
   tests-e2e-fixtures-edgenetwork:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1549,6 +1615,7 @@ jobs:
 
 
   tests-e2e-fixtures-essentialcontacts:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1569,6 +1636,7 @@ jobs:
 
 
   tests-e2e-fixtures-eventarc:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1589,6 +1657,7 @@ jobs:
 
 
   tests-e2e-fixtures-filestore:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1609,6 +1678,7 @@ jobs:
 
 
   tests-e2e-fixtures-firebase:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1629,6 +1699,7 @@ jobs:
 
 
   tests-e2e-fixtures-firebasedatabase:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1649,6 +1720,7 @@ jobs:
 
 
   tests-e2e-fixtures-firebasehosting:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1669,6 +1741,7 @@ jobs:
 
 
   tests-e2e-fixtures-firebasestorage:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1689,6 +1762,7 @@ jobs:
 
 
   tests-e2e-fixtures-firestore:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1709,6 +1783,7 @@ jobs:
 
 
   tests-e2e-fixtures-gkebackup:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1729,6 +1804,7 @@ jobs:
 
 
   tests-e2e-fixtures-gkehub:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1749,6 +1825,7 @@ jobs:
 
 
   tests-e2e-fixtures-healthcare:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1769,6 +1846,7 @@ jobs:
 
 
   tests-e2e-fixtures-iam:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1789,6 +1867,7 @@ jobs:
 
 
   tests-e2e-fixtures-iap:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1809,6 +1888,7 @@ jobs:
 
 
   tests-e2e-fixtures-identityplatform:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1829,6 +1909,7 @@ jobs:
 
 
   tests-e2e-fixtures-kms:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1849,6 +1930,7 @@ jobs:
 
 
   tests-e2e-fixtures-logging:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1869,6 +1951,7 @@ jobs:
 
 
   tests-e2e-fixtures-managedkafka:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1889,6 +1972,7 @@ jobs:
 
 
   tests-e2e-fixtures-memcache:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1909,6 +1993,7 @@ jobs:
 
 
   tests-e2e-fixtures-memorystore:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1929,6 +2014,7 @@ jobs:
 
 
   tests-e2e-fixtures-metastore:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1949,6 +2035,7 @@ jobs:
 
 
   tests-e2e-fixtures-mlengine:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1969,6 +2056,7 @@ jobs:
 
 
   tests-e2e-fixtures-monitoring:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -1989,6 +2077,7 @@ jobs:
 
 
   tests-e2e-fixtures-netapp:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2009,6 +2098,7 @@ jobs:
 
 
   tests-e2e-fixtures-networkconnectivity:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2029,6 +2119,7 @@ jobs:
 
 
   tests-e2e-fixtures-networkmanagement:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2049,6 +2140,7 @@ jobs:
 
 
   tests-e2e-fixtures-networksecurity:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2069,6 +2161,7 @@ jobs:
 
 
   tests-e2e-fixtures-networkservices:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2089,6 +2182,7 @@ jobs:
 
 
   tests-e2e-fixtures-notebooks:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2109,6 +2203,7 @@ jobs:
 
 
   tests-e2e-fixtures-orgpolicy:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2129,6 +2224,7 @@ jobs:
 
 
   tests-e2e-fixtures-osconfig:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2149,6 +2245,7 @@ jobs:
 
 
   tests-e2e-fixtures-oslogin:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2169,6 +2266,7 @@ jobs:
 
 
   tests-e2e-fixtures-parametermanager:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2189,6 +2287,7 @@ jobs:
 
 
   tests-e2e-fixtures-privateca:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2209,6 +2308,7 @@ jobs:
 
 
   tests-e2e-fixtures-privilegedaccessmanager:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2229,6 +2329,7 @@ jobs:
 
 
   tests-e2e-fixtures-pubsub:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2249,6 +2350,7 @@ jobs:
 
 
   tests-e2e-fixtures-pubsublite:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2269,6 +2371,7 @@ jobs:
 
 
   tests-e2e-fixtures-recaptchaenterprise:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2289,6 +2392,7 @@ jobs:
 
 
   tests-e2e-fixtures-redis:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2309,6 +2413,7 @@ jobs:
 
 
   tests-e2e-fixtures-resourcemanager:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2329,6 +2434,7 @@ jobs:
 
 
   tests-e2e-fixtures-run:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2349,6 +2455,7 @@ jobs:
 
 
   tests-e2e-fixtures-secretmanager:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2369,6 +2476,7 @@ jobs:
 
 
   tests-e2e-fixtures-securesourcemanager:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2389,6 +2497,7 @@ jobs:
 
 
   tests-e2e-fixtures-securitycenter:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2409,6 +2518,7 @@ jobs:
 
 
   tests-e2e-fixtures-servicedirectory:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2429,6 +2539,7 @@ jobs:
 
 
   tests-e2e-fixtures-servicenetworking:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2449,6 +2560,7 @@ jobs:
 
 
   tests-e2e-fixtures-serviceusage:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2469,6 +2581,7 @@ jobs:
 
 
   tests-e2e-fixtures-sourcerepo:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2489,6 +2602,7 @@ jobs:
 
 
   tests-e2e-fixtures-spanner:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2509,6 +2623,7 @@ jobs:
 
 
   tests-e2e-fixtures-speech:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2529,6 +2644,7 @@ jobs:
 
 
   tests-e2e-fixtures-sql:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2549,6 +2665,7 @@ jobs:
 
 
   tests-e2e-fixtures-storage:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2569,6 +2686,7 @@ jobs:
 
 
   tests-e2e-fixtures-storagetransfer:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2589,6 +2707,7 @@ jobs:
 
 
   tests-e2e-fixtures-tags:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2609,6 +2728,7 @@ jobs:
 
 
   tests-e2e-fixtures-tpu:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2629,6 +2749,7 @@ jobs:
 
 
   tests-e2e-fixtures-vertexai:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2649,6 +2770,7 @@ jobs:
 
 
   tests-e2e-fixtures-vmwareengine:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2669,6 +2791,7 @@ jobs:
 
 
   tests-e2e-fixtures-vpcaccess:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2689,6 +2812,7 @@ jobs:
 
 
   tests-e2e-fixtures-workflowexecutions:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2709,6 +2833,7 @@ jobs:
 
 
   tests-e2e-fixtures-workflows:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2729,6 +2854,7 @@ jobs:
 
 
   tests-e2e-fixtures-workstations:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2749,6 +2875,7 @@ jobs:
 
 
   tests-e2e-samples-alloydb:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2769,6 +2896,7 @@ jobs:
 
 
   tests-e2e-samples-apigateway:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2789,6 +2917,7 @@ jobs:
 
 
   tests-e2e-samples-apigee:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2809,6 +2938,7 @@ jobs:
 
 
   tests-e2e-samples-bigquery:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2829,6 +2959,7 @@ jobs:
 
 
   tests-e2e-samples-bigqueryconnection:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2849,6 +2980,7 @@ jobs:
 
 
   tests-e2e-samples-bigquerydatapolicy:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2869,6 +3001,7 @@ jobs:
 
 
   tests-e2e-samples-bigquerydatatransfer:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2889,6 +3022,7 @@ jobs:
 
 
   tests-e2e-samples-cloudbuild:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2909,6 +3043,7 @@ jobs:
 
 
   tests-e2e-samples-cloudidentity:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2929,6 +3064,7 @@ jobs:
 
 
   tests-e2e-samples-compute:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2949,6 +3085,7 @@ jobs:
 
 
   tests-e2e-samples-dataflow:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2969,6 +3106,7 @@ jobs:
 
 
   tests-e2e-samples-dataproc:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -2989,6 +3127,7 @@ jobs:
 
 
   tests-e2e-samples-gkehub:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -3009,6 +3148,7 @@ jobs:
 
 
   tests-e2e-samples-iam:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -3029,6 +3169,7 @@ jobs:
 
 
   tests-e2e-samples-kms:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -3049,6 +3190,7 @@ jobs:
 
 
   tests-e2e-samples-orgpolicy:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -3069,6 +3211,7 @@ jobs:
 
 
   tests-e2e-samples-redis:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -3089,6 +3232,7 @@ jobs:
 
 
   tests-e2e-samples-secretmanager:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -3109,6 +3253,7 @@ jobs:
 
 
   tests-e2e-samples-spanner:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -3129,6 +3274,7 @@ jobs:
 
 
   tests-e2e-samples-sql:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -3149,6 +3295,7 @@ jobs:
 
 
   tests-e2e-samples-storage:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -3169,6 +3316,7 @@ jobs:
 
 
   tests-e2e-samples-unclassified:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}
@@ -3189,6 +3337,7 @@ jobs:
 
 
   tests-e2e-samples-workstations:
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/${{ github.repository }}/e2e-test-env:${{ github.sha }}

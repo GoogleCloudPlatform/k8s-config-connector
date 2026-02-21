@@ -138,6 +138,7 @@ EOF
 
     if [[ "${name}" == tests-e2e-* ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    runs-on: ubuntu-latest
     needs: [unit-tests, build-e2e-image]
     container:
       image: ghcr.io/\${{ github.repository }}/e2e-test-env:\${{ github.sha }}
