@@ -1,11 +1,25 @@
 #!/usr/bin/env python3
 
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # This script cherry-picks (merged) PRs from the main branch to a release branch,
 # and then sends a github PR for the changes.
 #
 # It assumes that the gh CLI is installed and authenticated.
 #
-# Usage: dev/tasks/cherry-pick <release-branch> <pr-number>
+# Usage: dev/tasks/cherry-pick <release-branch> <pr-number> [--force]
 
 import os
 import subprocess
@@ -13,22 +27,30 @@ import sys
 import tempfile
 import json
 
-def run(cmd):
+def run(cmd, **kwargs):
     print(f"Running command: {' '.join(cmd)}")
-    return subprocess.run(cmd, check=True, capture_output=True, text=True)
+    try:
+        return subprocess.run(cmd, check=True, capture_output=True, text=True, **kwargs)
+    except subprocess.CalledProcessError as e:
+        print(f"Command failed with exit code {e.returncode}")
+        print(f"Stderr: {e.stderr}")
+        print(f"Stdout: {e.stdout}")
+        raise
 
 
 def main():
-    if len(sys.argv) != 3:
-        print("Usage: dev/tasks/cherry-pick <release-branch> <pr-number>")
+    if len(sys.argv) < 3:
+        print("Usage: dev/tasks/cherry-pick <release-branch> <pr-number> [--force]")
         sys.exit(1)
     release_branch = sys.argv[1]
     pr_number = sys.argv[2]
+    force = "--force" in sys.argv
 
     repo_root = run(["git", "rev-parse", "--show-toplevel"]).stdout.strip()
     os.chdir(repo_root)
 
     # Get the PR info
+    print(f"Fetching information for PR #{pr_number}...")
     pr_info_results = run(["gh", "pr", "view", pr_number, "--json", "commits,title,body"])
     pr_info = json.loads(pr_info_results.stdout)
 
@@ -39,25 +61,73 @@ def main():
     github_username = run(["gh", "api", "user", "-q", ".login"]).stdout.strip()
     user_fork = f"https://github.com/{github_username}/k8s-config-connector"
 
+    # Fetch latest from upstream to ensure we have the latest release branch
+    print("Fetching latest from upstream...")
+    run(["git", "fetch", "upstream"])
+
+    # Check for existing local branch
+    branch_exists_locally = subprocess.run(["git", "rev-parse", "--verify", branch_name], capture_output=True).returncode == 0
+    if branch_exists_locally:
+        if force:
+            print(f"Deleting existing local branch {branch_name}...")
+            run(["git", "branch", "-D", branch_name])
+        else:
+            print(f"Error: local branch '{branch_name}' already exists.")
+            print(f"Use --force to overwrite it, or delete it manually with 'git branch -D {branch_name}'.")
+            sys.exit(1)
+
+    # If force is enabled, also attempt to delete existing remote branch
+    if force:
+        print(f"Attempting to delete existing remote branch {branch_name} on {user_fork}...")
+        try:
+            run(["git", "push", user_fork, "--delete", branch_name])
+        except subprocess.CalledProcessError as e:
+            if "remote ref does not exist" in e.stderr:
+                print(f"Remote branch '{branch_name}' did not exist. Continuing.")
+            else:
+                print(f"Warning: failed to delete remote branch: {e.stderr}")
+
     # Create a temporary worktree
-    with tempfile.TemporaryDirectory() as tmpdir:
-        run(["git", "worktree", "add", "-b", branch_name, tmpdir, release_branch])
+    tmpdir = tempfile.mkdtemp(prefix=f"cherry-pick-{pr_number}-")
+    keep_worktree = False
+    try:
+        print(f"Creating temporary worktree in {tmpdir} based on upstream/{release_branch}...")
+        run(["git", "worktree", "add", "-b", branch_name, tmpdir, f"upstream/{release_branch}"])
+        
         os.chdir(tmpdir)
 
         # Cherry-pick the commits
+        print(f"Cherry-picking {len(pr_info['commits'])} commits...")
         for commit in pr_info['commits']:
-            run(["git", "cherry-pick", commit['oid']])
+            try:
+                run(["git", "cherry-pick", commit['oid']])
+            except subprocess.CalledProcessError:
+                print(f"\n!!! Cherry-pick failed for commit {commit['oid']} !!!")
+                print(f"The temporary worktree has been preserved at: {tmpdir}")
+                print("Please resolve the conflicts manually in that directory, then:")
+                print("  1. git cherry-pick --continue")
+                print(f"  2. git push {user_fork} {branch_name}")
+                print(f"  3. gh pr create --title \"{pr_title}\" --body \"{pr_body}\" --base {release_branch} --head {github_username}:{branch_name}")
+                print("\nWhen finished, remember to remove the worktree:")
+                print(f"  cd {repo_root}")
+                print(f"  git worktree remove {tmpdir}")
+                keep_worktree = True
+                sys.exit(1)
 
         # Push the new branch
+        print(f"Pushing branch {branch_name} to {user_fork}...")
         run(["git", "push", user_fork, f"{branch_name}:refs/heads/{branch_name}"])
 
         # Create the PR
+        print("Creating GitHub Pull Request...")
         pr_output = run(["gh", "pr", "create", "--title", pr_title, "--body", pr_body, "--base", release_branch, "--head", f"{github_username}:{branch_name}"]).stdout.strip()
         print(f"Created PR for cherry-pick: {pr_output}")
 
-        # Remove the worktree
+    finally:
         os.chdir(repo_root)
-        run(["git", "worktree", "remove", tmpdir, "--force"])
+        if not keep_worktree:
+            print(f"Cleaning up worktree at {tmpdir}...")
+            run(["git", "worktree", "remove", tmpdir, "--force"])
 
 if __name__ == "__main__":
     main()
