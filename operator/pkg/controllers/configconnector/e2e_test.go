@@ -23,6 +23,7 @@ import (
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/wait"
 )
 
 func TestConfigConnectorE2E(t *testing.T) {
@@ -64,17 +65,22 @@ func TestConfigConnectorE2E(t *testing.T) {
 		t.Fatalf("failed to create ConfigConnector: %v", err)
 	}
 
-	// TODO: Replace with a poll for status/observedGeneration
-	time.Sleep(15 * time.Second)
-
 	newCC := &corev1beta1.ConfigConnector{}
-	if err := c.Get(ctx, nn, newCC); err != nil {
-		t.Errorf("failed to get ConfigConnector: %v", err)
+	err := wait.PollImmediate(1*time.Second, 60*time.Second, func() (bool, error) {
+		if err := c.Get(ctx, nn, newCC); err != nil {
+			return false, nil
+		}
+		status := newCC.GetCommonStatus()
+		if status.Healthy {
+			return true, nil
+		}
+		return false, nil
+	})
+	if err != nil {
+		t.Errorf("ConfigConnector never became healthy: %v. Status: %+v", err, newCC.Status)
 	}
+
 	status := newCC.GetCommonStatus()
-	if got, want := status.Healthy, true; got != want {
-		t.Errorf("unexpected value for status.healthy: got '%v', want '%v'", got, want)
-	}
 	if len(status.Errors) != 0 {
 		t.Errorf("unexpected number of errors in status.errors: got %v, want 0. Got errors: %v", len(status.Errors), status.Errors)
 	}
