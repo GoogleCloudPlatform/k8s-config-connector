@@ -1,74 +1,74 @@
 # Controller Configuration
 
-Config Connector uses different underlying implementations (controller types) to manage Google Cloud resources. These include:
+Config Connector can be configured through two primary resources to manage how it interacts with Google Cloud and how it reconciles your resources.
 
-*   **Direct Controllers:** Newer implementations that call Google Cloud APIs directly. These are generally preferred for their simplicity and better integration.
-*   **Terraform-based Controllers (Legacy):** Older implementations that wrap the Terraform Google provider.
-*   **DCL-based Controllers (Legacy):** Older implementations that wrap the Google Cloud Declarative Library (DCL).
-
-While Config Connector selects a default controller for each resource, you can override this behavior at the namespace level (using `ConfigConnectorContext`) for supported resources.
+*   **ConfigConnector (CC):** A cluster-scoped resource that defines cluster-wide settings and the operational mode.
+*   **ConfigConnectorContext (CCC):** A namespace-scoped resource that defines settings for a specific namespace, such as identity and billing.
 
 ## Critical User Journeys
 
 This guide helps you achieve the following tasks:
 
-*   **[Verify which controller is managing my resource](#verifying-the-controller):** Learn how to check the active controller through logs or static configuration.
-*   **[Identify supported controller types for a resource](#finding-supported-controller-types):** Discover which controller implementations (Direct, TF, DCL) are available for a given resource kind.
-*   **[Override the default controller](#example):** Step-by-step example of using `ConfigConnectorContext` to switch a resource to a different controller type.
+*   **[Verify which controller type is managing my resource](#verifying-the-controller-type):** Learn how to check the active controller through logs or static configuration.
+*   **[Identify supported controller types for a resource](#finding-supported-controller-types)**: Discover which controller implementations (Direct, TF, DCL) are available for a given resource kind.
+*   **[Override the default controller implementation](#controller-implementation-overrides)**: Step-by-step example of using `ConfigConnectorContext` to switch a resource to a different controller type.
+*   **[Configure the Google Service Account for a namespace](#identity-and-authentication)**: Set up the identity that Config Connector uses to act on your behalf.
+*   **[Configure billing and quota project policies](#billing-and-quota)**: Control which Google Cloud project is charged for API requests.
+*   **[Pause reconciliation of resources](#pausing-reconciliation)**: Temporarily stop Config Connector from making changes to Google Cloud resources.
+
+---
 
 ## Configuration Resources
 
-There are two primary resources for configuring Config Connector:
+### ConfigConnector (Cluster-wide)
 
-1.  **ConfigConnector (CC):** A cluster-scoped resource that controls cluster-wide options, such as the operational mode (cluster vs. namespaced).
-    *   **Note:** `ConfigConnector` does not currently support controller type overrides at the cluster level. In cluster mode, overrides can only be applied at the individual resource level using legacy annotations.
-2.  **ConfigConnectorContext (CCC):** A namespace-scoped resource that controls options for a specific namespace.
-    *   **Note:** Controller overrides via `ConfigConnectorContext` are only supported when Config Connector is running in **namespaced mode**.
+The `ConfigConnector` resource is used to configure the entire Config Connector installation.
 
-### ConfigConnectorContext Reference
-
-The `ConfigConnectorContext` resource allows you to configure identity, billing, and experimental features for all Config Connector resources within a specific namespace.
-
-#### Identity and Billing
 | Field | Type | Description |
 | :--- | :--- | :--- |
-| `googleServiceAccount` | `string` | **Required.** The Google Service Account to be used by Config Connector to authenticate with Google Cloud APIs in the associated namespace. |
-| `requestProjectPolicy` | `enum` | Specifies which project to use for preconditions, quota, and billing. Supported values: `SERVICE_ACCOUNT_PROJECT` (default), `RESOURCE_PROJECT`, or `BILLING_PROJECT`. |
-| `billingProject` | `string` | The project ID to use for billing when `requestProjectPolicy` is set to `BILLING_PROJECT`. |
+| `mode` | `enum` | **Required.** The operational mode: `namespaced` (default) or `cluster`. |
+| `googleServiceAccount` | `string` | The Google Service Account (GSA) used in `cluster` mode with Workload Identity. |
+| `credentialSecretName` | `string` | The Kubernetes secret containing a GSA key (used in `cluster` mode without Workload Identity). |
+| `actuationMode` | `enum` | Cluster-wide default actuation mode (`Reconciling` or `Paused`). Overridden by `ConfigConnectorContext` in namespaced mode. |
+| `stateIntoSpec` | `enum` | Cluster-wide default for the `state-into-spec` behavior (`Absent` or `Merge`). Overridden by `ConfigConnectorContext` in namespaced mode. |
+| `experiments.multiClusterLease` | `object` | Configuration for multi-cluster leader election (experimental). |
 
-#### Reconciliation and Actuation
-| Field | Type | Description |
+**Note:** `ConfigConnector` does not support controller implementation overrides at the cluster level. In cluster mode, overrides can only be applied at the individual resource level using legacy annotations.
+
+### ConfigConnectorContext (Namespace-specific)
+
+In `namespaced` mode, you must create a `ConfigConnectorContext` in each namespace where you want to use Config Connector.
+
+| Category | Field | Description |
 | :--- | :--- | :--- |
-| `actuationMode` | `enum` | Controls how resources are actuated. Supported values: `Reconciling` (default), `Paused`. |
-| `stateIntoSpec` | `enum` | Overrides the default `cnrm.cloud.google.com/state-into-spec` annotation. Supported values: `Absent`, `Merge`. |
+| **Identity** | `googleServiceAccount` | **Required.** The GSA used for this namespace. |
+| **Billing** | `requestProjectPolicy` | Specifies which project to bill: `SERVICE_ACCOUNT_PROJECT` (default), `RESOURCE_PROJECT`, or `BILLING_PROJECT`. |
+| | `billingProject` | The project ID to use when `requestProjectPolicy` is `BILLING_PROJECT`. |
+| **Actuation** | `actuationMode` | Namespace-specific actuation mode (`Reconciling` or `Paused`). Takes precedence over `ConfigConnector` setting. |
+| | `stateIntoSpec` | Namespace-specific `state-into-spec` behavior (`Absent` or `Merge`). Takes precedence over `ConfigConnector` setting. |
+| **Advanced** | `experiments.controllerOverrides` | Map of `Kind.group` to controller type (`direct`, `tf`, `dcl`). |
+| | `managerNamespace` | **Immutable.** Custom namespace for controller managers. |
+| | `version` | Specifies the exact addon version to be deployed. |
 
-#### Experimental and Advanced
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `experiments.controllerOverrides` | `map[string]string` | Allows overriding the controller for specific resource types within the namespace. |
-| `managerNamespace` | `string` | **Immutable.** Instructs Config Connector to deploy controller managers in a specific namespace instead of the standard `cnrm-system`. |
-| `version` | `string` | Specifies the exact addon version to be deployed. |
+---
 
-## Controller Overrides
+## Controller Implementation Selection
 
-The `experiments.controllerOverrides` field in `ConfigConnectorContext` allows you to specify which controller to use for a given resource kind within the namespace, overriding the system default.
+Config Connector uses different underlying implementations (controller types) to manage Google Cloud resources:
 
-**Note:** Not all resources support all controller types. You can only override the controller with a type that is explicitly supported for that resource. See [Verifying the Controller](#verifying-the-controller) for how to check supported types.
+*   **Direct Controllers:** Newer implementations that call Google Cloud APIs directly. These are generally preferred for simplicity and performance.
+*   **Terraform-based Controllers (TF):** Older implementations that wrap the Terraform Google provider.
+*   **DCL-based Controllers:** Older implementations that wrap the Google Cloud Declarative Library (DCL).
 
-The key for each entry must follow the format `Kind.group`, and the value must be one of the supported controller types: `direct`, `tf`, or `dcl`.
+### Controller Implementation Overrides
 
-### Finding Resource Kind and Group
+You can override the default implementation for a specific resource kind within a namespace using the `experiments.controllerOverrides` field in `ConfigConnectorContext`.
 
-To find the Kind and Group for a resource, you can inspect its YAML definition or its CRD.
+**Note:** You can only override to a controller type that is explicitly supported for that resource. See [Finding Supported Controller Types](#finding-supported-controller-types).
 
-*   **Kind:** Found in the `kind` field of the resource (e.g., `BigQueryDataset`).
-*   **Group:** Found in the `apiVersion` before the slash (e.g., `bigquery.cnrm.cloud.google.com`).
+#### Example
 
-For example, for a `BigQueryDataset`, the override key would be `BigQueryDataset.bigquery.cnrm.cloud.google.com`.
-
-### Example
-
-The following `ConfigConnectorContext` configures Config Connector to use the experimental `direct` controller for `BigQueryDataset` resources:
+The following `ConfigConnectorContext` configures Config Connector to use the `direct` controller for `BigQueryDataset` resources:
 
 ```yaml
 apiVersion: core.cnrm.cloud.google.com/v1beta1
@@ -83,47 +83,65 @@ spec:
       BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
 ```
 
-## Precedence
+### Precedence
 
-Config Connector determines which controller to use following this order of precedence:
+Config Connector determines which controller type to use following this order of precedence:
 
-1.  **Resource Annotation (Legacy):** If the `alpha.cnrm.cloud.google.com/reconciler` annotation is present on the resource. Config Connector still honors this legacy behavior for backward compatibility, but it is moving away from it and you should use `ConfigConnectorContext` to override controllers.
-2.  **ConfigConnectorContext Override:** If an entry for the resource's `Kind.group` exists in the namespace's `ConfigConnectorContext`.
-3.  **Static Default:** The default controller implementation defined within the Config Connector version you are running.
+1.  **Resource Annotation (Legacy):** The `alpha.cnrm.cloud.google.com/reconciler` annotation on the resource.
+    *   *Note: This is legacy behavior. Use `ConfigConnectorContext` overrides for new configurations.*
+2.  **ConfigConnectorContext Override:** The `experiments.controllerOverrides` entry in the namespace.
+3.  **Static Default:** The default implementation defined in the Config Connector version.
 
-## Verifying the Controller
+---
 
-To determine which controller is being used for a resource, you should check the following in order:
+## Verifying the Controller Type
 
-1.  **ConfigConnectorContext Overrides:** Check the `ConfigConnectorContext` in the resource's namespace for any `experiments.controllerOverrides`.
-2.  **Static Configuration:** If no override is present, Config Connector uses the default defined in [pkg/controller/resourceconfig/static_config.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/resourceconfig/static_config.go).
+To determine which controller type is being used for a resource:
+
+1.  **Check Overrides:** Inspect the `ConfigConnectorContext` in the resource's namespace.
+2.  **Check Static Config:** Consult [pkg/controller/resourceconfig/static_config.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/resourceconfig/static_config.go).
+3.  **Inspect Logs:** View the logs of the `cnrm-controller-manager` pod.
 
 ### Finding Supported Controller Types
 
-To find which controller types are available for a specific resource Kind, consult the [pkg/controller/resourceconfig/static_config.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/resourceconfig/static_config.go) file in the repository.
+Consult the [static_config.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/pkg/controller/resourceconfig/static_config.go) file in the repository.
 
-For each resource, the file defines:
+For each resource kind, the file defines:
 *   **`DefaultController`:** The controller type used if no override is specified.
-*   **`SupportedControllers`:** The list of all controller types that can be successfully used as an override for that resource.
+*   **`SupportedControllers`:** The list of types that can be used as an override.
 
-**Example entry in `static_config.go`:**
+**Example entry:**
 ```go
 {Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}: {
     DefaultController: k8s.ReconcilerTypeTerraform, 
     SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect, k8s.ReconcilerTypeTerraform}
 },
 ```
-In this example, `BigQueryDataset` defaults to `tf` but can be overridden to `direct`.
 
 ### Inspecting Logs
 
-You can also verify the routing decision by inspecting the logs of the `cnrm-controller-manager` pod. Look for the message `"routing to controller"` which includes the selected controller type.
-
-To view these logs (ensure you have appropriate verbosity enabled, typically `V(1)`):
+Look for the `"routing to controller"` message in the `cnrm-controller-manager` logs (requires `V(1)` verbosity).
 
 ```bash
 kubectl -n cnrm-system logs pod/cnrm-controller-manager-0 | grep "routing to controller"
 ```
 
-The log entry will look similar to this:
+**Example Log Output:**
 `Info  routing to controller {"resource": {"namespace": "my-namespace", "name": "my-resource"}, "type": "direct"}`
+
+---
+
+## Identity and Authentication
+
+In `namespaced` mode, you must specify a `googleServiceAccount` in each `ConfigConnectorContext`. This GSA is used to authenticate all requests for resources in that namespace.
+
+## Billing and Quota
+
+Use `requestProjectPolicy` to control which project is billed for API calls:
+*   `SERVICE_ACCOUNT_PROJECT`: Bill the project where the GSA resides.
+*   `RESOURCE_PROJECT`: Bill the project where the resource is located.
+*   `BILLING_PROJECT`: Bill a specific project defined in `billingProject`.
+
+## Pausing Reconciliation
+
+Set `actuationMode: Paused` in `ConfigConnector` (cluster-wide) or `ConfigConnectorContext` (namespace-specific) to stop Config Connector from making changes to Google Cloud. In this mode, Config Connector continues to monitor Kubernetes resources but does not actuate them to the cloud.
