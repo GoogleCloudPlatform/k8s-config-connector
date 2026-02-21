@@ -64,6 +64,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/managedkafka"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/memorystore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/metastore"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/modelarmor"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/monitoring"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/netapp"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networkconnectivity"
