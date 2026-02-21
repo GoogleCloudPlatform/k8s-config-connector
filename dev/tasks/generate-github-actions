@@ -57,7 +57,16 @@ permissions:
 
 jobs:
 
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      repo_lower: \${{ steps.lowercase.outputs.repo_lower }}
+    steps:
+      - id: lowercase
+        run: echo "repo_lower=\$(echo \${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> \$GITHUB_OUTPUT
+
   build-e2e-image:
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -72,8 +81,8 @@ jobs:
           password: \${{ secrets.GITHUB_TOKEN }}
       - name: Build and push e2e test image
         run: |
-          docker build -t ghcr.io/\${{ github.repository }}/e2e-test-env:\${{ github.sha }} -f build/test-e2e/Dockerfile .
-          docker push ghcr.io/\${{ github.repository }}/e2e-test-env:\${{ github.sha }}
+          docker build -t ghcr.io/\${{ needs.setup.outputs.repo_lower }}/e2e-test-env:\${{ github.sha }} -f build/test-e2e/Dockerfile .
+          docker push ghcr.io/\${{ needs.setup.outputs.repo_lower }}/e2e-test-env:\${{ github.sha }}
 
 EOF
 
@@ -139,9 +148,9 @@ EOF
     if [[ "${name}" == tests-e2e-* ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     runs-on: ubuntu-latest
-    needs: [unit-tests, build-e2e-image]
+    needs: [unit-tests, build-e2e-image, setup]
     container:
-      image: ghcr.io/\${{ github.repository }}/e2e-test-env:\${{ github.sha }}
+      image: ghcr.io/\${{ needs.setup.outputs.repo_lower }}/e2e-test-env:\${{ github.sha }}
 EOF
     elif [[ "${name}" != "build-e2e-image" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
