@@ -31,30 +31,59 @@ import sys
 import tempfile
 
 def run(cmd, **kwargs):
-    print(f"Running command: {' '.join(cmd)}")
+    print(f"Running command: {shlex.join(cmd)}")
     try:
         return subprocess.run(cmd, check=True, capture_output=True, text=True, **kwargs)
     except subprocess.CalledProcessError as e:
         print(f"Command failed with exit code {e.returncode}")
-        print(f"Stderr: {e.stderr}")
-        print(f"Stdout: {e.stdout}")
+        if e.stderr:
+            print(f"Stderr: {e.stderr}")
+        if e.stdout:
+            print(f"Stdout: {e.stdout}")
         raise
 
 
-def get_user_fork_remote(github_username):
-    """
-    Tries to find a git remote that points to the user's fork.
-    Returns the name of the remote (e.g., 'origin').
-    """
-    remotes_result = run(["git", "remote", "-v"])
-    for line in remotes_result.stdout.splitlines():
-        parts = line.split()
-        if len(parts) < 2:
-            continue
-        name, url = parts[0], parts[1]
-        # Check if the URL contains the username and the repo name (or something similar)
-        if f"github.com/{github_username}/" in url:
-            return name
+def get_remotes():
+    """Returns a dictionary mapping remote names to their URLs."""
+    remotes = {}
+    try:
+        # Use subprocess.run directly to avoid circular dependency with run() if we wanted to be super safe,
+        # but calling run() is fine here.
+        result = subprocess.run(["git", "remote", "-v"], capture_output=True, text=True, check=True)
+        for line in result.stdout.splitlines():
+            parts = line.split()
+            if len(parts) >= 2:
+                name, url = parts[0], parts[1]
+                if name not in remotes:
+                    remotes[name] = url
+    except subprocess.CalledProcessError:
+        pass
+    return remotes
+
+
+def find_user_remote(remotes, github_username):
+    """Tries to find a git remote that points to the user's fork."""
+    patterns = [
+        f"github.com/{github_username}/",
+        f"github.com:{github_username}/"
+    ]
+    for name, url in remotes.items():
+        for pattern in patterns:
+            if pattern in url.lower():
+                return name
+    return None
+
+
+def find_upstream_remote(remotes):
+    """Tries to find a git remote that points to the official k8s-config-connector repository."""
+    patterns = [
+        "github.com/googlecloudplatform/k8s-config-connector",
+        "github.com:googlecloudplatform/k8s-config-connector"
+    ]
+    for name, url in remotes.items():
+        for pattern in patterns:
+            if pattern in url.lower():
+                return name
     return None
 
 
@@ -92,25 +121,27 @@ def main():
         branch_name = f"cherry-pick-{pr_number}-{release_branch}"
         github_username = run(["gh", "api", "user", "-q", ".login"]).stdout.strip()
         
-        user_remote = get_user_fork_remote(github_username)
+        remotes = get_remotes()
+        user_remote = find_user_remote(remotes, github_username)
         if not user_remote:
-            print(f"Error: Could not find a git remote for your fork (github.com/{github_username}/k8s-config-connector).")
+            print(f"Error: Could not find a git remote for your fork of k8s-config-connector.")
+            print(f"We looked for a remote pointing to github.com/{github_username}/k8s-config-connector.")
             print("Please ensure you have a remote pointing to your fork.")
             sys.exit(1)
         
         print(f"Using remote '{user_remote}' for your fork.")
 
-        # Ensure 'upstream' remote exists
-        remotes = run(["git", "remote"]).stdout.split()
-        if "upstream" not in remotes:
-            print("Error: 'upstream' remote not found.")
-            print("This script expects a remote named 'upstream' pointing to the main repository.")
-            print("Please add it with: git remote add upstream https://github.com/GoogleCloudPlatform/k8s-config-connector.git")
+        upstream_remote = find_upstream_remote(remotes)
+        if not upstream_remote:
+            print("Error: Could not find a git remote pointing to the official k8s-config-connector repository.")
+            print("Please ensure you have a remote pointing to GoogleCloudPlatform/k8s-config-connector.")
             sys.exit(1)
+            
+        print(f"Using remote '{upstream_remote}' as upstream.")
 
         # Fetch latest from upstream to ensure we have the latest release branch
-        print("Fetching latest from upstream...")
-        run(["git", "fetch", "upstream"])
+        print(f"Fetching latest from {upstream_remote}...")
+        run(["git", "fetch", upstream_remote])
 
         # Check for existing local branch
         branch_exists_locally = subprocess.run(["git", "rev-parse", "--verify", branch_name], capture_output=True).returncode == 0
@@ -136,8 +167,8 @@ def main():
 
         # Create a temporary worktree
         tmpdir = tempfile.mkdtemp(prefix=f"cherry-pick-{pr_number}-")
-        print(f"Creating temporary worktree in {tmpdir} based on upstream/{release_branch}...")
-        run(["git", "worktree", "add", "-b", branch_name, tmpdir, f"upstream/{release_branch}"])
+        print(f"Creating temporary worktree in {tmpdir} based on {upstream_remote}/{release_branch}...")
+        run(["git", "worktree", "add", "-b", branch_name, tmpdir, f"{upstream_remote}/{release_branch}"])
         
         os.chdir(tmpdir)
 
