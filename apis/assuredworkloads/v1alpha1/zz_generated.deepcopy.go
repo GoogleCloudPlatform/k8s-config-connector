@@ -163,7 +163,7 @@ func (in *AssuredWorkloadsWorkloadSpec) DeepCopyInto(out *AssuredWorkloadsWorklo
 	}
 	if in.ProvisionedResourcesParent != nil {
 		in, out := &in.ProvisionedResourcesParent, &out.ProvisionedResourcesParent
-		*out = new(string)
+		*out = new(v1beta1.FolderRef)
 		**out = **in
 	}
 	if in.KMSSettings != nil {

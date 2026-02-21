@@ -22,8 +22,54 @@ package assuredworkloads
 import (
 	pb "cloud.google.com/go/assuredworkloads/apiv1/assuredworkloadspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/assuredworkloads/v1alpha1"
+	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+func AssuredWorkloadsWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.AssuredWorkloadsWorkloadSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssuredWorkloadsWorkloadSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ComplianceRegime = direct.Enum_FromProto(mapCtx, in.GetComplianceRegime())
+	if in.GetBillingAccount() != "" {
+		out.BillingAccountRef = &billingv1alpha1.BillingAccountRef{External: in.GetBillingAccount()}
+	}
+	// MISSING: Etag
+	out.Labels = in.Labels
+	if in.GetProvisionedResourcesParent() != "" {
+		out.ProvisionedResourcesParent = &refs.FolderRef{External: in.GetProvisionedResourcesParent()}
+	}
+	out.KMSSettings = Workload_KMSSettings_FromProto(mapCtx, in.GetKmsSettings())
+	out.ResourceSettings = direct.Slice_FromProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_FromProto)
+	out.EnableSovereignControls = direct.LazyPtr(in.GetEnableSovereignControls())
+	out.Partner = direct.Enum_FromProto(mapCtx, in.GetPartner())
+	return out
+}
+
+func AssuredWorkloadsWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.AssuredWorkloadsWorkloadSpec) *pb.Workload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workload{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ComplianceRegime = direct.Enum_ToProto[pb.Workload_ComplianceRegime](mapCtx, in.ComplianceRegime)
+	if in.BillingAccountRef != nil {
+		out.BillingAccount = in.BillingAccountRef.External
+	}
+	// MISSING: Etag
+	out.Labels = in.Labels
+	// ProvisionedResourcesParent is handled manually in the controller
+	out.KmsSettings = Workload_KMSSettings_ToProto(mapCtx, in.KMSSettings)
+	out.ResourceSettings = direct.Slice_ToProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_ToProto)
+	out.EnableSovereignControls = direct.ValueOf(in.EnableSovereignControls)
+	out.Partner = direct.Enum_ToProto[pb.Workload_Partner](mapCtx, in.Partner)
+	return out
+}
 
 func Workload_SaaEnrollmentResponse_FromProto(mapCtx *direct.MapContext, in *pb.Workload_SaaEnrollmentResponse) *krm.Workload_SaaEnrollmentResponse {
 	if in == nil {

@@ -159,7 +159,36 @@ spec:
                   by this Assured Workload. May be either empty or a folder resource
                   which is a child of the Workload parent. If not specified all resources
                   are created under the parent organization. Format: folders/{folder_id}'
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The 'name' field of a folder, when not managed by
+                      Config Connector. This field must be set when 'name' field is
+                      not set.
+                    type: string
+                  name:
+                    description: The 'name' field of a 'Folder' resource. This field
+                      must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: The 'namespace' field of a 'Folder' resource. If
+                      unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
               resourceID:
                 description: The AssuredWorkloadsWorkload name. If not given, the
                   metadata.name will be used.

@@ -40,6 +40,9 @@ X-Goog-Request-Params: parent=organizations%2F123456789012%2Flocations%2Fus-cent
   "complianceRegime": 4,
   "displayName": "Test Workload ${uniqueId}",
   "enableSovereignControls": true,
+  "labels": {
+    "label-one": "value-one"
+  },
   "resourceSettings": [
     {
       "displayName": "Custom Project",
@@ -69,6 +72,9 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Test Workload ${uniqueId}",
     "enableSovereignControls": true,
+    "labels": {
+      "label-one": "value-one"
+    },
     "name": "organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}",
     "resourceSettings": [
       {
@@ -109,6 +115,9 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Test Workload ${uniqueId}",
   "enableSovereignControls": true,
+  "labels": {
+    "label-one": "value-one"
+  },
   "name": "organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}",
   "resourceSettings": [
     {
@@ -137,6 +146,9 @@ X-Goog-Request-Params: workload.name=organizations%2F123456789012%2Flocations%2F
   "complianceRegime": 4,
   "displayName": "Test Workload Updated ${uniqueId}",
   "enableSovereignControls": true,
+  "labels": {
+    "label-one": "value-one"
+  },
   "name": "organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}"
 }
 
@@ -156,6 +168,9 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Test Workload Updated ${uniqueId}",
   "enableSovereignControls": true,
+  "labels": {
+    "label-one": "value-one"
+  },
   "name": "organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}",
   "resourceSettings": [
     {
@@ -195,6 +210,9 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Test Workload Updated ${uniqueId}",
   "enableSovereignControls": true,
+  "labels": {
+    "label-one": "value-one"
+  },
   "name": "organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}",
   "resourceSettings": [
     {

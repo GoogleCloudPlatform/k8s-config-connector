@@ -6,9 +6,11 @@ spec:
   organizationRef:
     external: "organizations/123456789012"
   location: "us-central1"
-  displayName: "Test Workload ${uniqueId}"
+  displayName: "Test Workload Updated ${uniqueId}"
   complianceRegime: "FEDRAMP_MODERATE"
   billingAccountRef:
     external: "billingAccounts/000000-000000-000000"
-  # enableSovereignControls: true
+  enableSovereignControls: true
   partner: "PARTNER_UNSPECIFIED"
+  labels:
+    label-one: "value-one"

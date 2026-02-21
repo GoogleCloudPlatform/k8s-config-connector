@@ -15,6 +15,8 @@ spec:
   complianceRegime: FEDRAMP_MODERATE
   displayName: Test Workload Updated ${uniqueId}
   enableSovereignControls: true
+  labels:
+    label-one: value-one
   location: us-central1
   organizationRef:
     external: organizations/${organizationID}
