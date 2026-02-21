@@ -572,7 +572,6 @@ func ResourceContainerCluster() *schema.Resource {
 									"boot_disk_kms_key": {
 										Type:        schema.TypeString,
 										Optional:    true,
-										ForceNew:    true,
 										Description: `The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool.`,
 									},
 									"shielded_instance_config": {
