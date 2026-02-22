@@ -65,8 +65,23 @@ func (m *mockIAMPolicies) getIAMPolicy(resourcePath string) (*iampb.Policy, erro
 	policy := m.policies[resourcePath]
 	if policy == nil {
 		policy = &iampb.Policy{}
+	}
+
+	// Return a copy to avoid mutation
+	policy = proto.Clone(policy).(*iampb.Policy)
+
+	// Sort for determinism
+	for _, binding := range policy.Bindings {
+		sort.Strings(binding.Members)
+	}
+	sort.Slice(policy.Bindings, func(i, j int) bool {
+		return policy.Bindings[i].Role < policy.Bindings[j].Role
+	})
+
+	if policy.Etag == nil {
 		policy.Etag = computeEtag(policy)
 	}
+
 	return policy, nil
 }
 
