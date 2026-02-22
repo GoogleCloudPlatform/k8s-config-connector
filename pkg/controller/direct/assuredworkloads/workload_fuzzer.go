@@ -49,15 +49,8 @@ func assuredWorkloadsWorkloadFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".compliant_but_disallowed_services")
 
 	// Fields in Spec but not in ObservedState cannot be roundtripped through ObservedState.
-	f.Unimplemented_NotYetTriaged(".display_name")
-	f.Unimplemented_NotYetTriaged(".compliance_regime")
-	f.Unimplemented_NotYetTriaged(".enable_sovereign_controls")
+	// However, they can be roundtripped through Spec if implemented in the mapper.
 	f.Unimplemented_NotYetTriaged(".provisioned_resources_parent")
-	f.Unimplemented_NotYetTriaged(".kms_settings")
-	f.Unimplemented_NotYetTriaged(".partner")
-	f.Unimplemented_NotYetTriaged(".billing_account")
-	f.Unimplemented_NotYetTriaged(".resource_settings")
-	f.Unimplemented_NotYetTriaged(".saa_enrollment_response.setup_errors")
 
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_Etag()
