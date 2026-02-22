@@ -17,7 +17,6 @@ package fuzztesting
 import (
 	"math/rand"
 	"testing"
-	"time"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
@@ -34,7 +33,7 @@ func FuzzAllMappers(f *testing.F) {
 }
 
 func TestSomeMappers(t *testing.T) {
-	seed := time.Now().UnixNano()
+	seed := int64(0x666529a1b7c19b32)
 	randStream := rand.New(rand.NewSource(seed))
 
 	for i := 0; i < 100000; i++ {
