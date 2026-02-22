@@ -73,14 +73,15 @@ func (m *modelParameter) client(ctx context.Context, location string) (*gcp.Clie
 	return gcpClient, err
 }
 
-func (m *modelParameter) normalizeKMSKeyRef(ctx context.Context, reader client.Reader, src client.Object, parameter *krm.ParameterManagerParameter) error {
-	if parameter.Spec.KMSKeyRef != nil {
-		kmsKeyRef := parameter.Spec.KMSKeyRef
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src, kmsKeyRef)
+func (a *ParameterAdapter) normalizeKMSKeyRef(ctx context.Context) error {
+	obj := a.desired
+	if obj.Spec.KMSKeyRef != nil {
+		kmsKeyRef := obj.Spec.KMSKeyRef
+		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, kmsKeyRef)
 		if err != nil {
 			return err
 		}
-		parameter.Spec.KMSKeyRef = kmsKeyRef
+		obj.Spec.KMSKeyRef = kmsKeyRef
 	}
 	return nil
 }
@@ -97,29 +98,6 @@ func (m *modelParameter) AdapterForObject(ctx context.Context, op *directbase.Ad
 	if err != nil {
 		return nil, err
 	}
-
-	format := direct.ValueOf(obj.Spec.Format)
-
-	if format == "" {
-		obj.Spec.Format = direct.LazyPtr("UNFORMATTED")
-	}
-
-	mapCtx := &direct.MapContext{}
-
-	copied := obj.DeepCopy()
-
-	if err := m.normalizeKMSKeyRef(ctx, reader, obj, copied); err != nil {
-		return nil, err
-	}
-
-	desired := ParameterManagerParameterSpec_ToProto(mapCtx, &copied.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-
-	// if the proto `desired` has field "labels". we should do `desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
-	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
-
 	location := obj.Spec.ProjectAndLocationRef.Location
 
 	// Get parmetermanager GCP client
@@ -130,7 +108,8 @@ func (m *modelParameter) AdapterForObject(ctx context.Context, op *directbase.Ad
 	return &ParameterAdapter{
 		id:        id.(*krm.ParameterIdentity),
 		gcpClient: gcpClient,
-		desired:   desired,
+		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -142,7 +121,8 @@ func (m *modelParameter) AdapterForURL(ctx context.Context, url string) (directb
 type ParameterAdapter struct {
 	id        *krm.ParameterIdentity
 	gcpClient *gcp.Client
-	desired   *parametermanagerpb.Parameter
+	reader    client.Reader
+	desired   *krm.ParameterManagerParameter
 	actual    *parametermanagerpb.Parameter
 }
 
@@ -154,7 +134,7 @@ var _ directbase.Adapter = &ParameterAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *ParameterAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting Parameter", "name", a.id)
+	log.V(2).Info("getting Parameter", "name", a.id.String())
 
 	req := &parametermanagerpb.GetParameterRequest{Name: a.id.String()}
 	parameterpb, err := a.gcpClient.GetParameter(ctx, req)
@@ -162,7 +142,7 @@ func (a *ParameterAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting Parameter %q: %w", a.id, err)
+		return false, fmt.Errorf("getting Parameter %q from gcp: %w", a.id.String(), err)
 	}
 
 	a.actual = parameterpb
@@ -173,9 +153,22 @@ func (a *ParameterAdapter) Find(ctx context.Context) (bool, error) {
 func (a *ParameterAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Parameter", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	if err := a.normalizeKMSKeyRef(ctx); err != nil {
+		return fmt.Errorf("error in normalizing kmskey references: %w", err)
+	}
+
+	desired := a.desired.DeepCopy()
+	resource := ParameterManagerParameterSpec_ToProto(mapCtx, &desired.Spec)
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
 	req := &parametermanagerpb.CreateParameterRequest{
 		Parent:      a.id.Parent().String(),
-		Parameter:   a.desired,
+		Parameter:   resource,
 		ParameterId: a.id.ID(),
 	}
 	created, err := a.gcpClient.CreateParameter(ctx, req)
@@ -184,7 +177,6 @@ func (a *ParameterAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	}
 	log.V(2).Info("successfully created Parameter", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
 	status := &krm.ParameterManagerParameterStatus{}
 	status.ObservedState = ParameterManagerParameterObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -197,18 +189,39 @@ func (a *ParameterAdapter) Create(ctx context.Context, createOp *directbase.Crea
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ParameterAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating Parameter", "name", a.id)
+	log.V(2).Info("updating instance", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	if err := a.normalizeKMSKeyRef(ctx); err != nil {
+		return fmt.Errorf("error in normalizing kmskey references: %w", err)
+	}
+
+	desired := a.desired.DeepCopy()
+	resource := ParameterManagerParameterSpec_ToProto(mapCtx, &desired.Spec)
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 
 	paths := make(sets.Set[string])
 	var err error
-	a.desired.Name = a.id.String()
-	paths, err = common.CompareProtoMessage(a.desired, a.actual, common.BasicDiff)
+	resource.Name = a.id.String()
+	paths, err = common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
+		if a.desired.Status.ExternalRef == nil {
+			status := &krm.ParameterManagerParameterStatus{}
+			status.ObservedState = ParameterManagerParameterObservedState_FromProto(mapCtx, a.actual)
+			if mapCtx.Err() != nil {
+				return mapCtx.Err()
+			}
+			status.ExternalRef = direct.LazyPtr(a.id.String())
+			return updateOp.UpdateStatus(ctx, status, nil)
+		}
 		return nil
 	}
 	updateMask := &fieldmaskpb.FieldMask{
@@ -217,7 +230,7 @@ func (a *ParameterAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 
 	req := &parametermanagerpb.UpdateParameterRequest{
 		UpdateMask: updateMask,
-		Parameter:  a.desired,
+		Parameter:  resource,
 	}
 	updated, err := a.gcpClient.UpdateParameter(ctx, req)
 	if err != nil {
@@ -226,12 +239,13 @@ func (a *ParameterAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 
 	log.V(2).Info("successfully updated Parameter", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
-
 	status := &krm.ParameterManagerParameterStatus{}
 	status.ObservedState = ParameterManagerParameterObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
+	}
+	if a.desired.Status.ExternalRef == nil {
+		status.ExternalRef = direct.LazyPtr(a.id.String())
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }

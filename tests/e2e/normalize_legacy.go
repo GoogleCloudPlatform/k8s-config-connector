@@ -249,7 +249,6 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	addReplacement("response.executionStatus.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("response.executionStatus.latestJob.uid", "0123456789abcdef")
 	addReplacement("executionStatus.latestJob.uid", "0123456789abcdef")
-
 	for _, event := range events {
 		responseBody := event.Response.ParseBody()
 		if responseBody == nil {
