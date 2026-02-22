@@ -302,11 +302,11 @@ func sortV2Policy(policy *pb.Policy) {
 		return policy.Rules[i].Description < policy.Rules[j].Description
 	})
 	for _, rule := range policy.Rules {
-		if rule.DenyRule != nil {
-			sort.Strings(rule.DenyRule.DeniedPrincipals)
-			sort.Strings(rule.DenyRule.ExceptionPrincipals)
-			sort.Strings(rule.DenyRule.DeniedPermissions)
-			sort.Strings(rule.DenyRule.ExceptionPermissions)
+		if denyRule := rule.GetDenyRule(); denyRule != nil {
+			sort.Strings(denyRule.DeniedPrincipals)
+			sort.Strings(denyRule.ExceptionPrincipals)
+			sort.Strings(denyRule.DeniedPermissions)
+			sort.Strings(denyRule.ExceptionPermissions)
 		}
 	}
 }
