@@ -20,11 +20,14 @@ spec:
   location: us-central1-a
   nodeConfig:
     kubeletConfig:
+      cpuCfsQuota: false
+      cpuCfsQuotaPeriod: 200us
       cpuManagerPolicy: none
       imageGcHighThresholdPercent: 70
       imageGcLowThresholdPercent: 60
       imageMaximumGcAge: 2h
       imageMinimumGcAge: 3m
+      podPidsLimit: 2048
     linuxNodeConfig:
       sysctls:
         net.core.somaxconn: "2048"
@@ -36,6 +39,10 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  instanceGroupUrls:
+  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp
+  managedInstanceGroupUrls:
+  - https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-${uniqueId}
   observedGeneration: 3
   observedState:
     version: 1.30.5-gke.1014001

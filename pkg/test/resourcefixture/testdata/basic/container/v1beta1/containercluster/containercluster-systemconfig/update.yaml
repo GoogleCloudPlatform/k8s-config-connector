@@ -22,6 +22,9 @@ spec:
   nodeConfig:
     kubeletConfig:
       cpuManagerPolicy: "none"
+      cpuCfsQuota: false
+      cpuCfsQuotaPeriod: "200us"
+      podPidsLimit: 2048
       imageMinimumGcAge: "3m"
       imageMaximumGcAge: "2h"
       imageGcLowThresholdPercent: 60
