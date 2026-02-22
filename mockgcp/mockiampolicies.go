@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"sort"
 
 	"cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/protobuf/proto"
@@ -112,11 +113,30 @@ func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *ht
 		request.Policy.Version = 1
 	}
 
+	sortPolicy(request.Policy)
+
 	request.Policy.Etag = computeEtag(request.Policy)
 	m.policies[resourcePath] = request.Policy
 
 	return m.buildResponse(request.Policy)
 
+}
+
+func sortPolicy(policy *iampb.Policy) {
+	sort.Slice(policy.Bindings, func(i, j int) bool {
+		return policy.Bindings[i].Role < policy.Bindings[j].Role
+	})
+	for _, binding := range policy.Bindings {
+		sort.Strings(binding.Members)
+	}
+	sort.Slice(policy.AuditConfigs, func(i, j int) bool {
+		return policy.AuditConfigs[i].Service < policy.AuditConfigs[j].Service
+	})
+	for _, auditConfig := range policy.AuditConfigs {
+		sort.Slice(auditConfig.AuditLogConfigs, func(i, j int) bool {
+			return auditConfig.AuditLogConfigs[i].LogType < auditConfig.AuditLogConfigs[j].LogType
+		})
+	}
 }
 
 func computeEtag(policy *iampb.Policy) []byte {

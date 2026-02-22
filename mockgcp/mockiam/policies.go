@@ -24,6 +24,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/url"
+	"sort"
 	"strings"
 	"time"
 
@@ -189,6 +190,7 @@ func (s *IAMV2PoliciesServer) CreatePolicy(ctx context.Context, req *pb.CreatePo
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.DeleteTime = nil // Not deleted on create
+	sortV2Policy(obj)
 	obj.Etag = computeIAMV2PolicyEtag(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -239,6 +241,7 @@ func (s *IAMV2PoliciesServer) UpdatePolicy(ctx context.Context, req *pb.UpdatePo
 	updatedPolicy.Annotations = updateRequestPolicy.GetAnnotations() // Annotations are also updatable
 
 	updatedPolicy.UpdateTime = timestamppb.New(now)
+	sortV2Policy(updatedPolicy)
 	updatedPolicy.Etag = computeIAMV2PolicyEtag(updatedPolicy)
 
 	if err := s.storage.Update(ctx, fqn, updatedPolicy); err != nil {
@@ -292,6 +295,20 @@ func (s *IAMV2PoliciesServer) DeletePolicy(ctx context.Context, req *pb.DeletePo
 	lroMetadata.CreateTime = timestamppb.New(now)
 
 	return s.operations.DoneLRO(ctx, fqn, lroMetadata, deletedPolicy)
+}
+
+func sortV2Policy(policy *pb.Policy) {
+	sort.Slice(policy.Rules, func(i, j int) bool {
+		return policy.Rules[i].Description < policy.Rules[j].Description
+	})
+	for _, rule := range policy.Rules {
+		if rule.DenyRule != nil {
+			sort.Strings(rule.DenyRule.DeniedPrincipals)
+			sort.Strings(rule.DenyRule.ExceptionPrincipals)
+			sort.Strings(rule.DenyRule.DeniedPermissions)
+			sort.Strings(rule.DenyRule.ExceptionPermissions)
+		}
+	}
 }
 
 // computeIAMV2PolicyEtag computes a simple etag for a Policy object.
