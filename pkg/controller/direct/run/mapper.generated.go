@@ -60,6 +60,70 @@ func BinaryAuthorization_UseDefault_ToProto(mapCtx *direct.MapContext, in *bool)
 	}
 	return &pb.BinaryAuthorization_UseDefault{UseDefault: *in}
 }
+func BuildConfig_FromProto(mapCtx *direct.MapContext, in *pb.BuildConfig) *krm.BuildConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BuildConfig{}
+	// MISSING: Name
+	out.SourceLocation = direct.LazyPtr(in.GetSourceLocation())
+	out.FunctionTarget = direct.LazyPtr(in.GetFunctionTarget())
+	out.ImageURI = direct.LazyPtr(in.GetImageUri())
+	out.BaseImage = direct.LazyPtr(in.GetBaseImage())
+	out.EnableAutomaticUpdates = direct.LazyPtr(in.GetEnableAutomaticUpdates())
+	out.WorkerPool = direct.LazyPtr(in.GetWorkerPool())
+	out.EnvironmentVariables = in.EnvironmentVariables
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	return out
+}
+func BuildConfig_ToProto(mapCtx *direct.MapContext, in *krm.BuildConfig) *pb.BuildConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BuildConfig{}
+	// MISSING: Name
+	out.SourceLocation = direct.ValueOf(in.SourceLocation)
+	out.FunctionTarget = direct.ValueOf(in.FunctionTarget)
+	out.ImageUri = direct.ValueOf(in.ImageURI)
+	out.BaseImage = direct.ValueOf(in.BaseImage)
+	out.EnableAutomaticUpdates = direct.ValueOf(in.EnableAutomaticUpdates)
+	out.WorkerPool = direct.ValueOf(in.WorkerPool)
+	out.EnvironmentVariables = in.EnvironmentVariables
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	return out
+}
+func BuildConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BuildConfig) *krm.BuildConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BuildConfigObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: SourceLocation
+	// MISSING: FunctionTarget
+	// MISSING: ImageURI
+	// MISSING: BaseImage
+	// MISSING: EnableAutomaticUpdates
+	// MISSING: WorkerPool
+	// MISSING: EnvironmentVariables
+	// MISSING: ServiceAccount
+	return out
+}
+func BuildConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BuildConfigObservedState) *pb.BuildConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BuildConfig{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: SourceLocation
+	// MISSING: FunctionTarget
+	// MISSING: ImageURI
+	// MISSING: BaseImage
+	// MISSING: EnableAutomaticUpdates
+	// MISSING: WorkerPool
+	// MISSING: EnvironmentVariables
+	// MISSING: ServiceAccount
+	return out
+}
 func BuildInfo_FromProto(mapCtx *direct.MapContext, in *pb.BuildInfo) *krm.BuildInfo {
 	if in == nil {
 		return nil
@@ -302,30 +366,6 @@ func EnvVarSource_ToProto(mapCtx *direct.MapContext, in *krm.EnvVarSource) *pb.E
 	out.SecretKeyRef = SecretKeySelector_ToProto(mapCtx, in.SecretKeyRef)
 	return out
 }
-func ExecutionReference_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionReference) *krm.ExecutionReference {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ExecutionReference{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.CompletionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCompletionTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	out.CompletionStatus = direct.Enum_FromProto(mapCtx, in.GetCompletionStatus())
-	return out
-}
-func ExecutionReference_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionReference) *pb.ExecutionReference {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExecutionReference{}
-	out.Name = direct.ValueOf(in.Name)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.CompletionTime = direct.StringTimestamp_ToProto(mapCtx, in.CompletionTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	out.CompletionStatus = direct.Enum_ToProto[pb.ExecutionReference_CompletionStatus](mapCtx, in.CompletionStatus)
-	return out
-}
 func ExecutionTemplate_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionTemplate) *krm.ExecutionTemplate {
 	if in == nil {
 		return nil
@@ -520,6 +560,128 @@ func ResourceRequirements_ToProto(mapCtx *direct.MapContext, in *krm.ResourceReq
 	// MISSING: StartupCPUBoost
 	return out
 }
+func RevisionScaling_FromProto(mapCtx *direct.MapContext, in *pb.RevisionScaling) *krm.RevisionScaling {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RevisionScaling{}
+	out.MinInstanceCount = direct.LazyPtr(in.GetMinInstanceCount())
+	out.MaxInstanceCount = direct.LazyPtr(in.GetMaxInstanceCount())
+	return out
+}
+func RevisionScaling_ToProto(mapCtx *direct.MapContext, in *krm.RevisionScaling) *pb.RevisionScaling {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RevisionScaling{}
+	out.MinInstanceCount = direct.ValueOf(in.MinInstanceCount)
+	out.MaxInstanceCount = direct.ValueOf(in.MaxInstanceCount)
+	return out
+}
+func RevisionTemplate_FromProto(mapCtx *direct.MapContext, in *pb.RevisionTemplate) *krm.RevisionTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RevisionTemplate{}
+	out.Revision = direct.LazyPtr(in.GetRevision())
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.Scaling = RevisionScaling_FromProto(mapCtx, in.GetScaling())
+	out.VPCAccess = VPCAccess_FromProto(mapCtx, in.GetVpcAccess())
+	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.Containers = direct.Slice_FromProto(mapCtx, in.Containers, Container_FromProto)
+	out.Volumes = direct.Slice_FromProto(mapCtx, in.Volumes, Volume_FromProto)
+	out.ExecutionEnvironment = direct.Enum_FromProto(mapCtx, in.GetExecutionEnvironment())
+	out.EncryptionKey = direct.LazyPtr(in.GetEncryptionKey())
+	out.MaxInstanceRequestConcurrency = direct.LazyPtr(in.GetMaxInstanceRequestConcurrency())
+	out.ServiceMesh = ServiceMesh_FromProto(mapCtx, in.GetServiceMesh())
+	out.EncryptionKeyRevocationAction = direct.Enum_FromProto(mapCtx, in.GetEncryptionKeyRevocationAction())
+	out.EncryptionKeyShutdownDuration = direct.StringDuration_FromProto(mapCtx, in.GetEncryptionKeyShutdownDuration())
+	out.SessionAffinity = direct.LazyPtr(in.GetSessionAffinity())
+	out.HealthCheckDisabled = direct.LazyPtr(in.GetHealthCheckDisabled())
+	out.NodeSelector = NodeSelector_FromProto(mapCtx, in.GetNodeSelector())
+	out.GpuZonalRedundancyDisabled = in.GpuZonalRedundancyDisabled
+	return out
+}
+func RevisionTemplate_ToProto(mapCtx *direct.MapContext, in *krm.RevisionTemplate) *pb.RevisionTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RevisionTemplate{}
+	out.Revision = direct.ValueOf(in.Revision)
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.Scaling = RevisionScaling_ToProto(mapCtx, in.Scaling)
+	out.VpcAccess = VPCAccess_ToProto(mapCtx, in.VPCAccess)
+	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.Containers = direct.Slice_ToProto(mapCtx, in.Containers, Container_ToProto)
+	out.Volumes = direct.Slice_ToProto(mapCtx, in.Volumes, Volume_ToProto)
+	out.ExecutionEnvironment = direct.Enum_ToProto[pb.ExecutionEnvironment](mapCtx, in.ExecutionEnvironment)
+	out.EncryptionKey = direct.ValueOf(in.EncryptionKey)
+	out.MaxInstanceRequestConcurrency = direct.ValueOf(in.MaxInstanceRequestConcurrency)
+	out.ServiceMesh = ServiceMesh_ToProto(mapCtx, in.ServiceMesh)
+	out.EncryptionKeyRevocationAction = direct.Enum_ToProto[pb.EncryptionKeyRevocationAction](mapCtx, in.EncryptionKeyRevocationAction)
+	out.EncryptionKeyShutdownDuration = direct.StringDuration_ToProto(mapCtx, in.EncryptionKeyShutdownDuration)
+	out.SessionAffinity = direct.ValueOf(in.SessionAffinity)
+	out.HealthCheckDisabled = direct.ValueOf(in.HealthCheckDisabled)
+	out.NodeSelector = NodeSelector_ToProto(mapCtx, in.NodeSelector)
+	out.GpuZonalRedundancyDisabled = in.GpuZonalRedundancyDisabled
+	return out
+}
+func RevisionTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RevisionTemplate) *krm.RevisionTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RevisionTemplateObservedState{}
+	// MISSING: Revision
+	// MISSING: Labels
+	// MISSING: Annotations
+	// MISSING: Scaling
+	// MISSING: VPCAccess
+	// MISSING: Timeout
+	// MISSING: ServiceAccount
+	out.Containers = direct.Slice_FromProto(mapCtx, in.Containers, ContainerObservedState_FromProto)
+	// MISSING: Volumes
+	// MISSING: ExecutionEnvironment
+	// MISSING: EncryptionKey
+	// MISSING: MaxInstanceRequestConcurrency
+	// MISSING: ServiceMesh
+	// MISSING: EncryptionKeyRevocationAction
+	// MISSING: EncryptionKeyShutdownDuration
+	// MISSING: SessionAffinity
+	// MISSING: HealthCheckDisabled
+	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
+	return out
+}
+func RevisionTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RevisionTemplateObservedState) *pb.RevisionTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RevisionTemplate{}
+	// MISSING: Revision
+	// MISSING: Labels
+	// MISSING: Annotations
+	// MISSING: Scaling
+	// MISSING: VPCAccess
+	// MISSING: Timeout
+	// MISSING: ServiceAccount
+	out.Containers = direct.Slice_ToProto(mapCtx, in.Containers, ContainerObservedState_ToProto)
+	// MISSING: Volumes
+	// MISSING: ExecutionEnvironment
+	// MISSING: EncryptionKey
+	// MISSING: MaxInstanceRequestConcurrency
+	// MISSING: ServiceMesh
+	// MISSING: EncryptionKeyRevocationAction
+	// MISSING: EncryptionKeyShutdownDuration
+	// MISSING: SessionAffinity
+	// MISSING: HealthCheckDisabled
+	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
+	return out
+}
 func RunJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.RunJobObservedState {
 	if in == nil {
 		return nil
@@ -624,6 +786,124 @@ func RunJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.RunJobSpec) *pb.Job {
 	// MISSING: RunExecutionToken
 	return out
 }
+func RunServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.RunServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RunServiceObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: Generation
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	out.LastModifier = direct.LazyPtr(in.GetLastModifier())
+	out.Urls = in.Urls
+	// MISSING: ObservedGeneration
+	if v := in.GetTerminalCondition(); v != nil {
+		out.TerminalCondition = []*krm.Condition{Condition_FromProto(mapCtx, v)}
+	}
+	// MISSING: Conditions
+	out.LatestReadyRevision = direct.LazyPtr(in.GetLatestReadyRevision())
+	out.LatestCreatedRevision = direct.LazyPtr(in.GetLatestCreatedRevision())
+	out.TrafficStatuses = direct.Slice_FromProto(mapCtx, in.TrafficStatuses, TrafficTargetStatus_FromProto)
+	// MISSING: URI
+	// (near miss): "URI" vs "Uri"
+	// MISSING: SatisfiesPzs
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func RunServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RunServiceObservedState) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: Generation
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.LastModifier = direct.ValueOf(in.LastModifier)
+	out.Urls = in.Urls
+	// MISSING: ObservedGeneration
+	if len(in.TerminalCondition) > 0 && in.TerminalCondition[0] != nil {
+		out.TerminalCondition = Condition_ToProto(mapCtx, in.TerminalCondition[0])
+	}
+	// MISSING: Conditions
+	out.LatestReadyRevision = direct.ValueOf(in.LatestReadyRevision)
+	out.LatestCreatedRevision = direct.ValueOf(in.LatestCreatedRevision)
+	out.TrafficStatuses = direct.Slice_ToProto(mapCtx, in.TrafficStatuses, TrafficTargetStatus_ToProto)
+	// MISSING: URI
+	// (near miss): "URI" vs "Uri"
+	// MISSING: SatisfiesPzs
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func RunServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.RunServiceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RunServiceSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Generation
+	// MISSING: Labels
+	out.Annotations = in.Annotations
+	out.Client = direct.LazyPtr(in.GetClient())
+	out.ClientVersion = direct.LazyPtr(in.GetClientVersion())
+	out.Ingress = direct.Enum_FromProto(mapCtx, in.GetIngress())
+	out.LaunchStage = direct.Enum_FromProto(mapCtx, in.GetLaunchStage())
+	out.BinaryAuthorization = BinaryAuthorization_FromProto(mapCtx, in.GetBinaryAuthorization())
+	out.Template = RevisionTemplate_FromProto(mapCtx, in.GetTemplate())
+	out.Traffic = direct.Slice_FromProto(mapCtx, in.Traffic, TrafficTarget_FromProto)
+	out.Scaling = ServiceScaling_FromProto(mapCtx, in.GetScaling())
+	out.InvokerIAMDisabled = direct.LazyPtr(in.GetInvokerIamDisabled())
+	out.DefaultURIDisabled = direct.LazyPtr(in.GetDefaultUriDisabled())
+	out.CustomAudiences = in.CustomAudiences
+	// MISSING: ObservedGeneration
+	// MISSING: Conditions
+	// MISSING: URI
+	// MISSING: SatisfiesPzs
+	out.BuildConfig = BuildConfig_FromProto(mapCtx, in.GetBuildConfig())
+	return out
+}
+func RunServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.RunServiceSpec) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Generation
+	// MISSING: Labels
+	out.Annotations = in.Annotations
+	out.Client = direct.ValueOf(in.Client)
+	out.ClientVersion = direct.ValueOf(in.ClientVersion)
+	out.Ingress = direct.Enum_ToProto[pb.IngressTraffic](mapCtx, in.Ingress)
+	out.LaunchStage = direct.Enum_ToProto[apipb.LaunchStage](mapCtx, in.LaunchStage)
+	out.BinaryAuthorization = BinaryAuthorization_ToProto(mapCtx, in.BinaryAuthorization)
+	out.Template = RevisionTemplate_ToProto(mapCtx, in.Template)
+	out.Traffic = direct.Slice_ToProto(mapCtx, in.Traffic, TrafficTarget_ToProto)
+	out.Scaling = ServiceScaling_ToProto(mapCtx, in.Scaling)
+	out.InvokerIamDisabled = direct.ValueOf(in.InvokerIAMDisabled)
+	out.DefaultUriDisabled = direct.ValueOf(in.DefaultURIDisabled)
+	out.CustomAudiences = in.CustomAudiences
+	// MISSING: ObservedGeneration
+	// MISSING: Conditions
+	// MISSING: URI
+	// MISSING: SatisfiesPzs
+	out.BuildConfig = BuildConfig_ToProto(mapCtx, in.BuildConfig)
+	return out
+}
 func SecretKeySelector_FromProto(mapCtx *direct.MapContext, in *pb.SecretKeySelector) *krm.SecretKeySelector {
 	if in == nil {
 		return nil
@@ -674,6 +954,210 @@ func SecretVolumeSource_ToProto(mapCtx *direct.MapContext, in *krm.SecretVolumeS
 	out.DefaultMode = direct.ValueOf(in.DefaultMode)
 	return out
 }
+func Service_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.Service {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Service{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Uid
+	// MISSING: Generation
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	// MISSING: Creator
+	// MISSING: LastModifier
+	out.Client = direct.LazyPtr(in.GetClient())
+	out.ClientVersion = direct.LazyPtr(in.GetClientVersion())
+	out.Ingress = direct.Enum_FromProto(mapCtx, in.GetIngress())
+	out.LaunchStage = direct.Enum_FromProto(mapCtx, in.GetLaunchStage())
+	out.BinaryAuthorization = BinaryAuthorization_FromProto(mapCtx, in.GetBinaryAuthorization())
+	out.Template = RevisionTemplate_FromProto(mapCtx, in.GetTemplate())
+	out.Traffic = direct.Slice_FromProto(mapCtx, in.Traffic, TrafficTarget_FromProto)
+	out.Scaling = ServiceScaling_FromProto(mapCtx, in.GetScaling())
+	out.InvokerIAMDisabled = direct.LazyPtr(in.GetInvokerIamDisabled())
+	out.DefaultURIDisabled = direct.LazyPtr(in.GetDefaultUriDisabled())
+	// MISSING: Urls
+	out.CustomAudiences = in.CustomAudiences
+	// MISSING: ObservedGeneration
+	// MISSING: TerminalCondition
+	// MISSING: Conditions
+	// MISSING: LatestReadyRevision
+	// MISSING: LatestCreatedRevision
+	// MISSING: TrafficStatuses
+	// MISSING: URI
+	// MISSING: SatisfiesPzs
+	out.BuildConfig = BuildConfig_FromProto(mapCtx, in.GetBuildConfig())
+	// MISSING: Reconciling
+	// MISSING: Etag
+	return out
+}
+func Service_ToProto(mapCtx *direct.MapContext, in *krm.Service) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Uid
+	// MISSING: Generation
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	// MISSING: Creator
+	// MISSING: LastModifier
+	out.Client = direct.ValueOf(in.Client)
+	out.ClientVersion = direct.ValueOf(in.ClientVersion)
+	out.Ingress = direct.Enum_ToProto[pb.IngressTraffic](mapCtx, in.Ingress)
+	out.LaunchStage = direct.Enum_ToProto[apipb.LaunchStage](mapCtx, in.LaunchStage)
+	out.BinaryAuthorization = BinaryAuthorization_ToProto(mapCtx, in.BinaryAuthorization)
+	out.Template = RevisionTemplate_ToProto(mapCtx, in.Template)
+	out.Traffic = direct.Slice_ToProto(mapCtx, in.Traffic, TrafficTarget_ToProto)
+	out.Scaling = ServiceScaling_ToProto(mapCtx, in.Scaling)
+	out.InvokerIamDisabled = direct.ValueOf(in.InvokerIAMDisabled)
+	out.DefaultUriDisabled = direct.ValueOf(in.DefaultURIDisabled)
+	// MISSING: Urls
+	out.CustomAudiences = in.CustomAudiences
+	// MISSING: ObservedGeneration
+	// MISSING: TerminalCondition
+	// MISSING: Conditions
+	// MISSING: LatestReadyRevision
+	// MISSING: LatestCreatedRevision
+	// MISSING: TrafficStatuses
+	// MISSING: URI
+	// MISSING: SatisfiesPzs
+	out.BuildConfig = BuildConfig_ToProto(mapCtx, in.BuildConfig)
+	// MISSING: Reconciling
+	// MISSING: Etag
+	return out
+}
+func ServiceMesh_FromProto(mapCtx *direct.MapContext, in *pb.ServiceMesh) *krm.ServiceMesh {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceMesh{}
+	out.Mesh = direct.LazyPtr(in.GetMesh())
+	return out
+}
+func ServiceMesh_ToProto(mapCtx *direct.MapContext, in *krm.ServiceMesh) *pb.ServiceMesh {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceMesh{}
+	out.Mesh = direct.ValueOf(in.Mesh)
+	return out
+}
+func ServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.ServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceObservedState{}
+	// MISSING: Name
+	// MISSING: Description
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Generation = direct.LazyPtr(in.GetGeneration())
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	out.LastModifier = direct.LazyPtr(in.GetLastModifier())
+	// MISSING: Client
+	// MISSING: ClientVersion
+	// MISSING: Ingress
+	// MISSING: LaunchStage
+	// MISSING: BinaryAuthorization
+	out.Template = RevisionTemplateObservedState_FromProto(mapCtx, in.GetTemplate())
+	// MISSING: Traffic
+	// MISSING: Scaling
+	// MISSING: InvokerIAMDisabled
+	// MISSING: DefaultURIDisabled
+	out.Urls = in.Urls
+	// MISSING: CustomAudiences
+	out.ObservedGeneration = direct.LazyPtr(in.GetObservedGeneration())
+	out.TerminalCondition = Condition_FromProto(mapCtx, in.GetTerminalCondition())
+	out.Conditions = direct.Slice_FromProto(mapCtx, in.Conditions, Condition_FromProto)
+	out.LatestReadyRevision = direct.LazyPtr(in.GetLatestReadyRevision())
+	out.LatestCreatedRevision = direct.LazyPtr(in.GetLatestCreatedRevision())
+	out.TrafficStatuses = direct.Slice_FromProto(mapCtx, in.TrafficStatuses, TrafficTargetStatus_FromProto)
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.BuildConfig = BuildConfigObservedState_FromProto(mapCtx, in.GetBuildConfig())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func ServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceObservedState) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	// MISSING: Description
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Generation = direct.ValueOf(in.Generation)
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.LastModifier = direct.ValueOf(in.LastModifier)
+	// MISSING: Client
+	// MISSING: ClientVersion
+	// MISSING: Ingress
+	// MISSING: LaunchStage
+	// MISSING: BinaryAuthorization
+	out.Template = RevisionTemplateObservedState_ToProto(mapCtx, in.Template)
+	// MISSING: Traffic
+	// MISSING: Scaling
+	// MISSING: InvokerIAMDisabled
+	// MISSING: DefaultURIDisabled
+	out.Urls = in.Urls
+	// MISSING: CustomAudiences
+	out.ObservedGeneration = direct.ValueOf(in.ObservedGeneration)
+	out.TerminalCondition = Condition_ToProto(mapCtx, in.TerminalCondition)
+	out.Conditions = direct.Slice_ToProto(mapCtx, in.Conditions, Condition_ToProto)
+	out.LatestReadyRevision = direct.ValueOf(in.LatestReadyRevision)
+	out.LatestCreatedRevision = direct.ValueOf(in.LatestCreatedRevision)
+	out.TrafficStatuses = direct.Slice_ToProto(mapCtx, in.TrafficStatuses, TrafficTargetStatus_ToProto)
+	out.Uri = direct.ValueOf(in.URI)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.BuildConfig = BuildConfigObservedState_ToProto(mapCtx, in.BuildConfig)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func ServiceScaling_FromProto(mapCtx *direct.MapContext, in *pb.ServiceScaling) *krm.ServiceScaling {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceScaling{}
+	out.MinInstanceCount = direct.LazyPtr(in.GetMinInstanceCount())
+	out.ScalingMode = direct.Enum_FromProto(mapCtx, in.GetScalingMode())
+	out.ManualInstanceCount = in.ManualInstanceCount
+	return out
+}
+func ServiceScaling_ToProto(mapCtx *direct.MapContext, in *krm.ServiceScaling) *pb.ServiceScaling {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceScaling{}
+	out.MinInstanceCount = direct.ValueOf(in.MinInstanceCount)
+	out.ScalingMode = direct.Enum_ToProto[pb.ServiceScaling_ScalingMode](mapCtx, in.ScalingMode)
+	out.ManualInstanceCount = in.ManualInstanceCount
+	return out
+}
 func TCPSocketAction_FromProto(mapCtx *direct.MapContext, in *pb.TCPSocketAction) *krm.TCPSocketAction {
 	if in == nil {
 		return nil
@@ -707,8 +1191,8 @@ func TaskTemplate_FromProto(mapCtx *direct.MapContext, in *pb.TaskTemplate) *krm
 		out.EncryptionKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
 	}
 	out.VPCAccess = VPCAccess_FromProto(mapCtx, in.GetVpcAccess())
-	// MISSING: NodeSelector
-	// MISSING: GpuZonalRedundancyDisabled
+	out.NodeSelector = NodeSelector_FromProto(mapCtx, in.GetNodeSelector())
+	out.GpuZonalRedundancyDisabled = in.GpuZonalRedundancyDisabled
 	return out
 }
 func TaskTemplate_ToProto(mapCtx *direct.MapContext, in *krm.TaskTemplate) *pb.TaskTemplate {
@@ -730,8 +1214,8 @@ func TaskTemplate_ToProto(mapCtx *direct.MapContext, in *krm.TaskTemplate) *pb.T
 		out.EncryptionKey = in.EncryptionKeyRef.External
 	}
 	out.VpcAccess = VPCAccess_ToProto(mapCtx, in.VPCAccess)
-	// MISSING: NodeSelector
-	// MISSING: GpuZonalRedundancyDisabled
+	out.NodeSelector = NodeSelector_ToProto(mapCtx, in.NodeSelector)
+	out.GpuZonalRedundancyDisabled = in.GpuZonalRedundancyDisabled
 	return out
 }
 func TaskTemplate_MaxRetries_ToProto(mapCtx *direct.MapContext, in *int32) *pb.TaskTemplate_MaxRetries {
@@ -739,6 +1223,52 @@ func TaskTemplate_MaxRetries_ToProto(mapCtx *direct.MapContext, in *int32) *pb.T
 		return nil
 	}
 	return &pb.TaskTemplate_MaxRetries{MaxRetries: *in}
+}
+func TrafficTarget_FromProto(mapCtx *direct.MapContext, in *pb.TrafficTarget) *krm.TrafficTarget {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TrafficTarget{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Revision = direct.LazyPtr(in.GetRevision())
+	out.Percent = direct.LazyPtr(in.GetPercent())
+	out.Tag = direct.LazyPtr(in.GetTag())
+	return out
+}
+func TrafficTarget_ToProto(mapCtx *direct.MapContext, in *krm.TrafficTarget) *pb.TrafficTarget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrafficTarget{}
+	out.Type = direct.Enum_ToProto[pb.TrafficTargetAllocationType](mapCtx, in.Type)
+	out.Revision = direct.ValueOf(in.Revision)
+	out.Percent = direct.ValueOf(in.Percent)
+	out.Tag = direct.ValueOf(in.Tag)
+	return out
+}
+func TrafficTargetStatus_FromProto(mapCtx *direct.MapContext, in *pb.TrafficTargetStatus) *krm.TrafficTargetStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TrafficTargetStatus{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Revision = direct.LazyPtr(in.GetRevision())
+	out.Percent = direct.LazyPtr(in.GetPercent())
+	out.Tag = direct.LazyPtr(in.GetTag())
+	out.URI = direct.LazyPtr(in.GetUri())
+	return out
+}
+func TrafficTargetStatus_ToProto(mapCtx *direct.MapContext, in *krm.TrafficTargetStatus) *pb.TrafficTargetStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TrafficTargetStatus{}
+	out.Type = direct.Enum_ToProto[pb.TrafficTargetAllocationType](mapCtx, in.Type)
+	out.Revision = direct.ValueOf(in.Revision)
+	out.Percent = direct.ValueOf(in.Percent)
+	out.Tag = direct.ValueOf(in.Tag)
+	out.Uri = direct.ValueOf(in.URI)
+	return out
 }
 func VPCAccess_FromProto(mapCtx *direct.MapContext, in *pb.VpcAccess) *krm.VPCAccess {
 	if in == nil {

@@ -538,11 +538,11 @@ type TaskTemplate struct {
 
 	// Optional. The node selector for the task template.
 	// +kcc:proto:field=google.cloud.run.v2.TaskTemplate.node_selector
-	// NodeSelector *NodeSelector `json:"nodeSelector,omitempty"`
+	NodeSelector *NodeSelector `json:"nodeSelector,omitempty"`
 
 	// Optional. True if GPU zonal redundancy is disabled on this task template.
 	// +kcc:proto:field=google.cloud.run.v2.TaskTemplate.gpu_zonal_redundancy_disabled
-	// GpuZonalRedundancyDisabled *bool `json:"gpuZonalRedundancyDisabled,omitempty"`
+	GpuZonalRedundancyDisabled *bool `json:"gpuZonalRedundancyDisabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.run.v2.VersionToPath
