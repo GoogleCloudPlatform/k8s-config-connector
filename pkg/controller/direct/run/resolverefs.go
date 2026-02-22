@@ -104,7 +104,6 @@ func ResolveRunJobRefs(ctx context.Context, kube client.Reader, desired *krm.Run
 }
 
 func ResolveRunServiceRefs(ctx context.Context, kube client.Reader, desired *krm.RunService) error {
-	var err error
 	if desired.Spec.Template == nil {
 		return nil
 	}
