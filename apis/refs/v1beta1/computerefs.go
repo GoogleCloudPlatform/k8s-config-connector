@@ -112,6 +112,63 @@ func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src cli
 	}, nil
 }
 
+func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeAddressRef) (*ComputeAddressRef, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on computeaddress reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on computeaddress reference")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	addrObj := &unstructured.Unstructured{}
+	addrObj.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeAddress",
+	})
+	if err := reader.Get(ctx, key, addrObj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, fmt.Errorf("referenced ComputeAddress %v not found", key)
+		}
+		return nil, fmt.Errorf("error reading referenced ComputeAddress %v: %w", key, err)
+	}
+
+	// Try status.externalRef first (direct controllers)
+	externalRef, _, _ := unstructured.NestedString(addrObj.Object, "status", "externalRef")
+	if externalRef != "" {
+		return &ComputeAddressRef{
+			External: externalRef,
+		}, nil
+	}
+
+	// Try status.selfLink (Terraform controllers)
+	selfLink, _, _ := unstructured.NestedString(addrObj.Object, "status", "selfLink")
+	if selfLink != "" {
+		externalRef := fixStaleExternalFormat(selfLink)
+		return &ComputeAddressRef{
+			External: externalRef,
+		}, nil
+	}
+
+	return nil, fmt.Errorf("referenced ComputeAddress %v is not ready", key)
+}
+
 type ComputeAddressRef struct {
 	/* The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`

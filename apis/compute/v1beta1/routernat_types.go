@@ -43,18 +43,22 @@ type RouterNatLogConfig struct {
 // +kcc:proto=google.cloud.compute.v1.RouterNatRuleAction
 type RouterNatRuleAction struct {
 	/* A list of URLs of the IP resources used for this NAT rule. These IP addresses must be valid static external IP addresses assigned to the project. This field is used for public NAT. */
+	// +kcc:proto:field=google.cloud.compute.v1.RouterNatRuleAction.source_nat_active_ips
 	// +optional
 	SourceNatActiveIpsRefs []refs.ComputeAddressRef `json:"sourceNatActiveIpsRefs,omitempty"`
 
 	/* A list of URLs of the subnetworks used as source ranges for this NAT Rule. These subnetworks must have purpose set to PRIVATE_NAT. This field is used for private NAT. */
+	// +kcc:proto:field=google.cloud.compute.v1.RouterNatRuleAction.source_nat_active_ranges
 	// +optional
 	SourceNatActiveRangesRefs []refs.ComputeSubnetworkRef `json:"sourceNatActiveRangesRefs,omitempty"`
 
 	/* A list of URLs of the IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT. These IPs should be used for updating/patching a NAT rule only. This field is used for public NAT. */
+	// +kcc:proto:field=google.cloud.compute.v1.RouterNatRuleAction.source_nat_drain_ips
 	// +optional
 	SourceNatDrainIpsRefs []refs.ComputeAddressRef `json:"sourceNatDrainIpsRefs,omitempty"`
 
 	/* A list of URLs of subnetworks representing source ranges to be drained. This is only supported on patch/update, and these subnetworks must have previously been used as active ranges in this NAT Rule. This field is used for private NAT. */
+	// +kcc:proto:field=google.cloud.compute.v1.RouterNatRuleAction.source_nat_drain_ranges
 	// +optional
 	SourceNatDrainRangesRefs []refs.ComputeSubnetworkRef `json:"sourceNatDrainRangesRefs,omitempty"`
 }
@@ -96,15 +100,6 @@ type RouterNatSubnetwork struct {
 type RouterNat64Subnetwork struct {
 	/* The subnetwork to NAT. */
 	SubnetworkRef refs.ComputeSubnetworkRef `json:"subnetworkRef"`
-
-	/* List of the secondary ranges of the subnetwork that are allowed to use NAT. */
-	// +optional
-	SecondaryIpRangeNames []string `json:"secondaryIpRangeNames,omitempty"`
-
-	/* List of options for which source IPs in the subnetwork should have NAT enabled. */
-	// +kcc:proto:field=google.cloud.compute.v1.RouterNatSubnetworkToNat64.source_ip_ranges_to_nat
-	// +optional
-	SourceIpRangesToNat []string `json:"sourceIpRangesToNat,omitempty"`
 }
 
 // +kcc:spec:proto=google.cloud.compute.v1.RouterNat
@@ -115,6 +110,7 @@ type ComputeRouterNATSpec struct {
 	AutoNetworkTier *string `json:"autoNetworkTier,omitempty"`
 
 	/* A list of URLs of the IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT. These IPs should be used for updating/patching a NAT only. */
+	// +kcc:proto:field=google.cloud.compute.v1.RouterNat.drain_nat_ips
 	// +optional
 	DrainNatIps []refs.ComputeAddressRef `json:"drainNatIps,omitempty"`
 
@@ -159,6 +155,7 @@ type ComputeRouterNATSpec struct {
 	NatIpAllocateOption *string `json:"natIpAllocateOption,omitempty"`
 
 	/* A list of URLs of the IP resources used for this Nat service. These IP addresses must be valid static external IP addresses assigned to the project. */
+	// +kcc:proto:field=google.cloud.compute.v1.RouterNat.nat_ips
 	// +optional
 	NatIps []refs.ComputeAddressRef `json:"natIps,omitempty"`
 

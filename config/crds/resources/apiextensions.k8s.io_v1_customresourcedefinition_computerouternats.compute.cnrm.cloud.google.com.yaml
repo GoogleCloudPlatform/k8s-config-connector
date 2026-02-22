@@ -152,18 +152,6 @@ spec:
                   is selected for the SubnetworkIpRangeToNat64Option above.
                 items:
                   properties:
-                    secondaryIpRangeNames:
-                      description: List of the secondary ranges of the subnetwork
-                        that are allowed to use NAT.
-                      items:
-                        type: string
-                      type: array
-                    sourceIpRangesToNat:
-                      description: List of options for which source IPs in the subnetwork
-                        should have NAT enabled.
-                      items:
-                        type: string
-                      type: array
                     subnetworkRef:
                       description: The subnetwork to NAT.
                       oneOf:
