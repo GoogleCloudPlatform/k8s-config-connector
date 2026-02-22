@@ -91,7 +91,7 @@ func resolveRouterNATRefs(ctx context.Context, reader client.Reader, obj *krm.Co
 
 	// subnetwork
 	for i := range obj.Spec.Subnetwork {
-		subRef, err := ResolveComputeSubnetwork(ctx, reader, obj, &obj.Spec.Subnetwork[i].SubnetworkRef)
+		subRef, err := refs.ResolveComputeSubnetwork(ctx, reader, obj, &obj.Spec.Subnetwork[i].SubnetworkRef)
 		if err != nil {
 			return err
 		}
@@ -100,7 +100,7 @@ func resolveRouterNATRefs(ctx context.Context, reader client.Reader, obj *krm.Co
 
 	// natIps
 	for i := range obj.Spec.NatIps {
-		addrRef, err := ResolveComputeAddress(ctx, reader, obj, &obj.Spec.NatIps[i])
+		addrRef, err := refs.ResolveComputeAddress(ctx, reader, obj, &obj.Spec.NatIps[i])
 		if err != nil {
 			return err
 		}
@@ -109,7 +109,7 @@ func resolveRouterNATRefs(ctx context.Context, reader client.Reader, obj *krm.Co
 
 	// drainNatIps
 	for i := range obj.Spec.DrainNatIps {
-		addrRef, err := ResolveComputeAddress(ctx, reader, obj, &obj.Spec.DrainNatIps[i])
+		addrRef, err := refs.ResolveComputeAddress(ctx, reader, obj, &obj.Spec.DrainNatIps[i])
 		if err != nil {
 			return err
 		}
@@ -121,28 +121,28 @@ func resolveRouterNATRefs(ctx context.Context, reader client.Reader, obj *krm.Co
 		rule := &obj.Spec.Rules[i]
 		if rule.Action != nil {
 			for j := range rule.Action.SourceNatActiveIpsRefs {
-				addrRef, err := ResolveComputeAddress(ctx, reader, obj, &rule.Action.SourceNatActiveIpsRefs[j])
+				addrRef, err := refs.ResolveComputeAddress(ctx, reader, obj, &rule.Action.SourceNatActiveIpsRefs[j])
 				if err != nil {
 					return err
 				}
 				rule.Action.SourceNatActiveIpsRefs[j].External = addrRef.External
 			}
 			for j := range rule.Action.SourceNatDrainIpsRefs {
-				addrRef, err := ResolveComputeAddress(ctx, reader, obj, &rule.Action.SourceNatDrainIpsRefs[j])
+				addrRef, err := refs.ResolveComputeAddress(ctx, reader, obj, &rule.Action.SourceNatDrainIpsRefs[j])
 				if err != nil {
 					return err
 				}
 				rule.Action.SourceNatDrainIpsRefs[j].External = addrRef.External
 			}
 			for j := range rule.Action.SourceNatActiveRangesRefs {
-				subRef, err := ResolveComputeSubnetwork(ctx, reader, obj, &rule.Action.SourceNatActiveRangesRefs[j])
+				subRef, err := refs.ResolveComputeSubnetwork(ctx, reader, obj, &rule.Action.SourceNatActiveRangesRefs[j])
 				if err != nil {
 					return err
 				}
 				rule.Action.SourceNatActiveRangesRefs[j].External = subRef.External
 			}
 			for j := range rule.Action.SourceNatDrainRangesRefs {
-				subRef, err := ResolveComputeSubnetwork(ctx, reader, obj, &rule.Action.SourceNatDrainRangesRefs[j])
+				subRef, err := refs.ResolveComputeSubnetwork(ctx, reader, obj, &rule.Action.SourceNatDrainRangesRefs[j])
 				if err != nil {
 					return err
 				}
@@ -153,7 +153,7 @@ func resolveRouterNATRefs(ctx context.Context, reader client.Reader, obj *krm.Co
 
 	// nat64Subnetworks
 	for i := range obj.Spec.Nat64Subnetworks {
-		subRef, err := ResolveComputeSubnetwork(ctx, reader, obj, &obj.Spec.Nat64Subnetworks[i].SubnetworkRef)
+		subRef, err := refs.ResolveComputeSubnetwork(ctx, reader, obj, &obj.Spec.Nat64Subnetworks[i].SubnetworkRef)
 		if err != nil {
 			return err
 		}
