@@ -53,6 +53,8 @@ type BackupDRClient interface {
 	UpdateDataSource(ctx context.Context, in *UpdateDataSourceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Lists Backups in a given project and location.
 	ListBackups(ctx context.Context, in *ListBackupsRequest, opts ...grpc.CallOption) (*ListBackupsResponse, error)
+	// Fetch Backups for a given resource type.
+	FetchBackupsForResourceType(ctx context.Context, in *FetchBackupsForResourceTypeRequest, opts ...grpc.CallOption) (*FetchBackupsForResourceTypeResponse, error)
 	// Gets details of a Backup.
 	GetBackup(ctx context.Context, in *GetBackupRequest, opts ...grpc.CallOption) (*Backup, error)
 	// Updates the settings of a Backup.
@@ -91,6 +93,8 @@ type BackupDRClient interface {
 	TriggerBackup(ctx context.Context, in *TriggerBackupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Gets details of a single DataSourceReference.
 	GetDataSourceReference(ctx context.Context, in *GetDataSourceReferenceRequest, opts ...grpc.CallOption) (*DataSourceReference, error)
+	// Lists DataSourceReferences for a given project and location.
+	ListDataSourceReferences(ctx context.Context, in *ListDataSourceReferencesRequest, opts ...grpc.CallOption) (*ListDataSourceReferencesResponse, error)
 	// Fetch DataSourceReferences for a given project, location and resource type.
 	FetchDataSourceReferencesForResourceType(ctx context.Context, in *FetchDataSourceReferencesForResourceTypeRequest, opts ...grpc.CallOption) (*FetchDataSourceReferencesForResourceTypeResponse, error)
 	// Initializes the service related config for a project.
@@ -225,6 +229,15 @@ func (c *backupDRClient) UpdateDataSource(ctx context.Context, in *UpdateDataSou
 func (c *backupDRClient) ListBackups(ctx context.Context, in *ListBackupsRequest, opts ...grpc.CallOption) (*ListBackupsResponse, error) {
 	out := new(ListBackupsResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/ListBackups", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupDRClient) FetchBackupsForResourceType(ctx context.Context, in *FetchBackupsForResourceTypeRequest, opts ...grpc.CallOption) (*FetchBackupsForResourceTypeResponse, error) {
+	out := new(FetchBackupsForResourceTypeResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/FetchBackupsForResourceType", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -402,6 +415,15 @@ func (c *backupDRClient) GetDataSourceReference(ctx context.Context, in *GetData
 	return out, nil
 }
 
+func (c *backupDRClient) ListDataSourceReferences(ctx context.Context, in *ListDataSourceReferencesRequest, opts ...grpc.CallOption) (*ListDataSourceReferencesResponse, error) {
+	out := new(ListDataSourceReferencesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/ListDataSourceReferences", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backupDRClient) FetchDataSourceReferencesForResourceType(ctx context.Context, in *FetchDataSourceReferencesForResourceTypeRequest, opts ...grpc.CallOption) (*FetchDataSourceReferencesForResourceTypeResponse, error) {
 	out := new(FetchDataSourceReferencesForResourceTypeResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/FetchDataSourceReferencesForResourceType", in, out, opts...)
@@ -454,6 +476,8 @@ type BackupDRServer interface {
 	UpdateDataSource(context.Context, *UpdateDataSourceRequest) (*longrunningpb.Operation, error)
 	// Lists Backups in a given project and location.
 	ListBackups(context.Context, *ListBackupsRequest) (*ListBackupsResponse, error)
+	// Fetch Backups for a given resource type.
+	FetchBackupsForResourceType(context.Context, *FetchBackupsForResourceTypeRequest) (*FetchBackupsForResourceTypeResponse, error)
 	// Gets details of a Backup.
 	GetBackup(context.Context, *GetBackupRequest) (*Backup, error)
 	// Updates the settings of a Backup.
@@ -492,6 +516,8 @@ type BackupDRServer interface {
 	TriggerBackup(context.Context, *TriggerBackupRequest) (*longrunningpb.Operation, error)
 	// Gets details of a single DataSourceReference.
 	GetDataSourceReference(context.Context, *GetDataSourceReferenceRequest) (*DataSourceReference, error)
+	// Lists DataSourceReferences for a given project and location.
+	ListDataSourceReferences(context.Context, *ListDataSourceReferencesRequest) (*ListDataSourceReferencesResponse, error)
 	// Fetch DataSourceReferences for a given project, location and resource type.
 	FetchDataSourceReferencesForResourceType(context.Context, *FetchDataSourceReferencesForResourceTypeRequest) (*FetchDataSourceReferencesForResourceTypeResponse, error)
 	// Initializes the service related config for a project.
@@ -544,6 +570,9 @@ func (UnimplementedBackupDRServer) UpdateDataSource(context.Context, *UpdateData
 }
 func (UnimplementedBackupDRServer) ListBackups(context.Context, *ListBackupsRequest) (*ListBackupsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListBackups not implemented")
+}
+func (UnimplementedBackupDRServer) FetchBackupsForResourceType(context.Context, *FetchBackupsForResourceTypeRequest) (*FetchBackupsForResourceTypeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchBackupsForResourceType not implemented")
 }
 func (UnimplementedBackupDRServer) GetBackup(context.Context, *GetBackupRequest) (*Backup, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBackup not implemented")
@@ -601,6 +630,9 @@ func (UnimplementedBackupDRServer) TriggerBackup(context.Context, *TriggerBackup
 }
 func (UnimplementedBackupDRServer) GetDataSourceReference(context.Context, *GetDataSourceReferenceRequest) (*DataSourceReference, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDataSourceReference not implemented")
+}
+func (UnimplementedBackupDRServer) ListDataSourceReferences(context.Context, *ListDataSourceReferencesRequest) (*ListDataSourceReferencesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListDataSourceReferences not implemented")
 }
 func (UnimplementedBackupDRServer) FetchDataSourceReferencesForResourceType(context.Context, *FetchDataSourceReferencesForResourceTypeRequest) (*FetchDataSourceReferencesForResourceTypeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FetchDataSourceReferencesForResourceType not implemented")
@@ -869,6 +901,24 @@ func _BackupDR_ListBackups_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BackupDRServer).ListBackups(ctx, req.(*ListBackupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupDR_FetchBackupsForResourceType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchBackupsForResourceTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupDRServer).FetchBackupsForResourceType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.backupdr.v1.BackupDR/FetchBackupsForResourceType",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupDRServer).FetchBackupsForResourceType(ctx, req.(*FetchBackupsForResourceTypeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1215,6 +1265,24 @@ func _BackupDR_GetDataSourceReference_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupDR_ListDataSourceReferences_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListDataSourceReferencesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupDRServer).ListDataSourceReferences(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.backupdr.v1.BackupDR/ListDataSourceReferences",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupDRServer).ListDataSourceReferences(ctx, req.(*ListDataSourceReferencesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackupDR_FetchDataSourceReferencesForResourceType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FetchDataSourceReferencesForResourceTypeRequest)
 	if err := dec(in); err != nil {
@@ -1315,6 +1383,10 @@ var BackupDR_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _BackupDR_ListBackups_Handler,
 		},
 		{
+			MethodName: "FetchBackupsForResourceType",
+			Handler:    _BackupDR_FetchBackupsForResourceType_Handler,
+		},
+		{
 			MethodName: "GetBackup",
 			Handler:    _BackupDR_GetBackup_Handler,
 		},
@@ -1389,6 +1461,10 @@ var BackupDR_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetDataSourceReference",
 			Handler:    _BackupDR_GetDataSourceReference_Handler,
+		},
+		{
+			MethodName: "ListDataSourceReferences",
+			Handler:    _BackupDR_ListDataSourceReferences_Handler,
 		},
 		{
 			MethodName: "FetchDataSourceReferencesForResourceType",
