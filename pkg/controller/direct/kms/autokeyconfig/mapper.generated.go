@@ -69,8 +69,10 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 			switch {
 			case parent.FolderID != "":
 				out.FolderRef = &refs.FolderRef{External: parent.String()}
+				out.ProjectRef = nil
 			case parent.ProjectID != "":
 				out.ProjectRef = &refs.ProjectRef{External: parent.String()}
+				out.FolderRef = nil
 			}
 		}
 	}
