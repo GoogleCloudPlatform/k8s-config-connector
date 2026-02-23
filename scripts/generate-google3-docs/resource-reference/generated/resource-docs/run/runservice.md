@@ -2163,7 +2163,7 @@ spec:
     containers:
       - env:
           - name: "FOO"
-            value: "bar]"
+            value: "bar"
         image: "gcr.io/cloudrun/hello"
     scaling:
       maxInstanceCount: 2
