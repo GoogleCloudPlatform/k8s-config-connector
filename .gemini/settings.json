@@ -6,6 +6,11 @@
             "args": [
                 "stdio"
             ]
+        },
+        "crd": {
+            "command": "dev/mcp/crd-mcp-server",
+            "args": [
+            ]
         }
     }
 }
