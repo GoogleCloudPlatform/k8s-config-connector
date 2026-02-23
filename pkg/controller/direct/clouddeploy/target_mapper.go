@@ -109,7 +109,7 @@ func CloudDeployTargetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.CloudDeployTargetObservedState{}
-	out.TargetId = direct.LazyPtr(in.GetTargetId())
+	out.TargetID = direct.LazyPtr(in.GetTargetId())
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -121,7 +121,7 @@ func CloudDeployTargetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.C
 		return nil
 	}
 	out := &pb.Target{}
-	out.TargetId = direct.ValueOf(in.TargetId)
+	out.TargetId = direct.ValueOf(in.TargetID)
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)

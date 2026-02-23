@@ -111,7 +111,7 @@ type CloudDeployTargetStatus struct {
 // +kcc:observedstate:proto=google.cloud.deploy.v1.Target
 type CloudDeployTargetObservedState struct {
 	// Output only. Resource id of the `Target`.
-	TargetId *string `json:"targetId,omitempty"`
+	TargetID *string `json:"targetID,omitempty"`
 
 	// Output only. Unique identifier of the `Target`.
 	Uid *string `json:"uid,omitempty"`
@@ -282,7 +282,7 @@ type PrivatePool struct {
 type MultiTarget struct {
 	// Required. The target_ids of this multiTarget.
 	// +kcc:proto:field=google.cloud.deploy.v1.MultiTarget.target_ids
-	TargetIDs []string `json:"targetIds,omitempty"`
+	TargetIDs []string `json:"targetIDs,omitempty"`
 }
 
 // +kcc:proto=google.cloud.deploy.v1.AnthosCluster
@@ -292,4 +292,11 @@ type AnthosCluster struct {
 	//  `projects/{project}/locations/{location}/memberships/{membership_name}`.
 	// +kcc:proto:field=google.cloud.deploy.v1.AnthosCluster.membership
 	MembershipRef *gkehubkrm.GKEHubMembershipRef `json:"membershipRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.CustomTarget
+type CustomTarget struct {
+	// Required. The name of the CustomTargetType.
+	// +kcc:proto:field=google.cloud.deploy.v1.CustomTarget.custom_target_type
+	CustomTargetTypeRef *CustomTargetTypeRef `json:"customTargetTypeRef,omitempty"`
 }

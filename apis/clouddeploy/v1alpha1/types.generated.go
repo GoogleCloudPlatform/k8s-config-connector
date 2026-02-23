@@ -42,14 +42,6 @@ type CloudRunLocation struct {
 	Location *string `json:"location,omitempty"`
 }
 
-// +kcc:proto=google.cloud.deploy.v1.CustomTarget
-type CustomTarget struct {
-	// Required. The name of the CustomTargetType. Format must be
-	//  `projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}`.
-	// +kcc:proto:field=google.cloud.deploy.v1.CustomTarget.custom_target_type
-	CustomTargetType *string `json:"customTargetType,omitempty"`
-}
-
 // +kcc:proto=google.cloud.deploy.v1.CustomTargetSkaffoldActions
 type CustomTargetSkaffoldActions struct {
 	// Optional. The Skaffold custom action responsible for render operations. If

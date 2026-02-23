@@ -177,10 +177,34 @@ spec:
               customTarget:
                 description: Information specifying a custom target.
                 properties:
-                  customTargetType:
-                    description: Required. The name of the CustomTargetType. Format
-                      must be `projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}`.
-                    type: string
+                  customTargetTypeRef:
+                    description: Required. The name of the CustomTargetType.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed DeployCustomTargetType
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/customtargettypes/{{customtargettypeID}}".
+                        type: string
+                      name:
+                        description: The name of a DeployCustomTargetType resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a DeployCustomTargetType resource.
+                        type: string
+                    type: object
                 type: object
               deployParameters:
                 additionalProperties:
@@ -464,7 +488,7 @@ spec:
               multiTarget:
                 description: Information specifying a multi-target.
                 properties:
-                  targetIds:
+                  targetIDs:
                     description: Required. The target_ids of this multiTarget.
                     items:
                       type: string
@@ -576,7 +600,7 @@ spec:
                       and delete requests to ensure the client has an up-to-date value
                       before proceeding.
                     type: string
-                  targetId:
+                  targetID:
                     description: Output only. Resource id of the `Target`.
                     type: string
                   uid:

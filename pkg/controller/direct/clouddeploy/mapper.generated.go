@@ -183,7 +183,9 @@ func CustomTarget_FromProto(mapCtx *direct.MapContext, in *pb.CustomTarget) *krm
 		return nil
 	}
 	out := &krmclouddeployv1alpha1.CustomTarget{}
-	out.CustomTargetType = direct.LazyPtr(in.GetCustomTargetType())
+	if in.GetCustomTargetType() != "" {
+		out.CustomTargetTypeRef = &krmclouddeployv1alpha1.CustomTargetTypeRef{External: in.GetCustomTargetType()}
+	}
 	return out
 }
 func CustomTarget_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.CustomTarget) *pb.CustomTarget {
@@ -191,7 +193,9 @@ func CustomTarget_ToProto(mapCtx *direct.MapContext, in *krmclouddeployv1alpha1.
 		return nil
 	}
 	out := &pb.CustomTarget{}
-	out.CustomTargetType = direct.ValueOf(in.CustomTargetType)
+	if in.CustomTargetTypeRef != nil {
+		out.CustomTargetType = in.CustomTargetTypeRef.External
+	}
 	return out
 }
 func CustomTargetSkaffoldActions_FromProto(mapCtx *direct.MapContext, in *pb.CustomTargetSkaffoldActions) *krmclouddeployv1alpha1.CustomTargetSkaffoldActions {
