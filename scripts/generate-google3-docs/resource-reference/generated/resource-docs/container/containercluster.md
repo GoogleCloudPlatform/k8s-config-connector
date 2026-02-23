@@ -161,6 +161,8 @@ clusterAutoscaling:
       maxUnavailable: integer
       strategy: string
   autoscalingProfile: string
+  defaultComputeClassConfig:
+    enabled: boolean
   enabled: boolean
   resourceLimits:
   - maximum: integer
@@ -170,6 +172,7 @@ clusterIpv4Cidr: string
 clusterTelemetry:
   type: string
 confidentialNodes:
+  confidentialInstanceType: string
   enabled: boolean
 controlPlaneEndpointsConfig:
   dnsEndpointConfig:
@@ -286,6 +289,7 @@ nodeConfig:
     name: string
     namespace: string
   confidentialNodes:
+    confidentialInstanceType: string
     enabled: boolean
   diskSizeGb: integer
   diskType: string
@@ -1139,6 +1143,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>clusterAutoscaling.defaultComputeClassConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Default compute class is a configuration for default compute class.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.defaultComputeClassConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enables default compute class.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>clusterAutoscaling.enabled</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1235,6 +1259,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after cluster creation without deleting and recreating the entire cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>confidentialNodes.confidentialInstanceType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Confidential instance type for the cluster nodes. Valid values are SEV and SEV_SNP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2425,6 +2459,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.confidentialNodes.confidentialInstanceType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Confidential instance type for the cluster nodes. Valid values are SEV and SEV_SNP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

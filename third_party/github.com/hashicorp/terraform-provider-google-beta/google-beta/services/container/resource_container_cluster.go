@@ -1232,6 +1232,12 @@ func ResourceContainerCluster() *schema.Resource {
 							ForceNew:    true,
 							Description: `Whether Confidential Nodes feature is enabled for all nodes in this cluster.`,
 						},
+						"confidential_instance_type": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							ForceNew:    true,
+							Description: `Confidential instance type for the cluster nodes. Valid values are SEV and SEV_SNP.`,
+						},
 					},
 				},
 			},
