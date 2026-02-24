@@ -441,6 +441,14 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		DCL:       false,
 	},
 	{
+		Group:   "cloudbuild.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "CloudBuildTrigger",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
 		Group:   "cloudfunctions2.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "CloudFunctions2Function",
