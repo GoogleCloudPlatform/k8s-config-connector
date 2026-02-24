@@ -1,0 +1,12 @@
+# Directories that contain a massive number of files, ignored to prevent Gemini CLI from stalling
+# during workspace context generation and token counting.
+
+third_party/
+.build/
+node_modules/
+.git/
+vendor/
+bin/
+pkg/clients/generated/
+mockgcp/third_party/
+mockgcp/generated/
