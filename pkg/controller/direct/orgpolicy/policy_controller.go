@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/orgpolicy/apiv2"
 
@@ -190,6 +191,11 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	req.UpdateMask = &fieldmaskpb.FieldMask{
 		Paths: []string{"policy.spec", "policy.dry_run_spec"},
 	}
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for _, path := range req.UpdateMask.Paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	updated, err := a.gcpClient.UpdatePolicy(ctx, req)
 	if err != nil {
