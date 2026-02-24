@@ -31,8 +31,7 @@ type NetworkSecurityFirewallEndpointSpec struct {
 
 	// Required. Project to bill on endpoint uptime usage.
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.FirewallEndpoint.billing_project_id
-	BillingProjectID *string `json:"billingProjectId,omitempty"`
-
+	BillingProjectID *string `json:"billingProjectID,omitempty"`
 	// Optional. Description of the firewall endpoint. Max length 2048 characters.
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.FirewallEndpoint.description
 	Description *string `json:"description,omitempty"`

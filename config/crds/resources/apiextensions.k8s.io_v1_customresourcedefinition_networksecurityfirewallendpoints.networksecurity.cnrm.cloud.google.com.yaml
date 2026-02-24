@@ -64,7 +64,7 @@ spec:
             description: NetworkSecurityFirewallEndpointSpec defines the desired state
               of NetworkSecurityFirewallEndpoint
             properties:
-              billingProjectId:
+              billingProjectID:
                 description: Required. Project to bill on endpoint uptime usage.
                 type: string
               description:
