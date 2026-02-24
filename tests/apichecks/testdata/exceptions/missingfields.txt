@@ -859,18 +859,24 @@
 [missing_field] crd=computerouterinterfaces.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.redundantInterfaceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computerouterinterfaces.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.subnetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computerouterinterfaces.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.vpnTunnelRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.autoNetworkTier" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.drainNatIps[].external" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.drainNatIps[].name" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.drainNatIps[].namespace" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.enableDynamicPortAllocation" is not set in unstructured objects
+[missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.endpointTypes[]" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.icmpIdleTimeoutSec" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.logConfig.enable" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.logConfig.filter" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.maxPortsPerVm" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.minPortsPerVm" is not set in unstructured objects
+[missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.nat64Subnetworks[].subnetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.natIps[].external" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.natIps[].namespace" is not set in unstructured objects
+[missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].action.sourceNatActiveRangesRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].action.sourceNatDrainIpsRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].action.sourceNatDrainRangesRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceSubnetworkIpRangesToNat64" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.subnetwork[].secondaryIpRangeNames[]" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.tcpEstablishedIdleTimeoutSec" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.tcpTimeWaitTimeoutSec" is not set in unstructured objects
