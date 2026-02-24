@@ -26,11 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	gcp "cloud.google.com/go/networksecurity/apiv1beta1"
-	networksecuritypb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
-	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
-
+	api "google.golang.org/api/networksecurity/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -50,13 +46,12 @@ type modelFirewallEndpoint struct {
 	config config.ControllerConfig
 }
 
-func (m *modelFirewallEndpoint) client(ctx context.Context) (*gcp.Client, error) {
-	var opts []option.ClientOption
+func (m *modelFirewallEndpoint) client(ctx context.Context) (*api.Service, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := api.NewService(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building FirewallEndpoint client: %w", err)
 	}
@@ -76,9 +71,6 @@ func (m *modelFirewallEndpoint) AdapterForObject(ctx context.Context, op *direct
 		return nil, err
 	}
 
-	// No references to resolve for FirewallEndpoint (at least for now based on discovery doc)
-
-	// Get networksecurity GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -97,23 +89,19 @@ func (m *modelFirewallEndpoint) AdapterForURL(ctx context.Context, url string) (
 
 type FirewallEndpointAdapter struct {
 	id        *krm.FirewallEndpointIdentity
-	gcpClient *gcp.Client
+	gcpClient *api.Service
 	desired   *krm.NetworkSecurityFirewallEndpoint
-	actual    *networksecuritypb.FirewallEndpoint
+	actual    *api.FirewallEndpoint
 }
 
 var _ directbase.Adapter = &FirewallEndpointAdapter{}
 
 // Find retrieves the GCP resource.
-// Return true means the object is found. This triggers Adapter `Update` call.
-// Return false means the object is not found. This triggers Adapter `Create` call.
-// Return a non-nil error requeues the requests.
 func (a *FirewallEndpointAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting FirewallEndpoint", "name", a.id)
 
-	req := &networksecuritypb.GetFirewallEndpointRequest{Name: a.id.String()}
-	endpointpb, err := a.gcpClient.GetFirewallEndpoint(ctx, req)
+	endpoint, err := a.gcpClient.Projects.Locations.FirewallEndpoints.Get(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -121,102 +109,86 @@ func (a *FirewallEndpointAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting FirewallEndpoint %q: %w", a.id, err)
 	}
 
-	a.actual = endpointpb
+	a.actual = endpoint
 	return true, nil
 }
 
-// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+// Create creates the resource in GCP.
 func (a *FirewallEndpointAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating FirewallEndpoint", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := FirewallEndpointSpec_ToProto(mapCtx, &desired.Spec)
+	resource := FirewallEndpointSpec_ToAPI(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	req := &networksecuritypb.CreateFirewallEndpointRequest{
-		Parent:             a.id.Parent().String(),
-		FirewallEndpoint:   resource,
-		FirewallEndpointId: a.id.ID(),
-	}
-	op, err := a.gcpClient.CreateFirewallEndpoint(ctx, req)
+	op, err := a.gcpClient.Projects.Locations.FirewallEndpoints.Create(a.id.Parent().String(), resource).FirewallEndpointId(a.id.ID()).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating FirewallEndpoint %s: %w", a.id, err)
 	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("FirewallEndpoint %s waiting creation: %w", a.id, err)
-	}
-	log.V(2).Info("successfully created FirewallEndpoint", "name", a.id)
+	_ = op
+	
+	log.V(2).Info("successfully requested creation of FirewallEndpoint", "name", a.id)
 
 	status := &krm.NetworkSecurityFirewallEndpointStatus{}
-	status.ObservedState = FirewallEndpointObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+// Update updates the resource in GCP.
 func (a *FirewallEndpointAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating FirewallEndpoint", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := FirewallEndpointSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredApi := FirewallEndpointSpec_ToAPI(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	var paths []string
 
-	// Optional. Description of the firewall endpoint. Max length 2048 characters.
-	if a.desired.Spec.Description != nil && !reflect.DeepEqual(desiredPb.GetDescription(), a.actual.GetDescription()) {
+	if a.desired.Spec.Description != nil && !reflect.DeepEqual(desiredApi.Description, a.actual.Description) {
 		paths = append(paths, "description")
 	}
 
-	// Optional. Labels as key value pairs
-	if a.desired.Spec.Labels != nil && !reflect.DeepEqual(desiredPb.GetLabels(), a.actual.GetLabels()) {
+	if a.desired.Spec.Labels != nil && !reflect.DeepEqual(desiredApi.Labels, a.actual.Labels) {
 		paths = append(paths, "labels")
 	}
 
-	updated := a.actual
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
-		updateMask := &fieldmaskpb.FieldMask{
-			Paths: paths,
+		req := a.gcpClient.Projects.Locations.FirewallEndpoints.Patch(a.id.String(), desiredApi)
+		var updateMask string
+		for i, p := range paths {
+			if i > 0 {
+				updateMask += ","
+			}
+			updateMask += p
 		}
-		req := &networksecuritypb.UpdateFirewallEndpointRequest{
-			UpdateMask:       updateMask,
-			FirewallEndpoint: desiredPb,
-		}
-		req.FirewallEndpoint.Name = a.id.String()
-		op, err := a.gcpClient.UpdateFirewallEndpoint(ctx, req)
+		req.UpdateMask(updateMask)
+
+		op, err := req.Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("updating FirewallEndpoint %s: %w", a.id, err)
 		}
-		updated, err = op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("FirewallEndpoint %s waiting update: %w", a.id, err)
-		}
-		log.V(2).Info("successfully updated FirewallEndpoint", "name", a.id)
+		_ = op
+		log.V(2).Info("successfully requested update of FirewallEndpoint", "name", a.id)
 	}
 
 	status := &krm.NetworkSecurityFirewallEndpointStatus{}
-	status.ObservedState = FirewallEndpointObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
-// Export maps the GCP object to a Config Connector resource `spec`.
+// Export maps the GCP object.
 func (a *FirewallEndpointAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
@@ -225,7 +197,7 @@ func (a *FirewallEndpointAdapter) Export(ctx context.Context) (*unstructured.Uns
 
 	obj := &krm.NetworkSecurityFirewallEndpoint{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(FirewallEndpointSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(FirewallEndpointSpec_FromAPI(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -243,26 +215,20 @@ func (a *FirewallEndpointAdapter) Export(ctx context.Context) (*unstructured.Uns
 	return u, nil
 }
 
-// Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
+// Delete the resource from GCP.
 func (a *FirewallEndpointAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting FirewallEndpoint", "name", a.id)
 
-	req := &networksecuritypb.DeleteFirewallEndpointRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteFirewallEndpoint(ctx, req)
+	op, err := a.gcpClient.Projects.Locations.FirewallEndpoints.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent FirewallEndpoint, assuming it was already deleted", "name", a.id)
+			log.V(2).Info("skipping delete for non-existent FirewallEndpoint", "name", a.id)
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting FirewallEndpoint %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted FirewallEndpoint", "name", a.id)
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete FirewallEndpoint %s: %w", a.id, err)
-	}
+	_ = op
+	log.V(2).Info("successfully requested deletion of FirewallEndpoint", "name", a.id)
 	return true, nil
 }
