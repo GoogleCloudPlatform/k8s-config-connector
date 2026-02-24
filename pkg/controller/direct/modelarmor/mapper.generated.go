@@ -84,6 +84,38 @@ func FilterConfig_ToProto(mapCtx *direct.MapContext, in *krm.FilterConfig) *pb.F
 	out.MaliciousUriFilterSettings = MaliciousURIFilterSettings_ToProto(mapCtx, in.MaliciousURIFilterSettings)
 	return out
 }
+func FloorSetting_FloorSettingMetadata_FromProto(mapCtx *direct.MapContext, in *pb.FloorSetting_FloorSettingMetadata) *krm.FloorSetting_FloorSettingMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FloorSetting_FloorSettingMetadata{}
+	out.MultiLanguageDetection = FloorSetting_FloorSettingMetadata_MultiLanguageDetection_FromProto(mapCtx, in.GetMultiLanguageDetection())
+	return out
+}
+func FloorSetting_FloorSettingMetadata_ToProto(mapCtx *direct.MapContext, in *krm.FloorSetting_FloorSettingMetadata) *pb.FloorSetting_FloorSettingMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FloorSetting_FloorSettingMetadata{}
+	out.MultiLanguageDetection = FloorSetting_FloorSettingMetadata_MultiLanguageDetection_ToProto(mapCtx, in.MultiLanguageDetection)
+	return out
+}
+func FloorSetting_FloorSettingMetadata_MultiLanguageDetection_FromProto(mapCtx *direct.MapContext, in *pb.FloorSetting_FloorSettingMetadata_MultiLanguageDetection) *krm.FloorSetting_FloorSettingMetadata_MultiLanguageDetection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FloorSetting_FloorSettingMetadata_MultiLanguageDetection{}
+	out.EnableMultiLanguageDetection = direct.LazyPtr(in.GetEnableMultiLanguageDetection())
+	return out
+}
+func FloorSetting_FloorSettingMetadata_MultiLanguageDetection_ToProto(mapCtx *direct.MapContext, in *krm.FloorSetting_FloorSettingMetadata_MultiLanguageDetection) *pb.FloorSetting_FloorSettingMetadata_MultiLanguageDetection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FloorSetting_FloorSettingMetadata_MultiLanguageDetection{}
+	out.EnableMultiLanguageDetection = direct.ValueOf(in.EnableMultiLanguageDetection)
+	return out
+}
 func MaliciousURIFilterSettings_FromProto(mapCtx *direct.MapContext, in *pb.MaliciousUriFilterSettings) *krm.MaliciousURIFilterSettings {
 	if in == nil {
 		return nil
@@ -294,39 +326,6 @@ func SdpFilterSettings_ToProto(mapCtx *direct.MapContext, in *krm.SdpFilterSetti
 	if oneof := SdpAdvancedConfig_ToProto(mapCtx, in.AdvancedConfig); oneof != nil {
 		out.SdpConfiguration = &pb.SdpFilterSettings_AdvancedConfig{AdvancedConfig: oneof}
 	}
-	return out
-}
-
-func FloorSetting_FloorSettingMetadata_FromProto(mapCtx *direct.MapContext, in *pb.FloorSetting_FloorSettingMetadata) *krm.FloorSetting_FloorSettingMetadata {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FloorSetting_FloorSettingMetadata{}
-	out.MultiLanguageDetection = FloorSetting_FloorSettingMetadata_MultiLanguageDetection_FromProto(mapCtx, in.GetMultiLanguageDetection())
-	return out
-}
-func FloorSetting_FloorSettingMetadata_ToProto(mapCtx *direct.MapContext, in *krm.FloorSetting_FloorSettingMetadata) *pb.FloorSetting_FloorSettingMetadata {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FloorSetting_FloorSettingMetadata{}
-	out.MultiLanguageDetection = FloorSetting_FloorSettingMetadata_MultiLanguageDetection_ToProto(mapCtx, in.MultiLanguageDetection)
-	return out
-}
-func FloorSetting_FloorSettingMetadata_MultiLanguageDetection_FromProto(mapCtx *direct.MapContext, in *pb.FloorSetting_FloorSettingMetadata_MultiLanguageDetection) *krm.FloorSetting_FloorSettingMetadata_MultiLanguageDetection {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FloorSetting_FloorSettingMetadata_MultiLanguageDetection{}
-	out.EnableMultiLanguageDetection = direct.LazyPtr(in.GetEnableMultiLanguageDetection())
-	return out
-}
-func FloorSetting_FloorSettingMetadata_MultiLanguageDetection_ToProto(mapCtx *direct.MapContext, in *krm.FloorSetting_FloorSettingMetadata_MultiLanguageDetection) *pb.FloorSetting_FloorSettingMetadata_MultiLanguageDetection {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FloorSetting_FloorSettingMetadata_MultiLanguageDetection{}
-	out.EnableMultiLanguageDetection = direct.ValueOf(in.EnableMultiLanguageDetection)
 	return out
 }
 func Template_TemplateMetadata_FromProto(mapCtx *direct.MapContext, in *pb.Template_TemplateMetadata) *krm.Template_TemplateMetadata {

@@ -50,6 +50,7 @@ require (
 	cloud.google.com/go/managedkafka v0.8.1
 	cloud.google.com/go/memorystore v0.4.0
 	cloud.google.com/go/metastore v1.14.8
+	cloud.google.com/go/modelarmor v0.6.1
 	cloud.google.com/go/monitoring v1.24.3
 	cloud.google.com/go/netapp v1.11.0
 	cloud.google.com/go/networkmanagement v1.21.0
@@ -141,7 +142,6 @@ require (
 require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
-	cloud.google.com/go/modelarmor v0.6.1 // indirect
 	cloud.google.com/go/osconfig v1.15.1 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.30.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0 // indirect
