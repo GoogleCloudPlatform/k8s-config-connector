@@ -23,7 +23,6 @@ package cloudbuild
 import (
 	pb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
-	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -1082,26 +1081,6 @@ func GitSource_ToProto(mapCtx *direct.MapContext, in *krm.GitSource) *pb.GitSour
 	out.Revision = direct.ValueOf(in.Revision)
 	return out
 }
-func Hash_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krm.Hash {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Hash{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Value = []krm.byte{direct.LazyPtr(in.GetValue())}
-	return out
-}
-func Hash_ToProto(mapCtx *direct.MapContext, in *krm.Hash) *pb.Hash {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Hash{}
-	out.Type = direct.Enum_ToProto[pb.Hash_HashType](mapCtx, in.Type)
-	if len(in.Value) > 0 && in.Value[0] != nil {
-		out.Value = direct.ValueOf(in.Value[0])
-	}
-	return out
-}
 func InlineSecret_FromProto(mapCtx *direct.MapContext, in *pb.InlineSecret) *krm.InlineSecret {
 	if in == nil {
 		return nil
@@ -1118,30 +1097,6 @@ func InlineSecret_ToProto(mapCtx *direct.MapContext, in *krm.InlineSecret) *pb.I
 	out := &pb.InlineSecret{}
 	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
 	// MISSING: EnvMap
-	return out
-}
-func PrivatePoolV1Config_NetworkConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config_NetworkConfig) *krm.PrivatePoolV1Config_NetworkConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PrivatePoolV1Config_NetworkConfigSpec{}
-	if in.GetPeeredNetwork() != "" {
-		out.PeeredNetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetPeeredNetwork()}
-	}
-	out.EgressOption = direct.Enum_FromProto(mapCtx, in.GetEgressOption())
-	out.PeeredNetworkIPRange = direct.LazyPtr(in.GetPeeredNetworkIpRange())
-	return out
-}
-func PrivatePoolV1Config_NetworkConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV1Config_NetworkConfigSpec) *pb.PrivatePoolV1Config_NetworkConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PrivatePoolV1Config_NetworkConfig{}
-	if in.PeeredNetworkRef != nil {
-		out.PeeredNetwork = in.PeeredNetworkRef.External
-	}
-	out.EgressOption = direct.Enum_ToProto[pb.PrivatePoolV1Config_NetworkConfig_EgressOption](mapCtx, in.EgressOption)
-	out.PeeredNetworkIpRange = direct.ValueOf(in.PeeredNetworkIPRange)
 	return out
 }
 func PrivatePoolV1Config_NetworkConfigStatus_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV1Config_NetworkConfigStatus) *pb.PrivatePoolV1Config_NetworkConfig {

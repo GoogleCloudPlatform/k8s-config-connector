@@ -136,3 +136,27 @@ func PrivatePoolV1Config_WorkerConfig_ToProto(mapCtx *direct.MapContext, in *krm
 	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGb)
 	return out
 }
+
+func PrivatePoolV1Config_NetworkConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config_NetworkConfig) *krm.PrivatePoolV1Config_NetworkConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivatePoolV1Config_NetworkConfigSpec{}
+	out.PeeredNetworkRef = computev1beta1.ComputeNetworkRef{
+		External: in.GetPeeredNetwork(),
+	}
+	out.EgressOption = direct.Enum_FromProto(mapCtx, in.EgressOption)
+	out.PeeredNetworkIPRange = direct.LazyPtr(in.GetPeeredNetworkIpRange())
+	return out
+}
+
+func PrivatePoolV1Config_NetworkConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV1Config_NetworkConfigSpec) *pb.PrivatePoolV1Config_NetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivatePoolV1Config_NetworkConfig{}
+	out.PeeredNetwork = in.PeeredNetworkRef.External
+	out.EgressOption = direct.Enum_ToProto[pb.PrivatePoolV1Config_NetworkConfig_EgressOption](mapCtx, in.EgressOption)
+	out.PeeredNetworkIpRange = direct.ValueOf(in.PeeredNetworkIPRange)
+	return out
+}
