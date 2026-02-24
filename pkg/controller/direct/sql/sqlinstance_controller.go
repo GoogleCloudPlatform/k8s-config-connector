@@ -387,6 +387,13 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 		return nil, err
 	}
 
+	if obj.Spec.Settings.Edition != nil {
+		edition := *obj.Spec.Settings.Edition
+		if edition != "ENTERPRISE" && edition != "ENTERPRISE_PLUS" {
+			return nil, fmt.Errorf("unrecognized edition %q; supported values are ENTERPRISE and ENTERPRISE_PLUS", edition)
+		}
+	}
+
 	adapter := &sqlInstanceAdapter{
 		projectID:           projectID,
 		resourceID:          resourceID,
