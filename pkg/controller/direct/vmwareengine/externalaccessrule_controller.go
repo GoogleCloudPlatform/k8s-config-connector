@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -170,23 +171,31 @@ func (a *externalAccessRuleAdapter) Update(ctx context.Context, updateOp *direct
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, resource.Description)
 		paths = append(paths, "description")
 	}
 	if desired.Spec.Priority != nil && !reflect.DeepEqual(resource.Priority, a.actual.Priority) {
+		report.AddField("priority", a.actual.Priority, resource.Priority)
 		paths = append(paths, "priority")
 	}
 	if desired.Spec.Action != nil && !reflect.DeepEqual(resource.Action, a.actual.Action) {
+		report.AddField("action", a.actual.Action, resource.Action)
 		paths = append(paths, "action")
 	}
 	if desired.Spec.IPProtocol != nil && !reflect.DeepEqual(resource.IpProtocol, a.actual.IpProtocol) {
+		report.AddField("ip_protocol", a.actual.IpProtocol, resource.IpProtocol)
 		paths = append(paths, "ip_protocol")
 	}
 	if len(desired.Spec.SourcePorts) != 0 && !reflect.DeepEqual(resource.SourcePorts, a.actual.SourcePorts) {
+		report.AddField("source_ports", a.actual.SourcePorts, resource.SourcePorts)
 		paths = append(paths, "source_ports")
 	}
 	if len(desired.Spec.DestinationPorts) != 0 && !reflect.DeepEqual(resource.DestinationPorts, a.actual.DestinationPorts) {
+		report.AddField("destination_ports", a.actual.DestinationPorts, resource.DestinationPorts)
 		paths = append(paths, "destination_ports")
 	}
 	// TODO: handle source_ip_ranges and destination_ip_ranges which contain oneof fields which requires special handling
@@ -197,6 +206,7 @@ func (a *externalAccessRuleAdapter) Update(ctx context.Context, updateOp *direct
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateExternalAccessRuleRequest{
 			ExternalAccessRule: resource,
