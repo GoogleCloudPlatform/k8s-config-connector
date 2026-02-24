@@ -18,7 +18,7 @@ metadata:
   name: sqlinstance-unmanaged-${uniqueId}
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
-    cnrm.cloud.google.com/unmanaged: "spec.replicaConfiguration,spec.replicaConfiguration.caCertificate,spec.replicaConfiguration.clientCertificate,spec.replicaConfiguration.clientKey,spec.replicaConfiguration.connectRetryInterval,spec.replicaConfiguration.dumpFilePath,spec.replicaConfiguration.failoverTarget,spec.replicaConfiguration.masterHeartbeatPeriod,spec.replicaConfiguration.password,spec.replicaConfiguration.sslCipher,spec.replicaConfiguration.username,spec.replicaConfiguration.verifyServerCertificate"
+    cnrm.cloud.google.com/unmanaged: "spec.replicaConfiguration"
 spec:
   databaseVersion: MYSQL_5_7
   region: us-central1

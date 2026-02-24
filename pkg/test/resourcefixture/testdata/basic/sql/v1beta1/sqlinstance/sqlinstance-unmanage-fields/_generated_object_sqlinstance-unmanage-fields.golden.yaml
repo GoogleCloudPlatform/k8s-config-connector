@@ -5,7 +5,7 @@ metadata:
     alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/last-changed-cookie: normalized-cookie
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/unmanaged: spec.replicaConfiguration,spec.replicaConfiguration.caCertificate,spec.replicaConfiguration.clientCertificate,spec.replicaConfiguration.clientKey,spec.replicaConfiguration.connectRetryInterval,spec.replicaConfiguration.dumpFilePath,spec.replicaConfiguration.failoverTarget,spec.replicaConfiguration.masterHeartbeatPeriod,spec.replicaConfiguration.password,spec.replicaConfiguration.sslCipher,spec.replicaConfiguration.username,spec.replicaConfiguration.verifyServerCertificate
+    cnrm.cloud.google.com/unmanaged: spec.replicaConfiguration
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
