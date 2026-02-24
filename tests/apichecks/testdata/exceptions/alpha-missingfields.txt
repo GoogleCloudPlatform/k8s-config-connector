@@ -497,6 +497,16 @@
 [missing_field] crd=clouddmsconversionworkspaces.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=clouddmsconversionworkspaces.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.engine" is not set in unstructured objects
 [missing_field] crd=clouddmsconversionworkspaces.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.version" is not set in unstructured objects
+[missing_field] crd=clouddmsmappingrules.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectionProfileRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=clouddmsmappingrules.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=clouddmsmappingrules.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.filter.entities[]" is not set in unstructured objects
+[missing_field] crd=clouddmsmappingrules.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.filter.entityNameContains" is not set in unstructured objects
+[missing_field] crd=clouddmsmappingrules.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.filter.entityNamePrefix" is not set in unstructured objects
+[missing_field] crd=clouddmsmappingrules.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.filter.entityNameSuffix" is not set in unstructured objects
+[missing_field] crd=clouddmsmappingrules.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.filter.parentEntity" is not set in unstructured objects
+[missing_field] crd=clouddmsmappingrules.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=clouddmsmappingrules.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=clouddmsmappingrules.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.ruleScope" is not set in unstructured objects
 [missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cmekKeyNameRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.conversionWorkspace.commitID" is not set in unstructured objects
 [missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.conversionWorkspace.name" is not set in unstructured objects
