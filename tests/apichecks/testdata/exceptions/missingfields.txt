@@ -222,27 +222,45 @@
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.selfManaged.privateKeyPem.value" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.selfManaged.privateKeyPem.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.approvalConfig.approvalRequired" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.bitbucketServerTriggerConfig.bitbucketServerConfigResourceRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.bitbucketServerTriggerConfig.projectKey" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.bitbucketServerTriggerConfig.pullRequest.branch" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.bitbucketServerTriggerConfig.pullRequest.commentControl" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.bitbucketServerTriggerConfig.pullRequest.invertRegex" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.bitbucketServerTriggerConfig.push.branch" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.bitbucketServerTriggerConfig.push.invertRegex" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.bitbucketServerTriggerConfig.push.tag" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.bitbucketServerTriggerConfig.repoSlug" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.goModules[].modulePath" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.goModules[].moduleVersion" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.goModules[].repositoryLocation" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.goModules[].repositoryName" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.goModules[].repositoryProjectID" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.goModules[].sourcePath" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.images[]" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.mavenArtifacts[].artifactID" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.mavenArtifacts[].groupID" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.mavenArtifacts[].path" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.mavenArtifacts[].repository" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.mavenArtifacts[].version" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.npmPackages[].packagePath" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.npmPackages[].repository" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.objects.location" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.objects.paths[]" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.objects.timing[].endTime" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.objects.timing[].startTime" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.logsBucketRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.diskSizeGb" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.pythonPackages[].paths[]" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.artifacts.pythonPackages[].repository" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.availableSecrets.inline[].kmsKeyName" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.availableSecrets.secretManager[].versionName" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.dependencies[].empty" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.dependencies[].gitSource.depth" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.dependencies[].gitSource.destPath" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.dependencies[].gitSource.recurseSubmodules" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.dependencies[].gitSource.repository.developerConnect" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.dependencies[].gitSource.repository.url" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.dependencies[].gitSource.revision" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.gitConfig.http.proxySecretVersionName" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.logsBucket" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.automapSubstitutions" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.defaultLogsBucketBehavior" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.diskSizeGB" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.dynamicSubstitutions" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.enableStructuredLogging" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.env[]" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.logStreamingOption" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.logging" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.machineType" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.pool.name" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.requestedVerifyOption" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.secretEnv[]" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.sourceProvenanceHash[]" is not set in unstructured objects
@@ -250,40 +268,54 @@
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.volumes[].name" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.volumes[].path" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.workerPool" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.queueTtl" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.secret[].kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.secret[].secretEnv" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.queueTTL" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.secrets[].kmsKeyName" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.serviceAccount" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.gitSource.dir" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.gitSource.revision" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.gitSource.url" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.repoSource.branchName" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.repoSource.commitSha" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.repoSource.dir" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.repoSource.invertRegex" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.repoSource.projectId" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.repoSource.projectID" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.repoSource.repoName" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.repoSource.repoRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.repoSource.substitutions" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.repoSource.tagName" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.storageSource.bucketRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.storageSource.bucket" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.storageSource.generation" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.storageSource.object" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.step[].allowExitCodes[]" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.step[].allowFailure" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.step[].entrypoint" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.step[].script" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.step[].timing" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.step[].volumes[].name" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.step[].volumes[].path" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.step[].waitFor[]" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.storageSource.sourceFetcher" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.storageSourceManifest.bucket" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.storageSourceManifest.generation" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.source.storageSourceManifest.object" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].allowExitCodes[]" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].allowFailure" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].args[]" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].automapSubstitutions" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].dir" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].entrypoint" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].env[]" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].id" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].name" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].script" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].secretEnv[]" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].timeout" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].volumes[].name" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].volumes[].path" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.steps[].waitFor[]" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.substitutions" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.disabled" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.filename" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.filter" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.gitFileSource.bitbucketServerConfigRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.gitFileSource.githubEnterpriseConfigRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.gitFileSource.path" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.gitFileSource.githubEnterpriseConfig" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.gitFileSource.repoType" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.gitFileSource.repository" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.gitFileSource.repositoryRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.gitFileSource.revision" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.gitFileSource.uri" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.github.enterpriseConfigResourceNameRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.github.installationID" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.github.name" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.github.owner" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.github.pullRequest.branch" is not set in unstructured objects
@@ -294,9 +326,12 @@
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.github.push.tag" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.includeBuildLogs" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.pubsubConfig.serviceAccountEmail" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.pubsubConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.pubsubConfig.state" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.pubsubConfig.subscription" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.pubsubConfig.topic" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.pubsubConfig.topicRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.repositoryEventConfig.pullRequest.branch" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.repositoryEventConfig.pullRequest.commentControl" is not set in unstructured objects
@@ -305,15 +340,18 @@
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.repositoryEventConfig.push.invertRegex" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.repositoryEventConfig.push.tag" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.repositoryEventConfig.repository" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceToBuild.bitbucketServerConfigRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceToBuild.githubEnterpriseConfigRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceToBuild.githubEnterpriseConfig" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceToBuild.ref" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceToBuild.repoType" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceToBuild.repositoryRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceToBuild.repository" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceToBuild.uri" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.tags[]" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.triggerTemplate.commitSha" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.triggerTemplate.invertRegex" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.triggerTemplate.projectID" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.triggerTemplate.repoName" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.triggerTemplate.substitutions" is not set in unstructured objects
+[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.webhookConfig.secret" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.webhookConfig.secretRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.webhookConfig.state" is not set in unstructured objects
 [missing_field] crd=clouddeploydeliverypipelines.clouddeploy.cnrm.cloud.google.com version=v1beta1: field ".spec.annotations" is not set in unstructured objects
