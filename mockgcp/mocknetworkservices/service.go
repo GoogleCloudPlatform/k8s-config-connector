@@ -18,6 +18,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
@@ -69,6 +70,16 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err != nil {
 		return nil, err
 	}
+
+	mux.ServeMux.Handle("GET", runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"v1", "projects", "project", "locations", "global", "edgeCacheServices", "name"}, "")), s.v1.GetEdgeCacheService)
+	mux.ServeMux.Handle("POST", runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5}, []string{"v1", "projects", "project", "locations", "global", "edgeCacheServices"}, "")), s.v1.CreateEdgeCacheService)
+	mux.ServeMux.Handle("PATCH", runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"v1", "projects", "project", "locations", "global", "edgeCacheServices", "name"}, "")), s.v1.PatchEdgeCacheService)
+	mux.ServeMux.Handle("DELETE", runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"v1", "projects", "project", "locations", "global", "edgeCacheServices", "name"}, "")), s.v1.DeleteEdgeCacheService)
+
+	mux.ServeMux.Handle("GET", runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"v1", "projects", "project", "locations", "global", "edgeCacheOrigins", "name"}, "")), s.v1.GetEdgeCacheOrigin)
+	mux.ServeMux.Handle("POST", runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5}, []string{"v1", "projects", "project", "locations", "global", "edgeCacheOrigins"}, "")), s.v1.CreateEdgeCacheOrigin)
+	mux.ServeMux.Handle("PATCH", runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"v1", "projects", "project", "locations", "global", "edgeCacheOrigins", "name"}, "")), s.v1.PatchEdgeCacheOrigin)
+	mux.ServeMux.Handle("DELETE", runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4, 2, 5, 1, 0, 4, 1, 5, 6}, []string{"v1", "projects", "project", "locations", "global", "edgeCacheOrigins", "name"}, "")), s.v1.DeleteEdgeCacheOrigin)
 
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		if error.Code == 404 {
