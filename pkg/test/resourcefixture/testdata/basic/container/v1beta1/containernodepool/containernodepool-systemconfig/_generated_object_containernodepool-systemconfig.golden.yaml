@@ -21,7 +21,7 @@ spec:
   nodeConfig:
     kubeletConfig:
       cpuCfsQuota: false
-      cpuCfsQuotaPeriod: 200us
+      cpuCfsQuotaPeriod: 200ms
       cpuManagerPolicy: none
       imageGcHighThresholdPercent: 70
       imageGcLowThresholdPercent: 60

@@ -73,7 +73,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "nodeConfig": {
       "kubeletConfig": {
         "cpuCfsQuota": true,
-        "cpuCfsQuotaPeriod": "100us",
+        "cpuCfsQuotaPeriod": "100ms",
         "cpuManagerPolicy": "none",
         "imageGcHighThresholdPercent": 80,
         "imageGcLowThresholdPercent": 70,
@@ -346,7 +346,7 @@ X-Xss-Protection: 0
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
       "cpuCfsQuota": true,
-      "cpuCfsQuotaPeriod": "100us",
+      "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
       "imageGcHighThresholdPercent": 80,
       "imageGcLowThresholdPercent": 70,
@@ -417,7 +417,7 @@ X-Xss-Protection: 0
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "cpuCfsQuota": true,
-          "cpuCfsQuotaPeriod": "100us",
+          "cpuCfsQuotaPeriod": "100ms",
           "cpuManagerPolicy": "none",
           "imageGcHighThresholdPercent": 80,
           "imageGcLowThresholdPercent": 70,
@@ -723,7 +723,7 @@ X-Xss-Protection: 0
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
       "cpuCfsQuota": true,
-      "cpuCfsQuotaPeriod": "100us",
+      "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
       "imageGcHighThresholdPercent": 80,
       "imageGcLowThresholdPercent": 70,
@@ -794,7 +794,7 @@ X-Xss-Protection: 0
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "cpuCfsQuota": true,
-          "cpuCfsQuotaPeriod": "100us",
+          "cpuCfsQuotaPeriod": "100ms",
           "cpuManagerPolicy": "none",
           "imageGcHighThresholdPercent": 80,
           "imageGcLowThresholdPercent": 70,
@@ -1100,7 +1100,7 @@ X-Xss-Protection: 0
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
       "cpuCfsQuota": true,
-      "cpuCfsQuotaPeriod": "100us",
+      "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
       "imageGcHighThresholdPercent": 80,
       "imageGcLowThresholdPercent": 70,
@@ -1171,7 +1171,7 @@ X-Xss-Protection: 0
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "cpuCfsQuota": true,
-          "cpuCfsQuotaPeriod": "100us",
+          "cpuCfsQuotaPeriod": "100ms",
           "cpuManagerPolicy": "none",
           "imageGcHighThresholdPercent": 80,
           "imageGcLowThresholdPercent": 70,
@@ -1477,7 +1477,7 @@ X-Xss-Protection: 0
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
       "cpuCfsQuota": true,
-      "cpuCfsQuotaPeriod": "100us",
+      "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
       "imageGcHighThresholdPercent": 80,
       "imageGcLowThresholdPercent": 70,
@@ -1548,7 +1548,7 @@ X-Xss-Protection: 0
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "cpuCfsQuota": true,
-          "cpuCfsQuotaPeriod": "100us",
+          "cpuCfsQuotaPeriod": "100ms",
           "cpuManagerPolicy": "none",
           "imageGcHighThresholdPercent": 80,
           "imageGcLowThresholdPercent": 70,
@@ -1854,7 +1854,7 @@ X-Xss-Protection: 0
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
       "cpuCfsQuota": true,
-      "cpuCfsQuotaPeriod": "100us",
+      "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
       "imageGcHighThresholdPercent": 80,
       "imageGcLowThresholdPercent": 70,
@@ -1925,7 +1925,7 @@ X-Xss-Protection: 0
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "cpuCfsQuota": true,
-          "cpuCfsQuotaPeriod": "100us",
+          "cpuCfsQuotaPeriod": "100ms",
           "cpuManagerPolicy": "none",
           "imageGcHighThresholdPercent": 80,
           "imageGcLowThresholdPercent": 70,
@@ -2231,7 +2231,7 @@ X-Xss-Protection: 0
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
       "cpuCfsQuota": true,
-      "cpuCfsQuotaPeriod": "100us",
+      "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
       "imageGcHighThresholdPercent": 80,
       "imageGcLowThresholdPercent": 70,
@@ -2302,7 +2302,7 @@ X-Xss-Protection: 0
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
           "cpuCfsQuota": true,
-          "cpuCfsQuotaPeriod": "100us",
+          "cpuCfsQuotaPeriod": "100ms",
           "cpuManagerPolicy": "none",
           "imageGcHighThresholdPercent": 80,
           "imageGcLowThresholdPercent": 70,
