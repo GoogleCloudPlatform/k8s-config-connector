@@ -23,8 +23,6 @@ package cloudbuild
 import (
 	pb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
-	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -724,72 +722,6 @@ func CloudBuildTriggerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	return out
 }
-func CloudBuildTriggerSpec_FromProto(mapCtx *direct.MapContext, in *pb.BuildTrigger) *krm.CloudBuildTriggerSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CloudBuildTriggerSpec{}
-	// MISSING: ResourceName
-	// MISSING: ID
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: Name
-	out.Tags = in.Tags
-	out.TriggerTemplate = RepoSource_FromProto(mapCtx, in.GetTriggerTemplate())
-	out.Github = GitHubEventsConfig_FromProto(mapCtx, in.GetGithub())
-	out.PubsubConfig = PubsubConfig_FromProto(mapCtx, in.GetPubsubConfig())
-	out.WebhookConfig = WebhookConfig_FromProto(mapCtx, in.GetWebhookConfig())
-	// MISSING: Autodetect
-	out.Build = Build_FromProto(mapCtx, in.GetBuild())
-	out.Filename = direct.LazyPtr(in.GetFilename())
-	out.GitFileSource = GitFileSource_FromProto(mapCtx, in.GetGitFileSource())
-	out.Disabled = direct.LazyPtr(in.GetDisabled())
-	out.Substitutions = in.Substitutions
-	out.IgnoredFiles = in.IgnoredFiles
-	out.IncludedFiles = in.IncludedFiles
-	out.Filter = direct.LazyPtr(in.GetFilter())
-	out.SourceToBuild = GitRepoSource_FromProto(mapCtx, in.GetSourceToBuild())
-	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
-	}
-	out.RepositoryEventConfig = RepositoryEventConfig_FromProto(mapCtx, in.GetRepositoryEventConfig())
-	return out
-}
-func CloudBuildTriggerSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudBuildTriggerSpec) *pb.BuildTrigger {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BuildTrigger{}
-	// MISSING: ResourceName
-	// MISSING: ID
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: Name
-	out.Tags = in.Tags
-	out.TriggerTemplate = RepoSource_ToProto(mapCtx, in.TriggerTemplate)
-	out.Github = GitHubEventsConfig_ToProto(mapCtx, in.Github)
-	out.PubsubConfig = PubsubConfig_ToProto(mapCtx, in.PubsubConfig)
-	out.WebhookConfig = WebhookConfig_ToProto(mapCtx, in.WebhookConfig)
-	// MISSING: Autodetect
-	if oneof := Build_ToProto(mapCtx, in.Build); oneof != nil {
-		out.BuildTemplate = &pb.BuildTrigger_Build{Build: oneof}
-	}
-	if oneof := CloudBuildTriggerSpec_Filename_ToProto(mapCtx, in.Filename); oneof != nil {
-		out.BuildTemplate = oneof
-	}
-	if oneof := GitFileSource_ToProto(mapCtx, in.GitFileSource); oneof != nil {
-		out.BuildTemplate = &pb.BuildTrigger_GitFileSource{GitFileSource: oneof}
-	}
-	out.Disabled = direct.ValueOf(in.Disabled)
-	out.Substitutions = in.Substitutions
-	out.IgnoredFiles = in.IgnoredFiles
-	out.IncludedFiles = in.IncludedFiles
-	out.Filter = direct.ValueOf(in.Filter)
-	out.SourceToBuild = GitRepoSource_ToProto(mapCtx, in.SourceToBuild)
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	out.RepositoryEventConfig = RepositoryEventConfig_ToProto(mapCtx, in.RepositoryEventConfig)
-	return out
-}
 func CloudBuildTriggerSpec_Filename_ToProto(mapCtx *direct.MapContext, in *string) *pb.BuildTrigger_Filename {
 	if in == nil {
 		return nil
@@ -947,36 +879,6 @@ func GitConfig_HTTPConfig_ToProto(mapCtx *direct.MapContext, in *krm.GitConfig_H
 	out.ProxySecretVersionName = direct.ValueOf(in.ProxySecretVersionName)
 	return out
 }
-func GitFileSource_FromProto(mapCtx *direct.MapContext, in *pb.GitFileSource) *krm.GitFileSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GitFileSource{}
-	out.Path = direct.LazyPtr(in.GetPath())
-	out.URI = direct.LazyPtr(in.GetUri())
-	out.Repository = direct.LazyPtr(in.GetRepository())
-	out.RepoType = direct.Enum_FromProto(mapCtx, in.GetRepoType())
-	out.Revision = direct.LazyPtr(in.GetRevision())
-	out.GithubEnterpriseConfig = direct.LazyPtr(in.GetGithubEnterpriseConfig())
-	return out
-}
-func GitFileSource_ToProto(mapCtx *direct.MapContext, in *krm.GitFileSource) *pb.GitFileSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GitFileSource{}
-	out.Path = direct.ValueOf(in.Path)
-	out.Uri = direct.ValueOf(in.URI)
-	if oneof := GitFileSource_Repository_ToProto(mapCtx, in.Repository); oneof != nil {
-		out.Source = oneof
-	}
-	out.RepoType = direct.Enum_ToProto[pb.GitFileSource_RepoType](mapCtx, in.RepoType)
-	out.Revision = direct.ValueOf(in.Revision)
-	if oneof := GitFileSource_GithubEnterpriseConfig_ToProto(mapCtx, in.GithubEnterpriseConfig); oneof != nil {
-		out.EnterpriseConfig = oneof
-	}
-	return out
-}
 func GitFileSource_Repository_ToProto(mapCtx *direct.MapContext, in *string) *pb.GitFileSource_Repository {
 	if in == nil {
 		return nil
@@ -1077,26 +979,6 @@ func GitSource_ToProto(mapCtx *direct.MapContext, in *krm.GitSource) *pb.GitSour
 	out.Revision = direct.ValueOf(in.Revision)
 	return out
 }
-func Hash_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krm.Hash {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Hash{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	out.Value = []krm.byte{direct.LazyPtr(in.GetValue())}
-	return out
-}
-func Hash_ToProto(mapCtx *direct.MapContext, in *krm.Hash) *pb.Hash {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Hash{}
-	out.Type = direct.Enum_ToProto[pb.Hash_HashType](mapCtx, in.Type)
-	if len(in.Value) > 0 && in.Value[0] != nil {
-		out.Value = direct.ValueOf(in.Value[0])
-	}
-	return out
-}
 func InlineSecret_FromProto(mapCtx *direct.MapContext, in *pb.InlineSecret) *krm.InlineSecret {
 	if in == nil {
 		return nil
@@ -1113,30 +995,6 @@ func InlineSecret_ToProto(mapCtx *direct.MapContext, in *krm.InlineSecret) *pb.I
 	out := &pb.InlineSecret{}
 	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
 	// MISSING: EnvMap
-	return out
-}
-func PrivatePoolV1Config_NetworkConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config_NetworkConfig) *krm.PrivatePoolV1Config_NetworkConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PrivatePoolV1Config_NetworkConfigSpec{}
-	if in.GetPeeredNetwork() != "" {
-		out.PeeredNetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetPeeredNetwork()}
-	}
-	out.EgressOption = direct.Enum_FromProto(mapCtx, in.GetEgressOption())
-	out.PeeredNetworkIPRange = direct.LazyPtr(in.GetPeeredNetworkIpRange())
-	return out
-}
-func PrivatePoolV1Config_NetworkConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV1Config_NetworkConfigSpec) *pb.PrivatePoolV1Config_NetworkConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PrivatePoolV1Config_NetworkConfig{}
-	if in.PeeredNetworkRef != nil {
-		out.PeeredNetwork = in.PeeredNetworkRef.External
-	}
-	out.EgressOption = direct.Enum_ToProto[pb.PrivatePoolV1Config_NetworkConfig_EgressOption](mapCtx, in.EgressOption)
-	out.PeeredNetworkIpRange = direct.ValueOf(in.PeeredNetworkIPRange)
 	return out
 }
 func PrivatePoolV1Config_NetworkConfigStatus_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV1Config_NetworkConfigStatus) *pb.PrivatePoolV1Config_NetworkConfig {
@@ -1167,50 +1025,6 @@ func PrivatePoolV1Config_PrivateServiceConnect_ToProto(mapCtx *direct.MapContext
 	out.NetworkAttachment = direct.ValueOf(in.NetworkAttachment)
 	out.PublicIpAddressDisabled = direct.ValueOf(in.PublicIPAddressDisabled)
 	out.RouteAllTraffic = direct.ValueOf(in.RouteAllTraffic)
-	return out
-}
-func PubsubConfig_FromProto(mapCtx *direct.MapContext, in *pb.PubsubConfig) *krm.PubsubConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PubsubConfig{}
-	// MISSING: Subscription
-	out.Topic = direct.LazyPtr(in.GetTopic())
-	out.ServiceAccountEmail = direct.LazyPtr(in.GetServiceAccountEmail())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	return out
-}
-func PubsubConfig_ToProto(mapCtx *direct.MapContext, in *krm.PubsubConfig) *pb.PubsubConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PubsubConfig{}
-	// MISSING: Subscription
-	out.Topic = direct.ValueOf(in.Topic)
-	out.ServiceAccountEmail = direct.ValueOf(in.ServiceAccountEmail)
-	out.State = direct.Enum_ToProto[pb.PubsubConfig_State](mapCtx, in.State)
-	return out
-}
-func PubsubConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PubsubConfig) *krm.PubsubConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PubsubConfigObservedState{}
-	out.Subscription = direct.LazyPtr(in.GetSubscription())
-	// MISSING: Topic
-	// MISSING: ServiceAccountEmail
-	// MISSING: State
-	return out
-}
-func PubsubConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PubsubConfigObservedState) *pb.PubsubConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PubsubConfig{}
-	out.Subscription = direct.ValueOf(in.Subscription)
-	// MISSING: Topic
-	// MISSING: ServiceAccountEmail
-	// MISSING: State
 	return out
 }
 func PullRequestFilter_FromProto(mapCtx *direct.MapContext, in *pb.PullRequestFilter) *krm.PullRequestFilter {
@@ -1276,42 +1090,6 @@ func PushFilter_Tag_ToProto(mapCtx *direct.MapContext, in *string) *pb.PushFilte
 		return nil
 	}
 	return &pb.PushFilter_Tag{Tag: *in}
-}
-func RepoSource_FromProto(mapCtx *direct.MapContext, in *pb.RepoSource) *krm.RepoSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RepoSource{}
-	out.ProjectID = direct.LazyPtr(in.GetProjectId())
-	out.RepoName = direct.LazyPtr(in.GetRepoName())
-	out.BranchName = direct.LazyPtr(in.GetBranchName())
-	out.TagName = direct.LazyPtr(in.GetTagName())
-	out.CommitSha = direct.LazyPtr(in.GetCommitSha())
-	out.Dir = direct.LazyPtr(in.GetDir())
-	out.InvertRegex = direct.LazyPtr(in.GetInvertRegex())
-	out.Substitutions = in.Substitutions
-	return out
-}
-func RepoSource_ToProto(mapCtx *direct.MapContext, in *krm.RepoSource) *pb.RepoSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RepoSource{}
-	out.ProjectId = direct.ValueOf(in.ProjectID)
-	out.RepoName = direct.ValueOf(in.RepoName)
-	if oneof := RepoSource_BranchName_ToProto(mapCtx, in.BranchName); oneof != nil {
-		out.Revision = oneof
-	}
-	if oneof := RepoSource_TagName_ToProto(mapCtx, in.TagName); oneof != nil {
-		out.Revision = oneof
-	}
-	if oneof := RepoSource_CommitSha_ToProto(mapCtx, in.CommitSha); oneof != nil {
-		out.Revision = oneof
-	}
-	out.Dir = direct.ValueOf(in.Dir)
-	out.InvertRegex = direct.ValueOf(in.InvertRegex)
-	out.Substitutions = in.Substitutions
-	return out
 }
 func RepoSource_BranchName_ToProto(mapCtx *direct.MapContext, in *string) *pb.RepoSource_BranchName {
 	if in == nil {
@@ -1811,26 +1589,6 @@ func Volume_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
 	out := &pb.Volume{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Path = direct.ValueOf(in.Path)
-	return out
-}
-func WebhookConfig_FromProto(mapCtx *direct.MapContext, in *pb.WebhookConfig) *krm.WebhookConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WebhookConfig{}
-	out.Secret = direct.LazyPtr(in.GetSecret())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	return out
-}
-func WebhookConfig_ToProto(mapCtx *direct.MapContext, in *krm.WebhookConfig) *pb.WebhookConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WebhookConfig{}
-	if oneof := WebhookConfig_Secret_ToProto(mapCtx, in.Secret); oneof != nil {
-		out.AuthMethod = oneof
-	}
-	out.State = direct.Enum_ToProto[pb.WebhookConfig_State](mapCtx, in.State)
 	return out
 }
 func WebhookConfig_Secret_ToProto(mapCtx *direct.MapContext, in *string) *pb.WebhookConfig_Secret {

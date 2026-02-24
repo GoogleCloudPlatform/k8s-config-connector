@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: beta
     cnrm.cloud.google.com/system: "true"
   name: cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com
 spec:
@@ -61,6 +62,18 @@ spec:
           spec:
             description: CloudBuildTriggerSpec defines the desired state of CloudBuildTrigger
             properties:
+              approvalConfig:
+                description: Configuration for manual approval to start a build invocation
+                  of this BuildTrigger. Builds created by this trigger will require
+                  approval before they execute. Any user with a Cloud Build Approver
+                  role for the project can approve a build.
+                properties:
+                  approvalRequired:
+                    description: Whether or not approval is needed. If this is set
+                      on a build, it will become pending when created, and will need
+                      to be explicitly approved to start.
+                    type: boolean
+                type: object
               build:
                 description: Contents of the build template.
                 properties:
@@ -587,6 +600,36 @@ spec:
                           repoName:
                             description: Name of the Cloud Source Repository.
                             type: string
+                          repoRef:
+                            description: The Cloud Source Repository to build. If
+                              omitted, the repo with name "default" is assumed.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: The `name` field of a `SourceRepoRepository`
+                                  resource.
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
                           substitutions:
                             additionalProperties:
                               type: string
@@ -841,10 +884,6 @@ spec:
                       config. Format: `projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}`.
                       `projects/{project}/githubEnterpriseConfigs/{id}`.'
                     type: string
-                  path:
-                    description: The path of the file, with the repo root as the root
-                      of the path.
-                    type: string
                   repoType:
                     description: See RepoType above.
                     type: string
@@ -854,6 +893,33 @@ spec:
                       the repo from which the trigger invocation originated is assumed
                       to be the repo from which to read the specified path.
                     type: string
+                  repositoryRef:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `name` field of a `CloudBuildV2Repository`
+                          resource.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                   revision:
                     description: 'The branch, tag, arbitrary ref, or SHA version of
                       the repo to use when resolving the filename (optional). This
@@ -950,6 +1016,12 @@ spec:
                 items:
                   type: string
                 type: array
+              includeBuildLogs:
+                description: 'Build logs will be sent back to GitHub as part of the
+                  checkrun result.  Values can be INCLUDE_BUILD_LOGS_UNSPECIFIED or
+                  INCLUDE_BUILD_LOGS_WITH_STATUS Possible values: ["INCLUDE_BUILD_LOGS_UNSPECIFIED",
+                  "INCLUDE_BUILD_LOGS_WITH_STATUS"].'
+                type: string
               includedFiles:
                 description: |-
                   If any of the files altered in the commit pass the ignored_files
@@ -964,10 +1036,10 @@ spec:
                   type: string
                 type: array
               location:
-                description: The location of this resource.
+                description: Immutable. The location of this resource.
                 type: string
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -1005,14 +1077,72 @@ spec:
                   serviceAccountEmail:
                     description: Service account that will make the push request.
                     type: string
+                  serviceAccountRef:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `email` field of an `IAMServiceAccount` resource.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                   state:
                     description: Potential issues with the underlying Pub/Sub subscription
                       configuration. Only populated on get requests.
+                    type: string
+                  subscription:
+                    description: Output only. Name of the subscription.
                     type: string
                   topic:
                     description: The name of the topic from which this subscription
                       is receiving messages. Format is `projects/{project}/topics/{topic}`.
                     type: string
+                  topicRef:
+                    description: The name of the topic from which this subscription
+                      is receiving messages.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed PubSubTopic
+                          resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
+                        type: string
+                      name:
+                        description: The name of a PubSubTopic resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a PubSubTopic resource.
+                        type: string
+                    type: object
                 type: object
               repositoryEventConfig:
                 description: The configuration of a trigger that creates a build whenever
@@ -1071,7 +1201,7 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The CloudBuildTrigger name. If not given, the metadata.name
+                description: The GCP resource identifier. If not given, the metadata.name
                   will be used.
                 type: string
               serviceAccountRef:
@@ -1173,6 +1303,35 @@ spec:
                   repoName:
                     description: Name of the Cloud Source Repository.
                     type: string
+                  repoRef:
+                    description: The Cloud Source Repository to build. If omitted,
+                      the repo with name "default" is assumed.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `name` field of a `SourceRepoRepository`
+                          resource.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                   substitutions:
                     additionalProperties:
                       type: string
@@ -1196,6 +1355,35 @@ spec:
                     description: Required. Resource name for the secret required as
                       a URL parameter.
                     type: string
+                  secretRef:
+                    description: The secret required
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                        type: string
+                      name:
+                        description: The `name` field of a `SecretManagerSecretVersion`
+                          resource.
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                          resource.
+                        type: string
+                    type: object
                   state:
                     description: Potential issues with the underlying Pub/Sub subscription
                       configuration. Only populated on get requests.
@@ -1236,7 +1424,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the CloudBuildTrigger resource
+                description: A unique Config Connector specifier for the resource
                   in GCP.
                 type: string
               observedGeneration:
@@ -1253,8 +1441,12 @@ spec:
                 properties:
                   createTime:
                     description: Output only. Time when the trigger was created.
+                    format: date-time
                     type: string
                 type: object
+              triggerId:
+                description: The unique identifier for the trigger.
+                type: string
             type: object
         required:
         - spec

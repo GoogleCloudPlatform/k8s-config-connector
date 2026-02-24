@@ -681,47 +681,6 @@ type GitConfig_HTTPConfig struct {
 	ProxySecretVersionName *string `json:"proxySecretVersionName,omitempty"`
 }
 
-// +kcc:proto=google.devtools.cloudbuild.v1.GitFileSource
-type GitFileSource struct {
-	// The path of the file, with the repo root as the root of the path.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.GitFileSource.path
-	Path *string `json:"path,omitempty"`
-
-	// The URI of the repo.
-	//  Either uri or repository can be specified.
-	//  If unspecified, the repo from which the trigger invocation originated is
-	//  assumed to be the repo from which to read the specified path.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.GitFileSource.uri
-	URI *string `json:"uri,omitempty"`
-
-	// The fully qualified resource name of the Repos API repository.
-	//  Either URI or repository can be specified.
-	//  If unspecified, the repo from which the trigger invocation originated is
-	//  assumed to be the repo from which to read the specified path.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.GitFileSource.repository
-	Repository *string `json:"repository,omitempty"`
-
-	// See RepoType above.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.GitFileSource.repo_type
-	RepoType *string `json:"repoType,omitempty"`
-
-	// The branch, tag, arbitrary ref, or SHA version of the repo to use when
-	//  resolving the filename (optional).
-	//  This field respects the same syntax/resolution as described here:
-	//  https://git-scm.com/docs/gitrevisions
-	//  If unspecified, the revision from which the trigger invocation originated
-	//  is assumed to be the revision from which to read the specified path.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.GitFileSource.revision
-	Revision *string `json:"revision,omitempty"`
-
-	// The full resource name of the github enterprise config.
-	//  Format:
-	//  `projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}`.
-	//  `projects/{project}/githubEnterpriseConfigs/{id}`.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.GitFileSource.github_enterprise_config
-	GithubEnterpriseConfig *string `json:"githubEnterpriseConfig,omitempty"`
-}
-
 // +kcc:proto=google.devtools.cloudbuild.v1.GitHubEventsConfig
 type GitHubEventsConfig struct {
 	// The installationID that emits the GitHub event.
@@ -861,24 +820,6 @@ type PrivatePoolV1Config_PrivateServiceConnect struct {
 	RouteAllTraffic *bool `json:"routeAllTraffic,omitempty"`
 }
 
-// +kcc:proto=google.devtools.cloudbuild.v1.PubsubConfig
-type PubsubConfig struct {
-
-	// The name of the topic from which this subscription is receiving messages.
-	//  Format is `projects/{project}/topics/{topic}`.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.PubsubConfig.topic
-	Topic *string `json:"topic,omitempty"`
-
-	// Service account that will make the push request.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.PubsubConfig.service_account_email
-	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty"`
-
-	// Potential issues with the underlying Pub/Sub subscription configuration.
-	//  Only populated on get requests.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.PubsubConfig.state
-	State *string `json:"state,omitempty"`
-}
-
 // +kcc:proto=google.devtools.cloudbuild.v1.PullRequestFilter
 type PullRequestFilter struct {
 	// Regex of branches to match.
@@ -924,53 +865,6 @@ type PushFilter struct {
 	//  git_ref regex.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.PushFilter.invert_regex
 	InvertRegex *bool `json:"invertRegex,omitempty"`
-}
-
-// +kcc:proto=google.devtools.cloudbuild.v1.RepoSource
-type RepoSource struct {
-	// ID of the project that owns the Cloud Source Repository. If omitted, the
-	//  project ID requesting the build is assumed.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.project_id
-	ProjectID *string `json:"projectID,omitempty"`
-
-	// Name of the Cloud Source Repository.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.repo_name
-	RepoName *string `json:"repoName,omitempty"`
-
-	// Regex matching branches to build.
-	//
-	//  The syntax of the regular expressions accepted is the syntax accepted by
-	//  RE2 and described at https://github.com/google/re2/wiki/Syntax
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.branch_name
-	BranchName *string `json:"branchName,omitempty"`
-
-	// Regex matching tags to build.
-	//
-	//  The syntax of the regular expressions accepted is the syntax accepted by
-	//  RE2 and described at https://github.com/google/re2/wiki/Syntax
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.tag_name
-	TagName *string `json:"tagName,omitempty"`
-
-	// Explicit commit SHA to build.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.commit_sha
-	CommitSha *string `json:"commitSha,omitempty"`
-
-	// Directory, relative to the source root, in which to run the build.
-	//
-	//  This must be a relative path. If a step's `dir` is specified and is an
-	//  absolute path, this value is ignored for that step's execution.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.dir
-	Dir *string `json:"dir,omitempty"`
-
-	// Only trigger a build if the revision regex does NOT match the revision
-	//  regex.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.invert_regex
-	InvertRegex *bool `json:"invertRegex,omitempty"`
-
-	// Substitutions to use in a triggered build.
-	//  Should only be used with RunBuildTrigger
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.substitutions
-	Substitutions map[string]string `json:"substitutions,omitempty"`
 }
 
 // +kcc:proto=google.devtools.cloudbuild.v1.RepositoryEventConfig
@@ -1235,18 +1129,6 @@ type Volume struct {
 	Path *string `json:"path,omitempty"`
 }
 
-// +kcc:proto=google.devtools.cloudbuild.v1.WebhookConfig
-type WebhookConfig struct {
-	// Required. Resource name for the secret required as a URL parameter.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.WebhookConfig.secret
-	Secret *string `json:"secret,omitempty"`
-
-	// Potential issues with the underlying Pub/Sub subscription configuration.
-	//  Only populated on get requests.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.WebhookConfig.state
-	State *string `json:"state,omitempty"`
-}
-
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.ApprovalResult
 type ApprovalResultObservedState struct {
 	// Output only. Email of the user that called the ApproveBuild API to
@@ -1407,14 +1289,6 @@ type BuiltImageObservedState struct {
 	// Output only. Stores timing information for pushing the specified image.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuiltImage.push_timing
 	PushTiming *TimeSpan `json:"pushTiming,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.devtools.cloudbuild.v1.PubsubConfig
-type PubsubConfigObservedState struct {
-	// Output only. Name of the subscription. Format is
-	//  `projects/{project}/subscriptions/{subscription}`.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.PubsubConfig.subscription
-	Subscription *string `json:"subscription,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.RepositoryEventConfig
