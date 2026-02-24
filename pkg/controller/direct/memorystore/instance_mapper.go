@@ -385,61 +385,6 @@ func PscAutoConnectionObservedState_Port_ToProto(mapCtx *direct.MapContext, in *
 	out.Port = direct.ValueOf(in)
 	return out
 }
-
-func PscConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krmv1beta1.PscConnection {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1beta1.PscConnection{}
-	if in.GetPscConnectionId() != "" {
-		out.PscConnectionID = direct.LazyPtr(in.GetPscConnectionId())
-	}
-	if in.GetIpAddress() != "" {
-		out.IpAddress = direct.LazyPtr(in.GetIpAddress())
-	}
-	if in.GetNetwork() != "" {
-		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
-	}
-	if in.GetServiceAttachment() != "" {
-		out.ServiceAttachmentRef = &refs.ComputeServiceAttachmentRef{External: in.GetServiceAttachment()}
-	}
-	return out
-}
-func PscConnection_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscConnection) *pb.PscConnection {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PscConnection{}
-	out.PscConnectionId = direct.ValueOf(in.PscConnectionID)
-	out.IpAddress = direct.ValueOf(in.IpAddress)
-	if in.NetworkRef != nil {
-		out.Network = in.NetworkRef.External
-	}
-	if in.ServiceAttachmentRef != nil {
-		out.ServiceAttachment = in.ServiceAttachmentRef.External
-	}
-	return out
-}
-func PscConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krmv1beta1.PscConnectionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1beta1.PscConnectionObservedState{}
-	out.ProjectID = direct.LazyPtr(in.GetProjectId())
-	out.PscConnectionStatus = direct.Enum_FromProto(mapCtx, in.GetPscConnectionStatus())
-	out.ConnectionType = direct.Enum_FromProto(mapCtx, in.GetConnectionType())
-	return out
-}
-func PscConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscConnectionObservedState) *pb.PscConnection {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PscConnection{}
-	out.ProjectId = direct.ValueOf(in.ProjectID)
-	out.PscConnectionStatus = direct.Enum_ToProto[pb.PscConnectionStatus](mapCtx, in.PscConnectionStatus)
-	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
-	return out
-}
 func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krmv1beta1.ZoneDistributionConfig {
 	if in == nil {
 		return nil
