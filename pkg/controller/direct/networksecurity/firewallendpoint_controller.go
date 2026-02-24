@@ -130,7 +130,7 @@ func (a *FirewallEndpointAdapter) Create(ctx context.Context, createOp *directba
 		return fmt.Errorf("creating FirewallEndpoint %s: %w", a.id, err)
 	}
 	_ = op
-	
+
 	log.V(2).Info("successfully requested creation of FirewallEndpoint", "name", a.id)
 
 	status := &krm.NetworkSecurityFirewallEndpointStatus{}

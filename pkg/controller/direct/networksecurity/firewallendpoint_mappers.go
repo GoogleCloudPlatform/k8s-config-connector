@@ -15,17 +15,18 @@
 package networksecurity
 
 import (
-	networksecuritypb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+
+	api "google.golang.org/api/networksecurity/v1beta1"
 )
 
-func FirewallEndpointSpec_ToProto(ctx *direct.MapContext, in *v1beta1.NetworkSecurityFirewallEndpointSpec) *networksecuritypb.FirewallEndpoint {
+func FirewallEndpointSpec_ToAPI(ctx *direct.MapContext, in *v1beta1.NetworkSecurityFirewallEndpointSpec) *api.FirewallEndpoint {
 	if in == nil {
 		return nil
 	}
 
-	out := &networksecuritypb.FirewallEndpoint{}
+	out := &api.FirewallEndpoint{}
 	if in.Description != nil {
 		out.Description = *in.Description
 	}
@@ -38,13 +39,29 @@ func FirewallEndpointSpec_ToProto(ctx *direct.MapContext, in *v1beta1.NetworkSec
 	return out
 }
 
-func FirewallEndpointObservedState_FromProto(ctx *direct.MapContext, in *networksecuritypb.FirewallEndpoint) *v1beta1.NetworkSecurityFirewallEndpointStatus {
+func FirewallEndpointSpec_FromAPI(ctx *direct.MapContext, in *api.FirewallEndpoint) *v1beta1.NetworkSecurityFirewallEndpointSpec {
+	if in == nil {
+		return nil
+	}
+
+	out := &v1beta1.NetworkSecurityFirewallEndpointSpec{}
+	out.Description = direct.LazyPtr(in.Description)
+	if len(in.Labels) > 0 {
+		out.Labels = in.Labels
+	}
+	out.BillingProjectID = direct.LazyPtr(in.BillingProjectId)
+	return out
+}
+
+func FirewallEndpointObservedState_FromAPI(ctx *direct.MapContext, in *api.FirewallEndpoint) *v1beta1.NetworkSecurityFirewallEndpointStatus {
 	if in == nil {
 		return nil
 	}
 
 	out := &v1beta1.NetworkSecurityFirewallEndpointStatus{}
 	out.AssociatedNetworks = in.AssociatedNetworks
-	// TODO: map timestamps or other fields if needed
+	if in.UpdateTime != "" {
+		out.UpdateTime = direct.LazyPtr(in.UpdateTime)
+	}
 	return out
 }
