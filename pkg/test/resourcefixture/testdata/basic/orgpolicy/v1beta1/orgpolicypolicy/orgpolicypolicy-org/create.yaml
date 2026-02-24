@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: orgpolicy.cnrm.cloud.google.com/v1alpha1
+apiVersion: orgpolicy.cnrm.cloud.google.com/v1beta1
 kind: OrgPolicyPolicy
 metadata:
   name: custom.orgpolicypolicy${uniqueId}
 spec:
-  projectRef:
-    external: projects/1070934155037  # kcc-orgpolicy-test-project
+  organizationRef:
+    external: "organizations/1234567890" # Example org ID
   spec:
     rules:
       - enforce: false
