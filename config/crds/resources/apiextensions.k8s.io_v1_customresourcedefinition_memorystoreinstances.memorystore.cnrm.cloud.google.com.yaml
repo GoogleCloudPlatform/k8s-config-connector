@@ -45,7 +45,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: MemorystoreInstance is the Schema for the MemorystoreInstance
-          API
+          API. This resource manages Memorystore for Valkey instances.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -440,7 +440,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: MemorystoreInstance is the Schema for the MemorystoreInstance
-          API
+          API. This resource manages Memorystore for Valkey instances.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation

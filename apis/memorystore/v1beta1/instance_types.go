@@ -406,7 +406,7 @@ type PscConnectionObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// MemorystoreInstance is the Schema for the MemorystoreInstance API
+// MemorystoreInstance is the Schema for the MemorystoreInstance API. This resource manages Memorystore for Valkey instances.
 // +k8s:openapi-gen=true
 // +kubebuilder:storageversion
 type MemorystoreInstance struct {
