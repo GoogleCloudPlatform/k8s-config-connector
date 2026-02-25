@@ -45,10 +45,10 @@ func (s *InstanceGroupManagersV1) Get(ctx context.Context, req *pb.GetInstanceGr
 			// Synthetic support for GKE IGMs
 			if strings.HasPrefix(name.Name, "gke-") {
 				obj = &pb.InstanceGroupManager{
-					Name:      PtrTo(name.Name),
-					SelfLink:  PtrTo(buildComputeSelfLink(ctx, fqn)),
-					Zone:      PtrTo(buildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/zones/"+name.Zone)),
-					Id:        PtrTo(s.generateID()),
+					Name:          PtrTo(name.Name),
+					SelfLink:      PtrTo(buildComputeSelfLink(ctx, fqn)),
+					Zone:          PtrTo(buildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/zones/"+name.Zone)),
+					Id:            PtrTo(s.generateID()),
 					InstanceGroup: PtrTo(buildComputeSelfLink(ctx, fqn[:len(fqn)-4])), // approximate
 					Status: &pb.InstanceGroupManagerStatus{
 						IsStable: PtrTo(true),
