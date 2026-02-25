@@ -56,7 +56,7 @@ func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) 
 	if !ReplicaConfigurationsMatch(desired.ReplicaConfiguration, actual.ReplicaConfiguration) {
 		diff.AddField(".replicaConfiguration", actual.ReplicaConfiguration, desired.ReplicaConfiguration)
 	}
-	if !ReplicationClustersMatch(desired.ReplicationCluster, actual.ReplicationCluster) {
+	if !ReplicationClustersMatch(desired.ReplicationCluster, actual.ReplicationCluster, actual.Project) {
 		diff.AddField(".replicationCluster", actual.ReplicationCluster, desired.ReplicationCluster)
 	}
 	// Ignore RootPassword. It is not exported.
@@ -676,14 +676,14 @@ func PointersMatch[T any](desired *T, actual *T) bool {
 	return true
 }
 
-func ReplicationClustersMatch(desired *api.ReplicationCluster, actual *api.ReplicationCluster) bool {
+func ReplicationClustersMatch(desired *api.ReplicationCluster, actual *api.ReplicationCluster, defaultProjectID string) bool {
 	if desired == nil && actual == nil {
 		return true
 	}
-	if !PointersMatch(desired, actual) {
+	if (desired == nil) != (actual == nil) {
 		return false
 	}
-	if desired.FailoverDrReplicaName != actual.FailoverDrReplicaName {
+	if normalizeReplicaName(desired.FailoverDrReplicaName, defaultProjectID) != normalizeReplicaName(actual.FailoverDrReplicaName, defaultProjectID) {
 		return false
 	}
 	// Ignore PsaWriteEndpoint. It is output only.
