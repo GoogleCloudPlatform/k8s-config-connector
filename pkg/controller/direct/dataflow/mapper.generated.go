@@ -28,6 +28,82 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AutoscalingSettings_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingSettings) *krm.AutoscalingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutoscalingSettings{}
+	out.Algorithm = direct.Enum_FromProto(mapCtx, in.GetAlgorithm())
+	out.MaxNumWorkers = direct.LazyPtr(in.GetMaxNumWorkers())
+	return out
+}
+func AutoscalingSettings_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingSettings) *pb.AutoscalingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingSettings{}
+	out.Algorithm = direct.Enum_ToProto[pb.AutoscalingAlgorithm](mapCtx, in.Algorithm)
+	out.MaxNumWorkers = direct.ValueOf(in.MaxNumWorkers)
+	return out
+}
+func BigQueryIoDetails_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryIODetails) *krm.BigQueryIoDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryIoDetails{}
+	out.Table = direct.LazyPtr(in.GetTable())
+	out.Dataset = direct.LazyPtr(in.GetDataset())
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.Query = direct.LazyPtr(in.GetQuery())
+	return out
+}
+func BigQueryIoDetails_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryIoDetails) *pb.BigQueryIODetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryIODetails{}
+	out.Table = direct.ValueOf(in.Table)
+	out.Dataset = direct.ValueOf(in.Dataset)
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.Query = direct.ValueOf(in.Query)
+	return out
+}
+func BigTableIoDetails_FromProto(mapCtx *direct.MapContext, in *pb.BigTableIODetails) *krm.BigTableIoDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigTableIoDetails{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.InstanceID = direct.LazyPtr(in.GetInstanceId())
+	out.TableID = direct.LazyPtr(in.GetTableId())
+	return out
+}
+func BigTableIoDetails_ToProto(mapCtx *direct.MapContext, in *krm.BigTableIoDetails) *pb.BigTableIODetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigTableIODetails{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.InstanceId = direct.ValueOf(in.InstanceID)
+	out.TableId = direct.ValueOf(in.TableID)
+	return out
+}
+func DataSamplingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataSamplingConfig) *krm.DataSamplingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataSamplingConfig{}
+	out.Behaviors = direct.EnumSlice_FromProto(mapCtx, in.Behaviors)
+	return out
+}
+func DataSamplingConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataSamplingConfig) *pb.DataSamplingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataSamplingConfig{}
+	out.Behaviors = direct.EnumSlice_ToProto[pb.DataSamplingConfig_DataSamplingBehavior](mapCtx, in.Behaviors)
+	return out
+}
 func DataflowFlexTemplateJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.FlexTemplateRuntimeEnvironment) *krm.DataflowFlexTemplateJobSpec {
 	if in == nil {
 		return nil
@@ -106,5 +182,895 @@ func DataflowFlexTemplateJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Data
 	out.LauncherMachineType = direct.ValueOf(in.LauncherMachineType)
 	// MISSING: EnableLauncherVMSerialPortLogging
 	// MISSING: StreamingMode
+	return out
+}
+func DataflowJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.DataflowJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataflowJobSpec{}
+	// MISSING: ID
+	// MISSING: ProjectID
+	// MISSING: Name
+	// MISSING: Type
+	// MISSING: Environment
+	// MISSING: Steps
+	// MISSING: StepsLocation
+	// MISSING: CurrentState
+	// MISSING: CurrentStateTime
+	// MISSING: RequestedState
+	// MISSING: ExecutionInfo
+	// MISSING: CreateTime
+	// MISSING: ReplaceJobID
+	out.TransformNameMapping = in.TransformNameMapping
+	// MISSING: ClientRequestID
+	// MISSING: ReplacedByJobID
+	// MISSING: TempFiles
+	// MISSING: Labels
+	// MISSING: Location
+	// MISSING: PipelineDescription
+	// MISSING: StageStates
+	// MISSING: JobMetadata
+	// MISSING: StartTime
+	// MISSING: CreatedFromSnapshotID
+	// MISSING: SatisfiesPzs
+	// MISSING: RuntimeUpdatableParams
+	// MISSING: SatisfiesPzi
+	// MISSING: ServiceResources
+	return out
+}
+func DataflowJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataflowJobSpec) *pb.Job {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Job{}
+	// MISSING: ID
+	// MISSING: ProjectID
+	// MISSING: Name
+	// MISSING: Type
+	// MISSING: Environment
+	// MISSING: Steps
+	// MISSING: StepsLocation
+	// MISSING: CurrentState
+	// MISSING: CurrentStateTime
+	// MISSING: RequestedState
+	// MISSING: ExecutionInfo
+	// MISSING: CreateTime
+	// MISSING: ReplaceJobID
+	out.TransformNameMapping = in.TransformNameMapping
+	// MISSING: ClientRequestID
+	// MISSING: ReplacedByJobID
+	// MISSING: TempFiles
+	// MISSING: Labels
+	// MISSING: Location
+	// MISSING: PipelineDescription
+	// MISSING: StageStates
+	// MISSING: JobMetadata
+	// MISSING: StartTime
+	// MISSING: CreatedFromSnapshotID
+	// MISSING: SatisfiesPzs
+	// MISSING: RuntimeUpdatableParams
+	// MISSING: SatisfiesPzi
+	// MISSING: ServiceResources
+	return out
+}
+func DatastoreIoDetails_FromProto(mapCtx *direct.MapContext, in *pb.DatastoreIODetails) *krm.DatastoreIoDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatastoreIoDetails{}
+	out.Namespace = direct.LazyPtr(in.GetNamespace())
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	return out
+}
+func DatastoreIoDetails_ToProto(mapCtx *direct.MapContext, in *krm.DatastoreIoDetails) *pb.DatastoreIODetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatastoreIODetails{}
+	out.Namespace = direct.ValueOf(in.Namespace)
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	return out
+}
+func DebugOptions_FromProto(mapCtx *direct.MapContext, in *pb.DebugOptions) *krm.DebugOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DebugOptions{}
+	out.EnableHotKeyLogging = direct.LazyPtr(in.GetEnableHotKeyLogging())
+	out.DataSampling = DataSamplingConfig_FromProto(mapCtx, in.GetDataSampling())
+	return out
+}
+func DebugOptions_ToProto(mapCtx *direct.MapContext, in *krm.DebugOptions) *pb.DebugOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DebugOptions{}
+	out.EnableHotKeyLogging = direct.ValueOf(in.EnableHotKeyLogging)
+	out.DataSampling = DataSamplingConfig_ToProto(mapCtx, in.DataSampling)
+	return out
+}
+func Disk_FromProto(mapCtx *direct.MapContext, in *pb.Disk) *krm.Disk {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Disk{}
+	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
+	out.DiskType = direct.LazyPtr(in.GetDiskType())
+	out.MountPoint = direct.LazyPtr(in.GetMountPoint())
+	return out
+}
+func Disk_ToProto(mapCtx *direct.MapContext, in *krm.Disk) *pb.Disk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Disk{}
+	out.SizeGb = direct.ValueOf(in.SizeGB)
+	out.DiskType = direct.ValueOf(in.DiskType)
+	out.MountPoint = direct.ValueOf(in.MountPoint)
+	return out
+}
+func DisplayData_FromProto(mapCtx *direct.MapContext, in *pb.DisplayData) *krm.DisplayData {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DisplayData{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Namespace = direct.LazyPtr(in.GetNamespace())
+	out.StrValue = direct.LazyPtr(in.GetStrValue())
+	out.Int64Value = direct.LazyPtr(in.GetInt64Value())
+	out.FloatValue = direct.LazyPtr(in.GetFloatValue())
+	out.JavaClassValue = direct.LazyPtr(in.GetJavaClassValue())
+	out.TimestampValue = direct.StringTimestamp_FromProto(mapCtx, in.GetTimestampValue())
+	out.DurationValue = direct.StringDuration_FromProto(mapCtx, in.GetDurationValue())
+	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
+	out.ShortStrValue = direct.LazyPtr(in.GetShortStrValue())
+	out.URL = direct.LazyPtr(in.GetUrl())
+	out.Label = direct.LazyPtr(in.GetLabel())
+	return out
+}
+func DisplayData_ToProto(mapCtx *direct.MapContext, in *krm.DisplayData) *pb.DisplayData {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DisplayData{}
+	out.Key = direct.ValueOf(in.Key)
+	out.Namespace = direct.ValueOf(in.Namespace)
+	if oneof := DisplayData_StrValue_ToProto(mapCtx, in.StrValue); oneof != nil {
+		out.Value = oneof
+	}
+	if oneof := DisplayData_Int64Value_ToProto(mapCtx, in.Int64Value); oneof != nil {
+		out.Value = oneof
+	}
+	if oneof := DisplayData_FloatValue_ToProto(mapCtx, in.FloatValue); oneof != nil {
+		out.Value = oneof
+	}
+	if oneof := DisplayData_JavaClassValue_ToProto(mapCtx, in.JavaClassValue); oneof != nil {
+		out.Value = oneof
+	}
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.TimestampValue); oneof != nil {
+		out.Value = &pb.DisplayData_TimestampValue{TimestampValue: oneof}
+	}
+	if oneof := direct.StringDuration_ToProto(mapCtx, in.DurationValue); oneof != nil {
+		out.Value = &pb.DisplayData_DurationValue{DurationValue: oneof}
+	}
+	if oneof := DisplayData_BoolValue_ToProto(mapCtx, in.BoolValue); oneof != nil {
+		out.Value = oneof
+	}
+	out.ShortStrValue = direct.ValueOf(in.ShortStrValue)
+	out.Url = direct.ValueOf(in.URL)
+	out.Label = direct.ValueOf(in.Label)
+	return out
+}
+func DisplayData_StrValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.DisplayData_StrValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.DisplayData_StrValue{StrValue: *in}
+}
+func DisplayData_Int64Value_ToProto(mapCtx *direct.MapContext, in *int64) *pb.DisplayData_Int64Value {
+	if in == nil {
+		return nil
+	}
+	return &pb.DisplayData_Int64Value{Int64Value: *in}
+}
+func DisplayData_FloatValue_ToProto(mapCtx *direct.MapContext, in *float32) *pb.DisplayData_FloatValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.DisplayData_FloatValue{FloatValue: *in}
+}
+func DisplayData_JavaClassValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.DisplayData_JavaClassValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.DisplayData_JavaClassValue{JavaClassValue: *in}
+}
+func DisplayData_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.DisplayData_BoolValue {
+	if in == nil {
+		return nil
+	}
+	return &pb.DisplayData_BoolValue{BoolValue: *in}
+}
+func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment{}
+	out.TempStoragePrefix = direct.LazyPtr(in.GetTempStoragePrefix())
+	out.ClusterManagerAPIService = direct.LazyPtr(in.GetClusterManagerApiService())
+	out.Experiments = in.Experiments
+	out.ServiceOptions = in.ServiceOptions
+	out.ServiceKMSKeyName = direct.LazyPtr(in.GetServiceKmsKeyName())
+	out.WorkerPools = direct.Slice_FromProto(mapCtx, in.WorkerPools, WorkerPool_FromProto)
+	out.UserAgent = direct.Struct_FromProto(mapCtx, in.GetUserAgent())
+	out.Version = direct.Struct_FromProto(mapCtx, in.GetVersion())
+	out.Dataset = direct.LazyPtr(in.GetDataset())
+	out.SdkPipelineOptions = direct.Struct_FromProto(mapCtx, in.GetSdkPipelineOptions())
+	out.InternalExperiments = Any_FromProto(mapCtx, in.GetInternalExperiments())
+	out.ServiceAccountEmail = direct.LazyPtr(in.GetServiceAccountEmail())
+	out.FlexResourceSchedulingGoal = direct.Enum_FromProto(mapCtx, in.GetFlexResourceSchedulingGoal())
+	out.WorkerRegion = direct.LazyPtr(in.GetWorkerRegion())
+	out.WorkerZone = direct.LazyPtr(in.GetWorkerZone())
+	// MISSING: ShuffleMode
+	out.DebugOptions = DebugOptions_FromProto(mapCtx, in.GetDebugOptions())
+	// MISSING: UseStreamingEngineResourceBasedBilling
+	out.StreamingMode = direct.Enum_FromProto(mapCtx, in.GetStreamingMode())
+	return out
+}
+func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	out.TempStoragePrefix = direct.ValueOf(in.TempStoragePrefix)
+	out.ClusterManagerApiService = direct.ValueOf(in.ClusterManagerAPIService)
+	out.Experiments = in.Experiments
+	out.ServiceOptions = in.ServiceOptions
+	out.ServiceKmsKeyName = direct.ValueOf(in.ServiceKMSKeyName)
+	out.WorkerPools = direct.Slice_ToProto(mapCtx, in.WorkerPools, WorkerPool_ToProto)
+	out.UserAgent = direct.Struct_ToProto(mapCtx, in.UserAgent)
+	out.Version = direct.Struct_ToProto(mapCtx, in.Version)
+	out.Dataset = direct.ValueOf(in.Dataset)
+	out.SdkPipelineOptions = direct.Struct_ToProto(mapCtx, in.SdkPipelineOptions)
+	out.InternalExperiments = Any_ToProto(mapCtx, in.InternalExperiments)
+	out.ServiceAccountEmail = direct.ValueOf(in.ServiceAccountEmail)
+	out.FlexResourceSchedulingGoal = direct.Enum_ToProto[pb.FlexResourceSchedulingGoal](mapCtx, in.FlexResourceSchedulingGoal)
+	out.WorkerRegion = direct.ValueOf(in.WorkerRegion)
+	out.WorkerZone = direct.ValueOf(in.WorkerZone)
+	// MISSING: ShuffleMode
+	out.DebugOptions = DebugOptions_ToProto(mapCtx, in.DebugOptions)
+	// MISSING: UseStreamingEngineResourceBasedBilling
+	out.StreamingMode = direct.Enum_ToProto[pb.StreamingMode](mapCtx, in.StreamingMode)
+	return out
+}
+func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.EnvironmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EnvironmentObservedState{}
+	// MISSING: TempStoragePrefix
+	// MISSING: ClusterManagerAPIService
+	// MISSING: Experiments
+	// MISSING: ServiceOptions
+	// MISSING: ServiceKMSKeyName
+	// MISSING: WorkerPools
+	// MISSING: UserAgent
+	// MISSING: Version
+	// MISSING: Dataset
+	// MISSING: SdkPipelineOptions
+	// MISSING: InternalExperiments
+	// MISSING: ServiceAccountEmail
+	// MISSING: FlexResourceSchedulingGoal
+	// MISSING: WorkerRegion
+	// MISSING: WorkerZone
+	out.ShuffleMode = direct.Enum_FromProto(mapCtx, in.GetShuffleMode())
+	// MISSING: DebugOptions
+	out.UseStreamingEngineResourceBasedBilling = direct.LazyPtr(in.GetUseStreamingEngineResourceBasedBilling())
+	// MISSING: StreamingMode
+	return out
+}
+func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentObservedState) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: TempStoragePrefix
+	// MISSING: ClusterManagerAPIService
+	// MISSING: Experiments
+	// MISSING: ServiceOptions
+	// MISSING: ServiceKMSKeyName
+	// MISSING: WorkerPools
+	// MISSING: UserAgent
+	// MISSING: Version
+	// MISSING: Dataset
+	// MISSING: SdkPipelineOptions
+	// MISSING: InternalExperiments
+	// MISSING: ServiceAccountEmail
+	// MISSING: FlexResourceSchedulingGoal
+	// MISSING: WorkerRegion
+	// MISSING: WorkerZone
+	out.ShuffleMode = direct.Enum_ToProto[pb.ShuffleMode](mapCtx, in.ShuffleMode)
+	// MISSING: DebugOptions
+	out.UseStreamingEngineResourceBasedBilling = direct.ValueOf(in.UseStreamingEngineResourceBasedBilling)
+	// MISSING: StreamingMode
+	return out
+}
+func ExecutionStageState_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionStageState) *krm.ExecutionStageState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionStageState{}
+	out.ExecutionStageName = direct.LazyPtr(in.GetExecutionStageName())
+	out.ExecutionStageState = direct.Enum_FromProto(mapCtx, in.GetExecutionStageState())
+	out.CurrentStateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCurrentStateTime())
+	return out
+}
+func ExecutionStageState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionStageState) *pb.ExecutionStageState {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionStageState{}
+	out.ExecutionStageName = direct.ValueOf(in.ExecutionStageName)
+	out.ExecutionStageState = direct.Enum_ToProto[pb.JobState](mapCtx, in.ExecutionStageState)
+	out.CurrentStateTime = direct.StringTimestamp_ToProto(mapCtx, in.CurrentStateTime)
+	return out
+}
+func ExecutionStageSummary_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionStageSummary) *krm.ExecutionStageSummary {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionStageSummary{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Kind = direct.Enum_FromProto(mapCtx, in.GetKind())
+	out.InputSource = direct.Slice_FromProto(mapCtx, in.InputSource, ExecutionStageSummary_StageSource_FromProto)
+	out.OutputSource = direct.Slice_FromProto(mapCtx, in.OutputSource, ExecutionStageSummary_StageSource_FromProto)
+	out.PrerequisiteStage = in.PrerequisiteStage
+	out.ComponentTransform = direct.Slice_FromProto(mapCtx, in.ComponentTransform, ExecutionStageSummary_ComponentTransform_FromProto)
+	out.ComponentSource = direct.Slice_FromProto(mapCtx, in.ComponentSource, ExecutionStageSummary_ComponentSource_FromProto)
+	return out
+}
+func ExecutionStageSummary_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionStageSummary) *pb.ExecutionStageSummary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionStageSummary{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Id = direct.ValueOf(in.ID)
+	out.Kind = direct.Enum_ToProto[pb.KindType](mapCtx, in.Kind)
+	out.InputSource = direct.Slice_ToProto(mapCtx, in.InputSource, ExecutionStageSummary_StageSource_ToProto)
+	out.OutputSource = direct.Slice_ToProto(mapCtx, in.OutputSource, ExecutionStageSummary_StageSource_ToProto)
+	out.PrerequisiteStage = in.PrerequisiteStage
+	out.ComponentTransform = direct.Slice_ToProto(mapCtx, in.ComponentTransform, ExecutionStageSummary_ComponentTransform_ToProto)
+	out.ComponentSource = direct.Slice_ToProto(mapCtx, in.ComponentSource, ExecutionStageSummary_ComponentSource_ToProto)
+	return out
+}
+func ExecutionStageSummary_ComponentSource_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionStageSummary_ComponentSource) *krm.ExecutionStageSummary_ComponentSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionStageSummary_ComponentSource{}
+	out.UserName = direct.LazyPtr(in.GetUserName())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.OriginalTransformOrCollection = direct.LazyPtr(in.GetOriginalTransformOrCollection())
+	return out
+}
+func ExecutionStageSummary_ComponentSource_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionStageSummary_ComponentSource) *pb.ExecutionStageSummary_ComponentSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionStageSummary_ComponentSource{}
+	out.UserName = direct.ValueOf(in.UserName)
+	out.Name = direct.ValueOf(in.Name)
+	out.OriginalTransformOrCollection = direct.ValueOf(in.OriginalTransformOrCollection)
+	return out
+}
+func ExecutionStageSummary_ComponentTransform_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionStageSummary_ComponentTransform) *krm.ExecutionStageSummary_ComponentTransform {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionStageSummary_ComponentTransform{}
+	out.UserName = direct.LazyPtr(in.GetUserName())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.OriginalTransform = direct.LazyPtr(in.GetOriginalTransform())
+	return out
+}
+func ExecutionStageSummary_ComponentTransform_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionStageSummary_ComponentTransform) *pb.ExecutionStageSummary_ComponentTransform {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionStageSummary_ComponentTransform{}
+	out.UserName = direct.ValueOf(in.UserName)
+	out.Name = direct.ValueOf(in.Name)
+	out.OriginalTransform = direct.ValueOf(in.OriginalTransform)
+	return out
+}
+func ExecutionStageSummary_StageSource_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionStageSummary_StageSource) *krm.ExecutionStageSummary_StageSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionStageSummary_StageSource{}
+	out.UserName = direct.LazyPtr(in.GetUserName())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.OriginalTransformOrCollection = direct.LazyPtr(in.GetOriginalTransformOrCollection())
+	out.SizeBytes = direct.LazyPtr(in.GetSizeBytes())
+	return out
+}
+func ExecutionStageSummary_StageSource_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionStageSummary_StageSource) *pb.ExecutionStageSummary_StageSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionStageSummary_StageSource{}
+	out.UserName = direct.ValueOf(in.UserName)
+	out.Name = direct.ValueOf(in.Name)
+	out.OriginalTransformOrCollection = direct.ValueOf(in.OriginalTransformOrCollection)
+	out.SizeBytes = direct.ValueOf(in.SizeBytes)
+	return out
+}
+func FileIoDetails_FromProto(mapCtx *direct.MapContext, in *pb.FileIODetails) *krm.FileIoDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FileIoDetails{}
+	out.FilePattern = direct.LazyPtr(in.GetFilePattern())
+	return out
+}
+func FileIoDetails_ToProto(mapCtx *direct.MapContext, in *krm.FileIoDetails) *pb.FileIODetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FileIODetails{}
+	out.FilePattern = direct.ValueOf(in.FilePattern)
+	return out
+}
+func JobExecutionInfo_FromProto(mapCtx *direct.MapContext, in *pb.JobExecutionInfo) *krm.JobExecutionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.JobExecutionInfo{}
+	// MISSING: Stages
+	return out
+}
+func JobExecutionInfo_ToProto(mapCtx *direct.MapContext, in *krm.JobExecutionInfo) *pb.JobExecutionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.JobExecutionInfo{}
+	// MISSING: Stages
+	return out
+}
+func JobExecutionStageInfo_FromProto(mapCtx *direct.MapContext, in *pb.JobExecutionStageInfo) *krm.JobExecutionStageInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.JobExecutionStageInfo{}
+	out.StepName = in.StepName
+	return out
+}
+func JobExecutionStageInfo_ToProto(mapCtx *direct.MapContext, in *krm.JobExecutionStageInfo) *pb.JobExecutionStageInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.JobExecutionStageInfo{}
+	out.StepName = in.StepName
+	return out
+}
+func Package_FromProto(mapCtx *direct.MapContext, in *pb.Package) *krm.Package {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Package{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Location = direct.LazyPtr(in.GetLocation())
+	return out
+}
+func Package_ToProto(mapCtx *direct.MapContext, in *krm.Package) *pb.Package {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Package{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Location = direct.ValueOf(in.Location)
+	return out
+}
+func PipelineDescription_FromProto(mapCtx *direct.MapContext, in *pb.PipelineDescription) *krm.PipelineDescription {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PipelineDescription{}
+	out.OriginalPipelineTransform = direct.Slice_FromProto(mapCtx, in.OriginalPipelineTransform, TransformSummary_FromProto)
+	out.ExecutionPipelineStage = direct.Slice_FromProto(mapCtx, in.ExecutionPipelineStage, ExecutionStageSummary_FromProto)
+	out.DisplayData = direct.Slice_FromProto(mapCtx, in.DisplayData, DisplayData_FromProto)
+	out.StepNamesHash = direct.LazyPtr(in.GetStepNamesHash())
+	return out
+}
+func PipelineDescription_ToProto(mapCtx *direct.MapContext, in *krm.PipelineDescription) *pb.PipelineDescription {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineDescription{}
+	out.OriginalPipelineTransform = direct.Slice_ToProto(mapCtx, in.OriginalPipelineTransform, TransformSummary_ToProto)
+	out.ExecutionPipelineStage = direct.Slice_ToProto(mapCtx, in.ExecutionPipelineStage, ExecutionStageSummary_ToProto)
+	out.DisplayData = direct.Slice_ToProto(mapCtx, in.DisplayData, DisplayData_ToProto)
+	out.StepNamesHash = direct.ValueOf(in.StepNamesHash)
+	return out
+}
+func PubSubIoDetails_FromProto(mapCtx *direct.MapContext, in *pb.PubSubIODetails) *krm.PubSubIoDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PubSubIoDetails{}
+	out.Topic = direct.LazyPtr(in.GetTopic())
+	out.Subscription = direct.LazyPtr(in.GetSubscription())
+	return out
+}
+func PubSubIoDetails_ToProto(mapCtx *direct.MapContext, in *krm.PubSubIoDetails) *pb.PubSubIODetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PubSubIODetails{}
+	out.Topic = direct.ValueOf(in.Topic)
+	out.Subscription = direct.ValueOf(in.Subscription)
+	return out
+}
+func RuntimeUpdatableParams_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeUpdatableParams) *krm.RuntimeUpdatableParams {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RuntimeUpdatableParams{}
+	out.MaxNumWorkers = in.MaxNumWorkers
+	out.MinNumWorkers = in.MinNumWorkers
+	out.WorkerUtilizationHint = in.WorkerUtilizationHint
+	return out
+}
+func RuntimeUpdatableParams_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeUpdatableParams) *pb.RuntimeUpdatableParams {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RuntimeUpdatableParams{}
+	out.MaxNumWorkers = in.MaxNumWorkers
+	out.MinNumWorkers = in.MinNumWorkers
+	out.WorkerUtilizationHint = in.WorkerUtilizationHint
+	return out
+}
+func SdkBug_FromProto(mapCtx *direct.MapContext, in *pb.SdkBug) *krm.SdkBug {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SdkBug{}
+	// MISSING: Type
+	// MISSING: Severity
+	// MISSING: URI
+	return out
+}
+func SdkBug_ToProto(mapCtx *direct.MapContext, in *krm.SdkBug) *pb.SdkBug {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SdkBug{}
+	// MISSING: Type
+	// MISSING: Severity
+	// MISSING: URI
+	return out
+}
+func SdkBugObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SdkBug) *krm.SdkBugObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SdkBugObservedState{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
+	out.URI = direct.LazyPtr(in.GetUri())
+	return out
+}
+func SdkBugObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SdkBugObservedState) *pb.SdkBug {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SdkBug{}
+	out.Type = direct.Enum_ToProto[pb.SdkBug_Type](mapCtx, in.Type)
+	out.Severity = direct.Enum_ToProto[pb.SdkBug_Severity](mapCtx, in.Severity)
+	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
+func SdkHarnessContainerImage_FromProto(mapCtx *direct.MapContext, in *pb.SdkHarnessContainerImage) *krm.SdkHarnessContainerImage {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SdkHarnessContainerImage{}
+	out.ContainerImage = direct.LazyPtr(in.GetContainerImage())
+	out.UseSingleCorePerContainer = direct.LazyPtr(in.GetUseSingleCorePerContainer())
+	out.EnvironmentID = direct.LazyPtr(in.GetEnvironmentId())
+	out.Capabilities = in.Capabilities
+	return out
+}
+func SdkHarnessContainerImage_ToProto(mapCtx *direct.MapContext, in *krm.SdkHarnessContainerImage) *pb.SdkHarnessContainerImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SdkHarnessContainerImage{}
+	out.ContainerImage = direct.ValueOf(in.ContainerImage)
+	out.UseSingleCorePerContainer = direct.ValueOf(in.UseSingleCorePerContainer)
+	out.EnvironmentId = direct.ValueOf(in.EnvironmentID)
+	out.Capabilities = in.Capabilities
+	return out
+}
+func SdkVersion_FromProto(mapCtx *direct.MapContext, in *pb.SdkVersion) *krm.SdkVersion {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SdkVersion{}
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.VersionDisplayName = direct.LazyPtr(in.GetVersionDisplayName())
+	out.SdkSupportStatus = direct.Enum_FromProto(mapCtx, in.GetSdkSupportStatus())
+	// MISSING: Bugs
+	return out
+}
+func SdkVersion_ToProto(mapCtx *direct.MapContext, in *krm.SdkVersion) *pb.SdkVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SdkVersion{}
+	out.Version = direct.ValueOf(in.Version)
+	out.VersionDisplayName = direct.ValueOf(in.VersionDisplayName)
+	out.SdkSupportStatus = direct.Enum_ToProto[pb.SdkVersion_SdkSupportStatus](mapCtx, in.SdkSupportStatus)
+	// MISSING: Bugs
+	return out
+}
+func SdkVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SdkVersion) *krm.SdkVersionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SdkVersionObservedState{}
+	// MISSING: Version
+	// MISSING: VersionDisplayName
+	// MISSING: SdkSupportStatus
+	out.Bugs = direct.Slice_FromProto(mapCtx, in.Bugs, SdkBug_FromProto)
+	return out
+}
+func SdkVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SdkVersionObservedState) *pb.SdkVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SdkVersion{}
+	// MISSING: Version
+	// MISSING: VersionDisplayName
+	// MISSING: SdkSupportStatus
+	out.Bugs = direct.Slice_ToProto(mapCtx, in.Bugs, SdkBug_ToProto)
+	return out
+}
+func ServiceResources_FromProto(mapCtx *direct.MapContext, in *pb.ServiceResources) *krm.ServiceResources {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceResources{}
+	// MISSING: Zones
+	return out
+}
+func ServiceResources_ToProto(mapCtx *direct.MapContext, in *krm.ServiceResources) *pb.ServiceResources {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceResources{}
+	// MISSING: Zones
+	return out
+}
+func ServiceResourcesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceResources) *krm.ServiceResourcesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceResourcesObservedState{}
+	out.Zones = in.Zones
+	return out
+}
+func ServiceResourcesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceResourcesObservedState) *pb.ServiceResources {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceResources{}
+	out.Zones = in.Zones
+	return out
+}
+func SpannerIoDetails_FromProto(mapCtx *direct.MapContext, in *pb.SpannerIODetails) *krm.SpannerIoDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpannerIoDetails{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.InstanceID = direct.LazyPtr(in.GetInstanceId())
+	out.DatabaseID = direct.LazyPtr(in.GetDatabaseId())
+	return out
+}
+func SpannerIoDetails_ToProto(mapCtx *direct.MapContext, in *krm.SpannerIoDetails) *pb.SpannerIODetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpannerIODetails{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.InstanceId = direct.ValueOf(in.InstanceID)
+	out.DatabaseId = direct.ValueOf(in.DatabaseID)
+	return out
+}
+func Step_FromProto(mapCtx *direct.MapContext, in *pb.Step) *krm.Step {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Step{}
+	out.Kind = direct.LazyPtr(in.GetKind())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Properties = direct.Struct_FromProto(mapCtx, in.GetProperties())
+	return out
+}
+func Step_ToProto(mapCtx *direct.MapContext, in *krm.Step) *pb.Step {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Step{}
+	out.Kind = direct.ValueOf(in.Kind)
+	out.Name = direct.ValueOf(in.Name)
+	out.Properties = direct.Struct_ToProto(mapCtx, in.Properties)
+	return out
+}
+func TaskRunnerSettings_FromProto(mapCtx *direct.MapContext, in *pb.TaskRunnerSettings) *krm.TaskRunnerSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TaskRunnerSettings{}
+	out.TaskUser = direct.LazyPtr(in.GetTaskUser())
+	out.TaskGroup = direct.LazyPtr(in.GetTaskGroup())
+	out.OauthScopes = in.OauthScopes
+	out.BaseURL = direct.LazyPtr(in.GetBaseUrl())
+	out.DataflowAPIVersion = direct.LazyPtr(in.GetDataflowApiVersion())
+	out.ParallelWorkerSettings = WorkerSettings_FromProto(mapCtx, in.GetParallelWorkerSettings())
+	out.BaseTaskDir = direct.LazyPtr(in.GetBaseTaskDir())
+	out.ContinueOnException = direct.LazyPtr(in.GetContinueOnException())
+	out.LogToSerialconsole = direct.LazyPtr(in.GetLogToSerialconsole())
+	out.Alsologtostderr = direct.LazyPtr(in.GetAlsologtostderr())
+	out.LogUploadLocation = direct.LazyPtr(in.GetLogUploadLocation())
+	out.LogDir = direct.LazyPtr(in.GetLogDir())
+	out.TempStoragePrefix = direct.LazyPtr(in.GetTempStoragePrefix())
+	out.HarnessCommand = direct.LazyPtr(in.GetHarnessCommand())
+	out.WorkflowFileName = direct.LazyPtr(in.GetWorkflowFileName())
+	out.CommandlinesFileName = direct.LazyPtr(in.GetCommandlinesFileName())
+	out.VMID = direct.LazyPtr(in.GetVmId())
+	out.LanguageHint = direct.LazyPtr(in.GetLanguageHint())
+	out.StreamingWorkerMainClass = direct.LazyPtr(in.GetStreamingWorkerMainClass())
+	return out
+}
+func TaskRunnerSettings_ToProto(mapCtx *direct.MapContext, in *krm.TaskRunnerSettings) *pb.TaskRunnerSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TaskRunnerSettings{}
+	out.TaskUser = direct.ValueOf(in.TaskUser)
+	out.TaskGroup = direct.ValueOf(in.TaskGroup)
+	out.OauthScopes = in.OauthScopes
+	out.BaseUrl = direct.ValueOf(in.BaseURL)
+	out.DataflowApiVersion = direct.ValueOf(in.DataflowAPIVersion)
+	out.ParallelWorkerSettings = WorkerSettings_ToProto(mapCtx, in.ParallelWorkerSettings)
+	out.BaseTaskDir = direct.ValueOf(in.BaseTaskDir)
+	out.ContinueOnException = direct.ValueOf(in.ContinueOnException)
+	out.LogToSerialconsole = direct.ValueOf(in.LogToSerialconsole)
+	out.Alsologtostderr = direct.ValueOf(in.Alsologtostderr)
+	out.LogUploadLocation = direct.ValueOf(in.LogUploadLocation)
+	out.LogDir = direct.ValueOf(in.LogDir)
+	out.TempStoragePrefix = direct.ValueOf(in.TempStoragePrefix)
+	out.HarnessCommand = direct.ValueOf(in.HarnessCommand)
+	out.WorkflowFileName = direct.ValueOf(in.WorkflowFileName)
+	out.CommandlinesFileName = direct.ValueOf(in.CommandlinesFileName)
+	out.VmId = direct.ValueOf(in.VMID)
+	out.LanguageHint = direct.ValueOf(in.LanguageHint)
+	out.StreamingWorkerMainClass = direct.ValueOf(in.StreamingWorkerMainClass)
+	return out
+}
+func TransformSummary_FromProto(mapCtx *direct.MapContext, in *pb.TransformSummary) *krm.TransformSummary {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TransformSummary{}
+	out.Kind = direct.Enum_FromProto(mapCtx, in.GetKind())
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayData = direct.Slice_FromProto(mapCtx, in.DisplayData, DisplayData_FromProto)
+	out.OutputCollectionName = in.OutputCollectionName
+	out.InputCollectionName = in.InputCollectionName
+	return out
+}
+func TransformSummary_ToProto(mapCtx *direct.MapContext, in *krm.TransformSummary) *pb.TransformSummary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TransformSummary{}
+	out.Kind = direct.Enum_ToProto[pb.KindType](mapCtx, in.Kind)
+	out.Id = direct.ValueOf(in.ID)
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayData = direct.Slice_ToProto(mapCtx, in.DisplayData, DisplayData_ToProto)
+	out.OutputCollectionName = in.OutputCollectionName
+	out.InputCollectionName = in.InputCollectionName
+	return out
+}
+func WorkerPool_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPool) *krm.WorkerPool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkerPool{}
+	out.Kind = direct.LazyPtr(in.GetKind())
+	out.NumWorkers = direct.LazyPtr(in.GetNumWorkers())
+	out.Packages = direct.Slice_FromProto(mapCtx, in.Packages, Package_FromProto)
+	out.DefaultPackageSet = direct.Enum_FromProto(mapCtx, in.GetDefaultPackageSet())
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	out.TeardownPolicy = direct.Enum_FromProto(mapCtx, in.GetTeardownPolicy())
+	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
+	out.DiskType = direct.LazyPtr(in.GetDiskType())
+	out.DiskSourceImage = direct.LazyPtr(in.GetDiskSourceImage())
+	out.Zone = direct.LazyPtr(in.GetZone())
+	out.TaskrunnerSettings = TaskRunnerSettings_FromProto(mapCtx, in.GetTaskrunnerSettings())
+	out.OnHostMaintenance = direct.LazyPtr(in.GetOnHostMaintenance())
+	out.DataDisks = direct.Slice_FromProto(mapCtx, in.DataDisks, Disk_FromProto)
+	out.Metadata = in.Metadata
+	out.AutoscalingSettings = AutoscalingSettings_FromProto(mapCtx, in.GetAutoscalingSettings())
+	out.PoolArgs = Any_FromProto(mapCtx, in.GetPoolArgs())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.Subnetwork = direct.LazyPtr(in.GetSubnetwork())
+	out.WorkerHarnessContainerImage = direct.LazyPtr(in.GetWorkerHarnessContainerImage())
+	out.NumThreadsPerWorker = direct.LazyPtr(in.GetNumThreadsPerWorker())
+	out.IPConfiguration = direct.Enum_FromProto(mapCtx, in.GetIpConfiguration())
+	out.SdkHarnessContainerImages = direct.Slice_FromProto(mapCtx, in.SdkHarnessContainerImages, SdkHarnessContainerImage_FromProto)
+	return out
+}
+func WorkerPool_ToProto(mapCtx *direct.MapContext, in *krm.WorkerPool) *pb.WorkerPool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkerPool{}
+	out.Kind = direct.ValueOf(in.Kind)
+	out.NumWorkers = direct.ValueOf(in.NumWorkers)
+	out.Packages = direct.Slice_ToProto(mapCtx, in.Packages, Package_ToProto)
+	out.DefaultPackageSet = direct.Enum_ToProto[pb.DefaultPackageSet](mapCtx, in.DefaultPackageSet)
+	out.MachineType = direct.ValueOf(in.MachineType)
+	out.TeardownPolicy = direct.Enum_ToProto[pb.TeardownPolicy](mapCtx, in.TeardownPolicy)
+	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
+	out.DiskType = direct.ValueOf(in.DiskType)
+	out.DiskSourceImage = direct.ValueOf(in.DiskSourceImage)
+	out.Zone = direct.ValueOf(in.Zone)
+	out.TaskrunnerSettings = TaskRunnerSettings_ToProto(mapCtx, in.TaskrunnerSettings)
+	out.OnHostMaintenance = direct.ValueOf(in.OnHostMaintenance)
+	out.DataDisks = direct.Slice_ToProto(mapCtx, in.DataDisks, Disk_ToProto)
+	out.Metadata = in.Metadata
+	out.AutoscalingSettings = AutoscalingSettings_ToProto(mapCtx, in.AutoscalingSettings)
+	out.PoolArgs = Any_ToProto(mapCtx, in.PoolArgs)
+	out.Network = direct.ValueOf(in.Network)
+	out.Subnetwork = direct.ValueOf(in.Subnetwork)
+	out.WorkerHarnessContainerImage = direct.ValueOf(in.WorkerHarnessContainerImage)
+	out.NumThreadsPerWorker = direct.ValueOf(in.NumThreadsPerWorker)
+	out.IpConfiguration = direct.Enum_ToProto[pb.WorkerIPAddressConfiguration](mapCtx, in.IPConfiguration)
+	out.SdkHarnessContainerImages = direct.Slice_ToProto(mapCtx, in.SdkHarnessContainerImages, SdkHarnessContainerImage_ToProto)
+	return out
+}
+func WorkerSettings_FromProto(mapCtx *direct.MapContext, in *pb.WorkerSettings) *krm.WorkerSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WorkerSettings{}
+	out.BaseURL = direct.LazyPtr(in.GetBaseUrl())
+	out.ReportingEnabled = direct.LazyPtr(in.GetReportingEnabled())
+	out.ServicePath = direct.LazyPtr(in.GetServicePath())
+	out.ShuffleServicePath = direct.LazyPtr(in.GetShuffleServicePath())
+	out.WorkerID = direct.LazyPtr(in.GetWorkerId())
+	out.TempStoragePrefix = direct.LazyPtr(in.GetTempStoragePrefix())
+	return out
+}
+func WorkerSettings_ToProto(mapCtx *direct.MapContext, in *krm.WorkerSettings) *pb.WorkerSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkerSettings{}
+	out.BaseUrl = direct.ValueOf(in.BaseURL)
+	out.ReportingEnabled = direct.ValueOf(in.ReportingEnabled)
+	out.ServicePath = direct.ValueOf(in.ServicePath)
+	out.ShuffleServicePath = direct.ValueOf(in.ShuffleServicePath)
+	out.WorkerId = direct.ValueOf(in.WorkerID)
+	out.TempStoragePrefix = direct.ValueOf(in.TempStoragePrefix)
 	return out
 }

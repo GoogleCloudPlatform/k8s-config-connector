@@ -26,7 +26,9 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.dataflow.v1beta3 \
   --api-version dataflow.cnrm.cloud.google.com/v1beta1  \
-  --resource DataflowFlexTemplateJob:FlexTemplateRuntimeEnvironment # Note: this is an unusual resource, and the mapping is not 1:1
+  --resource DataflowFlexTemplateJob:FlexTemplateRuntimeEnvironment \
+  --resource DataflowJob:Job # Note: this is an unusual resource, and the mapping is not 1:1
+rm -f ${REPO_ROOT}/apis/dataflow/v1beta1/job_types.go
 
 go run . generate-mapper \
   --service google.dataflow.v1beta3 \
