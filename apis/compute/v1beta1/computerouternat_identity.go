@@ -132,7 +132,13 @@ func resolveRouterName(ctx context.Context, reader client.Reader, obj *ComputeRo
 		return ref.External, nil
 	}
 	if ref.Name != "" {
-		return ref.Name, nil
+		resolved, err := refsv1beta1.ResolveComputeRouter(ctx, reader, obj, ref)
+		if err != nil {
+			return "", err
+		}
+		// External is now in format projects/p/regions/r/routers/name
+		tokens := strings.Split(resolved.External, "/")
+		return tokens[len(tokens)-1], nil
 	}
 	return "", fmt.Errorf("routerRef is empty")
 }

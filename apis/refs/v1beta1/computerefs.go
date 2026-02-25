@@ -297,6 +297,63 @@ type ComputeRouterRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+func ResolveComputeRouter(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeRouterRef) (*ComputeRouterRef, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on reference")
+		}
+		return ref, nil
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	routerObj := &unstructured.Unstructured{}
+	routerObj.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeRouter",
+	})
+	if err := reader.Get(ctx, key, routerObj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, k8s.NewReferenceNotFoundError(routerObj.GroupVersionKind(), key)
+		}
+		return nil, fmt.Errorf("error reading referenced ComputeRouter %v: %w", key, err)
+	}
+
+	resourceID, err := GetResourceID(routerObj)
+	if err != nil {
+		return nil, err
+	}
+
+	region, _, _ := unstructured.NestedString(routerObj.Object, "spec", "region")
+	if region == "" {
+		return nil, fmt.Errorf("cannot get region from referenced ComputeRouter %v", key)
+	}
+
+	projectID, err := ResolveProjectID(ctx, reader, routerObj)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ComputeRouterRef{
+		External: fmt.Sprintf("projects/%s/regions/%s/routers/%s", projectID, region, resourceID),
+	}, nil
+}
+
 type ComputeFirewallPolicyRef struct {
 	// A reference to an externally managed ComputeFirewallPolicy resource.
 	// Should be in the format `locations/global/firewallPolicies/{{firewallPolicyID}}`.
