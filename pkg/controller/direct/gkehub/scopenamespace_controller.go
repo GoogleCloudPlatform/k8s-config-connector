@@ -192,7 +192,7 @@ func (a *namespaceAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	}
 
 	if err := a.waitForOp(ctx, op); err != nil {
-		return fmt.Errorf("waiting for namespace update %s: %w", name, err)
+		return fmt.Errorf("waiting for namespace update %q: %w", name, err)
 	}
 
 	actual, err := a.hubClient.namespaceClient.Get(name).Context(ctx).Do()

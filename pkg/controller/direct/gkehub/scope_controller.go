@@ -188,7 +188,7 @@ func (a *scopeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	}
 
 	if err := a.waitForOp(ctx, op); err != nil {
-		return fmt.Errorf("waiting for scope update %s: %w", name, err)
+		return fmt.Errorf("waiting for scope update %q: %w", name, err)
 	}
 
 	actual, err := a.hubClient.scopeClient.Get(name).Context(ctx).Do()
