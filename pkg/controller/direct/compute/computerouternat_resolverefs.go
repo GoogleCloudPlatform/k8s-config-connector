@@ -16,74 +16,16 @@ package compute
 
 import (
 	"context"
-	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func ResolveComputeRouter(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeRouterRef) (*refs.ComputeRouterRef, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on reference")
-		}
-		return ref, nil
-	}
-
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	computeRouter, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeRouter",
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	resourceID, err := refs.GetResourceID(computeRouter)
-	if err != nil {
-		return nil, err
-	}
-
-	projectID, err := refs.ResolveProjectID(ctx, reader, computeRouter)
-	if err != nil {
-		return nil, err
-	}
-
-	region, _, _ := unstructured.NestedString(computeRouter.Object, "spec", "region")
-	if region == "" {
-		return nil, fmt.Errorf("cannot get region from references ComputeRouter %v", key)
-	}
-
-	// convert to format `projects/<projectID>/regions/<region>/routers/<router>`
-	return &refs.ComputeRouterRef{
-		External: fmt.Sprintf("projects/%s/regions/%s/routers/%s", projectID, region, resourceID),
-	}, nil
-}
-
 func resolveRouterNATRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeRouterNAT) error {
 	// routerRef
-	routerRef, err := ResolveComputeRouter(ctx, reader, obj, &obj.Spec.RouterRef)
+	routerRef, err := refs.ResolveComputeRouter(ctx, reader, obj, &obj.Spec.RouterRef)
 	if err != nil {
 		return err
 	}
