@@ -46,6 +46,21 @@ func normalizeProjectRef(ctx context.Context, reader client.Reader, src client.O
 	}, nil
 }
 
+func normalizeFolderRef(ctx context.Context, reader client.Reader, src client.Object, ref *refs.FolderRef) (*refs.FolderRef, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	folder, err := refs.ResolveFolder(ctx, reader, src, ref)
+	if err != nil {
+		return nil, err
+	}
+
+	return &refs.FolderRef{
+		External: "folders/" + folder.FolderID,
+	}, nil
+}
+
 type refNormalizer struct {
 	ctx     context.Context
 	kube    client.Reader
@@ -83,6 +98,14 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 				return err
 			}
 			alertChart.PolicyRefs[i].External = refined
+		}
+	}
+
+	if folderRef, ok := v.(*refs.FolderRef); ok {
+		if ref, err := normalizeFolderRef(r.ctx, r.kube, r.src, folderRef); err != nil {
+			return err
+		} else if ref != nil {
+			*folderRef = *ref
 		}
 	}
 

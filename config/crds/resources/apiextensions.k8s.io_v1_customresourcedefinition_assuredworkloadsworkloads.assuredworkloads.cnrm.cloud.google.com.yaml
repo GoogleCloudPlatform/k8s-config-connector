@@ -154,7 +154,7 @@ spec:
               partner:
                 description: Optional. Compliance Regime associated with this workload.
                 type: string
-              provisionedResourcesParent:
+              provisionedResourcesParentRef:
                 description: 'Input only. The parent resource for the resources managed
                   by this Assured Workload. May be either empty or a folder resource
                   which is a child of the Workload parent. If not specified all resources

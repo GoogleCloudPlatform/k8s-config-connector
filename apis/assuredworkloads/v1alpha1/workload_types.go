@@ -75,7 +75,7 @@ type AssuredWorkloadsWorkloadSpec struct {
 	//  Format:
 	//  folders/{folder_id}
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.provisioned_resources_parent
-	ProvisionedResourcesParent *refs.FolderRef `json:"provisionedResourcesParent,omitempty"`
+	ProvisionedResourcesParentRef *refs.FolderRef `json:"provisionedResourcesParentRef,omitempty"`
 
 	// DEPRECATED
 	// Input only. Settings used to create a CMEK crypto key. When set, a project with a KMS

@@ -41,7 +41,7 @@ func AssuredWorkloadsWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.Wo
 	// MISSING: Etag
 	out.Labels = in.Labels
 	if in.GetProvisionedResourcesParent() != "" {
-		out.ProvisionedResourcesParent = &refs.FolderRef{External: in.GetProvisionedResourcesParent()}
+		out.ProvisionedResourcesParentRef = &refs.FolderRef{External: in.GetProvisionedResourcesParent()}
 	}
 	out.KMSSettings = Workload_KMSSettings_FromProto(mapCtx, in.GetKmsSettings())
 	out.ResourceSettings = direct.Slice_FromProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_FromProto)
@@ -63,7 +63,9 @@ func AssuredWorkloadsWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ass
 	}
 	// MISSING: Etag
 	out.Labels = in.Labels
-	// ProvisionedResourcesParent is handled manually in the controller
+	if in.ProvisionedResourcesParentRef != nil {
+		out.ProvisionedResourcesParent = in.ProvisionedResourcesParentRef.External
+	}
 	out.KmsSettings = Workload_KMSSettings_ToProto(mapCtx, in.KMSSettings)
 	out.ResourceSettings = direct.Slice_ToProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_ToProto)
 	out.EnableSovereignControls = direct.ValueOf(in.EnableSovereignControls)

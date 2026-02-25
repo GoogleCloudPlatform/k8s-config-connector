@@ -161,8 +161,8 @@ func (in *AssuredWorkloadsWorkloadSpec) DeepCopyInto(out *AssuredWorkloadsWorklo
 			(*out)[key] = val
 		}
 	}
-	if in.ProvisionedResourcesParent != nil {
-		in, out := &in.ProvisionedResourcesParent, &out.ProvisionedResourcesParent
+	if in.ProvisionedResourcesParentRef != nil {
+		in, out := &in.ProvisionedResourcesParentRef, &out.ProvisionedResourcesParentRef
 		*out = new(v1beta1.FolderRef)
 		**out = **in
 	}

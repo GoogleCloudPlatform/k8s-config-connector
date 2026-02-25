@@ -34,9 +34,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/assuredworkloads/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -63,18 +63,13 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	id, err := krm.NewWorkloadIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
-	}
-
-	provisionedResourcesParent := ""
-	if obj.Spec.ProvisionedResourcesParent != nil {
-		folder, err := refs.ResolveFolder(ctx, reader, obj, obj.Spec.ProvisionedResourcesParent)
-		if err != nil {
-			return nil, err
-		}
-		provisionedResourcesParent = fmt.Sprintf("folders/%s", folder.FolderID)
 	}
 
 	// Get GCP client
@@ -87,11 +82,10 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, err
 	}
 	return &adapter{
-		gcpClient:                  client,
-		id:                         id,
-		desired:                    obj,
-		reader:                     reader,
-		provisionedResourcesParent: provisionedResourcesParent,
+		gcpClient: client,
+		id:        id,
+		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -101,12 +95,11 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type adapter struct {
-	gcpClient                  *gcp.Client
-	id                         *krm.WorkloadIdentity
-	desired                    *krm.AssuredWorkloadsWorkload
-	actual                     *pb.Workload
-	reader                     client.Reader
-	provisionedResourcesParent string
+	gcpClient *gcp.Client
+	id        *krm.WorkloadIdentity
+	desired   *krm.AssuredWorkloadsWorkload
+	actual    *pb.Workload
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &adapter{}
@@ -138,7 +131,6 @@ func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.ProvisionedResourcesParent = a.provisionedResourcesParent
 
 	req := &pb.CreateWorkloadRequest{
 		Parent:     a.id.Parent().String(),
