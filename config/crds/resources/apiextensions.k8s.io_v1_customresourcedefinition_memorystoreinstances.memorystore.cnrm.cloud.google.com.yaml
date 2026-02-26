@@ -45,7 +45,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: MemorystoreInstance is the Schema for the MemorystoreInstance
-          API. This resource manages Memorystore for Valkey instances.
+          API. This resource manages Memorystore for Valkey instances (https://cloud.google.com/memorystore/docs/valkey).
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -60,8 +60,9 @@ spec:
           metadata:
             type: object
           spec:
-            description: MemorystoreInstanceSpec defines the desired state of a Memorystore
-              for Valkey instance
+            description: 'MemorystoreInstanceSpec defines the desired state of a Memorystore
+              for Valkey instance. Note: this resource does not manage Redis instances,
+              which are handled by RedisInstance.'
             properties:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
@@ -441,7 +442,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: MemorystoreInstance is the Schema for the MemorystoreInstance
-          API. This resource manages Memorystore for Valkey instances.
+          API. This resource manages Memorystore for Valkey instances (https://cloud.google.com/memorystore/docs/valkey).
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -456,8 +457,9 @@ spec:
           metadata:
             type: object
           spec:
-            description: MemorystoreInstanceSpec defines the desired state of a Memorystore
-              for Valkey instance
+            description: 'MemorystoreInstanceSpec defines the desired state of a Memorystore
+              for Valkey instance. Note: this resource does not manage Redis instances,
+              which are handled by RedisInstance.'
             properties:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.

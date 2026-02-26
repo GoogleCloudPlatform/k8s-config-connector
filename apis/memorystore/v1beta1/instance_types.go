@@ -23,7 +23,8 @@ import (
 
 var MemorystoreInstanceGVK = GroupVersion.WithKind("MemorystoreInstance")
 
-// MemorystoreInstanceSpec defines the desired state of a Memorystore for Valkey instance
+// MemorystoreInstanceSpec defines the desired state of a Memorystore for Valkey instance.
+// Note: this resource does not manage Redis instances, which are handled by RedisInstance.
 // +kcc:spec:proto=google.cloud.memorystore.v1.Instance
 type MemorystoreInstanceSpec struct {
 
@@ -406,7 +407,7 @@ type PscConnectionObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// MemorystoreInstance is the Schema for the MemorystoreInstance API. This resource manages Memorystore for Valkey instances.
+// MemorystoreInstance is the Schema for the MemorystoreInstance API. This resource manages Memorystore for Valkey instances (https://cloud.google.com/memorystore/docs/valkey).
 // +k8s:openapi-gen=true
 // +kubebuilder:storageversion
 type MemorystoreInstance struct {
