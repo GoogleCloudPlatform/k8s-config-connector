@@ -129,7 +129,7 @@ func init() {
 		SkipUpdate:   true,
 	}
 
-	resourceContextMap["computerouternat"] = ResourceContext{
+	resourceContextMap["basiccomputerouternat"] = ResourceContext{
 		ResourceKind: "ComputeRouterNAT",
 		SkipUpdate:   true,
 	}
