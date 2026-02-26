@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,74 +15,63 @@
 package v1beta1
 
 import (
-	"maps"
 	"testing"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/identity"
 )
 
-func TestAccessLevelParse(t *testing.T) {
+func TestAccessContextManagerAccessLevelIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
-		name      string
-		input     string
-		parsedMap map[string]string
-		hasError  bool
+		name    string
+		ref     string
+		wantErr bool
+		want    *AccessContextManagerAccessLevelIdentity
 	}{
 		{
-			name:      "Normal parse",
-			input:     "accessPolicies/val1/accessLevels/val2",
-			parsedMap: map[string]string{"accessPolicies": "val1", "accessLevels": "val2"},
-			hasError:  false,
+			name: "valid reference",
+			ref:  "accessPolicies/12345/accessLevels/my-level",
+			want: &AccessContextManagerAccessLevelIdentity{
+				AccessPolicy: "12345",
+				AccessLevel:  "my-level",
+			},
 		},
 		{
-			name:      "Normal parse with leading slash",
-			input:     "/accessPolicies/foo/accessLevels/bar",
-			parsedMap: map[string]string{"accessPolicies": "foo", "accessLevels": "bar"},
-			hasError:  false,
+			name:    "invalid reference format",
+			ref:     "invalid/format",
+			wantErr: true,
 		},
 		{
-			name:      "Normal parse with domain",
-			input:     "accesscontextmanager.googleapis.com/accessPolicies/policy/accessLevels/level",
-			parsedMap: map[string]string{"accessPolicies": "policy", "accessLevels": "level"},
-			hasError:  false,
+			name: "full url",
+			ref:  "https://accesscontextmanager.googleapis.com/accessPolicies/12345/accessLevels/my-level",
+			want: &AccessContextManagerAccessLevelIdentity{
+				AccessPolicy: "12345",
+				AccessLevel:  "my-level",
+			},
 		},
 		{
-			name:      "Normal parse with slashed domain",
-			input:     "//accesscontextmanager.googleapis.com/accessPolicies/policy/accessLevels/level",
-			parsedMap: map[string]string{"accessPolicies": "policy", "accessLevels": "level"},
-			hasError:  false,
-		},
-		{
-			name:      "Normal parse with wrong domain",
-			input:     "iam.googleapis.com/accessPolicies/policy/accessLevels/level",
-			parsedMap: nil,
-			hasError:  true,
-		},
-		{
-			name:      "Normal parse with wrong key",
-			input:     "accessPolicys/policy/accessLevels/level",
-			parsedMap: nil,
-			hasError:  true,
+			name: "full url with //",
+			ref:  "//accesscontextmanager.googleapis.com/accessPolicies/12345/accessLevels/my-level",
+			want: &AccessContextManagerAccessLevelIdentity{
+				AccessPolicy: "12345",
+				AccessLevel:  "my-level",
+			},
 		},
 	}
 
-	for _, tc := range tests {
-		err, result := identity.ParseIdentityMap(tc.input, parser, 2)
-		if tc.hasError {
-			if err == nil {
-				t.Fatalf("Test %s expected error but did not get one", tc.name)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			i := &AccessContextManagerAccessLevelIdentity{}
+			err := i.FromExternal(tt.ref)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
+				return
 			}
-			continue
-		}
-		// Error no expected at this point
-		if err != nil {
-			t.Fatalf("Test %s did not expect error but got %v", tc.name, err)
-		}
-		if result == nil {
-			t.Fatalf("Test %s expected a result but did not get one", tc.name)
-		}
-		if !maps.Equal(result, tc.parsedMap) {
-			t.Fatalf("Test %s bad result %v != %v", tc.name, result, tc.parsedMap)
-		}
+			if !tt.wantErr {
+				if i.AccessPolicy != tt.want.AccessPolicy {
+					t.Errorf("AccessPolicy = %v, want %v", i.AccessPolicy, tt.want.AccessPolicy)
+				}
+				if i.AccessLevel != tt.want.AccessLevel {
+					t.Errorf("AccessLevel = %v, want %v", i.AccessLevel, tt.want.AccessLevel)
+				}
+			}
+		})
 	}
 }

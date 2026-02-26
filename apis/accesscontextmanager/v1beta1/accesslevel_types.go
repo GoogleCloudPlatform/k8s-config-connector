@@ -171,7 +171,7 @@ type Condition struct {
 	   exist is an error. All access levels listed must be granted for the Condition
 	   to be true. Example: "`accessPolicies/MY_POLICY/accessLevels/LEVEL_NAME"` */
 	// +optional
-	RequiredAccessLevels []AccessLevelRef `json:"requiredAccessLevels,omitempty"`
+	RequiredAccessLevels []AccessContextManagerAccessLevelRef `json:"requiredAccessLevels,omitempty"`
 }
 
 // +kcc:proto=google.identity.accesscontextmanager.v1.DevicePolicy
