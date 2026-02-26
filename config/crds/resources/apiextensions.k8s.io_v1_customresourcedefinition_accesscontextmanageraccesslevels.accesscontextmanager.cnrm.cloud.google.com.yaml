@@ -243,8 +243,10 @@ spec:
                             access levels listed must be granted for the Condition
                             to be true. Example: "`accessPolicies/MY_POLICY/accessLevels/LEVEL_NAME"`'
                           items:
-                            description: AccessLevelRef is a reference to a AccessLevel
-                              resource.
+                            description: AccessContextManagerAccessLevelRef defines
+                              the resource reference to AccessContextManagerAccessLevel,
+                              which "External" field holds the GCP identifier for
+                              the KRM object.
                             oneOf:
                             - not:
                                 required:
@@ -262,13 +264,16 @@ spec:
                             properties:
                               external:
                                 description: A reference to an externally managed
-                                  AccessLevel resource. Should be in the format "accessPolicies/{{accessPolicyID}}/accessLevels/{{accessLevel}}".
+                                  AccessContextManagerAccessLevel resource. Should
+                                  be in the format "accessPolicies/{{accessPolicy}}/accessLevels/{{accessLevel}}".
                                 type: string
                               name:
-                                description: The name of a AccessLevel resource.
+                                description: The name of a AccessContextManagerAccessLevel
+                                  resource.
                                 type: string
                               namespace:
-                                description: The namespace of a AccessLevel resource.
+                                description: The namespace of a AccessContextManagerAccessLevel
+                                  resource.
                                 type: string
                             type: object
                           type: array
