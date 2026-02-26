@@ -11,3 +11,24 @@ spec:
       raiFilters:
       - filterType: "HATE_SPEECH"
         confidenceLevel: "LOW_AND_ABOVE"
+    sdpSettings:
+      basicConfig:
+        filterEnforcement: "ENABLED"
+      advancedConfig:
+        inspectTemplate: "projects/test-project/locations/us-central1/inspectTemplates/test-inspect-template"
+        deidentifyTemplate: "projects/test-project/locations/us-central1/deidentifyTemplates/test-deidentify-template"
+    piAndJailbreakFilterSettings:
+      filterEnforcement: "ENABLED"
+      confidenceLevel: "LOW_AND_ABOVE"
+    maliciousURIFilterSettings:
+      filterEnforcement: "ENABLED"
+  enableFloorSettingEnforcement: true
+  integratedServices:
+  - "AI_PLATFORM"
+  aiPlatformFloorSetting:
+    inspectOnly: true
+    inspectAndBlock: false
+    enableCloudLogging: true
+  floorSettingMetadata:
+    multiLanguageDetection:
+      enableMultiLanguageDetection: true
