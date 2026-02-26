@@ -25,15 +25,20 @@ var NetworkSecurityFirewallEndpointGVK = GroupVersion.WithKind("NetworkSecurityF
 // +kcc:spec:proto=google.cloud.networksecurity.v1beta1.FirewallEndpoint
 type NetworkSecurityFirewallEndpointSpec struct {
 	// The NetworkSecurityFirewallEndpoint name. If not given, the metadata.name will be used.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field is immutable"
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	Parent `json:",inline"`
 
 	// Required. Project to bill on endpoint uptime usage.
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.FirewallEndpoint.billing_project_id
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field is immutable"
 	BillingProjectID *string `json:"billingProjectID,omitempty"`
+
 	// Optional. Description of the firewall endpoint. Max length 2048 characters.
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.FirewallEndpoint.description
+	// +kubebuilder:validation:MaxLength=2048
 	Description *string `json:"description,omitempty"`
 
 	// Optional. Labels as key value pairs

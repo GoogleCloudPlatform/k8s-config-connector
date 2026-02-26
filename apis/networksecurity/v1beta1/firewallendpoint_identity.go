@@ -56,13 +56,9 @@ func (p *FirewallEndpointParent) String() string {
 func NewFirewallEndpointIdentity(ctx context.Context, reader client.Reader, obj *NetworkSecurityFirewallEndpoint) (*FirewallEndpointIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
 		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
 
@@ -106,7 +102,7 @@ func NewFirewallEndpointIdentity(ctx context.Context, reader client.Reader, obj 
 func ParseFirewallEndpointExternal(external string) (parent *FirewallEndpointParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "firewallEndpoints" {
-		return nil, "", fmt.Errorf("format of NetworkSecurityFirewallEndpoint external=%q was not known (use projects/{{projectID}}/locations/{{location}}/firewallEndpoints/{{firewallendpointID}})", external)
+		return nil, "", fmt.Errorf("format of NetworkSecurityFirewallEndpoint external=%q was not known (use projects/{{projectID}}/locations/{{location}}/firewallEndpoints/{{firewallEndpointID}})", external)
 	}
 	parent = &FirewallEndpointParent{
 		ProjectID: tokens[1],

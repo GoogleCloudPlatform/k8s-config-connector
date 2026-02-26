@@ -67,9 +67,13 @@ spec:
               billingProjectID:
                 description: Required. Project to bill on endpoint uptime usage.
                 type: string
+                x-kubernetes-validations:
+                - message: Field is immutable
+                  rule: self == oldSelf
               description:
                 description: Optional. Description of the firewall endpoint. Max length
                   2048 characters.
+                maxLength: 2048
                 type: string
               labels:
                 additionalProperties:
@@ -118,7 +122,11 @@ spec:
                 description: The NetworkSecurityFirewallEndpoint name. If not given,
                   the metadata.name will be used.
                 type: string
+                x-kubernetes-validations:
+                - message: Field is immutable
+                  rule: self == oldSelf
             required:
+            - billingProjectID
             - location
             - projectRef
             type: object
