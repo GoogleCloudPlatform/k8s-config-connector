@@ -64,6 +64,13 @@ func (s *ReservationsV1) Insert(ctx context.Context, req *pb.InsertReservationRe
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetReservationResource()).(*pb.Reservation)
+
+	if obj.GetShareSettings().GetShareType() == "SPECIFIC_PROJECTS" {
+		if len(obj.GetShareSettings().GetProjectMap()) == 0 {
+			return nil, status.Errorf(codes.InvalidArgument, "project_map is required when share_type is SPECIFIC_PROJECTS")
+		}
+	}
+
 	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
@@ -91,7 +98,16 @@ func (s *ReservationsV1) Update(ctx context.Context, req *pb.UpdateReservationRe
 		return nil, err
 	}
 
+	if req.GetReservationResource() == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "reservation_resource is required")
+	}
 	proto.Merge(obj, req.GetReservationResource())
+
+	if obj.GetShareSettings().GetShareType() == "SPECIFIC_PROJECTS" {
+		if len(obj.GetShareSettings().GetProjectMap()) == 0 {
+			return nil, status.Errorf(codes.InvalidArgument, "project_map is required when share_type is SPECIFIC_PROJECTS")
+		}
+	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

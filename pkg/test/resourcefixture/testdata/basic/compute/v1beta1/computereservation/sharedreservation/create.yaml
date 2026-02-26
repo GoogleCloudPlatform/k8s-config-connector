@@ -17,15 +17,15 @@ kind: ComputeReservation
 metadata:
   labels:
     label-one: "value-one"
-  name: computereservation-sample-shared
+  name: computereservation-${uniqueId}
 spec:
   description: Shared Reservation for 1 machines which will be shared with other projects.
   zone: us-central1-a
   shareSettings:
     shareType: SPECIFIC_PROJECTS
     projectMap:
-    - id: project-id-to-share-with
-      projectId: project-id-to-share-with
+    - id: project-id-${uniqueId}
+      projectId: project-id-${uniqueId}
   specificReservation:
     count: 1
     instanceProperties:
