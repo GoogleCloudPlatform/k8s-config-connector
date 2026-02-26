@@ -121,11 +121,13 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterInstanceTemplatesServer(grpcServer, &InstanceTemplatesV1{MockService: s})
 
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
+	pb.RegisterReservationsServer(grpcServer, &ReservationsV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterRoutesHandler)
+		pb.RegisterRoutesHandler,
+		pb.RegisterReservationsHandler)
 	if err != nil {
 		return nil, err
 	}
