@@ -5,13 +5,68 @@ import glob
 import yaml
 import os
 import subprocess
+import re
 
-def analyze_crd(file_path):
+def get_go_types():
+    """
+    Scans the apis/ directory to identify resources that have Go types defined.
+
+    Returns:
+        A set of (group, kind) tuples.
+    """
+    go_types = set()
+    try:
+        # Use grep to find all files with the specific annotation
+        output = subprocess.check_output(['grep', '-r', '-l', '+kubebuilder:resource:categories=gcp', 'apis/']).strip().decode('utf-8')
+        if not output:
+            return go_types
+        files = output.split('\n')
+    except subprocess.CalledProcessError:
+        return go_types
+
+    group_cache = {} # dir_path -> group_name
+
+    for f in files:
+        if not f.endswith('.go'):
+            continue
+
+        dir_path = os.path.dirname(f)
+        if dir_path not in group_cache:
+            group = None
+            for file_in_dir in os.listdir(dir_path):
+                if file_in_dir.endswith('.go'):
+                    with open(os.path.join(dir_path, file_in_dir), 'r') as gvf:
+                        content = gvf.read()
+                        match = re.search(r'\+groupName=([^\s]+)', content)
+                        if match:
+                            group = match.group(1).strip()
+                            break
+            group_cache[dir_path] = group
+
+        group = group_cache[dir_path]
+        if not group:
+            continue
+
+        with open(f, 'r') as gof:
+            content = gof.read()
+            # Split by the annotation to handle multiple resources in one file
+            blocks = content.split('// +kubebuilder:resource:categories=gcp')
+            for block in blocks[1:]:
+                # Look for the struct definition that follows the annotation
+                match = re.search(r'type\s+([A-Za-z0-9]+)\s+struct', block)
+                if match:
+                    kind = match.group(1)
+                    go_types.add((group, kind))
+
+    return go_types
+
+def analyze_crd(file_path, go_types):
     """
     Analyzes a single CRD file to extract relevant information.
 
     Args:
         file_path: The path to the CRD YAML file.
+        go_types: A set of (group, kind) tuples that have Go types.
 
     Returns:
         A dictionary containing the extracted information, or None if the file
@@ -46,6 +101,8 @@ def analyze_crd(file_path):
     elif labels.get('cnrm.cloud.google.com/dcl2crd') == 'true':
         reconciler = 'DCL'
 
+    has_go_type = (group, kind) in go_types
+
     return {
         'group': group,
         'kind': kind,
@@ -53,6 +110,7 @@ def analyze_crd(file_path):
         'has_v1beta1': has_v1beta1,
         'has_v1': has_v1,
         'reconciler': reconciler,
+        'has_go_type': has_go_type,
     }
 
 def write_csv_report(results, fieldnames, file_path):
@@ -106,6 +164,8 @@ def main():
     """
     switch_to_repo_root()
 
+    go_types = get_go_types()
+
     crd_files = glob.glob('config/crds/resources/*.yaml')
     if not crd_files:
         print("No CRD files found in config/crds/resources/")
@@ -113,7 +173,7 @@ def main():
 
     results = []
     for file_path in sorted(crd_files):
-        data = analyze_crd(file_path)
+        data = analyze_crd(file_path, go_types)
         if data:
             results.append(data)
 
@@ -123,10 +183,10 @@ def main():
     csv_path = os.path.join(output_dir, 'crd_report.csv')
     md_path = os.path.join(output_dir, 'crd_report.md')
 
-    fieldnames = ['group', 'kind', 'has_v1alpha1', 'has_v1beta1', 'has_v1', 'reconciler']
+    fieldnames = ['group', 'kind', 'has_v1alpha1', 'has_v1beta1', 'has_v1', 'reconciler', 'has_go_type']
 
     write_csv_report(results, fieldnames, csv_path)
-    print(f"Generated {file_path}")
+    print(f"Generated {csv_path}")
 
     with open(md_path, 'w') as mdfile:
       mdfile.write('# CRD Analysis Report\n\n')

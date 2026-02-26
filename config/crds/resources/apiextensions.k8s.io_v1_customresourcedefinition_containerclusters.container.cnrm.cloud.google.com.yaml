@@ -488,6 +488,10 @@ spec:
                           this endpoint. Note that GCP-managed services may still
                           use the endpoint even if this is false.
                         type: boolean
+                      enableK8sTokensViaDns:
+                        description: Controls whether the k8s token auth is allowed
+                          via DNS.
+                        type: boolean
                     type: object
                   ipEndpointsConfig:
                     description: IP endpoint configuration.

@@ -23,7 +23,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"io/fs"
 	"net/http"
 	"os"
 	"os/exec"
@@ -31,7 +31,7 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-
+	"golang.org/x/mod/modfile"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
 )
@@ -55,10 +55,82 @@ func buildRootCommand() *cobra.Command {
 	}
 
 	cmd.AddCommand(buildLicenseScanCommand())
+	cmd.AddCommand(buildLicenseVerifyCommand())
+	cmd.AddCommand(buildLicenseGenerateCommand())
 
 	klog.InitFlags(nil)
 
 	return cmd
+}
+
+// buildLicenseGenerateCommand builds the 'generate' command.
+// The 'generate' command reads a go.mod file and ensures that a license metadata YAML file
+// exists for each dependency. If it doesn't exist, it creates a template with "license: TODO".
+func buildLicenseGenerateCommand() *cobra.Command {
+	var opts RunLicenseGenerateOptions
+
+	cmd := &cobra.Command{
+		Use: "generate",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return RunLicenseGenerate(cmd.Context(), opts)
+		},
+	}
+
+	cmd.Flags().StringVar(&opts.GoMod, "gomod", opts.GoMod, "path to go.mod file")
+	_ = cmd.MarkFlagRequired("gomod")
+
+	return cmd
+}
+
+type RunLicenseGenerateOptions struct {
+	GoMod string
+}
+
+func RunLicenseGenerate(ctx context.Context, opts RunLicenseGenerateOptions) error {
+	b, err := os.ReadFile(opts.GoMod)
+	if err != nil {
+		return fmt.Errorf("error reading go.mod file %q: %w", opts.GoMod, err)
+	}
+	f, err := modfile.Parse(opts.GoMod, b, nil)
+	if err != nil {
+		return fmt.Errorf("error parsing go.mod file %q: %w", opts.GoMod, err)
+	}
+
+	for _, require := range f.Require {
+		module := &Module{
+			Name:    require.Mod.Path,
+			Version: require.Mod.Version,
+		}
+
+		if err := ensureModuleFile(module); err != nil {
+			fmt.Fprintf(os.Stderr, "Error for %s@%s: %v\n", module.Name, module.Version, err)
+		}
+	}
+	return nil
+}
+
+func ensureModuleFile(module *Module) error {
+	p := filepath.Join("experiments/tools/licensescan/modules", module.Name, module.Version+".yaml")
+	if _, err := os.Stat(p); err == nil {
+		return nil // Already exists
+	}
+
+	// Also check in embed FS
+	pFS := filepath.Join("modules", module.Name, module.Version+".yaml")
+	if _, err := modulesFS.ReadFile(pFS); err == nil {
+		return nil // Already exists in embed
+	}
+
+	if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
+		return fmt.Errorf("error from Mkdir(%q): %w", filepath.Dir(p), err)
+	}
+	s := "# https://pkg.go.dev/" + module.Name + "@" + module.Version + "\n"
+	s += "license: TODO"
+	if err := os.WriteFile(p, []byte(s), 0644); err != nil {
+		return fmt.Errorf("error writing %q: %w", p, err)
+	}
+	fmt.Printf("Created %s\n", p)
+	return nil
 }
 
 type Module struct {
@@ -71,6 +143,10 @@ type Module struct {
 	LicenseFiles []LicenseFile `json:"licenseFiles,omitempty"`
 }
 
+// buildLicenseScanCommand builds the 'scan' command.
+// The 'scan' command analyzes a compiled Go binary to identify its dependencies
+// and then looks up their licenses using the embedded or local metadata.
+// It can optionally include the full license text in its output.
 func buildLicenseScanCommand() *cobra.Command {
 	var opts RunLicenseScanOptions
 
@@ -82,11 +158,30 @@ func buildLicenseScanCommand() *cobra.Command {
 	}
 
 	cmd.Flags().StringVar(&opts.Binary, "binary", opts.Binary, "binary to analyze")
-	cmd.MarkFlagRequired("binary")
+	_ = cmd.MarkFlagRequired("binary")
 
 	cmd.Flags().BoolVar(&opts.IncludeLicenses, "print", opts.IncludeLicenses, "include license text")
 
 	cmd.Flags().StringArrayVar(&opts.IgnorePackage, "ignore", opts.IgnorePackage, "packages to ignore")
+
+	return cmd
+}
+
+// buildLicenseVerifyCommand builds the 'verify' command.
+// The 'verify' command ensures that all dependencies (from go.mod or the embedded metadata)
+// have a valid license specified in their metadata YAML file.
+// It fails if any license is marked as "TODO" or is missing.
+func buildLicenseVerifyCommand() *cobra.Command {
+	var opts RunLicenseVerifyOptions
+
+	cmd := &cobra.Command{
+		Use: "verify",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return RunLicenseVerify(cmd.Context(), opts)
+		},
+	}
+
+	cmd.Flags().StringVar(&opts.GoMod, "gomod", opts.GoMod, "path to go.mod file")
 
 	return cmd
 }
@@ -98,6 +193,116 @@ type RunLicenseScanOptions struct {
 	IgnorePackage []string
 
 	IncludeLicenses bool
+}
+
+type RunLicenseVerifyOptions struct {
+	GoMod string
+}
+
+func RunLicenseVerify(ctx context.Context, opts RunLicenseVerifyOptions) error {
+	var errors []error
+
+	if opts.GoMod != "" {
+		b, err := os.ReadFile(opts.GoMod)
+		if err != nil {
+			return fmt.Errorf("error reading go.mod file %q: %w", opts.GoMod, err)
+		}
+		f, err := modfile.Parse(opts.GoMod, b, nil)
+		if err != nil {
+			return fmt.Errorf("error parsing go.mod file %q: %w", opts.GoMod, err)
+		}
+		for _, require := range f.Require {
+			module := &Module{
+				Name:    require.Mod.Path,
+				Version: require.Mod.Version,
+			}
+
+			if err := checkModule(module); err != nil {
+				errors = append(errors, err)
+			}
+		}
+	} else {
+		err := fs.WalkDir(modulesFS, "modules", func(path string, d fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if !d.IsDir() {
+				if strings.HasSuffix(path, ".yaml") {
+					module := &Module{}
+					dir := filepath.Dir(path)
+					base := filepath.Base(path)
+					module.Name = strings.TrimPrefix(dir, "modules/")
+					module.Version = strings.TrimSuffix(base, ".yaml")
+
+					if err := checkModule(module); err != nil {
+						errors = append(errors, err)
+					}
+				}
+			}
+			return nil
+		})
+		if err != nil {
+			errors = append(errors, err)
+		}
+	}
+
+	if len(errors) > 0 {
+		for _, err := range errors {
+			fmt.Fprintf(os.Stderr, "%v\n", err)
+		}
+		return fmt.Errorf("license verification failed")
+	}
+	return nil
+}
+
+var mustShipCodeByLicense = map[string]bool{
+	"APACHE-2.0":       false,
+	"BSD-3-CLAUSE":     false,
+	"BSD-2-CLAUSE":     false,
+	"MIT":              false,
+	"UNICODE-DFS-2016": false,
+	"MPL-2.0":          true,
+	"PUBLICDOMAIN":     false,
+	"ISC":              false,
+	"HPND":             false,
+	"CC-BY-3.0":        false,
+	"BSL-1.0":          false,
+	"NCSA":             false,
+	"OPENSSL":          false,
+	"ZLIB":             false,
+}
+
+func checkModule(module *Module) error {
+	p := filepath.Join("experiments/tools/licensescan/modules", module.Name, module.Version+".yaml")
+	b, err := os.ReadFile(p)
+	if err != nil && os.IsNotExist(err) {
+		pFS := filepath.Join("modules", module.Name, module.Version+".yaml")
+		b, err = modulesFS.ReadFile(pFS)
+	}
+	if err != nil {
+		return fmt.Errorf("error reading module file for %s@%s: %w", module.Name, module.Version, err)
+	}
+
+	info := &moduleInfo{}
+	if err := yaml.Unmarshal(b, info); err != nil {
+		return fmt.Errorf("error parsing %s@%s: %w", module.Name, module.Version, err)
+	}
+	info.License = strings.TrimSpace(info.License)
+	if info.License == "TODO" || info.License == "" {
+		return fmt.Errorf("license not known for %s@%s", module.Name, module.Version)
+	}
+
+	licenses := strings.Split(info.License, ",")
+	for _, license := range licenses {
+		license = strings.TrimSpace(license)
+		license = strings.ToUpper(license)
+
+		if _, exists := mustShipCodeByLicense[license]; !exists {
+			return fmt.Errorf("unknown license %q (for %s@%s)", license, module.Name, module.Version)
+		}
+	}
+
+	return nil
 }
 
 func RunLicenseScan(ctx context.Context, opts RunLicenseScanOptions) error {
@@ -123,7 +328,6 @@ func RunLicenseScan(ctx context.Context, opts RunLicenseScanOptions) error {
 		}
 
 		module := &Module{
-			// Path: dep.Path,
 			Name:    dep.Path,
 			Sum:     dep.Sum,
 			Version: dep.Version,
@@ -133,10 +337,11 @@ func RunLicenseScan(ctx context.Context, opts RunLicenseScanOptions) error {
 		}
 		modules = append(modules, module)
 
-		p := filepath.Join("modules", module.Name, module.Version+".yaml")
+		p := filepath.Join("experiments/tools/licensescan/modules", module.Name, module.Version+".yaml")
 		b, err := os.ReadFile(p)
 		if err != nil && os.IsNotExist(err) {
-			b2, err2 := modulesFS.ReadFile(p)
+			pFS := filepath.Join("modules", module.Name, module.Version+".yaml")
+			b2, err2 := modulesFS.ReadFile(pFS)
 			if err2 == nil {
 				b = b2
 				err = err2
@@ -150,7 +355,7 @@ func RunLicenseScan(ctx context.Context, opts RunLicenseScanOptions) error {
 				s := "# https://pkg.go.dev/" + module.Name + "@" + module.Version + "\n"
 				s += "license: TODO"
 				b = []byte(s)
-				if err := ioutil.WriteFile(p, b, 0644); err != nil {
+				if err := os.WriteFile(p, b, 0644); err != nil {
 					return fmt.Errorf("error writing %q: %w", p, err)
 				}
 			} else {
@@ -178,23 +383,6 @@ func RunLicenseScan(ctx context.Context, opts RunLicenseScanOptions) error {
 		}
 	}
 
-	mustShipCodeByLicense := map[string]bool{
-		"APACHE-2.0":       false,
-		"BSD-3-CLAUSE":     false,
-		"BSD-2-CLAUSE":     false,
-		"MIT":              false,
-		"UNICODE-DFS-2016": false,
-		"MPL-2.0":          true,
-		"PUBLICDOMAIN":     false,
-		"ISC":              false,
-		"HPND":             false,
-		"CC-BY-3.0":        false,
-		"BSL-1.0":          false,
-		"NCSA":             false,
-		"OPENSSL":          false,
-		"ZLIB":             false,
-	}
-
 	if len(errors) == 0 {
 		for _, module := range modules {
 			if len(module.Info.LicenseURLs) == 0 {
@@ -206,9 +394,6 @@ func RunLicenseScan(ctx context.Context, opts RunLicenseScanOptions) error {
 				license = strings.TrimSpace(license)
 				license = strings.ToUpper(license)
 
-				if _, exists := mustShipCodeByLicense[license]; !exists {
-					return fmt.Errorf("unknown license %q for mustShipCode (for %s@%s)", license, module.Name, module.Version)
-				}
 				if mustShipCodeByLicense[license] {
 					module.Info.MustShipCode = true
 				}
@@ -252,22 +437,27 @@ func includeLicense(ctx context.Context, module *Module) ([]LicenseFile, error) 
 
 	if len(module.Info.LicenseURLs) != 0 {
 		for _, licenseURL := range module.Info.LicenseURLs {
-			response, err := http.Get(licenseURL)
-			if err != nil {
-				return nil, fmt.Errorf("error reading %q: %w", licenseURL, err)
+			if err := func() error {
+				response, err := http.Get(licenseURL)
+				if err != nil {
+					return fmt.Errorf("error reading %q: %w", licenseURL, err)
+				}
+				defer response.Body.Close()
+				if response.StatusCode != 200 {
+					return fmt.Errorf("unexpected response from GET %q: %v", licenseURL, response.Status)
+				}
+				b, err := io.ReadAll(response.Body)
+				if err != nil {
+					return fmt.Errorf("error reading response from %q: %w", licenseURL, err)
+				}
+				licenses = append(licenses, LicenseFile{
+					Path:     licenseURL,
+					Contents: string(b),
+				})
+				return nil
+			}(); err != nil {
+				return nil, err
 			}
-			defer response.Body.Close()
-			if response.StatusCode != 200 {
-				return nil, fmt.Errorf("unexpected response from GET %q: %v", licenseURL, response.Status)
-			}
-			b, err := io.ReadAll(response.Body)
-			if err != nil {
-				return nil, fmt.Errorf("error reading response from %q: %w", licenseURL, err)
-			}
-			licenses = append(licenses, LicenseFile{
-				Path:     licenseURL,
-				Contents: string(b),
-			})
 		}
 		return licenses, nil
 	}
@@ -300,19 +490,24 @@ func includeLicense(ctx context.Context, module *Module) ([]LicenseFile, error) 
 			isLicense = true
 		}
 		if isLicense {
-			r, err := f.Open()
-			if err != nil {
-				return nil, fmt.Errorf("error opening entry %q: %w", f.Name, err)
+			if err := func() error {
+				r, err := f.Open()
+				if err != nil {
+					return fmt.Errorf("error opening entry %q: %w", f.Name, err)
+				}
+				defer r.Close()
+				b, err := io.ReadAll(r)
+				if err != nil {
+					return fmt.Errorf("error reading entry %q: %w", f.Name, err)
+				}
+				licenses = append(licenses, LicenseFile{
+					Path:     f.Name,
+					Contents: string(b),
+				})
+				return nil
+			}(); err != nil {
+				return nil, err
 			}
-			defer r.Close()
-			b, err := io.ReadAll(r)
-			if err != nil {
-				return nil, fmt.Errorf("error reading entry %q: %w", f.Name, err)
-			}
-			licenses = append(licenses, LicenseFile{
-				Path:     f.Name,
-				Contents: string(b),
-			})
 		}
 	}
 

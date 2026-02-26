@@ -595,9 +595,9 @@ type Volume struct {
 	// +kcc:proto:field=google.cloud.run.v2.Volume.empty_dir
 	EmptyDir *EmptyDirVolumeSource `json:"emptyDir,omitempty"`
 
-	// For NFS Voumes, contains the path to the nfs Volume
+	// For Nfs Volumes, contains the path to the nfs Volume
 	// +kcc:proto:field=google.cloud.run.v2.Volume.nfs
-	// Nfs *NfsVolumeSource `json:"nfs,omitempty"`
+	Nfs *NfsVolumeSource `json:"nfs,omitempty"`
 
 	// Persistent storage backed by a Google Cloud Storage bucket.
 	// +kcc:proto:field=google.cloud.run.v2.Volume.gcs

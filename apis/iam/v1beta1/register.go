@@ -26,38 +26,31 @@ import (
 	"reflect"
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
 var (
-	// SchemeGroupVersion is group version used to register these objects
-	SchemeGroupVersion = schema.GroupVersion{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1"}
-
-	// SchemeBuilder is used to add go types to the GroupVersionKind scheme
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
-
 	IAMPolicyGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
+		Group:   GroupVersion.Group,
+		Version: GroupVersion.Version,
 		Kind:    reflect.TypeOf(IAMPolicy{}).Name(),
 	}
 
 	IAMPartialPolicyGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
+		Group:   GroupVersion.Group,
+		Version: GroupVersion.Version,
 		Kind:    reflect.TypeOf(IAMPartialPolicy{}).Name(),
 	}
 	IAMPolicyMemberGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
+		Group:   GroupVersion.Group,
+		Version: GroupVersion.Version,
 		Kind:    reflect.TypeOf(IAMPolicyMember{}).Name(),
 	}
 	IAMAuditConfigGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
+		Group:   GroupVersion.Group,
+		Version: GroupVersion.Version,
 		Kind:    reflect.TypeOf(IAMAuditConfig{}).Name(),
 	}
-	IAMAPIVersion = SchemeGroupVersion.String()
+	IAMAPIVersion = GroupVersion.String()
 )
 
 // IsHandwrittenIAM returns true if the given GVK corresponds to that of a
