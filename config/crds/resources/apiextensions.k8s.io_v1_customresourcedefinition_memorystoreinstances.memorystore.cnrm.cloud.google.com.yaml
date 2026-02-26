@@ -60,7 +60,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
+            description: MemorystoreInstanceSpec defines the desired state of a Memorystore
+              for Valkey instance
             properties:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
@@ -282,7 +283,7 @@ spec:
             type: object
           status:
             description: MemorystoreInstanceStatus defines the config connector machine
-              state of MemorystoreInstance
+              state of a Memorystore for Valkey instance
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -455,7 +456,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
+            description: MemorystoreInstanceSpec defines the desired state of a Memorystore
+              for Valkey instance
             properties:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
@@ -677,7 +679,7 @@ spec:
             type: object
           status:
             description: MemorystoreInstanceStatus defines the config connector machine
-              state of MemorystoreInstance
+              state of a Memorystore for Valkey instance
             properties:
               conditions:
                 description: Conditions represent the latest available observations

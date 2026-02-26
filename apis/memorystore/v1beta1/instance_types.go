@@ -23,7 +23,7 @@ import (
 
 var MemorystoreInstanceGVK = GroupVersion.WithKind("MemorystoreInstance")
 
-// MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
+// MemorystoreInstanceSpec defines the desired state of a Memorystore for Valkey instance
 // +kcc:spec:proto=google.cloud.memorystore.v1.Instance
 type MemorystoreInstanceSpec struct {
 
@@ -97,7 +97,7 @@ type Parent struct {
 	Location string `json:"location"`
 }
 
-// MemorystoreInstanceStatus defines the config connector machine state of MemorystoreInstance
+// MemorystoreInstanceStatus defines the config connector machine state of a Memorystore for Valkey instance
 type MemorystoreInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */

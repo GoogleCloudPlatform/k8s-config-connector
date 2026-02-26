@@ -42,6 +42,8 @@ func init() {
 	registry.RegisterModel(krm.MemorystoreInstanceGVK, NewInstanceModel)
 }
 
+// NewInstanceModel returns a directbase.Model for the MemorystoreInstance resource,
+// which manages Memorystore for Valkey instances.
 func NewInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
 	return &modelInstance{config: *config}, nil
 }
