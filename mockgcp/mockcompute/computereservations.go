@@ -50,6 +50,9 @@ func (s *ReservationsV1) Get(ctx context.Context, req *pb.GetReservationRequest)
 }
 
 func (s *ReservationsV1) Insert(ctx context.Context, req *pb.InsertReservationRequest) (*pb.Operation, error) {
+	if req.GetReservationResource() == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "reservation_resource is required")
+	}
 	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/reservations/" + req.GetReservationResource().GetName()
 	name, err := s.parseZonalReservationName(reqName)
 	if err != nil {
