@@ -17,12 +17,12 @@ package parametermanager
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/parametermanager/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
@@ -34,7 +34,6 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -203,12 +202,13 @@ func (a *ParameterAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		return mapCtx.Err()
 	}
 
-	paths := make(sets.Set[string])
-	var err error
 	resource.Name = a.id.String()
-	paths, err = common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
-	if err != nil {
-		return err
+	paths := []string{}
+	if !reflect.DeepEqual(a.actual.GetKmsKey(), resource.GetKmsKey()) {
+		paths = append(paths, "kms_key")
+	}
+	if !reflect.DeepEqual(a.actual.GetLabels(), resource.GetLabels()) {
+		paths = append(paths, "labels")
 	}
 
 	if len(paths) == 0 {
@@ -225,7 +225,7 @@ func (a *ParameterAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		return nil
 	}
 	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths),
+		Paths: paths,
 	}
 
 	req := &parametermanagerpb.UpdateParameterRequest{
