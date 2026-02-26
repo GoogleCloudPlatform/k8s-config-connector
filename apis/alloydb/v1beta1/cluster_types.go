@@ -277,7 +277,7 @@ type BackupSource struct {
 	//   * projects/{project}/locations/{region}/backups/{backup_id}
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.BackupSource.backup_name
 	// +required
-	BackupNameRef *refs.AlloyDBBackupRef `json:"backupNameRef,omitempty"`
+	BackupNameRef *AlloyDBBackupRef `json:"backupNameRef,omitempty"`
 }
 
 type RestoreContinuousBackupSource struct {

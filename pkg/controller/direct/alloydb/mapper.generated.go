@@ -463,7 +463,7 @@ func BackupSource_FromProto(mapCtx *direct.MapContext, in *pb.BackupSource) *krm
 	out := &krm.BackupSource{}
 	// MISSING: BackupUid
 	if in.GetBackupName() != "" {
-		out.BackupNameRef = &refsv1beta1.AlloyDBBackupRef{External: in.GetBackupName()}
+		out.BackupNameRef = &krm.AlloyDBBackupRef{External: in.GetBackupName()}
 	}
 	return out
 }

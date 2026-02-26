@@ -228,11 +228,9 @@ func (a *ClusterAdapter) normalizeReferences(ctx context.Context) error {
 	}
 
 	if obj.Spec.RestoreBackupSource != nil && obj.Spec.RestoreBackupSource.BackupNameRef != nil {
-		backup, err := refs.ResolveAlloyDBBackupRef(ctx, a.reader, obj, obj.Spec.RestoreBackupSource.BackupNameRef)
-		if err != nil {
+		if err := obj.Spec.RestoreBackupSource.BackupNameRef.Normalize(ctx, a.reader, obj.Namespace); err != nil {
 			return err
 		}
-		obj.Spec.RestoreBackupSource.BackupNameRef = backup
 	}
 
 	if obj.Spec.RestoreContinuousBackupSource != nil && obj.Spec.RestoreContinuousBackupSource.ClusterRef != nil {
