@@ -19,7 +19,7 @@ spec:
   clusterAutoscaling:
     autoProvisioningDefaults:
       bootDiskKMSKeyRef:
-        name: kmscryptokey2-${uniqueId}
+        name: kmscryptokey-2-${uniqueId}
     enabled: true
     resourceLimits:
     - maximum: 1

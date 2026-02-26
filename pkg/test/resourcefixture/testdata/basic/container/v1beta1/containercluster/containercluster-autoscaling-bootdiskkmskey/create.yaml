@@ -28,4 +28,4 @@ spec:
         maximum: 1024
     autoProvisioningDefaults:
       bootDiskKMSKeyRef:
-        name: kmscryptokey1-${uniqueId}
+        name: kmscryptokey-1-${uniqueId}
