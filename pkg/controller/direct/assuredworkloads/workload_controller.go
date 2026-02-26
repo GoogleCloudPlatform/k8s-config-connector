@@ -39,6 +39,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 func init() {
@@ -65,6 +66,14 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 
 	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	if obj.Spec.ProvisionedResourcesParentRef != nil {
+		folder, err := refs.ResolveFolder(ctx, reader, obj, obj.Spec.ProvisionedResourcesParentRef)
+		if err != nil {
+			return nil, err
+		}
+		obj.Spec.ProvisionedResourcesParentRef.External = "folders/" + folder.FolderID
 	}
 
 	id, err := krm.NewWorkloadIdentity(ctx, reader, obj)
