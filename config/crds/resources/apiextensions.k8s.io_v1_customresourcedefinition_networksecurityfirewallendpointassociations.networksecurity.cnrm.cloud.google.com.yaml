@@ -99,6 +99,9 @@ spec:
                       resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: Field is immutable
+                  rule: self == oldSelf
               labels:
                 additionalProperties:
                   type: string
@@ -139,6 +142,9 @@ spec:
                     description: The namespace of a ComputeNetwork resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: Field is immutable
+                  rule: self == oldSelf
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -175,6 +181,9 @@ spec:
                 description: The NetworkSecurityFirewallEndpointAssociation name.
                   If not given, the metadata.name will be used.
                 type: string
+                x-kubernetes-validations:
+                - message: Field is immutable
+                  rule: self == oldSelf
               tlsInspectionPolicyRef:
                 description: Optional. The URL of the TlsInspectionPolicy that is
                   being associated.
@@ -206,8 +215,13 @@ spec:
                       resource.
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: Field is immutable
+                  rule: self == oldSelf
             required:
+            - firewallEndpointRef
             - location
+            - networkRef
             - projectRef
             type: object
           status:

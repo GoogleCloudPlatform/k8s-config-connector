@@ -26,6 +26,7 @@ var NetworkSecurityFirewallEndpointAssociationGVK = GroupVersion.WithKind("Netwo
 // +kcc:spec:proto=google.cloud.networksecurity.v1beta1.FirewallEndpointAssociation
 type NetworkSecurityFirewallEndpointAssociationSpec struct {
 	// The NetworkSecurityFirewallEndpointAssociation name. If not given, the metadata.name will be used.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field is immutable"
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	Parent `json:",inline"`
@@ -36,10 +37,14 @@ type NetworkSecurityFirewallEndpointAssociationSpec struct {
 
 	// Required. The URL of the FirewallEndpoint that is being associated.
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.FirewallEndpointAssociation.firewall_endpoint
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field is immutable"
 	FirewallEndpointRef *NetworkSecurityFirewallEndpointRef `json:"firewallEndpointRef,omitempty"`
 
 	// Required. The URL of the network that is being associated.
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.FirewallEndpointAssociation.network
+	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field is immutable"
 	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. Labels as key value pairs
@@ -48,6 +53,7 @@ type NetworkSecurityFirewallEndpointAssociationSpec struct {
 
 	// Optional. The URL of the TlsInspectionPolicy that is being associated.
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.FirewallEndpointAssociation.tls_inspection_policy
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field is immutable"
 	TlsInspectionPolicyRef *NetworkSecurityTlsInspectionPolicyRef `json:"tlsInspectionPolicyRef,omitempty"`
 }
 
