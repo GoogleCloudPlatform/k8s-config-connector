@@ -282,7 +282,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if a.desired.Spec.NodeType != nil && !reflect.DeepEqual(desiredPb.NodeType, a.actual.NodeType) {
 		paths = append(paths, "node_type")
 	}
-	if a.desired.Spec.CrossInstanceReplicationConfig != nil && instanceRole(desiredPb) != instanceRole(a.actual) {
+	if a.desired.Spec.CrossInstanceReplicationConfig != nil && !reflect.DeepEqual(desiredPb.CrossInstanceReplicationConfig, a.actual.CrossInstanceReplicationConfig) {
 		paths = append(paths, "cross_instance_replication_config")
 	}
 
@@ -372,11 +372,4 @@ func (a *InstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 		return false, fmt.Errorf("waiting delete Instance %s: %w", a.id, err)
 	}
 	return true, nil
-}
-
-func instanceRole(instance *memorystorepb.Instance) memorystorepb.CrossInstanceReplicationConfig_InstanceRole {
-	if instance == nil || instance.CrossInstanceReplicationConfig == nil || instance.CrossInstanceReplicationConfig.InstanceRole == memorystorepb.CrossInstanceReplicationConfig_INSTANCE_ROLE_UNSPECIFIED {
-		return memorystorepb.CrossInstanceReplicationConfig_NONE
-	}
-	return instance.CrossInstanceReplicationConfig.InstanceRole
 }
