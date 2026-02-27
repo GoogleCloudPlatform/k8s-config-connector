@@ -237,7 +237,7 @@ spec:
           serviceAccountName: cnrm-backup-manager
           containers:
           - name: backup
-            image: gcr.io/gke-release/cnrm/controller:{{.Version}}
+            image: gcr.io/gke-release/cnrm/config-connector-cli:{{.Version}}
             command: ["config-connector", "backup", "create", "--bucket", "{{.Bucket}}", "--project", "{{.ProjectID}}", "--namespace", "{{.Namespace}}"]
           restartPolicy: OnFailure
 `

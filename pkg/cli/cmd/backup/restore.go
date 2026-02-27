@@ -259,11 +259,11 @@ func sortResources(objects []*unstructured.Unstructured) {
 			}
 		}
 
-		// Priority 10: IAM and Policy-like resources (should be last)
+		// Priority 10: IAM and attachment-like resources (should be last)
 		if group == "iam.cnrm.cloud.google.com" {
 			return 10
 		}
-		if strings.HasSuffix(kind, "Policy") || strings.HasSuffix(kind, "PolicyMember") || strings.HasSuffix(kind, "Binding") {
+		if strings.HasSuffix(kind, "PolicyMember") || strings.HasSuffix(kind, "Binding") {
 			return 10
 		}
 
