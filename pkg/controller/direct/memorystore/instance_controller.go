@@ -125,16 +125,19 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 	}
 	if obj.Spec.CrossInstanceReplicationConfig != nil {
 		crr := obj.Spec.CrossInstanceReplicationConfig
-		ns := obj.GetNamespace()
-		switch *crr.InstanceRole {
+		instanceRole := ""
+		if crr.InstanceRole != nil {
+			instanceRole = *crr.InstanceRole
+		}
+		switch instanceRole {
 		case "PRIMARY":
 			for _, secondaryInstance := range crr.SecondaryInstances {
-				if _, err := secondaryInstance.InstanceRef.NormalizedExternal(ctx, reader, ns); err != nil {
+				if err := resolveRemoteInstanceRef(ctx, reader, obj, &secondaryInstance); err != nil {
 					return err
 				}
 			}
 		case "SECONDARY":
-			if _, err := crr.PrimaryInstance.InstanceRef.NormalizedExternal(ctx, reader, ns); err != nil {
+			if err := resolveRemoteInstanceRef(ctx, reader, obj, crr.PrimaryInstance); err != nil {
 				return err
 			}
 		default:
@@ -142,6 +145,17 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 		}
 	}
 	return nil
+}
+
+func resolveRemoteInstanceRef(ctx context.Context, reader client.Reader, obj *krm.MemorystoreInstance, remoteInstance *krm.CrossInstanceReplicationConfig_RemoteInstance) error {
+	if remoteInstance == nil {
+		return nil
+	}
+	if remoteInstance.InstanceRef == nil {
+		return fmt.Errorf("InstanceRef is nil")
+	}
+	_, err := remoteInstance.InstanceRef.NormalizedExternal(ctx, reader, obj.Namespace)
+	return err
 }
 
 func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
