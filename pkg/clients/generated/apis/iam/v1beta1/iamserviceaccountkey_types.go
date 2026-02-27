@@ -43,7 +43,7 @@ type IAMServiceAccountKeySpec struct {
 	// +optional
 	KeyAlgorithm *string `json:"keyAlgorithm,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. The output format of the private key. TYPE_GOOGLE_CREDENTIALS_FILE is the default output format. */
 	// +optional
 	PrivateKeyType *string `json:"privateKeyType,omitempty"`
 
@@ -51,10 +51,11 @@ type IAMServiceAccountKeySpec struct {
 	// +optional
 	PublicKeyData *string `json:"publicKeyData,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. The output format for the public key. TYPE_NONE is the default for public key output. */
 	// +optional
 	PublicKeyType *string `json:"publicKeyType,omitempty"`
 
+	/* Immutable. The Service Account to create a key for. */
 	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef"`
 }
 

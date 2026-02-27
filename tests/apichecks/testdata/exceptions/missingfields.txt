@@ -837,6 +837,8 @@
 [missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservation.instanceProperties.guestAccelerators[].acceleratorType" is not set in unstructured objects
 [missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservation.instanceProperties.localSsds[].diskSizeGb" is not set in unstructured objects
 [missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservation.instanceProperties.localSsds[].interface" is not set in unstructured objects
+[missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.shareSettings.projectMap[].idRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.shareSettings.projectMap[].projectIdRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservationRequired" is not set in unstructured objects
 [missing_field] crd=computeresourcepolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computeresourcepolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.diskConsistencyGroupPolicy.enabled" is not set in unstructured objects

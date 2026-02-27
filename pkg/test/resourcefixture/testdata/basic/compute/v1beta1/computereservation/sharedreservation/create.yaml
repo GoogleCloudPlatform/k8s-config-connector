@@ -24,8 +24,10 @@ spec:
   shareSettings:
     shareType: SPECIFIC_PROJECTS
     projectMap:
-    - id: project-id-${uniqueId}
-      projectId: project-id-${uniqueId}
+    - idRef:
+        external: project-id-${uniqueId}
+      projectIdRef:
+        external: project-id-${uniqueId}
   specificReservation:
     count: 1
     instanceProperties:
