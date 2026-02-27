@@ -53,12 +53,12 @@ func FirewallEndpointSpec_FromAPI(ctx *direct.MapContext, in *api.FirewallEndpoi
 	return out
 }
 
-func FirewallEndpointObservedState_FromAPI(ctx *direct.MapContext, in *api.FirewallEndpoint) *v1beta1.NetworkSecurityFirewallEndpointStatus {
+func FirewallEndpointObservedState_FromAPI(ctx *direct.MapContext, in *api.FirewallEndpoint) *v1beta1.NetworkSecurityFirewallEndpointObservedState {
 	if in == nil {
 		return nil
 	}
 
-	out := &v1beta1.NetworkSecurityFirewallEndpointStatus{}
+	out := &v1beta1.NetworkSecurityFirewallEndpointObservedState{}
 	out.AssociatedNetworks = in.AssociatedNetworks
 	if in.UpdateTime != "" {
 		out.UpdateTime = direct.LazyPtr(in.UpdateTime)

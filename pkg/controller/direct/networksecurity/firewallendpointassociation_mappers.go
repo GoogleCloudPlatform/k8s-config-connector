@@ -50,12 +50,12 @@ func FirewallEndpointAssociationSpec_FromAPI(ctx *direct.MapContext, in *api.Fir
 	return out
 }
 
-func FirewallEndpointAssociationObservedState_FromAPI(ctx *direct.MapContext, in *api.FirewallEndpointAssociation) *v1beta1.NetworkSecurityFirewallEndpointAssociationStatus {
+func FirewallEndpointAssociationObservedState_FromAPI(ctx *direct.MapContext, in *api.FirewallEndpointAssociation) *v1beta1.NetworkSecurityFirewallEndpointAssociationObservedState {
 	if in == nil {
 		return nil
 	}
 
-	out := &v1beta1.NetworkSecurityFirewallEndpointAssociationStatus{}
+	out := &v1beta1.NetworkSecurityFirewallEndpointAssociationObservedState{}
 	if in.CreateTime != "" {
 		out.CreateTime = direct.LazyPtr(in.CreateTime)
 	}

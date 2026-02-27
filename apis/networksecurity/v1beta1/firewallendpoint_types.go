@@ -58,11 +58,17 @@ type NetworkSecurityFirewallEndpointStatus struct {
 	// A unique specifier for the NetworkSecurityFirewallEndpoint resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *NetworkSecurityFirewallEndpointObservedState `json:"observedState,omitempty"`
+}
+
+// NetworkSecurityFirewallEndpointObservedState defines the observed state of NetworkSecurityFirewallEndpoint
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1beta1.FirewallEndpoint
+type NetworkSecurityFirewallEndpointObservedState struct {
 	// Output only. List of networks that are associated with this endpoint in the local zone. This is a projection of the FirewallEndpointAssociations pointing at this endpoint. A network will only appear in this list after traffic routing is fully configured. Format: projects/{project}/global/networks/{name}.
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.FirewallEndpoint.associated_networks
 	AssociatedNetworks []string `json:"associatedNetworks,omitempty"`
 
-	// Output only. List of FirewallEndpointAssociations that are associated to this endpoint. An association will only appear in this list after traffic routing is fully configured.
 	// Output only. Update time stamp
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.FirewallEndpoint.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
