@@ -1,3 +1,26 @@
+GET https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Project 'example-project-01' not found or permission denied.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
 GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -15,6 +38,29 @@ X-Xss-Protection: 0
   "error": {
     "code": 403,
     "message": "The caller does not have permission",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/gke-basic-acm-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Project 'example-project-01' not found or permission denied.",
     "status": "PERMISSION_DENIED"
   }
 }
@@ -82,11 +128,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
-Content-Type: application/json
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&returnPartialSuccess=true
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-200 OK
+404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -97,39 +142,92 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
-    "gettable": true,
-    "ready": true
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
-    "lifecycleState": "ACTIVE",
-    "name": "Dependent Project",
-    "parent": {
-      "id": "${organizationID}",
-      "type": "organization"
-    },
-    "projectId": "example-project-01",
-    "projectNumber": "${projectNumber}"
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
+    "status": "NOT_FOUND"
   }
 }
 
 ---
 
-PUT https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "membershipSpecs": {
+    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {
+      "configmanagement": {
+        "configSync": {
+          "sourceFormat": "unstructured"
+        },
+        "version": "1.19.2"
+      }
+    }
+  },
+  "name": "projects/example-project-01/locations/global/features/projects/example-project-01/locations/global/features/configmanagement"
+}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "billingAccountName": "billingAccounts/${billingAccountID}"
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "A Test Service Account"
+  }
 }
 
 200 OK
@@ -143,68 +241,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "billingAccounts/${billingAccountID}",
-  "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
-}
-
----
-
-GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "billingAccountName": "billingAccounts/${billingAccountID}",
-  "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "Dependent Project",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
+  "displayName": "A Test Service Account",
+  "email": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
   "projectId": "example-project-01",
-  "projectNumber": "${projectNumber}"
+  "uniqueId": "111111111111111111111"
 }
 
 ---
 
-GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+GET https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -218,38 +266,21 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "billingAccounts/${billingAccountID}",
-  "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
+  "displayName": "A Test Service Account",
+  "email": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "example-project-01",
+  "uniqueId": "111111111111111111111"
 }
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/gke-basic-acm-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/container.googleapis.com:enable?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{}
-
-200 OK
+404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -260,45 +291,23 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
-    "service": {
-      "name": "projects/${projectNumber}/services/container.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
-    }
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: projects/example-project-01/zones/us-central1-a/clusters/gke-basic-acm-${uniqueId}.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: projects/example-project-01/zones/us-central1-a/clusters/gke-basic-acm-${uniqueId}.",
+    "status": "NOT_FOUND"
   }
 }
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+GET https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -312,11 +321,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "services": [
-    {
-      "name": "projects/${projectNumber}/services/container.googleapis.com"
-    }
-  ]
+  "displayName": "A Test Service Account",
+  "email": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "example-project-01",
+  "uniqueId": "111111111111111111111"
 }
 
 ---
@@ -659,6 +670,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -712,6 +725,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -1003,6 +1018,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -1056,6 +1073,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -1157,6 +1176,67 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&returnPartialSuccess=true
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "membershipSpecs": {
+    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {
+      "configmanagement": {
+        "configSync": {
+          "sourceFormat": "unstructured"
+        },
+        "version": "1.19.2"
+      }
+    }
+  },
+  "name": "projects/example-project-01/locations/global/features/projects/example-project-01/locations/global/features/configmanagement"
+}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1196,475 +1276,7 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{
-  "services": [
-    {
-      "name": "projects/${projectNumber}/services/container.googleapis.com"
-    }
-  ]
-}
-
----
-
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/anthos.googleapis.com:enable?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
 {}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
-    "service": {
-      "name": "projects/${projectNumber}/services/anthos.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
-    }
-  }
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "services": [
-    {
-      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/container.googleapis.com"
-    }
-  ]
-}
-
----
-
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/gkehub.googleapis.com:enable?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
-    "service": {
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
-    }
-  }
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "services": [
-    {
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/container.googleapis.com"
-    }
-  ]
-}
-
----
-
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/anthosconfigmanagement.googleapis.com:enable?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
-    "service": {
-      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
-    }
-  }
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "services": [
-    {
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
-    },
-    {
-      "name": "projects/${projectNumber}/services/container.googleapis.com"
-    }
-  ]
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Unknown service account",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Unknown service account",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "accountId": "sa-${uniqueId}",
-  "serviceAccount": {
-    "displayName": "A Test Service Account"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "A Test Service Account",
-  "email": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "example-project-01",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "A Test Service Account",
-  "email": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "example-project-01",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features?alt=json&featureId=configmanagement
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/example-project-01/locations/global/features/configmanagement"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/example-project-01/locations/global/features/configmanagement"
-  },
-  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}"
-}
-
----
-
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/example-project-01/locations/global/features/configmanagement"
-  },
-  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
-    "name": "projects/example-project-01/locations/global/features/configmanagement",
-    "resourceState": {
-      "state": "ACTIVE"
-    },
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/example-project-01/locations/global/features/configmanagement"
-}
 
 ---
 
@@ -1828,6 +1440,611 @@ X-Xss-Protection: 0
   },
   "uniqueId": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&returnPartialSuccess=true
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "membershipSpecs": {
+    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {
+      "configmanagement": {
+        "configSync": {
+          "sourceFormat": "unstructured"
+        },
+        "version": "1.19.2"
+      }
+    }
+  },
+  "name": "projects/example-project-01/locations/global/features/projects/example-project-01/locations/global/features/configmanagement"
+}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/${membershipID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authority": {
+    "identityProvider": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/gke-basic-acm-${uniqueId}",
+    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/gke-basic-acm-${uniqueId}",
+    "workloadIdentityPool": "${projectId}.svc.id.goog"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A sample GKE Hub membership",
+  "endpoint": {
+    "gkeCluster": {
+      "resourceLink": "//container.googleapis.com/projects/example-project-01/zones/us-central1-a/clusters/gke-basic-acm-${uniqueId}"
+    }
+  },
+  "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+  "infrastructureType": "MULTI_CLOUD",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/example-project-01/locations/us-central1/memberships/gkehubmembership-basic-acm-${uniqueId}",
+  "state": {
+    "code": "READY"
+  },
+  "uniqueId": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services:batchEnable?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "serviceIds": [
+    "anthosconfigmanagement.googleapis.com",
+    "container.googleapis.com",
+    "gkehub.googleapis.com",
+    "anthos.googleapis.com"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.api.serviceusage.v1.OperationMetadata"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.api.serviceusage.v1.BatchEnableServicesResponse",
+    "services": [
+      {
+        "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com",
+        "parent": "projects/${projectNumber}",
+        "state": "ENABLED"
+      },
+      {
+        "name": "projects/${projectNumber}/services/container.googleapis.com",
+        "parent": "projects/${projectNumber}",
+        "state": "ENABLED"
+      },
+      {
+        "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
+        "parent": "projects/${projectNumber}",
+        "state": "ENABLED"
+      },
+      {
+        "name": "projects/${projectNumber}/services/anthos.googleapis.com",
+        "parent": "projects/${projectNumber}",
+        "state": "ENABLED"
+      }
+    ]
+  }
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
+    "gettable": true,
+    "ready": true
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lifecycleState": "ACTIVE",
+    "name": "Dependent Project",
+    "parent": {
+      "id": "${organizationID}",
+      "type": "organization"
+    },
+    "projectId": "example-project-01",
+    "projectNumber": "${projectNumber}"
+  }
+}
+
+---
+
+PUT https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingEnabled": true,
+  "name": "projects/example-project-01/billingInfo",
+  "projectId": "example-project-01"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingEnabled": true,
+  "name": "projects/example-project-01/billingInfo",
+  "projectId": "example-project-01"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&returnPartialSuccess=true
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "membershipSpecs": {
+    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {
+      "configmanagement": {
+        "configSync": {
+          "sourceFormat": "unstructured"
+        },
+        "version": "1.19.2"
+      }
+    }
+  },
+  "name": "projects/example-project-01/locations/global/features/projects/example-project-01/locations/global/features/configmanagement"
+}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "Dependent Project",
+  "parent": {
+    "id": "${organizationID}",
+    "type": "organization"
+  },
+  "projectId": "example-project-01",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingEnabled": true,
+  "name": "projects/example-project-01/billingInfo",
+  "projectId": "example-project-01"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features?alt=json&featureId=configmanagement
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/example-project-01/locations/global/features/configmanagement",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement"
 }
 
 ---
@@ -2141,85 +2358,6 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "membershipSpecs": {
-    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {}
-  },
-  "name": "projects/example-project-01/locations/global/features/configmanagement",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/example-project-01/locations/global/features/configmanagement"
-  },
-  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}"
-}
-
----
-
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/example-project-01/locations/global/features/configmanagement"
-  },
-  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
-    "membershipSpecs": {
-      "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {}
-    },
-    "name": "projects/example-project-01/locations/global/features/configmanagement",
-    "resourceState": {
-      "state": "ACTIVE"
-    },
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
 GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1/memberships/${membershipID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
@@ -2356,6 +2494,130 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&returnPartialSuccess=true
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "membershipSpecs": {
+    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {
+      "configmanagement": {
+        "configSync": {
+          "git": {
+            "gcpServiceAccountEmail": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+            "httpsProxy": "https://github.com",
+            "policyDir": "config-connector",
+            "secretType": "none",
+            "syncBranch": "master",
+            "syncRepo": "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit",
+            "syncRev": "HEAD",
+            "syncWaitSecs": "20"
+          },
+          "sourceFormat": "hierarchy",
+          "stopSyncing": true
+        },
+        "version": "1.20.0"
+      }
+    }
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "membershipSpecs": {
+    "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {}
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "membershipSpecs": {
+      "projects/example-project-01/locations/us-central1/memberships/${membershipID}": {}
+    },
+    "name": "projects/example-project-01/locations/global/features/configmanagement",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
 
 ---
 
@@ -2523,6 +2785,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -2576,6 +2840,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -2867,6 +3133,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -2920,6 +3188,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },

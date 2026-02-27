@@ -385,6 +385,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -438,6 +440,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -727,6 +731,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -780,6 +786,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -1069,6 +1077,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -1122,6 +1132,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -1411,6 +1423,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -1464,6 +1478,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -1786,6 +1802,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -1839,6 +1857,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -2128,6 +2148,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -2181,6 +2203,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -2470,6 +2494,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -2523,6 +2549,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
