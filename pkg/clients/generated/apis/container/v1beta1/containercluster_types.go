@@ -467,6 +467,14 @@ type ClusterKalmConfig struct {
 }
 
 type ClusterKubeletConfig struct {
+	/* The maximum number of container log files that can be present for a container. */
+	// +optional
+	ContainerLogMaxFiles *int64 `json:"containerLogMaxFiles,omitempty"`
+
+	/* The maximum size of the container log file before it is rotated. */
+	// +optional
+	ContainerLogMaxSize *string `json:"containerLogMaxSize,omitempty"`
+
 	/* Enable CPU CFS quota enforcement for containers that specify CPU limits. */
 	// +optional
 	CpuCfsQuota *bool `json:"cpuCfsQuota,omitempty"`
@@ -478,11 +486,11 @@ type ClusterKubeletConfig struct {
 	/* Control the CPU management policy on the node. */
 	CpuManagerPolicy string `json:"cpuManagerPolicy"`
 
-	/* The percent of disk usage before which image garbage collection is never run. Lowest priority. */
+	/* The percent of disk usage after which image garbage collection is always run. */
 	// +optional
 	ImageGcHighThresholdPercent *int64 `json:"imageGcHighThresholdPercent,omitempty"`
 
-	/* The percent of disk usage after which image garbage collection is always run. */
+	/* The percent of disk usage before which image garbage collection is never run. Lowest priority. */
 	// +optional
 	ImageGcLowThresholdPercent *int64 `json:"imageGcLowThresholdPercent,omitempty"`
 
@@ -493,6 +501,10 @@ type ClusterKubeletConfig struct {
 	/* The minimum age for an unused image before it is garbage collected. */
 	// +optional
 	ImageMinimumGcAge *string `json:"imageMinimumGcAge,omitempty"`
+
+	/* The maximum number of parallel image pulls allowed. */
+	// +optional
+	MaxParallelImagePulls *int64 `json:"maxParallelImagePulls,omitempty"`
 
 	/* Controls the maximum number of processes allowed to run in a pod. */
 	// +optional
