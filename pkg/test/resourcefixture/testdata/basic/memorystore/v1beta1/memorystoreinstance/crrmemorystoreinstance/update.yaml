@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Detach the secondary instance from the primary instance
 apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
 kind: MemorystoreInstance
 metadata:
   name: memorystoreinstance-us-central1-b-${uniqueId}
 spec:
+  crossInstanceReplicationConfig:
+    instanceRole: NONE
   location: us-central1
   projectRef:
     external: ${projectId}
