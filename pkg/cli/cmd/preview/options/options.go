@@ -30,7 +30,7 @@ const (
 	inClusterFlag        = "in-cluster"
 )
 
-type Options struct {
+type PreviewOptions struct {
 	Kubeconfig       string
 	Timeout          int
 	ReportNamePrefix string
@@ -40,10 +40,13 @@ type Options struct {
 	Namespace        string
 	Verbose          int
 	InCluster        bool
+
+	// SourceTree is the path to a gitops repo to use instead of connecting to kube. This is intended for testing purposes.
+	SourceTree string
 }
 
-func NewOptions() *Options {
-	return &Options{
+func NewPreviewOptions() *PreviewOptions {
+	return &PreviewOptions{
 		Timeout:          15,
 		ReportNamePrefix: "preview-report",
 		GCPQPS:           5.0,
@@ -51,7 +54,7 @@ func NewOptions() *Options {
 	}
 }
 
-func (o *Options) AddFlags(flags *pflag.FlagSet) {
+func (o *PreviewOptions) AddFlags(flags *pflag.FlagSet) {
 	flags.StringVarP(&o.Kubeconfig, kubeconfigFlag, "", o.Kubeconfig, "path to the kubeconfig file.")
 	flags.IntVarP(&o.Timeout, timeoutFlag, "", o.Timeout, "timeout in minutes. Default to 15 minutes.")
 	flags.StringVarP(&o.ReportNamePrefix, reportNamePrefixFlag, "", o.ReportNamePrefix, "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
@@ -61,4 +64,7 @@ func (o *Options) AddFlags(flags *pflag.FlagSet) {
 	flags.StringVarP(&o.Namespace, namespaceFlag, "n", o.Namespace, "Namespace to preview. If not specified, all namespaces will be previewed.")
 	flags.IntVarP(&o.Verbose, verboseFlag, "v", o.Verbose, "Log verbosity level. Default to 0.")
 	flags.BoolVarP(&o.InCluster, inClusterFlag, "", o.InCluster, "Run in GKE cluster. Default to false.")
+
+	flags.StringVar(&o.SourceTree, "repo", o.SourceTree, "Path to a gitops repo to use instead of connecting to kube.")
+	flags.MarkHidden("repo")
 }

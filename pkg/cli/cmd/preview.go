@@ -28,7 +28,7 @@ const (
 )
 
 func NewPreviewCmd() *cobra.Command {
-	opts := options.NewOptions()
+	opts := options.NewPreviewOptions()
 	cmd := &cobra.Command{
 		Use:     "preview",
 		Short:   "preview Config Connector resources",
