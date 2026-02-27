@@ -144,4 +144,3 @@ func runStatus(ctx context.Context, options *statusOptions) error {
 
 	return nil
 }
-

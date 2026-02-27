@@ -241,4 +241,3 @@ spec:
             command: ["config-connector", "backup", "create", "--bucket", "{{.Bucket}}", "--project", "{{.ProjectID}}", "--namespace", "{{.Namespace}}"]
           restartPolicy: OnFailure
 `
-

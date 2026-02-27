@@ -342,6 +342,7 @@
 [acronyms] crd=containerattachedclusters.containerattached.cnrm.cloud.google.com version=v1beta1: field ".status.workloadIdentityConfig[].issuerUri" should be ".status.workloadIdentityConfig[].issuerURI"
 [acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.clusterAutoscaling.autoProvisioningDefaults.minCpuPlatform" should be ".spec.clusterAutoscaling.autoProvisioningDefaults.minCPUPlatform"
 [acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.clusterIpv4Cidr" should be ".spec.clusterIPV4CIDR"
+[acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.controlPlaneEndpointsConfig.dnsEndpointConfig.enableK8sTokensViaDns" should be ".spec.controlPlaneEndpointsConfig.dnsEndpointConfig.enableK8sTokensViaDNS"
 [acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.dnsConfig.clusterDns" should be ".spec.dnsConfig.clusterDNS"
 [acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.dnsConfig.clusterDnsDomain" should be ".spec.dnsConfig.clusterDNSDomain"
 [acronyms] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.dnsConfig.clusterDnsScope" should be ".spec.dnsConfig.clusterDNSScope"

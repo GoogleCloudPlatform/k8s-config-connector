@@ -137,4 +137,3 @@ func TestSortResourcesComplex(t *testing.T) {
 		}
 	}
 }
-

@@ -315,4 +315,3 @@ func applyObject(ctx context.Context, kubeClient *kubecli.Client, obj *unstructu
 	fmt.Printf("Restored %s/%s (%s)\n", obj.GetNamespace(), obj.GetName(), obj.GetKind())
 	return nil
 }
-

@@ -205,4 +205,3 @@ func backupObject(ctx context.Context, gcsClient *storage.Client, bucket, cluste
 	}
 	return wc.Close()
 }
-
