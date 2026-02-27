@@ -112,17 +112,22 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 					}
 				}
 			}
-			// if connection.PscConnection != nil {
-			// 	userConnection := connection.PscConnection
-			// 	if userConnection.NetworkRef != nil {
-			// 		if err := userConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
-			// 			return err
-			// 		}
-			// 	}
-			// 	if err := refs.ResolveComputeServiceAttachment(ctx, reader, obj.GetNamespace(), userConnection.ServiceAttachmentRef); err != nil {
-			// 		return err
-			// 	}
-			// }
+			if connection.PscConnection != nil {
+				userConnection := connection.PscConnection
+				if userConnection.NetworkRef != nil {
+					if err := userConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
+						return err
+					}
+				}
+				if userConnection.ForwardingRuleRef != nil {
+					if err := refs.ResolveComputeForwardingRule(ctx, reader, obj.GetNamespace(), userConnection.ForwardingRuleRef); err != nil {
+						return err
+					}
+				}
+				if err := refs.ResolveComputeServiceAttachment(ctx, reader, obj.GetNamespace(), userConnection.ServiceAttachmentRef); err != nil {
+					return err
+				}
+			}
 		}
 	}
 	return nil

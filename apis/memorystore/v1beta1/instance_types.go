@@ -141,6 +141,10 @@ type MemorystoreInstanceObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.node_config
 	NodeConfig *NodeConfigObservedState `json:"nodeConfig,omitempty"`
 
+	// Output only. Discovery endpoints for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.discovery_endpoints
+	DiscoveryEndpoints []DiscoveryEndpointObservedState `json:"discoveryEndpoints,omitempty"`
+
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints
 	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
@@ -155,7 +159,7 @@ type Instance_ConnectionDetail struct {
 
 	// Detailed information of a PSC connection that is created by the user.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_connection
-	// PscConnection *PscConnection `json:"pscConnection,omitempty"`
+	PscConnection *PscConnection `json:"pscConnection,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.InstanceEndpoint
@@ -248,7 +252,7 @@ type PscConnection struct {
 	//  projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}
 	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.forwarding_rule
 	// +required
-	//ForwardingRuleRef *refs.ComputeForwardingRuleRef `json:"forwardingRuleRef,omitempty"`
+	ForwardingRuleRef *refs.ComputeForwardingRuleRef `json:"forwardingRuleRef,omitempty"`
 
 	// Required. The consumer network where the IP address resides, in the form of
 	//  projects/{project_id}/global/networks/{network_id}.
@@ -301,7 +305,7 @@ type Instance_ConnectionDetailObservedState struct {
 	PscAutoConnection *PscAutoConnectionObservedState `json:"pscAutoConnection,omitempty"`
 	// Detailed information of a PSC connection that is created by the user.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_connection
-	// PscConnection *PscConnectionObservedState `json:"pscConnection,omitempty"`
+	PscConnection *PscConnectionObservedState `json:"pscConnection,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.InstanceEndpoint

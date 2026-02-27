@@ -1748,7 +1748,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The name of the location where the Environment will be created. Required.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1758,7 +1758,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The Project that this resource belongs to.{% endverbatim %}</p>
+            <p>{% verbatim %}The Project that this resource belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
