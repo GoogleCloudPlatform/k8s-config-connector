@@ -107,7 +107,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Optional. User annotations. See https://google.aip.dev/128#annotations Stores small amounts of arbitrary data.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. User annotations. Stores small amounts of arbitrary data. See https://google.aip.dev/128#annotations.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -308,7 +308,7 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the BackupDRBackupVault resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the BackupDRBackupVault resource in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -322,7 +322,7 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -357,7 +357,7 @@ observedState:
         <td><code>observedState.serviceAccount</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. Service account used by the BackupVault Service for this BackupVault.  The user should grant this account permissions in their workload project to enable the service to run backups and restores there.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. To enable the service to run backups and restores, grant the required permissions to this service account in your workload project.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -390,8 +390,6 @@ observedState:
     </tr>
 </tbody>
 </table>
-
-## Sample YAML(s)
 
 
 Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

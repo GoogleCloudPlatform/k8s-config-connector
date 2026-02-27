@@ -96,7 +96,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}KMSKeyRingRef defines the resource reference to KMSKeyRing, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
+            <p>{% verbatim %}KMSKeyRingRef defines the resource reference to KMSKeyRing, which "External" field holds the Google Cloud identifier for the KRM object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -245,7 +245,7 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the KMSImportJob resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the KMSImportJob resource in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -259,7 +259,7 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -371,7 +371,7 @@ observedState:
         <td><code>observedState.publicKey.pem</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The public key, encoded in PEM format. For more information, see the [RFC 7468](https://tools.ietf.org/html/rfc7468) sections for [General Considerations](https://tools.ietf.org/html/rfc7468#section-2) and [Textual Encoding of Subject Public Key Info] (https://tools.ietf.org/html/rfc7468#section-13).{% endverbatim %}</p>
+            <p>{% verbatim %}The public key, encoded in PEM format. For more information, see the RFC 7468 https://tools.ietf.org/html/rfc7468 sections for General Considerations https://tools.ietf.org/html/rfc7468#section-2 and Textual Encoding of Subject Public Key Info https://tools.ietf.org/html/rfc7468#section-13.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -383,8 +383,6 @@ observedState:
     </tr>
 </tbody>
 </table>
-
-## Sample YAML(s)
 
 
 Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

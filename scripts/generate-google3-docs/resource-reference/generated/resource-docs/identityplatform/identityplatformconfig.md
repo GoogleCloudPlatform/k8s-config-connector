@@ -1559,8 +1559,7 @@ metadata:
   name: identityplatformconfig-dep
 spec:
   region: "us-west2"
-  # This field needs to be updated to a supported 1st gen version per the service team
-  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
+  # Ensure that you're using a supported runtime version. Using an unsupported runtime version can cause errors. For a list of supported versions, see https://cloud.google.com/functions/docs/runtime-support#support_schedule.
   # Deprecated runtime version will cause googleapis error
   runtime: "nodejs20"
   availableMemoryMb: 128

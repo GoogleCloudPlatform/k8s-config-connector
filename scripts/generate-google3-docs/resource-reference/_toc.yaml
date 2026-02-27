@@ -209,7 +209,7 @@ toc:
   section:
   - title: "EventarcTrigger"
     path: /config-connector/docs/reference/resource-docs/eventarc/eventarctrigger.md
-- title: "Identity and Access Managmement (IAM)"
+- title: "Identity and Access Management (IAM)"
   section:
   - title: "IAMAccessBoundaryPolicy"
     path: /config-connector/docs/reference/resource-docs/iam/iamaccessboundarypolicy.md

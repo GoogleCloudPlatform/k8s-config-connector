@@ -185,9 +185,8 @@ resourceTypes:
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}Immutable. The resource instance type on which this policy applies. Format
- will be of the form : `<canonical service name>/<type>` Example:
-
-  * `compute.googleapis.com/Instance`.{% endverbatim %}</p>
+ will be of the form : <code><canonical service name>/<type></code>, for example
+<code>compute.googleapis.com/Instance</code>.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -280,7 +279,7 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the OrgPolicyCustomConstraint resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the OrgPolicyCustomConstraint resource in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -294,7 +293,7 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -306,8 +305,6 @@ observedState:
     </tr>
 </tbody>
 </table>
-
-## Sample YAML(s)
 
 
 Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

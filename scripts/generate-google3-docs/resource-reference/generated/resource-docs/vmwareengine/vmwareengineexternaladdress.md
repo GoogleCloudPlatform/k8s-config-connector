@@ -233,7 +233,7 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the VMwareEngineExternalAddress resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the VMwareEngineExternalAddress resource in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -247,7 +247,7 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -287,8 +287,6 @@ observedState:
     </tr>
 </tbody>
 </table>
-
-## Sample YAML(s)
 
 
 Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

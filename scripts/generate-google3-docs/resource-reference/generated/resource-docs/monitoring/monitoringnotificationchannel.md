@@ -159,7 +159,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The service-generated name of theresource. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. The service-generated name of the resource. Use this field to acquire an existing resource. If this field is not set, a new resource is created.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -169,7 +169,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Different notification type behaviors are configured primarily using the the 'labels' field on this
+            <p>{% verbatim %}Different notification type behaviors are configured primarily using the 'labels' field on this
 resource. This block contains the labels which contain secrets or passwords so that they can be marked
 sensitive and hidden from plan output. The name of the field, eg: password, will be the key
 in the 'labels' map in the api request.

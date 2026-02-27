@@ -421,7 +421,7 @@ Must set to empty for private service connect forwarding rule. For more informat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
+            <p>{% verbatim %}Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: Google Cloud definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1199,7 +1199,7 @@ serviceName: string
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique Config Connector specifier for the resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique Config Connector specifier for the resource in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

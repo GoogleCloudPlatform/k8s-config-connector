@@ -140,11 +140,11 @@ slotCapacity: integer
     <tr>
         <td>
             <p><code>failover.secondaryLocation</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Users can update this field to convert a non-failover reservation to a
+            <p>{% verbatim %}Required when failover is set. Users can update this field to convert a non-failover reservation to a
 failover reservation (by setting a specific region value) or convert a
 failover reservation to a non-failover reservation (by removing spec.failover).
 However, changes from one region to another region will be ignored by the
@@ -253,9 +253,6 @@ Immutable.{% endverbatim %}</p>
 </table>
 
 
-<p>* Field is required when parent field is specified</p>
-
-
 ### Status
 #### Schema
 ```yaml
@@ -336,7 +333,7 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the BigQueryReservationReservation resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the BigQueryReservationReservation resource in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -350,7 +347,7 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -392,13 +389,11 @@ observedState:
         <td><code>observedState.failover.secondaryLocation</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The current location of the reservation's secondary replica. This field is only set for reservations using the managed disaster recovery feature. Users can set this in create reservation calls to create a failover reservation or in update reservation calls to convert a non-failover reservation to a failover reservation(or vice versa).{% endverbatim %}</p>
+            <p>{% verbatim %}The current location of the reservation's secondary replica. This field is only set for reservations using the managed disaster recovery feature. Users can set this in create reservation calls to create a failover reservation or in update reservation calls to convert a non-failover reservation to a failover reservation (or vice versa).{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
 </table>
-
-## Sample YAML(s)
 
 
 Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

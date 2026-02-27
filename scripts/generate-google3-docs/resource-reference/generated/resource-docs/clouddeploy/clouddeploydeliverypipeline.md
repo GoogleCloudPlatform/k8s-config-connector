@@ -239,7 +239,7 @@ suspended: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The GCP resource identifier. If not given, the metadata.name will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}The Google Cloud resource identifier. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -369,7 +369,7 @@ suspended: boolean
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
-            <p>{% verbatim %}Required. The percentage based deployments that will occur as a part of a `Rollout`. List is expected in ascending order and each integer n is 0 <= n < 100. If the GatewayServiceMesh is configured for Kubernetes, then the range for n is 0 <= n <= 100.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The percentage-based deployments to occur in a Rollout. Provide a list of integers in ascending order. Each integer n must satisfy 0 <= n < 100. However, if gatewayServiceMesh is configured for Kubernetes, the range for n is 0 <= n <= 100.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1046,7 +1046,7 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the DeployDeliveryPipeline resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the DeployDeliveryPipeline resource in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1060,7 +1060,7 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1170,8 +1170,6 @@ observedState:
     </tr>
 </tbody>
 </table>
-
-## Sample YAML(s)
 
 
 Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

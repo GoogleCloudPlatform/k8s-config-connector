@@ -109,7 +109,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}A list of the full names of the assets to receive updates. You must specify either or both of asset_names and asset_types. Only asset updates matching specified asset_names or asset_types are exported to the feed. Example: `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`. For a list of the full names for supported asset types, see [Resource name format](/asset-inventory/docs/resource-name-format).{% endverbatim %}</p>
+            <p>{% verbatim %}A list of the full names of the assets to receive updates. You must specify either or both of asset_names and asset_types. Only asset updates matching specified asset_names or asset_types are exported to the feed. Example: <code>//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1</code>. For a list of the full names for supported asset types, see <a href="/asset-inventory/docs/resource-name-format">Resource name format</a>.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -135,7 +135,7 @@ resourceID: string
  Example: `"compute.googleapis.com/Disk"`
 
  For a list of all supported asset types, see
- [Supported asset types](/asset-inventory/docs/supported-asset-types).{% endverbatim %}</p>
+ <a href="/asset-inventory/docs/supported-asset-types">Supported asset types</a>.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -158,15 +158,13 @@ resourceID: string
             <p>{% verbatim %}A condition which determines whether an asset update should be published.
  If specified, an asset will be returned only when the expression evaluates
  to true.
- When set, `expression` field in the `Expr` must be a valid [CEL expression]
- (https://github.com/google/cel-spec) on a TemporalAsset with name
- `temporal_asset`. Example: a Feed with expression ("temporal_asset.deleted
- == true") will only publish Asset deletions. Other fields of `Expr` are
+ When set, <code>expression</code> field in the <code>Expr</code> must be a valid <a href="https://github.com/google/cel-spec">CEL expression</a> on a TemporalAsset with name
+ <code>temporal_asset</code>. Example: a Feed with expression ("temporal_asset.deleted
+ == true") will only publish Asset deletions. Other fields of <code>Expr</code> are
  optional.
 
- See our [user
- guide](https://cloud.google.com/asset-inventory/docs/monitoring-asset-changes-with-condition)
- for detailed instructions.{% endverbatim %}</p>
+ See our <a href="https://cloud.google.com/asset-inventory/docs/monitoring-asset-changes-with-condition">user
+ guide</a> for detailed instructions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -176,7 +174,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Description of the expression. This is a longer text which describes the expression, for example when hovered over it in a UI.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -196,7 +194,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. String indicating the location of the expression for error reporting, e.g. a file name and a position in the file.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. String indicating the location of the expression for error reporting, for example a file name and a position in the file.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -206,7 +204,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Title for the expression. This can be used for example in UIs which allow to enter the expression.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -246,7 +244,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The name of the Pub/Sub topic to publish to. Example: `projects/PROJECT_ID/topics/TOPIC_ID`.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the Pub/Sub topic to publish to. Example: <code>projects/PROJECT_ID/topics/TOPIC_ID</code>.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -256,7 +254,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed PubSubTopic resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed PubSubTopic resource. The full name of the externally managed PubSubTopic resource. Use the format "projects/{{projectID}}/topics/{{topicID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -332,11 +330,11 @@ resourceID: string
     <tr>
         <td>
             <p><code>organizationRef.external</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The 'name' field of an organization, when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}Required when the `organizationRef` field is specified. The 'name' field of an organization, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -396,7 +394,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}A list of relationship types to output, for example: `INSTANCE_TO_INSTANCEGROUP`. This field should only be specified if content_type=RELATIONSHIP. * If specified: it outputs specified relationship updates on the [asset_names] or the [asset_types]. It returns an error if any of the [relationship_types] doesn't belong to the supported relationship types of the [asset_names] or [asset_types], or any of the [asset_names] or the [asset_types] doesn't belong to the source types of the [relationship_types]. * Otherwise: it outputs the supported relationships of the types of [asset_names] and [asset_types] or returns an error if any of the [asset_names] or the [asset_types] has no replationship support. See [Introduction to Cloud Asset Inventory](https://cloud.google.com/asset-inventory/docs/overview) for all supported asset types and relationship types.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of relationship types to output, for example: <code>INSTANCE_TO_INSTANCEGROUP</code>. This field should only be specified if <code>contentType</code> is <code>RELATIONSHIP</code>. If specified: it outputs specified relationship updates on <code>assetNames</code> or <code>assetTypes</code>. It returns an error if any of <code>relationshipTypes</code> doesn't belong to the supported relationship types of <code>assetNames</code> or <code>assetTypes</code>, or any of <code>assetNames</code> or <code>assetTypes</code> doesn't belong to the source types of <code>relationshipTypes</code>. Otherwise: it outputs the supported relationships of the types of <code>assetNames</code> and <code>assetTypes</code> or returns an error if any of <code>assetNames</code> or <code>assetTypes</code> has no relationship support. See <a href="https://cloud.google.com/asset-inventory/docs/overview">Introduction to Cloud Asset Inventory</a> for all supported asset types and relationship types.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -421,9 +419,6 @@ resourceID: string
     </tr>
 </tbody>
 </table>
-
-
-<p>* Field is required when parent field is specified</p>
 
 
 ### Status
@@ -499,7 +494,7 @@ observedGeneration: integer
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the AssetFeed resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the AssetFeed resource in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -511,8 +506,6 @@ observedGeneration: integer
     </tr>
 </tbody>
 </table>
-
-## Sample YAML(s)
 
 
 Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

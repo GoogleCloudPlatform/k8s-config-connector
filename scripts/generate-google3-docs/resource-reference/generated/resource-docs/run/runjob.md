@@ -228,7 +228,7 @@ template:
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Optional. User-provided annotations, which are stored in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. User-provided annotations, which are stored in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -398,7 +398,7 @@ template:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Optional. Specifies the maximum desired number of tasks the execution should run at given time. When the job is run, if this field is 0 or unset, the maximum possible value will be used for that execution. The actual number of tasks running in steady state will be less than this number when there are fewer tasks waiting to be completed remaining, i.e. when the work left to do is less than max parallelism.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Specifies the maximum desired number of tasks the execution should run at given time. When the job is run, if this field is 0 or unset, the maximum possible value will be used for that execution. The actual number of tasks running in steady state will be less than this number when there are fewer tasks waiting to be completed remaining, for example when the work left to do is less than max parallelism.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -866,11 +866,13 @@ template:
             <p>{% verbatim %}Only `memory` and `cpu` keys in the map are supported.
 
  <p>Notes:
-  * The only supported values for CPU are '1', '2', '4', and '8'. Setting 4
+  <ul>
+    <li>The only supported values for CPU are '1', '2', '4', and '8'. Setting 4
  CPU requires at least 2Gi of memory. For more information, go to
- https://cloud.google.com/run/docs/configuring/cpu.
-   * For supported 'memory' values and syntax, go to
-  https://cloud.google.com/run/docs/configuring/memory-limits{% endverbatim %}</p>
+ https://cloud.google.com/run/docs/configuring/cpu.</li>
+    <li>For supported 'memory' values and syntax, go to
+  https://cloud.google.com/run/docs/configuring/memory-limits</li>
+  </ul>{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1040,7 +1042,7 @@ template:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. Path within the container at which the volume should be mounted. Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must otherwise be `/cloudsql`. All instances defined in the Volume will be available as `/cloudsql/[instance]`. For more information on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run{% endverbatim %}</p>
+            <p>{% verbatim %}Required when volumeMounts are set. Path within the container at which the volume should be mounted. Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must otherwise be `/cloudsql`. All instances defined in the Volume will be available as `/cloudsql/[instance]`. For more information on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1210,17 +1212,7 @@ template:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>template.template.volumes[].cloudSqlInstance.instanceRefs[]</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Format: {project}:{location}:{instance}. The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1270,7 +1262,7 @@ template:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The medium on which the data is stored. Acceptable values today is only MEMORY or none. When none, the default will currently be backed by memory but could change over time. +optional{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The medium on which the data is stored. Supported values are <code>MEMORY</code> or none. When none, the default will currently be backed by memory.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1311,22 +1303,10 @@ template:
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Integer representation of mode bits to use on created files by default.
- Must be a value between 0000 and 0777 (octal), defaulting to 0444.
- Directories within the path are not affected by  this setting.
-
- Notes
-
- * Internally, a umask of 0222 will be applied to any non-zero value.
- * This is an integer representation of the mode bits. So, the octal
- integer value should look exactly as the chmod numeric notation with a
- leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
- or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
- 493 (base-10).
- * This might be in conflict with other options that affect the
- file mode, like fsGroup, and the result can be other mode bits set.
-
- This might be in conflict with other options that affect the
- file mode, like fsGroup, and as a result, other mode bits could be set.{% endverbatim %}</p>
+Must be a value between 0000 and 0777 (octal), defaulting to 0444.
+Directories within the path are not affected by this setting.
+This is an integer representation of the mode bits. So, the octal integer value should look exactly as the chmod numeric notation with a leading zero. For example, to set mode u=rw,g=r (640), you can specify 0640 (octal) or 416 (decimal).
+This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1357,19 +1337,11 @@ template:
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Integer octal mode bits to use on this file, must be a value between
- 01 and 0777 (octal). If 0 or not set, the Volume's default mode will be
- used.
-
- Notes
-
- * Internally, a umask of 0222 will be applied to any non-zero value.
- * This is an integer representation of the mode bits. So, the octal
- integer value should look exactly as the chmod numeric notation with a
- leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
- or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
- 493 (base-10).
- * This might be in conflict with other options that affect the
- file mode, like fsGroup, and the result can be other mode bits set.{% endverbatim %}</p>
+01 and 0777 (octal). If 0 or not set, the Volume's default mode will be
+used.
+Internally, a umask of 0222 will be applied to any non-zero value.
+This is an integer representation of the mode bits. So, the octal integer value should look exactly as the chmod numeric notation with a leading zero. For example, to set mode u=rw,g=r (640), you can specify 0640 (octal) or 416 (decimal).
+This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1788,14 +1760,14 @@ updateTime: string
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the RunJob resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the RunJob resource in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>lastModifiedCookie</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}LastModifiedCookie contains hashes of the last applied spec and the last observed GCP state. The format is "<spec-hash>/<gcp-hash>". This is used by the controller to detect if the user's desired state has changed or if the GCP resource has drifted.{% endverbatim %}</p>
+            <p>{% verbatim %}LastModifiedCookie contains hashes of the last applied spec and the last observed Google Cloud state. The format is "<spec-hash>/<gcp-hash>". This is used by the controller to detect if the user's desired state has changed or if the Google Cloud resource has drifted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
