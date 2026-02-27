@@ -213,6 +213,12 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 	if obj.KubeletConfig.MaxParallelImagePulls == 0 {
 		obj.KubeletConfig.MaxParallelImagePulls = 2
 	}
+	if obj.KubeletConfig.ContainerLogMaxSize == "" {
+		obj.KubeletConfig.ContainerLogMaxSize = "10Mi"
+	}
+	if obj.KubeletConfig.ContainerLogMaxFiles == 0 {
+		obj.KubeletConfig.ContainerLogMaxFiles = 5
+	}
 
 	if obj.MachineType == "" {
 		obj.MachineType = "e2-medium"
