@@ -20,6 +20,8 @@ spec:
   location: us-central1-a
   nodeConfig:
     kubeletConfig:
+      containerLogMaxFiles: 4
+      containerLogMaxSize: 100Mi
       cpuCfsQuota: false
       cpuCfsQuotaPeriod: 200ms
       cpuManagerPolicy: none
@@ -27,6 +29,7 @@ spec:
       imageGcLowThresholdPercent: 60
       imageMaximumGcAge: 2h
       imageMinimumGcAge: 3m
+      maxParallelImagePulls: 10
       podPidsLimit: 2048
     linuxNodeConfig:
       sysctls:

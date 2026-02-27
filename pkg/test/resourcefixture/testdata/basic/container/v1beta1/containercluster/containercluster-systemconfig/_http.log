@@ -72,6 +72,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "networkPolicy": {},
     "nodeConfig": {
       "kubeletConfig": {
+        "containerLogMaxFiles": 3,
+        "containerLogMaxSize": "50Mi",
         "cpuCfsQuota": true,
         "cpuCfsQuotaPeriod": "100ms",
         "cpuManagerPolicy": "none",
@@ -79,6 +81,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "imageGcLowThresholdPercent": 70,
         "imageMaximumGcAge": "1h",
         "imageMinimumGcAge": "2m",
+        "maxParallelImagePulls": 5,
         "podPidsLimit": "1024"
       },
       "linuxNodeConfig": {
@@ -345,6 +348,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 3,
+      "containerLogMaxSize": "50Mi",
       "cpuCfsQuota": true,
       "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
@@ -353,7 +358,7 @@ X-Xss-Protection: 0
       "imageMaximumGcAge": "1h",
       "imageMinimumGcAge": "2m",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2,
+      "maxParallelImagePulls": 5,
       "podPidsLimit": "1024"
     },
     "linuxNodeConfig": {
@@ -416,6 +421,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 3,
+          "containerLogMaxSize": "50Mi",
           "cpuCfsQuota": true,
           "cpuCfsQuotaPeriod": "100ms",
           "cpuManagerPolicy": "none",
@@ -424,7 +431,7 @@ X-Xss-Protection: 0
           "imageMaximumGcAge": "1h",
           "imageMinimumGcAge": "2m",
           "insecureKubeletReadonlyPortEnabled": false,
-          "maxParallelImagePulls": 2,
+          "maxParallelImagePulls": 5,
           "podPidsLimit": "1024"
         },
         "linuxNodeConfig": {
@@ -722,6 +729,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 3,
+      "containerLogMaxSize": "50Mi",
       "cpuCfsQuota": true,
       "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
@@ -730,7 +739,7 @@ X-Xss-Protection: 0
       "imageMaximumGcAge": "1h",
       "imageMinimumGcAge": "2m",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2,
+      "maxParallelImagePulls": 5,
       "podPidsLimit": "1024"
     },
     "linuxNodeConfig": {
@@ -793,6 +802,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 3,
+          "containerLogMaxSize": "50Mi",
           "cpuCfsQuota": true,
           "cpuCfsQuotaPeriod": "100ms",
           "cpuManagerPolicy": "none",
@@ -801,7 +812,7 @@ X-Xss-Protection: 0
           "imageMaximumGcAge": "1h",
           "imageMinimumGcAge": "2m",
           "insecureKubeletReadonlyPortEnabled": false,
-          "maxParallelImagePulls": 2,
+          "maxParallelImagePulls": 5,
           "podPidsLimit": "1024"
         },
         "linuxNodeConfig": {
@@ -1099,6 +1110,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 3,
+      "containerLogMaxSize": "50Mi",
       "cpuCfsQuota": true,
       "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
@@ -1107,7 +1120,7 @@ X-Xss-Protection: 0
       "imageMaximumGcAge": "1h",
       "imageMinimumGcAge": "2m",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2,
+      "maxParallelImagePulls": 5,
       "podPidsLimit": "1024"
     },
     "linuxNodeConfig": {
@@ -1170,6 +1183,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 3,
+          "containerLogMaxSize": "50Mi",
           "cpuCfsQuota": true,
           "cpuCfsQuotaPeriod": "100ms",
           "cpuManagerPolicy": "none",
@@ -1178,7 +1193,7 @@ X-Xss-Protection: 0
           "imageMaximumGcAge": "1h",
           "imageMinimumGcAge": "2m",
           "insecureKubeletReadonlyPortEnabled": false,
-          "maxParallelImagePulls": 2,
+          "maxParallelImagePulls": 5,
           "podPidsLimit": "1024"
         },
         "linuxNodeConfig": {
@@ -1476,6 +1491,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 3,
+      "containerLogMaxSize": "50Mi",
       "cpuCfsQuota": true,
       "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
@@ -1484,7 +1501,7 @@ X-Xss-Protection: 0
       "imageMaximumGcAge": "1h",
       "imageMinimumGcAge": "2m",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2,
+      "maxParallelImagePulls": 5,
       "podPidsLimit": "1024"
     },
     "linuxNodeConfig": {
@@ -1547,6 +1564,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 3,
+          "containerLogMaxSize": "50Mi",
           "cpuCfsQuota": true,
           "cpuCfsQuotaPeriod": "100ms",
           "cpuManagerPolicy": "none",
@@ -1555,7 +1574,7 @@ X-Xss-Protection: 0
           "imageMaximumGcAge": "1h",
           "imageMinimumGcAge": "2m",
           "insecureKubeletReadonlyPortEnabled": false,
-          "maxParallelImagePulls": 2,
+          "maxParallelImagePulls": 5,
           "podPidsLimit": "1024"
         },
         "linuxNodeConfig": {
@@ -1853,6 +1872,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 3,
+      "containerLogMaxSize": "50Mi",
       "cpuCfsQuota": true,
       "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
@@ -1861,7 +1882,7 @@ X-Xss-Protection: 0
       "imageMaximumGcAge": "1h",
       "imageMinimumGcAge": "2m",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2,
+      "maxParallelImagePulls": 5,
       "podPidsLimit": "1024"
     },
     "linuxNodeConfig": {
@@ -1924,6 +1945,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 3,
+          "containerLogMaxSize": "50Mi",
           "cpuCfsQuota": true,
           "cpuCfsQuotaPeriod": "100ms",
           "cpuManagerPolicy": "none",
@@ -1932,7 +1955,7 @@ X-Xss-Protection: 0
           "imageMaximumGcAge": "1h",
           "imageMinimumGcAge": "2m",
           "insecureKubeletReadonlyPortEnabled": false,
-          "maxParallelImagePulls": 2,
+          "maxParallelImagePulls": 5,
           "podPidsLimit": "1024"
         },
         "linuxNodeConfig": {
@@ -2230,6 +2253,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 3,
+      "containerLogMaxSize": "50Mi",
       "cpuCfsQuota": true,
       "cpuCfsQuotaPeriod": "100ms",
       "cpuManagerPolicy": "none",
@@ -2238,7 +2263,7 @@ X-Xss-Protection: 0
       "imageMaximumGcAge": "1h",
       "imageMinimumGcAge": "2m",
       "insecureKubeletReadonlyPortEnabled": false,
-      "maxParallelImagePulls": 2,
+      "maxParallelImagePulls": 5,
       "podPidsLimit": "1024"
     },
     "linuxNodeConfig": {
@@ -2301,6 +2326,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 3,
+          "containerLogMaxSize": "50Mi",
           "cpuCfsQuota": true,
           "cpuCfsQuotaPeriod": "100ms",
           "cpuManagerPolicy": "none",
@@ -2309,7 +2336,7 @@ X-Xss-Protection: 0
           "imageMaximumGcAge": "1h",
           "imageMinimumGcAge": "2m",
           "insecureKubeletReadonlyPortEnabled": false,
-          "maxParallelImagePulls": 2,
+          "maxParallelImagePulls": 5,
           "podPidsLimit": "1024"
         },
         "linuxNodeConfig": {

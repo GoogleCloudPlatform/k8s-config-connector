@@ -29,6 +29,9 @@ spec:
       imageMaximumGcAge: "1h"
       imageGcLowThresholdPercent: 70
       imageGcHighThresholdPercent: 80
+      containerLogMaxSize: "50Mi"
+      containerLogMaxFiles: 3
+      maxParallelImagePulls: 5
     linuxNodeConfig:
       sysctls:
         net.core.somaxconn: "1024"
