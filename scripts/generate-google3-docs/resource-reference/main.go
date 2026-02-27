@@ -20,6 +20,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -185,6 +186,39 @@ func main() {
 			log.Fatal(fmt.Errorf("error generating doc for GVK %v: %w", gvk, err))
 		}
 	}
+
+	if err := applyPatches(); err != nil {
+		log.Fatalf("error applying patches: %v", err)
+	}
+}
+
+func applyPatches() error {
+	repoRoot, err := repo.GetRoot()
+	if err != nil {
+		return fmt.Errorf("error getting repo root: %w", err)
+	}
+
+	patchesDir := filepath.Join(repoRoot, "scripts", "generate-google3-docs", "resource-reference-patch")
+	matches, err := filepath.Glob(filepath.Join(patchesDir, "*.patch"))
+	if err != nil {
+		return fmt.Errorf("error globbing patches: %w", err)
+	}
+	if len(matches) == 0 {
+		return nil
+	}
+
+	sort.Strings(matches)
+
+	args := append([]string{"apply"}, matches...)
+	cmd := exec.Command("git", args...)
+	cmd.Dir = repoRoot
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("error running git apply: %w", err)
+	}
+	log.Printf("Applied patches: %v", matches)
+	return nil
 }
 
 type DocGenerator struct {
