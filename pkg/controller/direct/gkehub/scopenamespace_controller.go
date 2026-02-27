@@ -91,7 +91,7 @@ func (m *namespaceModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		location = tokens[3]
 		scopeID = tokens[5]
 	} else {
-		return nil, fmt.Errorf("unexpected format for scope reference: %s", scope.id)
+		return nil, fmt.Errorf("unexpected format for scope reference: %q", scope.id)
 	}
 
 	resourceID := direct.ValueOf(obj.Spec.ResourceID)
@@ -180,13 +180,19 @@ func (a *namespaceAdapter) Create(ctx context.Context, createOp *directbase.Crea
 
 func (a *namespaceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	mapCtx := &direct.MapContext{}
+
+	diffs := diffGKEHubNamespace(&a.desired.Spec, a.actual)
+	if len(diffs) == 0 {
+		return nil
+	}
+
 	desired := GKEHubNamespaceSpec_ToAPI(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	name := fmt.Sprintf("projects/%s/locations/%s/scopes/%s/namespaces/%s", a.projectID, a.location, a.scopeID, a.scopeNamespaceID)
-	op, err := a.hubClient.namespaceClient.Patch(name, desired).UpdateMask("labels,namespaceLabels").Context(ctx).Do()
+	op, err := a.hubClient.namespaceClient.Patch(name, desired).UpdateMask(strings.Join(diffs, ",")).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("updating namespace %q: %w", name, err)
 	}
@@ -227,7 +233,7 @@ func (a *namespaceAdapter) waitForOpName(ctx context.Context, opName string) err
 		}
 		if op.Done {
 			if op.Error != nil {
-				return fmt.Errorf("operation %q failed: %s", opName, op.Error.Message)
+				return fmt.Errorf("operation %q failed: %q", opName, op.Error.Message)
 			}
 			return nil
 		}
