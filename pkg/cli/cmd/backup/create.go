@@ -81,10 +81,12 @@ func runCreate(ctx context.Context, options *createOptions) error {
 	}
 
 	// Discover KCC resources
-	resourceLists, err := kubeClient.DiscoveryClient.ServerPreferredResources()
+	_, resourceLists, err := kubeClient.DiscoveryClient.ServerGroupsAndResources()
 	if err != nil {
 		return fmt.Errorf("discovering server resources: %w", err)
 	}
+
+	backedUpGKs := make(map[string]bool)
 
 	for _, resourceList := range resourceLists {
 		gv, err := schema.ParseGroupVersion(resourceList.GroupVersion)
@@ -99,6 +101,11 @@ func runCreate(ctx context.Context, options *createOptions) error {
 		for _, resource := range resourceList.APIResources {
 			// Skip subresources
 			if strings.Contains(resource.Name, "/") {
+				continue
+			}
+
+			gk := fmt.Sprintf("%s/%s", gv.Group, resource.Kind)
+			if backedUpGKs[gk] {
 				continue
 			}
 
@@ -118,6 +125,7 @@ func runCreate(ctx context.Context, options *createOptions) error {
 			if err := backupResource(ctx, kubeClient, gcsClient, options.bucket, clusterName, timestamp, gvk); err != nil {
 				fmt.Printf("Warning: failed to backup %v: %v\n", gvk, err)
 			}
+			backedUpGKs[gk] = true
 		}
 	}
 
