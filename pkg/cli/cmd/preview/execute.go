@@ -36,7 +36,7 @@ const (
 	defaultTimeout = 15
 )
 
-func Execute(ctx context.Context, opts *options.Options) error {
+func Execute(ctx context.Context, opts *options.PreviewOptions) error {
 	// Use a custom FlagSet for klog to avoid conflicts with global flag.CommandLine
 	klogFlags := flag.NewFlagSet("klog", flag.ExitOnError)
 	klog.InitFlags(klogFlags)
@@ -50,27 +50,36 @@ func Execute(ctx context.Context, opts *options.Options) error {
 	defer klog.Flush()
 
 	klog.V(0).Info("Starting preview tool.")
-	upstreamRESTConfig, err := getRESTConfig(ctx, opts)
-	if err != nil {
-		return fmt.Errorf("error building kubeconfig: %w", err)
+
+	previewOptions := corepreview.PreviewInstanceOptions{
+		UpstreamGCPQPS:   opts.GCPQPS,
+		UpstreamGCPBurst: opts.GCPBurst,
+		Namespace:        opts.Namespace,
 	}
+
+	if opts.SourceTree != "" {
+		return fmt.Errorf("preview from source tree is not yet implemented")
+	} else {
+		upstreamRESTConfig, err := getRESTConfig(ctx, opts)
+		if err != nil {
+			return fmt.Errorf("error building kubeconfig: %w", err)
+		}
+
+		authorization, err := getGCPAuthorization(ctx, opts)
+		if err != nil {
+			return fmt.Errorf("error building GCP authorization: %w", err)
+		}
+
+		previewOptions.UpstreamRESTConfig = upstreamRESTConfig
+		previewOptions.UpstreamGCPAuthorization = authorization
+	}
+
 	recorder := corepreview.NewRecorder()
-	if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig, opts.Namespace); err != nil {
+	if err := recorder.PreloadGKNN(ctx, previewOptions.UpstreamRESTConfig, previewOptions.Namespace); err != nil {
 		return fmt.Errorf("error preloading the list of resources to reconcile: %w", err)
 	}
 
-	authorization, err := getGCPAuthorization(ctx, opts)
-	if err != nil {
-		return fmt.Errorf("error building GCP authorization: %w", err)
-	}
-	previewInstance, err := corepreview.NewPreviewInstance(recorder, corepreview.PreviewInstanceOptions{
-		UpstreamRESTConfig:       upstreamRESTConfig,
-		UpstreamGCPAuthorization: authorization,
-		UpstreamGCPHTTPClient:    nil,
-		UpstreamGCPQPS:           opts.GCPQPS,
-		UpstreamGCPBurst:         opts.GCPBurst,
-		Namespace:                opts.Namespace,
-	})
+	previewInstance, err := corepreview.NewPreviewInstance(recorder, previewOptions)
 	if err != nil {
 		return fmt.Errorf("building preview instance: %w", err)
 	}
