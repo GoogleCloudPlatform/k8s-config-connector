@@ -18,6 +18,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/kubecli"
@@ -30,10 +31,11 @@ import (
 )
 
 type statusOptions struct {
-	cluster  string
-	location string
-	project  string
-	bucket   string
+	cluster   string
+	location  string
+	project   string
+	bucket    string
+	namespace string
 }
 
 func NewStatusCmd() *cobra.Command {
@@ -51,6 +53,7 @@ func NewStatusCmd() *cobra.Command {
 	cmd.Flags().StringVar(&options.location, "location", "", "Region of the cluster")
 	cmd.Flags().StringVar(&options.project, "project", "", "GCP project ID")
 	cmd.Flags().StringVar(&options.bucket, "bucket", "", "GCS bucket name for backups")
+	cmd.Flags().StringVar(&options.namespace, "namespace", "cnrm-system", "Namespace where Config Connector is installed")
 
 	return cmd
 }
@@ -61,9 +64,9 @@ func runStatus(ctx context.Context, options *statusOptions) error {
 		return fmt.Errorf("creating kubernetes client: %w", err)
 	}
 
-	fmt.Println("Recent Backup Jobs (CronJob):")
+	fmt.Printf("Recent Backup Jobs (Namespace: %s):\n", options.namespace)
 	var jobs batchv1.JobList
-	if err := kubeClient.List(ctx, &jobs, client.InNamespace("cnrm-system")); err != nil {
+	if err := kubeClient.List(ctx, &jobs, client.InNamespace(options.namespace)); err != nil {
 		fmt.Printf("Error listing jobs: %v\n", err)
 	} else {
 		found := false
@@ -101,14 +104,19 @@ func runStatus(ctx context.Context, options *statusOptions) error {
 	}
 
 	if options.bucket != "" {
-		fmt.Printf("\nRecent Backups in GCS (gs://%s):\n", options.bucket)
+		clusterName := options.cluster
+		if clusterName == "" {
+			clusterName = "default-cluster"
+		}
+		fmt.Printf("\nRecent Backups for cluster %s in GCS (gs://%s/%s/):\n", clusterName, options.bucket, clusterName)
 		gcsClient, err := storage.NewClient(ctx)
 		if err != nil {
 			return fmt.Errorf("creating GCS client: %w", err)
 		}
 		defer gcsClient.Close()
 
-		it := gcsClient.Bucket(options.bucket).Objects(ctx, &storage.Query{Delimiter: "/"})
+		prefix := clusterName + "/"
+		it := gcsClient.Bucket(options.bucket).Objects(ctx, &storage.Query{Prefix: prefix, Delimiter: "/"})
 		count := 0
 		for {
 			attrs, err := it.Next()
@@ -119,7 +127,9 @@ func runStatus(ctx context.Context, options *statusOptions) error {
 				return fmt.Errorf("iterating GCS objects: %w", err)
 			}
 			if attrs.Prefix != "" {
-				fmt.Printf("- %s\n", attrs.Prefix)
+				// strip the cluster name prefix for display
+				displayPrefix := strings.TrimPrefix(attrs.Prefix, prefix)
+				fmt.Printf("- %s\n", displayPrefix)
 				count++
 			}
 			if count >= 10 {
@@ -128,9 +138,10 @@ func runStatus(ctx context.Context, options *statusOptions) error {
 			}
 		}
 		if count == 0 {
-			fmt.Println("No backup artifacts found in bucket.")
+			fmt.Println("No backup artifacts found for this cluster.")
 		}
 	}
 
 	return nil
 }
+

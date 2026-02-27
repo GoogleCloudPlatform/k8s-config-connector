@@ -69,3 +69,72 @@ func TestSortResources(t *testing.T) {
 		}
 	}
 }
+
+func TestSortResourcesComplex(t *testing.T) {
+	resources := []*unstructured.Unstructured{
+		{
+			Object: map[string]interface{}{
+				"kind":       "ComputeSubnetwork",
+				"apiVersion": "compute.cnrm.cloud.google.com/v1beta1",
+				"metadata": map[string]interface{}{
+					"name": "subnetwork",
+				},
+			},
+		},
+		{
+			Object: map[string]interface{}{
+				"kind":       "IAMServiceAccount",
+				"apiVersion": "iam.cnrm.cloud.google.com/v1beta1",
+				"metadata": map[string]interface{}{
+					"name": "sa",
+				},
+			},
+		},
+		{
+			Object: map[string]interface{}{
+				"kind":       "Folder",
+				"apiVersion": "resourcemanager.cnrm.cloud.google.com/v1beta1",
+				"metadata": map[string]interface{}{
+					"name": "folder",
+				},
+			},
+		},
+		{
+			Object: map[string]interface{}{
+				"kind":       "ComputeNetwork",
+				"apiVersion": "compute.cnrm.cloud.google.com/v1beta1",
+				"metadata": map[string]interface{}{
+					"name": "network",
+				},
+			},
+		},
+		{
+			Object: map[string]interface{}{
+				"kind":       "Organization",
+				"apiVersion": "resourcemanager.cnrm.cloud.google.com/v1beta1",
+				"metadata": map[string]interface{}{
+					"name": "org",
+				},
+			},
+		},
+		{
+			Object: map[string]interface{}{
+				"kind":       "Project",
+				"apiVersion": "resourcemanager.cnrm.cloud.google.com/v1beta1",
+				"metadata": map[string]interface{}{
+					"name": "project",
+				},
+			},
+		},
+	}
+
+	sortResources(resources)
+
+	expectedOrder := []string{"Organization", "Folder", "Project", "IAMServiceAccount", "ComputeNetwork", "ComputeSubnetwork"}
+	for i, res := range resources {
+		if res.GetKind() != expectedOrder[i] {
+			t.Errorf("At index %d, expected kind %s, got %s", i, expectedOrder[i], res.GetKind())
+		}
+	}
+}
+

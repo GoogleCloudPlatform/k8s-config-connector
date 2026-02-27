@@ -24,16 +24,18 @@ import (
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
 
 	"cloud.google.com/go/storage"
 )
 
 type createOptions struct {
-	cluster  string
-	location string
-	project  string
-	bucket   string
+	cluster   string
+	location  string
+	project   string
+	bucket    string
+	namespace string
 }
 
 func NewCreateCmd() *cobra.Command {
@@ -51,6 +53,7 @@ func NewCreateCmd() *cobra.Command {
 	cmd.Flags().StringVar(&options.location, "location", "", "Region of the cluster")
 	cmd.Flags().StringVar(&options.project, "project", "", "GCP project ID")
 	cmd.Flags().StringVar(&options.bucket, "bucket", "", "GCS bucket name for backups")
+	cmd.Flags().StringVar(&options.namespace, "namespace", "cnrm-system", "Namespace where Config Connector is installed")
 
 	return cmd
 }
@@ -72,6 +75,10 @@ func runCreate(ctx context.Context, options *createOptions) error {
 	defer gcsClient.Close()
 
 	timestamp := time.Now().Format("2006-01-02-15-04-05")
+	clusterName := options.cluster
+	if clusterName == "" {
+		clusterName = "default-cluster"
+	}
 
 	// Discover KCC resources
 	resourceLists, err := kubeClient.DiscoveryClient.ServerPreferredResources()
@@ -108,7 +115,7 @@ func runCreate(ctx context.Context, options *createOptions) error {
 			}
 
 			gvk := gv.WithKind(resource.Kind)
-			if err := backupResource(ctx, kubeClient, gcsClient, options.bucket, timestamp, gvk); err != nil {
+			if err := backupResource(ctx, kubeClient, gcsClient, options.bucket, clusterName, timestamp, gvk); err != nil {
 				fmt.Printf("Warning: failed to backup %v: %v\n", gvk, err)
 			}
 		}
@@ -117,30 +124,49 @@ func runCreate(ctx context.Context, options *createOptions) error {
 	return nil
 }
 
-func backupResource(ctx context.Context, kubeClient *kubecli.Client, gcsClient *storage.Client, bucket, timestamp string, gvk schema.GroupVersionKind) error {
-	list := &unstructured.UnstructuredList{}
-	list.SetGroupVersionKind(gvk)
+func backupResource(ctx context.Context, kubeClient *kubecli.Client, gcsClient *storage.Client, bucket, cluster, timestamp string, gvk schema.GroupVersionKind) error {
+	limit := int64(500)
+	continueToken := ""
 
-	if err := kubeClient.List(ctx, list); err != nil {
-		return err
-	}
+	for {
+		list := &unstructured.UnstructuredList{}
+		list.SetGroupVersionKind(gvk)
 
-	for _, item := range list.Items {
-		if err := backupObject(ctx, gcsClient, bucket, timestamp, item); err != nil {
+		listOptions := []client.ListOption{
+			client.Limit(limit),
+		}
+		if continueToken != "" {
+			listOptions = append(listOptions, client.Continue(continueToken))
+		}
+
+		if err := kubeClient.List(ctx, list, listOptions...); err != nil {
 			return err
+		}
+
+		for _, item := range list.Items {
+			if err := backupObject(ctx, gcsClient, bucket, cluster, timestamp, item); err != nil {
+				fmt.Printf("Warning: failed to backup object %s/%s (%s): %v\n", item.GetNamespace(), item.GetName(), item.GetKind(), err)
+				continue
+			}
+		}
+
+		continueToken = list.GetContinue()
+		if continueToken == "" {
+			break
 		}
 	}
 
 	return nil
 }
 
-func backupObject(ctx context.Context, gcsClient *storage.Client, bucket, timestamp string, obj unstructured.Unstructured) error {
+func backupObject(ctx context.Context, gcsClient *storage.Client, bucket, cluster, timestamp string, obj unstructured.Unstructured) error {
 	// Sanitization - Remove live fields
 	unstructured.RemoveNestedField(obj.Object, "metadata", "uid")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "resourceVersion")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "generation")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "managedFields")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "creationTimestamp")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "ownerReferences")
 
 	// Remove status
 	unstructured.RemoveNestedField(obj.Object, "status")
@@ -150,7 +176,7 @@ func backupObject(ctx context.Context, gcsClient *storage.Client, bucket, timest
 	if annotations != nil {
 		delete(annotations, "kubectl.kubernetes.io/last-applied-configuration")
 		delete(annotations, "deployment.kubernetes.io/revision")
-		delete(annotations, "cnrm.cloud.google.com/state-into-spec") // Sometimes added by KCC
+		// Preservation: cnrm.cloud.google.com/state-into-spec is intentionally PRESERVED
 		if len(annotations) == 0 {
 			unstructured.RemoveNestedField(obj.Object, "metadata", "annotations")
 		} else {
@@ -170,11 +196,13 @@ func backupObject(ctx context.Context, gcsClient *storage.Client, bucket, timest
 	kind := strings.ToLower(obj.GetKind())
 	name := obj.GetName()
 
-	objectName := fmt.Sprintf("%s/%s/%s/%s.yaml", timestamp, namespace, kind, name)
+	objectName := fmt.Sprintf("%s/%s/%s/%s/%s.yaml", cluster, timestamp, namespace, kind, name)
 
 	wc := gcsClient.Bucket(bucket).Object(objectName).NewWriter(ctx)
 	if _, err := wc.Write(data); err != nil {
+		_ = wc.Close()
 		return err
 	}
 	return wc.Close()
 }
+

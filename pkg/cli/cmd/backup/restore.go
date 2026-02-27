@@ -34,11 +34,12 @@ import (
 )
 
 type restoreOptions struct {
-	targetCluster         string
+	cluster               string
 	targetClusterLocation string
 	sourceBucket          string
 	backupTimestamp       string
 	project               string
+	namespace             string
 	dryRun                bool
 }
 
@@ -53,11 +54,12 @@ func NewRestoreCmd() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&options.targetCluster, "target-cluster", "", "Name of the target cluster")
+	cmd.Flags().StringVar(&options.cluster, "cluster", "", "Name of the cluster")
 	cmd.Flags().StringVar(&options.targetClusterLocation, "target-cluster-location", "", "Location of the target cluster")
 	cmd.Flags().StringVar(&options.sourceBucket, "source-bucket", "", "Source GCS bucket name")
 	cmd.Flags().StringVar(&options.backupTimestamp, "backup-timestamp", "", "Backup timestamp (YYYY-MM-DD-HH-MM-SS)")
 	cmd.Flags().StringVar(&options.project, "project", "", "GCP project ID")
+	cmd.Flags().StringVar(&options.namespace, "namespace", "cnrm-system", "Namespace where Config Connector is installed")
 	cmd.Flags().BoolVar(&options.dryRun, "dry-run", false, "Perform a dry-run validation")
 
 	return cmd
@@ -82,9 +84,14 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 	}
 	defer gcsClient.Close()
 
-	fmt.Printf("Loading backup from gs://%s/%s/...\n", options.sourceBucket, options.backupTimestamp)
+	clusterName := options.cluster
+	if clusterName == "" {
+		clusterName = "default-cluster"
+	}
 
-	prefix := options.backupTimestamp + "/"
+	fmt.Printf("Loading backup from gs://%s/%s/%s/...\n", options.sourceBucket, clusterName, options.backupTimestamp)
+
+	prefix := fmt.Sprintf("%s/%s/", clusterName, options.backupTimestamp)
 	it := gcsClient.Bucket(options.sourceBucket).Objects(ctx, &storage.Query{Prefix: prefix})
 
 	var objects []*unstructured.Unstructured
@@ -154,15 +161,18 @@ func loadObject(ctx context.Context, gcsClient *storage.Client, bucket, objectNa
 
 func validateResources(ctx context.Context, kubeClient *kubecli.Client, objects []*unstructured.Unstructured) error {
 	// Check if GVKs exist in the target cluster
-	resourceLists, err := kubeClient.DiscoveryClient.ServerPreferredResources()
+	_, resourceLists, err := kubeClient.DiscoveryClient.ServerGroupsAndResources()
 	if err != nil {
 		return fmt.Errorf("discovering server resources: %w", err)
 	}
 
 	supportedGVKs := make(map[string]bool)
 	for _, list := range resourceLists {
+		gv, err := schema.ParseGroupVersion(list.GroupVersion)
+		if err != nil {
+			continue
+		}
 		for _, r := range list.APIResources {
-			gv, _ := schema.ParseGroupVersion(list.GroupVersion)
 			gvk := gv.WithKind(r.Kind)
 			supportedGVKs[gvk.String()] = true
 		}
@@ -179,40 +189,47 @@ func validateResources(ctx context.Context, kubeClient *kubecli.Client, objects 
 
 func sortResources(objects []*unstructured.Unstructured) {
 	// Priority-based sort to handle dependencies
-	// Priority 1: High-level containers (Project, Folder, Organization)
-	// Priority 2: Networking infrastructure (Network, Subnetwork)
-	// Priority 3: General resources
-	// Priority 4: IAM and dependent resources (IAMPolicy, IAMPolicyMember, etc.)
 	getPriority := func(obj *unstructured.Unstructured) int {
 		kind := obj.GetKind()
 		group := obj.GroupVersionKind().Group
 
-		// Priority 1: Containers
+		// Priority 0-2: Containers
 		if group == "resourcemanager.cnrm.cloud.google.com" {
 			switch kind {
-			case "Project", "Folder", "Organization":
+			case "Organization":
+				return 0
+			case "Folder":
 				return 1
-			}
-		}
-
-		// Priority 2: Networking
-		if group == "compute.cnrm.cloud.google.com" {
-			switch kind {
-			case "ComputeNetwork", "ComputeSubnetwork":
+			case "Project":
 				return 2
 			}
 		}
 
-		// Priority 4: IAM and Policy-like resources (should be last)
-		if group == "iam.cnrm.cloud.google.com" {
-			return 4
-		}
-		if strings.HasSuffix(kind, "Policy") || strings.HasSuffix(kind, "PolicyMember") || strings.HasSuffix(kind, "Binding") {
-			return 4
+		// Priority 3: Identity
+		if group == "iam.cnrm.cloud.google.com" && (kind == "IAMServiceAccount" || kind == "IAMWorkloadIdentityPool") {
+			return 3
 		}
 
-		// Priority 3: Everything else
-		return 3
+		// Priority 4-5: Networking
+		if group == "compute.cnrm.cloud.google.com" {
+			switch kind {
+			case "ComputeNetwork":
+				return 4
+			case "ComputeSubnetwork":
+				return 5
+			}
+		}
+
+		// Priority 10: IAM and Policy-like resources (should be last)
+		if group == "iam.cnrm.cloud.google.com" {
+			return 10
+		}
+		if strings.HasSuffix(kind, "Policy") || strings.HasSuffix(kind, "PolicyMember") || strings.HasSuffix(kind, "Binding") {
+			return 10
+		}
+
+		// Priority 9: Everything else
+		return 9
 	}
 
 	sort.SliceStable(objects, func(i, j int) bool {
@@ -234,6 +251,9 @@ func applyObject(ctx context.Context, kubeClient *kubecli.Client, obj *unstructu
 	unstructured.RemoveNestedField(obj.Object, "metadata", "uid")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "resourceVersion")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "managedFields")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "ownerReferences")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "generation")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "creationTimestamp")
 
 	// Acquisition
 	annotations := obj.GetAnnotations()
@@ -256,3 +276,4 @@ func applyObject(ctx context.Context, kubeClient *kubecli.Client, obj *unstructu
 	fmt.Printf("Restored %s/%s (%s)\n", obj.GetNamespace(), obj.GetName(), obj.GetKind())
 	return nil
 }
+
