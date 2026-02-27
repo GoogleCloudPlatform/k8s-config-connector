@@ -1,0 +1,20 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/compute/computefirewallpolicyrule.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/compute/computefirewallpolicyrule.md
+index 6b87e7310e..75d89c92b0 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/compute/computefirewallpolicyrule.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/compute/computefirewallpolicyrule.md
+@@ -656,7 +656,7 @@ ruleTupleCount: integer
+         <td><code>externalRef</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}A unique Config Connector specifier for the resource in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}A unique Config Connector specifier for the resource in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -757,4 +757,4 @@ metadata:
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file

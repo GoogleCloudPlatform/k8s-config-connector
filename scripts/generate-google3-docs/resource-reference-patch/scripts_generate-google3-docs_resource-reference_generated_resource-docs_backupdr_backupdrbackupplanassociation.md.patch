@@ -1,0 +1,61 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/backupdr/backupdrbackupplanassociation.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/backupdr/backupdrbackupplanassociation.md
+index 5ca743ed3d..8e3ff148e2 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/backupdr/backupdrbackupplanassociation.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/backupdr/backupdrbackupplanassociation.md
+@@ -206,7 +206,7 @@ resourceType: string
+         </td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}InstanceRef defines the resource reference to ComputeInstance, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
++            <p>{% verbatim %}InstanceRef defines the resource reference to ComputeInstance, which "External" field holds the Google Cloud identifier for the KRM object.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -352,7 +352,7 @@ observedState:
+         <td><code>externalRef</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}A unique specifier for the BackupDRBackupPlanAssociation resource in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}A unique specifier for the BackupDRBackupPlanAssociation resource in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -366,7 +366,7 @@ observedState:
+         <td><code>observedState</code></td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -434,28 +434,7 @@ observedState:
+  one "/" character. The last segment of the URL's path must represent
+  the fully qualified name of the type (as in
+  `path/google.protobuf.Duration`). The name should be in a canonical form
+- (e.g., leading "." is not accepted).
+-
+- In practice, teams usually precompile into the binary all types that they
+- expect it to use in the context of Any. However, for URLs which use the
+- scheme `http`, `https`, or no scheme, one can optionally set up a type
+- server that maps type URLs to message definitions as follows:
+-
+- * If no scheme is provided, `https` is assumed.
+- * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+-   value in binary format, or produce an error.
+- * Applications are allowed to cache lookup results based on the
+-   URL, or have them precompiled into a binary to avoid any
+-   lookup. Therefore, binary compatibility needs to be preserved
+-   on changes to types. (Use versioned type names to manage
+-   breaking changes.)
+-
+- Note: this functionality is not currently available in the official
+- protobuf release, and it is not used for type URLs beginning with
+- type.googleapis.com.
+-
+- Schemes other than `http`, `https` (or the empty scheme) might be
+- used with implementation specific semantics.{% endverbatim %}</p>
++ (e.g., leading "." is not accepted).{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>

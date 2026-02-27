@@ -1,0 +1,29 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/firestore/firestoredatabase.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/firestore/firestoredatabase.md
+index c94b074a50..87993c8606 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/firestore/firestoredatabase.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/firestore/firestoredatabase.md
+@@ -268,7 +268,7 @@ observedState:
+         <td><code>externalRef</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}A unique specifier for the FirestoreDatabase resource in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}A unique specifier for the FirestoreDatabase resource in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -282,7 +282,7 @@ observedState:
+         <td><code>observedState</code></td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -392,4 +392,4 @@ spec:
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file

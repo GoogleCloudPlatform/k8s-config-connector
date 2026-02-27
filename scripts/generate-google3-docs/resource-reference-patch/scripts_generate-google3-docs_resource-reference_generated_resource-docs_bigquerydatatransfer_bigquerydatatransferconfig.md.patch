@@ -1,0 +1,38 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/bigquerydatatransfer/bigquerydatatransferconfig.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/bigquerydatatransfer/bigquerydatatransferconfig.md
+index 70110b4549..93eba69d64 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/bigquerydatatransfer/bigquerydatatransferconfig.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/bigquerydatatransfer/bigquerydatatransferconfig.md
+@@ -469,7 +469,7 @@ serviceAccountRef:
+         </td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}Event driven transfer schedule options. If set, the transfer will be scheduled upon events arrial.{% endverbatim %}</p>
++            <p>{% verbatim %}Event driven transfer schedule options. If set, the transfer will be scheduled upon events arrival.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -704,7 +704,7 @@ observedState:
+         <td><code>externalRef</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}A unique specifier for the BigQueryDataTransferConfig resource in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}A unique specifier for the BigQueryDataTransferConfig resource in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -718,7 +718,7 @@ observedState:
+         <td><code>observedState</code></td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -860,4 +860,4 @@ metadata:
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file

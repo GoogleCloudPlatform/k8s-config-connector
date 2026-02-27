@@ -1,0 +1,11 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/compute/computefirewallpolicy.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/compute/computefirewallpolicy.md
+index 7f2282a73e..dd254b5cc1 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/compute/computefirewallpolicy.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/compute/computefirewallpolicy.md
+@@ -359,4 +359,4 @@ spec:
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file

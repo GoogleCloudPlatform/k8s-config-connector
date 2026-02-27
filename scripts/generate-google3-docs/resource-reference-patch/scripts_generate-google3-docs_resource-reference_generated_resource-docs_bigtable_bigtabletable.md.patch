@@ -1,0 +1,61 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/bigtable/bigtabletable.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/bigtable/bigtabletable.md
+index 840d9424f6..8e6d1d902a 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/bigtable/bigtabletable.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/bigtable/bigtabletable.md
+@@ -122,7 +122,7 @@ splitKeys:
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days..{% endverbatim %}</p>
++            <p>{% verbatim %}Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -132,7 +132,7 @@ splitKeys:
+         </td>
+         <td>
+             <p><code class="apitype">list (object)</code></p>
+-            <p>{% verbatim %}The names of the column families that should be created immediately upon table creation, specified by name. The values that may be set are specified here. At least one column family must be specified.{% endverbatim %}</p>
++            <p>{% verbatim %}The names of the column families that should be created immediately upon table creation, specified by name. The values that can be set are specified here. At least one column family must be specified.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -163,14 +163,14 @@ splitKeys:
+         <td>
+             <p><code class="apitype">string</code></p>
+             <p>{% verbatim %}NOTE: DeletionProtection proto field is changed from string (1.38) to bool (1.40) in cloud.google.com/go/bigtable/admin/apiv2/adminpb
+-Set to true to make the table protected against data loss. i.e. deleting
+-the following resources through Admin APIs are prohibited:
+-
+-* The table.
+-* The column families in the table.
+-* The instance containing the table.
+-
+-Note one can still delete the data stored in the table through Data APIs.{% endverbatim %}</p>
++Set to true to make the table protected against data loss. For example, deleting
++the following resources through Admin APIs are prohibited:{% endverbatim %}</p>
++<ul>
++<li>{% verbatim %}The table.{% endverbatim %}</li>
++<li>{% verbatim %}The column families in the table.{% endverbatim %}</li>
++<li>{% verbatim %}The instance containing the table.{% endverbatim %}</li>
++</ul>
++            <p>{% verbatim %}Note one can still delete the data stored in the table through Data APIs.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -323,7 +323,7 @@ observedGeneration: integer
+         <td><code>externalRef</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}A unique specifier for the BigtableTable resource in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}A unique specifier for the BigtableTable resource in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -385,4 +385,4 @@ spec:
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file

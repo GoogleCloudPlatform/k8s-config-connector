@@ -1,0 +1,395 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/composer/composerenvironment.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/composer/composerenvironment.md
+index a359fdcde6..37c59b5f7d 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/composer/composerenvironment.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/composer/composerenvironment.md
+@@ -238,7 +238,7 @@ storageConfig:
+         </td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}Optional. The retention policy for airflow metadata database.{% endverbatim %}</p>
++            <p>{% verbatim %}Optional. The retention policy for Airflow metadata database.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -383,17 +383,14 @@ storageConfig:
+             <p><code class="apitype">object</code></p>
+             <p>{% verbatim %}Optional. The maintenance window is the period when Cloud Composer
+  components may undergo maintenance. It is defined so that maintenance is
+- not executed during peak hours or critical time periods.
+-
+- The system will not be under maintenance for every occurrence of this
++ not executed during peak hours or critical time periods.{% endverbatim %}</p>
++            <p>{% verbatim %}The system will not be under maintenance for every occurrence of this
+  window, but when maintenance is planned, it will be scheduled
+- during the window.
+-
+- The maintenance window period must encompass at least 12 hours per week.
++ during the window.{% endverbatim %}</p>
++            <p>{% verbatim %}The maintenance window period must encompass at least 12 hours per week.
+  This may be split into multiple chunks, each with a size of
+- at least 4 hours.
+-
+- If this value is omitted, the default value for maintenance window is
++ at least 4 hours.{% endverbatim %}</p>
++            <p>{% verbatim %}If this value is omitted, the default value for maintenance window is
+  applied. By default, maintenance windows are from 00:00:00 to 04:00:00
+  (GMT) on Friday, Saturday, and Sunday every week.{% endverbatim %}</p>
+         </td>
+@@ -415,7 +412,7 @@ storageConfig:
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Required. Maintenance window recurrence. Format is a subset of [RFC-5545](https://tools.ietf.org/html/rfc5545) `RRULE`. The only allowed values for `FREQ` field are `FREQ=DAILY` and `FREQ=WEEKLY;BYDAY=...` Example values: `FREQ=WEEKLY;BYDAY=TU,WE`, `FREQ=DAILY`.{% endverbatim %}</p>
++            <p>{% verbatim %}Required. Maintenance window recurrence. Format is a subset of <a href="https://tools.ietf.org/html/rfc5545">RFC-5545</a> `RRULE`. The only allowed values for `FREQ` field are `FREQ=DAILY` and `FREQ=WEEKLY;BYDAY=...` Example values: `FREQ=WEEKLY;BYDAY=TU,WE`, `FREQ=DAILY`.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -435,7 +432,7 @@ storageConfig:
+         </td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}Optional. The configuration options for GKE cluster master authorized networks. By default master authorized networks feature is: - in case of private environment: enabled with no external networks allowlisted. - in case of public environment: disabled.{% endverbatim %}</p>
++            <p>{% verbatim %}Optional. The configuration options for GKE cluster authorized networks. By default, authorized networks are, for private environments, enabled with no external networks allowlisted, and for public environments, disabled.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -445,7 +442,7 @@ storageConfig:
+         </td>
+         <td>
+             <p><code class="apitype">list (object)</code></p>
+-            <p>{% verbatim %}Up to 50 external networks that could access Kubernetes master through HTTPS.{% endverbatim %}</p>
++            <p>{% verbatim %}Up to 50 external networks that could access Kubernetes control plane through HTTPS.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -587,8 +584,8 @@ storageConfig:
+         <td>
+             <p><code class="apitype">boolean</code></p>
+             <p>{% verbatim %}Optional. Deploys 'ip-masq-agent' daemon set in the GKE cluster and defines
+- nonMasqueradeCIDRs equals to pod IP range so IP masquerading is used for
+- all destination addresses, except between pods traffic.
++ nonMasqueradeCIDRs equals to Pod IP range so IP masquerading is used for
++ all destination addresses, except between Pods traffic.
+ 
+  See:
+  https://cloud.google.com/kubernetes-engine/docs/how-to/ip-masquerade-agent{% endverbatim %}</p>
+@@ -611,7 +608,7 @@ storageConfig:
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Optional. The IP address range used to allocate IP addresses to pods in
++            <p>{% verbatim %}Optional. The IP address range used to allocate IP addresses to Pods in
+  the GKE cluster.
+ 
+  For Cloud Composer environments in versions composer-1.*.*-airflow-*.*.*,
+@@ -623,7 +620,7 @@ storageConfig:
+  netmask.
+ 
+  Set to a
+- [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
++ <a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a>
+  notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
+  `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
+  to use.{% endverbatim %}</p>
+@@ -637,7 +634,7 @@ storageConfig:
+         <td>
+             <p><code class="apitype">string</code></p>
+             <p>{% verbatim %}Optional. The name of the GKE cluster's secondary range used to allocate
+- IP addresses to pods.
++ IP addresses to Pods.
+ 
+  For Cloud Composer environments in versions composer-1.*.*-airflow-*.*.*,
+  this field is applicable only when `use_ip_aliases` is true.{% endverbatim %}</p>
+@@ -662,7 +659,7 @@ storageConfig:
+  netmask.
+ 
+  Set to a
+- [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
++ <a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a>
+  notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
+  `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
+  to use.{% endverbatim %}</p>
+@@ -704,10 +701,10 @@ storageConfig:
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Optional. The Compute Engine [zone](/compute/docs/regions-zones) in which
++            <p>{% verbatim %}Optional. The Compute Engine <a href="/compute/docs/regions-zones">zone</a> in which
+  to deploy the VMs used to run the Apache Airflow software, specified as a
+- [relative resource
+- name](/apis/design/resource_names#relative_resource_name). For example:
++ <a href="/apis/design/resource_names#relative_resource_name">relative resource
++ name</a>. For example:
+  "projects/{projectId}/zones/{zoneId}".
+ 
+  This `location` must belong to the enclosing environment's project and
+@@ -731,10 +728,10 @@ storageConfig:
+         <td>
+             <p><code class="apitype">string</code></p>
+             <p>{% verbatim %}Optional. The Compute Engine
+- [machine type](/compute/docs/machine-types) used for cluster instances,
++ <a href="/compute/docs/machine-types">machine type</a> used for cluster instances,
+  specified as a
+- [relative resource
+- name](/apis/design/resource_names#relative_resource_name). For example:
++ <a href="/apis/design/resource_names#relative_resource_name">relative resource
++ name</a>. For example:
+  "projects/{projectId}/zones/{zoneId}/machineTypes/{machineTypeId}".
+ 
+  The `machineType` must belong to the enclosing environment's project and
+@@ -746,8 +743,8 @@ storageConfig:
+  specified, the location information from the specified field will be
+  propagated to the unspecified field.
+ 
+- The `machineTypeId` must not be a [shared-core machine
+- type](/compute/docs/machine-types#sharedcore).
++ The `machineTypeId` must not be a <a href="/compute/docs/machine-types#sharedcore">shared-core machine
++ type</a>.
+ 
+  If this field is unspecified, the `machineTypeId` defaults
+  to "n1-standard-1".
+@@ -765,14 +762,14 @@ storageConfig:
+             <p><code class="apitype">object</code></p>
+             <p>{% verbatim %}Optional. The Compute Engine network to be used for machine
+  communications, specified as a
+- [relative resource
+- name](/apis/design/resource_names#relative_resource_name). For example:
++ <a href="/apis/design/resource_names#relative_resource_name">relative resource
++ name</a>. For example:
+  "projects/{projectId}/global/networks/{networkId}".
+ 
+  If unspecified, the "default" network ID in the environment's project is
+- used. If a [Custom Subnet Network](/vpc/docs/vpc#vpc_networks_and_subnets)
++ used. If a <a href="/vpc/docs/vpc#vpc_networks_and_subnets">Custom Subnet Network</a>
+  is provided, `nodeConfig.subnetwork` must also be provided. For
+- [Shared VPC](/vpc/docs/shared-vpc) subnetwork requirements, see
++ <a href="/vpc/docs/shared-vpc">Shared VPC</a> subnetwork requirements, see
+  `nodeConfig.subnetwork`.{% endverbatim %}</p>
+         </td>
+     </tr>
+@@ -838,7 +835,7 @@ storageConfig:
+         </td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}Optional. The Google Cloud Platform Service Account to be used by the node VMs. If a service account is not specified, the "default" Compute Engine service account is used. Cannot be updated.{% endverbatim %}</p>
++            <p>{% verbatim %}Optional. The Google Cloud Platform Service Account to be used by the node VMs. If a service account is not specified, the default Compute Engine service account is used. Cannot be updated.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -858,7 +855,7 @@ storageConfig:
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
++            <p>{% verbatim %}Name of the referent. More information: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -880,8 +877,8 @@ storageConfig:
+             <p><code class="apitype">object</code></p>
+             <p>{% verbatim %}Optional. The Compute Engine subnetwork to be used for machine
+  communications, specified as a
+- [relative resource
+- name](/apis/design/resource_names#relative_resource_name). For example:
++ <a href="/apis/design/resource_names#relative_resource_name">relative resource
++ name</a>. For example:
+  "projects/{projectId}/regions/{regionId}/subnetworks/{subnetworkId}"
+ 
+  If a subnetwork is provided, `nodeConfig.network` must also be provided,
+@@ -926,7 +923,7 @@ storageConfig:
+         </td>
+         <td>
+             <p><code class="apitype">list (string)</code></p>
+-            <p>{% verbatim %}Optional. The list of instance tags applied to all node VMs. Tags are used to identify valid sources or targets for network firewalls. Each tag within the list must comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt). Cannot be updated.{% endverbatim %}</p>
++            <p>{% verbatim %}Optional. The list of instance tags applied to all node VMs. Tags are used to identify valid sources or targets for network firewalls. Each tag within the list must comply with <a href="https://www.ietf.org/rfc/rfc1035.txt">RFC1035</a>. Cannot be updated.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -1011,7 +1008,7 @@ storageConfig:
+         <td>
+             <p><code class="apitype">string</code></p>
+             <p>{% verbatim %}Optional. The CIDR block from which IP range for Cloud Composer Network in
+- tenant project will be reserved. Needs to be disjoint from
++ tenant project will be reserved. Must not overlap with
+  private_cluster_config.master_ipv4_cidr_block and
+  cloud_sql_ipv4_cidr_block.
+ 
+@@ -1026,7 +1023,7 @@ storageConfig:
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Optional. The CIDR block from which IP range in tenant project will be reserved for Cloud SQL. Needs to be disjoint from `web_server_ipv4_cidr_block`.{% endverbatim %}</p>
++            <p>{% verbatim %}Optional. The CIDR block from which IP range in tenant project will be reserved for Cloud SQL. Must not overlap with `web_server_ipv4_cidr_block`.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -1114,7 +1111,7 @@ storageConfig:
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Optional. The CIDR block from which IPv4 range for GKE master will be reserved. If left blank, the default value of '172.16.0.0/23' is used.{% endverbatim %}</p>
++            <p>{% verbatim %}Optional. The CIDR block from which IPv4 range for GKE control plane will be reserved. If left blank, the default value of '172.16.0.0/23' is used.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -1125,7 +1122,7 @@ storageConfig:
+         <td>
+             <p><code class="apitype">string</code></p>
+             <p>{% verbatim %}Optional. The CIDR block from which IP range for web server will be
+- reserved. Needs to be disjoint from
++ reserved. Must not overlap with
+  `private_cluster_config.master_ipv4_cidr_block` and
+  `cloud_sql_ipv4_cidr_block`.
+ 
+@@ -1222,7 +1219,6 @@ storageConfig:
+     <tr>
+         <td>
+             <p><code>config.softwareConfig.airflowConfigOverrides</code></p>
+-            <p><i>Optional</i></p>
+         </td>
+         <td>
+             <p><code class="apitype">map (key: string, value: string)</code></p>
+@@ -1235,11 +1231,11 @@ storageConfig:
+  contain an equals sign ("=") or semicolon (";"). Section and property names
+  must not contain a period ("."). Apache Airflow configuration property
+  names must be written in
+- [snake_case](https://en.wikipedia.org/wiki/Snake_case). Property values can
++ <a href="https://en.wikipedia.org/wiki/Snake_case">snake_case</a>. Property values can
+  contain any character, and can be written in any lower/upper case format.
+ 
+  Certain Apache Airflow configuration property values are
+- [blocked](/composer/docs/concepts/airflow-configurations),
++ <a href="/composer/docs/concepts/airflow-configurations">blocked</a>,
+  and cannot be overridden.{% endverbatim %}</p>
+         </td>
+     </tr>
+@@ -1279,19 +1275,21 @@ storageConfig:
+  `AIRFLOW__[A-Z0-9_]+__[A-Z0-9_]+`), and they cannot match any of the
+  following reserved names:
+ 
+- * `AIRFLOW_HOME`
+- * `C_FORCE_ROOT`
+- * `CONTAINER_NAME`
+- * `DAGS_FOLDER`
+- * `GCP_PROJECT`
+- * `GCS_BUCKET`
+- * `GKE_CLUSTER_NAME`
+- * `SQL_DATABASE`
+- * `SQL_INSTANCE`
+- * `SQL_PASSWORD`
+- * `SQL_PROJECT`
+- * `SQL_REGION`
+- * `SQL_USER`{% endverbatim %}</p>
++<ul>
++<li>`AIRFLOW_HOME`</li>
++<li>`C_FORCE_ROOT`</li>
++<li>`CONTAINER_NAME`</li>
++<li>`DAGS_FOLDER`</li>
++<li>`GCP_PROJECT`</li>
++<li>`GCS_BUCKET`</li>
++<li>`GKE_CLUSTER_NAME`</li>
++<li>`SQL_DATABASE`</li>
++<li>`SQL_INSTANCE`</li>
++<li>`SQL_PASSWORD`</li>
++<li>`SQL_PROJECT`</li>
++<li>`SQL_REGION`</li>
++<li>`SQL_USER`</li>
++</ul>{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -1309,7 +1307,7 @@ storageConfig:
+  supported and denies the request for an unsupported version.
+ 
+  The Cloud Composer portion of the image version is a full
+- [semantic version](https://semver.org), or an alias in the form of major
++ <a href="https://semver.org">semantic version</a>, or an alias in the form of major
+  version number or `latest`. When an alias is provided, the server replaces
+  it with the current Cloud Composer version that satisfies the alias.
+ 
+@@ -1322,9 +1320,9 @@ storageConfig:
+ 
+  In all cases, the resolved image version is stored in the same field.
+ 
+- See also [version
+- list](/composer/docs/concepts/versioning/composer-versions) and [versioning
+- overview](/composer/docs/concepts/versioning/composer-versioning-overview).{% endverbatim %}</p>
++ See also <a href="/composer/docs/concepts/versioning/composer-versions">version
++ list</a> and <a href="/composer/docs/concepts/versioning/composer-versioning-overview">versioning
++ overview</a>.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -1735,10 +1733,12 @@ storageConfig:
+  The labels map can contain no more than 64 entries. Entries of the labels
+  map are UTF8 strings that comply with the following restrictions:
+ 
+- * Keys must conform to regexp: [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
+- * Values must conform to regexp:  [\p{Ll}\p{Lo}\p{N}_-]{0,63}
+- * Both keys and values are additionally constrained to be <= 128 bytes in
+- size.{% endverbatim %}</p>
++ <ul>
++  <li>Keys must conform to regexp: [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}</li>
++  <li>Values must conform to regexp:  [\p{Ll}\p{Lo}\p{N}_-]{0,63}</li>
++  <li>Both keys and values are additionally constrained to be <= 128 bytes in
++ size.</li>
++ </ul>{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -1954,7 +1954,7 @@ observedState:
+         <td><code>externalRef</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}A unique specifier for the ComposerEnvironment resource in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}A unique specifier for the ComposerEnvironment resource in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -1968,7 +1968,7 @@ observedState:
+         <td><code>observedState</code></td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -1982,14 +1982,14 @@ observedState:
+         <td><code>observedState.config.airflowBYOIDURI</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Output only. The 'bring your own identity' variant of the URI of the Apache Airflow Web UI hosted within this environment, to be accessed with external identities using workforce identity federation (see [Access environments with workforce identity federation](/composer/docs/composer-2/access-environments-with-workforce-identity-federation)).{% endverbatim %}</p>
++            <p>{% verbatim %}Output only. The 'bring your own identity' variant of the URI of the Apache Airflow Web UI hosted within this environment, to be accessed with external identities using workforce identity federation (see <a href="/composer/docs/composer-2/access-environments-with-workforce-identity-federation">Access environments with workforce identity federation</a>).{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+         <td><code>observedState.config.airflowURI</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Output only. The URI of the Apache Airflow Web UI hosted within this environment (see [Airflow web interface](/composer/docs/how-to/accessing/airflow-web-interface)).{% endverbatim %}</p>
++            <p>{% verbatim %}Output only. The URI of the Apache Airflow Web UI hosted within this environment (see <a href="/composer/docs/how-to/accessing/airflow-web-interface">Airflow web interface</a>).{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -2035,7 +2035,7 @@ observedState:
+         <td><code>observedState.config.privateEnvironmentConfig.privateClusterConfig.masterIPV4ReservedRange</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Output only. The IP range in CIDR notation to use for the hosted master network. This range is used for assigning internal IP addresses to the GKE cluster master or set of masters and to the internal load balancer virtual IP. This range must not overlap with any other ranges in use within the cluster's network.{% endverbatim %}</p>
++            <p>{% verbatim %}Output only. The IP range in CIDR notation to use for the hosted network. This range is used for assigning internal IP addresses to the GKE control plane IP range or set of ranges and to the internal load balancer virtual IP. This range must not overlap with any other ranges in use within the cluster's network.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -2079,9 +2079,7 @@ observedState:
+ </tbody>
+ </table>
+ 
+-## Sample YAML(s)
+-
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file

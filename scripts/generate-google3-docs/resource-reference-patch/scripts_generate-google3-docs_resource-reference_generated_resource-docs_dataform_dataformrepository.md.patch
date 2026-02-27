@@ -1,0 +1,13 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/dataform/dataformrepository.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/dataform/dataformrepository.md
+index 0ffdbf3e93..7e269d2fd2 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/dataform/dataformrepository.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/dataform/dataformrepository.md
+@@ -28,7 +28,7 @@
+ </tr>
+ <tr>
+ <td>{{gcp_name_short}} REST Resource Documentation</td>
+-<td><a href="/dataform/reference/rest/v1beta1/projects.locations.repositories">/dataform/reference/rest/v1beta1/projects.locations.repositories</a></td>
++<td><a href="/dataform/docs/api/reference/rest/v1beta1/projects.locations.repositoriess">/dataform/docs/reference/rest/v1beta1/projects.locations.repositories</a></td>
+ </tr>
+ <tr>
+ <td>{{product_name_short}} Resource Short Names</td>

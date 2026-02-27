@@ -1,0 +1,109 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/documentai/documentaiprocessorversion.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/documentai/documentaiprocessorversion.md
+index a6bcf37c5c..7cc6254c09 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/documentai/documentaiprocessorversion.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/documentai/documentaiprocessorversion.md
+@@ -104,7 +104,7 @@ resourceID: string
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}The time at which this processor version will be deprecated.{% endverbatim %}</p>
++            <p>{% verbatim %}The time at which this processor version will be retired.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -194,7 +194,7 @@ resourceID: string
+         </td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}ProcessorRef defines the resource reference to DocumentAIProcessor, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
++            <p>{% verbatim %}ProcessorRef defines the resource reference to DocumentAIProcessor, which "External" field holds the Google Cloud identifier for the KRM object.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -378,7 +378,7 @@ observedState:
+         <td><code>externalRef</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}A unique specifier for the DocumentAI resource in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}A unique specifier for the DocumentAI resource in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -392,7 +392,7 @@ observedState:
+         <td><code>observedState</code></td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -483,19 +483,16 @@ observedState:
+         <td><code>observedState.document_schema.entityTypes[].name</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Name of the type. It must be unique within the schema file and
+- cannot be a "Common Type".  The following naming conventions are used:
+-
+- - Use `snake_casing`.
+- - Name matching is case-sensitive.
+- - Maximum 64 characters.
+- - Must start with a letter.
+- - Allowed characters: ASCII letters `[a-z0-9_-]`.  (For backward
+-   compatibility internal infrastructure and tooling can handle any ascii
+-   character.)
+- - The `/` is sometimes used to denote a property of a type.  For example
+-   `line_item/amount`.  This convention is deprecated, but will still be
+-   honored for backward compatibility.{% endverbatim %}</p>
++            <p>Name of the type. It must be unique within the schema file and
++ cannot be a "Common Type". The following naming conventions are used:</p>
++            <ul>
++              <li>Use <code>snake_casing</code>.</li>
++              <li>Name matching is case-sensitive.</li>
++              <li>Maximum 64 characters.</li>
++              <li>Must start with a letter.</li>
++              <li>Allowed characters: ASCII letters <code>[a-z0-9_-]</code>.</li>
++              <li>The <code>/</code> is sometimes used to denote a property of a type. For example <code>line_item/amount</code>. This convention is not supported, but will still be honored for backward compatibility.</li>
++            </ul>
+         </td>
+     </tr>
+     <tr>
+@@ -579,7 +576,7 @@ observedState:
+         <td><code>observedState.document_schema.metadata.skipNamingValidation</code></td>
+         <td>
+             <p><code class="apitype">boolean</code></p>
+-            <p>{% verbatim %}If set, we will skip the naming format validation in the schema. So the string values in `DocumentSchema.EntityType.name` and `DocumentSchema.EntityType.Property.name` will not be checked.{% endverbatim %}</p>
++            <p>{% verbatim %}If set, skips the naming format validation in the schema, meaning the string values in `DocumentSchema.EntityType.name` and `DocumentSchema.EntityType.Property.name` will not be checked.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -593,7 +590,7 @@ observedState:
+         <td><code>observedState.gen_ai_model_info.customGenAiModelInfo</code></td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}Information for a custom Generative AI model created by the user.{% endverbatim %}</p>
++            <p>{% verbatim %}Information for a custom Generative AI model.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -656,7 +653,7 @@ observedState:
+         <td><code>observedState.latest_evaluation.aggregateMetrics.f1Score</code></td>
+         <td>
+             <p><code class="apitype">float</code></p>
+-            <p>{% verbatim %}The calculated f1 score.{% endverbatim %}</p>
++            <p>{% verbatim %}The calculated F1 score.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -858,9 +855,7 @@ observedState:
+ </tbody>
+ </table>
+ 
+-## Sample YAML(s)
+-
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file

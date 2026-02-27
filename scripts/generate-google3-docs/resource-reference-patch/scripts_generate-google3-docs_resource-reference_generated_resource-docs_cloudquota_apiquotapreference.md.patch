@@ -1,0 +1,79 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/cloudquota/apiquotapreference.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/cloudquota/apiquotapreference.md
+index c8d2e050d2..8e5f4a3211 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/cloudquota/apiquotapreference.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/cloudquota/apiquotapreference.md
+@@ -101,7 +101,7 @@ service: string
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Input only. An email address that can be used to contact the the user, in
++            <p>{% verbatim %}Input only. An email address that can be used to contact the user, in
+  case Google Cloud needs more information to make a decision before
+  additional quota can be granted.
+ 
+@@ -172,7 +172,7 @@ service: string
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}The 'namespace' field of a 'Folder' resource. If unset, the namespace is defaulted to the namespace of the referencer resource.{% endverbatim %}</p>
++            <p>{% verbatim %}The 'namespace' field of a 'Folder' resource. If not set, the namespace is defaulted to the namespace of the referenced resource.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -182,7 +182,7 @@ service: string
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}The reason / justification for this quota preference.{% endverbatim %}</p>
++            <p>{% verbatim %}The reason or justification for this quota preference.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -272,7 +272,7 @@ service: string
+         </td>
+         <td>
+             <p><code class="apitype">map (key: string, value: string)</code></p>
+-            <p>{% verbatim %}Optional. The annotations map for clients to store small amounts of arbitrary data. Do not put PII or other sensitive information here. See https://google.aip.dev/128#annotations{% endverbatim %}</p>
++            <p>{% verbatim %}Optional. The annotations map for customers to store small amounts of arbitrary data. Do not put PII or other sensitive information here. See https://google.aip.dev/128#annotations{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -405,7 +405,7 @@ observedState:
+         <td><code>externalRef</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}A unique specifier for the APIQuotaPreference resource in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}A unique specifier for the APIQuotaPreference resource in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -419,7 +419,7 @@ observedState:
+         <td><code>observedState</code></td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -468,7 +468,7 @@ observedState:
+         <td><code>observedState.quotaConfig.traceID</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Output only. The trace id that the Google Cloud uses to provision the requested quota. This trace id may be used by the client to contact Cloud support to track the state of a quota preference request. The trace id is only produced for increase requests and is unique for each request. The quota decrease requests do not have a trace id.{% endverbatim %}</p>
++            <p>{% verbatim %}Output only. Output only. The trace ID that Google Cloud uses to provision the requested quota. You can use this trace ID to contact Cloud Support to track the state of a quota preference request. The trace ID is only produced for increase requests and is unique for each request. Quota decrease requests do not have a trace ID.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -488,9 +488,7 @@ observedState:
+ </tbody>
+ </table>
+ 
+-## Sample YAML(s)
+-
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file

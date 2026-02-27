@@ -1,0 +1,22 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/run/runservice.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/run/runservice.md
+index 738b5032de..1057cb0579 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/run/runservice.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/run/runservice.md
+@@ -2415,8 +2415,8 @@ spec:
+           items:
+             - versionRef:
+                 name: runservice-dep-secret
+-              path: "my-secret"
+-              mode: 256 # 0400
++                path: "my-secret"
++                mode: 256 # 0400
+ ---
+ # Replace ${PROJECT_ID?} and ${PROJECT_NUMBER?} below with your desired project
+ # ID and project number.
+@@ -2546,4 +2546,4 @@ spec:
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file

@@ -1,0 +1,61 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/essentialcontacts/essentialcontactscontact.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/essentialcontacts/essentialcontactscontact.md
+index a1abb45180..097ae7f6ba 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/essentialcontacts/essentialcontactscontact.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/essentialcontacts/essentialcontactscontact.md
+@@ -135,7 +135,7 @@ resourceID: string
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}The 'namespace' field of a 'Folder' resource. If unset, the namespace is defaulted to the namespace of the referencer resource.{% endverbatim %}</p>
++            <p>{% verbatim %}The 'namespace' field of a 'Folder' resource. If unset, the namespace is defaulted to the namespace of the referenced resource.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -145,7 +145,7 @@ resourceID: string
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Required. The preferred language for notifications, as a ISO 639-1 language code. See [Supported languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages) for a list of supported languages.{% endverbatim %}</p>
++            <p>{% verbatim %}Required. The preferred language for notifications, as a ISO 639-1 language code. See https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages for a list of supported languages.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -245,7 +245,7 @@ resourceID: string
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
++            <p>{% verbatim %}The EssentialContactsContact name. If not given, the metadata.name will be used.{% endverbatim %}</p>
+         </td>
+     </tr>
+ </tbody>
+@@ -331,7 +331,7 @@ observedState:
+         <td><code>externalRef</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}A unique specifier for the EssentialContactsContact resource in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}A unique specifier for the EssentialContactsContact resource in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -345,7 +345,7 @@ observedState:
+         <td><code>observedState</code></td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -365,9 +365,7 @@ observedState:
+ </tbody>
+ </table>
+ 
+-## Sample YAML(s)
+-
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file

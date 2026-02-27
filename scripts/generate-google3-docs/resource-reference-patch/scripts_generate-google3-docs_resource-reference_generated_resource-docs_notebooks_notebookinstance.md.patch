@@ -1,0 +1,22 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/notebooks/notebookinstance.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/notebooks/notebookinstance.md
+index ed038d5769..331fe3df7d 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/notebooks/notebookinstance.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/notebooks/notebookinstance.md
+@@ -1035,7 +1035,7 @@ observedState:
+         <td><code>externalRef</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}A unique specifier for the NotebookInstance resource in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}A unique specifier for the NotebookInstance resource in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -1049,7 +1049,7 @@ observedState:
+         <td><code>observedState</code></td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>

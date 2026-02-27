@@ -1,0 +1,21 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/identityplatform/identityplatformconfig.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/identityplatform/identityplatformconfig.md
+index 6c2c7a4d01..405d7830f3 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/identityplatform/identityplatformconfig.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/identityplatform/identityplatformconfig.md
+@@ -1559,8 +1559,7 @@ metadata:
+   name: identityplatformconfig-dep
+ spec:
+   region: "us-west2"
+-  # This field needs to be updated to a supported 1st gen version per the service team
+-  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
++  # Ensure that you're using a supported runtime version. Using an unsupported runtime version can cause errors. For a list of supported versions, see https://cloud.google.com/functions/docs/runtime-support#support_schedule.
+   # Deprecated runtime version will cause googleapis error
+   runtime: "nodejs20"
+   availableMemoryMb: 128
+@@ -1589,4 +1588,4 @@ spec:
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file

@@ -1,0 +1,83 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/bigqueryreservation/bigqueryreservationassignment.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/bigqueryreservation/bigqueryreservationassignment.md
+index ff4ae0eefa..3f36fbb645 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/bigqueryreservation/bigqueryreservationassignment.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/bigqueryreservation/bigqueryreservationassignment.md
+@@ -97,7 +97,7 @@ resourceID: string
+         </td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}Immutable. Required. The resource which will use the reservation. E.g. `projects/myproject`, `folders/123`, or `organizations/456`.{% endverbatim %}</p>
++            <p>{% verbatim %}Immutable. Required. The resource which will use the reservation. For example, <code>projects/myproject</code>, <code>folders/123</code>, or <code>organizations/456</code>.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -137,7 +137,7 @@ resourceID: string
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}The 'namespace' field of a 'Folder' resource. If unset, the namespace is defaulted to the namespace of the referencer resource.{% endverbatim %}</p>
++            <p>{% verbatim %}The 'namespace' field of a 'Folder' resource. If unset, the namespace is defaulted to the namespace of the referenced resource.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -153,11 +153,11 @@ resourceID: string
+     <tr>
+         <td>
+             <p><code>assignee.organizationRef.external</code></p>
+-            <p><i>Required*</i></p>
++            <p><i>Required</i></p>
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}The 'name' field of an organization, when not managed by Config Connector.{% endverbatim %}</p>
++            <p>{% verbatim %}Required when 'organizationRef' is specified. The 'name' field of an organization, when not managed by Config Connector.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -267,14 +267,14 @@ resourceID: string
+         </td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}Immutable. Optional. The BigQueryReservationAssignment ID used for resource creation or acquisition. Service-generated.Can be set only if resource acquisition . For acquisition: This field must be provided to identify the Reservation resource to acquire.{% endverbatim %}</p>
++            <p>{% verbatim %}Immutable. Optional. The BigQueryReservationAssignment ID. This field is service-generated and can only be set for resource acquisition. To acquire an existing resource, you must provide this field to identify the Reservation resource to acquire.{% endverbatim %}</p>
+         </td>
+     </tr>
+ </tbody>
+ </table>
+ 
+ 
+-<p>* Field is required when parent field is specified</p>
++
+ 
+ 
+ ### Status
+@@ -352,7 +352,7 @@ observedState:
+         <td><code>externalRef</code></td>
+         <td>
+             <p><code class="apitype">string</code></p>
+-            <p>{% verbatim %}A unique specifier for the BigqueryReservationAssignment resource in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}A unique specifier for the BigqueryReservationAssignment resource in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -366,7 +366,7 @@ observedState:
+         <td><code>observedState</code></td>
+         <td>
+             <p><code class="apitype">object</code></p>
+-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
++            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in Google Cloud.{% endverbatim %}</p>
+         </td>
+     </tr>
+     <tr>
+@@ -379,9 +379,7 @@ observedState:
+ </tbody>
+ </table>
+ 
+-## Sample YAML(s)
+-
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file

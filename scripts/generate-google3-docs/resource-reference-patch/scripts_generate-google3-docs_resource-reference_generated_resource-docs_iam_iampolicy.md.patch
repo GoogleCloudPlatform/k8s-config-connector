@@ -1,0 +1,20 @@
+diff --git a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/iam/iampolicy.md b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/iam/iampolicy.md
+index b9c773d566..e3e764753a 100644
+--- a/scripts/generate-google3-docs/resource-reference/generated/resource-docs/iam/iampolicy.md
++++ b/scripts/generate-google3-docs/resource-reference/generated/resource-docs/iam/iampolicy.md
+@@ -61,7 +61,7 @@ Note: Updating <code>spec.resourceRef</code> is not allowed.
+ </tr>
+ <tr>
+ <td>{{gcp_name_short}} REST Resource Documentation</td>
+-<td><a href="/iam/docs/reference/rest/v1/iamPolicies">/iam/docs/reference/rest/v1/iamPolicies</a></td>
++<td><a href="/iam/reference/rest/v1/iamPolicies">/iam/reference/rest/v1/iamPolicies</a></td>
+ </tr>
+ <tr>
+ <td>{{product_name_short}} Resource Short Names</td>
+@@ -1172,4 +1172,4 @@ metadata:
+ 
+ Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+ 
+-{% endblock %}
++{% endblock %}
+\ No newline at end of file
