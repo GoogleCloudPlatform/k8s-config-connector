@@ -91,7 +91,17 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 
 	fmt.Printf("Loading backup from gs://%s/%s/%s/...\n", options.sourceBucket, clusterName, options.backupTimestamp)
 
-	prefix := fmt.Sprintf("%s/%s/", clusterName, options.backupTimestamp)
+	backupTimestamp := options.backupTimestamp
+	if backupTimestamp == "latest" {
+		latest, err := findLatestBackup(ctx, gcsClient, options.sourceBucket, clusterName)
+		if err != nil {
+			return fmt.Errorf("finding latest backup: %w", err)
+		}
+		backupTimestamp = latest
+		fmt.Printf("Resolved 'latest' to timestamp: %s\n", backupTimestamp)
+	}
+
+	prefix := fmt.Sprintf("%s/%s/", clusterName, backupTimestamp)
 	it := gcsClient.Bucket(options.sourceBucket).Objects(ctx, &storage.Query{Prefix: prefix})
 
 	var objects []*unstructured.Unstructured
@@ -137,6 +147,35 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 
 	fmt.Println("Restore complete.")
 	return nil
+}
+
+func findLatestBackup(ctx context.Context, gcsClient *storage.Client, bucket, cluster string) (string, error) {
+	prefix := cluster + "/"
+	it := gcsClient.Bucket(bucket).Objects(ctx, &storage.Query{Prefix: prefix, Delimiter: "/"})
+
+	var timestamps []string
+	for {
+		attrs, err := it.Next()
+		if errors.Is(err, iterator.Done) {
+			break
+		}
+		if err != nil {
+			return "", err
+		}
+		if attrs.Prefix != "" {
+			timestamp := strings.TrimSuffix(strings.TrimPrefix(attrs.Prefix, prefix), "/")
+			if timestamp != "" {
+				timestamps = append(timestamps, timestamp)
+			}
+		}
+	}
+
+	if len(timestamps) == 0 {
+		return "", fmt.Errorf("no backups found in gs://%s/%s/", bucket, cluster)
+	}
+
+	sort.Strings(timestamps)
+	return timestamps[len(timestamps)-1], nil
 }
 
 func loadObject(ctx context.Context, gcsClient *storage.Client, bucket, objectName string) (*unstructured.Unstructured, error) {
