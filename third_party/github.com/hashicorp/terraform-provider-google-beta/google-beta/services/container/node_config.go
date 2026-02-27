@@ -512,24 +512,46 @@ func schemaNodeConfig() *schema.Schema {
 							"image_gc_low_threshold_percent": {
 								Type:         schema.TypeInt,
 								Optional:     true,
+								Computed:     true,
 								ValidateFunc: validation.IntBetween(0, 100),
-								Description:  `The percent of disk usage after which image garbage collection is always run.`,
+								Description:  `The percent of disk usage before which image garbage collection is never run. Lowest priority.`,
 							},
 							"image_gc_high_threshold_percent": {
 								Type:         schema.TypeInt,
 								Optional:     true,
+								Computed:     true,
 								ValidateFunc: validation.IntBetween(0, 100),
-								Description:  `The percent of disk usage before which image garbage collection is never run. Lowest priority.`,
+								Description:  `The percent of disk usage after which image garbage collection is always run.`,
 							},
 							"image_minimum_gc_age": {
 								Type:        schema.TypeString,
 								Optional:    true,
+								Computed:    true,
 								Description: `The minimum age for an unused image before it is garbage collected.`,
 							},
 							"image_maximum_gc_age": {
 								Type:        schema.TypeString,
 								Optional:    true,
+								Computed:    true,
 								Description: `The maximum age for an unused image before it is garbage collected.`,
+							},
+							"container_log_max_size": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								Computed:    true,
+								Description: `The maximum size of the container log file before it is rotated.`,
+							},
+							"container_log_max_files": {
+								Type:        schema.TypeInt,
+								Optional:    true,
+								Computed:    true,
+								Description: `The maximum number of container log files that can be present for a container.`,
+							},
+							"max_parallel_image_pulls": {
+								Type:        schema.TypeInt,
+								Optional:    true,
+								Computed:    true,
+								Description: `The maximum number of parallel image pulls allowed.`,
 							},
 						},
 					},
@@ -1031,6 +1053,15 @@ func expandKubeletConfig(v interface{}) *container.NodeKubeletConfig {
 	if imageMaximumGcAge, ok := cfg["image_maximum_gc_age"]; ok {
 		kConfig.ImageMaximumGcAge = imageMaximumGcAge.(string)
 	}
+	if containerLogMaxSize, ok := cfg["container_log_max_size"]; ok {
+		kConfig.ContainerLogMaxSize = containerLogMaxSize.(string)
+	}
+	if containerLogMaxFiles, ok := cfg["container_log_max_files"]; ok {
+		kConfig.ContainerLogMaxFiles = int64(containerLogMaxFiles.(int))
+	}
+	if maxParallelImagePulls, ok := cfg["max_parallel_image_pulls"]; ok {
+		kConfig.MaxParallelImagePulls = int64(maxParallelImagePulls.(int))
+	}
 	return kConfig
 }
 
@@ -1443,6 +1474,15 @@ func flattenKubeletConfig(c *container.NodeKubeletConfig) []map[string]interface
 		}
 		if c.ImageMaximumGcAge != "" {
 			conf["image_maximum_gc_age"] = c.ImageMaximumGcAge
+		}
+		if c.ContainerLogMaxSize != "" {
+			conf["container_log_max_size"] = c.ContainerLogMaxSize
+		}
+		if c.ContainerLogMaxFiles > 0 {
+			conf["container_log_max_files"] = c.ContainerLogMaxFiles
+		}
+		if c.MaxParallelImagePulls > 0 {
+			conf["max_parallel_image_pulls"] = c.MaxParallelImagePulls
 		}
 		result = append(result, conf)
 	}
