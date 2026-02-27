@@ -77,7 +77,14 @@ func (obj *AccessContextManagerAccessPolicy) GetIdentity(ctx context.Context, re
 	}
 
 	// Cross-check the identity against the status value, if present.
-	externalRef := obj.Status.Name
+	externalRef := ""
+	if obj.Status.ExternalRef != nil {
+		externalRef = *obj.Status.ExternalRef
+	}
+	if externalRef == "" {
+		externalRef = obj.Status.Name
+	}
+
 	if externalRef != "" {
 		// Validate desired with actual
 		statusIdentity := &AccessContextManagerAccessPolicyIdentity{}
