@@ -161,7 +161,9 @@ func (a *FirewallEndpointAssociationAdapter) Create(ctx context.Context, createO
 
 	log.V(2).Info("successfully requested creation of FirewallEndpointAssociation", "name", a.id)
 
+	mapCtx = &direct.MapContext{}
 	status := &krm.NetworkSecurityFirewallEndpointAssociationStatus{}
+	status.ObservedState = FirewallEndpointAssociationObservedState_FromAPI(mapCtx, a.actual)
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -203,6 +205,8 @@ func (a *FirewallEndpointAssociationAdapter) Update(ctx context.Context, updateO
 	}
 
 	status := &krm.NetworkSecurityFirewallEndpointAssociationStatus{}
+	status.ObservedState = FirewallEndpointAssociationObservedState_FromAPI(mapCtx, a.actual)
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

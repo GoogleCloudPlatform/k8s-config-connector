@@ -134,14 +134,6 @@ spec:
             description: NetworkSecurityFirewallEndpointStatus defines the config
               connector machine state of NetworkSecurityFirewallEndpoint
             properties:
-              associatedNetworks:
-                description: 'Output only. List of networks that are associated with
-                  this endpoint in the local zone. This is a projection of the FirewallEndpointAssociations
-                  pointing at this endpoint. A network will only appear in this list
-                  after traffic routing is fully configured. Format: projects/{project}/global/networks/{name}.'
-                items:
-                  type: string
-                type: array
               conditions:
                 description: Conditions represent the latest available observations
                   of the object's current state.
@@ -180,12 +172,23 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              updateTime:
-                description: Output only. List of FirewallEndpointAssociations that
-                  are associated to this endpoint. An association will only appear
-                  in this list after traffic routing is fully configured. Output only.
-                  Update time stamp
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  associatedNetworks:
+                    description: 'Output only. List of networks that are associated
+                      with this endpoint in the local zone. This is a projection of
+                      the FirewallEndpointAssociations pointing at this endpoint.
+                      A network will only appear in this list after traffic routing
+                      is fully configured. Format: projects/{project}/global/networks/{name}.'
+                    items:
+                      type: string
+                    type: array
+                  updateTime:
+                    description: Output only. Update time stamp
+                    type: string
+                type: object
             type: object
         required:
         - spec

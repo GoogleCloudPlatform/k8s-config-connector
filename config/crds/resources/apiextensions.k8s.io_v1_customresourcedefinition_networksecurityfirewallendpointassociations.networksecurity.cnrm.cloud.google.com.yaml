@@ -254,9 +254,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: Output only. Create time stamp
-                type: string
               externalRef:
                 description: A unique specifier for the NetworkSecurityFirewallEndpointAssociation
                   resource in GCP.
@@ -269,15 +266,23 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              reconciling:
-                description: Output only. Whether reconciling is in progress.
-                type: boolean
-              state:
-                description: Output only. Current state of the association.
-                type: string
-              updateTime:
-                description: Output only. Update time stamp
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Create time stamp
+                    type: string
+                  reconciling:
+                    description: Output only. Whether reconciling is in progress.
+                    type: boolean
+                  state:
+                    description: Output only. Current state of the association.
+                    type: string
+                  updateTime:
+                    description: Output only. Update time stamp
+                    type: string
+                type: object
             type: object
         required:
         - spec

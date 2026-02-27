@@ -1,7 +1,1 @@
-crd=networksecurityfirewallendpointassociations.networksecurity.cnrm.cloud.google.com version=v1beta1: CRD has non-boilerplate field 'createTime' under 'status'
-crd=networksecurityfirewallendpointassociations.networksecurity.cnrm.cloud.google.com version=v1beta1: CRD has non-boilerplate field 'reconciling' under 'status'
-crd=networksecurityfirewallendpointassociations.networksecurity.cnrm.cloud.google.com version=v1beta1: CRD has non-boilerplate field 'state' under 'status'
-crd=networksecurityfirewallendpointassociations.networksecurity.cnrm.cloud.google.com version=v1beta1: CRD has non-boilerplate field 'updateTime' under 'status'
-crd=networksecurityfirewallendpoints.networksecurity.cnrm.cloud.google.com version=v1beta1: CRD has non-boilerplate field 'associatedNetworks' under 'status'
-crd=networksecurityfirewallendpoints.networksecurity.cnrm.cloud.google.com version=v1beta1: CRD has non-boilerplate field 'updateTime' under 'status'
 crd=tagslocationtagbindings.tags.cnrm.cloud.google.com version=v1beta1: CRD has non-boilerplate field 'name' under 'status'

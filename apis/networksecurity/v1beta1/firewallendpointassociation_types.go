@@ -69,6 +69,13 @@ type NetworkSecurityFirewallEndpointAssociationStatus struct {
 	// A unique specifier for the NetworkSecurityFirewallEndpointAssociation resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *NetworkSecurityFirewallEndpointAssociationObservedState `json:"observedState,omitempty"`
+}
+
+// NetworkSecurityFirewallEndpointAssociationObservedState defines the observed state of NetworkSecurityFirewallEndpointAssociation
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1beta1.FirewallEndpointAssociation
+type NetworkSecurityFirewallEndpointAssociationObservedState struct {
 	// Output only. Create time stamp
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.FirewallEndpointAssociation.create_time
 	CreateTime *string `json:"createTime,omitempty"`
