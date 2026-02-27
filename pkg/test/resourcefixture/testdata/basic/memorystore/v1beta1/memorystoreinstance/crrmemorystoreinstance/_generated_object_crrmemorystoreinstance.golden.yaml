@@ -33,10 +33,9 @@ status:
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    crossInstanceReplicationConfig:
-      updateTime: "2026-02-27T19:58:06.795279142Z"
+    crossInstanceReplicationConfig: {}
     nodeConfig:
-      sizeGB: 1.4
+      sizeGB: 13
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"
