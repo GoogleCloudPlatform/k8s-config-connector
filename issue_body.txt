@@ -1,0 +1,92 @@
+### Problem Statement
+
+While Config Connector (KCC) enables GitOps-driven infrastructure management, relying solely on GitOps repositories is insufficient for comprehensive Disaster Recovery (DR). Git repositories often do not capture the live state of the cluster, such as:
+- Server-generated fields (e.g., `spec.resourceID` for acquired resources).
+- The exact status and health of KCC resources at a specific point in time.
+- Resources that may have been modified directly in the cluster (drift) or have not yet been committed.
+
+Currently, there is no standardized, easy-to-use mechanism to snapshot and restore the full state of KCC resources. This gap makes DR planning complex and error-prone.
+
+### Potential Solution
+
+The `config-connector` CLI should be enhanced to support first-class `backup` and `restore` operations, using the `migrate` command concept introduced in [PR #3258](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3258) as the base for the backup design.
+
+The goal is to provide a "batteries-included" DR solution that handles the complexities of exporting, sanitizing, and properly restoring KCC resources (handling dependency ordering and acquisition).
+
+### Proposed CLI Experience
+
+#### 1. Configure Scheduled Backups
+
+A command to set up the backup infrastructure (CronJob, Service Accounts, GCS Bucket):
+
+```shell
+config-connector backup configure \
+  --cluster <CLUSTER_NAME> \
+  --location <REGION> \
+  --bucket <GCS_BUCKET_NAME> \
+  --bucket-location <GCS_BUCKET_LOCATION> \
+  --frequency daily \
+  --project <YOUR_PROJECT_ID>
+```
+
+**Functionality:**
+- Creates a GCS bucket (if not exists).
+- Configures a Kubernetes Service Account (KSA) with RBAC to read KCC resources.
+- Binds KSA to a Google Service Account (GCS writer) via Workload Identity.
+- Deploys a CronJob to perform scheduled exports.
+- Exports resources to `gs://<BUCKET>/<TIMESTAMP>/namespace/kind/name.yaml`.
+
+#### 2. Manual Backup Trigger
+
+A command to trigger an immediate backup:
+
+```shell
+config-connector backup create \
+  --cluster <CLUSTER_NAME> \
+  --location <REGION> \
+  --project <YOUR_PROJECT_ID>
+```
+
+#### 3. Check Backup Status
+
+A command to view the status of recent backup jobs:
+
+```shell
+config-connector backup status \
+  --cluster <CLUSTER_NAME> \
+  --location <REGION> \
+  --project <YOUR_PROJECT_ID>
+```
+
+**Functionality:**
+- Lists recent backup jobs and their status (Succeeded/Failed).
+- Provides details on any errors encountered during the export process.
+- Verifies if the backup artifacts are successfully present in the GCS bucket.
+
+#### 4. Restore and Validation
+
+A command to restore resources from GCS to a target cluster, with support for validation (dry-run) and acquisition:
+
+```shell
+config-connector backup restore \
+  --target-cluster <VERIFICATION_CLUSTER_NAME> \
+  --target-cluster-location <VERIFICATION_CLUSTER_LOCATION> \
+  --source-bucket <GCS_BUCKET_NAME> \
+  --backup-timestamp <YYYY-MM-DD> \
+  --project <YOUR_PROJECT_ID> \
+  [--dry-run]
+```
+
+**Key Restore Logic:**
+- **Pre-Restore Validation**: Verifies the integrity and status of the backup *before* initiating the restore, ensuring the backup is complete and usable.
+- **Sanitization**: Strips live fields like `uid`, `resourceVersion`, `generation` from backups.
+- **Acquisition**: Temporarily injects `cnrm.cloud.google.com/deletion-policy: abandon` to ensure KCC "acquires" existing GCP resources rather than conflicting with them.
+- **Dependency Ordering**: Applies resources in topological order (e.g., `Project` -> `PubSubTopic` -> `PubSubSubscription`).
+
+
+**Additional Context**
+This feature would align with the "Migrate" capability but focuses specifically on the DR use case, ensuring that enterprise users have a trusted path to recover their KCC environment.
+
+> [!IMPORTANT]
+> **Testing Requirements**: This feature will require significant pre-release testing to ensure data integrity and reliable recovery across various resource types and failure scenarios. Thorough validation of the restore process is critical before this can be considered production-ready.
+
