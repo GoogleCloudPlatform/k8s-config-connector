@@ -137,7 +137,6 @@ spec:
                           type: object
                       required:
                       - idRef
-                      - projectIdRef
                       type: object
                     type: array
                   shareType:
