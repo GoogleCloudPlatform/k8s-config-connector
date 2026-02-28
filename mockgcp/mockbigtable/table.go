@@ -24,8 +24,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
