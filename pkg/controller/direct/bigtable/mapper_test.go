@@ -15,10 +15,12 @@
 package bigtable
 
 import (
+	"reflect"
 	"testing"
 
 	gcp "cloud.google.com/go/bigtable"
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 )
 
 func TestBigtableMaterializedViewInfo_ToBigtableMaterializedView(t *testing.T) {
@@ -118,6 +120,36 @@ func TestBigtableMaterializedView_ToBigtableMaterializedViewInfo(t *testing.T) {
 		}
 		if got.MaterializedViewID != in.Name {
 			t.Errorf("MaterializedViewID mismatch: got %v, want %v", got.MaterializedViewID, in.Name)
+		}
+	})
+}
+
+func TestProtoSchema_v1alpha1_Mappers(t *testing.T) {
+	testBytes := []byte{0x00, 0x01, 0x02, 0x03, 0xff}
+
+	t.Run("ToProto", func(t *testing.T) {
+		in := &krm.ProtoSchema{
+			ProtoDescriptors: testBytes,
+		}
+		got := ProtoSchema_v1alpha1_ToProto(nil, in)
+		if got == nil {
+			t.Fatalf("unexpected nil result")
+		}
+		if !reflect.DeepEqual(got.ProtoDescriptors, testBytes) {
+			t.Errorf("ProtoDescriptors: got %v, want %v", got.ProtoDescriptors, testBytes)
+		}
+	})
+
+	t.Run("FromProto", func(t *testing.T) {
+		in := &pb.ProtoSchema{
+			ProtoDescriptors: testBytes,
+		}
+		got := ProtoSchema_v1alpha1_FromProto(nil, in)
+		if got == nil {
+			t.Fatalf("unexpected nil result")
+		}
+		if !reflect.DeepEqual(got.ProtoDescriptors, testBytes) {
+			t.Errorf("ProtoDescriptors: got %v, want %v", got.ProtoDescriptors, testBytes)
 		}
 	})
 }
