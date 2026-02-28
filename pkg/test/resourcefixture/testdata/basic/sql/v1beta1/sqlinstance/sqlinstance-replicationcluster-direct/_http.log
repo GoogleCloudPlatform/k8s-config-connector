@@ -961,7 +961,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "name": "sqlinstance-primary-direct-${uniqueId}",
   "region": "us-central1",
   "replicationCluster": {
-    "failoverDrReplicaName": "sqlinstance-replica-direct-${uniqueId}"
+    "failoverDrReplicaName": "${projectId}:sqlinstance-replica-direct-${uniqueId}"
   },
   "settings": {
     "activationPolicy": "ALWAYS",
@@ -1097,7 +1097,7 @@ X-Xss-Protection: 0
   "project": "${projectId}",
   "region": "us-central1",
   "replicationCluster": {
-    "failoverDrReplicaName": "sqlinstance-replica-direct-${uniqueId}"
+    "failoverDrReplicaName": "${projectId}:sqlinstance-replica-direct-${uniqueId}"
   },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-primary-direct-${uniqueId}",
