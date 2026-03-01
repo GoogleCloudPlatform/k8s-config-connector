@@ -78,7 +78,6 @@ func (s *NetworkServicesServer) ListLbRouteExtensions(ctx context.Context, req *
 	return response, nil
 }
 
-
 func (s *NetworkServicesServer) CreateLbRouteExtension(ctx context.Context, req *pb.CreateLbRouteExtensionRequest) (*longrunningpb.Operation, error) {
 	reqName := req.Parent + "/lbRouteExtensions/" + req.LbRouteExtensionId
 	name, err := s.parseLbRouteExtensionName(reqName)
