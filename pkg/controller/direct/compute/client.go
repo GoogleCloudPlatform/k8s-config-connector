@@ -119,26 +119,53 @@ func (m *gcpClient) newRegionalTargetTcpProxiesClient(ctx context.Context) (*com
 }
 
 func (m *gcpClient) newFutureReservationsClient(ctx context.Context) (*compute.FutureReservationsClient, error) {
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	client, err := compute.NewFutureReservationsRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building compute FutureReservations client: %w", err)
+        opts, err := m.config.RESTClientOptions()
+        if err != nil {
+                return nil, err
+        }
+        client, err := compute.NewFutureReservationsRESTClient(ctx, opts...)
+        if err != nil {
+                return nil, fmt.Errorf("building compute FutureReservations client: %w", err)
 
-	}
-	return client, err
+        }
+        return client, err
+}
+
+func (m *gcpClient) newUrlMapsClient(ctx context.Context) (*compute.UrlMapsClient, error) {
+        opts, err := m.config.RESTClientOptions()
+        if err != nil {
+                return nil, err
+        }
+
+        client, err := compute.NewUrlMapsRESTClient(ctx, opts...)
+        if err != nil {
+                return nil, fmt.Errorf("building compute UrlMapsClient client: %w", err)
+
+        }
+        return client, err
 }
 
 func (m *gcpClient) newReservationsClient(ctx context.Context) (*compute.ReservationsClient, error) {
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	client, err := compute.NewReservationsRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building compute Reservations client: %w", err)
-	}
-	return client, err
+        opts, err := m.config.RESTClientOptions()
+        if err != nil {
+                return nil, err
+        }
+        client, err := compute.NewReservationsRESTClient(ctx, opts...)
+        if err != nil {
+                return nil, fmt.Errorf("building compute Reservations client: %w", err)
+        }
+        return client, err
+}
+
+func (m *gcpClient) newRegionalUrlMapsClient(ctx context.Context) (*compute.RegionUrlMapsClient, error) {
+        opts, err := m.config.RESTClientOptions()
+        if err != nil {
+                return nil, err
+        }
+        client, err := compute.NewRegionUrlMapsRESTClient(ctx, opts...)
+        if err != nil {
+                return nil, fmt.Errorf("building compute RegionalUrlMapsClient client: %w", err)
+
+        }
+        return client, err
 }

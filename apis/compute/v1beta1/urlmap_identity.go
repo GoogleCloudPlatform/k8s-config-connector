@@ -65,6 +65,10 @@ func (i *ComputeURLMapIdentity) Host() string {
 	return ComputeURLMapGlobalIdentityFormat.Host()
 }
 
+func NewComputeURLMapIdentity(ctx context.Context, reader client.Reader, obj *ComputeURLMap) (*ComputeURLMapIdentity, error) {
+	return getIdentityFromComputeURLMapSpec(ctx, reader, obj)
+}
+
 func getIdentityFromComputeURLMapSpec(ctx context.Context, reader client.Reader, obj client.Object) (*ComputeURLMapIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
