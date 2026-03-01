@@ -134,6 +134,10 @@ func init() {
 		SkipUpdate:   true,
 	}
 
+	resourceContextMap["privatenat"] = ResourceContext{
+		ResourceKind: "ComputeRouterNAT",
+	}
+
 	resourceContextMap["computerouterpeer"] = ResourceContext{
 		ResourceKind: "ComputeRouterPeer",
 		SkipUpdate:   true,
