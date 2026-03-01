@@ -81,42 +81,17 @@ spec:
                 description: Optional. Labels as key value pairs
                 type: object
               location:
-                description: Immutable.
+                description: Immutable. The location for the resource
                 type: string
-                x-kubernetes-validations:
-                - message: Location field is immutable
-                  rule: self == oldSelf
-              projectRef:
-                description: The Project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
+              organizationRef:
+                description: The Organization that this resource belongs to.
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
+                    description: The 'name' field of an organization, when not managed
                       by Config Connector.
                     type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
+                required:
+                - external
                 type: object
               resourceID:
                 description: The NetworkSecurityFirewallEndpoint name. If not given,
@@ -128,7 +103,7 @@ spec:
             required:
             - billingProjectID
             - location
-            - projectRef
+            - organizationRef
             type: object
           status:
             description: NetworkSecurityFirewallEndpointStatus defines the config

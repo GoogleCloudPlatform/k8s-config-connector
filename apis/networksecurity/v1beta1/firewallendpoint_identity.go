@@ -44,22 +44,26 @@ func (i *FirewallEndpointIdentity) Parent() *FirewallEndpointParent {
 }
 
 type FirewallEndpointParent struct {
-	ProjectID string
-	Location  string
+	OrganizationID string
+	Location       string
 }
 
 func (p *FirewallEndpointParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "organizations/" + p.OrganizationID + "/locations/" + p.Location
 }
 
 // NewFirewallEndpointIdentity builds a FirewallEndpointIdentity from the Config Connector FirewallEndpoint object.
 func NewFirewallEndpointIdentity(ctx context.Context, reader client.Reader, obj *NetworkSecurityFirewallEndpoint) (*FirewallEndpointIdentity, error) {
 
 	// Get Parent
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
+	orgID, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
 	if err != nil {
 		return nil, err
 	}
+	if orgID == nil {
+		return nil, fmt.Errorf("organizationRef is required")
+	}
+	organizationID := orgID.OrganizationID
 	location := obj.Spec.Location
 
 	// Get desired ID
@@ -79,8 +83,8 @@ func NewFirewallEndpointIdentity(ctx context.Context, reader client.Reader, obj 
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actualParent.OrganizationID != organizationID {
+			return nil, fmt.Errorf("spec.organizationRef changed, expect %s, got %s", actualParent.OrganizationID, organizationID)
 		}
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
@@ -92,8 +96,8 @@ func NewFirewallEndpointIdentity(ctx context.Context, reader client.Reader, obj 
 	}
 	return &FirewallEndpointIdentity{
 		parent: &FirewallEndpointParent{
-			ProjectID: projectID,
-			Location:  location,
+			OrganizationID: organizationID,
+			Location:       location,
 		},
 		id: resourceID,
 	}, nil
@@ -101,12 +105,12 @@ func NewFirewallEndpointIdentity(ctx context.Context, reader client.Reader, obj 
 
 func ParseFirewallEndpointExternal(external string) (parent *FirewallEndpointParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "firewallEndpoints" {
-		return nil, "", fmt.Errorf("format of NetworkSecurityFirewallEndpoint external=%q was not known (use projects/{{projectID}}/locations/{{location}}/firewallEndpoints/{{firewallEndpointID}})", external)
+	if len(tokens) != 6 || tokens[0] != "organizations" || tokens[2] != "locations" || tokens[4] != "firewallEndpoints" {
+		return nil, "", fmt.Errorf("format of NetworkSecurityFirewallEndpoint external=%q was not known (use organizations/{{organizationID}}/locations/{{location}}/firewallEndpoints/{{firewallEndpointID}})", external)
 	}
 	parent = &FirewallEndpointParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		OrganizationID: tokens[1],
+		Location:       tokens[3],
 	}
 	resourceID = tokens[5]
 	return parent, resourceID, nil

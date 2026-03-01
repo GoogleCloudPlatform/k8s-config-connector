@@ -30,7 +30,7 @@ func FirewallEndpointSpec_ToAPI(ctx *direct.MapContext, in *v1beta1.NetworkSecur
 	if in.Description != nil {
 		out.Description = *in.Description
 	}
-	if in.Labels != nil {
+	if len(in.Labels) > 0 {
 		out.Labels = in.Labels
 	}
 	if in.BillingProjectID != nil {
@@ -50,6 +50,7 @@ func FirewallEndpointSpec_FromAPI(ctx *direct.MapContext, in *api.FirewallEndpoi
 		out.Labels = in.Labels
 	}
 	out.BillingProjectID = direct.LazyPtr(in.BillingProjectId)
+	// Note: Parent fields (OrganizationRef, Location) are populated by Export.
 	return out
 }
 

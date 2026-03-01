@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -24,11 +25,17 @@ var NetworkSecurityFirewallEndpointGVK = GroupVersion.WithKind("NetworkSecurityF
 // NetworkSecurityFirewallEndpointSpec defines the desired state of NetworkSecurityFirewallEndpoint
 // +kcc:spec:proto=google.cloud.networksecurity.v1beta1.FirewallEndpoint
 type NetworkSecurityFirewallEndpointSpec struct {
+	// The Organization that this resource belongs to.
+	// +required
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef"`
+
+	// Immutable. The location for the resource
+	// +required
+	Location string `json:"location"`
+
 	// The NetworkSecurityFirewallEndpoint name. If not given, the metadata.name will be used.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field is immutable"
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	Parent `json:",inline"`
 
 	// Required. Project to bill on endpoint uptime usage.
 	// +kcc:proto:field=google.cloud.networksecurity.v1beta1.FirewallEndpoint.billing_project_id

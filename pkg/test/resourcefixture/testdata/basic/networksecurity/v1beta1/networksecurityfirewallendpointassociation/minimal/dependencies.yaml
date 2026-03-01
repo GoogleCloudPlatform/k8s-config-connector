@@ -25,6 +25,8 @@ kind: NetworkSecurityFirewallEndpoint
 metadata:
   name: nsfirewallendpoint-${unique_id}
 spec:
+  organizationRef:
+    external: organizations/${org_id}
   location: us-central1
   billingProjectID: ${project_id}
   description: "Firewall endpoint for association"

@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -101,7 +102,7 @@ func (a *FirewallEndpointAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting FirewallEndpoint", "name", a.id)
 
-	endpoint, err := a.gcpClient.Projects.Locations.FirewallEndpoints.Get(a.id.String()).Context(ctx).Do()
+	endpoint, err := a.gcpClient.Organizations.Locations.FirewallEndpoints.Get(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -125,7 +126,7 @@ func (a *FirewallEndpointAdapter) Create(ctx context.Context, createOp *directba
 		return mapCtx.Err()
 	}
 
-	op, err := a.gcpClient.Projects.Locations.FirewallEndpoints.Create(a.id.Parent().String(), resource).FirewallEndpointId(a.id.ID()).Context(ctx).Do()
+	op, err := a.gcpClient.Organizations.Locations.FirewallEndpoints.Create(a.id.Parent().String(), resource).FirewallEndpointId(a.id.ID()).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating FirewallEndpoint %s: %w", a.id, err)
 	}
@@ -165,15 +166,8 @@ func (a *FirewallEndpointAdapter) Update(ctx context.Context, updateOp *directba
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
-		req := a.gcpClient.Projects.Locations.FirewallEndpoints.Patch(a.id.String(), desiredApi)
-		var updateMask string
-		for i, p := range paths {
-			if i > 0 {
-				updateMask += ","
-			}
-			updateMask += p
-		}
-		req.UpdateMask(updateMask)
+		req := a.gcpClient.Organizations.Locations.FirewallEndpoints.Patch(a.id.String(), desiredApi)
+		req.UpdateMask(strings.Join(paths, ","))
 
 		op, err := req.Context(ctx).Do()
 		if err != nil {
@@ -205,7 +199,7 @@ func (a *FirewallEndpointAdapter) Export(ctx context.Context) (*unstructured.Uns
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.OrganizationRef = &refs.OrganizationRef{External: a.id.Parent().OrganizationID}
 	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -224,7 +218,7 @@ func (a *FirewallEndpointAdapter) Delete(ctx context.Context, deleteOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting FirewallEndpoint", "name", a.id)
 
-	op, err := a.gcpClient.Projects.Locations.FirewallEndpoints.Delete(a.id.String()).Context(ctx).Do()
+	op, err := a.gcpClient.Organizations.Locations.FirewallEndpoints.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			log.V(2).Info("skipping delete for non-existent FirewallEndpoint", "name", a.id)
