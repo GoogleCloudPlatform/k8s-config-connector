@@ -40,7 +40,7 @@ type CertificateManagerCertificateIssuanceConfigSpec struct {
 	// Required. The CA that issues the workload certificate. It includes the CA
 	//  address, type, authentication to CA service, etc.
 	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateIssuanceConfig.certificate_authority_config
-	CertificateAuthorityConfig *CertificateIssuanceConfig_CertificateAuthorityConfig `json:"certificateAuthorityConfigRef,omitempty"`
+	CertificateAuthorityConfig *CertificateIssuanceConfig_CertificateAuthorityConfig `json:"certificateAuthorityConfig,omitempty"`
 
 	// Required. Workload certificate lifetime requested.
 	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateIssuanceConfig.lifetime

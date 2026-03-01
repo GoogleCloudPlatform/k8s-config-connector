@@ -38,6 +38,12 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type CertificateissuanceconfigCertificateAuthorityConfig struct {
+	/* Defines a CertificateAuthorityServiceConfig. */
+	// +optional
+	CertificateAuthorityServiceConfig *CertificateissuanceconfigCertificateAuthorityServiceConfig `json:"certificateAuthorityServiceConfig,omitempty"`
+}
+
 type CertificateissuanceconfigCertificateAuthorityServiceConfig struct {
 	/* Required. A CA pool resource used to issue a certificate. The CA pool string has a relative resource path following the form "projects/{project}/locations/{location}/caPools/{ca_pool}". */
 	// +optional
@@ -47,7 +53,7 @@ type CertificateissuanceconfigCertificateAuthorityServiceConfig struct {
 type CertificateManagerCertificateIssuanceConfigSpec struct {
 	/* Required. The CA that issues the workload certificate. It includes the CA address, type, authentication to CA service, etc. */
 	// +optional
-	CertificateAuthorityConfigRef *v1alpha1.ResourceRef `json:"certificateAuthorityConfigRef,omitempty"`
+	CertificateAuthorityConfig *CertificateissuanceconfigCertificateAuthorityConfig `json:"certificateAuthorityConfig,omitempty"`
 
 	/* One or more paragraphs of text description of a CertificateIssuanceConfig. */
 	// +optional
