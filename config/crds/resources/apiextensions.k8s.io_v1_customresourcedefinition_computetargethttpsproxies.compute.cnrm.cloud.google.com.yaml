@@ -291,8 +291,9 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `selfLink` field of a `ComputeURLMap`
-                      resource.'
+                    description: A reference to an externally managed ComputeURLMap
+                      resource. Should be in the format "projects/{{projectID}}/global/urlMaps/{{name}}"
+                      or "projects/{{projectID}}/regions/{{region}}/urlMaps/{{name}}".
                     type: string
                   name:
                     description: The name of a ComputeURLMap resource.

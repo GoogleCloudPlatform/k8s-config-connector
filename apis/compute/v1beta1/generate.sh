@@ -38,6 +38,7 @@ go run . generate-types \
   --resource ComputeReservation:Reservation \
   --resource ComputeHealthCheck:HealthCheck \
   --resource ComputeNodeGroup:NodeGroup \
+  --resource ComputeURLMap:UrlMap \
   --include-skipped-output
 
 go run . generate-mapper \
