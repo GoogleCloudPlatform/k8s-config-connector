@@ -63,7 +63,7 @@ spec:
             description: CertificateManagerCertificateIssuanceConfigSpec defines the
               desired state of CertificateManagerCertificateIssuanceConfig
             properties:
-              certificateAuthorityConfigRef:
+              certificateAuthorityConfig:
                 description: Required. The CA that issues the workload certificate.
                   It includes the CA address, type, authentication to CA service,
                   etc.
