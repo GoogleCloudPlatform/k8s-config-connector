@@ -1,0 +1,7 @@
+# gcloud service-extensions lb-route-extensions doesn't support create and update commands; we use import for both.
+- exec: gcloud service-extensions lb-route-extensions import test-${uniqueId} --source=route-extension.yaml --location=global --project=${projectId}
+- exec: gcloud service-extensions lb-route-extensions describe test-${uniqueId} --location=global --project=${projectId}
+- exec: gcloud service-extensions lb-route-extensions import test-${uniqueId} --source=route-extension-update.yaml --location=global --project=${projectId}
+- exec: gcloud service-extensions lb-route-extensions describe test-${uniqueId} --location=global --project=${projectId}
+- exec: gcloud service-extensions lb-route-extensions list --location=global --project=${projectId}
+- exec: gcloud service-extensions lb-route-extensions delete test-${uniqueId} --location=global --project=${projectId} --quiet

@@ -23,6 +23,15 @@ const TimePlaceholder = "2024-04-01T12:34:56.123456Z"
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	replacements.ReplacePath(".createTime", TimePlaceholder)
+	replacements.ReplacePath(".updateTime", TimePlaceholder)
+	replacements.ReplacePath(".endTime", TimePlaceholder)
+
+	replacements.ReplacePath(".lbRouteExtensions[].createTime", TimePlaceholder)
+	replacements.ReplacePath(".lbRouteExtensions[].updateTime", TimePlaceholder)
+
+	replacements.ReplacePath(".metadata.createTime", TimePlaceholder)
+	replacements.ReplacePath(".metadata.endTime", TimePlaceholder)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
