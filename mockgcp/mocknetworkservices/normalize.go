@@ -15,6 +15,8 @@
 package mocknetworkservices
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -35,4 +37,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.HasPrefix(value, "https://compute.googleapis.com/compute/v1/") {
+			newValue := strings.Replace(value, "https://compute.googleapis.com/compute/v1/", "https://www.googleapis.com/compute/v1/", 1)
+			replacements.ReplaceStringValue(value, newValue)
+		}
+	})
 }
