@@ -182,7 +182,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeTargetSSLProxy                           | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeTargetTCPProxy                           | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeTargetVPNGateway                         | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeURLMap                                   | False        | True        | False  | Direct     | True        |
+| compute.cnrm.cloud.google.com                 | ComputeURLMap                                   | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                 | ComputeVPNGateway                               | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeVPNTunnel                                | False        | True        | False  | Terraform  | False       |
 | configcontroller.cnrm.cloud.google.com        | ConfigControllerInstance                        | False        | True        | False  | DCL        | False       |
