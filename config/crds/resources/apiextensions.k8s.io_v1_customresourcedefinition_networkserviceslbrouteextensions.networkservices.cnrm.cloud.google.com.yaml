@@ -341,6 +341,7 @@ spec:
                   scheme. Supported values: INTERNAL_MANAGED, EXTERNAL_MANAGED.'
                 type: string
               location:
+                description: The location that this resource belongs to.
                 type: string
                 x-kubernetes-validations:
                 - message: Location is immutable.
