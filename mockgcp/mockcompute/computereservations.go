@@ -101,7 +101,16 @@ func (s *ReservationsV1) Update(ctx context.Context, req *pb.UpdateReservationRe
 	if req.GetReservationResource() == nil {
 		return nil, status.Errorf(codes.InvalidArgument, "reservation_resource is required")
 	}
-	proto.Merge(obj, req.GetReservationResource())
+
+	update := req.GetReservationResource()
+	if update.ShareSettings != nil {
+		obj.ShareSettings = update.ShareSettings
+	}
+	// proto.Merge merges maps and messages; since we already replaced ShareSettings,
+	// we want to avoid merging it again.
+	updateCopy := proto.Clone(update).(*pb.Reservation)
+	updateCopy.ShareSettings = nil
+	proto.Merge(obj, updateCopy)
 
 	if obj.GetShareSettings().GetShareType() == "SPECIFIC_PROJECTS" {
 		if len(obj.GetShareSettings().GetProjectMap()) == 0 {

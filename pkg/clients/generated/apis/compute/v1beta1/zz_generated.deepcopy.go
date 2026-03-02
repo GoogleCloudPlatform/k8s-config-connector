@@ -13723,8 +13723,8 @@ func (in *ReservationLocalSsds) DeepCopy() *ReservationLocalSsds {
 func (in *ReservationProjectMap) DeepCopyInto(out *ReservationProjectMap) {
 	*out = *in
 	out.IdRef = in.IdRef
-	if in.ProjectIdRef != nil {
-		in, out := &in.ProjectIdRef, &out.ProjectIdRef
+	if in.ProjectIDRef != nil {
+		in, out := &in.ProjectIDRef, &out.ProjectIDRef
 		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}

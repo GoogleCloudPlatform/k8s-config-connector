@@ -1960,7 +1960,7 @@ spec:
             version: v1beta1
             group: resourcemanager.cnrm.cloud.google.com
         - tfField: share_settings.project_map.project_id
-          key: projectIdRef
+          key: projectIDRef
           description: |-
             The project id/number should be the same as the key of this project
             config in the project map.

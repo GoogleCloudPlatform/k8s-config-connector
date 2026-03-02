@@ -88,7 +88,7 @@ type ReservationProjectMap struct {
 	/* The project id/number should be the same as the key of this project
 	config in the project map. */
 	// +optional
-	ProjectIdRef *v1alpha1.ResourceRef `json:"projectIdRef,omitempty"`
+	ProjectIDRef *v1alpha1.ResourceRef `json:"projectIDRef,omitempty"`
 }
 
 type ReservationShareSettings struct {
@@ -98,6 +98,7 @@ type ReservationShareSettings struct {
 
 	/* Type of sharing for this shared-reservation Possible values: ["LOCAL", "SPECIFIC_PROJECTS"]. */
 	// +optional
+	// +kubebuilder:validation:Enum=LOCAL;SPECIFIC_PROJECTS
 	ShareType *string `json:"shareType,omitempty"`
 }
 
