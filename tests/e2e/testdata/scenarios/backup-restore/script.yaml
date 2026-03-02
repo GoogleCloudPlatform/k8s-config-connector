@@ -30,6 +30,7 @@ spec:
 ---
 # Step 2: Trigger a manual backup using the CLI
 apiVersion: RunCLI
+kind: RunCLI
 args:
   - backup
   - create
@@ -40,6 +41,7 @@ args:
 ---
 # Step 3: Verify backup status in GCS
 apiVersion: RunCLI
+kind: RunCLI
 args:
   - backup
   - status
@@ -57,6 +59,7 @@ TEST: DELETE
 ---
 # Step 5: Restore from backup using the 'latest' keyword
 apiVersion: RunCLI
+kind: RunCLI
 args:
   - backup
   - restore
