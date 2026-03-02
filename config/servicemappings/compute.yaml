@@ -1270,18 +1270,6 @@ spec:
             kind: Project
             version: v1beta1
             group: resourcemanager.cnrm.cloud.google.com
-    - name: google_compute_network
-      kind: ComputeNetwork
-      metadataMapping:
-        name: name
-      resourceID:
-        targetField: name
-      idTemplate: "projects/{{project}}/global/networks/{{name}}"
-      idTemplateCanBeUsedToMatchResourceName: true
-      resourceAvailableInAssetInventory: true
-      containers:
-        - type: project
-          tfField: project
     - name: google_compute_network_endpoint_group
       kind: ComputeNetworkEndpointGroup
       metadataMapping:

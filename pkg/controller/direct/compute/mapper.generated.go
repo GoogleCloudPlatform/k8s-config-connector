@@ -517,6 +517,152 @@ func NetworkAttachmentConnectedEndpoint_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.SubnetworkCidrRange = in.SubnetworkCIDRRange
 	return out
 }
+func NetworkParams_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkParams) *krm.NetworkParams {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkParams{}
+	out.ResourceManagerTags = in.ResourceManagerTags
+	return out
+}
+func NetworkParams_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkParams) *pb.NetworkParams {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkParams{}
+	out.ResourceManagerTags = in.ResourceManagerTags
+	return out
+}
+func NetworkPeering_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeering) *krm.NetworkPeering {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkPeering{}
+	out.AutoCreateRoutes = in.AutoCreateRoutes
+	out.ConnectionStatus = NetworkPeeringConnectionStatus_v1beta1_FromProto(mapCtx, in.GetConnectionStatus())
+	out.ExchangeSubnetRoutes = in.ExchangeSubnetRoutes
+	out.ExportCustomRoutes = in.ExportCustomRoutes
+	out.ExportSubnetRoutesWithPublicIP = in.ExportSubnetRoutesWithPublicIp
+	out.ImportCustomRoutes = in.ImportCustomRoutes
+	out.ImportSubnetRoutesWithPublicIP = in.ImportSubnetRoutesWithPublicIp
+	out.Name = in.Name
+	out.Network = in.Network
+	out.PeerMtu = in.PeerMtu
+	out.StackType = in.StackType
+	out.State = in.State
+	out.StateDetails = in.StateDetails
+	out.UpdateStrategy = in.UpdateStrategy
+	return out
+}
+func NetworkPeering_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkPeering) *pb.NetworkPeering {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPeering{}
+	out.AutoCreateRoutes = in.AutoCreateRoutes
+	out.ConnectionStatus = NetworkPeeringConnectionStatus_v1beta1_ToProto(mapCtx, in.ConnectionStatus)
+	out.ExchangeSubnetRoutes = in.ExchangeSubnetRoutes
+	out.ExportCustomRoutes = in.ExportCustomRoutes
+	out.ExportSubnetRoutesWithPublicIp = in.ExportSubnetRoutesWithPublicIP
+	out.ImportCustomRoutes = in.ImportCustomRoutes
+	out.ImportSubnetRoutesWithPublicIp = in.ImportSubnetRoutesWithPublicIP
+	out.Name = in.Name
+	out.Network = in.Network
+	out.PeerMtu = in.PeerMtu
+	out.StackType = in.StackType
+	out.State = in.State
+	out.StateDetails = in.StateDetails
+	out.UpdateStrategy = in.UpdateStrategy
+	return out
+}
+func NetworkPeeringConnectionStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeeringConnectionStatus) *krm.NetworkPeeringConnectionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkPeeringConnectionStatus{}
+	out.ConsensusState = NetworkPeeringConnectionStatusConsensusState_v1beta1_FromProto(mapCtx, in.GetConsensusState())
+	out.TrafficConfiguration = NetworkPeeringConnectionStatusTrafficConfiguration_v1beta1_FromProto(mapCtx, in.GetTrafficConfiguration())
+	out.UpdateStrategy = in.UpdateStrategy
+	return out
+}
+func NetworkPeeringConnectionStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkPeeringConnectionStatus) *pb.NetworkPeeringConnectionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPeeringConnectionStatus{}
+	out.ConsensusState = NetworkPeeringConnectionStatusConsensusState_v1beta1_ToProto(mapCtx, in.ConsensusState)
+	out.TrafficConfiguration = NetworkPeeringConnectionStatusTrafficConfiguration_v1beta1_ToProto(mapCtx, in.TrafficConfiguration)
+	out.UpdateStrategy = in.UpdateStrategy
+	return out
+}
+func NetworkPeeringConnectionStatusConsensusState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeeringConnectionStatusConsensusState) *krm.NetworkPeeringConnectionStatusConsensusState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkPeeringConnectionStatusConsensusState{}
+	out.DeleteStatus = in.DeleteStatus
+	out.UpdateStatus = in.UpdateStatus
+	return out
+}
+func NetworkPeeringConnectionStatusConsensusState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkPeeringConnectionStatusConsensusState) *pb.NetworkPeeringConnectionStatusConsensusState {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPeeringConnectionStatusConsensusState{}
+	out.DeleteStatus = in.DeleteStatus
+	out.UpdateStatus = in.UpdateStatus
+	return out
+}
+func NetworkPeeringConnectionStatusTrafficConfiguration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeeringConnectionStatusTrafficConfiguration) *krm.NetworkPeeringConnectionStatusTrafficConfiguration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkPeeringConnectionStatusTrafficConfiguration{}
+	out.ExportCustomRoutesToPeer = in.ExportCustomRoutesToPeer
+	out.ExportSubnetRoutesWithPublicIPToPeer = in.ExportSubnetRoutesWithPublicIpToPeer
+	out.ImportCustomRoutesFromPeer = in.ImportCustomRoutesFromPeer
+	out.ImportSubnetRoutesWithPublicIPFromPeer = in.ImportSubnetRoutesWithPublicIpFromPeer
+	out.StackType = in.StackType
+	return out
+}
+func NetworkPeeringConnectionStatusTrafficConfiguration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkPeeringConnectionStatusTrafficConfiguration) *pb.NetworkPeeringConnectionStatusTrafficConfiguration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkPeeringConnectionStatusTrafficConfiguration{}
+	out.ExportCustomRoutesToPeer = in.ExportCustomRoutesToPeer
+	out.ExportSubnetRoutesWithPublicIpToPeer = in.ExportSubnetRoutesWithPublicIPToPeer
+	out.ImportCustomRoutesFromPeer = in.ImportCustomRoutesFromPeer
+	out.ImportSubnetRoutesWithPublicIpFromPeer = in.ImportSubnetRoutesWithPublicIPFromPeer
+	out.StackType = in.StackType
+	return out
+}
+func NetworkRoutingConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkRoutingConfig) *krm.NetworkRoutingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkRoutingConfig{}
+	out.BGPAlwaysCompareMed = in.BgpAlwaysCompareMed
+	out.BGPBestPathSelectionMode = in.BgpBestPathSelectionMode
+	out.BGPInterRegionCost = in.BgpInterRegionCost
+	out.EffectiveBGPAlwaysCompareMed = in.EffectiveBgpAlwaysCompareMed
+	out.EffectiveBGPInterRegionCost = in.EffectiveBgpInterRegionCost
+	out.RoutingMode = in.RoutingMode
+	return out
+}
+func NetworkRoutingConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkRoutingConfig) *pb.NetworkRoutingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkRoutingConfig{}
+	out.BgpAlwaysCompareMed = in.BGPAlwaysCompareMed
+	out.BgpBestPathSelectionMode = in.BGPBestPathSelectionMode
+	out.BgpInterRegionCost = in.BGPInterRegionCost
+	out.EffectiveBgpAlwaysCompareMed = in.EffectiveBGPAlwaysCompareMed
+	out.EffectiveBgpInterRegionCost = in.EffectiveBGPInterRegionCost
+	out.RoutingMode = in.RoutingMode
+	return out
+}
 func SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig) *krm.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig {
 	if in == nil {
 		return nil
