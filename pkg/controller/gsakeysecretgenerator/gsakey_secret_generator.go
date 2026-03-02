@@ -17,8 +17,11 @@ package gsakeysecretgenerator
 import (
 	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
+	"reflect"
 
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	kontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
@@ -67,7 +70,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, deps 
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
-		For(obj, builder.OnlyMetadata).
+		For(obj).
 		Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %w", err)
@@ -125,9 +128,10 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("error finding private key from service account key resource %v: %w", request.NamespacedName, err)
 	}
-	if !ok {
+	if !ok || key == "" {
 		logger.Info("no private key is found from service account key. No secret will be created.", "resource", request.NamespacedName)
-		return reconcile.Result{}, nil
+		jitteredPeriod := r.jitterGen.WatchJitteredTimeout()
+		return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 	}
 
 	b, err := base64.StdEncoding.DecodeString(key)
@@ -156,14 +160,18 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 
 	originalSecret := &corev1.Secret{}
 	if err = r.Get(ctx, request.NamespacedName, originalSecret); err == nil {
+		// Check if secret already matches
+		if reflect.DeepEqual(originalSecret.Data, secret.Data) && reflect.DeepEqual(originalSecret.OwnerReferences, secret.OwnerReferences) {
+			logger.V(1).Info("secret is already up to date", "resource", request.NamespacedName)
+			return reconcile.Result{}, nil
+		}
 		logger.Info("updating the secret", "resource", request.NamespacedName)
 		if err = r.Update(ctx, secret); err != nil {
 			r.recorder.Eventf(u, corev1.EventTypeWarning, k8s.UpdateFailed, eventMessageTemplate, u.GetName(), u.GetNamespace(), fmt.Errorf("update call failed: %w", err))
 			return reconcile.Result{}, err
 		}
-		jitteredPeriod := r.jitterGen.WatchJitteredTimeout()
-		logger.Info("successfully finished reconcile", "time to next reconciliation", jitteredPeriod)
-		return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
+		logger.Info("successfully updated the secret", "resource", request.NamespacedName)
+		return reconcile.Result{}, nil
 	}
 
 	if !errors.IsNotFound(err) {
@@ -172,12 +180,67 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 	logger.Info("creating the secret", "resource", request.NamespacedName)
 	if err = r.Create(ctx, secret); err != nil {
 		r.recorder.Eventf(u, corev1.EventTypeWarning, k8s.CreateFailed, eventMessageTemplate, u.GetName(), u.GetNamespace(), fmt.Sprintf(k8s.CreateFailedMessageTmpl, err))
+		// Update status to reflect that secret creation failed
+		if statusErr := r.updateReadyCondition(ctx, u, corev1.ConditionFalse, "SecretCreationFailed", fmt.Sprintf("failed to create secret: %v", err)); statusErr != nil {
+			logger.Error(statusErr, "failed to update status", "resource", request.NamespacedName)
+		}
 		return reconcile.Result{}, err
 	}
 	r.recorder.Eventf(u, corev1.EventTypeNormal, k8s.Created, eventMessageTemplate, u.GetName(), u.GetNamespace(), k8s.CreatedMessage)
-	jitteredPeriod := r.jitterGen.WatchJitteredTimeout()
-	logger.Info("successfully finished reconcile", "time to next reconciliation", jitteredPeriod)
-	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
+	logger.Info("successfully created the secret", "resource", request.NamespacedName)
+
+	// We don't touch the Ready condition on success, because the TF controller manages it.
+	// But if it was previously False because of us, we should probably clear it?
+	// Actually, the TF controller will set it to True on its next reconciliation anyway.
+
+	return reconcile.Result{}, nil
+}
+
+func (r *ReconcileSecret) updateReadyCondition(ctx context.Context, u *unstructured.Unstructured, status corev1.ConditionStatus, reason, message string) error {
+	// Only update if the current condition is different
+	currReady, found, err := getReadyConditionFromUnstructured(u)
+	if err == nil && found && currReady.Status == status && currReady.Reason == reason && currReady.Message == message {
+		return nil
+	}
+
+	newCondition := k8s.NewCustomReadyCondition(status, reason, message)
+
+	// Convert condition to map for unstructured
+	var conditionMap map[string]interface{}
+	b, err := json.Marshal(newCondition)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(b, &conditionMap); err != nil {
+		return err
+	}
+
+	conditions := []interface{}{conditionMap}
+	if err := unstructured.SetNestedSlice(u.Object, conditions, "status", "conditions"); err != nil {
+		return err
+	}
+	return r.Status().Update(ctx, u)
+}
+
+func getReadyConditionFromUnstructured(u *unstructured.Unstructured) (k8sv1alpha1.Condition, bool, error) {
+	conditionsRaw, found, err := unstructured.NestedSlice(u.Object, "status", "conditions")
+	if err != nil || !found {
+		return k8sv1alpha1.Condition{}, false, err
+	}
+	conditions, err := k8s.MarshalAsConditionsSlice(conditionsRaw)
+	if err != nil {
+		return k8sv1alpha1.Condition{}, false, err
+	}
+	for _, condition := range conditions {
+		if condition.Type == k8sv1alpha1.ReadyConditionType {
+			return condition, true, nil
+		}
+	}
+	return k8sv1alpha1.Condition{}, false, nil
+}
+
+func (r *ReconcileSecret) updateSecretCreationFailed(ctx context.Context, u *unstructured.Unstructured, err error) error {
+	return r.updateReadyCondition(ctx, u, corev1.ConditionFalse, "SecretCreationFailed", fmt.Sprintf("failed to create secret: %v", err))
 }
 
 func getPrivateKey(obj *unstructured.Unstructured) (string, bool, error) {

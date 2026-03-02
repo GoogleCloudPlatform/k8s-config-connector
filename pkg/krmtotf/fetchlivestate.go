@@ -40,6 +40,12 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 	id, err := resource.GetImportID(kubeClient, smLoader)
 	if err != nil {
 		if _, ok := k8s.AsServerGeneratedIDNotFoundError(err); ok {
+			// If we are deleting and the server-generated ID is not found, it might be because
+			// the status was lost. For resources that are not importable (skipImport: true),
+			// this is a fatal error during deletion because we can't find the resource to delete.
+			if !resource.GetDeletionTimestamp().IsZero() && resource.ResourceConfig.SkipImport {
+				return nil, fmt.Errorf("cannot delete resource because its server-generated ID is missing from status and it is not importable: %w", err)
+			}
 			// If the import ID cannot be determined because it requires a server-
 			// generated ID that has not been set, this means the resource has not
 			// yet been created. Return as if the read returned a non-existent
@@ -51,7 +57,6 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 		return nil, fmt.Errorf("error getting ID for resource: %w", err)
 	}
 	return fetchLiveStateFromID(ctx, id, resource, provider, kubeClient, smLoader)
-
 }
 
 // ShouldResolveParentForDelete
