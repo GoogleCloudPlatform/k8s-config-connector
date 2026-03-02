@@ -142,9 +142,6 @@ spec:
                   shareType:
                     description: 'Type of sharing for this shared-reservation Possible
                       values: ["LOCAL", "SPECIFIC_PROJECTS"].'
-                    enum:
-                    - LOCAL
-                    - SPECIFIC_PROJECTS
                     type: string
                 type: object
               specificReservation:

@@ -98,7 +98,6 @@ type ReservationShareSettings struct {
 
 	/* Type of sharing for this shared-reservation Possible values: ["LOCAL", "SPECIFIC_PROJECTS"]. */
 	// +optional
-	// +kubebuilder:validation:Enum=LOCAL;SPECIFIC_PROJECTS
 	ShareType *string `json:"shareType,omitempty"`
 }
 
