@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
-kind: MemorystoreInstance
+apiVersion: memorystore.cnrm.cloud.google.com/v1alpha1
+kind: MemorystoreInstanceBackup
 metadata:
-  name: memorystoreinstance-${uniqueId}
+  name: memorystoreinstancebackup-1-${uniqueId}
 spec:
+  instanceRef:
+    name: memorystoreinstance-1-${uniqueId}
   location: us-central1
-  projectRef:
-    external: ${projectId}
-  shardCount: 2

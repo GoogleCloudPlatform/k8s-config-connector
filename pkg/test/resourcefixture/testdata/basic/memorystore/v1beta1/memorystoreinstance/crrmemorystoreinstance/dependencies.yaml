@@ -15,9 +15,16 @@
 apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
 kind: MemorystoreInstance
 metadata:
-  name: memorystoreinstance-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: memorystoreinstance-us-central1-a-${uniqueId}
 spec:
   location: us-central1
+  nodeType: SHARED_CORE_NANO
   projectRef:
     external: ${projectId}
-  shardCount: 2
+  replicaCount: 0
+  shardCount: 1
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-a
