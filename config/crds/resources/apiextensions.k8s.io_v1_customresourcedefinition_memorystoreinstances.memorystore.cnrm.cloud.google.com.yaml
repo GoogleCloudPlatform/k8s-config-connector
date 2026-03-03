@@ -64,7 +64,137 @@ spec:
             properties:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
+                  For valid values, see https://cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#authorizationmode
                 type: string
+              automatedBackupConfig:
+                description: Optional. The automated backup config for the instance.
+                properties:
+                  automatedBackupMode:
+                    description: Optional. The automated backup mode. If the mode
+                      is disabled, the other fields will be ignored. For valid values,
+                      see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#automatedbackupmode
+                    type: string
+                  fixedFrequencySchedule:
+                    description: Optional. Trigger automated backups at a fixed frequency.
+                    properties:
+                      startTime:
+                        description: Required. The start time of every automated backup
+                          in UTC. It must be set to the start of an hour. This field
+                          is required.
+                        properties:
+                          hours:
+                            description: Hours of day in 24 hour format. Should be
+                              from 0 to 23. An API may choose to allow the value "24:00:00"
+                              for scenarios like business closing time.
+                            format: int32
+                            type: integer
+                          minutes:
+                            description: Minutes of hour of day. Must be from 0 to
+                              59.
+                            format: int32
+                            type: integer
+                          nanos:
+                            description: Fractions of seconds in nanoseconds. Must
+                              be from 0 to 999,999,999.
+                            format: int32
+                            type: integer
+                          seconds:
+                            description: Seconds of minutes of the time. Must normally
+                              be from 0 to 59. An API may allow the value 60 if it
+                              allows leap-seconds.
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
+                  retention:
+                    description: Optional. How long to keep automated backups before
+                      the backups are deleted. The value should be between 1 day and
+                      365 days. If not specified, the default value is 35 days.
+                    type: string
+                type: object
+              crossInstanceReplicationConfig:
+                description: Optional. The config for cross instance replication.
+                properties:
+                  instanceRole:
+                    description: Required. The role of the instance in cross instance
+                      replication. For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#instancerole
+                    type: string
+                  primaryInstance:
+                    description: |-
+                      Optional. Details of the primary instance that is used as the replication
+                       source for this secondary instance.
+
+                       This field is only set for a secondary instance.
+                    properties:
+                      instanceRef:
+                        description: Optional. A reference to the remote instance.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
+                    type: object
+                  secondaryInstances:
+                    description: |-
+                      Optional. List of secondary instances that are replicating from this
+                       primary instance.
+
+                       This field is only set for a primary instance.
+                    items:
+                      properties:
+                        instanceRef:
+                          description: Optional. A reference to the remote instance.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed MemorystoreInstance
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                              type: string
+                            name:
+                              description: The name of a MemorystoreInstance resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a MemorystoreInstance
+                                resource.
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                type: object
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -115,6 +245,12 @@ spec:
                                       resource.
                                     type: string
                                 type: object
+                              port:
+                                description: Optional. The port number of the PSC
+                                  Auto connection. Port will only be set for Primary/Reader
+                                  or Discovery endpoint.
+                                format: int32
+                                type: integer
                               projectRef:
                                 description: Required. The consumer project_id where
                                   PSC connections are established. This should be
@@ -166,8 +302,20 @@ spec:
                   instance.
                 type: object
               engineVersion:
-                description: Optional. Immutable. Engine version of the instance.
+                description: Optional. Engine version of the instance.
                 type: string
+              gcsSource:
+                description: Optional. Immutable. Backups that stored in Cloud Storage
+                  buckets. The Cloud Storage buckets need to be the same region as
+                  the instances. Read permission is required to import from the provided
+                  Cloud Storage Objects.
+                properties:
+                  uris:
+                    description: 'Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2'
+                    items:
+                      type: string
+                    type: array
+                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -179,12 +327,91 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maintenancePolicy:
+                description: Optional. The maintenance policy for the instance. If
+                  not provided, the maintenance event will be performed based on Memorystore
+                  internal rollout schedule.
+                properties:
+                  weeklyMaintenanceWindow:
+                    description: Optional. Maintenance window that is applied to resources
+                      covered by this policy. Minimum 1. For the current version,
+                      the maximum number of weekly_window is expected to be one.
+                    items:
+                      properties:
+                        day:
+                          description: Optional. Allows to define schedule that runs
+                            specified day of the week.
+                          type: string
+                        startTime:
+                          description: Optional. Start time of the window in UTC.
+                            For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/Shared.Types/DayOfWeek
+                          properties:
+                            hours:
+                              description: Hours of day in 24 hour format. Should
+                                be from 0 to 23. An API may choose to allow the value
+                                "24:00:00" for scenarios like business closing time.
+                              format: int32
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
+                              type: integer
+                            seconds:
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
+                              type: integer
+                          type: object
+                      type: object
+                    type: array
+                type: object
+              managedBackupSource:
+                description: Optional. Immutable. Backups that generated and managed
+                  by memorystore service.
+                properties:
+                  backupRef:
+                    description: Optional. A reference to the backup instance.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed MemorystoreInstance
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                        type: string
+                      name:
+                        description: The name of a MemorystoreInstance resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a MemorystoreInstance resource.
+                        type: string
+                    type: object
+                type: object
               mode:
-                description: Optional. The mode config for the instance.
+                description: Optional. Immutable. The mode config for the instance.
+                  For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#mode
                 type: string
               nodeType:
-                description: Optional. Immutable. Machine type for individual nodes
-                  of the instance.
+                description: Optional. Machine type for individual nodes of the instance.
+                  For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/NodeType
                 type: string
               persistenceConfig:
                 description: Optional. Persistence configuration of the instance.
@@ -194,11 +421,13 @@ spec:
                       if mode is not AOF.
                     properties:
                       appendFsync:
-                        description: Optional. The fsync mode.
+                        description: Optional. The fsync mode. For valid values, see
+                          https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#appendfsync
                         type: string
                     type: object
                   mode:
-                    description: Optional. Current persistence mode.
+                    description: Optional. Current persistence mode. For valid values,
+                      see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#persistencemode
                     type: string
                   rdbConfig:
                     description: Optional. RDB configuration. This field will be ignored
@@ -261,7 +490,7 @@ spec:
                 type: integer
               transitEncryptionMode:
                 description: Optional. Immutable. In-transit encryption mode of the
-                  instance.
+                  instance. For valid values, see https://cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#transitencryptionmode
                 type: string
               zoneDistributionConfig:
                 description: Optional. Immutable. Zone distribution configuration
@@ -269,7 +498,7 @@ spec:
                 properties:
                   mode:
                     description: Optional. Current zone distribution mode. Defaults
-                      to MULTI_ZONE.
+                      to MULTI_ZONE. For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#zonedistributionmode
                     type: string
                   zone:
                     description: Optional. Defines zone where all resources will be
@@ -326,9 +555,80 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  backupCollection:
+                    description: 'Output only. The backup collection full resource
+                      name. Example: projects/{project}/locations/{location}/backupCollections/{collection}'
+                    type: string
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
+                  crossInstanceReplicationConfig:
+                    description: Optional. The config for cross instance replication.
+                    properties:
+                      membership:
+                        description: |-
+                          Output only. An output only view of all the member instances participating
+                           in the cross instance replication. This view will be provided by every
+                           member instance irrespective of its instance role(primary or secondary).
+
+                           A primary instance can provide information about all the secondary
+                           instances replicating from it. However, a secondary instance only knows
+                           about the primary instance from which it is replicating. However, for
+                           scenarios, where the primary instance is unavailable(e.g. regional outage),
+                           a Getinstance request can be sent to any other member instance and this
+                           field will list all the member instances participating in cross instance
+                           replication.
+                        properties:
+                          primaryInstance:
+                            description: Output only. The primary instance that acts
+                              as the source of replication for the secondary instances.
+                            properties:
+                              instance:
+                                description: 'Optional. The full resource path of
+                                  the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                                type: string
+                              uid:
+                                description: Output only. The unique identifier of
+                                  the remote instance.
+                                type: string
+                            type: object
+                          secondaryInstances:
+                            description: Output only. The list of secondary instances
+                              replicating from the primary instance.
+                            items:
+                              properties:
+                                instance:
+                                  description: 'Optional. The full resource path of
+                                    the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                                  type: string
+                                uid:
+                                  description: Output only. The unique identifier
+                                    of the remote instance.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      primaryInstance:
+                        description: |-
+                          Optional. Details of the primary instance that is used as the replication
+                           source for this secondary instance.
+
+                           This field is only set for a secondary instance.
+                        properties:
+                          instance:
+                            description: 'Optional. The full resource path of the
+                              remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                            type: string
+                          uid:
+                            description: Output only. The unique identifier of the
+                              remote instance.
+                            type: string
+                        type: object
+                      updateTime:
+                        description: Output only. The last time cross instance replication
+                          config was updated.
+                        type: string
+                    type: object
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
@@ -345,6 +645,7 @@ spec:
                                 properties:
                                   connectionType:
                                     description: Output only. Type of the PSC connection.
+                                      For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#connectiontype
                                     type: string
                                   forwardingRule:
                                     description: 'Output only. The URI of the consumer
@@ -355,12 +656,6 @@ spec:
                                       the consumer network for the PSC forwarding
                                       rule.
                                     type: string
-                                  port:
-                                    description: Optional. Output only. port will
-                                      only be set for Primary/Reader or Discovery
-                                      endpoint.
-                                    format: int32
-                                    type: integer
                                   pscConnectionID:
                                     description: Output only. The PSC connection id
                                       of the forwarding rule connected to the service
@@ -372,7 +667,7 @@ spec:
                                       ACTIVE or it no longer exists. Please note that
                                       this value is updated periodically. Please use
                                       Private Service Connect APIs for the latest
-                                      status.'
+                                      status. For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#pscconnectionstatus'
                                     type: string
                                   serviceAttachment:
                                     description: Output only. The service attachment
@@ -384,6 +679,30 @@ spec:
                           type: array
                       type: object
                     type: array
+                  maintenancePolicy:
+                    description: Optional. The maintenance policy for the instance.
+                      If not provided, the maintenance event will be performed based
+                      on Memorystore internal rollout schedule.
+                    properties:
+                      createTime:
+                        description: Output only. The time when the policy was created.
+                        type: string
+                      updateTime:
+                        description: Output only. The time when the policy was updated.
+                        type: string
+                    type: object
+                  maintenanceSchedule:
+                    description: Output only. Published maintenance schedule.
+                    properties:
+                      endTime:
+                        description: Output only. The end time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                      startTime:
+                        description: Output only. The start time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                    type: object
                   nodeConfig:
                     description: Output only. Configuration of individual nodes of
                       the instance.
@@ -392,8 +711,24 @@ spec:
                         description: Output only. Memory size in GB of the node.
                         type: number
                     type: object
+                  pscAttachmentDetails:
+                    description: Output only. Service attachment details to configure
+                      PSC connections.
+                    items:
+                      properties:
+                        connectionType:
+                          description: Output only. Type of Psc endpoint. For valid
+                            values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#connectiontype
+                          type: string
+                        serviceAttachment:
+                          description: Output only. Service attachment URI which your
+                            self-created PscConnection should use as target.
+                          type: string
+                      type: object
+                    type: array
                   state:
-                    description: Output only. Current state of the instance.
+                    description: Output only. Current state of the instance. For valid
+                      values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#state
                     type: string
                   stateInfo:
                     description: Output only. Additional information about the state
@@ -402,6 +737,24 @@ spec:
                       updateInfo:
                         description: Output only. Describes ongoing update when instance
                           state is UPDATING.
+                        properties:
+                          targetEngineVersion:
+                            description: Output only. Target engine version for the
+                              instance.
+                            type: string
+                          targetNodeType:
+                            description: Output only. Target node type for the instance.
+                            type: string
+                          targetReplicaCount:
+                            description: Output only. Target number of replica nodes
+                              per shard for the instance.
+                            format: int32
+                            type: integer
+                          targetShardCount:
+                            description: Output only. Target number of shards for
+                              the instance.
+                            format: int32
+                            type: integer
                         type: object
                     type: object
                   uid:
@@ -459,7 +812,137 @@ spec:
             properties:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
+                  For valid values, see https://cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#authorizationmode
                 type: string
+              automatedBackupConfig:
+                description: Optional. The automated backup config for the instance.
+                properties:
+                  automatedBackupMode:
+                    description: Optional. The automated backup mode. If the mode
+                      is disabled, the other fields will be ignored. For valid values,
+                      see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#automatedbackupmode
+                    type: string
+                  fixedFrequencySchedule:
+                    description: Optional. Trigger automated backups at a fixed frequency.
+                    properties:
+                      startTime:
+                        description: Required. The start time of every automated backup
+                          in UTC. It must be set to the start of an hour. This field
+                          is required.
+                        properties:
+                          hours:
+                            description: Hours of day in 24 hour format. Should be
+                              from 0 to 23. An API may choose to allow the value "24:00:00"
+                              for scenarios like business closing time.
+                            format: int32
+                            type: integer
+                          minutes:
+                            description: Minutes of hour of day. Must be from 0 to
+                              59.
+                            format: int32
+                            type: integer
+                          nanos:
+                            description: Fractions of seconds in nanoseconds. Must
+                              be from 0 to 999,999,999.
+                            format: int32
+                            type: integer
+                          seconds:
+                            description: Seconds of minutes of the time. Must normally
+                              be from 0 to 59. An API may allow the value 60 if it
+                              allows leap-seconds.
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
+                  retention:
+                    description: Optional. How long to keep automated backups before
+                      the backups are deleted. The value should be between 1 day and
+                      365 days. If not specified, the default value is 35 days.
+                    type: string
+                type: object
+              crossInstanceReplicationConfig:
+                description: Optional. The config for cross instance replication.
+                properties:
+                  instanceRole:
+                    description: Required. The role of the instance in cross instance
+                      replication. For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#instancerole
+                    type: string
+                  primaryInstance:
+                    description: |-
+                      Optional. Details of the primary instance that is used as the replication
+                       source for this secondary instance.
+
+                       This field is only set for a secondary instance.
+                    properties:
+                      instanceRef:
+                        description: Optional. A reference to the remote instance.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed MemorystoreInstance
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                            type: string
+                          name:
+                            description: The name of a MemorystoreInstance resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MemorystoreInstance resource.
+                            type: string
+                        type: object
+                    type: object
+                  secondaryInstances:
+                    description: |-
+                      Optional. List of secondary instances that are replicating from this
+                       primary instance.
+
+                       This field is only set for a primary instance.
+                    items:
+                      properties:
+                        instanceRef:
+                          description: Optional. A reference to the remote instance.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: A reference to an externally managed MemorystoreInstance
+                                resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                              type: string
+                            name:
+                              description: The name of a MemorystoreInstance resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a MemorystoreInstance
+                                resource.
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                type: object
               deletionProtectionEnabled:
                 description: Optional. If set to true deletion of the instance will
                   fail.
@@ -510,6 +993,12 @@ spec:
                                       resource.
                                     type: string
                                 type: object
+                              port:
+                                description: Optional. The port number of the PSC
+                                  Auto connection. Port will only be set for Primary/Reader
+                                  or Discovery endpoint.
+                                format: int32
+                                type: integer
                               projectRef:
                                 description: Required. The consumer project_id where
                                   PSC connections are established. This should be
@@ -561,8 +1050,20 @@ spec:
                   instance.
                 type: object
               engineVersion:
-                description: Optional. Immutable. Engine version of the instance.
+                description: Optional. Engine version of the instance.
                 type: string
+              gcsSource:
+                description: Optional. Immutable. Backups that stored in Cloud Storage
+                  buckets. The Cloud Storage buckets need to be the same region as
+                  the instances. Read permission is required to import from the provided
+                  Cloud Storage Objects.
+                properties:
+                  uris:
+                    description: 'Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2'
+                    items:
+                      type: string
+                    type: array
+                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -574,12 +1075,91 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maintenancePolicy:
+                description: Optional. The maintenance policy for the instance. If
+                  not provided, the maintenance event will be performed based on Memorystore
+                  internal rollout schedule.
+                properties:
+                  weeklyMaintenanceWindow:
+                    description: Optional. Maintenance window that is applied to resources
+                      covered by this policy. Minimum 1. For the current version,
+                      the maximum number of weekly_window is expected to be one.
+                    items:
+                      properties:
+                        day:
+                          description: Optional. Allows to define schedule that runs
+                            specified day of the week.
+                          type: string
+                        startTime:
+                          description: Optional. Start time of the window in UTC.
+                            For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/Shared.Types/DayOfWeek
+                          properties:
+                            hours:
+                              description: Hours of day in 24 hour format. Should
+                                be from 0 to 23. An API may choose to allow the value
+                                "24:00:00" for scenarios like business closing time.
+                              format: int32
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Must be from 0
+                                to 59.
+                              format: int32
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Must
+                                be from 0 to 999,999,999.
+                              format: int32
+                              type: integer
+                            seconds:
+                              description: Seconds of minutes of the time. Must normally
+                                be from 0 to 59. An API may allow the value 60 if
+                                it allows leap-seconds.
+                              format: int32
+                              type: integer
+                          type: object
+                      type: object
+                    type: array
+                type: object
+              managedBackupSource:
+                description: Optional. Immutable. Backups that generated and managed
+                  by memorystore service.
+                properties:
+                  backupRef:
+                    description: Optional. A reference to the backup instance.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed MemorystoreInstance
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                        type: string
+                      name:
+                        description: The name of a MemorystoreInstance resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a MemorystoreInstance resource.
+                        type: string
+                    type: object
+                type: object
               mode:
-                description: Optional. The mode config for the instance.
+                description: Optional. Immutable. The mode config for the instance.
+                  For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#mode
                 type: string
               nodeType:
-                description: Optional. Immutable. Machine type for individual nodes
-                  of the instance.
+                description: Optional. Machine type for individual nodes of the instance.
+                  For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/NodeType
                 type: string
               persistenceConfig:
                 description: Optional. Persistence configuration of the instance.
@@ -589,11 +1169,13 @@ spec:
                       if mode is not AOF.
                     properties:
                       appendFsync:
-                        description: Optional. The fsync mode.
+                        description: Optional. The fsync mode. For valid values, see
+                          https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#appendfsync
                         type: string
                     type: object
                   mode:
-                    description: Optional. Current persistence mode.
+                    description: Optional. Current persistence mode. For valid values,
+                      see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#persistencemode
                     type: string
                   rdbConfig:
                     description: Optional. RDB configuration. This field will be ignored
@@ -656,7 +1238,7 @@ spec:
                 type: integer
               transitEncryptionMode:
                 description: Optional. Immutable. In-transit encryption mode of the
-                  instance.
+                  instance. For valid values, see https://cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#transitencryptionmode
                 type: string
               zoneDistributionConfig:
                 description: Optional. Immutable. Zone distribution configuration
@@ -664,7 +1246,7 @@ spec:
                 properties:
                   mode:
                     description: Optional. Current zone distribution mode. Defaults
-                      to MULTI_ZONE.
+                      to MULTI_ZONE. For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#zonedistributionmode
                     type: string
                   zone:
                     description: Optional. Defines zone where all resources will be
@@ -721,9 +1303,80 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  backupCollection:
+                    description: 'Output only. The backup collection full resource
+                      name. Example: projects/{project}/locations/{location}/backupCollections/{collection}'
+                    type: string
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
+                  crossInstanceReplicationConfig:
+                    description: Optional. The config for cross instance replication.
+                    properties:
+                      membership:
+                        description: |-
+                          Output only. An output only view of all the member instances participating
+                           in the cross instance replication. This view will be provided by every
+                           member instance irrespective of its instance role(primary or secondary).
+
+                           A primary instance can provide information about all the secondary
+                           instances replicating from it. However, a secondary instance only knows
+                           about the primary instance from which it is replicating. However, for
+                           scenarios, where the primary instance is unavailable(e.g. regional outage),
+                           a Getinstance request can be sent to any other member instance and this
+                           field will list all the member instances participating in cross instance
+                           replication.
+                        properties:
+                          primaryInstance:
+                            description: Output only. The primary instance that acts
+                              as the source of replication for the secondary instances.
+                            properties:
+                              instance:
+                                description: 'Optional. The full resource path of
+                                  the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                                type: string
+                              uid:
+                                description: Output only. The unique identifier of
+                                  the remote instance.
+                                type: string
+                            type: object
+                          secondaryInstances:
+                            description: Output only. The list of secondary instances
+                              replicating from the primary instance.
+                            items:
+                              properties:
+                                instance:
+                                  description: 'Optional. The full resource path of
+                                    the remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                                  type: string
+                                uid:
+                                  description: Output only. The unique identifier
+                                    of the remote instance.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                      primaryInstance:
+                        description: |-
+                          Optional. Details of the primary instance that is used as the replication
+                           source for this secondary instance.
+
+                           This field is only set for a secondary instance.
+                        properties:
+                          instance:
+                            description: 'Optional. The full resource path of the
+                              remote instance in the format: projects/<project>/locations/<region>/instances/<instance-id>'
+                            type: string
+                          uid:
+                            description: Output only. The unique identifier of the
+                              remote instance.
+                            type: string
+                        type: object
+                      updateTime:
+                        description: Output only. The last time cross instance replication
+                          config was updated.
+                        type: string
+                    type: object
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
@@ -740,6 +1393,7 @@ spec:
                                 properties:
                                   connectionType:
                                     description: Output only. Type of the PSC connection.
+                                      For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#connectiontype
                                     type: string
                                   forwardingRule:
                                     description: 'Output only. The URI of the consumer
@@ -750,12 +1404,6 @@ spec:
                                       the consumer network for the PSC forwarding
                                       rule.
                                     type: string
-                                  port:
-                                    description: Optional. Output only. port will
-                                      only be set for Primary/Reader or Discovery
-                                      endpoint.
-                                    format: int32
-                                    type: integer
                                   pscConnectionID:
                                     description: Output only. The PSC connection id
                                       of the forwarding rule connected to the service
@@ -767,7 +1415,7 @@ spec:
                                       ACTIVE or it no longer exists. Please note that
                                       this value is updated periodically. Please use
                                       Private Service Connect APIs for the latest
-                                      status.'
+                                      status. For valid values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#pscconnectionstatus'
                                     type: string
                                   serviceAttachment:
                                     description: Output only. The service attachment
@@ -779,6 +1427,30 @@ spec:
                           type: array
                       type: object
                     type: array
+                  maintenancePolicy:
+                    description: Optional. The maintenance policy for the instance.
+                      If not provided, the maintenance event will be performed based
+                      on Memorystore internal rollout schedule.
+                    properties:
+                      createTime:
+                        description: Output only. The time when the policy was created.
+                        type: string
+                      updateTime:
+                        description: Output only. The time when the policy was updated.
+                        type: string
+                    type: object
+                  maintenanceSchedule:
+                    description: Output only. Published maintenance schedule.
+                    properties:
+                      endTime:
+                        description: Output only. The end time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                      startTime:
+                        description: Output only. The start time of any upcoming scheduled
+                          maintenance for this instance.
+                        type: string
+                    type: object
                   nodeConfig:
                     description: Output only. Configuration of individual nodes of
                       the instance.
@@ -787,8 +1459,24 @@ spec:
                         description: Output only. Memory size in GB of the node.
                         type: number
                     type: object
+                  pscAttachmentDetails:
+                    description: Output only. Service attachment details to configure
+                      PSC connections.
+                    items:
+                      properties:
+                        connectionType:
+                          description: Output only. Type of Psc endpoint. For valid
+                            values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#connectiontype
+                          type: string
+                        serviceAttachment:
+                          description: Output only. Service attachment URI which your
+                            self-created PscConnection should use as target.
+                          type: string
+                      type: object
+                    type: array
                   state:
-                    description: Output only. Current state of the instance.
+                    description: Output only. Current state of the instance. For valid
+                      values, see https://docs.cloud.google.com/memorystore/docs/valkey/reference/rest/v1/projects.locations.instances#state
                     type: string
                   stateInfo:
                     description: Output only. Additional information about the state
@@ -797,6 +1485,24 @@ spec:
                       updateInfo:
                         description: Output only. Describes ongoing update when instance
                           state is UPDATING.
+                        properties:
+                          targetEngineVersion:
+                            description: Output only. Target engine version for the
+                              instance.
+                            type: string
+                          targetNodeType:
+                            description: Output only. Target node type for the instance.
+                            type: string
+                          targetReplicaCount:
+                            description: Output only. Target number of replica nodes
+                              per shard for the instance.
+                            format: int32
+                            type: integer
+                          targetShardCount:
+                            description: Output only. Target number of shards for
+                              the instance.
+                            format: int32
+                            type: integer
                         type: object
                     type: object
                   uid:
