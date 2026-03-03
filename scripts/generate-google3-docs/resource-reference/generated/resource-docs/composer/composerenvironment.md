@@ -1748,7 +1748,7 @@ storageConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The location that this resource belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
