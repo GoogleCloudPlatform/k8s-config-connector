@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -22,6 +23,9 @@ import (
 // ComputeNetworkSpec defines the desired state of ComputeNetwork
 // +kcc:spec:proto=google.cloud.compute.v1.Network
 type ComputeNetworkSpec struct {
+	/* The project that this resource belongs to. */
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
 	/* Immutable. When set to 'true', the network is created in "auto subnet mode" and
 	it will create a subnet for each region automatically across the
 	'10.128.0.0/9' address range.

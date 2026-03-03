@@ -30,6 +30,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -85,8 +86,29 @@ func (m *networkModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 }
 
 func (m *networkModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id, err := krm.ParseComputeNetworkExternal(url)
+	if err != nil {
+		return nil, err
+	}
+
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
+	}
+	networksClient, err := gcpClient.newNetworksClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	routesClient, err := gcpClient.newRoutesClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &NetworkAdapter{
+		networksClient: networksClient,
+		routesClient:   routesClient,
+		id:             id,
+	}, nil
 }
 
 type NetworkAdapter struct {
@@ -129,6 +151,7 @@ func (a *NetworkAdapter) Create(ctx context.Context, op *directbase.CreateOperat
 	if err := mapCtx.Err(); err != nil {
 		return err
 	}
+	desiredProto.Name = direct.LazyPtr(a.id.ID())
 
 	req := &computepb.InsertNetworkRequest{
 		Project:         a.id.Parent().ProjectID,
@@ -176,28 +199,35 @@ func (a *NetworkAdapter) Update(ctx context.Context, op *directbase.UpdateOperat
 	if err := mapCtx.Err(); err != nil {
 		return err
 	}
+	desiredProto.Name = direct.LazyPtr(a.id.ID())
 
-	// For ComputeNetwork, many fields are Immutable.
-	// We use Patch to update RoutingConfig and other mutable fields.
-	// Check if any field actually changed.
-	// Note: We don't have a generic diff yet for ComputeNetwork, but we can rely on Patch being safe.
-
-	report := &structuredreporting.Diff{Object: op.GetUnstructured()}
-	// TODO: Add fields to report if they changed
-	structuredreporting.ReportDiff(ctx, report)
-
-	req := &computepb.PatchNetworkRequest{
-		Project:         a.id.Parent().ProjectID,
-		Network:         a.id.ID(),
-		NetworkResource: desiredProto,
-	}
-	opWait, err := a.networksClient.Patch(ctx, req)
+	paths, err := common.CompareProtoMessage(desiredProto, a.actual, common.BasicDiff)
 	if err != nil {
-		return fmt.Errorf("updating ComputeNetwork %s: %w", a.id, err)
+		return err
 	}
 
-	if err := opWait.Wait(ctx); err != nil {
-		return fmt.Errorf("waiting for update of ComputeNetwork %s: %w", a.id, err)
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.String())
+	} else {
+		report := &structuredreporting.Diff{Object: op.GetUnstructured()}
+		for path := range paths {
+			report.AddField(path, nil, nil)
+		}
+		structuredreporting.ReportDiff(ctx, report)
+
+		req := &computepb.PatchNetworkRequest{
+			Project:         a.id.Parent().ProjectID,
+			Network:         a.id.ID(),
+			NetworkResource: desiredProto,
+		}
+		opWait, err := a.networksClient.Patch(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating ComputeNetwork %s: %w", a.id, err)
+		}
+
+		if err := opWait.Wait(ctx); err != nil {
+			return fmt.Errorf("waiting for update of ComputeNetwork %s: %w", a.id, err)
+		}
 	}
 
 	actual, err := a.networksClient.Get(ctx, &computepb.GetNetworkRequest{
