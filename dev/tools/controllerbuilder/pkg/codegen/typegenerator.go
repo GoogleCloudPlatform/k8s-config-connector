@@ -281,11 +281,12 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 			return "", fmt.Errorf("unsupported map type with key %v (only string key is supported) and value %v", keyKind, valueKind)
 		}
 
-		if valueKind == protoreflect.StringKind {
+		switch valueKind {
+		case protoreflect.StringKind:
 			return "map[string]string", nil
-		} else if valueKind == protoreflect.Int64Kind {
+		case protoreflect.Int64Kind:
 			return "map[string]int64", nil
-		} else if valueKind == protoreflect.MessageKind {
+		case protoreflect.MessageKind:
 			var valueGoType string
 			if isTransitiveOutput {
 				valueGoType = goNameForOutputProtoMessage(valueField.Message())
@@ -294,7 +295,7 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 			}
 
 			return fmt.Sprintf("map[string]%s", valueGoType), nil
-		} else {
+		default:
 			return "", fmt.Errorf("unsupported map type with key string and value %v", valueKind)
 		}
 	}
