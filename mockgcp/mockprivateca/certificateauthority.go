@@ -131,6 +131,24 @@ func (s *PrivateCAV1) CreateCertificateAuthority(ctx context.Context, req *pb.Cr
 	for _, caDesc := range obj.CaCertificateDescriptions {
 		pruneKU(caDesc.GetX509Description().GetKeyUsage())
 	}
+	obj.CaCertificateDescriptions = []*pb.CertificateDescription{
+		{
+			SubjectDescription: &pb.CertificateDescription_SubjectDescription{
+				Subject: &pb.Subject{
+					CommonName: name.CertificateAuthorityID,
+				},
+			},
+			CertFingerprint: &pb.CertificateDescription_CertificateFingerprint{
+				Sha256Hash: fmt.Sprintf("0123456789abcdef0123456789abcdef0123456789abcdef0123456789%s", name.CertificateAuthorityID),
+			},
+		},
+	}
+	obj.AccessUrls = &pb.CertificateAuthority_AccessUrls{
+		CaCertificateAccessUrl: fmt.Sprintf("https://privateca.googleapis.com/v1/%s/caCertificate", fqn),
+		CrlAccessUrls:          []string{fmt.Sprintf("https://privateca.googleapis.com/v1/%s/crl", fqn)},
+	}
+	obj.SatisfiesPzs = true
+	obj.SatisfiesPzi = true
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

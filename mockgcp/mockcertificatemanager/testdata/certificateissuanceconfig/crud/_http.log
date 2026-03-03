@@ -241,6 +241,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
+<<<<<<< HEAD
     "caCertificateDescriptions": [
       {
         "authorityKeyId": {
@@ -275,6 +276,22 @@ X-Xss-Protection: 0
               "certSign": true,
               "crlSign": true
             }
+=======
+    "accessUrls": {
+      "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/caCertificate",
+      "crlAccessUrls": [
+        "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/crl"
+      ]
+    },
+    "caCertificateDescriptions": [
+      {
+        "certFingerprint": {
+          "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+        },
+        "subjectDescription": {
+          "subject": {
+            "commonName": "test-ca-${uniqueId}"
+>>>>>>> bff9897c34 (Update _http.log to reflect mock-generated traffic instead of real GCP traffic)
           }
         }
       }
@@ -294,7 +311,8 @@ X-Xss-Protection: 0
           "baseKeyUsage": {
             "certSign": true,
             "crlSign": true
-          }
+          },
+          "extendedKeyUsage": {}
         }
       }
     },
@@ -307,8 +325,13 @@ X-Xss-Protection: 0
     "pemCaCertificates": [
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
+<<<<<<< HEAD
     "state": "STAGED",
     "tier": "DEVOPS",
+=======
+    "satisfiesPzi": true,
+    "satisfiesPzs": true,
+>>>>>>> bff9897c34 (Update _http.log to reflect mock-generated traffic instead of real GCP traffic)
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -377,6 +400,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
+<<<<<<< HEAD
     "caCertificateDescriptions": [
       {
         "authorityKeyId": {
@@ -411,6 +435,22 @@ X-Xss-Protection: 0
               "certSign": true,
               "crlSign": true
             }
+=======
+    "accessUrls": {
+      "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/caCertificate",
+      "crlAccessUrls": [
+        "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/crl"
+      ]
+    },
+    "caCertificateDescriptions": [
+      {
+        "certFingerprint": {
+          "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+        },
+        "subjectDescription": {
+          "subject": {
+            "commonName": "test-ca-${uniqueId}"
+>>>>>>> bff9897c34 (Update _http.log to reflect mock-generated traffic instead of real GCP traffic)
           }
         }
       }
@@ -430,7 +470,8 @@ X-Xss-Protection: 0
           "baseKeyUsage": {
             "certSign": true,
             "crlSign": true
-          }
+          },
+          "extendedKeyUsage": {}
         }
       }
     },
@@ -443,8 +484,12 @@ X-Xss-Protection: 0
     "pemCaCertificates": [
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
+<<<<<<< HEAD
+=======
+    "satisfiesPzi": true,
+    "satisfiesPzs": true,
+>>>>>>> bff9897c34 (Update _http.log to reflect mock-generated traffic instead of real GCP traffic)
     "state": "ENABLED",
-    "tier": "DEVOPS",
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -525,7 +570,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateIssuanceConfig",
     "certificateAuthorityConfig": {
       "certificateAuthorityServiceConfig": {
-        "caPool": "projects/${projectNumber}/locations/us-central1/caPools/test-pool-${uniqueId}"
+        "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
       }
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -561,7 +606,7 @@ X-Xss-Protection: 0
 {
   "certificateAuthorityConfig": {
     "certificateAuthorityServiceConfig": {
-      "caPool": "projects/${projectNumber}/locations/us-central1/caPools/test-pool-${uniqueId}"
+      "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -598,7 +643,7 @@ X-Xss-Protection: 0
     {
       "certificateAuthorityConfig": {
         "certificateAuthorityServiceConfig": {
-          "caPool": "projects/${projectNumber}/locations/us-central1/caPools/test-pool-${uniqueId}"
+          "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
         }
       },
       "createTime": "2024-04-01T12:34:56.123456Z",
@@ -693,6 +738,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+<<<<<<< HEAD
   "caCertificateDescriptions": [
     {
       "authorityKeyId": {
@@ -727,6 +773,22 @@ X-Xss-Protection: 0
             "certSign": true,
             "crlSign": true
           }
+=======
+  "accessUrls": {
+    "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/caCertificate",
+    "crlAccessUrls": [
+      "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/crl"
+    ]
+  },
+  "caCertificateDescriptions": [
+    {
+      "certFingerprint": {
+        "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+      },
+      "subjectDescription": {
+        "subject": {
+          "commonName": "test-ca-${uniqueId}"
+>>>>>>> bff9897c34 (Update _http.log to reflect mock-generated traffic instead of real GCP traffic)
         }
       }
     }
@@ -746,7 +808,8 @@ X-Xss-Protection: 0
         "baseKeyUsage": {
           "certSign": true,
           "crlSign": true
-        }
+        },
+        "extendedKeyUsage": {}
       }
     }
   },
@@ -759,8 +822,12 @@ X-Xss-Protection: 0
   "pemCaCertificates": [
     "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
   ],
+<<<<<<< HEAD
+=======
+  "satisfiesPzi": true,
+  "satisfiesPzs": true,
+>>>>>>> bff9897c34 (Update _http.log to reflect mock-generated traffic instead of real GCP traffic)
   "state": "ENABLED",
-  "tier": "DEVOPS",
   "type": "SELF_SIGNED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -829,6 +896,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
+<<<<<<< HEAD
     "caCertificateDescriptions": [
       {
         "authorityKeyId": {
@@ -863,6 +931,22 @@ X-Xss-Protection: 0
               "certSign": true,
               "crlSign": true
             }
+=======
+    "accessUrls": {
+      "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/caCertificate",
+      "crlAccessUrls": [
+        "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/crl"
+      ]
+    },
+    "caCertificateDescriptions": [
+      {
+        "certFingerprint": {
+          "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+        },
+        "subjectDescription": {
+          "subject": {
+            "commonName": "test-ca-${uniqueId}"
+>>>>>>> bff9897c34 (Update _http.log to reflect mock-generated traffic instead of real GCP traffic)
           }
         }
       }
@@ -882,7 +966,8 @@ X-Xss-Protection: 0
           "baseKeyUsage": {
             "certSign": true,
             "crlSign": true
-          }
+          },
+          "extendedKeyUsage": {}
         }
       }
     },
@@ -895,8 +980,12 @@ X-Xss-Protection: 0
     "pemCaCertificates": [
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
+<<<<<<< HEAD
+=======
+    "satisfiesPzi": true,
+    "satisfiesPzs": true,
+>>>>>>> bff9897c34 (Update _http.log to reflect mock-generated traffic instead of real GCP traffic)
     "state": "DISABLED",
-    "tier": "DEVOPS",
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -920,6 +1009,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+<<<<<<< HEAD
   "caCertificateDescriptions": [
     {
       "authorityKeyId": {
@@ -954,6 +1044,22 @@ X-Xss-Protection: 0
             "certSign": true,
             "crlSign": true
           }
+=======
+  "accessUrls": {
+    "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/caCertificate",
+    "crlAccessUrls": [
+      "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/crl"
+    ]
+  },
+  "caCertificateDescriptions": [
+    {
+      "certFingerprint": {
+        "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+      },
+      "subjectDescription": {
+        "subject": {
+          "commonName": "test-ca-${uniqueId}"
+>>>>>>> bff9897c34 (Update _http.log to reflect mock-generated traffic instead of real GCP traffic)
         }
       }
     }
@@ -973,7 +1079,8 @@ X-Xss-Protection: 0
         "baseKeyUsage": {
           "certSign": true,
           "crlSign": true
-        }
+        },
+        "extendedKeyUsage": {}
       }
     }
   },
@@ -986,8 +1093,12 @@ X-Xss-Protection: 0
   "pemCaCertificates": [
     "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
   ],
+<<<<<<< HEAD
+=======
+  "satisfiesPzi": true,
+  "satisfiesPzs": true,
+>>>>>>> bff9897c34 (Update _http.log to reflect mock-generated traffic instead of real GCP traffic)
   "state": "DISABLED",
-  "tier": "DEVOPS",
   "type": "SELF_SIGNED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -1050,6 +1161,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
+<<<<<<< HEAD
     "caCertificateDescriptions": [
       {
         "authorityKeyId": {
@@ -1084,6 +1196,22 @@ X-Xss-Protection: 0
               "certSign": true,
               "crlSign": true
             }
+=======
+    "accessUrls": {
+      "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/caCertificate",
+      "crlAccessUrls": [
+        "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/crl"
+      ]
+    },
+    "caCertificateDescriptions": [
+      {
+        "certFingerprint": {
+          "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+        },
+        "subjectDescription": {
+          "subject": {
+            "commonName": "test-ca-${uniqueId}"
+>>>>>>> bff9897c34 (Update _http.log to reflect mock-generated traffic instead of real GCP traffic)
           }
         }
       }
@@ -1103,7 +1231,8 @@ X-Xss-Protection: 0
           "baseKeyUsage": {
             "certSign": true,
             "crlSign": true
-          }
+          },
+          "extendedKeyUsage": {}
         }
       }
     },
@@ -1118,8 +1247,12 @@ X-Xss-Protection: 0
     "pemCaCertificates": [
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
+<<<<<<< HEAD
+=======
+    "satisfiesPzi": true,
+    "satisfiesPzs": true,
+>>>>>>> bff9897c34 (Update _http.log to reflect mock-generated traffic instead of real GCP traffic)
     "state": "DELETED",
-    "tier": "DEVOPS",
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
