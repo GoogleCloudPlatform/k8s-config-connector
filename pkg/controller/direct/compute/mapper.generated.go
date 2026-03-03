@@ -297,7 +297,7 @@ func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMa
 	}
 	out := &krm.ComputeURLMapSpec{}
 	out.DefaultCustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetDefaultCustomErrorResponsePolicy())
-	out.DefaultRouteAction = HTTPRouteAction_v1beta1_FromProto(mapCtx, in.GetDefaultRouteAction())
+	out.DefaultRouteAction = ComputeURLMapHTTPRouteAction_v1beta1_FromProto(mapCtx, in.GetDefaultRouteAction())
 	out.DefaultService = in.DefaultService
 	out.DefaultURLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetDefaultUrlRedirect())
 	out.Description = in.Description
@@ -306,9 +306,9 @@ func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMa
 	// MISSING: ID
 	// MISSING: Kind
 	// MISSING: Name
-	out.PathMatchers = direct.Slice_FromProto(mapCtx, in.PathMatchers, PathMatcher_v1beta1_FromProto)
+	out.PathMatchers = direct.Slice_FromProto(mapCtx, in.PathMatchers, ComputeURLMapPathMatcher_v1beta1_FromProto)
 	// MISSING: Region
-	out.Tests = direct.Slice_FromProto(mapCtx, in.Tests, URLMapTest_v1beta1_FromProto)
+	out.Tests = direct.Slice_FromProto(mapCtx, in.Tests, ComputeURLMapTest_v1beta1_FromProto)
 	return out
 }
 func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapSpec) *pb.UrlMap {
@@ -317,7 +317,7 @@ func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	}
 	out := &pb.UrlMap{}
 	out.DefaultCustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.DefaultCustomErrorResponsePolicy)
-	out.DefaultRouteAction = HTTPRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
+	out.DefaultRouteAction = ComputeURLMapHTTPRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
 	out.DefaultService = in.DefaultService
 	out.DefaultUrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.DefaultURLRedirect)
 	out.Description = in.Description
@@ -326,9 +326,9 @@ func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	// MISSING: ID
 	// MISSING: Kind
 	// MISSING: Name
-	out.PathMatchers = direct.Slice_ToProto(mapCtx, in.PathMatchers, PathMatcher_v1beta1_ToProto)
+	out.PathMatchers = direct.Slice_ToProto(mapCtx, in.PathMatchers, ComputeURLMapPathMatcher_v1beta1_ToProto)
 	// MISSING: Region
-	out.Tests = direct.Slice_ToProto(mapCtx, in.Tests, URLMapTest_v1beta1_ToProto)
+	out.Tests = direct.Slice_ToProto(mapCtx, in.Tests, ComputeURLMapTest_v1beta1_ToProto)
 	return out
 }
 func CorsPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CorsPolicy) *krm.CorsPolicy {
