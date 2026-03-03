@@ -161,10 +161,6 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	// after r.Get().
 	auditConfig.SetGroupVersionKind(iamv1beta1.IAMAuditConfigGVK)
 	uObj := &unstructured.Unstructured{}
-	uObj.Object, err = runtime.DefaultUnstructuredConverter.ToUnstructured(&auditConfig)
-	if err != nil {
-		return reconcile.Result{}, err
-	}
 	uObj.SetNamespace(auditConfig.GetNamespace())
 	uObj.SetName(auditConfig.GetName())
 	uObj.SetGroupVersionKind(iamv1beta1.IAMAuditConfigGVK)
