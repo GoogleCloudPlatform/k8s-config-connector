@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,12 +13,11 @@
 # limitations under the License.
 
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
-kind: TagsTagBinding
+kind: TagsTagKey
 metadata:
-  name: tagstagbinding-${uniqueId}
+  name: tagstagkey-dep
 spec:
-  parentRef:
-    #  external: //cloudresourcemanager.googleapis.com/projects/938492827514 # If parent is project, This is the full resource name of a GCP project number not ID! 
-    external: //cloudresourcemanager.googleapis.com/projects/${projectNumber}
-  tagValueRef:
-    name: tagstagvalue-${uniqueId}
+  description: For keyname resources.
+  # Replace ${ORG_ID?} with your organization ID.
+  parent: organizations/${ORG_ID?}
+  shortName: keynamedep

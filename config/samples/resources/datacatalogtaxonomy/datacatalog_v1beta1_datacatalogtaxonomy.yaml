@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: tags.cnrm.cloud.google.com/v1beta1
-kind: TagsTagValue
+apiVersion: datacatalog.cnrm.cloud.google.com/v1beta1
+kind: DataCatalogTaxonomy
 metadata:
-  name: tagstagvalue-${uniqueId}
+  name: datacatalogtaxonomy-sample
 spec:
-  description: For valuename resources.
-  parentRef:
-    name: tagstagkey-${uniqueId}
-  shortName: valuename
+  activatedPolicyTypes:
+  - FINE_GRAINED_ACCESS_CONTROL
+  description: A collection of policy tags
+  displayName: my_taxonomy
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
+  region: us

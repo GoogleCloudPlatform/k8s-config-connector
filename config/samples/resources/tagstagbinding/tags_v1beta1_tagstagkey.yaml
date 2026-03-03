@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
-kind: BigQueryRoutine
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagKey
 metadata:
-  name: bigqueryroutine-${uniqueId}
+  name: tagstagkey-dep
 spec:
-  datasetRef:
-    name: bigquerydataset${uniqueId}
-  definitionBody: CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x
-    + y);
-  projectRef:
-    external: ${projectId}
-  resourceID: bigqueryroutine${uniqueId}
-  routineType: PROCEDURE
+  description: For keyname resources.
+  # Replace ${ORG_ID?} with your organization ID.
+  parent: organizations/${ORG_ID?}
+  shortName: keynamedep

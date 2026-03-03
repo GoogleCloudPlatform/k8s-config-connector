@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,11 @@
 # limitations under the License.
 
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
-kind: TagsTagKey
+kind: TagsTagValue
 metadata:
-  name: tagstagkey-${uniqueId}
+  name: tagstagvalue-dep
 spec:
-  description: For keyname resources.
-  parent: projects/${projectId}
-  shortName: keyname${uniqueId}
+  description: For valuename resources.
+  parentRef:
+    name: tagstagkey-dep
+  shortName: valuename
