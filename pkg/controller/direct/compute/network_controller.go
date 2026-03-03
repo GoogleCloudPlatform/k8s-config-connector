@@ -16,6 +16,7 @@ package compute
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	compute "cloud.google.com/go/compute/apiv1"
@@ -143,7 +144,7 @@ func (a *NetworkAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *NetworkAdapter) Create(ctx context.Context, op *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName("ComputeNetwork")
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ComputeNetwork", "name", a.id)
 
 	mapCtx := &direct.MapContext{}
@@ -191,7 +192,7 @@ func (a *NetworkAdapter) Create(ctx context.Context, op *directbase.CreateOperat
 }
 
 func (a *NetworkAdapter) Update(ctx context.Context, op *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx).WithName("ComputeNetwork")
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeNetwork", "name", a.id)
 
 	mapCtx := &direct.MapContext{}
@@ -271,7 +272,7 @@ func (a *NetworkAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 }
 
 func (a *NetworkAdapter) Delete(ctx context.Context, op *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName("ComputeNetwork")
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting ComputeNetwork", "name", a.id)
 
 	req := &computepb.DeleteNetworkRequest{
@@ -296,22 +297,22 @@ func (a *NetworkAdapter) Delete(ctx context.Context, op *directbase.DeleteOperat
 func (a *NetworkAdapter) deleteDefaultRoutes(ctx context.Context, networkSelfLink string) error {
 	projectID := a.id.Parent().ProjectID
 	filter := fmt.Sprintf("(network=\"%s\") AND (destRange=\"0.0.0.0/0\")", networkSelfLink)
-	
+
 	req := &computepb.ListRoutesRequest{
 		Project: projectID,
 		Filter:  &filter,
 	}
-	
+
 	it := a.routesClient.List(ctx, req)
 	for {
 		route, err := it.Next()
-		if err == iterator.Done {
+		if errors.Is(err, iterator.Done) {
 			break
 		}
 		if err != nil {
 			return fmt.Errorf("listing routes: %w", err)
 		}
-		
+
 		deleteReq := &computepb.DeleteRouteRequest{
 			Project: projectID,
 			Route:   route.GetName(),
