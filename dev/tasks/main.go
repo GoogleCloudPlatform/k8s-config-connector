@@ -19,6 +19,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -125,24 +126,27 @@ func run(ctx context.Context) error {
 		return nil
 	}
 
-	// TODO: Check tag does not exist?
-	// originalRefs, err := originalWorktree.ShowRefs(ctx)
-	// if err != nil {
-	// 	return fmt.Errorf("error showing refs: %w", err)
-	// }
-
 	message := "Release " + currentVersion
 	tagName := currentVersion
 	if addVPrefix {
 		tagName = "v" + tagName
 	}
+
+	exists, err := originalWorktree.TagExists(ctx, tagName)
+	if err != nil {
+		return err
+	}
+	if exists {
+		return fmt.Errorf("tag %q already exists", tagName)
+	}
+
 	log.Info("creating tag", "tag", tagName, "sha", currentSHA)
 	if !yes {
 		fmt.Fprintf(os.Stdout, "Would create tag %v pointing to %v\n", tagName, currentSHA)
 		fmt.Fprintf(os.Stdout, "Pass --yes to actually do the tagging\n")
 		return nil
 	}
-	if err := originalWorktree.CreateTag(ctx, currentVersion, message, currentSHA); err != nil {
+	if err := originalWorktree.CreateTag(ctx, tagName, message, currentSHA); err != nil {
 		return err
 	}
 
@@ -244,6 +248,18 @@ func (w *gitWorktree) ReadFile(ctx context.Context, revision string, path string
 	}
 
 	return results.Stdout.Bytes(), nil
+}
+
+func (w *gitWorktree) TagExists(ctx context.Context, tagName string) (bool, error) {
+	_, err := w.runGit(ctx, "show-ref", "refs/tags/"+tagName)
+	if err != nil {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) && exitErr.ExitCode() == 1 {
+			return false, nil
+		}
+		return false, fmt.Errorf("checking if tag %q exists: %w", tagName, err)
+	}
+	return true, nil
 }
 
 func (w *gitWorktree) RevParse(ctx context.Context, revision string) (string, error) {
