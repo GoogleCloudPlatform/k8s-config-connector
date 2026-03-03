@@ -211,7 +211,7 @@ func backupResources(resources []unstructured.Unstructured, path string) error {
 	for i, res := range resources {
 		// Clean up metadata before backup
 		cleanResourceForBackup(&res)
-		
+
 		y, err := yaml.Marshal(res.Object)
 		if err != nil {
 			return err
