@@ -23,19 +23,16 @@ import (
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/metricsscope/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-type metricsScopeService struct {
-	*MockService
-	pb.UnimplementedMetricsScopesServer
-}
-
-func (s *metricsScopeService) getMetricsScope(ctx context.Context, name *MetricsScopeName, createIfNotExists bool) (*pb.MetricsScope, error) {
+func (s *metricsScopesV1) getMetricsScope(ctx context.Context, name *MetricsScopeName, createIfNotExists bool) (*pb.MetricsScope, error) {
 	fqn := name.String()
 
 	metricsScope := &pb.MetricsScope{}
@@ -58,7 +55,7 @@ func (s *metricsScopeService) getMetricsScope(ctx context.Context, name *Metrics
 	return metricsScope, nil
 }
 
-func (s *metricsScopeService) GetMetricsScope(ctx context.Context, req *pb.GetMetricsScopeRequest) (*pb.MetricsScope, error) {
+func (s *metricsScopesV1) GetMetricsScope(ctx context.Context, req *pb.GetMetricsScopeRequest) (*pb.MetricsScope, error) {
 	name, err := s.parseMetricsScopeName(req.GetName())
 	if err != nil {
 		return nil, err
@@ -72,6 +69,23 @@ func (s *metricsScopeService) GetMetricsScope(ctx context.Context, req *pb.GetMe
 	}
 
 	return obj, nil
+}
+
+func (s *metricsScopesV1) ListMetricsScopesByMonitoredProject(ctx context.Context, req *pb.ListMetricsScopesByMonitoredProjectRequest) (*pb.ListMetricsScopesByMonitoredProjectResponse, error) {
+	response := &pb.ListMetricsScopesByMonitoredProjectResponse{}
+
+	queryKind := (&pb.MetricsScope{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, queryKind, storage.ListOptions{}, func(obj proto.Message) error {
+		metricsScope := obj.(*pb.MetricsScope)
+
+		// TODO: Filter
+
+		response.MetricsScopes = append(response.MetricsScopes, metricsScope)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return response, nil
 }
 
 func createDefaultMetricsScopeForProject(ctx context.Context, project *projects.ProjectData) *pb.MetricsScope {
@@ -94,7 +108,7 @@ func createDefaultMetricsScopeForProject(ctx context.Context, project *projects.
 
 // Adds a `MonitoredProject` with the given project ID
 // to the specified `Metrics Scope`.
-func (s *metricsScopeService) CreateMonitoredProject(ctx context.Context, req *pb.CreateMonitoredProjectRequest) (*longrunningpb.Operation, error) {
+func (s *metricsScopesV1) CreateMonitoredProject(ctx context.Context, req *pb.CreateMonitoredProjectRequest) (*longrunningpb.Operation, error) {
 	now := time.Now()
 
 	metricsScopeName, err := s.parseMetricsScopeName(req.GetParent())
@@ -145,7 +159,7 @@ func (s *metricsScopeService) CreateMonitoredProject(ctx context.Context, req *p
 	return s.operations.DoneLRO(ctx, "", metadata, response)
 }
 
-func (s *metricsScopeService) DeleteMonitoredProject(ctx context.Context, req *pb.DeleteMonitoredProjectRequest) (*longrunningpb.Operation, error) {
+func (s *metricsScopesV1) DeleteMonitoredProject(ctx context.Context, req *pb.DeleteMonitoredProjectRequest) (*longrunningpb.Operation, error) {
 	removeMonitoredProjectName, err := s.parseMonitoredProjectName(req.Name)
 	if err != nil {
 		return nil, err

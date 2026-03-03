@@ -1,0 +1,364 @@
+POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "name": "monitored-${uniqueId}",
+  "parent": {
+    "id": "650586513145",
+    "type": "folder"
+  },
+  "projectId": "monitored-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
+    "gettable": true,
+    "ready": true
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "lifecycleState": "ACTIVE",
+    "name": "monitored-${uniqueId}",
+    "parent": {
+      "id": "650586513145",
+      "type": "folder"
+    },
+    "projectId": "monitored-${uniqueId}",
+    "projectNumber": "${projectNumber}"
+  }
+}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/monitored-${uniqueId}/services/cloudapis.googleapis.com:enable?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
+    "service": {
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/monitored-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "monitored-${uniqueId}",
+  "parent": {
+    "id": "650586513145",
+    "type": "folder"
+  },
+  "projectId": "monitored-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}/projects?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "name": "locations/global/metricsScopes/${projectId}/projects/monitored-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.monitoring.metricsscope.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "state": "DONE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.monitoring.metricsscope.v1.MonitoredProject",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes:listMetricsScopesByMonitoredProject?alt=json&monitoredResourceContainer=projects%2Fmonitored-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metricsScopes": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}/projects/monitored-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.monitoring.metricsscope.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "state": "DONE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/locations/global/metricsScopes/${projectId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "monitoredProjects": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "name": "locations/global/metricsScopes/${projectNumber}/projects/${projectNumber}"
+    }
+  ],
+  "name": "locations/global/metricsScopes/${projectNumber}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v1/projects/monitored-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
