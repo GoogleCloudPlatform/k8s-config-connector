@@ -412,6 +412,7 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 					return fmt.Errorf("getting relative path for sample %q: %w", sampleName, err)
 				}
 				sampleKey.TestKey = relativeDir
+				sampleKey.files = append(sampleKey.files, path)
 				// The sampleKey.APIGroup can be found from the Kind, the Kind is in the path as config/samples/resources/<KIND>,
 				// Then by iterating the files under the sourceDir, you can find the `apiGroup` value if the `kind` matches <KIND>
 				if sampleKey.APIGroup == "" {
