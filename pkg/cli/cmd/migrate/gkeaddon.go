@@ -57,6 +57,9 @@ var (
 )
 
 func init() {
+	migrateGKEAddonCmd.AddCommand(migrateGKEAddonPrepareCmd)
+	migrateGKEAddonCmd.AddCommand(migrateGKEAddonFinishCmd)
+
 	clusterOptions.AddFlags(migrateGKEAddonPrepareCmd)
 	migrateGKEAddonPrepareCmd.Flags().StringVarP(&outputFile, "output", "o", "kcc-backup.yaml", "Path to the backup file")
 
