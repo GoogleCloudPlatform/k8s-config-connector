@@ -142,12 +142,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: Output only. Time the scope was created.
-                type: string
-              deleteTime:
-                description: Output only. Time the scope was deleted.
-                type: string
               externalRef:
                 description: Output only. External reference of the GKEHubScope.
                 type: string
@@ -159,24 +153,35 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              state:
-                description: Output only. State of the scope.
+              observedState:
+                description: The state of the resource as most recently observed in
+                  GCP.
                 properties:
-                  code:
-                    description: 'Output only. Code describes the current state of
-                      the scope. Possible values: CODE_UNSPECIFIED, CREATING, READY,
-                      DELETING, UPDATING'
+                  createTime:
+                    description: Output only. Time the scope was created.
+                    type: string
+                  deleteTime:
+                    description: Output only. Time the scope was deleted.
+                    type: string
+                  state:
+                    description: Output only. State of the scope.
+                    properties:
+                      code:
+                        description: 'Output only. Code describes the current state
+                          of the scope. Possible values: CODE_UNSPECIFIED, CREATING,
+                          READY, DELETING, UPDATING'
+                        type: string
+                    type: object
+                  uid:
+                    description: Output only. Google-generated UUID for this resource.
+                      This is unique across all scope resources. If a scope resource
+                      is deleted and another with the same name is created, it gets
+                      a different uid.
+                    type: string
+                  updateTime:
+                    description: Output only. Time the scope was last updated.
                     type: string
                 type: object
-              uid:
-                description: Output only. Google-generated UUID for this resource.
-                  This is unique across all scope resources. If a scope resource is
-                  deleted and another with the same name is created, it gets a different
-                  uid.
-                type: string
-              updateTime:
-                description: Output only. Time the scope was last updated.
-                type: string
             type: object
         type: object
     served: true

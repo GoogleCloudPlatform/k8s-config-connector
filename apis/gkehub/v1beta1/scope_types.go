@@ -51,6 +51,16 @@ type GKEHubScopeStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* The state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *GKEHubScopeObservedState `json:"observedState,omitempty"`
+
+	/* Output only. External reference of the GKEHubScope. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+}
+
+type GKEHubScopeObservedState struct {
 	/* Output only. Google-generated UUID for this resource. This is unique across all scope resources. If a scope resource is deleted and another with the same name is created, it gets a different uid. */
 	// +optional
 	Uid *string `json:"uid,omitempty"`
@@ -70,10 +80,6 @@ type GKEHubScopeStatus struct {
 	/* Output only. State of the scope. */
 	// +optional
 	State *ScopeLifecycleStateStatus `json:"state,omitempty"`
-
-	/* Output only. External reference of the GKEHubScope. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
 }
 
 type ScopeLifecycleStateStatus struct {

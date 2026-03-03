@@ -54,6 +54,16 @@ type GKEHubNamespaceStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	/* The state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *GKEHubNamespaceObservedState `json:"observedState,omitempty"`
+
+	/* Output only. External reference of the GKEHubNamespace. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+}
+
+type GKEHubNamespaceObservedState struct {
 	/* Output only. Google-generated UUID for this resource. This is unique across all namespace resources. If a namespace resource is deleted and another with the same name is created, it gets a different uid. */
 	// +optional
 	Uid *string `json:"uid,omitempty"`
@@ -73,10 +83,6 @@ type GKEHubNamespaceStatus struct {
 	/* Output only. State of the namespace. */
 	// +optional
 	State *NamespaceLifecycleStateStatus `json:"state,omitempty"`
-
-	/* Output only. External reference of the GKEHubNamespace. */
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
 }
 
 type NamespaceLifecycleStateStatus struct {

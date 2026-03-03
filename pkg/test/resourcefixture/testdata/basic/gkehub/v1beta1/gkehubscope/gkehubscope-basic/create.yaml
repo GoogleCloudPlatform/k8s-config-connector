@@ -19,5 +19,8 @@ metadata:
 spec:
   projectRef:
     external: ${project_id}
+  location: global
   labels:
     env: dev
+  namespaceLabels:
+    team: platform

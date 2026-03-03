@@ -35,11 +35,12 @@ func GKEHubScopeStatus_FromAPI(mapCtx *direct.MapContext, in *gkehubv1.Scope) *k
 		return nil
 	}
 	out := &krm.GKEHubScopeStatus{}
-	out.Uid = direct.LazyPtr(in.Uid)
-	out.CreateTime = direct.LazyPtr(in.CreateTime)
-	out.UpdateTime = direct.LazyPtr(in.UpdateTime)
-	out.DeleteTime = direct.LazyPtr(in.DeleteTime)
-	out.State = ScopeLifecycleStateStatus_FromAPI(mapCtx, in.State)
+	out.ObservedState = &krm.GKEHubScopeObservedState{}
+	out.ObservedState.Uid = direct.LazyPtr(in.Uid)
+	out.ObservedState.CreateTime = direct.LazyPtr(in.CreateTime)
+	out.ObservedState.UpdateTime = direct.LazyPtr(in.UpdateTime)
+	out.ObservedState.DeleteTime = direct.LazyPtr(in.DeleteTime)
+	out.ObservedState.State = ScopeLifecycleStateStatus_FromAPI(mapCtx, in.State)
 	return out
 }
 

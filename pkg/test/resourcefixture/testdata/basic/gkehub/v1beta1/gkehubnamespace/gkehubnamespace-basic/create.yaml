@@ -19,6 +19,7 @@ metadata:
 spec:
   projectRef:
     external: ${project_id}
+  location: global
   scopeRef:
     name: gkehubscope-dep
   labels:

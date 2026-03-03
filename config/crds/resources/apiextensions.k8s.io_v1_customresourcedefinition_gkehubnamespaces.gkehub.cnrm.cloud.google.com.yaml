@@ -170,12 +170,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: Output only. Time the namespace was created.
-                type: string
-              deleteTime:
-                description: Output only. Time the namespace was deleted.
-                type: string
               externalRef:
                 description: Output only. External reference of the GKEHubNamespace.
                 type: string
@@ -187,24 +181,35 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              state:
-                description: Output only. State of the namespace.
+              observedState:
+                description: The state of the resource as most recently observed in
+                  GCP.
                 properties:
-                  code:
-                    description: 'Output only. Code describes the current state of
-                      the namespace. Possible values: CODE_UNSPECIFIED, CREATING,
-                      READY, DELETING, UPDATING'
+                  createTime:
+                    description: Output only. Time the namespace was created.
+                    type: string
+                  deleteTime:
+                    description: Output only. Time the namespace was deleted.
+                    type: string
+                  state:
+                    description: Output only. State of the namespace.
+                    properties:
+                      code:
+                        description: 'Output only. Code describes the current state
+                          of the namespace. Possible values: CODE_UNSPECIFIED, CREATING,
+                          READY, DELETING, UPDATING'
+                        type: string
+                    type: object
+                  uid:
+                    description: Output only. Google-generated UUID for this resource.
+                      This is unique across all namespace resources. If a namespace
+                      resource is deleted and another with the same name is created,
+                      it gets a different uid.
+                    type: string
+                  updateTime:
+                    description: Output only. Time the namespace was last updated.
                     type: string
                 type: object
-              uid:
-                description: Output only. Google-generated UUID for this resource.
-                  This is unique across all namespace resources. If a namespace resource
-                  is deleted and another with the same name is created, it gets a
-                  different uid.
-                type: string
-              updateTime:
-                description: Output only. Time the namespace was last updated.
-                type: string
             type: object
         type: object
     served: true

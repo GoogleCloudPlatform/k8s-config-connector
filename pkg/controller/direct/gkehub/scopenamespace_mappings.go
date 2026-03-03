@@ -35,11 +35,12 @@ func GKEHubNamespaceStatus_FromAPI(mapCtx *direct.MapContext, in *gkehubv1.Names
 		return nil
 	}
 	out := &krm.GKEHubNamespaceStatus{}
-	out.Uid = direct.LazyPtr(in.Uid)
-	out.CreateTime = direct.LazyPtr(in.CreateTime)
-	out.UpdateTime = direct.LazyPtr(in.UpdateTime)
-	out.DeleteTime = direct.LazyPtr(in.DeleteTime)
-	out.State = NamespaceLifecycleStateStatus_FromAPI(mapCtx, in.State)
+	out.ObservedState = &krm.GKEHubNamespaceObservedState{}
+	out.ObservedState.Uid = direct.LazyPtr(in.Uid)
+	out.ObservedState.CreateTime = direct.LazyPtr(in.CreateTime)
+	out.ObservedState.UpdateTime = direct.LazyPtr(in.UpdateTime)
+	out.ObservedState.DeleteTime = direct.LazyPtr(in.DeleteTime)
+	out.ObservedState.State = NamespaceLifecycleStateStatus_FromAPI(mapCtx, in.State)
 	return out
 }
 
