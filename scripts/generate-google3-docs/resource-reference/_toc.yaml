@@ -87,6 +87,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/bigquery/bigquerydataset.md
   - title: "BigQueryJob"
     path: /config-connector/docs/reference/resource-docs/bigquery/bigqueryjob.md
+  - title: "BigQueryRoutine"
+    path: /config-connector/docs/reference/resource-docs/bigquery/bigqueryroutine.md
   - title: "BigQueryTable"
     path: /config-connector/docs/reference/resource-docs/bigquery/bigquerytable.md
   - title: "BigQueryDataTransferConfig"
@@ -465,6 +467,12 @@ toc:
   section:
   - title: "ContainerAttachedCluster"
     path: /config-connector/docs/reference/resource-docs/containerattached/containerattachedcluster.md
+- title: "Data Catalog"
+  section:
+  - title: "DataCatalogPolicyTag"
+    path: /config-connector/docs/reference/resource-docs/datacatalog/datacatalogpolicytag.md
+  - title: "DataCatalogTaxonomy"
+    path: /config-connector/docs/reference/resource-docs/datacatalog/datacatalogtaxonomy.md
 - title: "Dataflow"
   section:
   - title: "DataflowJob"
@@ -669,6 +677,16 @@ toc:
   section:
   - title: "StorageTransferJob"
     path: /config-connector/docs/reference/resource-docs/storagetransfer/storagetransferjob.md
+- title: "Tags"
+  section:
+  - title: "TagsLocationTagBinding"
+    path: /config-connector/docs/reference/resource-docs/tags/tagslocationtagbinding.md
+  - title: "TagsTagBinding"
+    path: /config-connector/docs/reference/resource-docs/tags/tagstagbinding.md
+  - title: "TagsTagKey"
+    path: /config-connector/docs/reference/resource-docs/tags/tagstagkey.md
+  - title: "TagsTagValue"
+    path: /config-connector/docs/reference/resource-docs/tags/tagstagvalue.md
 - title: "Vertex AI"
   section:
   - title: "VertexAIDataset"
