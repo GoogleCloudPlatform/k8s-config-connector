@@ -86,12 +86,10 @@ protoc --include_imports --include_source_info \
     --experimental_allow_proto3_optional \
     -I ${THIRD_PARTY}/googleapis/ \
     -I ${REPO_ROOT}/mockgcp/apis \
-    -I ${REPO_ROOT}/mockgcp/third_party/googleapis \
     ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto \
-    ${REPO_ROOT}/mockgcp/third_party/googleapis/mockgcp/cloud/compute/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/analytics/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
