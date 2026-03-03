@@ -23,8 +23,9 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 cd "${REPO_ROOT}/dev/tools/controllerbuilder"
 
-# We skip scaffold files because we've manually created/renamed datacatalogpolicytag_types.go
-# to follow the instructions in the issue, while the generator would have created policytag_types.go.
+# We skip scaffold files because we've manually created/renamed datacatalogpolicytag_types.go,
+# datacatalogpolicytag_identity.go and datacatalogpolicytag_reference.go
+# to follow the instructions in the issue, while the generator would have used different names.
 go run . generate-types \
     --service google.cloud.datacatalog.v1beta1 \
     --api-version datacatalog.cnrm.cloud.google.com/v1beta1 \
