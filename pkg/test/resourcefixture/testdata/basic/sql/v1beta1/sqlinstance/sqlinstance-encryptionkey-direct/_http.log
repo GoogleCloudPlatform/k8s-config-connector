@@ -1040,6 +1040,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "recordClientAddress": true
     },
     "ipConfiguration": {
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,
@@ -1216,6 +1217,7 @@ X-Xss-Protection: 0
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,
@@ -1382,6 +1384,7 @@ X-Xss-Protection: 0
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,
@@ -1471,6 +1474,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "recordClientAddress": true
     },
     "ipConfiguration": {
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,
@@ -1648,6 +1652,7 @@ X-Xss-Protection: 0
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,
