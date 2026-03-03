@@ -59,6 +59,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	// BackendService
 	replacements.SortSlice(".backends")
+
+	// firewallPolicies
+	replacements.ReplacePath(".items[].fingerprint", PlaceholderFingerprint)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
