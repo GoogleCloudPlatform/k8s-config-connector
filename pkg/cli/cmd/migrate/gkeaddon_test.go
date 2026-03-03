@@ -119,9 +119,7 @@ func TestPauseReconciliation(t *testing.T) {
 		Client: fakeClient,
 	}
 
-	resources := []unstructured.Unstructured{*cc}
-
-	if err := pauseReconciliation(ctx, kubeClient, resources); err != nil {
+	if err := pauseReconciliation(ctx, kubeClient); err != nil {
 		t.Fatalf("pauseReconciliation failed: %v", err)
 	}
 
@@ -163,9 +161,7 @@ func TestResumeReconciliation(t *testing.T) {
 		Client: fakeClient,
 	}
 
-	resources := []unstructured.Unstructured{*cc}
-
-	if err := resumeReconciliation(ctx, kubeClient, resources); err != nil {
+	if err := resumeReconciliation(ctx, kubeClient); err != nil {
 		t.Fatalf("resumeReconciliation failed: %v", err)
 	}
 

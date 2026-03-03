@@ -86,7 +86,7 @@ func runPrepare(ctx context.Context) error {
 	}
 
 	fmt.Println("3. Pausing reconciliation...")
-	if err := pauseReconciliation(ctx, kubeClient, resources); err != nil {
+	if err := pauseReconciliation(ctx, kubeClient); err != nil {
 		return fmt.Errorf("error pausing reconciliation: %w", err)
 	}
 
@@ -125,7 +125,7 @@ func runFinish(ctx context.Context) error {
 	}
 
 	fmt.Println("3. Resuming reconciliation...")
-	if err := resumeReconciliation(ctx, kubeClient, resources); err != nil {
+	if err := resumeReconciliation(ctx, kubeClient); err != nil {
 		return fmt.Errorf("error resuming reconciliation: %w", err)
 	}
 
@@ -238,10 +238,22 @@ func cleanResourceForBackup(res *unstructured.Unstructured) {
 	unstructured.RemoveNestedField(res.Object, "status")
 }
 
-func pauseReconciliation(ctx context.Context, kubeClient *kubecli.Client, resources []unstructured.Unstructured) error {
-	for i := range resources {
-		res := &resources[i]
-		if res.GetKind() == "ConfigConnector" || res.GetKind() == "ConfigConnectorContext" {
+func pauseReconciliation(ctx context.Context, kubeClient *kubecli.Client) error {
+	gvkList := []schema.GroupVersionKind{
+		{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnector"},
+		{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnectorContext"},
+	}
+
+	for _, gvk := range gvkList {
+		list := &unstructured.UnstructuredList{}
+		list.SetGroupVersionKind(gvk)
+		if err := kubeClient.List(ctx, list); err != nil {
+			fmt.Printf("Warning: failed to list %s: %v\n", gvk.Kind, err)
+			continue
+		}
+
+		for i := range list.Items {
+			res := &list.Items[i]
 			if err := unstructured.SetNestedField(res.Object, "Paused", "spec", "actuationMode"); err != nil {
 				return err
 			}
@@ -262,7 +274,8 @@ func removeFinalizers(ctx context.Context, kubeClient *kubecli.Client, resources
 		}
 		res.SetFinalizers(nil)
 		if err := kubeClient.Update(ctx, res); err != nil {
-			fmt.Printf("Warning: failed to remove finalizers from %s/%s: %v\n", res.GetNamespace(), res.GetName(), err)
+			// Don't fail the whole process if one finalizer removal fails, but warn the user.
+			fmt.Printf("Warning: failed to remove finalizers from %s %s/%s: %v\n", res.GetKind(), res.GetNamespace(), res.GetName(), err)
 		}
 	}
 	return nil
@@ -297,16 +310,28 @@ func applyResources(ctx context.Context, kubeClient *kubecli.Client, resources [
 			return err
 		}
 		if err := kubeClient.Patch(ctx, &res, client.RawPatch(types.ApplyPatchType, data), client.FieldOwner("kcc-migration-tool"), client.ForceOwnership); err != nil {
-			fmt.Printf("Warning: failed to apply %s/%s: %v\n", res.GetNamespace(), res.GetName(), err)
+			fmt.Printf("Warning: failed to apply %s %s/%s: %v\n", res.GetKind(), res.GetNamespace(), res.GetName(), err)
 		}
 	}
 	return nil
 }
 
-func resumeReconciliation(ctx context.Context, kubeClient *kubecli.Client, resources []unstructured.Unstructured) error {
-	for i := range resources {
-		res := &resources[i]
-		if res.GetKind() == "ConfigConnector" || res.GetKind() == "ConfigConnectorContext" {
+func resumeReconciliation(ctx context.Context, kubeClient *kubecli.Client) error {
+	gvkList := []schema.GroupVersionKind{
+		{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnector"},
+		{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnectorContext"},
+	}
+
+	for _, gvk := range gvkList {
+		list := &unstructured.UnstructuredList{}
+		list.SetGroupVersionKind(gvk)
+		if err := kubeClient.List(ctx, list); err != nil {
+			fmt.Printf("Warning: failed to list %s: %v\n", gvk.Kind, err)
+			continue
+		}
+
+		for i := range list.Items {
+			res := &list.Items[i]
 			if err := unstructured.SetNestedField(res.Object, "Reconciling", "spec", "actuationMode"); err != nil {
 				return err
 			}
