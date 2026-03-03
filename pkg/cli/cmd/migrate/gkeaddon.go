@@ -238,12 +238,13 @@ func cleanResourceForBackup(res *unstructured.Unstructured) {
 }
 
 func pauseReconciliation(ctx context.Context, kubeClient *kubecli.Client, resources []unstructured.Unstructured) error {
-	for _, res := range resources {
+	for i := range resources {
+		res := &resources[i]
 		if res.GetKind() == "ConfigConnector" || res.GetKind() == "ConfigConnectorContext" {
 			if err := unstructured.SetNestedField(res.Object, "Paused", "spec", "actuationMode"); err != nil {
 				return err
 			}
-			if err := kubeClient.Update(ctx, &res); err != nil {
+			if err := kubeClient.Update(ctx, res); err != nil {
 				return fmt.Errorf("error updating %s %s/%s: %w", res.GetKind(), res.GetNamespace(), res.GetName(), err)
 			}
 			fmt.Printf("Paused %s %s/%s\n", res.GetKind(), res.GetNamespace(), res.GetName())
@@ -253,12 +254,13 @@ func pauseReconciliation(ctx context.Context, kubeClient *kubecli.Client, resour
 }
 
 func removeFinalizers(ctx context.Context, kubeClient *kubecli.Client, resources []unstructured.Unstructured) error {
-	for _, res := range resources {
+	for i := range resources {
+		res := &resources[i]
 		if len(res.GetFinalizers()) == 0 {
 			continue
 		}
 		res.SetFinalizers(nil)
-		if err := kubeClient.Update(ctx, &res); err != nil {
+		if err := kubeClient.Update(ctx, res); err != nil {
 			fmt.Printf("Warning: failed to remove finalizers from %s/%s: %v\n", res.GetNamespace(), res.GetName(), err)
 		}
 	}
@@ -301,12 +303,13 @@ func applyResources(ctx context.Context, kubeClient *kubecli.Client, resources [
 }
 
 func resumeReconciliation(ctx context.Context, kubeClient *kubecli.Client, resources []unstructured.Unstructured) error {
-	for _, res := range resources {
+	for i := range resources {
+		res := &resources[i]
 		if res.GetKind() == "ConfigConnector" || res.GetKind() == "ConfigConnectorContext" {
 			if err := unstructured.SetNestedField(res.Object, "Reconciling", "spec", "actuationMode"); err != nil {
 				return err
 			}
-			if err := kubeClient.Update(ctx, &res); err != nil {
+			if err := kubeClient.Update(ctx, res); err != nil {
 				return fmt.Errorf("error updating %s %s/%s: %w", res.GetKind(), res.GetNamespace(), res.GetName(), err)
 			}
 			fmt.Printf("Resumed %s %s/%s\n", res.GetKind(), res.GetNamespace(), res.GetName())
