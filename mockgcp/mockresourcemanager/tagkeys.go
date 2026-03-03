@@ -141,6 +141,19 @@ func (s *TagKeys) CreateTagKey(ctx context.Context, req *pb.CreateTagKeyRequest)
 		return nil, fmt.Errorf("ValidateOnly not yet implemented")
 	}
 
+	// Check for duplicate shortName under the same parent (real GCP enforces this).
+	normalizedParent := req.GetTagKey().GetParent()
+	tagKeyKind := (&pb.TagKey{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, tagKeyKind, storage.ListOptions{}, func(obj proto.Message) error {
+		existing := obj.(*pb.TagKey)
+		if existing.GetParent() == normalizedParent && existing.GetShortName() == req.GetTagKey().GetShortName() {
+			return status.Errorf(codes.AlreadyExists, "A TagKey with short name '%s' already exists under parent '%s'", req.GetTagKey().GetShortName(), normalizedParent)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
 	name := &tagKeyName{
 		ID: time.Now().UnixNano(),
 	}

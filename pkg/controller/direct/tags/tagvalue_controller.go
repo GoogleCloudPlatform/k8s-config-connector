@@ -16,6 +16,7 @@ package tags
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -26,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	"google.golang.org/api/iterator"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -159,23 +161,71 @@ func (a *TagsTagValueAdapter) Create(ctx context.Context, createOp *directbase.C
 
 	op, err := a.tagValuesClient.CreateTagValue(ctx, req)
 	if err != nil {
+		if direct.IsAlreadyExists(err) {
+			log.V(0).Info("TagsTagValue already exists, attempting to acquire", "parent", a.desired.GetParent(), "shortName", a.desired.GetShortName())
+			return a.acquireExistingTagValue(ctx, createOp)
+		}
 		return fmt.Errorf("creating TagsTagValue: %w", err)
 	}
 
 	created, err := op.Wait(ctx)
 	if err != nil {
+		if direct.IsAlreadyExists(err) {
+			log.V(0).Info("TagsTagValue already exists, attempting to acquire", "parent", a.desired.GetParent(), "shortName", a.desired.GetShortName())
+			return a.acquireExistingTagValue(ctx, createOp)
+		}
 		return fmt.Errorf("waiting for creation of TagsTagValue: %w", err)
 	}
 	log.V(0).Info("created TagsTagValue", "name", created.GetName())
 
-	// For compatibility, we set spec.resourceID after creation because this is a server-generated-id resource that we are migrating from terraform/DCL.
-	// More info in docs/ai/server-generated-id.md
-	resourceID := strings.TrimPrefix(created.GetName(), "tagValues/")
+	return a.setResourceIDAndStatus(ctx, createOp, created)
+}
+
+// acquireExistingTagValue looks up an existing TagValue by parent and shortName after an ALREADY_EXISTS error,
+// then sets the resourceID and status to adopt the resource.
+func (a *TagsTagValueAdapter) acquireExistingTagValue(ctx context.Context, createOp *directbase.CreateOperation) error {
+	log := klog.FromContext(ctx)
+
+	existing, err := a.findTagValueByShortName(ctx)
+	if err != nil {
+		return err
+	}
+	if existing == nil {
+		return fmt.Errorf("TagsTagValue with shortName %q not found under %q despite ALREADY_EXISTS error", a.desired.GetShortName(), a.desired.GetParent())
+	}
+	log.V(0).Info("acquired existing TagsTagValue", "name", existing.GetName())
+
+	return a.setResourceIDAndStatus(ctx, createOp, existing)
+}
+
+// setResourceIDAndStatus sets spec.resourceID and updates status from the given TagValue.
+// For compatibility, we set spec.resourceID after creation because this is a server-generated-id resource that we are migrating from terraform/DCL.
+// More info in docs/ai/server-generated-id.md
+func (a *TagsTagValueAdapter) setResourceIDAndStatus(ctx context.Context, createOp *directbase.CreateOperation, tagValue *pb.TagValue) error {
+	resourceID := strings.TrimPrefix(tagValue.GetName(), "tagValues/")
 	if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {
 		return err
 	}
+	return a.updateStatus(ctx, createOp, tagValue)
+}
 
-	return a.updateStatus(ctx, createOp, created)
+// findTagValueByShortName lists TagValues under the parent TagKey and returns the one matching the desired shortName.
+func (a *TagsTagValueAdapter) findTagValueByShortName(ctx context.Context) (*pb.TagValue, error) {
+	listReq := &pb.ListTagValuesRequest{Parent: a.desired.GetParent()}
+	it := a.tagValuesClient.ListTagValues(ctx, listReq)
+	for {
+		tagValue, err := it.Next()
+		if err != nil {
+			if errors.Is(err, iterator.Done) {
+				break
+			}
+			return nil, fmt.Errorf("listing TagsTagValues under %q: %w", a.desired.GetParent(), err)
+		}
+		if tagValue.GetShortName() == a.desired.GetShortName() {
+			return tagValue, nil
+		}
+	}
+	return nil, nil
 }
 
 func (a *TagsTagValueAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {

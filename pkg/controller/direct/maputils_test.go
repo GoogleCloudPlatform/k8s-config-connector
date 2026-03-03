@@ -15,8 +15,12 @@
 package direct
 
 import (
+	"fmt"
 	"testing"
 
+	"github.com/googleapis/gax-go/v2/apierror"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 
@@ -41,5 +45,66 @@ func TestStringDuration_ToProto(t *testing.T) {
 	}
 	if mapctx.Err() != nil {
 		t.Fatalf("google.protobuf.Duration -> String error: %s", mapctx.Err())
+	}
+}
+
+func TestIsAlreadyExists(t *testing.T) {
+	tests := []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{
+			name: "nil error",
+			err:  nil,
+			want: false,
+		},
+		{
+			name: "unrelated error",
+			err:  fmt.Errorf("something went wrong"),
+			want: false,
+		},
+		{
+			name: "gRPC AlreadyExists",
+			err:  status.Error(codes.AlreadyExists, "resource already exists"),
+			want: true,
+		},
+		{
+			name: "gRPC NotFound",
+			err:  status.Error(codes.NotFound, "not found"),
+			want: false,
+		},
+		{
+			name: "gRPC AlreadyExists wrapped with apierror",
+			err: func() error {
+				grpcErr := status.Error(codes.AlreadyExists, "resource already exists")
+				apiErr, _ := apierror.ParseError(grpcErr, true)
+				return apiErr
+			}(),
+			want: true,
+		},
+		{
+			name: "gRPC NotFound wrapped with apierror",
+			err: func() error {
+				grpcErr := status.Error(codes.NotFound, "not found")
+				apiErr, _ := apierror.ParseError(grpcErr, true)
+				return apiErr
+			}(),
+			want: false,
+		},
+		{
+			name: "wrapped gRPC AlreadyExists",
+			err:  fmt.Errorf("creating resource: %w", status.Error(codes.AlreadyExists, "already exists")),
+			want: true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := IsAlreadyExists(tc.err)
+			if got != tc.want {
+				t.Errorf("IsAlreadyExists(%v) = %v, want %v", tc.err, got, tc.want)
+			}
+		})
 	}
 }
