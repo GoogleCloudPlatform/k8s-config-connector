@@ -87,6 +87,17 @@ spec:
                         description: The namespace where the MultiClusterLease object
                           will be created.
                         type: string
+                      resourceReplicationMode:
+                        default: Status
+                        description: |-
+                          ResourceReplicationMode specifies how the resources will be synced to the passive clusters.
+                          Can be either 'Status' or 'Full'.
+                          'Status' (default) means only the status field (and occasionally essential fields like spec.resourceID) are synced.
+                          'Full' means both the spec and status are synced.
+                        enum:
+                        - Status
+                        - Full
+                        type: string
                     required:
                     - clusterCandidateIdentity
                     - leaseName

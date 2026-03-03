@@ -88,6 +88,15 @@ type MultiClusterLeaseSpec struct {
 	//  This name must be unique across all the clusters that you are configuring the multi cluster set up for.
 	// +required
 	ClusterCandidateIdentity string `json:"clusterCandidateIdentity"`
+
+	// ResourceReplicationMode specifies how the resources will be synced to the passive clusters.
+	// Can be either 'Status' or 'Full'.
+	// 'Status' (default) means only the status field (and occasionally essential fields like spec.resourceID) are synced.
+	// 'Full' means both the spec and status are synced.
+	// +optional
+	// +kubebuilder:validation:Enum=Status;Full
+	// +kubebuilder:default=Status
+	ResourceReplicationMode string `json:"resourceReplicationMode,omitempty"`
 }
 
 // ConfigConnectorStatus defines the observed state of ConfigConnector
