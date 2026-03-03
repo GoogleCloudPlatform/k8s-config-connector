@@ -58,8 +58,11 @@ CURRENT_REF="HEAD"
 MSG=$(git log --format=%s -n 1 "${CURRENT_REF}")
 
 # Check for Optional commit 0: Merge commit
-if [[ "${MSG}" == "Merge pull request"* ]]; then
-  echo "Found merge commit at ${CURRENT_REF} ('${MSG}'). Verifying content from the merged branch (HEAD^2)."
+# This effectively checks if CURRENT_REF is a merge commit (which will have at least two parents).
+# ${CURRENT_REF}^2 refers to the second parent, which is the tip of the branch being merged.
+# This allows us to inspect the actual commit message from the source branch (the PR).
+if git rev-parse --verify "${CURRENT_REF}^2" >/dev/null 2>&1; then
+  echo "Found merge commit at ${CURRENT_REF} (has 2 parents). Verifying content from the merged branch (HEAD^2)."
   CURRENT_REF="${CURRENT_REF}^2"
   MSG=$(git log --format=%s -n 1 "${CURRENT_REF}")
 fi
