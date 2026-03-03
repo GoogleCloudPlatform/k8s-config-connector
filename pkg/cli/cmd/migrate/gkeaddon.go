@@ -150,7 +150,7 @@ func getAllKCCResources(ctx context.Context, kubeClient *kubecli.Client) ([]unst
 		if err != nil || !found {
 			continue
 		}
-		if !strings.HasSuffix(group, "cnrm.cloud.google.com") {
+		if !strings.HasSuffix(group, ".cnrm.cloud.google.com") {
 			continue
 		}
 		kind, found, err := unstructured.NestedString(crd.Object, "spec", "names", "kind")
@@ -208,10 +208,11 @@ func backupResources(resources []unstructured.Unstructured, path string) error {
 	defer f.Close()
 
 	for i, res := range resources {
-		// Clean up metadata before backup
-		cleanResourceForBackup(&res)
+		// Clean up metadata before backup. Use a copy to avoid modifying the original.
+		resCopy := res.DeepCopy()
+		cleanResourceForBackup(resCopy)
 
-		y, err := yaml.Marshal(res.Object)
+		y, err := yaml.Marshal(resCopy.Object)
 		if err != nil {
 			return err
 		}
