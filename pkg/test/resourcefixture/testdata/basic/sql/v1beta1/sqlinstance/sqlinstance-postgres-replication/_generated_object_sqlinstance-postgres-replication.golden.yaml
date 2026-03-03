@@ -3,13 +3,12 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/deletion-policy: abandon
-    cnrm.cloud.google.com/last-changed-cookie: normalized-cookie
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/unmanaged: spec.maintenanceVersion,spec.settings.edition
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
   name: postgres-replication-${uniqueId}
@@ -50,9 +49,10 @@ spec:
       queryInsightsEnabled: true
       queryStringLength: 2048
     ipConfiguration:
+      enablePrivatePathForGoogleCloudServices: true
       ipv4Enabled: false
       privateNetworkRef:
-        name: ${networkID}
+        name: network-${uniqueId}
       requireSsl: true
     locationPreference:
       secondaryZone: europe-west1-b
@@ -75,8 +75,8 @@ status:
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 2
-  privateIpAddress: 10.1.2.3
+  observedGeneration: 1
+  privateIpAddress: 192.168.0.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/postgres-replication-${uniqueId}
   serverCaCert:
     cert: |
