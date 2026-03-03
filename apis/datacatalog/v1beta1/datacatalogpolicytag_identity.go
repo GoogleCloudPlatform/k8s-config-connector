@@ -76,7 +76,7 @@ func NewPolicyTagIdentity(ctx context.Context, reader client.Reader, obj *DataCa
 		resourceID = obj.GetName()
 	}
 	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+		return nil, fmt.Errorf("cannot resolve resourceID")
 	}
 
 	// Use approved External
@@ -88,13 +88,13 @@ func NewPolicyTagIdentity(ctx context.Context, reader client.Reader, obj *DataCa
 			return nil, err
 		}
 		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("Project ID changed, expect %s, got %s", actualParent.ProjectID, projectID)
+			return nil, fmt.Errorf("ProjectID changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("Location changed, expect %s, got %s", actualParent.Location, location)
 		}
 		if actualParent.TaxonomyID != taxonomyID {
-			return nil, fmt.Errorf("Taxonomy ID changed, expect %s, got %s", actualParent.TaxonomyID, taxonomyID)
+			return nil, fmt.Errorf("TaxonomyID changed, expect %s, got %s", actualParent.TaxonomyID, taxonomyID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
