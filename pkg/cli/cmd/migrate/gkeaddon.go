@@ -86,7 +86,7 @@ func runPrepare(ctx context.Context) error {
 	}
 
 	fmt.Println("3. Pausing reconciliation...")
-	if err := pauseReconciliation(ctx, kubeClient); err != nil {
+	if err := pauseReconciliation(ctx, kubeClient, resources); err != nil {
 		return fmt.Errorf("error pausing reconciliation: %w", err)
 	}
 
@@ -125,7 +125,7 @@ func runFinish(ctx context.Context) error {
 	}
 
 	fmt.Println("3. Resuming reconciliation...")
-	if err := resumeReconciliation(ctx, kubeClient); err != nil {
+	if err := resumeReconciliation(ctx, kubeClient, resources); err != nil {
 		return fmt.Errorf("error resuming reconciliation: %w", err)
 	}
 
@@ -150,15 +150,11 @@ func getAllKCCResources(ctx context.Context, kubeClient *kubecli.Client) ([]unst
 		if err != nil || !found {
 			continue
 		}
-		if !strings.HasSuffix(group, ".cnrm.cloud.google.com") {
+		if !strings.HasSuffix(group, "cnrm.cloud.google.com") {
 			continue
 		}
 		kind, found, err := unstructured.NestedString(crd.Object, "spec", "names", "kind")
 		if err != nil || !found {
-			continue
-		}
-		// Skip CC and CCC as they are handled separately for pausing
-		if kind == "ConfigConnector" || kind == "ConfigConnectorContext" {
 			continue
 		}
 
@@ -241,45 +237,18 @@ func cleanResourceForBackup(res *unstructured.Unstructured) {
 	unstructured.RemoveNestedField(res.Object, "status")
 }
 
-func pauseReconciliation(ctx context.Context, kubeClient *kubecli.Client) error {
-	// Pause ConfigConnector
-	ccList := &unstructured.UnstructuredList{}
-	ccList.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "core.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ConfigConnector",
-	})
-	if err := kubeClient.List(ctx, ccList); err == nil {
-		for _, cc := range ccList.Items {
-			if err := unstructured.SetNestedField(cc.Object, "Paused", "spec", "actuationMode"); err != nil {
+func pauseReconciliation(ctx context.Context, kubeClient *kubecli.Client, resources []unstructured.Unstructured) error {
+	for _, res := range resources {
+		if res.GetKind() == "ConfigConnector" || res.GetKind() == "ConfigConnectorContext" {
+			if err := unstructured.SetNestedField(res.Object, "Paused", "spec", "actuationMode"); err != nil {
 				return err
 			}
-			if err := kubeClient.Update(ctx, &cc); err != nil {
-				return fmt.Errorf("error updating ConfigConnector %s: %w", cc.GetName(), err)
+			if err := kubeClient.Update(ctx, &res); err != nil {
+				return fmt.Errorf("error updating %s %s/%s: %w", res.GetKind(), res.GetNamespace(), res.GetName(), err)
 			}
-			fmt.Printf("Paused ConfigConnector %s\n", cc.GetName())
+			fmt.Printf("Paused %s %s/%s\n", res.GetKind(), res.GetNamespace(), res.GetName())
 		}
 	}
-
-	// Pause all ConfigConnectorContexts
-	cccList := &unstructured.UnstructuredList{}
-	cccList.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "core.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ConfigConnectorContext",
-	})
-	if err := kubeClient.List(ctx, cccList); err == nil {
-		for _, ccc := range cccList.Items {
-			if err := unstructured.SetNestedField(ccc.Object, "Paused", "spec", "actuationMode"); err != nil {
-				return err
-			}
-			if err := kubeClient.Update(ctx, &ccc); err != nil {
-				return fmt.Errorf("error updating ConfigConnectorContext %s/%s: %w", ccc.GetNamespace(), ccc.GetName(), err)
-			}
-			fmt.Printf("Paused ConfigConnectorContext %s/%s\n", ccc.GetNamespace(), ccc.GetName())
-		}
-	}
-
 	return nil
 }
 
@@ -331,44 +300,17 @@ func applyResources(ctx context.Context, kubeClient *kubecli.Client, resources [
 	return nil
 }
 
-func resumeReconciliation(ctx context.Context, kubeClient *kubecli.Client) error {
-	// Resume ConfigConnector
-	ccList := &unstructured.UnstructuredList{}
-	ccList.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "core.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ConfigConnector",
-	})
-	if err := kubeClient.List(ctx, ccList); err == nil {
-		for _, cc := range ccList.Items {
-			if err := unstructured.SetNestedField(cc.Object, "Reconciling", "spec", "actuationMode"); err != nil {
+func resumeReconciliation(ctx context.Context, kubeClient *kubecli.Client, resources []unstructured.Unstructured) error {
+	for _, res := range resources {
+		if res.GetKind() == "ConfigConnector" || res.GetKind() == "ConfigConnectorContext" {
+			if err := unstructured.SetNestedField(res.Object, "Reconciling", "spec", "actuationMode"); err != nil {
 				return err
 			}
-			if err := kubeClient.Update(ctx, &cc); err != nil {
-				return fmt.Errorf("error updating ConfigConnector %s: %w", cc.GetName(), err)
+			if err := kubeClient.Update(ctx, &res); err != nil {
+				return fmt.Errorf("error updating %s %s/%s: %w", res.GetKind(), res.GetNamespace(), res.GetName(), err)
 			}
-			fmt.Printf("Resumed ConfigConnector %s\n", cc.GetName())
+			fmt.Printf("Resumed %s %s/%s\n", res.GetKind(), res.GetNamespace(), res.GetName())
 		}
 	}
-
-	// Resume all ConfigConnectorContexts
-	cccList := &unstructured.UnstructuredList{}
-	cccList.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "core.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ConfigConnectorContext",
-	})
-	if err := kubeClient.List(ctx, cccList); err == nil {
-		for _, ccc := range cccList.Items {
-			if err := unstructured.SetNestedField(ccc.Object, "Reconciling", "spec", "actuationMode"); err != nil {
-				return err
-			}
-			if err := kubeClient.Update(ctx, &ccc); err != nil {
-				return fmt.Errorf("error updating ConfigConnectorContext %s/%s: %w", ccc.GetNamespace(), ccc.GetName(), err)
-			}
-			fmt.Printf("Resumed ConfigConnectorContext %s/%s\n", ccc.GetNamespace(), ccc.GetName())
-		}
-	}
-
 	return nil
 }
