@@ -31,6 +31,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/memorystore/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/google/uuid"
 )
 
 type instanceServer struct {
@@ -85,7 +87,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	updatedObj := proto.Clone(obj).(*pb.Instance)
 	updatedObj.CreateTime = nil
-	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 
 	metadata := &pb.OperationMetadata{
 		ApiVersion: "v1",
@@ -118,7 +120,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 		obj.NodeType = pb.Instance_HIGHMEM_MEDIUM
 	}
 
-	if obj.Endpoints == nil {
+	if obj.Endpoints != nil {
 		pscConnectionID := time.Now().UnixNano()
 
 		for _, endpoint := range obj.Endpoints {
@@ -141,7 +143,7 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 					if err != nil {
 						return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", userConnection.Network)
 					}
-					forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
+					forwardingRuleID := fmt.Sprintf("ssc-user-fr-%x", pscConnectionID)
 					userConnection.IpAddress = fmt.Sprintf("10.128.0.%d", rand.IntN(100))
 					userConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID)
 					userConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
@@ -199,6 +201,18 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.EngineVersion == "" {
 		obj.EngineVersion = "VALKEY_7_2"
 	}
+	if obj.CrossInstanceReplicationConfig == nil {
+		obj.CrossInstanceReplicationConfig = &pb.CrossInstanceReplicationConfig{}
+	}
+	if obj.CrossInstanceReplicationConfig.InstanceRole == pb.CrossInstanceReplicationConfig_INSTANCE_ROLE_UNSPECIFIED {
+		obj.CrossInstanceReplicationConfig.InstanceRole = pb.CrossInstanceReplicationConfig_NONE
+	}
+	if obj.AutomatedBackupConfig == nil {
+		obj.AutomatedBackupConfig = &pb.AutomatedBackupConfig{}
+	}
+	if obj.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
+		obj.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
+	}
 	return nil
 }
 
@@ -241,22 +255,34 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 
 	for _, path := range paths {
 		switch path {
+		case "labels":
+			obj.Labels = req.Instance.Labels
 		case "replicaCount":
 			obj.ReplicaCount = req.Instance.ReplicaCount
 		case "shardCount":
 			obj.ShardCount = req.Instance.ShardCount
-		case "deletionProtectionEnabled":
-			obj.DeletionProtectionEnabled = req.Instance.DeletionProtectionEnabled
-		case "persistenceConfig":
-			obj.PersistenceConfig = req.Instance.PersistenceConfig
-		case "engineConfigs":
-			obj.EngineConfigs = req.Instance.EngineConfigs
-		case "endpoints":
-			obj.Endpoints = req.Instance.Endpoints
-		case "labels":
-			obj.Labels = req.Instance.Labels
 		case "nodeType":
 			obj.NodeType = req.Instance.NodeType
+		case "persistenceConfig":
+			obj.PersistenceConfig = req.Instance.PersistenceConfig
+		case "engineVersion":
+			obj.EngineVersion = req.Instance.EngineVersion
+		case "engineConfigs":
+			obj.EngineConfigs = req.Instance.EngineConfigs
+		case "deletionProtectionEnabled":
+			obj.DeletionProtectionEnabled = req.Instance.DeletionProtectionEnabled
+		case "endpoints":
+			obj.Endpoints = req.Instance.Endpoints
+		case "maintenancePolicy":
+			obj.MaintenancePolicy = req.Instance.MaintenancePolicy
+		case "automatedBackupConfig":
+			obj.AutomatedBackupConfig = req.Instance.AutomatedBackupConfig
+		case "crossInstanceReplicationConfig":
+			obj.CrossInstanceReplicationConfig = req.Instance.CrossInstanceReplicationConfig
+		case "gcsBucket":
+			obj.ImportSources = &pb.Instance_GcsSource{GcsSource: req.Instance.GetGcsSource()}
+		case "managedBackupSource":
+			obj.ImportSources = &pb.Instance_ManagedBackupSource_{ManagedBackupSource: req.Instance.GetManagedBackupSource()}
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
@@ -313,6 +339,131 @@ func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 	}
 
 	deletedObj := &pb.Instance{}
+	if err := r.storage.Delete(ctx, fqn, deletedObj); err != nil {
+		return nil, err
+	}
+
+	metadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "delete",
+	}
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		return &emptypb.Empty{}, nil
+	})
+}
+
+func (r *instanceServer) GetBackup(ctx context.Context, req *pb.GetBackupRequest) (*pb.Backup, error) {
+	name, err := r.parseBackupName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Backup{}
+	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	retObj := proto.Clone(obj).(*pb.Backup)
+	return retObj, nil
+}
+
+func (r *instanceServer) BackupInstance(ctx context.Context, req *pb.BackupInstanceRequest) (*longrunning.Operation, error) {
+	instanceName, err := r.parseInstanceName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	instanceFqn := instanceName.String()
+	instanceObj := &pb.Instance{}
+	if err := r.storage.Get(ctx, instanceFqn, instanceObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", instanceFqn)
+		}
+		return nil, err
+	}
+
+	backupCollectionName := ""
+	if instanceObj.BackupCollection != nil {
+		backupCollectionName = *instanceObj.BackupCollection
+	} else {
+		backupCollectionName = fmt.Sprintf("projects/%s/locations/%s/backupCollections/%s", instanceName.Project.ID, instanceName.Location, uuid.New().String())
+		instanceObj.BackupCollection = direct.LazyPtr(backupCollectionName)
+		if err := r.storage.Update(ctx, instanceFqn, instanceObj); err != nil {
+			return nil, err
+		}
+	}
+
+	reqName := fmt.Sprintf("%s/backups/%s", backupCollectionName, req.GetBackupId())
+	name, err := r.parseBackupName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	now := time.Now()
+
+	obj := &pb.Backup{
+		BackupType:    pb.Backup_ON_DEMAND,
+		CreateTime:    timestamppb.New(now),
+		EngineVersion: instanceObj.EngineVersion,
+		Instance:      instanceName.String(),
+		InstanceUid:   instanceObj.Uid,
+		Name:          fqn,
+		NodeType:      instanceObj.NodeType,
+		ShardCount:    instanceObj.ShardCount,
+		State:         pb.Backup_ACTIVE,
+		Uid:           uuid.New().String(),
+	}
+	if req.GetTtl() != nil {
+		ttl := now.Add(req.GetTtl().AsDuration())
+		obj.ExpireTime = timestamppb.New(ttl)
+	}
+	if err := r.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	prefix := name.OperationPrefix()
+	metadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(now),
+		Target:     instanceName.String(),
+		Verb:       "backup",
+	}
+
+	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		return proto.Clone(instanceObj).(*pb.Instance), nil
+	})
+}
+
+func (r *instanceServer) DeleteBackup(ctx context.Context, req *pb.DeleteBackupRequest) (*longrunning.Operation, error) {
+	name, err := r.parseBackupName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+
+	now := time.Now()
+
+	obj := &pb.Backup{}
+
+	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	deletedObj := &pb.Backup{}
 	if err := r.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
@@ -388,5 +539,48 @@ func (s *instanceServer) parseNetworkName(name string) (*networkName, error) {
 			Name:    tokens[4],
 		}, nil
 	}
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+type backupName struct {
+	Project          *projects.ProjectData
+	Location         string
+	BackupCollection string
+	Name             string
+}
+
+func (n *backupName) String() string {
+	return fmt.Sprintf("%s/backups/%s", n.Parent(), n.Name)
+}
+
+func (n *backupName) Parent() string {
+	return fmt.Sprintf("%s/backupCollections/%s", n.OperationPrefix(), n.BackupCollection)
+}
+
+func (n *backupName) OperationPrefix() string {
+	return fmt.Sprintf("projects/%s/locations/%s", n.Project.ID, n.Location)
+}
+
+// parseBackupName parses a string into a backup name.
+// The expected form is `projects/*/locations/*/backupCollections/*/backups/*`.
+func (r *instanceServer) parseBackupName(name string) (*backupName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "backupCollections" && tokens[6] == "backups" {
+		project, err := r.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &backupName{
+			Project:          project,
+			Location:         tokens[3],
+			BackupCollection: tokens[5],
+			Name:             tokens[7],
+		}
+
+		return name, nil
+	}
+
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
