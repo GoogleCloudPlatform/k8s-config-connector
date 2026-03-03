@@ -1,0 +1,760 @@
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-us-central1-a-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=memorystoreinstance-us-central1-a-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "nodeType": 1,
+  "replicaCount": 0,
+  "shardCount": 1,
+  "zoneDistributionConfig": {
+    "mode": 2,
+    "zone": "us-central1-a"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
+    "authorizationMode": "AUTH_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260217_02_00",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "engineVersion": "VALKEY_7_2",
+    "mode": "CLUSTER",
+    "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}",
+    "nodeConfig": {
+      "sizeGb": 1.4
+    },
+    "nodeType": "SHARED_CORE_NANO",
+    "persistenceConfig": {
+      "mode": "DISABLED"
+    },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
+    "replicaCount": 0,
+    "satisfiesPzi": true,
+    "shardCount": 1,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "zoneDistributionConfig": {
+      "mode": "SINGLE_ZONE",
+      "zone": "us-central1-a"
+    }
+  }
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-us-central1-b-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=memorystoreinstance-us-central1-b-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "crossInstanceReplicationConfig": {
+    "instanceRole": 3,
+    "primaryInstance": {
+      "instance": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}"
+    }
+  },
+  "nodeType": 1,
+  "replicaCount": 0,
+  "shardCount": 1,
+  "zoneDistributionConfig": {
+    "mode": 2,
+    "zone": "us-central1-b"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
+    "authorizationMode": "AUTH_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossInstanceReplicationConfig": {
+      "instanceRole": "SECONDARY",
+      "membership": {
+        "primaryInstance": {
+          "instance": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}",
+          "uid": "7339e227-0847-41cd-b37e-93962f92803d"
+        },
+        "secondaryInstances": [
+          {
+            "instance": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+            "uid": "446c0636-b3b6-4e6e-8dd9-3797a5c932c3"
+          }
+        ]
+      },
+      "primaryInstance": {
+        "instance": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}",
+        "uid": "7339e227-0847-41cd-b37e-93962f92803d"
+      },
+      "updateTime": "2026-03-03T08:44:28.703337498Z"
+    },
+    "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260217_02_00",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "engineVersion": "VALKEY_7_2",
+    "mode": "CLUSTER",
+    "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+    "nodeConfig": {
+      "sizeGb": 1.4
+    },
+    "nodeType": "SHARED_CORE_NANO",
+    "persistenceConfig": {
+      "mode": "DISABLED"
+    },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
+    "replicaCount": 0,
+    "satisfiesPzi": true,
+    "shardCount": 1,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "zoneDistributionConfig": {
+      "mode": "SINGLE_ZONE",
+      "zone": "us-central1-b"
+    }
+  }
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-us-central1-b-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossInstanceReplicationConfig": {
+    "instanceRole": 3,
+    "membership": {
+      "primaryInstance": {
+        "instance": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}",
+        "uid": "7339e227-0847-41cd-b37e-93962f92803d"
+      },
+      "secondaryInstances": [
+        {
+          "instance": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+          "uid": "446c0636-b3b6-4e6e-8dd9-3797a5c932c3"
+        }
+      ]
+    },
+    "primaryInstance": {
+      "instance": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}",
+      "uid": "7339e227-0847-41cd-b37e-93962f92803d"
+    },
+    "updateTime": "2026-03-03T08:44:28.703337498Z"
+  },
+  "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260217_02_00",
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
+  "engineVersion": "VALKEY_7_2",
+  "mode": 2,
+  "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+  "nodeConfig": {
+    "sizeGb": 1.4
+  },
+  "nodeType": 1,
+  "persistenceConfig": {
+    "mode": 1
+  },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    },
+    {
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    }
+  ],
+  "replicaCount": 0,
+  "satisfiesPzi": true,
+  "shardCount": 1,
+  "state": 2,
+  "transitEncryptionMode": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "zoneDistributionConfig": {
+    "mode": 2,
+    "zone": "us-central1-b"
+  }
+}
+
+---
+
+PATCH https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=crossInstanceReplicationConfig
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-us-central1-b-${uniqueId}
+
+{
+  "crossInstanceReplicationConfig": {
+    "instanceRole": 1,
+    "primaryInstance": {}
+  },
+  "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+  "nodeType": 1,
+  "replicaCount": 0,
+  "shardCount": 1,
+  "zoneDistributionConfig": {
+    "mode": 2,
+    "zone": "us-central1-b"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
+    "authorizationMode": "AUTH_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossInstanceReplicationConfig": {
+      "instanceRole": "NONE",
+      "updateTime": "2026-03-03T08:53:56.705681861Z"
+    },
+    "deletionProtectionEnabled": false,
+    "effectiveMaintenanceVersion": "MEMORYSTORE_20260217_02_00",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "engineVersion": "VALKEY_7_2",
+    "mode": "CLUSTER",
+    "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+    "nodeConfig": {
+      "sizeGb": 1.4
+    },
+    "nodeType": "SHARED_CORE_NANO",
+    "persistenceConfig": {
+      "mode": "DISABLED"
+    },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      },
+      {
+        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+      }
+    ],
+    "replicaCount": 0,
+    "satisfiesPzi": true,
+    "shardCount": 1,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "zoneDistributionConfig": {
+      "mode": "SINGLE_ZONE",
+      "zone": "us-central1-b"
+    }
+  }
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-us-central1-b-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossInstanceReplicationConfig": {
+    "instanceRole": 1,
+    "updateTime": "2026-03-03T08:53:56.705681861Z"
+  },
+  "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260217_02_00",
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
+  "engineVersion": "VALKEY_7_2",
+  "mode": 2,
+  "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+  "nodeConfig": {
+    "sizeGb": 1.4
+  },
+  "nodeType": 1,
+  "persistenceConfig": {
+    "mode": 1
+  },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    },
+    {
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    }
+  ],
+  "replicaCount": 0,
+  "satisfiesPzi": true,
+  "shardCount": 1,
+  "state": 2,
+  "transitEncryptionMode": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "zoneDistributionConfig": {
+    "mode": 2,
+    "zone": "us-central1-b"
+  }
+}
+
+---
+
+DELETE https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-us-central1-b-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-us-central1-a-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossInstanceReplicationConfig": {
+    "instanceRole": 1,
+    "updateTime": "2026-03-03T08:53:56.705681861Z"
+  },
+  "deletionProtectionEnabled": false,
+  "effectiveMaintenanceVersion": "MEMORYSTORE_20260217_02_00",
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
+  "engineVersion": "VALKEY_7_2",
+  "mode": 2,
+  "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}",
+  "nodeConfig": {
+    "sizeGb": 1.4
+  },
+  "nodeType": 1,
+  "persistenceConfig": {
+    "mode": 1
+  },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    },
+    {
+      "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+    }
+  ],
+  "replicaCount": 0,
+  "satisfiesPzi": true,
+  "shardCount": 1,
+  "state": 2,
+  "transitEncryptionMode": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "zoneDistributionConfig": {
+    "mode": 2,
+    "zone": "us-central1-a"
+  }
+}
+
+---
+
+DELETE https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-us-central1-a-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
