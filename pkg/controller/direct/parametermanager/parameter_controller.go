@@ -210,6 +210,12 @@ func (a *ParameterAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	if !reflect.DeepEqual(a.actual.GetLabels(), resource.GetLabels()) {
 		paths = append(paths, "labels")
 	}
+	// Add to update_mask only if format is specified
+	if desired.Spec.Format != nil {
+		if !reflect.DeepEqual(a.actual.GetFormat(), resource.GetFormat()) {
+			paths = append(paths, "format")
+		}
+	}
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
