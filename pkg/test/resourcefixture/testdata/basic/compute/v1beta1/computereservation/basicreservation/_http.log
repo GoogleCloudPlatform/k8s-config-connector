@@ -1,0 +1,85 @@
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/reservations?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "Reservation for 2 basic machines which will become generally available for VM instances to consume.",
+  "name": "computereservation-${uniqueId}",
+  "specificReservation": {
+    "count": "2",
+    "instanceProperties": {
+      "machineType": "n1-standard-1",
+      "minCpuPlatform": "Intel Sandy Bridge"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+
+{
+  "id": "${operationID}",
+  "insertTime": "1970-01-01T00:00:00Z",
+  "kind": "compute#operation",
+  "name": "operation-${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/operations/operation-${operationID}",
+  "startTime": "1970-01-01T00:00:00Z",
+  "status": "DONE",
+  "targetId": "${resourceID}",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+
+{
+  "creationTimestamp": "1970-01-01T00:00:00Z",
+  "description": "Reservation for 2 basic machines which will become generally available for VM instances to consume.",
+  "id": "${resourceID}",
+  "kind": "compute#reservation",
+  "name": "computereservation-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}",
+  "specificReservation": {
+    "count": "2",
+    "inUseCount": "0",
+    "instanceProperties": {
+      "machineType": "n1-standard-1",
+      "minCpuPlatform": "Intel Sandy Bridge"
+    }
+  },
+  "status": "READY",
+  "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a"
+}

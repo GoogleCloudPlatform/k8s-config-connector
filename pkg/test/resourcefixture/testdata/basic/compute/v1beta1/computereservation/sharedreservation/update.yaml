@@ -19,7 +19,7 @@ metadata:
     label-one: "value-one"
   name: computereservation-${uniqueId}
 spec:
-  description: Shared Reservation for 2 machines which will be shared with other projects.
+  description: Shared Reservation for 1 machines which will be shared with other projects.
   zone: us-central1-a
   shareSettings:
     shareType: SPECIFIC_PROJECTS
@@ -33,6 +33,6 @@ spec:
       projectIDRef:
         external: another-project-id-${uniqueId}
   specificReservation:
-    count: 2
+    count: 1
     instanceProperties:
       machineType: n1-standard-1
