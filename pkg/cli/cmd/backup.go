@@ -30,6 +30,7 @@ func NewBackupCmd() *cobra.Command {
 	backupCmd.AddCommand(backup.NewConfigureCmd())
 	backupCmd.AddCommand(backup.NewCreateCmd())
 	backupCmd.AddCommand(backup.NewStatusCmd())
+	backupCmd.AddCommand(backup.NewRestoreCmd())
 
 	return backupCmd
 }
