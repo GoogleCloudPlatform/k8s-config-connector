@@ -74,7 +74,7 @@ func runCreate(ctx context.Context, options *createOptions) error {
 	}
 	defer gcsClient.Close()
 
-	timestamp := time.Now().Format("2006-01-02-15-04-05")
+	timestamp := time.Now().UTC().Format("2006-01-02-15-04-05")
 	clusterName := options.cluster
 	if clusterName == "" {
 		clusterName = "default-cluster"
