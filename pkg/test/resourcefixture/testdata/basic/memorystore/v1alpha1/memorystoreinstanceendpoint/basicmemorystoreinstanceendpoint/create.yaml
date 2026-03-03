@@ -12,12 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
-kind: MemorystoreInstance
+apiVersion: memorystore.cnrm.cloud.google.com/v1alpha1
+kind: MemorystoreInstanceEndpoint
 metadata:
-  name: memorystoreinstance-${uniqueId}
+  name: memorystoreinstanceendpoint-1-${uniqueId}
 spec:
-  location: us-central1
-  projectRef:
-    external: ${projectId}
-  shardCount: 2
+  endpoints:
+    - connections:
+      - pscConnection:
+            forwardingRuleRef:
+              name: computeforwardingrule-1a-${uniqueId}
+      - pscConnection:
+            forwardingRuleRef:
+              name: computeforwardingrule-1b-${uniqueId}
+  instanceRef:
+    name: memorystoreinstance-1-${uniqueId}

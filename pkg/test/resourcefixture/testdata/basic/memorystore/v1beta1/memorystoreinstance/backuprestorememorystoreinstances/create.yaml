@@ -15,9 +15,18 @@
 apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
 kind: MemorystoreInstance
 metadata:
-  name: memorystoreinstance-${uniqueId}
+  name: memorystoreinstance-2-${uniqueId}
 spec:
   location: us-central1
+  managedBackupSource:
+    backupRef:
+      name: memorystoreinstancebackup-1-${uniqueId}
+  mode: CLUSTER_DISABLED
+  nodeType: SHARED_CORE_NANO
   projectRef:
     external: ${projectId}
-  shardCount: 2
+  replicaCount: 0
+  shardCount: 1
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-c

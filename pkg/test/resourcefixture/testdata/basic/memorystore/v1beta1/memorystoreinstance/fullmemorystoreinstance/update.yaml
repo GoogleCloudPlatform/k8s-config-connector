@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,26 +17,13 @@ kind: MemorystoreInstance
 metadata:
   name: memorystore-${uniqueId}
 spec:
-  shardCount: 12
-  location: us-central1
-  projectRef:
-    external: ${projectId}
-  replicaCount: 1
-  nodeType: STANDARD_SMALL
-  transitEncryptionMode: SERVER_AUTHENTICATION
   authorizationMode: IAM_AUTH
-  engineVersion: VALKEY_7_2
-  engineConfigs:
-    maxmemory-policy: volatile-ttl
-    maxclients: '10000'
-  zoneDistributionConfig:
-    mode: SINGLE_ZONE
-    zone: us-central1-b
-  persistenceConfig:
-    mode: RDB
-    rdbConfig:
-      rdbSnapshotPeriod: ONE_HOUR
-      rdbSnapshotStartTime: 2029-10-02T15:01:23Z
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    retention: 86500s
+    fixedFrequencySchedule:
+      startTime:
+        hours: 2
   deletionProtectionEnabled: false
   endpoints:
   - connections:
@@ -45,6 +32,31 @@ spec:
             external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
           projectRef:
             external: ${projectId}
-  mode: CLUSTER
+  engineConfigs:
+    maxclients: '10000'
+    maxmemory-policy: allkeys-lru
+  engineVersion: VALKEY_8_0
   labels:
-    keyx: valx
+    key2: val2modified
+    key3: val3
+  location: us-central1
+  maintenancePolicy:
+    weeklyMaintenanceWindow:
+      - day: MONDAY
+        startTime:
+          hours: 1
+  mode: CLUSTER
+  nodeType: STANDARD_SMALL
+  persistenceConfig:
+    mode: RDB
+    rdbConfig:
+      rdbSnapshotPeriod: ONE_HOUR
+      rdbSnapshotStartTime: 2029-10-02T15:01:23Z
+  projectRef:
+    external: ${projectId}
+  replicaCount: 2
+  shardCount: 2
+  transitEncryptionMode: SERVER_AUTHENTICATION
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-b

@@ -15,46 +15,19 @@
 apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
 kind: MemorystoreInstance
 metadata:
-  name: memorystore-${uniqueId}
+  name: memorystoreinstance-us-central1-b-${uniqueId}
 spec:
-  authorizationMode: IAM_AUTH
-  automatedBackupConfig:
-    automatedBackupMode: ENABLED
-    retention: 86400s
-    fixedFrequencySchedule:
-      startTime:
-        hours: 1
-  deletionProtectionEnabled: true
-  endpoints:
-  - connections:
-    - pscAutoConnection:
-          networkRef:
-            external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
-          projectRef:
-            external: ${projectId}
-  engineConfigs:
-    maxmemory-policy: volatile-ttl
-  engineVersion: VALKEY_7_2
-  labels:
-    key1: val1
-    key2: val2
+  crossInstanceReplicationConfig:
+    instanceRole: SECONDARY
+    primaryInstance:
+      instanceRef:
+        name: memorystoreinstance-us-central1-a-${uniqueId}
   location: us-central1
-  maintenancePolicy:
-    weeklyMaintenanceWindow:
-      - day: WEDNESDAY
-        startTime:
-          hours: 3
-  mode: CLUSTER
   nodeType: SHARED_CORE_NANO
-  persistenceConfig:
-    mode: AOF
-    aofConfig:
-      appendFsync: EVERY_SEC
   projectRef:
     external: ${projectId}
-  replicaCount: 1
+  replicaCount: 0
   shardCount: 1
-  transitEncryptionMode: SERVER_AUTHENTICATION
   zoneDistributionConfig:
     mode: SINGLE_ZONE
     zone: us-central1-b
