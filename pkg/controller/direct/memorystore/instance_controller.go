@@ -20,6 +20,7 @@ import (
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
+	refsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -111,19 +112,51 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 					}
 				}
 			}
-			// if connection.PscConnection != nil {
-			// 	userConnection := connection.PscConnection
-			// 	if userConnection.NetworkRef != nil {
-			// 		if err := userConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
-			// 			return err
-			// 		}
-			// 	}
-			// 	if err := refs.ResolveComputeServiceAttachment(ctx, reader, obj.GetNamespace(), userConnection.ServiceAttachmentRef); err != nil {
-			// 		return err
-			// 	}
-			// }
 		}
 	}
+	if obj.Spec.CrossInstanceReplicationConfig != nil {
+		crr := obj.Spec.CrossInstanceReplicationConfig
+		instanceRole := ""
+		if crr.InstanceRole != nil {
+			instanceRole = *crr.InstanceRole
+		}
+		switch instanceRole {
+		case "PRIMARY":
+			for _, secondaryInstance := range crr.SecondaryInstances {
+				if err := resolveRemoteInstanceRef(ctx, reader, obj, &secondaryInstance); err != nil {
+					return err
+				}
+			}
+		case "SECONDARY":
+			if err := resolveRemoteInstanceRef(ctx, reader, obj, crr.PrimaryInstance); err != nil {
+				return err
+			}
+		default:
+			// do nothing
+		}
+	}
+	if obj.Spec.ManagedBackupSource != nil && obj.Spec.ManagedBackupSource.BackupRef != nil {
+		ref, err := refsv1alpha1.ResolveMemorystoreInstanceBackup(ctx, reader, obj, obj.Spec.ManagedBackupSource.BackupRef)
+		if err != nil {
+			return err
+		}
+		obj.Spec.ManagedBackupSource.BackupRef.External = ref.External
+	}
+	return nil
+}
+
+func resolveRemoteInstanceRef(ctx context.Context, reader client.Reader, obj *krm.MemorystoreInstance, remoteInstance *krm.CrossInstanceReplicationConfig_RemoteInstance) error {
+	if remoteInstance == nil {
+		return nil
+	}
+	if remoteInstance.InstanceRef == nil {
+		return fmt.Errorf("InstanceRef is nil")
+	}
+	ref, err := refs.ResolveMemorystoreInstance(ctx, reader, obj, remoteInstance.InstanceRef)
+	if err != nil {
+		return err
+	}
+	remoteInstance.InstanceRef.External = ref.External
 	return nil
 }
 
@@ -159,6 +192,7 @@ func (a *InstanceAdapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	a.actual = instancepb
+	a.desired.Status.ExternalRef = direct.LazyPtr(a.id.String())
 	return true, nil
 }
 
@@ -187,6 +221,7 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if err != nil {
 		return fmt.Errorf("Instance %s waiting creation: %w", a.id, err)
 	}
+	a.actual = created
 	log.V(2).Info("successfully created Instance", "name", a.id)
 
 	status := &krm.MemorystoreInstanceStatus{}
@@ -224,7 +259,12 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	var paths []string
 
-	// If replica count is unset, the field become unmanaged.
+	// If a field is unset, the field become unmanaged.
+	// see https://docs.cloud.google.com/config-connector/docs/concepts/ignore-unspecified-fields
+	if a.desired.Spec.Labels != nil && !reflect.DeepEqual(desiredPb.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, desiredPb.Labels)
+		paths = append(paths, "labels")
+	}
 	if a.desired.Spec.ReplicaCount != nil && !reflect.DeepEqual(desiredPb.ReplicaCount, a.actual.ReplicaCount) {
 		report.AddField("replica_count", a.actual.ReplicaCount, desiredPb.ReplicaCount)
 		paths = append(paths, "replica_count")
@@ -233,33 +273,37 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		report.AddField("shard_count", a.actual.ShardCount, desiredPb.ShardCount)
 		paths = append(paths, "shard_count")
 	}
-	if a.desired.Spec.DeletionProtectionEnabled != nil && !reflect.DeepEqual(desiredPb.DeletionProtectionEnabled, a.actual.DeletionProtectionEnabled) {
-		report.AddField("deletion_protection_enabled", a.actual.DeletionProtectionEnabled, desiredPb.DeletionProtectionEnabled)
-		paths = append(paths, "deletion_protection_enabled")
+	if a.desired.Spec.NodeType != nil && !reflect.DeepEqual(desiredPb.NodeType, a.actual.NodeType) {
+		report.AddField("node_type", a.actual.NodeType, desiredPb.NodeType)
+		paths = append(paths, "node_type")
 	}
 	if a.desired.Spec.PersistenceConfig != nil && !reflect.DeepEqual(desiredPb.PersistenceConfig, a.actual.PersistenceConfig) {
 		report.AddField("persistence_config", a.actual.PersistenceConfig, desiredPb.PersistenceConfig)
 		paths = append(paths, "persistence_config")
 	}
-	if a.desired.Spec.EngineConfigs != nil && !reflect.DeepEqual(desiredPb.EngineConfigs, a.actual.EngineConfigs) {
-		report.AddField("engine_configs", a.actual.EngineConfigs, desiredPb.EngineConfigs)
-		paths = append(paths, "engine_configs")
-	}
-	if a.desired.Spec.Endpoints != nil && !reflect.DeepEqual(desiredPb.Endpoints, a.actual.Endpoints) {
-		report.AddField("endpoints", a.actual.Endpoints, desiredPb.Endpoints)
-		paths = append(paths, "endpoints")
-	}
-	if a.desired.Spec.Labels != nil && !reflect.DeepEqual(desiredPb.Labels, a.actual.Labels) {
-		report.AddField("labels", a.actual.Labels, desiredPb.Labels)
-		paths = append(paths, "labels")
-	}
 	if a.desired.Spec.EngineVersion != nil && !reflect.DeepEqual(desiredPb.EngineVersion, a.actual.EngineVersion) {
 		report.AddField("engine_version", a.actual.EngineVersion, desiredPb.EngineVersion)
 		paths = append(paths, "engine_version")
 	}
-	if a.desired.Spec.NodeType != nil && !reflect.DeepEqual(desiredPb.NodeType, a.actual.NodeType) {
-		report.AddField("node_type", a.actual.NodeType, desiredPb.NodeType)
-		paths = append(paths, "node_type")
+	if a.desired.Spec.EngineConfigs != nil && !reflect.DeepEqual(desiredPb.EngineConfigs, a.actual.EngineConfigs) {
+		report.AddField("engine_configs", a.actual.EngineConfigs, desiredPb.EngineConfigs)
+		paths = append(paths, "engine_configs")
+	}
+	if a.desired.Spec.DeletionProtectionEnabled != nil && !reflect.DeepEqual(desiredPb.DeletionProtectionEnabled, a.actual.DeletionProtectionEnabled) {
+		report.AddField("deletion_protection_enabled", a.actual.DeletionProtectionEnabled, desiredPb.DeletionProtectionEnabled)
+		paths = append(paths, "deletion_protection_enabled")
+	}
+	if a.desired.Spec.MaintenancePolicy != nil && !reflect.DeepEqual(desiredPb.MaintenancePolicy, a.actual.MaintenancePolicy) {
+		report.AddField("maintenance_policy", a.actual.MaintenancePolicy, desiredPb.MaintenancePolicy)
+		paths = append(paths, "maintenance_policy")
+	}
+	if a.desired.Spec.CrossInstanceReplicationConfig != nil && !reflect.DeepEqual(desiredPb.CrossInstanceReplicationConfig, a.actual.CrossInstanceReplicationConfig) {
+		report.AddField("cross_instance_replication_config", a.actual.CrossInstanceReplicationConfig, desiredPb.CrossInstanceReplicationConfig)
+		paths = append(paths, "cross_instance_replication_config")
+	}
+	if a.desired.Spec.AutomatedBackupConfig != nil && !reflect.DeepEqual(desiredPb.AutomatedBackupConfig, a.actual.AutomatedBackupConfig) {
+		report.AddField("automated_backup_config", a.actual.AutomatedBackupConfig, desiredPb.AutomatedBackupConfig)
+		paths = append(paths, "automated_backup_config")
 	}
 
 	updated := a.actual
@@ -285,6 +329,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 			if err != nil {
 				return fmt.Errorf("instance %s waiting update: %w", a.id, err)
 			}
+			a.actual = updated
 			log.V(2).Info("successfully updated Instance", "name", a.id, "updateMask", path)
 		}
 		log.V(2).Info("successfully updated Instance", "name", a.id)
@@ -295,6 +340,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 

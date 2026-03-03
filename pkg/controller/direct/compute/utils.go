@@ -16,6 +16,7 @@ package compute
 
 import (
 	"reflect"
+	"regexp"
 	"strings"
 )
 
@@ -53,5 +54,35 @@ func IsSelfLinkEqual(a, b *string) bool {
 			}
 		}
 	}
-	return aVal == bVal
+	if aVal == bVal {
+		return true
+	}
+
+	// handle the diff when on self link uses projectId while the other uses projectNumber, for example:
+	// a := "projects/509363992912/regions/us-central1/serviceAttachments/gcp-memorystore-auto-f50eb3307cbb3bc2-psc-sa"
+	// b := "projects/l7eded49c6ec938cfp-tp/regions/us-central1/serviceAttachments/gcp-memorystore-auto-f50eb3307cbb3bc2-psc-sa"
+	// we assume that (projectNumber = 509363992912) is the same as (projectId = "l7eded49c6ec938cfp-tp"), hence (a == b)
+	aTokens := strings.Split(aVal, "/")
+	bTokens := strings.Split(bVal, "/")
+	if len(aTokens) != len(bTokens) {
+		return false
+	}
+	for i, aToken := range aTokens {
+		if i != 1 {
+			if aToken != bTokens[i] {
+				return false
+			}
+		} else {
+			// if one use projectId but the other use projectNumber
+			// assume they are a match
+			re := regexp.MustCompile(`^[0-9]+$`)
+			aUseProjectNumber := re.MatchString(aTokens[1])
+			bUseProjectNumber := re.MatchString(bTokens[1])
+			if aUseProjectNumber == bUseProjectNumber {
+				return false
+			}
+		}
+	}
+
+	return true
 }
