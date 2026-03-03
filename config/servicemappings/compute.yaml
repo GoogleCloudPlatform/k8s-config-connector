@@ -36,6 +36,12 @@ spec:
       observedFields:
         - address
       resourceReferences:
+        - key: ipCollectionRef
+          tfField: ip_collection
+          description: |-
+            The URL of the PublicDelegatedPrefix resource to which the IP
+            addresses in this collection belong. Note: this field can only be
+            used with EXTERNAL type with IPV4_PD purpose.
         - key: networkRef
           tfField: network
           description: |-
@@ -561,6 +567,12 @@ spec:
       observedFields:
         - address
       resourceReferences:
+        - key: ipCollectionRef
+          tfField: ip_collection
+          description: |-
+            The URL of the PublicDelegatedPrefix resource to which the IP
+            addresses in this collection belong. Note: this field can only be
+            used with EXTERNAL type with IPV4_PD purpose.
         - key: networkRef
           tfField: network
           description: |-
