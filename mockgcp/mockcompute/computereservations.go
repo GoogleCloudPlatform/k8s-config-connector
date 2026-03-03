@@ -77,6 +77,9 @@ func (s *ReservationsV1) Insert(ctx context.Context, req *pb.InsertReservationRe
 	obj.Kind = PtrTo("compute#reservation")
 	obj.Zone = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", name.Project.ID, name.Zone)))
 	obj.Status = PtrTo("READY")
+	if obj.SpecificReservation != nil {
+		obj.SpecificReservation.InUseCount = PtrTo(int64(0))
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -104,18 +107,36 @@ func (s *ReservationsV1) Update(ctx context.Context, req *pb.UpdateReservationRe
 
 	update := req.GetReservationResource()
 	if update.ShareSettings != nil {
-		obj.ShareSettings = update.ShareSettings
+		if obj.ShareSettings == nil {
+			obj.ShareSettings = &pb.ShareSettings{}
+		}
+		if update.ShareSettings.ShareType != nil {
+			obj.ShareSettings.ShareType = update.ShareSettings.ShareType
+		}
+		if update.ShareSettings.ProjectMap != nil {
+			if obj.ShareSettings.ProjectMap == nil {
+				obj.ShareSettings.ProjectMap = make(map[string]*pb.ShareSettingsProjectConfig)
+			}
+			for k, v := range update.ShareSettings.ProjectMap {
+				obj.ShareSettings.ProjectMap[k] = v
+			}
+		}
 	}
-	// proto.Merge merges maps and messages; since we already replaced ShareSettings,
-	// we want to avoid merging it again.
+
+	// For other fields, we use proto.Merge
 	updateCopy := proto.Clone(update).(*pb.Reservation)
 	updateCopy.ShareSettings = nil
 	proto.Merge(obj, updateCopy)
 
-	if obj.GetShareSettings().GetShareType() == "SPECIFIC_PROJECTS" {
+	if obj.GetShareSettings() != nil && obj.GetShareSettings().GetShareType() == "SPECIFIC_PROJECTS" {
 		if len(obj.GetShareSettings().GetProjectMap()) == 0 {
 			return nil, status.Errorf(codes.InvalidArgument, "project_map is required when share_type is SPECIFIC_PROJECTS")
 		}
+	}
+
+	obj.Status = PtrTo("READY")
+	if obj.SpecificReservation != nil {
+		obj.SpecificReservation.InUseCount = PtrTo(int64(0))
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
