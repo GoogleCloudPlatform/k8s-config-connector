@@ -94,7 +94,7 @@ func NewPolicyTagIdentity(ctx context.Context, reader client.Reader, obj *DataCa
 			return nil, fmt.Errorf("Location changed, expect %s, got %s", actualParent.Location, location)
 		}
 		if actualParent.TaxonomyID != taxonomyID {
-			return nil, fmt.Errorf("Taxonomy Id changed, expect %s, got %s", actualParent.TaxonomyID, taxonomyID)
+			return nil, fmt.Errorf("Taxonomy ID changed, expect %s, got %s", actualParent.TaxonomyID, taxonomyID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -114,7 +114,7 @@ func NewPolicyTagIdentity(ctx context.Context, reader client.Reader, obj *DataCa
 func ParsePolicyTagExternal(external string) (parent *PolicyTagParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "taxonomies" || tokens[6] != "policyTags" {
-		return nil, "", fmt.Errorf("format of DataCatalogPolicyTag external=%q was not known (use projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}}/policyTags/{{policytagID}})", external)
+		return nil, "", fmt.Errorf("format of DataCatalogPolicyTag external=%q was not known (use projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}}/policyTags/{{policyTagID}})", external)
 	}
 	parent = &PolicyTagParent{
 		ProjectID:  tokens[1],
