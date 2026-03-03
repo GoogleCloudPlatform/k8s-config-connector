@@ -1,0 +1,55 @@
+apiVersion: memorystore.cnrm.cloud.google.com/v1alpha1
+kind: MemorystoreInstanceEndpoint
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: memorystoreinstanceendpoint-1-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  endpoints:
+  - connections:
+    - pscConnection:
+        forwardingRuleRef:
+          name: ${forwardingRuleID}
+    - pscConnection:
+        forwardingRuleRef:
+          name: ${forwardingRuleID}
+  - connections:
+    - pscConnection:
+        forwardingRuleRef:
+          name: ${forwardingRuleID}
+    - pscConnection:
+        forwardingRuleRef:
+          name: ${forwardingRuleID}
+  instanceRef:
+    name: memorystoreinstance-1-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2
+  observedState:
+    endpoints:
+    - connections:
+      - pscConnection:
+          connectionType: CONNECTION_TYPE_DISCOVERY
+          projectID: ${projectId}
+          pscConnectionStatus: ACTIVE
+      - pscConnection:
+          projectID: ${projectId}
+          pscConnectionStatus: ACTIVE
+    - connections:
+      - pscConnection:
+          connectionType: CONNECTION_TYPE_DISCOVERY
+          projectID: ${projectId}
+          pscConnectionStatus: ACTIVE
+      - pscConnection:
+          projectID: ${projectId}
+          pscConnectionStatus: ACTIVE
