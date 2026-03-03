@@ -60,6 +60,26 @@ func TestConfigConnectorContextE2E(t *testing.T) {
 		t.Fatalf("failed to create ConfigConnector: %v", err)
 	}
 
+	// Wait for ConfigConnector to be healthy
+	ccKey := client.ObjectKeyFromObject(cc)
+	err := wait.PollUntilContextTimeout(ctx, 1*time.Second, 60*time.Second, true, func(ctx context.Context) (bool, error) {
+		newCC := &corev1beta1.ConfigConnector{}
+		if err := c.Get(ctx, ccKey, newCC); err != nil {
+			return false, err
+		}
+		status := newCC.GetCommonStatus()
+		if status.ObservedGeneration != newCC.Generation {
+			return false, nil
+		}
+		if !status.Healthy {
+			return false, nil
+		}
+		return true, nil
+	})
+	if err != nil {
+		t.Fatalf("error waiting for ConfigConnector to become healthy: %v", err)
+	}
+
 	ccc := &corev1beta1.ConfigConnectorContext{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      corev1beta1.ConfigConnectorContextAllowedName,
@@ -76,7 +96,7 @@ func TestConfigConnectorContextE2E(t *testing.T) {
 	}
 
 	// Poll for status/observedGeneration
-	err := wait.PollImmediate(1*time.Second, 60*time.Second, func() (bool, error) {
+	err = wait.PollUntilContextTimeout(ctx, 1*time.Second, 60*time.Second, true, func(ctx context.Context) (bool, error) {
 		newCCC := &corev1beta1.ConfigConnectorContext{}
 		if err := c.Get(ctx, nn, newCCC); err != nil {
 			return false, err

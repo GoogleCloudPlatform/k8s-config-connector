@@ -43,7 +43,7 @@ func TestConfigConnectorE2E(t *testing.T) {
 
 	apiVersion, kind := corev1beta1.ConfigConnectorGroupVersionKind.ToAPIVersionAndKind()
 	nn := types.NamespacedName{
-		Name: "configconnector.core.cnrm.cloud.google.com",
+		Name: corev1beta1.ConfigConnectorAllowedName,
 	}
 
 	cc := &corev1beta1.ConfigConnector{
@@ -64,7 +64,7 @@ func TestConfigConnectorE2E(t *testing.T) {
 	}
 
 	// Poll for status/observedGeneration
-	err := wait.PollImmediate(1*time.Second, 60*time.Second, func() (bool, error) {
+	err := wait.PollUntilContextTimeout(ctx, 1*time.Second, 60*time.Second, true, func(ctx context.Context) (bool, error) {
 		newCC := &corev1beta1.ConfigConnector{}
 		if err := c.Get(ctx, nn, newCC); err != nil {
 			return false, err
