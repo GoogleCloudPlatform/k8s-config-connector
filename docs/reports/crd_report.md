@@ -234,7 +234,6 @@
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineDataStore                        | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineDataStoreTargetSite              | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineEngine                           | True         | False       | False  | Direct     | True        |
-| discoveryengine.cnrm.cloud.google.com         | DiscoveryEngineSchema                           | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                     | DLPDeidentifyTemplate                           | False        | True        | False  | DCL        | False       |
 | dlp.cnrm.cloud.google.com                     | DLPInspectTemplate                              | False        | True        | False  | DCL        | False       |
 | dlp.cnrm.cloud.google.com                     | DLPJobTrigger                                   | False        | True        | False  | DCL        | False       |
