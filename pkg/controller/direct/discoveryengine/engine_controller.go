@@ -28,6 +28,7 @@ import (
 	gcp "cloud.google.com/go/discoveryengine/apiv1"
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -147,7 +148,7 @@ func (a *engineAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating discoveryengine engine", "name", a.id)
 
-	desired := direct.ProtoClone(a.desired)
+	desired := proto.CloneOf(a.desired)
 	desired.Name = a.id.String()
 
 	req := &pb.CreateEngineRequest{
@@ -179,7 +180,7 @@ func (a *engineAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating discoveryengine engine", "name", a.id)
 
-	desired := direct.ProtoClone(a.desired)
+	desired := proto.CloneOf(a.desired)
 	desired.Name = a.id.String()
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}

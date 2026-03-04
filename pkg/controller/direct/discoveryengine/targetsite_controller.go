@@ -27,6 +27,7 @@ import (
 	gcp "cloud.google.com/go/discoveryengine/apiv1"
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -148,7 +149,7 @@ func (a *targetSiteAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating discoveryengine targetsite", "dataStoreID", a.dataStoreID)
 
-	desired := direct.ProtoClone(a.desired)
+	desired := proto.CloneOf(a.desired)
 
 	req := &pb.CreateTargetSiteRequest{
 		Parent:     a.dataStoreID.String() + "/siteSearchEngine",
