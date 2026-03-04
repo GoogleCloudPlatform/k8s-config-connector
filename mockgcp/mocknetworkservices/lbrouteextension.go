@@ -100,10 +100,11 @@ func (s *NetworkServicesServer) CreateLbRouteExtension(ctx context.Context, req 
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Target:     name.String(),
-		Verb:       "create",
-		ApiVersion: "v1",
+		CreateTime:            timestamppb.New(now),
+		Target:                name.String(),
+		Verb:                  "create",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
@@ -167,10 +168,11 @@ func (s *NetworkServicesServer) UpdateLbRouteExtension(ctx context.Context, req 
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Target:     name.String(),
-		Verb:       "update",
-		ApiVersion: "v1",
+		CreateTime:            timestamppb.New(now),
+		Target:                name.String(),
+		Verb:                  "update",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
@@ -193,10 +195,11 @@ func (s *NetworkServicesServer) DeleteLbRouteExtension(ctx context.Context, req 
 
 	now := time.Now()
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Target:     name.String(),
-		Verb:       "delete",
-		ApiVersion: "v1",
+		CreateTime:            timestamppb.New(now),
+		Target:                name.String(),
+		Verb:                  "delete",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
 	}
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {

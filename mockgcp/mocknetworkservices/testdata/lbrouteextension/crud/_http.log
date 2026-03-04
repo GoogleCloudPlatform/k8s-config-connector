@@ -195,7 +195,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
@@ -209,7 +208,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -306,7 +306,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
@@ -321,6 +320,7 @@ X-Xss-Protection: 0
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "role": "ACTIVE",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "stackType": "IPV4_ONLY",
   "state": "READY"
 }
 
@@ -409,7 +409,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -454,7 +454,7 @@ Content-Type: application/json
 
 {
   "healthChecks": [
-    "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
   ],
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "${backendServiceID}",
@@ -573,7 +573,7 @@ Content-Type: application/json
 
 {
   "healthChecks": [
-    "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
   ],
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "${backendServiceID}",
@@ -643,7 +643,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -691,7 +691,7 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "defaultService": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "name": "${urlMapID}"
 }
 
@@ -757,7 +757,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -793,7 +793,7 @@ Content-Type: application/json
 
 {
   "name": "${targetHttpProxyID}",
-  "urlMap": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
+  "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
 }
 
 200 OK
@@ -858,7 +858,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}?alt=json
+GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -897,7 +897,7 @@ Content-Type: application/json
   "name": "${forwardingRuleID}",
   "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "portRange": "80",
-  "target": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}"
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}"
 }
 
 200 OK
@@ -1065,12 +1065,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
     "verb": "create"
   },
@@ -1101,7 +1099,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
     "verb": "create"
   },
@@ -1115,7 +1112,7 @@ X-Xss-Protection: 0
           {
             "authority": "ext1.com",
             "name": "ext1",
-            "service": "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/backendServices/${backendServiceID}",
+            "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
             "timeout": "0.100s"
           }
         ],
@@ -1126,7 +1123,7 @@ X-Xss-Protection: 0
       }
     ],
     "forwardingRules": [
-      "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/forwardingRules/${forwardingRuleID}"
+      "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
     ],
     "loadBalancingScheme": "EXTERNAL_MANAGED",
     "name": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
@@ -1159,7 +1156,7 @@ X-Xss-Protection: 0
         {
           "authority": "ext1.com",
           "name": "ext1",
-          "service": "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/backendServices/${backendServiceID}",
+          "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
           "timeout": "0.100s"
         }
       ],
@@ -1170,7 +1167,7 @@ X-Xss-Protection: 0
     }
   ],
   "forwardingRules": [
-    "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/forwardingRules/${forwardingRuleID}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
   ],
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
@@ -1221,12 +1218,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
     "verb": "update"
   },
@@ -1257,7 +1252,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
     "verb": "update"
   },
@@ -1272,7 +1266,7 @@ X-Xss-Protection: 0
           {
             "authority": "ext1.com",
             "name": "ext1",
-            "service": "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/backendServices/${backendServiceID}",
+            "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
             "timeout": "0.100s"
           }
         ],
@@ -1283,7 +1277,7 @@ X-Xss-Protection: 0
       }
     ],
     "forwardingRules": [
-      "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/forwardingRules/${forwardingRuleID}"
+      "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
     ],
     "loadBalancingScheme": "EXTERNAL_MANAGED",
     "name": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
@@ -1317,7 +1311,7 @@ X-Xss-Protection: 0
         {
           "authority": "ext1.com",
           "name": "ext1",
-          "service": "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/backendServices/${backendServiceID}",
+          "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
           "timeout": "0.100s"
         }
       ],
@@ -1328,7 +1322,7 @@ X-Xss-Protection: 0
     }
   ],
   "forwardingRules": [
-    "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/forwardingRules/${forwardingRuleID}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
   ],
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
@@ -1363,7 +1357,7 @@ X-Xss-Protection: 0
             {
               "authority": "ext1.com",
               "name": "ext1",
-              "service": "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/backendServices/${backendServiceID}",
+              "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
               "timeout": "0.100s"
             }
           ],
@@ -1374,7 +1368,7 @@ X-Xss-Protection: 0
         }
       ],
       "forwardingRules": [
-        "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/forwardingRules/${forwardingRuleID}"
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
       ],
       "loadBalancingScheme": "EXTERNAL_MANAGED",
       "name": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
@@ -1401,12 +1395,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
     "verb": "delete"
   },
@@ -1437,7 +1429,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
     "verb": "delete"
   },
@@ -1516,7 +1507,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}?alt=json
+DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -1583,7 +1574,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
+DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -1645,6 +1636,73 @@ X-Xss-Protection: 0
   "status": "DONE",
   "targetId": "${urlMapID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}",
+  "user": "user@example.com"
+}
+
+---
+
+DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}/wait?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "user": "user@example.com"
 }
 
@@ -1717,74 +1775,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${backendServiceID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
-  "user": "user@example.com"
-}
-
----
-
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}/wait?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "delete",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${backendServiceID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
-  "user": "user@example.com"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
+DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive

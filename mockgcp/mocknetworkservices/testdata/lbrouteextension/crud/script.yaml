@@ -47,6 +47,7 @@
 - exec: gcloud service-extensions lb-route-extensions describe test-${uniqueId} --location=us-central1 --project=${projectId}
 - exec: gcloud service-extensions lb-route-extensions list --location=us-central1 --project=${projectId}
 - exec: gcloud service-extensions lb-route-extensions delete test-${uniqueId} --location=us-central1 --project=${projectId} --quiet
+- exec: rm route-extension.yaml route-extension-update.yaml
 - exec: gcloud compute forwarding-rules delete test-fr-${uniqueId} --region=us-central1 --project=${projectId} --quiet
 - exec: gcloud compute target-http-proxies delete test-tp-${uniqueId} --region=us-central1 --project=${projectId} --quiet
 - exec: gcloud compute url-maps delete test-um-${uniqueId} --region=us-central1 --project=${projectId} --quiet
