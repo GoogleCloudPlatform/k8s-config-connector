@@ -43,6 +43,9 @@ func (s *ReservationsV1) Get(ctx context.Context, req *pb.GetReservationRequest)
 
 	obj := &pb.Reservation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -126,6 +129,13 @@ func (s *ReservationsV1) Update(ctx context.Context, req *pb.UpdateReservationRe
 	// For other fields, we use proto.Merge
 	updateCopy := proto.Clone(update).(*pb.Reservation)
 	updateCopy.ShareSettings = nil
+	// Preserve immutable fields
+	updateCopy.Zone = nil
+	updateCopy.SelfLink = nil
+	updateCopy.Id = nil
+	updateCopy.Kind = nil
+	updateCopy.Status = nil
+	updateCopy.CreationTimestamp = nil
 	proto.Merge(obj, updateCopy)
 
 	if obj.GetShareSettings() != nil && obj.GetShareSettings().GetShareType() == "SPECIFIC_PROJECTS" {

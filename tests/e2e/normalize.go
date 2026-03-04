@@ -120,6 +120,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
+	// Specific to ComputeReservation
+	visitor.sortSlices.Insert(".spec.shareSettings.projectMap")
+
 	// Specific to Dataflow
 	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
 
@@ -1026,7 +1029,12 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	// Remove header in response.
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
+	events.RemoveHTTPResponseHeader("Server")
 	events.RemoveHTTPResponseHeader("Server-Timing")
+	events.RemoveHTTPResponseHeader("Vary")
+	events.RemoveHTTPResponseHeader("X-Content-Type-Options")
+	events.RemoveHTTPResponseHeader("X-Frame-Options")
+	events.RemoveHTTPResponseHeader("X-Xss-Protection")
 	events.RemoveHTTPResponseHeader("X-Debug-Tracking-Id")
 	events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
 	events.RemoveHTTPResponseHeader("Etag")
@@ -1184,6 +1192,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.SortSlice(".access")
 		visitor.ReplacePath(".access[].userByEmail", "user@google.com")
 	}
+
+	// Specific to ComputeReservation
+	visitor.SortSlice(".shareSettings.projectMap")
 
 	// BigQueryConnection
 	{
