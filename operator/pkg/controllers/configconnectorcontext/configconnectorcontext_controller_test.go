@@ -985,7 +985,7 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 	mockEventRecorder.AssertEventRecorded(kind, nn, v1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
 
 	newCCC := &corev1beta1.ConfigConnectorContext{}
-	err = wait.PollUntilContextTimeout(ctx, 100*time.Millisecond, 10*time.Second, true, func(ctx context.Context) (bool, error) {
+	err := wait.PollUntilContextTimeout(ctx, 100*time.Millisecond, 10*time.Second, true, func(ctx context.Context) (bool, error) {
 		if err := c.Get(ctx, nn, newCCC); err != nil {
 			return false, err
 		}
