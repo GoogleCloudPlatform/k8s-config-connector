@@ -263,6 +263,66 @@ func ComputeSubnetworkStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: SystemReservedInternalIPV6Ranges
 	return out
 }
+func ComputeURLMapHTTPRouteAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRouteAction) *krm.ComputeURLMapHTTPRouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeURLMapHTTPRouteAction{}
+	out.CorsPolicy = CorsPolicy_v1beta1_FromProto(mapCtx, in.GetCorsPolicy())
+	out.FaultInjectionPolicy = HTTPFaultInjection_v1beta1_FromProto(mapCtx, in.GetFaultInjectionPolicy())
+	out.MaxStreamDuration = Duration_v1beta1_FromProto(mapCtx, in.GetMaxStreamDuration())
+	out.RequestMirrorPolicy = ComputeURLMapRequestMirrorPolicy_v1beta1_FromProto(mapCtx, in.GetRequestMirrorPolicy())
+	out.RetryPolicy = HTTPRetryPolicy_v1beta1_FromProto(mapCtx, in.GetRetryPolicy())
+	out.Timeout = Duration_v1beta1_FromProto(mapCtx, in.GetTimeout())
+	out.URLRewrite = URLRewrite_v1beta1_FromProto(mapCtx, in.GetUrlRewrite())
+	out.WeightedBackendServices = direct.Slice_FromProto(mapCtx, in.WeightedBackendServices, ComputeURLMapWeightedBackendService_v1beta1_FromProto)
+	return out
+}
+func ComputeURLMapHTTPRouteAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapHTTPRouteAction) *pb.HttpRouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRouteAction{}
+	out.CorsPolicy = CorsPolicy_v1beta1_ToProto(mapCtx, in.CorsPolicy)
+	out.FaultInjectionPolicy = HTTPFaultInjection_v1beta1_ToProto(mapCtx, in.FaultInjectionPolicy)
+	out.MaxStreamDuration = Duration_v1beta1_ToProto(mapCtx, in.MaxStreamDuration)
+	out.RequestMirrorPolicy = ComputeURLMapRequestMirrorPolicy_v1beta1_ToProto(mapCtx, in.RequestMirrorPolicy)
+	out.RetryPolicy = HTTPRetryPolicy_v1beta1_ToProto(mapCtx, in.RetryPolicy)
+	out.Timeout = Duration_v1beta1_ToProto(mapCtx, in.Timeout)
+	out.UrlRewrite = URLRewrite_v1beta1_ToProto(mapCtx, in.URLRewrite)
+	out.WeightedBackendServices = direct.Slice_ToProto(mapCtx, in.WeightedBackendServices, ComputeURLMapWeightedBackendService_v1beta1_ToProto)
+	return out
+}
+func ComputeURLMapHTTPRouteRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRouteRule) *krm.ComputeURLMapHTTPRouteRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeURLMapHTTPRouteRule{}
+	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetCustomErrorResponsePolicy())
+	out.Description = in.Description
+	out.HeaderAction = HTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
+	out.MatchRules = direct.Slice_FromProto(mapCtx, in.MatchRules, HTTPRouteRuleMatch_v1beta1_FromProto)
+	out.Priority = in.Priority
+	out.RouteAction = ComputeURLMapHTTPRouteAction_v1beta1_FromProto(mapCtx, in.GetRouteAction())
+	out.Service = ComputeURLMapDefaultService_v1beta1_FromProto(mapCtx, in.Service)
+	out.URLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetUrlRedirect())
+	return out
+}
+func ComputeURLMapHTTPRouteRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapHTTPRouteRule) *pb.HttpRouteRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRouteRule{}
+	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.CustomErrorResponsePolicy)
+	out.Description = in.Description
+	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
+	out.MatchRules = direct.Slice_ToProto(mapCtx, in.MatchRules, HTTPRouteRuleMatch_v1beta1_ToProto)
+	out.Priority = in.Priority
+	out.RouteAction = ComputeURLMapHTTPRouteAction_v1beta1_ToProto(mapCtx, in.RouteAction)
+	out.Service = ComputeURLMapDefaultService_v1beta1_ToProto(mapCtx, in.Service)
+	out.UrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.URLRedirect)
+	return out
+}
 func ComputeURLMapObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMap) *krm.ComputeURLMapObservedState {
 	if in == nil {
 		return nil
@@ -270,7 +330,7 @@ func ComputeURLMapObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	out := &krm.ComputeURLMapObservedState{}
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Fingerprint = in.Fingerprint
-	// MISSING: ID
+	out.ID = in.Id
 	// MISSING: Kind
 	// MISSING: Name
 	// MISSING: Region
@@ -284,11 +344,87 @@ func ComputeURLMapObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out := &pb.UrlMap{}
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Fingerprint = in.Fingerprint
-	// MISSING: ID
+	out.Id = in.ID
 	// MISSING: Kind
 	// MISSING: Name
 	// MISSING: Region
 	out.SelfLink = in.SelfLink
+	return out
+}
+func ComputeURLMapPathMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PathMatcher) *krm.ComputeURLMapPathMatcher {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeURLMapPathMatcher{}
+	out.DefaultCustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetDefaultCustomErrorResponsePolicy())
+	out.DefaultRouteAction = ComputeURLMapHTTPRouteAction_v1beta1_FromProto(mapCtx, in.GetDefaultRouteAction())
+	out.DefaultService = ComputeURLMapDefaultService_v1beta1_FromProto(mapCtx, in.DefaultService)
+	out.DefaultURLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetDefaultUrlRedirect())
+	out.Description = in.Description
+	out.HeaderAction = HTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
+	out.Name = in.Name
+	out.PathRules = direct.Slice_FromProto(mapCtx, in.PathRules, ComputeURLMapPathRule_v1beta1_FromProto)
+	out.RouteRules = direct.Slice_FromProto(mapCtx, in.RouteRules, ComputeURLMapHTTPRouteRule_v1beta1_FromProto)
+	return out
+}
+func ComputeURLMapPathMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapPathMatcher) *pb.PathMatcher {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PathMatcher{}
+	out.DefaultCustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.DefaultCustomErrorResponsePolicy)
+	out.DefaultRouteAction = ComputeURLMapHTTPRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
+	out.DefaultService = ComputeURLMapDefaultService_v1beta1_ToProto(mapCtx, in.DefaultService)
+	out.DefaultUrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.DefaultURLRedirect)
+	out.Description = in.Description
+	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
+	out.Name = in.Name
+	out.PathRules = direct.Slice_ToProto(mapCtx, in.PathRules, ComputeURLMapPathRule_v1beta1_ToProto)
+	out.RouteRules = direct.Slice_ToProto(mapCtx, in.RouteRules, ComputeURLMapHTTPRouteRule_v1beta1_ToProto)
+	return out
+}
+func ComputeURLMapPathRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PathRule) *krm.ComputeURLMapPathRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeURLMapPathRule{}
+	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetCustomErrorResponsePolicy())
+	out.Paths = in.Paths
+	out.RouteAction = ComputeURLMapHTTPRouteAction_v1beta1_FromProto(mapCtx, in.GetRouteAction())
+	out.Service = ComputeURLMapDefaultService_v1beta1_FromProto(mapCtx, in.Service)
+	out.URLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetUrlRedirect())
+	return out
+}
+func ComputeURLMapPathRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapPathRule) *pb.PathRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PathRule{}
+	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.CustomErrorResponsePolicy)
+	out.Paths = in.Paths
+	out.RouteAction = ComputeURLMapHTTPRouteAction_v1beta1_ToProto(mapCtx, in.RouteAction)
+	out.Service = ComputeURLMapDefaultService_v1beta1_ToProto(mapCtx, in.Service)
+	out.UrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.URLRedirect)
+	return out
+}
+func ComputeURLMapRequestMirrorPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RequestMirrorPolicy) *krm.ComputeURLMapRequestMirrorPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeURLMapRequestMirrorPolicy{}
+	if in.GetBackendService() != "" {
+		out.BackendServiceRef = &krm.ComputeBackendServiceRef{External: in.GetBackendService()}
+	}
+	return out
+}
+func ComputeURLMapRequestMirrorPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapRequestMirrorPolicy) *pb.RequestMirrorPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RequestMirrorPolicy{}
+	if in.BackendServiceRef != nil {
+		out.BackendService = &in.BackendServiceRef.External
+	}
 	return out
 }
 func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMap) *krm.ComputeURLMapSpec {
@@ -298,12 +434,11 @@ func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMa
 	out := &krm.ComputeURLMapSpec{}
 	out.DefaultCustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetDefaultCustomErrorResponsePolicy())
 	out.DefaultRouteAction = ComputeURLMapHTTPRouteAction_v1beta1_FromProto(mapCtx, in.GetDefaultRouteAction())
-	out.DefaultService = in.DefaultService
+	out.DefaultService = ComputeURLMapDefaultService_v1beta1_FromProto(mapCtx, in.DefaultService)
 	out.DefaultURLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetDefaultUrlRedirect())
 	out.Description = in.Description
 	out.HeaderAction = HTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
 	out.HostRules = direct.Slice_FromProto(mapCtx, in.HostRules, HostRule_v1beta1_FromProto)
-	// MISSING: ID
 	// MISSING: Kind
 	// MISSING: Name
 	out.PathMatchers = direct.Slice_FromProto(mapCtx, in.PathMatchers, ComputeURLMapPathMatcher_v1beta1_FromProto)
@@ -318,17 +453,68 @@ func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	out := &pb.UrlMap{}
 	out.DefaultCustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.DefaultCustomErrorResponsePolicy)
 	out.DefaultRouteAction = ComputeURLMapHTTPRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
-	out.DefaultService = in.DefaultService
+	out.DefaultService = ComputeURLMapDefaultService_v1beta1_ToProto(mapCtx, in.DefaultService)
 	out.DefaultUrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.DefaultURLRedirect)
 	out.Description = in.Description
 	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
 	out.HostRules = direct.Slice_ToProto(mapCtx, in.HostRules, HostRule_v1beta1_ToProto)
-	// MISSING: ID
 	// MISSING: Kind
 	// MISSING: Name
 	out.PathMatchers = direct.Slice_ToProto(mapCtx, in.PathMatchers, ComputeURLMapPathMatcher_v1beta1_ToProto)
 	// MISSING: Region
 	out.Tests = direct.Slice_ToProto(mapCtx, in.Tests, ComputeURLMapTest_v1beta1_ToProto)
+	return out
+}
+func ComputeURLMapTest_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMapTest) *krm.ComputeURLMapTest {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeURLMapTest{}
+	out.Description = in.Description
+	out.ExpectedOutputURL = in.ExpectedOutputUrl
+	out.ExpectedRedirectResponseCode = in.ExpectedRedirectResponseCode
+	out.Headers = direct.Slice_FromProto(mapCtx, in.Headers, URLMapTestHeader_v1beta1_FromProto)
+	out.Host = in.Host
+	out.Path = in.Path
+	out.Service = ComputeURLMapDefaultService_v1beta1_FromProto(mapCtx, in.Service)
+	return out
+}
+func ComputeURLMapTest_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapTest) *pb.UrlMapTest {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlMapTest{}
+	out.Description = in.Description
+	out.ExpectedOutputUrl = in.ExpectedOutputURL
+	out.ExpectedRedirectResponseCode = in.ExpectedRedirectResponseCode
+	out.Headers = direct.Slice_ToProto(mapCtx, in.Headers, URLMapTestHeader_v1beta1_ToProto)
+	out.Host = in.Host
+	out.Path = in.Path
+	out.Service = ComputeURLMapDefaultService_v1beta1_ToProto(mapCtx, in.Service)
+	return out
+}
+func ComputeURLMapWeightedBackendService_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WeightedBackendService) *krm.ComputeURLMapWeightedBackendService {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeURLMapWeightedBackendService{}
+	if in.GetBackendService() != "" {
+		out.BackendServiceRef = &krm.ComputeBackendServiceRef{External: in.GetBackendService()}
+	}
+	out.HeaderAction = HTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
+	out.Weight = in.Weight
+	return out
+}
+func ComputeURLMapWeightedBackendService_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapWeightedBackendService) *pb.WeightedBackendService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WeightedBackendService{}
+	if in.BackendServiceRef != nil {
+		out.BackendService = &in.BackendServiceRef.External
+	}
+	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
+	out.Weight = in.Weight
 	return out
 }
 func CorsPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CorsPolicy) *krm.CorsPolicy {
@@ -715,66 +901,6 @@ func HTTPRetryPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPRetr
 	out.RetryConditions = in.RetryConditions
 	return out
 }
-func HTTPRouteAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRouteAction) *krm.HTTPRouteAction {
-	if in == nil {
-		return nil
-	}
-	out := &krm.HTTPRouteAction{}
-	out.CorsPolicy = CorsPolicy_v1beta1_FromProto(mapCtx, in.GetCorsPolicy())
-	out.FaultInjectionPolicy = HTTPFaultInjection_v1beta1_FromProto(mapCtx, in.GetFaultInjectionPolicy())
-	out.MaxStreamDuration = Duration_v1beta1_FromProto(mapCtx, in.GetMaxStreamDuration())
-	out.RequestMirrorPolicy = RequestMirrorPolicy_v1beta1_FromProto(mapCtx, in.GetRequestMirrorPolicy())
-	out.RetryPolicy = HTTPRetryPolicy_v1beta1_FromProto(mapCtx, in.GetRetryPolicy())
-	out.Timeout = Duration_v1beta1_FromProto(mapCtx, in.GetTimeout())
-	out.URLRewrite = URLRewrite_v1beta1_FromProto(mapCtx, in.GetUrlRewrite())
-	out.WeightedBackendServices = direct.Slice_FromProto(mapCtx, in.WeightedBackendServices, WeightedBackendService_v1beta1_FromProto)
-	return out
-}
-func HTTPRouteAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPRouteAction) *pb.HttpRouteAction {
-	if in == nil {
-		return nil
-	}
-	out := &pb.HttpRouteAction{}
-	out.CorsPolicy = CorsPolicy_v1beta1_ToProto(mapCtx, in.CorsPolicy)
-	out.FaultInjectionPolicy = HTTPFaultInjection_v1beta1_ToProto(mapCtx, in.FaultInjectionPolicy)
-	out.MaxStreamDuration = Duration_v1beta1_ToProto(mapCtx, in.MaxStreamDuration)
-	out.RequestMirrorPolicy = RequestMirrorPolicy_v1beta1_ToProto(mapCtx, in.RequestMirrorPolicy)
-	out.RetryPolicy = HTTPRetryPolicy_v1beta1_ToProto(mapCtx, in.RetryPolicy)
-	out.Timeout = Duration_v1beta1_ToProto(mapCtx, in.Timeout)
-	out.UrlRewrite = URLRewrite_v1beta1_ToProto(mapCtx, in.URLRewrite)
-	out.WeightedBackendServices = direct.Slice_ToProto(mapCtx, in.WeightedBackendServices, WeightedBackendService_v1beta1_ToProto)
-	return out
-}
-func HTTPRouteRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRouteRule) *krm.HTTPRouteRule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.HTTPRouteRule{}
-	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetCustomErrorResponsePolicy())
-	out.Description = in.Description
-	out.HeaderAction = HTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
-	out.MatchRules = direct.Slice_FromProto(mapCtx, in.MatchRules, HTTPRouteRuleMatch_v1beta1_FromProto)
-	out.Priority = in.Priority
-	out.RouteAction = HTTPRouteAction_v1beta1_FromProto(mapCtx, in.GetRouteAction())
-	out.Service = in.Service
-	out.URLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetUrlRedirect())
-	return out
-}
-func HTTPRouteRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.HTTPRouteRule) *pb.HttpRouteRule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.HttpRouteRule{}
-	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.CustomErrorResponsePolicy)
-	out.Description = in.Description
-	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
-	out.MatchRules = direct.Slice_ToProto(mapCtx, in.MatchRules, HTTPRouteRuleMatch_v1beta1_ToProto)
-	out.Priority = in.Priority
-	out.RouteAction = HTTPRouteAction_v1beta1_ToProto(mapCtx, in.RouteAction)
-	out.Service = in.Service
-	out.UrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.URLRedirect)
-	return out
-}
 func HTTPRouteRuleMatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRouteRuleMatch) *krm.HTTPRouteRuleMatch {
 	if in == nil {
 		return nil
@@ -991,78 +1117,6 @@ func NetworkAttachmentConnectedEndpoint_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.Status = in.Status
 	out.Subnetwork = in.Subnetwork
 	out.SubnetworkCidrRange = in.SubnetworkCIDRRange
-	return out
-}
-func PathMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PathMatcher) *krm.PathMatcher {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PathMatcher{}
-	out.DefaultCustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetDefaultCustomErrorResponsePolicy())
-	out.DefaultRouteAction = HTTPRouteAction_v1beta1_FromProto(mapCtx, in.GetDefaultRouteAction())
-	out.DefaultService = in.DefaultService
-	out.DefaultURLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetDefaultUrlRedirect())
-	out.Description = in.Description
-	out.HeaderAction = HTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
-	out.Name = in.Name
-	out.PathRules = direct.Slice_FromProto(mapCtx, in.PathRules, PathRule_v1beta1_FromProto)
-	out.RouteRules = direct.Slice_FromProto(mapCtx, in.RouteRules, HTTPRouteRule_v1beta1_FromProto)
-	return out
-}
-func PathMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PathMatcher) *pb.PathMatcher {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PathMatcher{}
-	out.DefaultCustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.DefaultCustomErrorResponsePolicy)
-	out.DefaultRouteAction = HTTPRouteAction_v1beta1_ToProto(mapCtx, in.DefaultRouteAction)
-	out.DefaultService = in.DefaultService
-	out.DefaultUrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.DefaultURLRedirect)
-	out.Description = in.Description
-	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
-	out.Name = in.Name
-	out.PathRules = direct.Slice_ToProto(mapCtx, in.PathRules, PathRule_v1beta1_ToProto)
-	out.RouteRules = direct.Slice_ToProto(mapCtx, in.RouteRules, HTTPRouteRule_v1beta1_ToProto)
-	return out
-}
-func PathRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PathRule) *krm.PathRule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PathRule{}
-	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetCustomErrorResponsePolicy())
-	out.Paths = in.Paths
-	out.RouteAction = HTTPRouteAction_v1beta1_FromProto(mapCtx, in.GetRouteAction())
-	out.Service = in.Service
-	out.URLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetUrlRedirect())
-	return out
-}
-func PathRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PathRule) *pb.PathRule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PathRule{}
-	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.CustomErrorResponsePolicy)
-	out.Paths = in.Paths
-	out.RouteAction = HTTPRouteAction_v1beta1_ToProto(mapCtx, in.RouteAction)
-	out.Service = in.Service
-	out.UrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.URLRedirect)
-	return out
-}
-func RequestMirrorPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RequestMirrorPolicy) *krm.RequestMirrorPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RequestMirrorPolicy{}
-	out.BackendService = in.BackendService
-	return out
-}
-func RequestMirrorPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RequestMirrorPolicy) *pb.RequestMirrorPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RequestMirrorPolicy{}
-	out.BackendService = in.BackendService
 	return out
 }
 func SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig) *krm.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig {
@@ -1533,34 +1587,6 @@ func SubnetworkSecondaryRange_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: ReservedInternalRange
 	return out
 }
-func URLMapTest_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMapTest) *krm.URLMapTest {
-	if in == nil {
-		return nil
-	}
-	out := &krm.URLMapTest{}
-	out.Description = in.Description
-	out.ExpectedOutputURL = in.ExpectedOutputUrl
-	out.ExpectedRedirectResponseCode = in.ExpectedRedirectResponseCode
-	out.Headers = direct.Slice_FromProto(mapCtx, in.Headers, URLMapTestHeader_v1beta1_FromProto)
-	out.Host = in.Host
-	out.Path = in.Path
-	out.Service = in.Service
-	return out
-}
-func URLMapTest_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.URLMapTest) *pb.UrlMapTest {
-	if in == nil {
-		return nil
-	}
-	out := &pb.UrlMapTest{}
-	out.Description = in.Description
-	out.ExpectedOutputUrl = in.ExpectedOutputURL
-	out.ExpectedRedirectResponseCode = in.ExpectedRedirectResponseCode
-	out.Headers = direct.Slice_ToProto(mapCtx, in.Headers, URLMapTestHeader_v1beta1_ToProto)
-	out.Host = in.Host
-	out.Path = in.Path
-	out.Service = in.Service
-	return out
-}
 func URLMapTestHeader_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMapTestHeader) *krm.URLMapTestHeader {
 	if in == nil {
 		return nil
@@ -1597,25 +1623,5 @@ func URLRewrite_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.URLRewrite) *
 	out.HostRewrite = in.HostRewrite
 	out.PathPrefixRewrite = in.PathPrefixRewrite
 	out.PathTemplateRewrite = in.PathTemplateRewrite
-	return out
-}
-func WeightedBackendService_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WeightedBackendService) *krm.WeightedBackendService {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WeightedBackendService{}
-	out.BackendService = in.BackendService
-	out.HeaderAction = HTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
-	out.Weight = in.Weight
-	return out
-}
-func WeightedBackendService_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.WeightedBackendService) *pb.WeightedBackendService {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WeightedBackendService{}
-	out.BackendService = in.BackendService
-	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
-	out.Weight = in.Weight
 	return out
 }
