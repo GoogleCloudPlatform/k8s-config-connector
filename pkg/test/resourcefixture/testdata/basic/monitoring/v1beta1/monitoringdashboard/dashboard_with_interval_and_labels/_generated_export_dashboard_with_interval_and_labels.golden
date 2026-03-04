@@ -1,0 +1,42 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringDashboard
+metadata:
+  name: ${dashboardID}
+spec:
+  displayName: Dashboard with Interval and Labels
+  gridLayout:
+    columns: 2
+    widgets:
+    - timeSeriesTable:
+        dataSets:
+        - minAlignmentPeriod: 0s
+          timeSeriesQuery:
+            timeSeriesFilter:
+              aggregation:
+                alignmentPeriod: 1m0s
+                perSeriesAligner: ALIGN_MEAN
+              filter: metric.type="compute.googleapis.com/instance/cpu/utilization"
+                resource.type="gce_instance"
+              pickTimeSeriesFilter:
+                direction: TOP
+                interval:
+                  endTime: "2026-03-04T00:00:00Z"
+                numTimeSeries: 5
+                rankingMethod: METHOD_MEAN
+      title: Top 5 GCE Instances by CPU
+    - title: Chart with Thresholds
+      xyChart:
+        dataSets:
+        - plotType: LINE
+          targetAxis: Y1
+          timeSeriesQuery:
+            timeSeriesFilter:
+              filter: metric.type="compute.googleapis.com/instance/cpu/utilization"
+                resource.type="gce_instance"
+        thresholds:
+        - label: Critical
+          value: 0.8
+  labels:
+    user-label: user-value
+  projectRef:
+    external: ${projectId}

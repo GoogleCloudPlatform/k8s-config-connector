@@ -18,7 +18,7 @@ spec:
                   perSeriesAligner: ALIGN_RATE
                 filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
               unitOverride: "1"
-          timeshiftDuration: 600.5s
+          timeshiftDuration: 10m0.5s
           y2Axis:
             label: y2Axis
             scale: LOG10
@@ -75,17 +75,17 @@ spec:
       - pieChart:
           chartType: DONUT
           dataSets:
-          - minAlignmentPeriod: 60s
+          - minAlignmentPeriod: 1m0s
             sliceNameTemplate: ${resource.labels.zone}
             timeSeriesQuery:
               timeSeriesFilter:
                 aggregation:
-                  alignmentPeriod: "60"
+                  alignmentPeriod: 1m0s
                   perSeriesAligner: ALIGN_RATE
                 filter: metric.type="compute.googleapis.com/instance/disk/read_bytes_count"
                   resource.type="gce_instance"
                 secondaryAggregation:
-                  alignmentPeriod: "60"
+                  alignmentPeriod: 1m0s
                   perSeriesAligner: ALIGN_MEAN
           showLabels: true
         title: PieChart Widget
@@ -111,7 +111,7 @@ spec:
             timeSeriesQuery:
               timeSeriesFilter:
                 aggregation:
-                  alignmentPeriod: "60"
+                  alignmentPeriod: 1m0s
                   perSeriesAligner: ALIGN_RATE
                 filter: metric.type="compute.googleapis.com/instance/disk/read_bytes_count"
                   resource.type="gce_instance"
