@@ -1379,7 +1379,6 @@
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscaling.locationPolicy" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscaling.totalMaxNodeCount" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscaling.totalMinNodeCount" is not set in unstructured objects
-[missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.initialNodeCount" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.management.autoRepair" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.management.autoUpgrade" is not set in unstructured objects
 [missing_field] crd=containernodepools.container.cnrm.cloud.google.com version=v1beta1: field ".spec.maxPodsPerNode" is not set in unstructured objects

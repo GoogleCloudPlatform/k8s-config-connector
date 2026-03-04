@@ -409,6 +409,11 @@ type NodepoolPlacementPolicy struct {
 	Type string `json:"type"`
 }
 
+type NodepoolQueuedProvisioning struct {
+	/* Whether Queued Provisioning is enabled. */
+	Enabled bool `json:"enabled"`
+}
+
 type NodepoolPodCidrOverprovisionConfig struct {
 	Disabled bool `json:"disabled"`
 }
@@ -544,6 +549,10 @@ type ContainerNodePoolSpec struct {
 	/* Immutable. Specifies the node placement policy. */
 	// +optional
 	PlacementPolicy *NodepoolPlacementPolicy `json:"placementPolicy,omitempty"`
+
+	/* Configuration for Queued Provisioning. */
+	// +optional
+	QueuedProvisioning *NodepoolQueuedProvisioning `json:"queuedProvisioning,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

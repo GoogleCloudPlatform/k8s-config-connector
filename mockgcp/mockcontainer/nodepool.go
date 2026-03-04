@@ -160,6 +160,10 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 		obj.PodIpv4CidrSize = 24
 	}
 
+	if obj.QueuedProvisioning == nil {
+		obj.QueuedProvisioning = &pb.NodePool_QueuedProvisioning{}
+	}
+
 	if obj.UpgradeSettings == nil {
 		obj.UpgradeSettings = &pb.NodePool_UpgradeSettings{
 			MaxSurge:       1,
@@ -342,6 +346,11 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 	if update.Taints != nil {
 		obj.Config.Taints = update.GetTaints().Taints
 		update.Taints = nil
+	}
+
+	if update.QueuedProvisioning != nil {
+		obj.QueuedProvisioning = update.QueuedProvisioning
+		update.QueuedProvisioning = nil
 	}
 
 	// TODO: Support more updates!

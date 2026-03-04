@@ -502,6 +502,9 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 			Disabled: true,
 		}
 	}
+	if obj.AddonsConfig.ParallelstoreCsiDriverConfig == nil {
+		obj.AddonsConfig.ParallelstoreCsiDriverConfig = &pb.ParallelstoreCsiDriverConfig{}
+	}
 
 	// AnonymousAuthenticationConfig
 	if obj.AnonymousAuthenticationConfig == nil {
