@@ -83,7 +83,6 @@ type Taxonomy_Service struct {
 	Identity *string `json:"identity,omitempty"`
 }
 
-// +kcc:proto=google.cloud.datacatalog.v1.SystemTimestamps
 type SystemTimestamps struct {
 	// Creation timestamp of the resource within the given system.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.create_time

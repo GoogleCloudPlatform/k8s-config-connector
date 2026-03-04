@@ -22,19 +22,22 @@ import (
 var DataCatalogPolicyTagGVK = GroupVersion.WithKind("DataCatalogPolicyTag")
 
 // DataCatalogPolicyTagSpec defines the desired state of DataCatalogPolicyTag
-// +kcc:spec:proto=google.cloud.datacatalog.v1beta1.PolicyTag
+// +kcc:spec:proto=google.cloud.datacatalog.v1.PolicyTag
 type DataCatalogPolicyTagSpec struct {
 	/* Description of this policy tag. It must: contain only unicode characters, tabs,
 	newlines, carriage returns and page breaks; and be at most 2000 bytes long when
 	encoded in UTF-8. If not set, defaults to an empty description.
 	If not set, defaults to an empty description. */
 	// +optional
+	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.description
 	Description *string `json:"description,omitempty"`
 
 	/* User defined name of this policy tag. It must: be unique within the parent
 	taxonomy; contain only unicode letters, numbers, underscores, dashes and spaces;
 	not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8. */
-	DisplayName string `json:"displayName"`
+	// +required
+	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.display_name
+	DisplayName *string `json:"displayName"`
 
 	// +optional
 	ParentPolicyTagRef *PolicyTagRef `json:"parentPolicyTagRef,omitempty"`
@@ -64,15 +67,17 @@ type DataCatalogPolicyTagStatus struct {
 	/* Resource name of this policy tag, whose format is:
 	"projects/{project}/locations/{region}/taxonomies/{taxonomy}/policyTags/{policytag}". */
 	// +optional
+	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.name
 	Name *string `json:"name,omitempty"`
 
 	/* Resource names of child policy tags of this policy tag. */
 	// +optional
+	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.child_policy_tags
 	ChildPolicyTags []string `json:"childPolicyTags,omitempty"`
 }
 
 // DataCatalogPolicyTagObservedState is the state of the DataCatalogPolicyTag resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.datacatalog.v1beta1.PolicyTag
+// +kcc:observedstate:proto=google.cloud.datacatalog.v1.PolicyTag
 type DataCatalogPolicyTagObservedState struct {
 }
 
