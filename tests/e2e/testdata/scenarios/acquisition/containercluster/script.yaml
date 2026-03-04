@@ -1,0 +1,53 @@
+---
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: acq-cluster-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/remove-default-node-pool: "true"
+    cnrm.cloud.google.com/remove-default-node-pool-allow-node-config: "true"
+    cnrm.cloud.google.com/deletion-policy: abandon
+spec:
+  location: us-central1-a
+  initialNodeCount: 1
+  nodeConfig:
+    tags:
+      - acq-test
+  loggingService: none
+  monitoringService: none
+---
+TEST: ABANDON
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: acq-cluster-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/remove-default-node-pool: "true"
+    cnrm.cloud.google.com/remove-default-node-pool-allow-node-config: "true"
+    cnrm.cloud.google.com/deletion-policy: abandon
+spec:
+  location: us-central1-a
+  initialNodeCount: 1
+  nodeConfig:
+    tags:
+      - acq-test
+  loggingService: none
+  monitoringService: none
+---
+# ACQUIRE
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: acq-cluster-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/remove-default-node-pool: "true"
+    cnrm.cloud.google.com/remove-default-node-pool-allow-node-config: "true"
+    cnrm.cloud.google.com/deletion-policy: abandon
+spec:
+  location: us-central1-a
+  initialNodeCount: 1
+  nodeConfig:
+    tags:
+      - acq-test
+  loggingService: none
+  monitoringService: none
