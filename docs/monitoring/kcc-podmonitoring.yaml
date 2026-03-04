@@ -1,0 +1,22 @@
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: kcc-metrics
+  namespace: cnrm-system
+spec:
+  selector:
+    matchLabels:
+      cnrm.cloud.google.com/system: "true"
+  endpoints:
+  - port: 8888
+    interval: 30s
+    metricRelabeling:
+    - action: replace
+      sourceLabels: [namespace]
+      targetLabel: exported_namespace
+  - port: 48797
+    interval: 30s
+    metricRelabeling:
+    - action: replace
+      sourceLabels: [namespace]
+      targetLabel: exported_namespace
