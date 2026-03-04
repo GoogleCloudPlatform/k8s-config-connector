@@ -1630,6 +1630,8 @@ func ComputeURLMapHTTPRouteAction_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	out.WeightedBackendServices = direct.Slice_ToProto(mapCtx, in.WeightedBackendServices, ComputeURLMapWeightedBackendService_v1beta1_ToProto)
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeURLMapHTTPRouteRule_v1beta1_FromProto", skipping
 func ComputeURLMapHTTPRouteRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRouteRule) *krm.ComputeURLMapHTTPRouteRule {
 	if in == nil {
 		return nil
@@ -1645,21 +1647,27 @@ func ComputeURLMapHTTPRouteRule_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	out.URLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetUrlRedirect())
 	return out
 }
-func ComputeURLMapHTTPRouteRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapHTTPRouteRule) *pb.HttpRouteRule {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ComputeURLMapHTTPRouteRule_v1beta1_ToProto", skipping
+
+	func ComputeURLMapHTTPRouteRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapHTTPRouteRule) *pb.HttpRouteRule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HttpRouteRule{}
+		out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.CustomErrorResponsePolicy)
+		out.Description = in.Description
+		out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
+		out.MatchRules = direct.Slice_ToProto(mapCtx, in.MatchRules, HTTPRouteRuleMatch_v1beta1_ToProto)
+		out.Priority = in.Priority
+		out.RouteAction = ComputeURLMapHTTPRouteAction_v1beta1_ToProto(mapCtx, in.RouteAction)
+		out.Service = in.Service
+		out.UrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.URLRedirect)
+		return out
 	}
-	out := &pb.HttpRouteRule{}
-	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.CustomErrorResponsePolicy)
-	out.Description = in.Description
-	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
-	out.MatchRules = direct.Slice_ToProto(mapCtx, in.MatchRules, HTTPRouteRuleMatch_v1beta1_ToProto)
-	out.Priority = in.Priority
-	out.RouteAction = ComputeURLMapHTTPRouteAction_v1beta1_ToProto(mapCtx, in.RouteAction)
-	out.Service = in.Service
-	out.UrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.URLRedirect)
-	return out
-}
+*/
 func ComputeURLMapObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMap) *krm.ComputeURLMapObservedState {
 	if in == nil {
 		return nil
@@ -1688,6 +1696,8 @@ func ComputeURLMapObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out.SelfLink = in.SelfLink
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeURLMapPathMatcher_v1beta1_FromProto", skipping
 func ComputeURLMapPathMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PathMatcher) *krm.ComputeURLMapPathMatcher {
 	if in == nil {
 		return nil
@@ -1704,6 +1714,9 @@ func ComputeURLMapPathMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	out.RouteRules = direct.Slice_FromProto(mapCtx, in.RouteRules, ComputeURLMapHTTPRouteRule_v1beta1_FromProto)
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeURLMapPathMatcher_v1beta1_ToProto", skipping
 func ComputeURLMapPathMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapPathMatcher) *pb.PathMatcher {
 	if in == nil {
 		return nil
@@ -1720,6 +1733,9 @@ func ComputeURLMapPathMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.RouteRules = direct.Slice_ToProto(mapCtx, in.RouteRules, ComputeURLMapHTTPRouteRule_v1beta1_ToProto)
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeURLMapPathRule_v1beta1_FromProto", skipping
 func ComputeURLMapPathRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PathRule) *krm.ComputeURLMapPathRule {
 	if in == nil {
 		return nil
@@ -1732,18 +1748,24 @@ func ComputeURLMapPathRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.P
 	out.URLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetUrlRedirect())
 	return out
 }
-func ComputeURLMapPathRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapPathRule) *pb.PathRule {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ComputeURLMapPathRule_v1beta1_ToProto", skipping
+
+	func ComputeURLMapPathRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapPathRule) *pb.PathRule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PathRule{}
+		out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.CustomErrorResponsePolicy)
+		out.Paths = in.Paths
+		out.RouteAction = ComputeURLMapHTTPRouteAction_v1beta1_ToProto(mapCtx, in.RouteAction)
+		out.Service = in.Service
+		out.UrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.URLRedirect)
+		return out
 	}
-	out := &pb.PathRule{}
-	out.CustomErrorResponsePolicy = CustomErrorResponsePolicy_v1beta1_ToProto(mapCtx, in.CustomErrorResponsePolicy)
-	out.Paths = in.Paths
-	out.RouteAction = ComputeURLMapHTTPRouteAction_v1beta1_ToProto(mapCtx, in.RouteAction)
-	out.Service = in.Service
-	out.UrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.URLRedirect)
-	return out
-}
+*/
 func ComputeURLMapRequestMirrorPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RequestMirrorPolicy) *krm.ComputeURLMapRequestMirrorPolicy {
 	if in == nil {
 		return nil
@@ -1764,6 +1786,8 @@ func ComputeURLMapRequestMirrorPolicy_v1beta1_ToProto(mapCtx *direct.MapContext,
 	}
 	return out
 }
+
+/* found existing non-generated mapping function "ComputeURLMapSpec_v1beta1_FromProto", skipping
 func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMap) *krm.ComputeURLMapSpec {
 	if in == nil {
 		return nil
@@ -1783,6 +1807,9 @@ func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMa
 	out.Tests = direct.Slice_FromProto(mapCtx, in.Tests, ComputeURLMapTest_v1beta1_FromProto)
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeURLMapSpec_v1beta1_ToProto", skipping
 func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapSpec) *pb.UrlMap {
 	if in == nil {
 		return nil
@@ -1802,6 +1829,9 @@ func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	out.Tests = direct.Slice_ToProto(mapCtx, in.Tests, ComputeURLMapTest_v1beta1_ToProto)
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ComputeURLMapTest_v1beta1_FromProto", skipping
 func ComputeURLMapTest_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMapTest) *krm.ComputeURLMapTest {
 	if in == nil {
 		return nil
@@ -1816,20 +1846,26 @@ func ComputeURLMapTest_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMa
 	out.Service = in.Service
 	return out
 }
-func ComputeURLMapTest_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapTest) *pb.UrlMapTest {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ComputeURLMapTest_v1beta1_ToProto", skipping
+
+	func ComputeURLMapTest_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapTest) *pb.UrlMapTest {
+		if in == nil {
+			return nil
+		}
+		out := &pb.UrlMapTest{}
+		out.Description = in.Description
+		out.ExpectedOutputUrl = in.ExpectedOutputURL
+		out.ExpectedRedirectResponseCode = in.ExpectedRedirectResponseCode
+		out.Headers = direct.Slice_ToProto(mapCtx, in.Headers, URLMapTestHeader_v1beta1_ToProto)
+		out.Host = in.Host
+		out.Path = in.Path
+		out.Service = in.Service
+		return out
 	}
-	out := &pb.UrlMapTest{}
-	out.Description = in.Description
-	out.ExpectedOutputUrl = in.ExpectedOutputURL
-	out.ExpectedRedirectResponseCode = in.ExpectedRedirectResponseCode
-	out.Headers = direct.Slice_ToProto(mapCtx, in.Headers, URLMapTestHeader_v1beta1_ToProto)
-	out.Host = in.Host
-	out.Path = in.Path
-	out.Service = in.Service
-	return out
-}
+*/
 func ComputeURLMapWeightedBackendService_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WeightedBackendService) *krm.ComputeURLMapWeightedBackendService {
 	if in == nil {
 		return nil
