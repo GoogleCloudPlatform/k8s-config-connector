@@ -42,6 +42,10 @@ spec:
             The URL of the PublicDelegatedPrefix resource to which the IP
             addresses in this collection belong. Note: this field can only be
             used with EXTERNAL type with IPV4_PD purpose.
+          gvk:
+            kind: ComputePublicDelegatedPrefix
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
         - key: networkRef
           tfField: network
           description: |-
@@ -573,6 +577,10 @@ spec:
             The URL of the PublicDelegatedPrefix resource to which the IP
             addresses in this collection belong. Note: this field can only be
             used with EXTERNAL type with IPV4_PD purpose.
+          gvk:
+            kind: ComputePublicDelegatedPrefix
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
         - key: networkRef
           tfField: network
           description: |-
