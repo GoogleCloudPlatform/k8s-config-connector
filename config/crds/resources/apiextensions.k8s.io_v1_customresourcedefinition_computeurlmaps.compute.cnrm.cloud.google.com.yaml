@@ -3095,13 +3095,13 @@ spec:
                   fingerprint:
                     description: Fingerprint used for optimistic locking.
                     type: string
-                  selfLink:
-                    description: The self-link for the resource.
-                    type: string
-                  urlMapID:
+                  id:
                     description: The unique identifier for the resource.
                     format: int64
                     type: integer
+                  selfLink:
+                    description: The self-link for the resource.
+                    type: string
                 type: object
             type: object
         required:

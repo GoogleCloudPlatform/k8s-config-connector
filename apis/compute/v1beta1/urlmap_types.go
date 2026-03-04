@@ -76,6 +76,7 @@ type ComputeURLMapDefaultService struct {
 	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.PathMatcher
 type ComputeURLMapPathMatcher struct {
 	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.default_custom_error_response_policy
 	DefaultCustomErrorResponsePolicy *CustomErrorResponsePolicy `json:"defaultCustomErrorResponsePolicy,omitempty"`
@@ -105,6 +106,7 @@ type ComputeURLMapPathMatcher struct {
 	RouteRules []ComputeURLMapHTTPRouteRule `json:"routeRules,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.PathRule
 type ComputeURLMapPathRule struct {
 	// +kcc:proto:field=google.cloud.compute.v1.PathRule.custom_error_response_policy
 	CustomErrorResponsePolicy *CustomErrorResponsePolicy `json:"customErrorResponsePolicy,omitempty"`
@@ -122,6 +124,7 @@ type ComputeURLMapPathRule struct {
 	URLRedirect *HTTPRedirectAction `json:"urlRedirect,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.HttpRouteRule
 type ComputeURLMapHTTPRouteRule struct {
 	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRule.custom_error_response_policy
 	CustomErrorResponsePolicy *CustomErrorResponsePolicy `json:"customErrorResponsePolicy,omitempty"`
@@ -148,6 +151,7 @@ type ComputeURLMapHTTPRouteRule struct {
 	URLRedirect *HTTPRedirectAction `json:"urlRedirect,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.HttpRouteAction
 type ComputeURLMapHTTPRouteAction struct {
 	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteAction.cors_policy
 	CorsPolicy *CorsPolicy `json:"corsPolicy,omitempty"`
@@ -168,17 +172,19 @@ type ComputeURLMapHTTPRouteAction struct {
 	Timeout *Duration `json:"timeout,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteAction.url_rewrite
-	UrlRewrite *URLRewrite `json:"urlRewrite,omitempty"`
+	URLRewrite *URLRewrite `json:"urlRewrite,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteAction.weighted_backend_services
 	WeightedBackendServices []ComputeURLMapWeightedBackendService `json:"weightedBackendServices,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.RequestMirrorPolicy
 type ComputeURLMapRequestMirrorPolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RequestMirrorPolicy.backend_service
 	BackendServiceRef *ComputeBackendServiceRef `json:"backendServiceRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.WeightedBackendService
 type ComputeURLMapWeightedBackendService struct {
 	// +kcc:proto:field=google.cloud.compute.v1.WeightedBackendService.backend_service
 	BackendServiceRef *ComputeBackendServiceRef `json:"backendServiceRef,omitempty"`
@@ -187,9 +193,10 @@ type ComputeURLMapWeightedBackendService struct {
 	HeaderAction *HTTPHeaderAction `json:"headerAction,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.WeightedBackendService.weight
-	Weight *int32 `json:"weight,omitempty"`
+	Weight *uint32 `json:"weight,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.UrlMapTest
 type ComputeURLMapTest struct {
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTest.description
 	Description *string `json:"description,omitempty"`
@@ -245,7 +252,7 @@ type ComputeURLMapObservedState struct {
 
 	// The unique identifier for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMap.id
-	URLMapID *uint64 `json:"urlMapID,omitempty"`
+	ID *uint64 `json:"id,omitempty"`
 
 	// The self-link for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMap.self_link

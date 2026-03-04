@@ -1097,6 +1097,8 @@ type HTTPRetryPolicy struct {
 	RetryConditions []string `json:"retryConditions,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HttpRouteAction", skipping
+
 // +kcc:proto=google.cloud.compute.v1.HttpRouteAction
 type HTTPRouteAction struct {
 	// The specification for allowing client-side cross-origin requests. For more information about the W3C recommendation for cross-origin resource sharing (CORS), see Fetch API Living Standard. Not supported when the URL map is bound to a target gRPC proxy.
@@ -1131,6 +1133,9 @@ type HTTPRouteAction struct {
 	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteAction.weighted_backend_services
 	WeightedBackendServices []WeightedBackendService `json:"weightedBackendServices,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HttpRouteRule", skipping
 
 // +kcc:proto=google.cloud.compute.v1.HttpRouteRule
 type HTTPRouteRule struct {
@@ -1166,6 +1171,7 @@ type HTTPRouteRule struct {
 	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRule.url_redirect
 	URLRedirect *HTTPRedirectAction `json:"urlRedirect,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.compute.v1.HttpRouteRuleMatch
 type HTTPRouteRuleMatch struct {
@@ -1703,6 +1709,8 @@ type NodeTemplateNodeTypeFlexibility struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PathMatcher", skipping
+
 // +kcc:proto=google.cloud.compute.v1.PathMatcher
 type PathMatcher struct {
 	// defaultCustomErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendServiceor BackendBucket responds with an error. This policy takes effect at the PathMatcher level and applies only when no policy has been defined for the error code at lower levels like RouteRule and PathRule within this PathMatcher. If an error code does not have a policy defined in defaultCustomErrorResponsePolicy, then a policy defined for the error code in UrlMap.defaultCustomErrorResponsePolicy takes effect. For example, consider a UrlMap with the following configuration: - UrlMap.defaultCustomErrorResponsePolicy is configured with policies for 5xx and 4xx errors - A RouteRule for /coming_soon/ is configured for the error code 404. If the request is for www.myotherdomain.com and a 404 is encountered, the policy under UrlMap.defaultCustomErrorResponsePolicy takes effect. If a 404 response is encountered for the request www.example.com/current_events/, the pathMatcher's policy takes effect. If however, the request for www.example.com/coming_soon/ encounters a 404, the policy in RouteRule.customErrorResponsePolicy takes effect. If any of the requests in this example encounter a 500 error code, the policy at UrlMap.defaultCustomErrorResponsePolicy takes effect. When used in conjunction with pathMatcher.defaultRouteAction.retryPolicy, retries take precedence. Only once all retries are exhausted, the defaultCustomErrorResponsePolicy is applied. While attempting a retry, if load balancer is successful in reaching the service, the defaultCustomErrorResponsePolicy is ignored and the response from the service is returned to the client. defaultCustomErrorResponsePolicy is supported only for global external Application Load Balancers.
@@ -1741,6 +1749,9 @@ type PathMatcher struct {
 	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.route_rules
 	RouteRules []HTTPRouteRule `json:"routeRules,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PathRule", skipping
 
 // +kcc:proto=google.cloud.compute.v1.PathRule
 type PathRule struct {
@@ -1764,6 +1775,9 @@ type PathRule struct {
 	// +kcc:proto:field=google.cloud.compute.v1.PathRule.url_redirect
 	URLRedirect *HTTPRedirectAction `json:"urlRedirect,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.RequestMirrorPolicy", skipping
 
 // +kcc:proto=google.cloud.compute.v1.RequestMirrorPolicy
 type RequestMirrorPolicy struct {
@@ -1771,6 +1785,7 @@ type RequestMirrorPolicy struct {
 	// +kcc:proto:field=google.cloud.compute.v1.RequestMirrorPolicy.backend_service
 	BackendService *string `json:"backendService,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.Reservation", skipping
 
@@ -3257,6 +3272,8 @@ type URLMap struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.UrlMapTest", skipping
+
 // +kcc:proto=google.cloud.compute.v1.UrlMapTest
 type URLMapTest struct {
 	// Description of this test case.
@@ -3287,6 +3304,7 @@ type URLMapTest struct {
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTest.service
 	Service *string `json:"service,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.compute.v1.UrlMapTestHeader
 type URLMapTestHeader struct {
@@ -3314,6 +3332,8 @@ type URLRewrite struct {
 	PathTemplateRewrite *string `json:"pathTemplateRewrite,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.WeightedBackendService", skipping
+
 // +kcc:proto=google.cloud.compute.v1.WeightedBackendService
 type WeightedBackendService struct {
 	// The full or partial URL to the default BackendService resource. Before forwarding the request to backendService, the load balancer applies any relevant headerActions specified as part of this backendServiceWeight.
@@ -3328,3 +3348,4 @@ type WeightedBackendService struct {
 	// +kcc:proto:field=google.cloud.compute.v1.WeightedBackendService.weight
 	Weight *uint32 `json:"weight,omitempty"`
 }
+*/
