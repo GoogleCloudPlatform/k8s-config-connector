@@ -31,7 +31,9 @@ The `ConfigConnector` resource is used to configure the entire Config Connector 
 | `credentialSecretName` | `string` | The Kubernetes secret containing a GSA key (used in `cluster` mode without Workload Identity). |
 | `actuationMode` | `enum` | Cluster-wide default actuation mode (`Reconciling` or `Paused`). Overridden by `ConfigConnectorContext` in namespaced mode. |
 | `stateIntoSpec` | `enum` | Cluster-wide default for the `state-into-spec` behavior (`Absent` or `Merge`). Overridden by `ConfigConnectorContext` in namespaced mode. |
-| `experiments.multiClusterLease` | `object` | Configuration for multi-cluster leader election (experimental). |
+| `experiments.multiClusterLease.leaseName` | `string` | The name of the `MultiClusterLease` object that Config Connector will create. |
+| `experiments.multiClusterLease.namespace` | `string` | The namespace where the `MultiClusterLease` object will be created. |
+| `experiments.multiClusterLease.clusterCandidateIdentity` | `string` | **Required.** Unique identity for the cluster in multi-cluster leader election. |
 
 **Note:** `ConfigConnector` does not support controller implementation overrides at the cluster level. In cluster mode, overrides can only be applied at the individual resource level using legacy annotations.
 
