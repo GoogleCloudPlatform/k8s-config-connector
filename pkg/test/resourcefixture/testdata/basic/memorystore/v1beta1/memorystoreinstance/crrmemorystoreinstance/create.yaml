@@ -15,6 +15,8 @@
 apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
 kind: MemorystoreInstance
 metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: memorystoreinstance-us-central1-b-${uniqueId}
 spec:
   crossInstanceReplicationConfig:

@@ -1,6 +1,8 @@
 apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
 kind: MemorystoreInstance
 metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -11,9 +13,12 @@ metadata:
   namespace: ${uniqueId}
 spec:
   crossInstanceReplicationConfig:
-    instanceRole: NONE
+    instanceRole: PRIMARY
     primaryInstance:
       instanceRef:
+        name: memorystoreinstance-us-central1-a-${uniqueId}
+    secondaryInstances:
+    - instanceRef:
         name: memorystoreinstance-us-central1-a-${uniqueId}
   location: us-central1
   nodeType: SHARED_CORE_NANO
@@ -36,13 +41,20 @@ status:
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     crossInstanceReplicationConfig:
-      updateTime: "2026-03-03T08:53:56.705681861Z"
+      membership:
+        primaryInstance:
+          instance: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}
+          uid: a7f98ccc-3af9-4b1b-8c04-45cb42d6f6b3
+        secondaryInstances:
+        - instance: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}
+          uid: 8e8b1ff9-3480-42fd-a801-daff2cf2235f
+      updateTime: "2026-03-04T05:18:19.507715947Z"
     nodeConfig:
       sizeGB: 1.4
     pscAttachmentDetails:
     - connectionType: CONNECTION_TYPE_DISCOVERY
-      serviceAttachment: projects/90383486381/regions/us-central1/serviceAttachments/gcp-memorystore-auto-d1035e90b314d1c8-psc-sa
-    - serviceAttachment: projects/90383486381/regions/us-central1/serviceAttachments/gcp-memorystore-auto-d1035e90b314d1c8-psc-sa-2
+      serviceAttachment: projects/403202615937/regions/us-central1/serviceAttachments/gcp-memorystore-auto-f0399a78988f5001-psc-sa
+    - serviceAttachment: projects/403202615937/regions/us-central1/serviceAttachments/gcp-memorystore-auto-f0399a78988f5001-psc-sa-2
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"
