@@ -15,6 +15,7 @@
 package krmtotf
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 	"strings"
@@ -27,6 +28,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -152,10 +155,20 @@ func expandFieldTemplate(template string, r *Resource, c client.Client, smLoader
 		if !SupportsHierarchicalReferences(&r.ResourceConfig) {
 			// TODO(b/193177782): Delete this if-block once all resources
 			// support hierarchical references.
-			for _, c := range r.ResourceConfig.Containers {
-				if field == c.TFField {
-					annotation := k8s.GetAnnotationForContainerType(c.Type)
+			for _, container := range r.ResourceConfig.Containers {
+				if field == container.TFField {
+					annotation := k8s.GetAnnotationForContainerType(container.Type)
 					val, ok := k8s.GetAnnotation(annotation, r)
+					if !ok || val == "" {
+						// Fallback to namespace annotation
+						if r.GetNamespace() != "" {
+							ns := &unstructured.Unstructured{}
+							ns.SetGroupVersionKind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"})
+							if err := c.Get(context.TODO(), types.NamespacedName{Name: r.GetNamespace()}, ns); err == nil {
+								val, ok = k8s.GetAnnotation(annotation, ns)
+							}
+						}
+					}
 					if (!ok || val == "") && isRequired {
 						resolutionError = fmt.Errorf("no value found for annotation %v", annotation)
 						return ""

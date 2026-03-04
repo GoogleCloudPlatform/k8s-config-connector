@@ -202,6 +202,17 @@ func ResolveProjectFromAnnotation(ctx context.Context, reader client.Reader, src
 		return &ProjectIdentity{ProjectID: projectID}, nil
 	}
 
+	// Fallback to namespace annotation
+	if src.GetNamespace() != "" {
+		ns := &unstructured.Unstructured{}
+		ns.SetGroupVersionKind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"})
+		if err := reader.Get(ctx, types.NamespacedName{Name: src.GetNamespace()}, ns); err == nil {
+			if projectID := ns.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
+				return &ProjectIdentity{ProjectID: projectID}, nil
+			}
+		}
+	}
+
 	return nil, fmt.Errorf("project-id annotation not set on resource")
 }
 
@@ -313,6 +324,17 @@ func ResolveProjectID(ctx context.Context, reader client.Reader, obj runtime.Obj
 
 	if projectID := u.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
 		return projectID, nil
+	}
+
+	// Fallback to namespace annotation
+	if u.GetNamespace() != "" {
+		ns := &unstructured.Unstructured{}
+		ns.SetGroupVersionKind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"})
+		if err := reader.Get(ctx, types.NamespacedName{Name: u.GetNamespace()}, ns); err == nil {
+			if projectID := ns.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
+				return projectID, nil
+			}
+		}
 	}
 
 	return "", fmt.Errorf("cannot find project id for %v %v/%v", u.GetKind(), u.GetNamespace(), u.GetName())
