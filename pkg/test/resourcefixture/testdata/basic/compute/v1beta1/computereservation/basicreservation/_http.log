@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -21,7 +21,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/reservations?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -29,7 +29,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "description": "Reservation for 2 basic machines which will become generally available for VM instances to consume.",
   "name": "computereservation-${uniqueId}",
   "specificReservation": {
-    "count": "2",
+    "count": 2,
     "instanceProperties": {
       "machineType": "n1-standard-1",
       "minCpuPlatform": "Intel Sandy Bridge"
@@ -47,18 +47,18 @@ Content-Type: application/json; charset=UTF-8
   "name": "operation-${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/operations/operation-${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/operation-${operationID}",
   "startTime": "1970-01-01T00:00:00Z",
   "status": "DONE",
   "targetId": "${resourceID}",
-  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}",
   "user": "user@example.com",
-  "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a"
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -71,9 +71,9 @@ Content-Type: application/json; charset=UTF-8
   "id": "${resourceID}",
   "kind": "compute#reservation",
   "name": "computereservation-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}",
   "specificReservation": {
-    "count": "2",
+    "count": 2,
     "inUseCount": "0",
     "instanceProperties": {
       "machineType": "n1-standard-1",
@@ -81,5 +81,5 @@ Content-Type: application/json; charset=UTF-8
     }
   },
   "status": "READY",
-  "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a"
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
