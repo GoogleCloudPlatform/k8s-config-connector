@@ -46,9 +46,45 @@ func withResourceCustomResolvers(config map[string]interface{}, liveState map[st
 	switch kind {
 	case "BigtableInstance":
 		return MergeClusterConfigsFromLiveStateForBigtableInstance(config, liveState, r)
+	case "ContainerCluster":
+		return resolveContainerClusterOverrides(config, liveState)
 	default:
 		return config, nil
 	}
+}
+
+func resolveContainerClusterOverrides(config map[string]interface{}, liveState map[string]interface{}) (map[string]interface{}, error) {
+	removeDefaultNodePoolVal, ok := config["remove_default_node_pool"]
+	if !ok {
+		return config, nil
+	}
+
+	removeDefaultNodePool := false
+	switch v := removeDefaultNodePoolVal.(type) {
+	case bool:
+		removeDefaultNodePool = v
+	case string:
+		removeDefaultNodePool = (v == "true")
+	}
+
+	if !removeDefaultNodePool {
+		return config, nil
+	}
+
+	// If remove_default_node_pool is true, TF requires that node_version is NOT specified.
+	delete(config, "node_version")
+
+	// Also, if the default node pool is already gone from GCP, we should not specify node_config.
+	// We check if node_config exists in liveState.
+	exists, err := topLevelObjectFieldExistsInStateMap(liveState, "node_config")
+	if err != nil {
+		return nil, err
+	}
+	if !exists {
+		delete(config, "node_config")
+	}
+
+	return config, nil
 }
 
 // MergeClusterConfigsFromLiveStateForBigtableInstance is a resource specific function to deal with the following edge case.
