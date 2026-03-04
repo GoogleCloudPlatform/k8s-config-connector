@@ -258,7 +258,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -499,6 +500,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -647,7 +649,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -888,6 +891,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -1036,7 +1040,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -1277,6 +1282,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -1375,6 +1381,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       "networkPolicyConfig": {
         "disabled": true
+      },
+      "parallelstoreCsiDriverConfig": {
+        "enabled": false
       }
     }
   }
@@ -1471,7 +1480,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -1712,6 +1722,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -1860,7 +1871,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -2101,6 +2113,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -2249,7 +2262,8 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -2490,6 +2504,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -2589,6 +2604,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       "networkPolicyConfig": {
         "disabled": false
+      },
+      "parallelstoreCsiDriverConfig": {
+        "enabled": false
       }
     }
   }
@@ -2688,7 +2706,8 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
-    "networkPolicyConfig": {}
+    "networkPolicyConfig": {},
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -2929,6 +2948,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -3080,7 +3100,8 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
-    "networkPolicyConfig": {}
+    "networkPolicyConfig": {},
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -3321,6 +3342,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
@@ -3472,7 +3494,8 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
-    "networkPolicyConfig": {}
+    "networkPolicyConfig": {},
+    "parallelstoreCsiDriverConfig": {}
   },
   "anonymousAuthenticationConfig": {
     "mode": "ENABLED"
@@ -3713,6 +3736,7 @@ X-Xss-Protection: 0
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
+      "queuedProvisioning": {},
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
