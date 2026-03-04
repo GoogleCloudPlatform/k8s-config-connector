@@ -11,12 +11,12 @@ spec:
       widget:
         timeSeriesTable:
           dataSets:
-          - minAlignmentPeriod: 60s
+          - minAlignmentPeriod: 1m0s
             timeSeriesQuery:
               outputFullDuration: true
               timeSeriesFilter:
                 aggregation:
-                  alignmentPeriod: "60"
+                  alignmentPeriod: 1m0s
                   crossSeriesReducer: REDUCE_SUM
                   perSeriesAligner: ALIGN_RATE
                 filter: metric.type="monitoring.googleapis.com/billing/time_series_billed_for_queries_count"
