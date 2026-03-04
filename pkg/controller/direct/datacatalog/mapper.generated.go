@@ -596,8 +596,8 @@ func DataCatalogPolicyTagObservedState_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.DataCatalogPolicyTagObservedState{}
-	// MISSING: Name
-	// MISSING: ChildPolicyTags
+	out.Name = direct.LazyPtr(in.GetName())
+	out.ChildPolicyTags = in.ChildPolicyTags
 	return out
 }
 func DataCatalogPolicyTagObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalogPolicyTagObservedState) *pb.PolicyTag {
@@ -605,8 +605,8 @@ func DataCatalogPolicyTagObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.PolicyTag{}
-	// MISSING: Name
-	// MISSING: ChildPolicyTags
+	out.Name = direct.ValueOf(in.Name)
+	out.ChildPolicyTags = in.ChildPolicyTags
 	return out
 }
 func DataCatalogPolicyTagSpec_FromProto(mapCtx *direct.MapContext, in *pb.PolicyTag) *krm.DataCatalogPolicyTagSpec {
@@ -614,13 +614,11 @@ func DataCatalogPolicyTagSpec_FromProto(mapCtx *direct.MapContext, in *pb.Policy
 		return nil
 	}
 	out := &krm.DataCatalogPolicyTagSpec{}
-	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	if in.GetParentPolicyTag() != "" {
 		out.ParentPolicyTagRef = &krm.PolicyTagRef{External: in.GetParentPolicyTag()}
 	}
-	// MISSING: ChildPolicyTags
 	return out
 }
 func DataCatalogPolicyTagSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalogPolicyTagSpec) *pb.PolicyTag {
@@ -628,13 +626,11 @@ func DataCatalogPolicyTagSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataCat
 		return nil
 	}
 	out := &pb.PolicyTag{}
-	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	if in.ParentPolicyTagRef != nil {
 		out.ParentPolicyTag = in.ParentPolicyTagRef.External
 	}
-	// MISSING: ChildPolicyTags
 	return out
 }
 func DataCatalogTagObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krmdatacatalogv1alpha1.DataCatalogTagObservedState {
@@ -736,7 +732,7 @@ func DataCatalogTaxonomyObservedState_FromProto(mapCtx *direct.MapContext, in *p
 		return nil
 	}
 	out := &krm.DataCatalogTaxonomyObservedState{}
-	// MISSING: Name
+	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: DisplayName
 	// MISSING: Description
 	out.PolicyTagCount = direct.LazyPtr(in.GetPolicyTagCount())
@@ -755,7 +751,7 @@ found existing non-generated mapping function "DataCatalogTaxonomyObservedState_
 			return nil
 		}
 		out := &pb.Taxonomy{}
-		// MISSING: Name
+		out.Name = direct.ValueOf(in.Name)
 		// MISSING: DisplayName
 		// MISSING: Description
 		out.PolicyTagCount = direct.ValueOf(in.PolicyTagCount)
@@ -1557,26 +1553,6 @@ func SystemTimestampsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.S
 	return out
 }
 func SystemTimestampsObservedState_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1alpha1.SystemTimestampsObservedState) *pb.SystemTimestamps {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SystemTimestamps{}
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	return out
-}
-func SystemTimestampsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestamps) *krm.SystemTimestampsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SystemTimestampsObservedState{}
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	return out
-}
-func SystemTimestampsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SystemTimestampsObservedState) *pb.SystemTimestamps {
 	if in == nil {
 		return nil
 	}

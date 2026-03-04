@@ -138,6 +138,8 @@ type PolicyTagObservedState struct {
 }
 */
 
+/* found existing non-generated go type "SystemTimestampsObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.datacatalog.v1.SystemTimestamps
 type SystemTimestampsObservedState struct {
 	// Output only. Expiration timestamp of the resource within the given system.
@@ -146,6 +148,7 @@ type SystemTimestampsObservedState struct {
 	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.expire_time
 	ExpireTime *string `json:"expireTime,omitempty"`
 }
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.datacatalog.v1.Taxonomy", skipping
 

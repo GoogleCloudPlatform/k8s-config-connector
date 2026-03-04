@@ -67,6 +67,19 @@ type DataCatalogPolicyTagStatus struct {
 	/* Resource name of this policy tag, whose format is:
 	"projects/{project}/locations/{region}/taxonomies/{taxonomy}/policyTags/{policytag}". */
 	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Resource names of child policy tags of this policy tag. */
+	// +optional
+	ChildPolicyTags []string `json:"childPolicyTags,omitempty"`
+}
+
+// DataCatalogPolicyTagObservedState is the state of the DataCatalogPolicyTag resource as most recently observed in GCP.
+// +kcc:observedstate:proto=google.cloud.datacatalog.v1.PolicyTag
+type DataCatalogPolicyTagObservedState struct {
+	/* Resource name of this policy tag, whose format is:
+	"projects/{project}/locations/{region}/taxonomies/{taxonomy}/policyTags/{policytag}". */
+	// +optional
 	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.name
 	Name *string `json:"name,omitempty"`
 
@@ -74,11 +87,6 @@ type DataCatalogPolicyTagStatus struct {
 	// +optional
 	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.child_policy_tags
 	ChildPolicyTags []string `json:"childPolicyTags,omitempty"`
-}
-
-// DataCatalogPolicyTagObservedState is the state of the DataCatalogPolicyTag resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.datacatalog.v1.PolicyTag
-type DataCatalogPolicyTagObservedState struct {
 }
 
 // +genclient
