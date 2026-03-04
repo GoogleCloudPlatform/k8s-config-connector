@@ -89,7 +89,7 @@ func (m *networkModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 func (m *networkModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	id, err := krm.ParseComputeNetworkExternal(url)
 	if err != nil {
-		return nil, err
+		return nil, nil
 	}
 
 	gcpClient, err := newGCPClient(m.config)
