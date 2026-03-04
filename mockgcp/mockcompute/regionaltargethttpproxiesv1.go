@@ -63,12 +63,22 @@ func (s *RegionalTargetHTTPProxiesV1) Insert(ctx context.Context, req *pb.Insert
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#targetHttpProxy")
+	obj.Region = PtrTo(buildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/regions/"+name.Region))
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalTargetHTTPProxiesV1) SetUrlMap(ctx context.Context, req *pb.SetUrlMapRegionTargetHttpProxyRequest) (*pb.Operation, error) {
@@ -90,7 +100,15 @@ func (s *RegionalTargetHTTPProxiesV1) SetUrlMap(ctx context.Context, req *pb.Set
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setUrlMap"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalTargetHTTPProxiesV1) Delete(ctx context.Context, req *pb.DeleteRegionTargetHttpProxyRequest) (*pb.Operation, error) {
@@ -107,7 +125,15 @@ func (s *RegionalTargetHTTPProxiesV1) Delete(ctx context.Context, req *pb.Delete
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type regionalTargetHttpProxyName struct {
