@@ -17,6 +17,7 @@
 // krm.group: compute.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.compute.v1
+// resource: ComputeAddress:Address
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
 // resource: ComputeForwardingRule:ForwardingRule
 // resource: ComputeSecurityPolicy:SecurityPolicy

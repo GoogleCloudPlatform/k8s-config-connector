@@ -24,9 +24,106 @@ import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ComputeAddressObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeAddressObservedState{}
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: Users
+	return out
+}
+func ComputeAddressObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressObservedState) *pb.Address {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Address{}
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: Users
+	return out
+}
+func ComputeAddressSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeAddressSpec{}
+	out.Address = in.Address
+	out.AddressType = in.AddressType
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	out.IPVersion = in.IpVersion
+	out.IPV6EndpointType = in.Ipv6EndpointType
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.NetworkTier = in.NetworkTier
+	out.PrefixLength = in.PrefixLength
+	out.Purpose = in.Purpose
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	// MISSING: Users
+	return out
+}
+func ComputeAddressSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressSpec) *pb.Address {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Address{}
+	out.Address = in.Address
+	out.AddressType = in.AddressType
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	out.IpVersion = in.IPVersion
+	out.Ipv6EndpointType = in.IPV6EndpointType
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.NetworkTier = in.NetworkTier
+	out.PrefixLength = in.PrefixLength
+	out.Purpose = in.Purpose
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = &in.SubnetworkRef.External
+	}
+	// MISSING: Users
+	return out
+}
 func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyObservedState {
 	if in == nil {
 		return nil
