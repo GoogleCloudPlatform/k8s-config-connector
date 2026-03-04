@@ -70,7 +70,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, deps 
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
-		For(obj).
+		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %w", err)
@@ -197,49 +197,47 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 }
 
 func (r *ReconcileSecret) updateReadyCondition(ctx context.Context, u *unstructured.Unstructured, status corev1.ConditionStatus, reason, message string) error {
-	// Only update if the current condition is different
-	currReady, found, err := getReadyConditionFromUnstructured(u)
-	if err == nil && found && currReady.Status == status && currReady.Reason == reason && currReady.Message == message {
-		return nil
+	conditionsRaw, _, _ := unstructured.NestedSlice(u.Object, "status", "conditions")
+	conditions, err := k8s.MarshalAsConditionsSlice(conditionsRaw)
+	if err != nil {
+		return err
 	}
 
 	newCondition := k8s.NewCustomReadyCondition(status, reason, message)
 
-	// Convert condition to map for unstructured
-	var conditionMap map[string]interface{}
-	b, err := json.Marshal(newCondition)
+	found := false
+	for i, c := range conditions {
+		if c.Type == k8sv1alpha1.ReadyConditionType {
+			if c.Status == status && c.Reason == reason && c.Message == message {
+				return nil // already up to date
+			}
+			conditions[i] = newCondition
+			found = true
+			break
+		}
+	}
+	if !found {
+		conditions = append(conditions, newCondition)
+	}
+
+	// Convert back to slice of maps
+	var conditionsMap []interface{}
+	b, err := json.Marshal(conditions)
 	if err != nil {
 		return err
 	}
-	if err := json.Unmarshal(b, &conditionMap); err != nil {
+	if err := json.Unmarshal(b, &conditionsMap); err != nil {
 		return err
 	}
 
-	conditions := []interface{}{conditionMap}
-	if err := unstructured.SetNestedSlice(u.Object, conditions, "status", "conditions"); err != nil {
+	if err := unstructured.SetNestedSlice(u.Object, conditionsMap, "status", "conditions"); err != nil {
 		return err
 	}
 	return r.Status().Update(ctx, u)
 }
 
-func getReadyConditionFromUnstructured(u *unstructured.Unstructured) (k8sv1alpha1.Condition, bool, error) {
-	conditionsRaw, found, err := unstructured.NestedSlice(u.Object, "status", "conditions")
-	if err != nil || !found {
-		return k8sv1alpha1.Condition{}, false, err
-	}
-	conditions, err := k8s.MarshalAsConditionsSlice(conditionsRaw)
-	if err != nil {
-		return k8sv1alpha1.Condition{}, false, err
-	}
-	for _, condition := range conditions {
-		if condition.Type == k8sv1alpha1.ReadyConditionType {
-			return condition, true, nil
-		}
-	}
-	return k8sv1alpha1.Condition{}, false, nil
-}
-
 func (r *ReconcileSecret) updateSecretCreationFailed(ctx context.Context, u *unstructured.Unstructured, err error) error {
+
 	return r.updateReadyCondition(ctx, u, corev1.ConditionFalse, "SecretCreationFailed", fmt.Sprintf("failed to create secret: %v", err))
 }
 
