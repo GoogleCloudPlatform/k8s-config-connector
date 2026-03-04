@@ -64,8 +64,6 @@ func (m *modelBackup) client(ctx context.Context) (*gcp.Client, error) {
 }
 
 func (m *modelBackup) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
-	log := klog.FromContext(ctx)
-
 	u := op.GetUnstructured()
 	obj := &krm.MemorystoreInstanceBackup{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
@@ -82,28 +80,21 @@ func (m *modelBackup) AdapterForObject(ctx context.Context, op *directbase.Adapt
 		return nil, err
 	}
 
-	if err := resolveBackupRefereces(ctx, op.Reader, gcpClient, obj); err != nil {
-		return nil, err
-	}
-
-	id, err := krm.NewBackupIdentity(ctx, obj)
-	if err != nil {
-		// just log the error; if the id is not ready, it means the backup is not created yet
-		log.V(2).Info("creating Backup identity", "err", err)
-	}
-
 	return &BackupAdapter{
-		id:        id,
 		gcpClient: gcpClient,
+		reader:    op.Reader,
 		desired:   obj,
 	}, nil
 }
 
-func resolveBackupRefereces(ctx context.Context, reader client.Reader, gcpClient *gcp.Client, obj *krm.MemorystoreInstanceBackup) error {
-	if obj.Spec.ResourceID == nil {
-		obj.Spec.ResourceID = direct.LazyPtr(obj.GetName())
+func resolveBackupName(obj *krm.MemorystoreInstanceBackup) string {
+	if obj.Spec.ResourceID != nil {
+		return *obj.Spec.ResourceID
 	}
+	return obj.GetName()
+}
 
+func resolveBackupRefereces(ctx context.Context, reader client.Reader, gcpClient *gcp.Client, obj *krm.MemorystoreInstanceBackup) error {
 	if obj.Spec.InstanceRef != nil {
 		if obj.Spec.InstanceRef.External == "" {
 			instanceRef, err := refs.ResolveMemorystoreInstance(ctx, reader, obj, obj.Spec.InstanceRef)
@@ -135,6 +126,7 @@ func (m *modelBackup) AdapterForURL(ctx context.Context, url string) (directbase
 type BackupAdapter struct {
 	id        *krm.BackupIdentity
 	gcpClient *gcp.Client
+	reader    client.Reader
 	desired   *krm.MemorystoreInstanceBackup
 	actual    *memorystorepb.Backup
 }
@@ -146,10 +138,16 @@ var _ directbase.Adapter = &BackupAdapter{}
 // Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
 func (a *BackupAdapter) Find(ctx context.Context) (bool, error) {
-	if a.id == nil {
-		// Id is not resolved yet, which means the resource is not created yet.
-		return false, nil
+	if err := resolveBackupRefereces(ctx, a.reader, a.gcpClient, a.desired); err != nil {
+		return false, err
 	}
+
+	id, err := krm.NewBackupIdentity(ctx, a.desired)
+	if err != nil {
+		return false, err
+	}
+
+	a.id = id
 
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Backup", "name", a.id.String())
@@ -169,7 +167,7 @@ func (a *BackupAdapter) Find(ctx context.Context) (bool, error) {
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *BackupAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	name := direct.ValueOf(a.desired.Spec.ResourceID)
+	name := resolveBackupName(a.desired)
 
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Backup", "name", name)
@@ -179,6 +177,7 @@ func (a *BackupAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 	}
 
 	desired := a.desired.DeepCopy()
+	desired.Spec.ResourceID = &name
 	mapCtx := &direct.MapContext{}
 	reqCreate := MemorystoreInstanceBackupSpec_ToProtoBackupInstanceRequest(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -208,7 +207,6 @@ func (a *BackupAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 	}
 
 	a.id = id
-	a.actual = backup
 
 	status := &krm.MemorystoreInstanceBackupStatus{}
 	status.ObservedState = MemorystoreInstanceBackupObservedState_FromProto(mapCtx, backup)

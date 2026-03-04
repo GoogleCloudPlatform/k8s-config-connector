@@ -80,10 +80,6 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, err
 	}
 
-	if err := resolveReferences(ctx, reader, obj); err != nil {
-		return nil, err
-	}
-
 	// Get memorystore GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -92,6 +88,7 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 	return &InstanceAdapter{
 		id:        id,
 		gcpClient: gcpClient,
+		reader:    reader,
 		desired:   obj,
 	}, nil
 }
@@ -116,23 +113,13 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 	}
 	if obj.Spec.CrossInstanceReplicationConfig != nil {
 		crr := obj.Spec.CrossInstanceReplicationConfig
-		instanceRole := ""
-		if crr.InstanceRole != nil {
-			instanceRole = *crr.InstanceRole
+		if err := resolveRemoteInstanceRef(ctx, reader, obj, crr.PrimaryInstance); err != nil {
+			return err
 		}
-		switch instanceRole {
-		case "PRIMARY":
-			for _, secondaryInstance := range crr.SecondaryInstances {
-				if err := resolveRemoteInstanceRef(ctx, reader, obj, &secondaryInstance); err != nil {
-					return err
-				}
-			}
-		case "SECONDARY":
-			if err := resolveRemoteInstanceRef(ctx, reader, obj, crr.PrimaryInstance); err != nil {
+		for _, secondaryInstance := range crr.SecondaryInstances {
+			if err := resolveRemoteInstanceRef(ctx, reader, obj, &secondaryInstance); err != nil {
 				return err
 			}
-		default:
-			// do nothing
 		}
 	}
 	if obj.Spec.ManagedBackupSource != nil && obj.Spec.ManagedBackupSource.BackupRef != nil {
@@ -168,6 +155,7 @@ func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directba
 type InstanceAdapter struct {
 	id        *krm.InstanceIdentity
 	gcpClient *gcp.Client
+	reader    client.Reader
 	desired   *krm.MemorystoreInstance
 	actual    *memorystorepb.Instance
 }
@@ -200,9 +188,13 @@ func (a *InstanceAdapter) Find(ctx context.Context) (bool, error) {
 func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Instance", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	if err := resolveReferences(ctx, a.reader, desired); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	resource := MemorystoreInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -221,7 +213,6 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if err != nil {
 		return fmt.Errorf("Instance %s waiting creation: %w", a.id, err)
 	}
-	a.actual = created
 	log.V(2).Info("successfully created Instance", "name", a.id)
 
 	status := &krm.MemorystoreInstanceStatus{}
@@ -237,9 +228,14 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Instance", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := MemorystoreInstanceSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desired := a.desired.DeepCopy()
+	if err := resolveReferences(ctx, a.reader, desired); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
+	desiredPb := MemorystoreInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -253,6 +249,17 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		desiredPb.PersistenceConfig.AofConfig = nil
 	case memorystorepb.PersistenceConfig_AOF:
 		desiredPb.PersistenceConfig.RdbConfig = nil
+	}
+
+	// Need to unset the fields to allow for switchover in cross region replication.
+	switch desiredPb.GetCrossInstanceReplicationConfig().GetInstanceRole() {
+	case memorystorepb.CrossInstanceReplicationConfig_PRIMARY:
+		desiredPb.CrossInstanceReplicationConfig.PrimaryInstance.Instance = ""
+	case memorystorepb.CrossInstanceReplicationConfig_SECONDARY:
+		desiredPb.CrossInstanceReplicationConfig.SecondaryInstances = nil
+	default:
+		desiredPb.CrossInstanceReplicationConfig.PrimaryInstance.Instance = ""
+		desiredPb.CrossInstanceReplicationConfig.SecondaryInstances = nil
 	}
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
@@ -329,7 +336,6 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 			if err != nil {
 				return fmt.Errorf("instance %s waiting update: %w", a.id, err)
 			}
-			a.actual = updated
 			log.V(2).Info("successfully updated Instance", "name", a.id, "updateMask", path)
 		}
 		log.V(2).Info("successfully updated Instance", "name", a.id)

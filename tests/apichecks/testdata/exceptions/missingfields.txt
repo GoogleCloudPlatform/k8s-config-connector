@@ -2262,7 +2262,6 @@
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.minutes" is not set in unstructured objects
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.nanos" is not set in unstructured objects
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.seconds" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.crossInstanceReplicationConfig.secondaryInstances[].instanceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.endpoints[].connections[].pscAutoConnection.port" is not set in unstructured objects
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.gcsSource.uris[]" is not set in unstructured objects
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.weeklyMaintenanceWindow[].startTime.minutes" is not set in unstructured objects

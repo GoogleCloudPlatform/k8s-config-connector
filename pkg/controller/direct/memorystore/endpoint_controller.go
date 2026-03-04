@@ -86,10 +86,6 @@ func (m *modelEndpoint) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, err
 	}
 
-	if err := resolveEndpointReferences(ctx, reader, obj); err != nil {
-		return nil, err
-	}
-
 	// Get memorystore and compute GCP client
 	gcpClient, cmpClient, err := m.client(ctx)
 	if err != nil {
@@ -99,6 +95,7 @@ func (m *modelEndpoint) AdapterForObject(ctx context.Context, op *directbase.Ada
 		id:        id,
 		gcpClient: gcpClient,
 		cmpClient: cmpClient,
+		reader:    reader,
 		desired:   obj,
 	}, nil
 }
@@ -126,6 +123,7 @@ type EndpointAdapter struct {
 	id        *krm.EndpointIdentity
 	gcpClient *gcp.Client
 	cmpClient *gcpcompute.ForwardingRulesClient
+	reader    client.Reader
 	desired   *krm.MemorystoreInstanceEndpoint
 	actual    *pb.Instance
 }
@@ -158,6 +156,10 @@ func (a *EndpointAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating user created instance endoints", "name", a.id)
 
+	if err := resolveEndpointReferences(ctx, a.reader, a.desired); err != nil {
+		return err
+	}
+
 	actual, err := a.updateConnections(ctx, a.desired.Spec.Endpoints, createOp.GetUnstructured())
 	if err != nil {
 		return err
@@ -169,7 +171,6 @@ func (a *EndpointAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	a.actual = actual
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -177,6 +178,10 @@ func (a *EndpointAdapter) Create(ctx context.Context, createOp *directbase.Creat
 func (a *EndpointAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating user created instance endoints", "name", a.id)
+
+	if err := resolveEndpointReferences(ctx, a.reader, a.desired); err != nil {
+		return err
+	}
 
 	actual, err := a.updateConnections(ctx, a.desired.Spec.Endpoints, updateOp.GetUnstructured())
 	if err != nil {
@@ -189,7 +194,6 @@ func (a *EndpointAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	a.actual = actual
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
