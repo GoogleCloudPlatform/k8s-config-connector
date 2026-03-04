@@ -71,6 +71,9 @@ spec:
               description:
                 description: Immutable. An optional description of this resource.
                 type: string
+              ipCollection:
+                description: Immutable. The IP range of the IPv6 address.
+                type: string
               ipVersion:
                 description: 'Immutable. The IP Version that will be used by this
                   address. The default value is ''IPV4''. Possible values: ["IPV4",
