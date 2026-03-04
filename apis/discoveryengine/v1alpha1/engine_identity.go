@@ -17,43 +17,14 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// EngineIdentity defines the resource reference to DiscoveryEngineEngine, which "External" field
-// holds the GCP identifier for the KRM object.
-type EngineIdentity struct {
-	parent *EngineParent
-	id     string
-}
-
-func (i *EngineIdentity) String() string {
-	return i.parent.String() + "/engines/" + i.id
-}
-
-func (i *EngineIdentity) ID() string {
-	return i.id
-}
-
-func (i *EngineIdentity) Parent() *EngineParent {
-	return i.parent
-}
-
-type EngineParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *EngineParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds a EngineIdentity from the Config Connector Engine object.
-func NewEngineIdentity(ctx context.Context, reader client.Reader, obj *DiscoveryEngineEngine) (*EngineIdentity, error) {
+// New builds a DiscoveryEngineEngineID from the Config Connector Engine object.
+func NewDiscoveryEngineEngineIDFromObject(ctx context.Context, reader client.Reader, obj *DiscoveryEngineEngine) (*DiscoveryEngineEngineID, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
@@ -65,6 +36,7 @@ func NewEngineIdentity(ctx context.Context, reader client.Reader, obj *Discovery
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
+	collectionID := obj.Spec.Collection
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -75,43 +47,29 @@ func NewEngineIdentity(ctx context.Context, reader client.Reader, obj *Discovery
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
+	id := &DiscoveryEngineEngineID{
+		CollectionLink: &CollectionLink{
+			ProjectAndLocation: &ProjectAndLocation{
+				ProjectID: projectID,
+				Location:  location,
+			},
+			Collection: collectionID,
+		},
+		Engine: resourceID,
+	}
+
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseEngineExternal(externalRef)
+		statusID, err := parseDiscoveryEngineEngineExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		if statusID.String() != id.String() {
+			return nil, fmt.Errorf("cannot change object key after creation; status=%q, new=%q",
+				statusID.String(), id.String())
 		}
 	}
-	return &EngineIdentity{
-		parent: &EngineParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
-}
-
-func ParseEngineExternal(external string) (parent *EngineParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "engines" {
-		return nil, "", fmt.Errorf("format of DiscoveryEngineEngine external=%q was not known (use projects/{{projectID}}/locations/{{location}}/engines/{{engineID}})", external)
-	}
-	parent = &EngineParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return id, nil
 }
