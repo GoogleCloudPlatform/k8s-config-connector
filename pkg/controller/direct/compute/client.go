@@ -117,3 +117,29 @@ func (m *gcpClient) newRegionalTargetTcpProxiesClient(ctx context.Context) (*com
 	}
 	return client, err
 }
+
+func (m *gcpClient) addressClient(ctx context.Context) (*compute.AddressesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewAddressesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeAddress client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newGlobalAddressClient(ctx context.Context) (*compute.GlobalAddressesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	client, err := compute.NewGlobalAddressesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building global ComputeAddress client: %w", err)
+
+	}
+	return client, err
+}
