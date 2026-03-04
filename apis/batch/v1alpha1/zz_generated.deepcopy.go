@@ -926,6 +926,13 @@ func (in *JobStatus) DeepCopyInto(out *JobStatus) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.TaskGroups != nil {
+		in, out := &in.TaskGroups, &out.TaskGroups
+		*out = make(map[string]JobStatus_TaskGroupStatus, len(*in))
+		for key, val := range *in {
+			(*out)[key] = *val.DeepCopy()
+		}
+	}
 	if in.RunDuration != nil {
 		in, out := &in.RunDuration, &out.RunDuration
 		*out = new(string)

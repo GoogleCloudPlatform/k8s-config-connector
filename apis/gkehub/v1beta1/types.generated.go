@@ -216,8 +216,11 @@ type MonitoringConfig struct {
 
 // +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyContentSpec
 type PolicyContentSpec struct {
-
-	// TODO: unsupported map type with key string and value message
+	// map of bundle name to BundleInstallSpec. The bundle name maps to the
+	//  `bundleName` key in the `policycontroller.gke.io/constraintData` annotation
+	//  on a constraint.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyContentSpec.bundles
+	Bundles map[string]BundleInstallSpec `json:"bundles,omitempty"`
 
 	// Configures the installation of the Template Library.
 	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyContentSpec.template_library
