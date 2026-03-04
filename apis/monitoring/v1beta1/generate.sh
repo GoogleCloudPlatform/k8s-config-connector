@@ -28,7 +28,7 @@ go run . generate-types \
   --resource MonitoringNotificationChannel:NotificationChannel
 
 go run . generate-mapper \
-  --service google.monitoring.v3 \
+  --service google.monitoring.v3,google.monitoring.dashboard.v1 \
   --api-version monitoring.cnrm.cloud.google.com/v1beta1
 
 cd ${REPO_ROOT}
