@@ -9,7 +9,7 @@ There are two ways to configure container resources, depending on whether you ar
 
 ## Configurable Pods and Containers
 
-The following table lists the Config Connector components and the resources used to customize them.
+The following table lists the workloads (may be a statefulSet or Deployment) and containers that can be configured.
 
 | Pod Name | Customization Resource | Workload Type | Container Name(s) |
 | :--- | :--- | :--- | :--- |
