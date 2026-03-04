@@ -385,29 +385,8 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config, namespa
 			if !contains(apiResource.Verbs, "list") {
 				continue
 			}
-			gvr := schema.GroupVersionResource{
-				Group:    apiResource.Group,
-				Version:  apiResource.Version,
-				Resource: apiResource.Name,
-			}
-			if gvr.Group == "" {
-				gvr.Group = apiResourceListGroupVersion.Group
-			}
-			if gvr.Version == "" {
-				gvr.Version = apiResourceListGroupVersion.Version
-			}
-			// Not tracking CC and CCC objects.
-			if strings.HasSuffix(gvr.Group, "core.cnrm.cloud.google.com") {
-				continue
-			}
-
-			// Not tracking non-CNRM objects.
-			if !strings.Contains(gvr.Group, "cnrm.cloud.google.com") {
-				continue
-			}
-
-			// Not tracking ignored CRDs.
-			if _, ok := constants.IgnoredCRDList[strings.ToLower(gvr.Resource)+"."+strings.ToLower(gvr.Group)]; ok {
+			gvr, ok := toTrackedGVR(apiResource, apiResourceListGroupVersion)
+			if !ok {
 				continue
 			}
 			var resources *unstructured.UnstructuredList
@@ -456,4 +435,35 @@ func contains(slice []string, str string) bool {
 		}
 	}
 	return false
+}
+
+// toTrackedGVR converts an APIResource to a tracked GVR.
+// It returns the GVR and a boolean indicating whether it should be tracked.
+func toTrackedGVR(apiResource metav1.APIResource, apiResourceListGroupVersion schema.GroupVersion) (schema.GroupVersionResource, bool) {
+	gvr := schema.GroupVersionResource{
+		Group:    apiResource.Group,
+		Version:  apiResource.Version,
+		Resource: apiResource.Name,
+	}
+	if gvr.Group == "" {
+		gvr.Group = apiResourceListGroupVersion.Group
+	}
+	if gvr.Version == "" {
+		gvr.Version = apiResourceListGroupVersion.Version
+	}
+	// Not tracking CC and CCC objects.
+	if strings.HasSuffix(gvr.Group, "core.cnrm.cloud.google.com") {
+		return gvr, false
+	}
+
+	// Not tracking non-CNRM objects.
+	if !strings.Contains(gvr.Group, "cnrm.cloud.google.com") {
+		return gvr, false
+	}
+
+	// Not tracking ignored CRDs.
+	if _, ok := constants.IgnoredCRDList[strings.ToLower(gvr.Resource)+"."+strings.ToLower(gvr.Group)]; ok {
+		return gvr, false
+	}
+	return gvr, true
 }
