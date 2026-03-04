@@ -162,7 +162,7 @@ func FindDefaultServiceAccount() (string, error) {
 		}
 		return "", fmt.Errorf("error getting credentials: %w", err)
 	}
-	if creds == nil {
+	if creds == nil || len(creds.JSON) == 0 {
 		return "", nil
 	}
 
