@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
+	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
 )
@@ -75,6 +76,13 @@ type CCExperiments struct {
 	// MultiClusterLease defines configuration specific to multi-cluster leader election.
 	// +optional
 	MultiClusterLease *MultiClusterLeaseSpec `json:"multiClusterLease,omitempty"`
+
+	// ControllerOverrides allows specifying which controller to use for a given
+	// resource kind cluster-wide, overriding the system default.
+	// The format for the entries should follow the format as Kind.group :
+	// e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
+	// +optional
+	ControllerOverrides map[string]k8scontrollertype.ReconcilerType `json:"controllerOverrides,omitempty"`
 }
 
 // MultiClusterLeaseSpec defines the configuration for a multi-cluster lease.

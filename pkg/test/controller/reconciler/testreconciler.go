@@ -263,16 +263,22 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured, c client.Client) (k8s
 			}
 		}
 
-		// Check for CCC setting
-		_, ccc, err := kccstate.FetchLiveKCCState(context.Background(), c, types.NamespacedName{Namespace: u.GetNamespace(), Name: u.GetName()})
+		// Check for CC and CCC setting
+		cc, ccc, err := kccstate.FetchLiveKCCState(context.Background(), c, types.NamespacedName{Namespace: u.GetNamespace(), Name: u.GetName()})
 		if err != nil {
 			return "", fmt.Errorf("error fetching kcc state: %w", err)
 		}
+		gk := u.GetObjectKind().GroupVersionKind().GroupKind().String()
+		// CCC takes precedence
 		if ccc.Spec.Experiments != nil {
-			for k, v := range ccc.Spec.Experiments.ControllerOverrides {
-				if k == u.GetObjectKind().GroupVersionKind().GroupKind().String() {
-					return v, nil
-				}
+			if v, ok := ccc.Spec.Experiments.ControllerOverrides[gk]; ok {
+				return v, nil
+			}
+		}
+		// Fallback to CC
+		if cc.Spec.Experiments != nil {
+			if v, ok := cc.Spec.Experiments.ControllerOverrides[gk]; ok {
+				return v, nil
 			}
 		}
 

@@ -31,10 +31,17 @@ func NewControllerSelector(config *ResourcesControllerMap) *ControllerSelector {
 	}
 }
 
-func (s *ControllerSelector) SelectController(gvk schema.GroupVersionKind, ccc *v1beta1.ConfigConnectorContext) k8s.ReconcilerType {
-	// Check if there is an override in ConfigConnectorContext for the specific GVK.
-	if ccc != nil && ccc.Spec.Experiments.ControllerOverrides != nil {
-		if controllerType, ok := ccc.Spec.Experiments.ControllerOverrides[gvk.GroupKind().String()]; ok {
+func (s *ControllerSelector) SelectController(gvk schema.GroupVersionKind, cc *v1beta1.ConfigConnector, ccc *v1beta1.ConfigConnectorContext) k8s.ReconcilerType {
+	groupKind := gvk.GroupKind().String()
+	// Check if there is an override in ConfigConnectorContext (CCC)
+	if ccc != nil && ccc.Spec.Experiments != nil && ccc.Spec.Experiments.ControllerOverrides != nil {
+		if controllerType, ok := ccc.Spec.Experiments.ControllerOverrides[groupKind]; ok {
+			return controllerType
+		}
+	}
+	// Check if there is an override in ConfigConnector (CC)
+	if cc != nil && cc.Spec.Experiments != nil && cc.Spec.Experiments.ControllerOverrides != nil {
+		if controllerType, ok := cc.Spec.Experiments.ControllerOverrides[groupKind]; ok {
 			return controllerType
 		}
 	}

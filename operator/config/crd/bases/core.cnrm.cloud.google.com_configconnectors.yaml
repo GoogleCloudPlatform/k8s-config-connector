@@ -69,6 +69,17 @@ spec:
               experiments:
                 description: ConfigConnector specific experiments
                 properties:
+                  controllerOverrides:
+                    additionalProperties:
+                      description: ReconcilerType describes the type of reconciler
+                        (controller) being used
+                      type: string
+                    description: |-
+                      ControllerOverrides allows specifying which controller to use for a given
+                      resource kind cluster-wide, overriding the system default.
+                      The format for the entries should follow the format as Kind.group :
+                      e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
+                    type: object
                   multiClusterLease:
                     description: MultiClusterLease defines configuration specific
                       to multi-cluster leader election.
