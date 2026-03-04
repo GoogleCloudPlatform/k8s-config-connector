@@ -269,7 +269,7 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "datastream.cnrm.cloud.google.com", Kind: "DatastreamPrivateConnection"}:
 	case schema.GroupKind{Group: "datastream.cnrm.cloud.google.com", Kind: "DatastreamRoute"}:
 	case schema.GroupKind{Group: "datastream.cnrm.cloud.google.com", Kind: "DatastreamStream"}:
-	case schema.GroupKind{Group: "clouddeploy.cnrm.cloud.google.com", Kind: "DeployCustomTargetType"}:
+	case schema.GroupKind{Group: "clouddeploy.cnrm.cloud.google.com", Kind: "CloudDeployCustomTargetType"}:
 	case schema.GroupKind{Group: "deploymentmanager.cnrm.cloud.google.com", Kind: "DeploymentManagerDeployment"}:
 	case schema.GroupKind{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowAgent"}:
 	case schema.GroupKind{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXAgent"}:
