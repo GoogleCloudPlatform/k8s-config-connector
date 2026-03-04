@@ -60,8 +60,8 @@ func TestCleanResourceForBackup(t *testing.T) {
 			"metadata": map[string]interface{}{
 				"name":              "test-resource",
 				"namespace":         "test-ns",
-				"resourceVersion":  "12345",
-				"uid":              "uid-123",
+				"resourceVersion":   "12345",
+				"uid":               "uid-123",
 				"creationTimestamp": "2026-03-03T00:00:00Z",
 				"managedFields":     []interface{}{"field1"},
 				"deletionTimestamp": "2026-03-03T00:00:00Z",
