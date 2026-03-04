@@ -106,6 +106,11 @@ func (in *DataCatalogPolicyTagSpec) DeepCopyInto(out *DataCatalogPolicyTagSpec) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.DisplayName != nil {
+		in, out := &in.DisplayName, &out.DisplayName
+		*out = new(string)
+		**out = **in
+	}
 	if in.ParentPolicyTagRef != nil {
 		in, out := &in.ParentPolicyTagRef, &out.ParentPolicyTagRef
 		*out = new(PolicyTagRef)
