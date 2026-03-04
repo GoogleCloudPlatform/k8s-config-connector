@@ -24,11 +24,81 @@ import (
 
 	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
-	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	monitoredres "google.golang.org/genproto/googleapis/api/monitoredres"
+	"google.golang.org/genproto/googleapis/type/interval"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+func MonitoringDashboardSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringDashboardSpec) *pb.Dashboard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dashboard{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if in.GridLayout != nil {
+		out.Layout = &pb.Dashboard_GridLayout{GridLayout: GridLayout_ToProto(mapCtx, in.GridLayout)}
+	}
+	if in.MosaicLayout != nil {
+		out.Layout = &pb.Dashboard_MosaicLayout{MosaicLayout: MosaicLayout_ToProto(mapCtx, in.MosaicLayout)}
+	}
+	if in.RowLayout != nil {
+		out.Layout = &pb.Dashboard_RowLayout{RowLayout: RowLayout_ToProto(mapCtx, in.RowLayout)}
+	}
+	if in.ColumnLayout != nil {
+		out.Layout = &pb.Dashboard_ColumnLayout{ColumnLayout: ColumnLayout_ToProto(mapCtx, in.ColumnLayout)}
+	}
+	out.DashboardFilters = direct.Slice_ToProto(mapCtx, in.DashboardFilters, DashboardFilter_ToProto)
+	out.Labels = in.Labels
+	return out
+}
+
+func MonitoringDashboardSpec_FromProto(mapCtx *direct.MapContext, in *pb.Dashboard) *krm.MonitoringDashboardSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoringDashboardSpec{}
+	out.DisplayName = direct.LazyPtr(in.DisplayName)
+	if in.GetGridLayout() != nil {
+		out.GridLayout = GridLayout_FromProto(mapCtx, in.GetGridLayout())
+	}
+	if in.GetMosaicLayout() != nil {
+		out.MosaicLayout = MosaicLayout_FromProto(mapCtx, in.GetMosaicLayout())
+	}
+	if in.GetRowLayout() != nil {
+		out.RowLayout = RowLayout_FromProto(mapCtx, in.GetRowLayout())
+	}
+	if in.GetColumnLayout() != nil {
+		out.ColumnLayout = ColumnLayout_FromProto(mapCtx, in.GetColumnLayout())
+	}
+	out.DashboardFilters = direct.Slice_FromProto(mapCtx, in.DashboardFilters, DashboardFilter_FromProto)
+	out.Labels = in.Labels
+	return out
+}
+
+func PickTimeSeriesFilter_ToProto(mapCtx *direct.MapContext, in *krm.PickTimeSeriesFilter) *pb.PickTimeSeriesFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PickTimeSeriesFilter{}
+	out.RankingMethod = direct.Enum_ToProto[pb.PickTimeSeriesFilter_Method](mapCtx, in.RankingMethod)
+	out.NumTimeSeries = direct.ValueOf(in.NumTimeSeries)
+	out.Direction = direct.Enum_ToProto[pb.PickTimeSeriesFilter_Direction](mapCtx, in.Direction)
+	out.Interval = Interval_ToProto(mapCtx, in.Interval)
+	return out
+}
+
+func PickTimeSeriesFilter_FromProto(mapCtx *direct.MapContext, in *pb.PickTimeSeriesFilter) *krm.PickTimeSeriesFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PickTimeSeriesFilter{}
+	out.RankingMethod = direct.Enum_FromProto(mapCtx, in.RankingMethod)
+	out.NumTimeSeries = direct.LazyPtr(in.NumTimeSeries)
+	out.Direction = direct.Enum_FromProto(mapCtx, in.Direction)
+	out.Interval = Interval_FromProto(mapCtx, in.Interval)
+	return out
+}
 
 func Empty_FromProto(mapCtx *direct.MapContext, in *emptypb.Empty) *krm.Empty {
 	if in == nil {
@@ -51,7 +121,7 @@ func AlertChart_FromProto(mapCtx *direct.MapContext, in *pb.AlertChart) *krm.Ale
 	}
 	out := &krm.AlertChart{}
 	if in.Name != "" {
-		out.AlertPolicyRef = &monitoringv1beta1.MonitoringAlertPolicyRef{
+		out.AlertPolicyRef = &krm.MonitoringAlertPolicyRef{
 			External: in.Name,
 		}
 	}
@@ -248,7 +318,27 @@ func DashboardFilter_StringValue_ToProto(mapCtx *direct.MapContext, in *string) 
 		return nil
 	}
 	out := &pb.DashboardFilter_StringValue{}
-	out.StringValue = *in
+	out.StringValue = direct.ValueOf(in)
+	return out
+}
+
+func Interval_FromProto(mapCtx *direct.MapContext, in *interval.Interval) *krm.Interval {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Interval{}
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+
+func Interval_ToProto(mapCtx *direct.MapContext, in *krm.Interval) *interval.Interval {
+	if in == nil {
+		return nil
+	}
+	out := &interval.Interval{}
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
 
@@ -259,7 +349,7 @@ func IncidentList_FromProto(mapCtx *direct.MapContext, in *pb.IncidentList) *krm
 	out := &krm.IncidentList{}
 	out.MonitoredResources = direct.Slice_FromProto(mapCtx, in.MonitoredResources, MonitoredResource_FromProto)
 	for _, policyName := range in.PolicyNames {
-		out.PolicyRefs = append(out.PolicyRefs, monitoringv1beta1.MonitoringAlertPolicyRef{External: policyName})
+		out.PolicyRefs = append(out.PolicyRefs, krm.MonitoringAlertPolicyRef{External: policyName})
 	}
 	return out
 }
