@@ -11,16 +11,15 @@ There are two ways to configure container resources, depending on whether you ar
 
 The following table lists the Config Connector components and the resources used to customize them.
 
-| Pod Name | Config Connector Mode | Customization Resource | Workload Type | Container Name(s) |
-| :--- | :--- | :--- | :--- | :--- |
-| `cnrm-controller-manager` | Cluster Mode | `ControllerResource` | StatefulSet | `manager`, `prom-to-sd` |
-| `cnrm-controller-manager` | Namespaced Mode | `NamespacedControllerResource` | StatefulSet | `manager`, `prom-to-sd` |
-| `cnrm-webhook-manager` | Both Modes | `ControllerResource` | Deployment | `webhook` |
-| `cnrm-deletiondefender` | Both Modes | `ControllerResource` | StatefulSet | `deletiondefender` |
-| `cnrm-resource-stats-recorder` | Both Modes | `ControllerResource` | Deployment | `recorder`, `prom-to-sd` |
-| `cnrm-unmanaged-detector` | Namespaced Mode only | `ControllerResource` | StatefulSet | `unmanageddetector` |
+| Pod Name | Customization Resource | Workload Type | Container Name(s) |
+| :--- | :--- | :--- | :--- |
+| `cnrm-controller-manager` | `ControllerResource` (Cluster Mode)<br>`NamespacedControllerResource` (Namespaced Mode) | StatefulSet | `manager`, `prom-to-sd` |
+| `cnrm-webhook-manager` | `ControllerResource` | Deployment | `webhook` |
+| `cnrm-deletiondefender` | `ControllerResource` | StatefulSet | `deletiondefender` |
+| `cnrm-resource-stats-recorder` | `ControllerResource` | Deployment | `recorder`, `prom-to-sd` |
+| `cnrm-unmanaged-detector` | `ControllerResource` | StatefulSet | `unmanageddetector` |
 
-**Note:** Components that are shared across the entire cluster (e.g., webhooks, deletion defender) are always customized using a cluster-scoped `ControllerResource`, even if Config Connector is running in Namespaced Mode. Only the per-namespace `cnrm-controller-manager` pods are customized using `NamespacedControllerResource` in Namespaced Mode.
+**Note:** For `cnrm-controller-manager`, the resource used for customization depends on the Config Connector mode. In Cluster Mode, there is one per cluster customized via `ControllerResource`. In Namespaced Mode, there is one per namespace customized via `NamespacedControllerResource`. All other workloads are cluster-wide and customized via `ControllerResource` regardless of the Config Connector mode.
 
 ## Configuring Resources in Cluster Mode
 
@@ -99,16 +98,16 @@ spec:
 
 | Field                       | Type                     | Description                                                                                                                                                                     |
 | --------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `containers`                | `[]ContainerResourceSpec`| A list of containers whose resource requirements are to be customized. Must be omitted if `verticalPodAutoscalerMode` is `Enabled`.                                           |
+| `containers`                | `[]ContainerResourceSpec`| A list of containers whose resource requirements are to be customized. Must be set to an empty list `[]` if `verticalPodAutoscalerMode` is `Enabled`.                           |
 | `replicas`                  | `int64`                  | The number of desired replicas. This field only takes effect if the `metadata.name` is `cnrm-webhook-manager`.                                                                  |
-| `verticalPodAutoscalerMode` | `string`                 | Mode of Vertical Pod Autoscaler for the controller. Allowed values: `Enabled`, `Disabled`. Defaults to `Disabled`. Mutually exclusive with `containers`.                        |
+| `verticalPodAutoscalerMode` | `string`                 | Mode of Vertical Pod Autoscaler for the controller. Allowed values: `Enabled`, `Disabled`. Defaults to `Disabled`. Mutually exclusive with specifying non-empty `containers`.  |
 
 ### NamespacedControllerResourceSpec
 
 | Field                       | Type                     | Description                                                                                                                                                                     |
 | --------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `containers`                | `[]ContainerResourceSpec`| A list of containers whose resource requirements are to be customized. Must be omitted if `verticalPodAutoscalerMode` is `Enabled`.                                           |
-| `verticalPodAutoscalerMode` | `string`                 | Mode of Vertical Pod Autoscaler for the controller. Allowed values: `Enabled`, `Disabled`. Defaults to `Disabled`. Mutually exclusive with `containers`.                        |
+| `containers`                | `[]ContainerResourceSpec`| A list of containers whose resource requirements are to be customized. Must be set to an empty list `[]` if `verticalPodAutoscalerMode` is `Enabled`.                           |
+| `verticalPodAutoscalerMode` | `string`                 | Mode of Vertical Pod Autoscaler for the controller. Allowed values: `Enabled`, `Disabled`. Defaults to `Disabled`. Mutually exclusive with specifying non-empty `containers`.  |
 
 ### ContainerResourceSpec
 
@@ -130,7 +129,7 @@ You can enable the Vertical Pod Autoscaler (VPA) for Config Connector pods by se
 
 When VPA is enabled, Config Connector automatically creates a `VerticalPodAutoscaler` resource for the target workload with `updateMode: Auto`. The operator will also periodically fetch recommendations from the VPA and apply them to the pod specifications to ensure they remain in sync with VPA's suggestions.
 
-**Important:** `verticalPodAutoscalerMode: Enabled` is mutually exclusive with specifying `containers` in the same object. When VPA is enabled, the `containers` field should be omitted.
+**Important:** `verticalPodAutoscalerMode: Enabled` is mutually exclusive with specifying non-empty `containers` in the same object. When VPA is enabled, the `containers` field must be set to an empty list `[]`.
 
 ### Example: Enabling VPA for `cnrm-controller-manager` in Cluster Mode
 
@@ -141,6 +140,7 @@ metadata:
   name: cnrm-controller-manager
 spec:
   verticalPodAutoscalerMode: Enabled
+  containers: []
 ```
 
 ### Example: Enabling VPA for `cnrm-controller-manager` in Namespaced Mode
@@ -153,4 +153,5 @@ metadata:
   namespace: config-control
 spec:
   verticalPodAutoscalerMode: Enabled
+  containers: []
 ```
