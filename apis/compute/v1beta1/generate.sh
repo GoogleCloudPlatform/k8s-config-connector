@@ -28,13 +28,14 @@ go run . generate-types \
   --api-version compute.cnrm.cloud.google.com/v1beta1  \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
   --resource ComputeForwardingRule:ForwardingRule \
+  --resource ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation \
   --resource ComputeSecurityPolicy:SecurityPolicy \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetTcpProxy:TargetTcpProxy
 
 go run . generate-mapper \
     --multiversion \
-    --service google.cloud.compute.v1 \
+    --service google.cloud.compute.v1,google.cloud.compute.v1beta \
     --api-version compute.cnrm.cloud.google.com/v1beta1
 
 cd ${REPO_ROOT}
