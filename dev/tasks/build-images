@@ -50,6 +50,17 @@ export OPERATOR_IMG=${IMAGE_PREFIX}operator:${IMAGE_TAG}
 cd ${REPO_ROOT}
 make docker-build
 
+if [[ "${UPGRADE_CHANNELS:-}" == "1" ]]; then
+  echo "Updating operator channels with built images"
+  VERSION=${IMAGE_TAG} ${REPO_ROOT}/dev/tasks/build-release-bundle
+  ln -sf ${REPO_ROOT}/dist/release-bundle.tar.gz ${REPO_ROOT}/release-bundle.tar.gz
+  make -C ${REPO_ROOT}/operator upgrade-kcc-local
+  # We use IfNotPresent so that kind can use the images we load.
+  # Otherwise, it will try to pull from the registry, which will fail for registry.kind/
+  find ${REPO_ROOT}/operator/channels ${REPO_ROOT}/operator/autopilot-channels -name "*.yaml" -exec sed -i'' -e 's/imagePullPolicy: Always/imagePullPolicy: IfNotPresent/g' {} +
+  rm ${REPO_ROOT}/release-bundle.tar.gz
+fi
+
 cd ${REPO_ROOT}/operator
 make docker-build
 

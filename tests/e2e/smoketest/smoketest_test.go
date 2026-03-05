@@ -63,15 +63,26 @@ func TestSmoketest(t *testing.T) {
 	buildCmd.Env = append(os.Environ(),
 		"IMAGE_TAG="+imageTag,
 		"IMAGE_PREFIX="+imagePrefix,
+		"UPGRADE_CHANNELS=1",
 	)
 	if output, err := buildCmd.CombinedOutput(); err != nil {
 		t.Fatalf("failed to build images: %v\nOutput: %s", err, string(output))
 	}
 
-	t.Logf("Loading operator image into kind")
-	operatorImage := imagePrefix + "operator:" + imageTag
-	if err := runCommand(ctx, t, root, "kind", "load", "--name", clusterName, "docker-image", operatorImage); err != nil {
-		t.Fatalf("failed to load image into kind: %v", err)
+	t.Logf("Loading images into kind")
+	images := []string{
+		"operator",
+		"controller",
+		"recorder",
+		"webhook",
+		"deletiondefender",
+		"unmanageddetector",
+	}
+	for _, img := range images {
+		imageName := imagePrefix + img + ":" + imageTag
+		if err := runCommand(ctx, t, root, "kind", "load", "--name", clusterName, "docker-image", imageName); err != nil {
+			t.Fatalf("failed to load image %q into kind: %v", imageName, err)
+		}
 	}
 
 	t.Logf("Deploying operator to kind")
