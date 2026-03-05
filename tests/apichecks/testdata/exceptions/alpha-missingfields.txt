@@ -1537,7 +1537,6 @@
 [missing_field] crd=discoveryenginedatastores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.workspaceConfig.superAdminEmailAddress" is not set in unstructured objects
 [missing_field] crd=discoveryenginedatastores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.workspaceConfig.superAdminServiceAccount" is not set in unstructured objects
 [missing_field] crd=discoveryenginedatastores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.workspaceConfig.type" is not set in unstructured objects
-[missing_field] crd=discoveryenginedatastoretargetsites.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.providedURIPattern" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.agentCreationConfig.business" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.agentCreationConfig.defaultLanguageCode" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.agentCreationConfig.location" is not set in unstructured objects
