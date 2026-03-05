@@ -8,4 +8,4 @@ spec:
   purpose: IPV4_PD
   location: us-central1
   ipCollectionRef:
-    external: projects/${project_id}/regions/us-central1/publicDelegatedPrefixes/pdp-sample
+    external: projects/${projectId}/regions/us-central1/publicDelegatedPrefixes/pdp-sample

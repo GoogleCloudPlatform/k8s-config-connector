@@ -16,7 +16,7 @@ metadata:
 spec:
   addressType: EXTERNAL
   ipCollectionRef:
-    external: projects/${project_id}/regions/us-central1/publicDelegatedPrefixes/pdp-sample
+    external: projects/${projectId}/regions/us-central1/publicDelegatedPrefixes/pdp-sample
   ipVersion: IPV4
   location: us-central1
   purpose: IPV4_PD

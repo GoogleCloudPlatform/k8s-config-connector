@@ -34,7 +34,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "addressType": "EXTERNAL",
-  "ipCollection": "projects/${project_id}/regions/us-central1/publicDelegatedPrefixes/pdp-sample",
+  "ipCollection": "projects/${projectId}/regions/us-central1/publicDelegatedPrefixes/pdp-sample",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -124,7 +124,7 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "",
   "id": "000000000000000000000",
-  "ipCollection": "projects/${project_id}/regions/us-central1/publicDelegatedPrefixes/pdp-sample",
+  "ipCollection": "projects/${projectId}/regions/us-central1/publicDelegatedPrefixes/pdp-sample",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
@@ -196,7 +196,7 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "",
   "id": "000000000000000000000",
-  "ipCollection": "projects/${project_id}/regions/us-central1/publicDelegatedPrefixes/pdp-sample",
+  "ipCollection": "projects/${projectId}/regions/us-central1/publicDelegatedPrefixes/pdp-sample",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
