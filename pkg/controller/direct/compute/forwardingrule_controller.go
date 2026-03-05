@@ -470,7 +470,6 @@ func (a *forwardingRuleAdapter) setLabels(ctx context.Context, fingerprint *stri
 	}
 	return op, err
 }
-
 func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
 	if err != nil {
