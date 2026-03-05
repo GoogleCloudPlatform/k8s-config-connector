@@ -563,7 +563,7 @@ spec:
                         type: string
                     type: object
                 type: object
-              defaultURLRedirect:
+              defaultUrlRedirect:
                 description: When none of the specified hostRules match, the request
                   is redirected to a URL specified by defaultUrlRedirect.
                 properties:
@@ -1231,7 +1231,7 @@ spec:
                               type: string
                           type: object
                       type: object
-                    defaultURLRedirect:
+                    defaultUrlRedirect:
                       properties:
                         hostRedirect:
                           description: The host that is used in the redirect response
@@ -2935,7 +2935,7 @@ spec:
                   properties:
                     description:
                       type: string
-                    expectedOutputURL:
+                    expectedOutputUrl:
                       type: string
                     expectedRedirectResponseCode:
                       format: int32
