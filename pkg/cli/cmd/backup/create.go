@@ -16,6 +16,7 @@ package backup
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -86,6 +87,7 @@ func runCreate(ctx context.Context, options *createOptions) error {
 		return fmt.Errorf("discovering server resources: %w", err)
 	}
 
+	stats := make(map[string]int)
 	backedUpGKs := make(map[string]bool)
 
 	for _, resourceList := range resourceLists {
@@ -122,19 +124,43 @@ func runCreate(ctx context.Context, options *createOptions) error {
 			}
 
 			gvk := gv.WithKind(resource.Kind)
-			if err := backupResource(ctx, kubeClient, gcsClient, options.bucket, clusterName, timestamp, gvk); err != nil {
+			count, err := backupResource(ctx, kubeClient, gcsClient, options.bucket, clusterName, timestamp, gvk)
+			if err != nil {
 				fmt.Printf("Warning: failed to backup %v: %v\n", gvk, err)
+			}
+			if count > 0 {
+				stats[gk] = count
 			}
 			backedUpGKs[gk] = true
 		}
 	}
 
+	if err := writeSummary(ctx, gcsClient, options.bucket, clusterName, timestamp, stats); err != nil {
+		fmt.Printf("Warning: failed to write summary.json: %v\n", err)
+	}
+
 	return nil
 }
 
-func backupResource(ctx context.Context, kubeClient *kubecli.Client, gcsClient *storage.Client, bucket, cluster, timestamp string, gvk schema.GroupVersionKind) error {
+func writeSummary(ctx context.Context, gcsClient *storage.Client, bucket, cluster, timestamp string, stats map[string]int) error {
+	data, err := json.MarshalIndent(stats, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	objectName := fmt.Sprintf("%s/%s/summary.json", cluster, timestamp)
+	wc := gcsClient.Bucket(bucket).Object(objectName).NewWriter(ctx)
+	if _, err := wc.Write(data); err != nil {
+		_ = wc.Close()
+		return err
+	}
+	return wc.Close()
+}
+
+func backupResource(ctx context.Context, kubeClient *kubecli.Client, gcsClient *storage.Client, bucket, cluster, timestamp string, gvk schema.GroupVersionKind) (int, error) {
 	limit := int64(500)
 	continueToken := ""
+	count := 0
 
 	for {
 		list := &unstructured.UnstructuredList{}
@@ -148,7 +174,7 @@ func backupResource(ctx context.Context, kubeClient *kubecli.Client, gcsClient *
 		}
 
 		if err := kubeClient.List(ctx, list, listOptions...); err != nil {
-			return err
+			return count, err
 		}
 
 		for _, item := range list.Items {
@@ -156,6 +182,7 @@ func backupResource(ctx context.Context, kubeClient *kubecli.Client, gcsClient *
 				fmt.Printf("Warning: failed to backup object %s/%s (%s): %v\n", item.GetNamespace(), item.GetName(), item.GetKind(), err)
 				continue
 			}
+			count++
 		}
 
 		continueToken = list.GetContinue()
@@ -164,7 +191,7 @@ func backupResource(ctx context.Context, kubeClient *kubecli.Client, gcsClient *
 		}
 	}
 
-	return nil
+	return count, nil
 }
 
 func backupObject(ctx context.Context, gcsClient *storage.Client, bucket, cluster, timestamp string, obj unstructured.Unstructured) error {
@@ -175,9 +202,6 @@ func backupObject(ctx context.Context, gcsClient *storage.Client, bucket, cluste
 	unstructured.RemoveNestedField(obj.Object, "metadata", "managedFields")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "creationTimestamp")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "ownerReferences")
-
-	// Remove status
-	unstructured.RemoveNestedField(obj.Object, "status")
 
 	// Remove common system annotations
 	annotations := obj.GetAnnotations()

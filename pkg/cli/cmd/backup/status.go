@@ -16,6 +16,7 @@ package backup
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -129,7 +130,23 @@ func runStatus(ctx context.Context, options *statusOptions) error {
 			if attrs.Prefix != "" {
 				// strip the cluster name prefix for display
 				displayPrefix := strings.TrimPrefix(attrs.Prefix, prefix)
-				fmt.Printf("- %s\n", displayPrefix)
+				fmt.Printf("- %s", displayPrefix)
+
+				// Try to read summary.json
+				summaryPath := attrs.Prefix + "summary.json"
+				rc, err := gcsClient.Bucket(options.bucket).Object(summaryPath).NewReader(ctx)
+				if err == nil {
+					var stats map[string]int
+					if err := json.NewDecoder(rc).Decode(&stats); err == nil {
+						total := 0
+						for _, count := range stats {
+							total += count
+						}
+						fmt.Printf(" (%d resources)", total)
+					}
+					rc.Close()
+				}
+				fmt.Println()
 				count++
 			}
 			if count >= 10 {
