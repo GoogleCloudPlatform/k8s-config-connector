@@ -42,6 +42,12 @@ func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.Norma
 
 	visitor.ReplacePath(".metadata.createTime", NormalizedTimestamp)
 	visitor.ReplacePath(".metadata.endTime", NormalizedTimestamp)
+
+	visitor.ReplacePath(".caCertificateDescriptions[].subjectDescription.notBeforeTime", NormalizedTimestamp)
+	visitor.ReplacePath(".caCertificateDescriptions[].subjectDescription.notAfterTime", NormalizedTimestamp)
+
+	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectDescription.notBeforeTime", NormalizedTimestamp)
+	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectDescription.notAfterTime", NormalizedTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

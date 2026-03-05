@@ -67,24 +67,57 @@ func (s *PrivateCAV1) CreateCertificateAuthority(ctx context.Context, req *pb.Cr
 
 	// Populate Output-only fields
 	obj.PemCaCertificates = []string{"-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"}
-	obj.CaCertificateDescriptions = []*pb.CertificateDescription{
-		{
-			SubjectDescription: &pb.CertificateDescription_SubjectDescription{
-				Subject: &pb.Subject{
-					CommonName: name.CertificateAuthorityID,
-				},
-			},
-			CertFingerprint: &pb.CertificateDescription_CertificateFingerprint{
-				Sha256Hash: fmt.Sprintf("0123456789abcdef0123456789abcdef0123456789abcdef0123456789%s", name.CertificateAuthorityID),
-			},
+	caDesc := &pb.CertificateDescription{
+		CertFingerprint: &pb.CertificateDescription_CertificateFingerprint{
+			Sha256Hash: fmt.Sprintf("0123456789abcdef0123456789abcdef0123456789abcdef0123456789%s", name.CertificateAuthorityID),
 		},
 	}
-	obj.AccessUrls = &pb.CertificateAuthority_AccessUrls{
-		CaCertificateAccessUrl: fmt.Sprintf("https://privateca.googleapis.com/v1/%s/caCertificate", fqn),
-		CrlAccessUrls:          []string{fmt.Sprintf("https://privateca.googleapis.com/v1/%s/crl", fqn)},
+	if obj.Config != nil && obj.Config.SubjectConfig != nil {
+		caDesc.SubjectDescription = &pb.CertificateDescription_SubjectDescription{
+			Subject:         proto.Clone(obj.Config.SubjectConfig.Subject).(*pb.Subject),
+			SubjectAltName:  proto.Clone(obj.Config.SubjectConfig.SubjectAltName).(*pb.SubjectAltNames),
+			HexSerialNumber: "0123456789abcdef",
+			Lifetime:        obj.Lifetime,
+			NotBeforeTime:   obj.CreateTime,
+			NotAfterTime:    timestamppb.New(now.Add(time.Duration(obj.Lifetime.Seconds) * time.Second)),
+		}
 	}
-	obj.SatisfiesPzs = true
-	obj.SatisfiesPzi = true
+	if obj.Config != nil {
+		caDesc.X509Description = proto.Clone(obj.Config.X509Config).(*pb.X509Parameters)
+		caDesc.PublicKey = proto.Clone(obj.Config.PublicKey).(*pb.PublicKey)
+	}
+	obj.CaCertificateDescriptions = []*pb.CertificateDescription{caDesc}
+
+	// Fetch CAPool to check publishing options
+	caPool := &pb.CaPool{}
+	caPoolName := &caPoolName{
+		Project:    name.Project,
+		Location:   name.Location,
+		CAPoolName: name.CAPoolName,
+	}
+	if err := s.storage.Get(ctx, caPoolName.String(), caPool); err != nil {
+		return nil, err
+	}
+
+	obj.AccessUrls = &pb.CertificateAuthority_AccessUrls{
+		CaCertificateAccessUrl: fmt.Sprintf("http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/%s/ca.crt", name.CertificateAuthorityID),
+	}
+	if caPool.GetPublishingOptions().GetPublishCrl() {
+		obj.AccessUrls.CrlAccessUrls = []string{
+			fmt.Sprintf("http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/%s/crl", name.CertificateAuthorityID),
+		}
+	}
+
+	// service seems to remove "zero" values
+	pruneKU := func(ku *pb.KeyUsage) {
+		if ku != nil && proto.Equal(ku.ExtendedKeyUsage, &pb.KeyUsage_ExtendedKeyUsageOptions{}) {
+			ku.ExtendedKeyUsage = nil
+		}
+	}
+	pruneKU(obj.GetConfig().GetX509Config().GetKeyUsage())
+	for _, caDesc := range obj.CaCertificateDescriptions {
+		pruneKU(caDesc.GetX509Description().GetKeyUsage())
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -225,6 +258,17 @@ func (s *PrivateCAV1) UpdateCertificateAuthority(ctx context.Context, req *pb.Up
 
 	// TODO: FieldMask
 	proto.Merge(obj, req.GetCertificateAuthority())
+
+	// service seems to remove "zero" values
+	pruneKU := func(ku *pb.KeyUsage) {
+		if ku != nil && proto.Equal(ku.ExtendedKeyUsage, &pb.KeyUsage_ExtendedKeyUsageOptions{}) {
+			ku.ExtendedKeyUsage = nil
+		}
+	}
+	pruneKU(obj.GetConfig().GetX509Config().GetKeyUsage())
+	for _, caDesc := range obj.CaCertificateDescriptions {
+		pruneKU(caDesc.GetX509Description().GetKeyUsage())
+	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

@@ -242,10 +242,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
     "accessUrls": {
-      "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/caCertificate",
-      "crlAccessUrls": [
-        "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/crl"
-      ]
+      "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/test-ca-${uniqueId}/ca.crt"
     },
     "caCertificateDescriptions": [
       {
@@ -253,8 +250,24 @@ X-Xss-Protection: 0
           "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
         },
         "subjectDescription": {
+          "hexSerialNumber": "0123456789abcdef",
+          "lifetime": "315569261s",
+          "notAfterTime": "2024-04-01T12:34:56.123456Z",
+          "notBeforeTime": "2024-04-01T12:34:56.123456Z",
           "subject": {
             "commonName": "test-ca-${uniqueId}"
+          },
+          "subjectAltName": {}
+        },
+        "x509Description": {
+          "caOptions": {
+            "isCa": true
+          },
+          "keyUsage": {
+            "baseKeyUsage": {
+              "certSign": true,
+              "crlSign": true
+            }
           }
         }
       }
@@ -274,8 +287,7 @@ X-Xss-Protection: 0
           "baseKeyUsage": {
             "certSign": true,
             "crlSign": true
-          },
-          "extendedKeyUsage": {}
+          }
         }
       }
     },
@@ -288,8 +300,6 @@ X-Xss-Protection: 0
     "pemCaCertificates": [
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
-    "satisfiesPzi": true,
-    "satisfiesPzs": true,
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -359,10 +369,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
     "accessUrls": {
-      "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/caCertificate",
-      "crlAccessUrls": [
-        "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/crl"
-      ]
+      "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/test-ca-${uniqueId}/ca.crt"
     },
     "caCertificateDescriptions": [
       {
@@ -370,8 +377,24 @@ X-Xss-Protection: 0
           "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
         },
         "subjectDescription": {
+          "hexSerialNumber": "0123456789abcdef",
+          "lifetime": "315569261s",
+          "notAfterTime": "2024-04-01T12:34:56.123456Z",
+          "notBeforeTime": "2024-04-01T12:34:56.123456Z",
           "subject": {
             "commonName": "test-ca-${uniqueId}"
+          },
+          "subjectAltName": {}
+        },
+        "x509Description": {
+          "caOptions": {
+            "isCa": true
+          },
+          "keyUsage": {
+            "baseKeyUsage": {
+              "certSign": true,
+              "crlSign": true
+            }
           }
         }
       }
@@ -391,8 +414,7 @@ X-Xss-Protection: 0
           "baseKeyUsage": {
             "certSign": true,
             "crlSign": true
-          },
-          "extendedKeyUsage": {}
+          }
         }
       }
     },
@@ -405,8 +427,6 @@ X-Xss-Protection: 0
     "pemCaCertificates": [
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
-    "satisfiesPzi": true,
-    "satisfiesPzs": true,
     "state": "ENABLED",
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -488,7 +508,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateIssuanceConfig",
     "certificateAuthorityConfig": {
       "certificateAuthorityServiceConfig": {
-        "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
+        "caPool": "projects/${projectNumber}/locations/us-central1/caPools/test-pool-${uniqueId}"
       }
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -524,7 +544,7 @@ X-Xss-Protection: 0
 {
   "certificateAuthorityConfig": {
     "certificateAuthorityServiceConfig": {
-      "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
+      "caPool": "projects/${projectNumber}/locations/us-central1/caPools/test-pool-${uniqueId}"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -561,7 +581,7 @@ X-Xss-Protection: 0
     {
       "certificateAuthorityConfig": {
         "certificateAuthorityServiceConfig": {
-          "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
+          "caPool": "projects/${projectNumber}/locations/us-central1/caPools/test-pool-${uniqueId}"
         }
       },
       "createTime": "2024-04-01T12:34:56.123456Z",
@@ -657,10 +677,7 @@ X-Xss-Protection: 0
 
 {
   "accessUrls": {
-    "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/caCertificate",
-    "crlAccessUrls": [
-      "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/crl"
-    ]
+    "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/test-ca-${uniqueId}/ca.crt"
   },
   "caCertificateDescriptions": [
     {
@@ -668,8 +685,24 @@ X-Xss-Protection: 0
         "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
       },
       "subjectDescription": {
+        "hexSerialNumber": "0123456789abcdef",
+        "lifetime": "315569261s",
+        "notAfterTime": "2024-04-01T12:34:56.123456Z",
+        "notBeforeTime": "2024-04-01T12:34:56.123456Z",
         "subject": {
           "commonName": "test-ca-${uniqueId}"
+        },
+        "subjectAltName": {}
+      },
+      "x509Description": {
+        "caOptions": {
+          "isCa": true
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "crlSign": true
+          }
         }
       }
     }
@@ -689,8 +722,7 @@ X-Xss-Protection: 0
         "baseKeyUsage": {
           "certSign": true,
           "crlSign": true
-        },
-        "extendedKeyUsage": {}
+        }
       }
     }
   },
@@ -703,8 +735,6 @@ X-Xss-Protection: 0
   "pemCaCertificates": [
     "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
   ],
-  "satisfiesPzi": true,
-  "satisfiesPzs": true,
   "state": "ENABLED",
   "type": "SELF_SIGNED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -775,10 +805,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
     "accessUrls": {
-      "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/caCertificate",
-      "crlAccessUrls": [
-        "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/crl"
-      ]
+      "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/test-ca-${uniqueId}/ca.crt"
     },
     "caCertificateDescriptions": [
       {
@@ -786,8 +813,24 @@ X-Xss-Protection: 0
           "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
         },
         "subjectDescription": {
+          "hexSerialNumber": "0123456789abcdef",
+          "lifetime": "315569261s",
+          "notAfterTime": "2024-04-01T12:34:56.123456Z",
+          "notBeforeTime": "2024-04-01T12:34:56.123456Z",
           "subject": {
             "commonName": "test-ca-${uniqueId}"
+          },
+          "subjectAltName": {}
+        },
+        "x509Description": {
+          "caOptions": {
+            "isCa": true
+          },
+          "keyUsage": {
+            "baseKeyUsage": {
+              "certSign": true,
+              "crlSign": true
+            }
           }
         }
       }
@@ -807,8 +850,7 @@ X-Xss-Protection: 0
           "baseKeyUsage": {
             "certSign": true,
             "crlSign": true
-          },
-          "extendedKeyUsage": {}
+          }
         }
       }
     },
@@ -821,8 +863,6 @@ X-Xss-Protection: 0
     "pemCaCertificates": [
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
-    "satisfiesPzi": true,
-    "satisfiesPzs": true,
     "state": "DISABLED",
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -848,10 +888,7 @@ X-Xss-Protection: 0
 
 {
   "accessUrls": {
-    "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/caCertificate",
-    "crlAccessUrls": [
-      "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/crl"
-    ]
+    "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/test-ca-${uniqueId}/ca.crt"
   },
   "caCertificateDescriptions": [
     {
@@ -859,8 +896,24 @@ X-Xss-Protection: 0
         "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
       },
       "subjectDescription": {
+        "hexSerialNumber": "0123456789abcdef",
+        "lifetime": "315569261s",
+        "notAfterTime": "2024-04-01T12:34:56.123456Z",
+        "notBeforeTime": "2024-04-01T12:34:56.123456Z",
         "subject": {
           "commonName": "test-ca-${uniqueId}"
+        },
+        "subjectAltName": {}
+      },
+      "x509Description": {
+        "caOptions": {
+          "isCa": true
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "crlSign": true
+          }
         }
       }
     }
@@ -880,8 +933,7 @@ X-Xss-Protection: 0
         "baseKeyUsage": {
           "certSign": true,
           "crlSign": true
-        },
-        "extendedKeyUsage": {}
+        }
       }
     }
   },
@@ -894,8 +946,6 @@ X-Xss-Protection: 0
   "pemCaCertificates": [
     "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
   ],
-  "satisfiesPzi": true,
-  "satisfiesPzs": true,
   "state": "DISABLED",
   "type": "SELF_SIGNED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -960,10 +1010,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
     "accessUrls": {
-      "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/caCertificate",
-      "crlAccessUrls": [
-        "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}/certificateAuthorities/test-ca-${uniqueId}/crl"
-      ]
+      "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/test-ca-${uniqueId}/ca.crt"
     },
     "caCertificateDescriptions": [
       {
@@ -971,8 +1018,24 @@ X-Xss-Protection: 0
           "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
         },
         "subjectDescription": {
+          "hexSerialNumber": "0123456789abcdef",
+          "lifetime": "315569261s",
+          "notAfterTime": "2024-04-01T12:34:56.123456Z",
+          "notBeforeTime": "2024-04-01T12:34:56.123456Z",
           "subject": {
             "commonName": "test-ca-${uniqueId}"
+          },
+          "subjectAltName": {}
+        },
+        "x509Description": {
+          "caOptions": {
+            "isCa": true
+          },
+          "keyUsage": {
+            "baseKeyUsage": {
+              "certSign": true,
+              "crlSign": true
+            }
           }
         }
       }
@@ -992,8 +1055,7 @@ X-Xss-Protection: 0
           "baseKeyUsage": {
             "certSign": true,
             "crlSign": true
-          },
-          "extendedKeyUsage": {}
+          }
         }
       }
     },
@@ -1008,8 +1070,6 @@ X-Xss-Protection: 0
     "pemCaCertificates": [
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
-    "satisfiesPzi": true,
-    "satisfiesPzs": true,
     "state": "DELETED",
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
