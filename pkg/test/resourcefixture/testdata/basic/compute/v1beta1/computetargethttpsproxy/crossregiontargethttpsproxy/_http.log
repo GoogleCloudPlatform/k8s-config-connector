@@ -127,7 +127,6 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "",
-  "enableCDN": false,
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -885,7 +884,6 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "",
-  "enableCDN": false,
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,

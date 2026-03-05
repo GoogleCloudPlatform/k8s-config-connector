@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -193,12 +194,17 @@ func (a *SecretVersionAdapter) Update(ctx context.Context, updateOp *directbase.
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating SecretVersion", "name", a.id)
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	var updated *pb.SecretVersion
 	var err error
 
 	switch a.actual.State {
 	case pb.SecretVersion_ENABLED:
 		if !*a.desired.Spec.Enabled {
+			report.AddField("enabled", true, false)
+			structuredreporting.ReportDiff(ctx, report)
+
 			log.V(2).Info("disabling the secret version", "name", a.id)
 			req := &pb.DisableSecretVersionRequest{
 				Name: a.id.String(),
@@ -213,6 +219,9 @@ func (a *SecretVersionAdapter) Update(ctx context.Context, updateOp *directbase.
 		}
 	case pb.SecretVersion_DISABLED:
 		if *a.desired.Spec.Enabled {
+			report.AddField("enabled", false, true)
+			structuredreporting.ReportDiff(ctx, report)
+
 			log.V(2).Info("enabling the secret version", "name", a.id)
 			req := &pb.EnableSecretVersionRequest{
 				Name: a.id.String(),

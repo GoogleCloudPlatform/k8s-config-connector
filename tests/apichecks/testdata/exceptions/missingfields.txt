@@ -3324,10 +3324,8 @@
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.dumpFilePath" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.failoverTarget" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.masterHeartbeatPeriod" is not set in unstructured objects
-[missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.password.value" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.password.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.sslCipher" is not set in unstructured objects
-[missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.username" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.verifyServerCertificate" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.rootPassword.value" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.activeDirectoryConfig.domain" is not set in unstructured objects
@@ -3336,8 +3334,6 @@
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.pscConfig[].allowedConsumerProjects[]" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.pscConfig[].pscEnabled" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.locationPreference.followGaeApplication" is not set in unstructured objects
-[missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.pricingPlan" is not set in unstructured objects
-[missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.replicationType" is not set in unstructured objects
 [missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.password.value" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.autoclass.enabled" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.bucketPolicyOnly" is not set in unstructured objects

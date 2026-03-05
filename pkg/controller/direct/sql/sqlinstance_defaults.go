@@ -26,6 +26,12 @@ const (
 	// DefaultQueryPlansPerMinute is the default value for QueryPlansPerMinute.
 	// https://docs.cloud.google.com/sql/docs/mysql/admin-api/rest/v1/instances#insightsconfig
 	DefaultQueryPlansPerMinute = 5
+
+	// DefaultRetainedBackupsEnterprise is the default value for RetainedBackups for Enterprise edition.
+	// DefaultRetainedBackupsEnterprisePlus is the default value for RetainedBackups for Enterprise Plus edition.
+	// https://docs.cloud.google.com/sql/docs/mysql/backup-recovery/backup-options#sb-backup-retention
+	DefaultRetainedBackupsEnterprise     = 7
+	DefaultRetainedBackupsEnterprisePlus = 15
 )
 
 func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance, fieldMetadata map[string]*FieldMetadata) {
@@ -54,10 +60,20 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		// If desired backupConfiguration is not specified and actual is disabled, use the actual.
 		out.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
 	}
+	// If backupConfiguration is specified and BackupRetentionSettings is not specified, apply default BackupRetentionSettings based on edition.
 	if in.Spec.Settings.BackupConfiguration != nil {
-		if in.Spec.Settings.BackupConfiguration.BackupRetentionSettings != nil && in.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit == nil {
-			// GCP default retentionUnit is COUNT.
+		if in.Spec.Settings.BackupConfiguration.BackupRetentionSettings == nil {
+			out.Settings.BackupConfiguration.BackupRetentionSettings = &api.BackupRetentionSettings{}
+		}
+		if out.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit == "" {
 			out.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit = "COUNT"
+		}
+		if out.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups == 0 {
+			if direct.ValueOf(in.Spec.Settings.Edition) == "ENTERPRISE_PLUS" {
+				out.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups = DefaultRetainedBackupsEnterprisePlus
+			} else {
+				out.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups = DefaultRetainedBackupsEnterprise
+			}
 		}
 	}
 	if in.Spec.Settings.ConnectorEnforcement == nil {

@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/metastore/apiv1"
 	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
@@ -221,11 +222,15 @@ func (a *MetastoreFederationAdapter) Update(ctx context.Context, updateOp *direc
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, resource.Labels)
 		paths = append(paths, "labels")
 	}
 	if desired.Spec.BackendMetastores != nil && !reflect.DeepEqual(resource.BackendMetastores, a.actual.BackendMetastores) {
+		report.AddField("backend_metastores", a.actual.BackendMetastores, resource.BackendMetastores)
 		paths = append(paths, "backend_metastores")
 	}
 
@@ -234,6 +239,7 @@ func (a *MetastoreFederationAdapter) Update(ctx context.Context, updateOp *direc
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateFederationRequest{
 			Federation: resource,

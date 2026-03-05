@@ -36,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -160,12 +161,16 @@ func (a *externalAddressAdapter) Update(ctx context.Context, updateOp *directbas
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	// UpdateMask for ExternalAddress allows updating description and internal_ip
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, resource.Description)
 		paths = append(paths, "description")
 	}
 	if desired.Spec.InternalIP != nil && !reflect.DeepEqual(resource.InternalIp, a.actual.InternalIp) {
+		report.AddField("internal_ip", a.actual.InternalIp, resource.InternalIp)
 		paths = append(paths, "internal_ip")
 	}
 
@@ -174,6 +179,7 @@ func (a *externalAddressAdapter) Update(ctx context.Context, updateOp *directbas
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateExternalAddressRequest{
 			ExternalAddress: resource,

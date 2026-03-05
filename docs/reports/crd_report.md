@@ -93,6 +93,7 @@
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildWorkerPool                            | True         | True        | False  | Direct     | True        |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeliveryPipeline                     | True         | True        | False  | Direct     | True        |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeployPolicy                         | True         | False       | False  | Direct     | True        |
+| clouddeploy.cnrm.cloud.google.com             | CloudDeployTarget                               | True         | False       | False  | Direct     | True        |
 | clouddms.cnrm.cloud.google.com                | CloudDMSConversionWorkspace                     | True         | False       | False  | Direct     | True        |
 | clouddms.cnrm.cloud.google.com                | CloudDMSMigrationJob                            | True         | False       | False  | Direct     | True        |
 | clouddms.cnrm.cloud.google.com                | CloudDMSPrivateConnection                       | True         | False       | False  | Direct     | True        |
@@ -162,7 +163,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeReservation                              | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeResourcePolicy                           | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRouterInterface                          | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeRouterNAT                                | False        | True        | False  | Direct     | True        |
+| compute.cnrm.cloud.google.com                 | ComputeRouterNAT                                | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRouterPeer                               | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRouter                                   | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeRoute                                    | False        | True        | False  | Terraform  | False       |
@@ -357,6 +358,7 @@
 | networkservices.cnrm.cloud.google.com         | NetworkServicesGateway                          | False        | True        | False  | DCL        | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesGRPCRoute                        | False        | True        | False  | DCL        | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesHTTPRoute                        | False        | True        | False  | DCL        | False       |
+| networkservices.cnrm.cloud.google.com         | NetworkServicesLBRouteExtension                 | True         | False       | False  | Direct     | True        |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesMesh                             | False        | True        | False  | DCL        | False       |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesServiceBinding                   | True         | False       | False  | Direct     | True        |
 | networkservices.cnrm.cloud.google.com         | NetworkServicesTCPRoute                         | False        | True        | False  | DCL        | False       |

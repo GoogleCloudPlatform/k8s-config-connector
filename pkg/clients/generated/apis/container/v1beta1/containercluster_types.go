@@ -302,6 +302,10 @@ type ClusterDnsEndpointConfig struct {
 	/* Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false. */
 	// +optional
 	AllowExternalTraffic *bool `json:"allowExternalTraffic,omitempty"`
+
+	/* Controls whether the k8s token auth is allowed via DNS. */
+	// +optional
+	EnableK8sTokensViaDns *bool `json:"enableK8sTokensViaDns,omitempty"`
 }
 
 type ClusterEnableK8sBetaApis struct {
