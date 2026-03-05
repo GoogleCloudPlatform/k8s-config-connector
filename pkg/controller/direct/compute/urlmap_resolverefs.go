@@ -88,18 +88,47 @@ func resolveURLMapRefs(ctx context.Context, reader client.Reader, obj *krm.Compu
 		return nil
 	}
 
+	resolveRouteAction := func(ra *krm.ComputeURLMapHTTPRouteAction) error {
+		if ra == nil {
+			return nil
+		}
+		if ra.RequestMirrorPolicy != nil && ra.RequestMirrorPolicy.BackendServiceRef != nil {
+			if _, err := ra.RequestMirrorPolicy.BackendServiceRef.NormalizedExternal(ctx, reader, obj.Namespace); err != nil {
+				return err
+			}
+		}
+		for i := range ra.WeightedBackendServices {
+			wbs := &ra.WeightedBackendServices[i]
+			if wbs.BackendServiceRef != nil {
+				if _, err := wbs.BackendServiceRef.NormalizedExternal(ctx, reader, obj.Namespace); err != nil {
+					return err
+				}
+			}
+		}
+		return nil
+	}
+
 	if err := resolveDefaultService(obj.Spec.DefaultService); err != nil {
 		return err
 	}
+	if err := resolveRouteAction(obj.Spec.DefaultRouteAction); err != nil {
+		return err
+	}
 
-	for i := range obj.Spec.PathMatchers {
-		pm := &obj.Spec.PathMatchers[i]
+	for i := range obj.Spec.PathMatcher {
+		pm := &obj.Spec.PathMatcher[i]
 		if err := resolveDefaultService(pm.DefaultService); err != nil {
 			return err
 		}
-		for j := range pm.PathRules {
-			pr := &pm.PathRules[j]
+		if err := resolveRouteAction(pm.DefaultRouteAction); err != nil {
+			return err
+		}
+		for j := range pm.PathRule {
+			pr := &pm.PathRule[j]
 			if err := resolveDefaultService(pr.Service); err != nil {
+				return err
+			}
+			if err := resolveRouteAction(pr.RouteAction); err != nil {
 				return err
 			}
 		}
@@ -108,11 +137,14 @@ func resolveURLMapRefs(ctx context.Context, reader client.Reader, obj *krm.Compu
 			if err := resolveDefaultService(rr.Service); err != nil {
 				return err
 			}
+			if err := resolveRouteAction(rr.RouteAction); err != nil {
+				return err
+			}
 		}
 	}
 
-	for i := range obj.Spec.Tests {
-		t := &obj.Spec.Tests[i]
+	for i := range obj.Spec.Test {
+		t := &obj.Spec.Test[i]
 		if err := resolveDefaultService(t.Service); err != nil {
 			return err
 		}

@@ -15,8 +15,11 @@
 package compute
 
 import (
+	"fmt"
+	"strconv"
 	"strings"
 
+	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -46,4 +49,34 @@ func ComputeURLMapDefaultService_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 		return &in.BackendServiceRef.External
 	}
 	return nil
+}
+
+func Duration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Duration{}
+	out.Nanos = in.Nanos
+	if in.Seconds != nil {
+		s := fmt.Sprintf("%d", *in.Seconds)
+		out.Seconds = &s
+	}
+	return out
+}
+
+func Duration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Duration) *pb.Duration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Duration{}
+	out.Nanos = in.Nanos
+	if in.Seconds != nil {
+		s, err := strconv.ParseInt(*in.Seconds, 10, 64)
+		if err != nil {
+			mapCtx.Errorf("invalid seconds value %q: %v", *in.Seconds, err)
+		} else {
+			out.Seconds = &s
+		}
+	}
+	return out
 }

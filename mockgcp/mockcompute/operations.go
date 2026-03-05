@@ -83,6 +83,39 @@ func (s *computeOperations) newLRO(ctx context.Context, projectID string) (*pb.O
 	return op, nil
 }
 
+func (s *computeOperations) newRegionalLRO(ctx context.Context, projectID string, region string) (*pb.Operation, error) {
+	log := klog.FromContext(ctx)
+
+	now := time.Now()
+	millis := now.UnixMilli()
+	id := string(uuid.NewUUID())
+	nanos := now.UnixNano()
+
+	op := &pb.Operation{}
+
+	op.StartTime = PtrTo(formatTime(now))
+	op.InsertTime = PtrTo(formatTime(now))
+	op.Id = PtrTo(uint64(nanos))
+
+	op.Progress = PtrTo(int32(0))
+
+	name := fmt.Sprintf("operation-%d-%s", millis, id)
+	op.Name = PtrTo(name)
+	op.Kind = PtrTo("compute#operation")
+	fqn := s.regionalOperationFQN(projectID, region, name)
+
+	op.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	op.Region = PtrTo(buildComputeSelfLink(ctx, "projects/"+projectID+"/regions/"+region))
+
+	op.Status = PtrTo(pb.Operation_DONE)
+
+	log.Info("storing operation", "fqn", fqn)
+	if err := s.storage.Create(ctx, fqn, op); err != nil {
+		return nil, err
+	}
+	return op, nil
+}
+
 func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn string, callback func() (proto.Message, error)) (*pb.Operation, error) {
 	log := klog.FromContext(ctx)
 

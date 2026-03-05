@@ -300,11 +300,14 @@ func ComputeURLMapObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	out := &krm.ComputeURLMapObservedState{}
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Fingerprint = in.Fingerprint
+	// MISSING: HostRules
 	out.ID = in.Id
 	// MISSING: Kind
 	// MISSING: Name
+	// MISSING: PathMatchers
 	// MISSING: Region
 	out.SelfLink = in.SelfLink
+	// MISSING: Tests
 	return out
 }
 func ComputeURLMapObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapObservedState) *pb.UrlMap {
@@ -314,11 +317,14 @@ func ComputeURLMapObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out := &pb.UrlMap{}
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Fingerprint = in.Fingerprint
+	// MISSING: HostRules
 	out.Id = in.ID
 	// MISSING: Kind
 	// MISSING: Name
+	// MISSING: PathMatchers
 	// MISSING: Region
 	out.SelfLink = in.SelfLink
+	// MISSING: Tests
 	return out
 }
 func ComputeURLMapRequestMirrorPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RequestMirrorPolicy) *krm.ComputeURLMapRequestMirrorPolicy {
@@ -431,24 +437,6 @@ func CustomErrorResponsePolicyCustomErrorResponseRule_v1beta1_ToProto(mapCtx *di
 	out.MatchResponseCodes = in.MatchResponseCodes
 	out.OverrideResponseCode = in.OverrideResponseCode
 	out.Path = in.Path
-	return out
-}
-func Duration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.Duration {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Duration{}
-	out.Nanos = in.Nanos
-	out.Seconds = in.Seconds
-	return out
-}
-func Duration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Duration) *pb.Duration {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Duration{}
-	out.Nanos = in.Nanos
-	out.Seconds = in.Seconds
 	return out
 }
 func Expr_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Expr) *krm.Expr {

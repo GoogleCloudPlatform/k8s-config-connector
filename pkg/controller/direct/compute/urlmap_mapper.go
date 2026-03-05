@@ -63,7 +63,7 @@ func ComputeURLMapPathMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	out.Description = in.Description
 	out.HeaderAction = HTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
 	out.Name = in.Name
-	out.PathRules = direct.Slice_FromProto(mapCtx, in.PathRules, ComputeURLMapPathRule_v1beta1_FromProto)
+	out.PathRule = direct.Slice_FromProto(mapCtx, in.PathRules, ComputeURLMapPathRule_v1beta1_FromProto)
 	out.RouteRules = direct.Slice_FromProto(mapCtx, in.RouteRules, ComputeURLMapHTTPRouteRule_v1beta1_FromProto)
 	return out
 }
@@ -79,7 +79,7 @@ func ComputeURLMapPathMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Description = in.Description
 	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
 	out.Name = in.Name
-	out.PathRules = direct.Slice_ToProto(mapCtx, in.PathRules, ComputeURLMapPathRule_v1beta1_ToProto)
+	out.PathRules = direct.Slice_ToProto(mapCtx, in.PathRule, ComputeURLMapPathRule_v1beta1_ToProto)
 	out.RouteRules = direct.Slice_ToProto(mapCtx, in.RouteRules, ComputeURLMapHTTPRouteRule_v1beta1_ToProto)
 	return out
 }
@@ -120,12 +120,12 @@ func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMa
 	out.DefaultURLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetDefaultUrlRedirect())
 	out.Description = in.Description
 	out.HeaderAction = HTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
-	out.HostRules = direct.Slice_FromProto(mapCtx, in.HostRules, HostRule_v1beta1_FromProto)
+	out.HostRule = direct.Slice_FromProto(mapCtx, in.HostRules, HostRule_v1beta1_FromProto)
 	// MISSING: Kind
 	// MISSING: Name
-	out.PathMatchers = direct.Slice_FromProto(mapCtx, in.PathMatchers, ComputeURLMapPathMatcher_v1beta1_FromProto)
+	out.PathMatcher = direct.Slice_FromProto(mapCtx, in.PathMatchers, ComputeURLMapPathMatcher_v1beta1_FromProto)
 	// MISSING: Region
-	out.Tests = direct.Slice_FromProto(mapCtx, in.Tests, ComputeURLMapTest_v1beta1_FromProto)
+	out.Test = direct.Slice_FromProto(mapCtx, in.Tests, ComputeURLMapTest_v1beta1_FromProto)
 	return out
 }
 func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapSpec) *pb.UrlMap {
@@ -139,12 +139,12 @@ func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	out.DefaultUrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.DefaultURLRedirect)
 	out.Description = in.Description
 	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
-	out.HostRules = direct.Slice_ToProto(mapCtx, in.HostRules, HostRule_v1beta1_ToProto)
+	out.HostRules = direct.Slice_ToProto(mapCtx, in.HostRule, HostRule_v1beta1_ToProto)
 	// MISSING: Kind
 	// MISSING: Name
-	out.PathMatchers = direct.Slice_ToProto(mapCtx, in.PathMatchers, ComputeURLMapPathMatcher_v1beta1_ToProto)
+	out.PathMatchers = direct.Slice_ToProto(mapCtx, in.PathMatcher, ComputeURLMapPathMatcher_v1beta1_ToProto)
 	// MISSING: Region
-	out.Tests = direct.Slice_ToProto(mapCtx, in.Tests, ComputeURLMapTest_v1beta1_ToProto)
+	out.Tests = direct.Slice_ToProto(mapCtx, in.Test, ComputeURLMapTest_v1beta1_ToProto)
 	return out
 }
 

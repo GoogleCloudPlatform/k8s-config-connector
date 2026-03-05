@@ -1324,8 +1324,8 @@ func (in *ComputeURLMapPathMatcher) DeepCopyInto(out *ComputeURLMapPathMatcher) 
 		*out = new(string)
 		**out = **in
 	}
-	if in.PathRules != nil {
-		in, out := &in.PathRules, &out.PathRules
+	if in.PathRule != nil {
+		in, out := &in.PathRule, &out.PathRule
 		*out = make([]ComputeURLMapPathRule, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
@@ -1468,22 +1468,22 @@ func (in *ComputeURLMapSpec) DeepCopyInto(out *ComputeURLMapSpec) {
 		*out = new(HTTPHeaderAction)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.HostRules != nil {
-		in, out := &in.HostRules, &out.HostRules
+	if in.HostRule != nil {
+		in, out := &in.HostRule, &out.HostRule
 		*out = make([]HostRule, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.PathMatchers != nil {
-		in, out := &in.PathMatchers, &out.PathMatchers
+	if in.PathMatcher != nil {
+		in, out := &in.PathMatcher, &out.PathMatcher
 		*out = make([]ComputeURLMapPathMatcher, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.Tests != nil {
-		in, out := &in.Tests, &out.Tests
+	if in.Test != nil {
+		in, out := &in.Test, &out.Test
 		*out = make([]ComputeURLMapTest, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
@@ -1745,7 +1745,7 @@ func (in *Duration) DeepCopyInto(out *Duration) {
 	}
 	if in.Seconds != nil {
 		in, out := &in.Seconds, &out.Seconds
-		*out = new(int64)
+		*out = new(string)
 		**out = **in
 	}
 }
