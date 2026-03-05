@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"reflect"
 	"regexp"
 	"sort"
@@ -1029,12 +1030,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	// Remove header in response.
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
-	events.RemoveHTTPResponseHeader("Server")
 	events.RemoveHTTPResponseHeader("Server-Timing")
-	events.RemoveHTTPResponseHeader("Vary")
-	events.RemoveHTTPResponseHeader("X-Content-Type-Options")
-	events.RemoveHTTPResponseHeader("X-Frame-Options")
-	events.RemoveHTTPResponseHeader("X-Xss-Protection")
 	events.RemoveHTTPResponseHeader("X-Debug-Tracking-Id")
 	events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
 	events.RemoveHTTPResponseHeader("Etag")
@@ -1101,6 +1097,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 		// Normalize etags in URLS
 		event.Request.URL = normalizeEtagsInURL(event.Request.URL)
+
+		// Sort query parameters to avoid non-deterministic diffs
+		event.Request.URL = sortQueryParameters(event.Request.URL)
 	}
 
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -1332,6 +1331,29 @@ func rewriteComputeURL(u string) string {
 func normalizeEtagsInURL(u string) string {
 	re := regexp.MustCompile(`etag=[a-zA-Z0-9%]+`)
 	return re.ReplaceAllString(u, "etag=abcdef0123A")
+}
+
+func sortQueryParameters(u string) string {
+	parts := strings.SplitN(u, "?", 2)
+	if len(parts) < 2 {
+		return u
+	}
+	path := parts[0]
+	rawQuery := parts[1]
+
+	query, err := url.ParseQuery(rawQuery)
+	if err != nil {
+		return u
+	}
+	for k, v := range query {
+		sort.Strings(v)
+		query[k] = v
+	}
+	newQuery := query.Encode()
+	// Restore placeholders that were URL-encoded
+	newQuery = strings.ReplaceAll(newQuery, "%7B", "{")
+	newQuery = strings.ReplaceAll(newQuery, "%7D", "}")
+	return path + "?" + newQuery
 }
 
 // isGetOperation returns true if this is an operation poll request

@@ -8,7 +8,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
     label-one: value-one
@@ -41,6 +41,6 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
-  observedGeneration: 2
+  observedGeneration: 3
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}
   status: READY
