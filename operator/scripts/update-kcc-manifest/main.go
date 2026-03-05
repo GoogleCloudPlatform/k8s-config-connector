@@ -300,6 +300,9 @@ func dropStalePackages(pacakgesPath string) error {
 
 	// Drop older versions
 	for _, r := range totalReleases {
+		if strings.HasPrefix(r, "dev-") {
+			continue
+		}
 		shouldKeep := false
 		for _, s := range supported {
 			if r == s {

@@ -55,9 +55,9 @@ func TestSmoketest(t *testing.T) {
 		t.Fatalf("failed to create kind cluster: %v", err)
 	}
 
-	// Use a valid semver tag that is higher than any existing version to ensure it is kept by the operator's package manager.
-	imageTag := "10.0.0-dev." + time.Now().Format("20060102T150405")
-	imagePrefix := "registry.kind/"
+	// Revert imageTag to use 'dev-' prefix.
+	imageTag := "dev-" + time.Now().Format("20060102T150405")
+	imagePrefix := "gcr.io/gke-release/cnrm/"
 
 	t.Logf("Building images with tag %q", imageTag)
 	buildCmd := exec.CommandContext(ctx, filepath.Join(root, "dev/tasks/build-images"))
@@ -80,11 +80,13 @@ func TestSmoketest(t *testing.T) {
 		"deletiondefender",
 		"unmanageddetector",
 	}
+	// Optimization: load all images in one command
+	var imageFullNames []string
 	for _, img := range images {
-		imageName := imagePrefix + img + ":" + imageTag
-		if err := runCommand(ctx, t, root, "kind", "load", "--name", clusterName, "docker-image", imageName); err != nil {
-			t.Fatalf("failed to load image %q into kind: %v", imageName, err)
-		}
+		imageFullNames = append(imageFullNames, imagePrefix+img+":"+imageTag)
+	}
+	if err := runCommand(ctx, t, root, "kind", append([]string{"load", "docker-image", "--name", clusterName}, imageFullNames...)...); err != nil {
+		t.Fatalf("failed to load images into kind: %v", err)
 	}
 
 	t.Logf("Deploying operator to kind")
@@ -95,13 +97,7 @@ func TestSmoketest(t *testing.T) {
 	}
 
 	manifests := string(kustomizeOutput)
-	// Replace operator image and pull policy
-	// The kustomize output should have the image we set during build if we ran make docker-build
-	// But let's be safe and do a replacement here too if needed, or just ensure we use the built one.
-	// Actually, dev/tasks/build-images calls make -C operator docker-build which updates manager_image_patch.yaml
-	// So kustomize build should already have the right image.
-	// However, we want to ensure imagePullPolicy is IfNotPresent so kind uses the loaded image.
-	manifests = strings.ReplaceAll(manifests, "imagePullPolicy: Always", "imagePullPolicy: IfNotPresent")
+	// imagePullPolicy is now IfNotPresent in the manifests because of the templates.
 
 	applyCmd := exec.CommandContext(ctx, "kubectl", "apply", "--server-side", "-f", "-")
 	applyCmd.Stdin = strings.NewReader(manifests)
