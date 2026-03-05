@@ -265,7 +265,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -322,7 +323,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     },
     "controlPlaneEndpointsConfig": {
       "dnsEndpointConfig": {
-        "allowExternalTraffic": false
+        "allowExternalTraffic": false,
+        "enableK8sTokensViaDns": false
       },
       "ipEndpointsConfig": {
         "authorizedNetworksConfig": {},
@@ -509,6 +511,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-central1.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -858,6 +861,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-central1.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -1547,6 +1551,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-central1.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -1896,6 +1901,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-central1.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -2239,7 +2245,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---

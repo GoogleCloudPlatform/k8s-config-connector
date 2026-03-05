@@ -49,6 +49,11 @@ func main() {
 	foundIssues := false
 	for scanner.Scan() {
 		line := scanner.Text()
+		if logExitStatus(line) {
+			continue // Skip processing exit status lines
+		}
+		// TODO: Add more logic here to detect true errors (e.g. compilation failures, panics)
+		// that are not linter errors.
 		if isRelevant(line, changes) {
 			fmt.Println(line)
 			foundIssues = true
@@ -61,7 +66,22 @@ func main() {
 
 	if foundIssues {
 		os.Exit(1)
+	} else {
+		fmt.Fprintf(os.Stderr, "Info: No relevant lint problems found in changed code.\n")
 	}
+}
+
+// logExitStatus checks if the line is an "exit status N" line,
+// logs the status to stderr, and returns true if it was an exit status line.
+func logExitStatus(line string) bool {
+	if strings.HasPrefix(line, "exit status ") {
+		statusStr := strings.TrimPrefix(line, "exit status ")
+		if _, err := strconv.Atoi(statusStr); err == nil {
+			fmt.Fprintf(os.Stderr, "Info: Linter reported exit status %s (indicating potential issues in unchanged code). Filtering this for your changes.\n", statusStr)
+			return true
+		}
+	}
+	return false
 }
 
 func getChanges() (FileChanges, error) {
@@ -157,12 +177,6 @@ func getChanges() (FileChanges, error) {
 }
 
 func isRelevant(line string, changes FileChanges) bool {
-	// "go run" might print "exit status N" to stderr, which is part of the input to lint-filter.
-	// We need to ignore "exit status 3", as it means violations found.
-	if line == "exit status 3" {
-		return false
-	}
-
 	parts := strings.SplitN(line, ":", 4)
 	if len(parts) < 3 {
 		return true // Pass through lines that don't look like file:line:col (e.g. potential panic or other error)

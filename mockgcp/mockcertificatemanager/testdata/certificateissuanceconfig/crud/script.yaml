@@ -1,0 +1,4 @@
+- exec: gcloud certificate-manager issuance-configs create test-${uniqueId} --location=us-central1 --ca-pool=projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId} --description="Test Certificate Issuance Config" --labels=foo=bar
+- exec: gcloud certificate-manager issuance-configs describe test-${uniqueId} --location=us-central1
+- exec: gcloud certificate-manager issuance-configs list --location=us-central1
+- exec: gcloud certificate-manager issuance-configs delete test-${uniqueId} --location=us-central1 --quiet

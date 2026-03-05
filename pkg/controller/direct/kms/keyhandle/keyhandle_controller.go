@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/kms/apiv1"
 
@@ -202,6 +203,12 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		status.ExternalRef = &externalRef
 		return updateOp.UpdateStatus(ctx, status, nil)
 	} else {
+		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+		for path := range paths {
+			report.AddField(path, nil, nil)
+		}
+		structuredreporting.ReportDiff(ctx, report)
+
 		return fmt.Errorf("update operation not supported for resource %v %v, field(s) changed: %v",
 			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired), paths)
 	}

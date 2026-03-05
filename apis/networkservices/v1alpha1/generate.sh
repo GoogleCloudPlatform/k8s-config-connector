@@ -25,7 +25,9 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.networkservices.v1 \
     --api-version "networkservices.cnrm.cloud.google.com/v1alpha1" \
-    --resource NetworkServicesServiceBinding:ServiceBinding
+    --resource NetworkServicesServiceBinding:ServiceBinding \
+    --resource NetworkServicesLBRouteExtension:LbRouteExtension
+
 
 go run . generate-mapper \
     --service google.cloud.networkservices.v1 \
@@ -35,3 +37,4 @@ cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg/controller/direct/networkservices/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w apis/networkservices/v1alpha1/

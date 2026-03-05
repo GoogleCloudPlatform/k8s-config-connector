@@ -96,3 +96,13 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/alloydb
 
 EOF
 
+# Container/GKE patches
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto --message DNSEndpointConfig --mode append <<EOF
+
+  // Controls whether the k8s token auth is allowed via DNS.
+
+  optional bool enable_k8s_tokens_via_dns = 5;
+
+EOF
+

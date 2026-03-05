@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -145,7 +146,11 @@ func (a *IAPSettingsAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	desiredPb.Name = a.id.String() // explicitly set Name field for the underlying GCP API
-
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for _, path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 	req := &pb.UpdateIapSettingsRequest{
 		IapSettings: desiredPb,
 		UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
