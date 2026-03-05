@@ -198,7 +198,7 @@ type Build struct {
 
 	// TTL in queue for this build. If provided and the build is enqueued longer than this value, the build will expire and the build status will be EXPIRED. The TTL starts ticking from createTime. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.queue_ttl
-	QueueTtl *string `json:"queueTtl,omitempty"`
+	QueueTTL *string `json:"queueTtl,omitempty"`
 
 	// Secrets to decrypt using Cloud Key Management Service.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.secrets
@@ -294,8 +294,8 @@ type Secrets_SecretManager struct {
 // +kcc:proto=google.devtools.cloudbuild.v1.BuildOptions
 type BuildOptions struct {
 	// Requested disk size for the VM that runs the build. Note that this is *NOT* "disk free"; some of the space will be used by the operating system and build utilities. Also note that this is the minimum disk size that will be allocated for the build -- the build may run with a larger disk than requested. At present, the maximum disk size is 4000GB; builds that request more than the maximum are rejected with an error.
-	// +kcc:proto:field=MISSING
-	DiskSize *int `json:"diskSizeGb,omitempty"`
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.disk_size_gb
+	DiskSizeGB *int `json:"diskSizeGb,omitempty"`
 
 	// Option to specify whether or not to apply bash style string operations to the substitutions. NOTE: this is always enabled for triggered builds and cannot be overridden in the build configuration file.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildOptions.dynamic_substitutions
@@ -394,7 +394,7 @@ type Source_RepoSource struct {
 
 	// ID of the project that owns the Cloud Source Repository. If omitted, the project ID requesting the build is assumed.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.project_id
-	ProjectId *string `json:"projectId,omitempty"`
+	ProjectID *string `json:"projectId,omitempty"`
 
 	// The Cloud Source Repository to build. If omitted, the repo with name "default" is assumed.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.RepoSource.repo_name
@@ -416,8 +416,8 @@ type Source_StorageSource struct {
 	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef"`
 
 	// Google Cloud Storage generation for the object. If the generation is omitted, the latest generation will be used.
-	// +kcc:proto:field=MISSING
-	GCSGeneration *string `json:"generation,omitempty"`
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSource.generation
+	Generation *string `json:"generation,omitempty"`
 
 	// Google Cloud Storage object containing the source. This object must be a gzipped archive file (.tar.gz) containing source to build.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.StorageSource.object
@@ -427,8 +427,8 @@ type Source_StorageSource struct {
 // +kcc:proto=google.devtools.cloudbuild.v1.BuildStep
 type BuildStep struct {
 	// Allow this build step to fail without failing the entire build if and only if the exit code is one of the specified codes. If allowFailure is also specified, this field will take precedence.
-	// +kcc:proto:field=MISSING
-	AllowedExitCodes []int `json:"allowExitCodes,omitempty"`
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildStep.allow_exit_codes
+	AllowExitCodes []int `json:"allowExitCodes,omitempty"`
 
 	// Allow this build step to fail without failing the entire build. If false, the entire build will fail if this step fails. Otherwise, the build will succeed, but this step will still have a failure status. Error information will be reported in the failureDetail field.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildStep.allow_failure
@@ -452,7 +452,7 @@ type BuildStep struct {
 
 	// Unique identifier for this build step, used in waitFor to reference this build step as a dependency.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildStep.id
-	Id *string `json:"id,omitempty"`
+	ID *string `json:"id,omitempty"`
 
 	// The name of the container image that will run this particular build step. If the image is available in the host's Docker daemon's cache, it will be run directly. If not, the host will attempt to pull the image first, using the builder service account's credentials if necessary. The Docker daemon's cache will already have the latest versions of all of the officially supported build steps (https://github.com/GoogleCloudPlatform/cloud-builders). The Docker daemon will also have cached many of the layers for some popular images, like "ubuntu", "debian", but they will be refreshed at the time you attempt to use them. If you built an image in a previous build step, it will be stored in the host's Docker daemon's cache and is available to use as the name for a later build step.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildStep.name
@@ -720,7 +720,7 @@ type CloudBuildTriggerStatus struct {
 
 	// The unique identifier for the trigger.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildTrigger.id
-	TriggerId *string `json:"triggerId,omitempty"`
+	TriggerID *string `json:"triggerId,omitempty"`
 
 	// A unique specifier for the CloudBuildTrigger resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`

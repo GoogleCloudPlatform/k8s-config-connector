@@ -290,8 +290,7 @@ func Build_FromProto(mapCtx *direct.MapContext, in *pb.Build) *krm.Build {
 	// MISSING: FinishTime
 	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
 	out.Images = in.Images
-	// MISSING: QueueTTL
-	// (near miss): "QueueTTL" vs "QueueTtl"
+	out.QueueTTL = direct.StringDuration_FromProto(mapCtx, in.GetQueueTtl())
 	out.Artifacts = Artifacts_FromProto(mapCtx, in.GetArtifacts())
 	if in.GetLogsBucket() != "" {
 		out.LogsBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetLogsBucket()}
@@ -331,8 +330,7 @@ func Build_ToProto(mapCtx *direct.MapContext, in *krm.Build) *pb.Build {
 	// MISSING: FinishTime
 	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
 	out.Images = in.Images
-	// MISSING: QueueTTL
-	// (near miss): "QueueTTL" vs "QueueTtl"
+	out.QueueTtl = direct.StringDuration_ToProto(mapCtx, in.QueueTTL)
 	out.Artifacts = Artifacts_ToProto(mapCtx, in.Artifacts)
 	if in.LogsBucketRef != nil {
 		out.LogsBucket = in.LogsBucketRef.External
@@ -478,7 +476,7 @@ func BuildOptions_FromProto(mapCtx *direct.MapContext, in *pb.BuildOptions) *krm
 	out.SourceProvenanceHash = direct.EnumSlice_FromProto(mapCtx, in.SourceProvenanceHash)
 	out.RequestedVerifyOption = direct.Enum_FromProto(mapCtx, in.GetRequestedVerifyOption())
 	out.MachineType = direct.Enum_FromProto(mapCtx, in.GetMachineType())
-	// MISSING: DiskSizeGB
+	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
 	out.SubstitutionOption = direct.Enum_FromProto(mapCtx, in.GetSubstitutionOption())
 	out.DynamicSubstitutions = direct.LazyPtr(in.GetDynamicSubstitutions())
 	// MISSING: AutomapSubstitutions
@@ -501,7 +499,7 @@ func BuildOptions_ToProto(mapCtx *direct.MapContext, in *krm.BuildOptions) *pb.B
 	out.SourceProvenanceHash = direct.EnumSlice_ToProto[pb.Hash_HashType](mapCtx, in.SourceProvenanceHash)
 	out.RequestedVerifyOption = direct.Enum_ToProto[pb.BuildOptions_VerifyOption](mapCtx, in.RequestedVerifyOption)
 	out.MachineType = direct.Enum_ToProto[pb.BuildOptions_MachineType](mapCtx, in.MachineType)
-	// MISSING: DiskSizeGB
+	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
 	out.SubstitutionOption = direct.Enum_ToProto[pb.BuildOptions_SubstitutionOption](mapCtx, in.SubstitutionOption)
 	out.DynamicSubstitutions = direct.ValueOf(in.DynamicSubstitutions)
 	// MISSING: AutomapSubstitutions
@@ -559,8 +557,7 @@ func BuildStep_FromProto(mapCtx *direct.MapContext, in *pb.BuildStep) *krm.Build
 	out.Env = in.Env
 	out.Args = in.Args
 	out.Dir = direct.LazyPtr(in.GetDir())
-	// MISSING: ID
-	// (near miss): "ID" vs "Id"
+	out.ID = direct.LazyPtr(in.GetId())
 	out.WaitFor = in.WaitFor
 	out.Entrypoint = direct.LazyPtr(in.GetEntrypoint())
 	out.SecretEnv = in.SecretEnv
@@ -571,7 +568,7 @@ func BuildStep_FromProto(mapCtx *direct.MapContext, in *pb.BuildStep) *krm.Build
 	// MISSING: Status
 	out.AllowFailure = direct.LazyPtr(in.GetAllowFailure())
 	// MISSING: ExitCode
-	// MISSING: AllowExitCodes
+	out.AllowExitCodes = in.AllowExitCodes
 	out.Script = direct.LazyPtr(in.GetScript())
 	// MISSING: AutomapSubstitutions
 	return out
@@ -585,8 +582,7 @@ func BuildStep_ToProto(mapCtx *direct.MapContext, in *krm.BuildStep) *pb.BuildSt
 	out.Env = in.Env
 	out.Args = in.Args
 	out.Dir = direct.ValueOf(in.Dir)
-	// MISSING: ID
-	// (near miss): "ID" vs "Id"
+	out.Id = direct.ValueOf(in.ID)
 	out.WaitFor = in.WaitFor
 	out.Entrypoint = direct.ValueOf(in.Entrypoint)
 	out.SecretEnv = in.SecretEnv
@@ -597,7 +593,7 @@ func BuildStep_ToProto(mapCtx *direct.MapContext, in *krm.BuildStep) *pb.BuildSt
 	// MISSING: Status
 	out.AllowFailure = direct.ValueOf(in.AllowFailure)
 	// MISSING: ExitCode
-	// MISSING: AllowExitCodes
+	out.AllowExitCodes = in.AllowExitCodes
 	out.Script = direct.ValueOf(in.Script)
 	// MISSING: AutomapSubstitutions
 	return out
@@ -1716,8 +1712,7 @@ func Source_RepoSource_FromProto(mapCtx *direct.MapContext, in *pb.RepoSource) *
 		return nil
 	}
 	out := &krm.Source_RepoSource{}
-	// MISSING: ProjectID
-	// (near miss): "ProjectID" vs "ProjectId"
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
 	// MISSING: RepoName
 	out.BranchName = direct.LazyPtr(in.GetBranchName())
 	out.TagName = direct.LazyPtr(in.GetTagName())
@@ -1732,8 +1727,7 @@ func Source_RepoSource_ToProto(mapCtx *direct.MapContext, in *krm.Source_RepoSou
 		return nil
 	}
 	out := &pb.RepoSource{}
-	// MISSING: ProjectID
-	// (near miss): "ProjectID" vs "ProjectId"
+	out.ProjectId = direct.ValueOf(in.ProjectID)
 	// MISSING: RepoName
 	if oneof := Source_RepoSource_BranchName_ToProto(mapCtx, in.BranchName); oneof != nil {
 		out.Revision = oneof
@@ -1776,7 +1770,7 @@ func Source_StorageSource_FromProto(mapCtx *direct.MapContext, in *pb.StorageSou
 		out.BucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetBucket()}
 	}
 	out.Object = direct.LazyPtr(in.GetObject())
-	// MISSING: Generation
+	out.Generation = direct.LazyPtr(in.GetGeneration())
 	// MISSING: SourceFetcher
 	return out
 }
@@ -1789,7 +1783,7 @@ func Source_StorageSource_ToProto(mapCtx *direct.MapContext, in *krm.Source_Stor
 		out.Bucket = in.BucketRef.External
 	}
 	out.Object = direct.ValueOf(in.Object)
-	// MISSING: Generation
+	out.Generation = direct.ValueOf(in.Generation)
 	// MISSING: SourceFetcher
 	return out
 }
