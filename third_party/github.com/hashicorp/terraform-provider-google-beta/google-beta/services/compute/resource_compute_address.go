@@ -18,6 +18,7 @@
 package compute
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"reflect"
@@ -36,6 +37,8 @@ func ResourceComputeAddress() *schema.Resource {
 		Read:   resourceComputeAddressRead,
 		Update: resourceComputeAddressUpdate,
 		Delete: resourceComputeAddressDelete,
+
+		CustomizeDiff: resourceComputeAddressCustomizeDiff,
 
 		Importer: &schema.ResourceImporter{
 			State: resourceComputeAddressImport,
@@ -167,7 +170,8 @@ this purpose.
 
 
 This should only be set when using an Internal address, except for IPV4_PD which is used with EXTERNAL addresses.`,
-                        },			"region": {
+			},
+			"region": {
 				Type:             schema.TypeString,
 				Computed:         true,
 				Optional:         true,
@@ -841,4 +845,21 @@ func expandComputeAddressIpCollection(v interface{}, d tpgresource.TerraformReso
 		return nil, fmt.Errorf("Invalid value for ip_collection: %s", err)
 	}
 	return f.RelativeLink(), nil
+}
+
+func resourceComputeAddressCustomizeDiff(_ context.Context, d *schema.ResourceDiff, meta interface{}) error {
+	purpose := d.Get("purpose").(string)
+	ipCollection := d.Get("ip_collection").(string)
+
+	if purpose == "IPV4_PD" {
+		if ipCollection == "" {
+			return fmt.Errorf("ip_collection must be set when purpose is IPV4_PD")
+		}
+	} else {
+		if ipCollection != "" {
+			return fmt.Errorf("ip_collection can only be set when purpose is IPV4_PD")
+		}
+	}
+
+	return nil
 }

@@ -18,6 +18,7 @@
 package compute
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"reflect"
@@ -36,6 +37,8 @@ func ResourceComputeGlobalAddress() *schema.Resource {
 		Read:   resourceComputeGlobalAddressRead,
 		Update: resourceComputeGlobalAddressUpdate,
 		Delete: resourceComputeGlobalAddressDelete,
+
+		CustomizeDiff: resourceComputeGlobalAddressCustomizeDiff,
 
 		Importer: &schema.ResourceImporter{
 			State: resourceComputeGlobalAddressImport,
@@ -143,7 +146,8 @@ when purpose=PRIVATE_SERVICE_CONNECT`,
 * IPV4_PD - for a public IPv4 prefix collection
 
 This should only be set when using an Internal address, except for IPV4_PD which is used with EXTERNAL addresses.`,
-                        },			"creation_timestamp": {
+			},
+			"creation_timestamp": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: `Creation timestamp in RFC3339 text format.`,
@@ -690,9 +694,26 @@ func expandComputeGlobalAddressIpCollection(v interface{}, d tpgresource.Terrafo
 	if v == nil || v.(string) == "" {
 		return nil, nil
 	}
-	f, err := tpgresource.ParseRegionalFieldValue("publicDelegatedPrefixes", v.(string), "project", "region", "zone", d, config, true)
+	f, err := tpgresource.ParseGlobalFieldValue("publicDelegatedPrefixes", v.(string), "project", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for ip_collection: %s", err)
 	}
 	return f.RelativeLink(), nil
+}
+
+func resourceComputeGlobalAddressCustomizeDiff(_ context.Context, d *schema.ResourceDiff, meta interface{}) error {
+	purpose := d.Get("purpose").(string)
+	ipCollection := d.Get("ip_collection").(string)
+
+	if purpose == "IPV4_PD" {
+		if ipCollection == "" {
+			return fmt.Errorf("ip_collection must be set when purpose is IPV4_PD")
+		}
+	} else {
+		if ipCollection != "" {
+			return fmt.Errorf("ip_collection can only be set when purpose is IPV4_PD")
+		}
+	}
+
+	return nil
 }
