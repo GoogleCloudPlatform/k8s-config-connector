@@ -65,9 +65,15 @@ func (m *urlMapModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewComputeURLMapIdentity(ctx, reader, obj)
+	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
+	}
+	id := i.(*krm.ComputeURLMapIdentity)
+
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
 
 	adapter := &urlMapAdapter{
@@ -76,35 +82,24 @@ func (m *urlMapModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 		reader:  reader,
 	}
 
-	// Get location
-	location := id.Region
-	if location == "" {
-		location = "global"
-	}
-
-	gcpClient, err := newGCPClient(m.config)
-	if err != nil {
-		return nil, fmt.Errorf("building gcp client: %w", err)
-	}
-
-	if location == "global" {
-		client, err := gcpClient.newUrlMapsClient(ctx)
+	if id.Region == "" {
+		c, err := gcpClient.newUrlMapsClient(ctx)
 		if err != nil {
 			return nil, err
 		}
-		adapter.urlMapsClient = client
+		adapter.urlMapsClient = c
 	} else {
-		client, err := gcpClient.newRegionalUrlMapsClient(ctx)
+		c, err := gcpClient.newRegionalUrlMapsClient(ctx)
 		if err != nil {
 			return nil, err
 		}
-		adapter.regionalUrlMapClient = client
+		adapter.regionalUrlMapClient = c
 	}
+
 	return adapter, nil
 }
 
 func (m *urlMapModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
 	return nil, nil
 }
 
@@ -112,40 +107,168 @@ func (a *urlMapAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting ComputeURLMap", "name", a.id)
 
-	urlMap, err := a.get(ctx)
+	actual, err := a.get(ctx)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting ComputeURLMap %q: %w", a.id, err)
 	}
-	a.actual = urlMap
+	a.actual = actual
 	return true, nil
 }
 
 func (a *urlMapAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	return fmt.Errorf("Create not implemented for ComputeURLMap (Direct controller is in development, use Terraform reconciler)")
+	u := createOp.GetUnstructured()
+
+	log := klog.FromContext(ctx)
+	log.V(2).Info("creating ComputeURLMap", "name", a.id)
+
+	if err := resolveURLMapRefs(ctx, a.reader, a.desired); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
+	desiredpb := ComputeURLMapSpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	desiredpb.Name = &a.id.Name
+
+	var op *gcp.Operation
+	var err error
+
+	if a.id.Region == "" {
+		req := &computepb.InsertUrlMapRequest{
+			Project:        a.id.Project,
+			UrlMapResource: desiredpb,
+		}
+		op, err = a.urlMapsClient.Insert(ctx, req)
+	} else {
+		req := &computepb.InsertRegionUrlMapRequest{
+			Project:        a.id.Project,
+			Region:         a.id.Region,
+			UrlMapResource: desiredpb,
+		}
+		op, err = a.regionalUrlMapClient.Insert(ctx, req)
+	}
+
+	if err != nil {
+		return fmt.Errorf("creating ComputeURLMap %s: %w", a.id, err)
+	}
+
+	if err := op.Wait(ctx); err != nil {
+		return fmt.Errorf("waiting for ComputeURLMap %s create: %w", a.id, err)
+	}
+
+	actual, err := a.get(ctx)
+	if err != nil {
+		return fmt.Errorf("getting created ComputeURLMap %s: %w", a.id, err)
+	}
+
+	status := &krm.ComputeURLMapStatus{}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	status.ObservedState = &krm.ComputeURLMapObservedState{
+		CreationTimestamp: actual.CreationTimestamp,
+		SelfLink:          actual.SelfLink,
+		ID:                actual.Id,
+		Fingerprint:       actual.Fingerprint,
+	}
+	if actual.Id != nil {
+		mapID := int64(*actual.Id)
+		status.MapID = &mapID
+	}
+
+	return setStatus(u, status)
 }
 
 func (a *urlMapAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return fmt.Errorf("Update not implemented for ComputeURLMap (Direct controller is in development, use Terraform reconciler)")
+	u := updateOp.GetUnstructured()
+
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating ComputeURLMap", "name", a.id)
+
+	if err := resolveURLMapRefs(ctx, a.reader, a.desired); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
+	desiredpb := ComputeURLMapSpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	// name is immutable
+	desiredpb.Name = &a.id.Name
+	// fingerprint is needed for optimistic locking
+	desiredpb.Fingerprint = a.actual.Fingerprint
+
+	var op *gcp.Operation
+	var err error
+
+	if a.id.Region == "" {
+		req := &computepb.UpdateUrlMapRequest{
+			Project:        a.id.Project,
+			UrlMap:         a.id.Name,
+			UrlMapResource: desiredpb,
+		}
+		op, err = a.urlMapsClient.Update(ctx, req)
+	} else {
+		req := &computepb.UpdateRegionUrlMapRequest{
+			Project:        a.id.Project,
+			Region:         a.id.Region,
+			UrlMap:         a.id.Name,
+			UrlMapResource: desiredpb,
+		}
+		op, err = a.regionalUrlMapClient.Update(ctx, req)
+	}
+
+	if err != nil {
+		return fmt.Errorf("updating ComputeURLMap %s: %w", a.id, err)
+	}
+
+	if err := op.Wait(ctx); err != nil {
+		return fmt.Errorf("waiting for ComputeURLMap %s update: %w", a.id, err)
+	}
+
+	actual, err := a.get(ctx)
+	if err != nil {
+		return fmt.Errorf("getting updated ComputeURLMap %s: %w", a.id, err)
+	}
+
+	status := &krm.ComputeURLMapStatus{}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	status.ObservedState = &krm.ComputeURLMapObservedState{
+		CreationTimestamp: actual.CreationTimestamp,
+		SelfLink:          actual.SelfLink,
+		ID:                actual.Id,
+		Fingerprint:       actual.Fingerprint,
+	}
+	if actual.Id != nil {
+		mapID := int64(*actual.Id)
+		status.MapID = &mapID
+	}
+
+	return setStatus(u, status)
 }
 
 func (a *urlMapAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
-		return nil, fmt.Errorf("urlMap %s not found", a.id)
+		return nil, fmt.Errorf("ComputeURLMap %q not found", a.id)
 	}
 
 	mc := &direct.MapContext{}
 	spec := ComputeURLMapSpec_v1beta1_FromProto(mc, a.actual)
 	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
 	if err != nil {
-		return nil, fmt.Errorf("error converting urlMap spec to unstructured: %w", err)
+		return nil, fmt.Errorf("error converting ComputeURLMap spec to unstructured: %w", err)
 	}
 
 	u := &unstructured.Unstructured{
 		Object: make(map[string]interface{}),
 	}
+	u.SetName(a.id.Name)
 	u.SetGroupVersionKind(krm.ComputeURLMapGVK)
 
 	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
@@ -156,25 +279,53 @@ func (a *urlMapAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 }
 
 func (a *urlMapAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	return false, fmt.Errorf("Delete not implemented for ComputeURLMap (Direct controller is in development, use Terraform reconciler)")
+	log := klog.FromContext(ctx)
+	log.V(2).Info("deleting ComputeURLMap", "name", a.id)
+
+	var op *gcp.Operation
+	var err error
+
+	if a.id.Region == "" {
+		req := &computepb.DeleteUrlMapRequest{
+			Project: a.id.Project,
+			UrlMap:  a.id.Name,
+		}
+		op, err = a.urlMapsClient.Delete(ctx, req)
+	} else {
+		req := &computepb.DeleteRegionUrlMapRequest{
+			Project: a.id.Project,
+			Region:  a.id.Region,
+			UrlMap:  a.id.Name,
+		}
+		op, err = a.regionalUrlMapClient.Delete(ctx, req)
+	}
+
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
+		return false, fmt.Errorf("deleting ComputeURLMap %s: %w", a.id, err)
+	}
+
+	if err := op.Wait(ctx); err != nil {
+		return false, fmt.Errorf("waiting for ComputeURLMap %s delete: %w", a.id, err)
+	}
+
+	return true, nil
 }
 
 func (a *urlMapAdapter) get(ctx context.Context) (*computepb.UrlMap, error) {
-	projectID := a.id.Project
-	location := a.id.Region
-	name := a.id.Name
-
-	if location == "" {
+	if a.id.Region == "" {
 		getReq := &computepb.GetUrlMapRequest{
-			Project: projectID,
-			UrlMap:  name,
+			Project: a.id.Project,
+			UrlMap:  a.id.Name,
 		}
 		return a.urlMapsClient.Get(ctx, getReq)
 	} else {
 		getReq := &computepb.GetRegionUrlMapRequest{
-			Project: projectID,
-			Region:  location,
-			UrlMap:  name,
+			Project: a.id.Project,
+			Region:  a.id.Region,
+			UrlMap:  a.id.Name,
 		}
 		return a.regionalUrlMapClient.Get(ctx, getReq)
 	}
