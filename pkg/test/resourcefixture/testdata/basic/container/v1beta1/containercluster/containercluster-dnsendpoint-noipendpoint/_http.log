@@ -600,6 +600,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -653,6 +655,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -754,7 +758,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -765,17 +769,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not Found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not Found"
-  }
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool",
+  "name": "gke-containercluster-abcdef-default-pool-grp",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
+  "status": {
+    "isStable": true
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a"
 }
 
 ---
@@ -937,6 +938,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -990,6 +993,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -1091,7 +1096,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1102,17 +1107,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not Found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not Found"
-  }
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool",
+  "name": "gke-containercluster-abcdef-default-pool-grp",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
+  "status": {
+    "isStable": true
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a"
 }
 
 ---
@@ -1274,6 +1276,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -1327,6 +1331,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -1428,7 +1434,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1439,17 +1445,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not Found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not Found"
-  }
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool",
+  "name": "gke-containercluster-abcdef-default-pool-grp",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
+  "status": {
+    "isStable": true
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a"
 }
 
 ---
@@ -1611,6 +1614,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -1664,6 +1669,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -1985,6 +1992,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -2038,6 +2047,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -2139,7 +2150,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -2150,17 +2161,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not Found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not Found"
-  }
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool",
+  "name": "gke-containercluster-abcdef-default-pool-grp",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
+  "status": {
+    "isStable": true
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a"
 }
 
 ---
@@ -2322,6 +2330,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -2375,6 +2385,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
@@ -2476,7 +2488,7 @@ X-Xss-Protection: 0
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -2487,17 +2499,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not Found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not Found"
-  }
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool",
+  "name": "gke-containercluster-abcdef-default-pool-grp",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
+  "status": {
+    "isStable": true
+  },
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/northamerica-south1-a"
 }
 
 ---
@@ -2659,6 +2668,8 @@ X-Xss-Protection: 0
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
+      "containerLogMaxFiles": 5,
+      "containerLogMaxSize": "10Mi",
       "insecureKubeletReadonlyPortEnabled": false,
       "maxParallelImagePulls": 2
     },
@@ -2712,6 +2723,8 @@ X-Xss-Protection: 0
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
+          "containerLogMaxFiles": 5,
+          "containerLogMaxSize": "10Mi",
           "insecureKubeletReadonlyPortEnabled": false,
           "maxParallelImagePulls": 2
         },
