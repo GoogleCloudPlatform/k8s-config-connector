@@ -100,7 +100,7 @@ func PrivatePoolV1Config_NetworkConfig_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.PrivatePoolV1Config_NetworkConfigSpec{}
-	out.PeeredNetworkRef = computev1beta1.ComputeNetworkRef{
+	out.PeeredNetworkRef = &computev1beta1.ComputeNetworkRef{
 		External: in.GetPeeredNetwork(),
 	}
 	out.EgressOption = direct.Enum_FromProto(mapCtx, in.EgressOption)
@@ -112,7 +112,9 @@ func PrivatePoolV1Config_NetworkConfig_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.PrivatePoolV1Config_NetworkConfig{}
-	out.PeeredNetwork = in.PeeredNetworkRef.External
+	if in.PeeredNetworkRef != nil {
+		out.PeeredNetwork = in.PeeredNetworkRef.External
+	}
 
 	out.EgressOption = direct.Enum_ToProto[pb.PrivatePoolV1Config_NetworkConfig_EgressOption](mapCtx, in.EgressOption)
 	out.PeeredNetworkIpRange = direct.ValueOf(in.PeeredNetworkIPRange)

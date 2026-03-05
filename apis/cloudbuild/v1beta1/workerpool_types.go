@@ -76,7 +76,8 @@ type PrivatePoolV1Config_NetworkConfigSpec struct {
 	// Immutable. The network definition that the workers are peered
 	//  to. If this section is left empty, the workers will be peered to
 	//  `WorkerPool.project_id` on the service producer network.
-	PeeredNetworkRef computev1beta1.ComputeNetworkRef `json:"peeredNetworkRef,omitempty"`
+	// +kcc:proto:field=MISSING
+	PeeredNetworkRef *computev1beta1.ComputeNetworkRef `json:"peeredNetworkRef,omitempty"`
 
 	// Option to configure network egress for the workers.
 	EgressOption *string `json:"egressOption,omitempty"`
