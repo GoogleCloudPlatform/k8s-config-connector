@@ -23,6 +23,7 @@ package discoveryengine
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	gcp "cloud.google.com/go/discoveryengine/apiv1"
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
@@ -36,6 +37,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -182,15 +184,91 @@ func (a *targetSiteAdapter) Create(ctx context.Context, createOp *directbase.Cre
 }
 
 func (a *targetSiteAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	// Not implemented as TargetSite seems to be immutable in GCP API for most fields,
-	// and UpdateTargetSite is not common.
-	// Actually, let's check if there is an UpdateTargetSite method.
-	return fmt.Errorf("update not implemented for DiscoveryEngineDataStoreTargetSite")
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating discoveryengine targetsite", "name", a.id)
+
+	desired := direct.ProtoClone(a.desired)
+	desired.Name = a.id.String()
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
+	// Most fields in TargetSite are immutable or input-only.
+	// We check for drifts and report them, but only update if there are mutable fields.
+	// Based on the API, TargetSite doesn't seem to have many mutable fields.
+	// If we find that no fields can be updated, we just return nil to avoid UpdateFailed loop.
+
+	needsUpdate := false
+	if !reflect.DeepEqual(a.desired.Type, a.actual.Type) {
+		report.AddField("type", a.actual.Type, a.desired.Type)
+		needsUpdate = true
+	}
+
+	// provided_uri_pattern and exact_match are InputOnly, so we check for drift but don't include in updateMask if they are immutable.
+	if !reflect.DeepEqual(a.desired.ProvidedUriPattern, a.actual.ProvidedUriPattern) {
+		report.AddField("provided_uri_pattern", a.actual.ProvidedUriPattern, a.desired.ProvidedUriPattern)
+		// Assuming immutable
+	}
+	if !reflect.DeepEqual(a.desired.ExactMatch, a.actual.ExactMatch) {
+		report.AddField("exact_match", a.actual.ExactMatch, a.desired.ExactMatch)
+		// Assuming immutable
+	}
+
+	if !needsUpdate {
+		log.V(2).Info("no field needs update for discoveryengine targetsite", "name", a.id)
+		return nil
+	}
+
+	structuredreporting.ReportDiff(ctx, report)
+
+	req := &pb.UpdateTargetSiteRequest{
+		TargetSite: desired,
+	}
+	op, err := a.gcpClient.UpdateTargetSite(ctx, req)
+	if err != nil {
+		return fmt.Errorf("updating discoveryengine targetsite %s: %w", a.id.String(), err)
+	}
+	updated, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("discoveryengine targetsite %s waiting update: %w", a.id.String(), err)
+	}
+	log.V(2).Info("successfully updated discoveryengine targetsite", "name", a.id)
+
+	status := &krm.DiscoveryEngineDataStoreTargetSiteStatus{}
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = DiscoveryEngineDataStoreTargetSiteObservedState_FromProto(mapCtx, updated)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.PtrTo(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *targetSiteAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	// Not implemented
-	return nil, nil
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+
+	obj := &krm.DiscoveryEngineDataStoreTargetSite{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(DiscoveryEngineDataStoreTargetSiteSpec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	obj.Spec.DataStoreRef = &krm.DiscoveryEngineDataStoreRef{
+		External: a.dataStoreID.String(),
+	}
+
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+
+	u := &unstructured.Unstructured{Object: uObj}
+	u.SetName(a.id.TargetSite)
+	u.SetGroupVersionKind(krm.DiscoveryEngineDataStoreTargetSiteGVK)
+
+	return u, nil
 }
 
 // Delete implements the Adapter interface.
@@ -201,6 +279,9 @@ func (a *targetSiteAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 	req := &pb.DeleteTargetSiteRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteTargetSite(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
 		return false, fmt.Errorf("deleting discoveryengine targetsite %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully deleted discoveryengine targetsite", "name", a.id)

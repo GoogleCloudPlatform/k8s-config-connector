@@ -58,6 +58,37 @@ func (s *siteSearchEngineService) GetTargetSite(ctx context.Context, req *pb.Get
 	return obj, nil
 }
 
+func (s *siteSearchEngineService) UpdateTargetSite(ctx context.Context, req *pb.UpdateTargetSiteRequest) (*longrunning.Operation, error) {
+	if req.TargetSite == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "target_site is required")
+	}
+
+	name, err := s.parseTargetSiteName(req.TargetSite.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	actual := &pb.TargetSite{}
+	if err := s.storage.Get(ctx, fqn, actual); err != nil {
+		return nil, err
+	}
+
+	// For simplicity, we just update the fields.
+	// In real GCP, some fields might be immutable.
+	actual.Type = req.TargetSite.Type
+
+	actual.UpdateTime = timestamppb.Now()
+
+	if err := s.storage.Update(ctx, fqn, actual); err != nil {
+		return nil, err
+	}
+
+	prefix := fmt.Sprintf("projects/%s/locations/%s/collections/%s/dataStores/%s/siteSearchEngine", name.Project.ID, name.Location, name.Collection, name.DataStore)
+	return s.operations.DoneLRO(ctx, prefix, nil, actual)
+}
+
 func (s *siteSearchEngineService) CreateTargetSite(ctx context.Context, req *pb.CreateTargetSiteRequest) (*longrunning.Operation, error) {
 	parent, err := s.parseSiteSearchEngineName(req.Parent)
 	if err != nil {
@@ -129,6 +160,20 @@ func (s *MockService) parseTargetSiteName(name string) (*targetSiteName, error) 
 			TargetSite: tokens[10],
 		}, nil
 	}
+	if len(tokens) == 9 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dataStores" && tokens[6] == "siteSearchEngine" && tokens[7] == "targetSites" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &targetSiteName{
+			Project:    project,
+			Location:   tokens[3],
+			Collection: "default_collection",
+			DataStore:  tokens[5],
+			TargetSite: tokens[8],
+		}, nil
+	}
 	return nil, status.Errorf(codes.InvalidArgument, "invalid target site name %q", name)
 }
 
@@ -156,6 +201,19 @@ func (s *MockService) parseSiteSearchEngineName(name string) (*siteSearchEngineN
 			Location:   tokens[3],
 			Collection: tokens[5],
 			DataStore:  tokens[7],
+		}, nil
+	}
+	if len(tokens) == 7 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dataStores" && tokens[6] == "siteSearchEngine" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &siteSearchEngineName{
+			Project:    project,
+			Location:   tokens[3],
+			Collection: "default_collection",
+			DataStore:  tokens[5],
 		}, nil
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "invalid site search engine name %q", name)

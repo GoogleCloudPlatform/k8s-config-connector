@@ -193,6 +193,22 @@ func (a *engineAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		report.AddField("data_store_ids", a.actual.DataStoreIds, a.desired.DataStoreIds)
 		updateMask.Paths = append(updateMask.Paths, "data_store_ids")
 	}
+	if !reflect.DeepEqual(a.desired.CommonConfig, a.actual.CommonConfig) {
+		report.AddField("common_config", a.actual.CommonConfig, a.desired.CommonConfig)
+		updateMask.Paths = append(updateMask.Paths, "common_config")
+	}
+	if !reflect.DeepEqual(a.desired.DisableAnalytics, a.actual.DisableAnalytics) {
+		report.AddField("disable_analytics", a.actual.DisableAnalytics, a.desired.DisableAnalytics)
+		updateMask.Paths = append(updateMask.Paths, "disable_analytics")
+	}
+	if !reflect.DeepEqual(a.desired.GetChatEngineConfig(), a.actual.GetChatEngineConfig()) {
+		report.AddField("chat_engine_config", a.actual.GetChatEngineConfig(), a.desired.GetChatEngineConfig())
+		updateMask.Paths = append(updateMask.Paths, "chat_engine_config")
+	}
+	if !reflect.DeepEqual(a.desired.GetSearchEngineConfig(), a.actual.GetSearchEngineConfig()) {
+		report.AddField("search_engine_config", a.actual.GetSearchEngineConfig(), a.desired.GetSearchEngineConfig())
+		updateMask.Paths = append(updateMask.Paths, "search_engine_config")
+	}
 
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
@@ -257,6 +273,9 @@ func (a *engineAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 	req := &pb.DeleteEngineRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteEngine(ctx, req)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
 		return false, fmt.Errorf("deleting discoveryengine engine %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully deleted discoveryengine engine", "name", a.id)
