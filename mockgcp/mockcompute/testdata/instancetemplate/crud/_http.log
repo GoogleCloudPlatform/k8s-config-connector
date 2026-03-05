@@ -1,4 +1,4 @@
-GET https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -40,7 +40,7 @@ Content-Type: application/json
         "autoDelete": true,
         "boot": true,
         "initializeParams": {
-          "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12"
+          "sourceImage": "https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12"
         },
         "mode": "READ_WRITE",
         "type": "PERSISTENT"
@@ -56,7 +56,7 @@ Content-Type: application/json
             "type": "ONE_TO_ONE_NAT"
           }
         ],
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default"
+        "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default"
       }
     ],
     "scheduling": {
@@ -100,7 +100,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${instanceTemplateID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "user": "user@example.com"
 }
 
@@ -133,13 +133,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${instanceTemplateID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -169,7 +169,7 @@ X-Xss-Protection: 0
         "deviceName": "boot",
         "index": 0,
         "initializeParams": {
-          "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12"
+          "sourceImage": "https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-12"
         },
         "kind": "compute#attachedDisk",
         "mode": "READ_WRITE",
@@ -192,7 +192,7 @@ X-Xss-Protection: 0
         ],
         "kind": "compute#networkInterface",
         "name": "nic0",
-        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default"
+        "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/default"
       }
     ],
     "scheduling": {
@@ -215,12 +215,12 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}"
 }
 
 ---
 
-DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -246,7 +246,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${instanceTemplateID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "user": "user@example.com"
 }
 
@@ -279,6 +279,6 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${instanceTemplateID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
+  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
   "user": "user@example.com"
 }
