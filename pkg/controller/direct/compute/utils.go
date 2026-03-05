@@ -62,35 +62,35 @@ func IsSelfLinkEqual(a, b *string) bool {
 }
 
 func ConvertInt32ToInt(in *int32) *int {
-        if in == nil {
-                return nil
-        }
-        v := int(*in)
-        return &v
+	if in == nil {
+		return nil
+	}
+	v := int(*in)
+	return &v
 }
 
 func ConvertIntToInt32(in *int) *int32 {
-        if in == nil {
-                return nil
-        }
-        v := int32(*in)
-        return &v
+	if in == nil {
+		return nil
+	}
+	v := int32(*in)
+	return &v
 }
 
 func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-        status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
-        if err != nil {
-                return fmt.Errorf("error converting status to unstructured: %w", err)
-        }
+	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
+	if err != nil {
+		return fmt.Errorf("error converting status to unstructured: %w", err)
+	}
 
-        old, _, _ := unstructured.NestedMap(u.Object, "status")
-        if old != nil {
-                status["conditions"] = old["conditions"]
-                status["observedGeneration"] = old["observedGeneration"]
-                status["externalRef"] = old["externalRef"]
-        }
+	old, _, _ := unstructured.NestedMap(u.Object, "status")
+	if old != nil {
+		status["conditions"] = old["conditions"]
+		status["observedGeneration"] = old["observedGeneration"]
+		status["externalRef"] = old["externalRef"]
+	}
 
-        u.Object["status"] = status
+	u.Object["status"] = status
 
-        return nil
+	return nil
 }

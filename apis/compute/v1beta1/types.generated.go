@@ -282,6 +282,8 @@ type CustomErrorResponsePolicyCustomErrorResponseRule struct {
 	Path *string `json:"path,omitempty"`
 }
 
+/* found existing non-generated go type "Duration", skipping
+
 // +kcc:proto=google.cloud.compute.v1.Duration
 type Duration struct {
 	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
@@ -292,6 +294,7 @@ type Duration struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Duration.seconds
 	Seconds *int64 `json:"seconds,omitempty"`
 }
+*/
 
 /* unreachable type Expr
 // +kcc:proto=google.cloud.compute.v1.Expr

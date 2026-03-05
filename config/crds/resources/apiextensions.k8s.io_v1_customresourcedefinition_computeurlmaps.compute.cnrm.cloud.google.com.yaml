@@ -228,8 +228,7 @@ spec:
                                   Must be from 0 to 315,576,000,000 inclusive. Note:
                                   these bounds are computed from: 60 sec/min * 60
                                   min/hr * 24 hr/day * 365.25 days/year * 10000 years'
-                                format: int64
-                                type: integer
+                                type: string
                             type: object
                           percentage:
                             description: The percentage of traffic for connections,
@@ -253,8 +252,7 @@ spec:
                           be from 0 to 315,576,000,000 inclusive. Note: these bounds
                           are computed from: 60 sec/min * 60 min/hr * 24 hr/day *
                           365.25 days/year * 10000 years'
-                        format: int64
-                        type: integer
+                        type: string
                     type: object
                   requestMirrorPolicy:
                     properties:
@@ -318,8 +316,7 @@ spec:
                               Must be from 0 to 315,576,000,000 inclusive. Note: these
                               bounds are computed from: 60 sec/min * 60 min/hr * 24
                               hr/day * 365.25 days/year * 10000 years'
-                            format: int64
-                            type: integer
+                            type: string
                         type: object
                       retryConditions:
                         description: 'Specifies one or more conditions when this retry
@@ -368,8 +365,7 @@ spec:
                           be from 0 to 315,576,000,000 inclusive. Note: these bounds
                           are computed from: 60 sec/min * 60 min/hr * 24 hr/day *
                           365.25 days/year * 10000 years'
-                        format: int64
-                        type: integer
+                        type: string
                     type: object
                   urlRewrite:
                     properties:
@@ -680,7 +676,7 @@ spec:
                       type: string
                     type: array
                 type: object
-              hostRules:
+              hostRule:
                 description: The list of HostRules to use against the URL.
                 items:
                   properties:
@@ -709,7 +705,7 @@ spec:
               location:
                 description: The location of this resource.
                 type: string
-              pathMatchers:
+              pathMatcher:
                 description: The list of named PathMatchers to use against the URL.
                 items:
                   properties:
@@ -882,8 +878,7 @@ spec:
                                         inclusive. Note: these bounds are computed
                                         from: 60 sec/min * 60 min/hr * 24 hr/day *
                                         365.25 days/year * 10000 years'
-                                      format: int64
-                                      type: integer
+                                      type: string
                                   type: object
                                 percentage:
                                   description: The percentage of traffic for connections,
@@ -908,8 +903,7 @@ spec:
                                 Must be from 0 to 315,576,000,000 inclusive. Note:
                                 these bounds are computed from: 60 sec/min * 60 min/hr
                                 * 24 hr/day * 365.25 days/year * 10000 years'
-                              format: int64
-                              type: integer
+                              type: string
                           type: object
                         requestMirrorPolicy:
                           properties:
@@ -978,8 +972,7 @@ spec:
                                     Note: these bounds are computed from: 60 sec/min
                                     * 60 min/hr * 24 hr/day * 365.25 days/year * 10000
                                     years'
-                                  format: int64
-                                  type: integer
+                                  type: string
                               type: object
                             retryConditions:
                               description: 'Specifies one or more conditions when
@@ -1032,8 +1025,7 @@ spec:
                                 Must be from 0 to 315,576,000,000 inclusive. Note:
                                 these bounds are computed from: 60 sec/min * 60 min/hr
                                 * 24 hr/day * 365.25 days/year * 10000 years'
-                              format: int64
-                              type: integer
+                              type: string
                           type: object
                         urlRewrite:
                           properties:
@@ -1352,7 +1344,7 @@ spec:
                       type: object
                     name:
                       type: string
-                    pathRules:
+                    pathRule:
                       items:
                         properties:
                           customErrorResponsePolicy:
@@ -1537,8 +1529,7 @@ spec:
                                               inclusive. Note: these bounds are computed
                                               from: 60 sec/min * 60 min/hr * 24 hr/day
                                               * 365.25 days/year * 10000 years'
-                                            format: int64
-                                            type: integer
+                                            type: string
                                         type: object
                                       percentage:
                                         description: The percentage of traffic for
@@ -1565,8 +1556,7 @@ spec:
                                       inclusive. Note: these bounds are computed from:
                                       60 sec/min * 60 min/hr * 24 hr/day * 365.25
                                       days/year * 10000 years'
-                                    format: int64
-                                    type: integer
+                                    type: string
                                 type: object
                               requestMirrorPolicy:
                                 properties:
@@ -1637,8 +1627,7 @@ spec:
                                           inclusive. Note: these bounds are computed
                                           from: 60 sec/min * 60 min/hr * 24 hr/day
                                           * 365.25 days/year * 10000 years'
-                                        format: int64
-                                        type: integer
+                                        type: string
                                     type: object
                                   retryConditions:
                                     description: 'Specifies one or more conditions
@@ -1696,8 +1685,7 @@ spec:
                                       inclusive. Note: these bounds are computed from:
                                       60 sec/min * 60 min/hr * 24 hr/day * 365.25
                                       days/year * 10000 years'
-                                    format: int64
-                                    type: integer
+                                    type: string
                                 type: object
                               urlRewrite:
                                 properties:
@@ -2473,8 +2461,7 @@ spec:
                                               inclusive. Note: these bounds are computed
                                               from: 60 sec/min * 60 min/hr * 24 hr/day
                                               * 365.25 days/year * 10000 years'
-                                            format: int64
-                                            type: integer
+                                            type: string
                                         type: object
                                       percentage:
                                         description: The percentage of traffic for
@@ -2501,8 +2488,7 @@ spec:
                                       inclusive. Note: these bounds are computed from:
                                       60 sec/min * 60 min/hr * 24 hr/day * 365.25
                                       days/year * 10000 years'
-                                    format: int64
-                                    type: integer
+                                    type: string
                                 type: object
                               requestMirrorPolicy:
                                 properties:
@@ -2573,8 +2559,7 @@ spec:
                                           inclusive. Note: these bounds are computed
                                           from: 60 sec/min * 60 min/hr * 24 hr/day
                                           * 365.25 days/year * 10000 years'
-                                        format: int64
-                                        type: integer
+                                        type: string
                                     type: object
                                   retryConditions:
                                     description: 'Specifies one or more conditions
@@ -2632,8 +2617,7 @@ spec:
                                       inclusive. Note: these bounds are computed from:
                                       60 sec/min * 60 min/hr * 24 hr/day * 365.25
                                       days/year * 10000 years'
-                                    format: int64
-                                    type: integer
+                                    type: string
                                 type: object
                               urlRewrite:
                                 properties:
@@ -2945,7 +2929,7 @@ spec:
                 description: The ComputeURLMap name. If not given, the metadata.name
                   will be used.
                 type: string
-              tests:
+              test:
                 description: The list of expected URL mappings.
                 items:
                   properties:
@@ -3038,7 +3022,6 @@ spec:
                 type: array
             required:
             - location
-            - projectRef
             type: object
           status:
             description: ComputeURLMapStatus defines the config connector machine

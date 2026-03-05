@@ -26,7 +26,7 @@ var ComputeURLMapGVK = GroupVersion.WithKind("ComputeURLMap")
 // +kcc:spec:proto=google.cloud.compute.v1.UrlMap
 type ComputeURLMapSpec struct {
 	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// The location of this resource.
 	Location string `json:"location"`
@@ -60,20 +60,31 @@ type ComputeURLMapSpec struct {
 
 	// The list of HostRules to use against the URL.
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMap.host_rules
-	HostRules []HostRule `json:"hostRules,omitempty"`
+	HostRule []HostRule `json:"hostRule,omitempty"`
 
 	// The list of named PathMatchers to use against the URL.
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMap.path_matchers
-	PathMatchers []ComputeURLMapPathMatcher `json:"pathMatchers,omitempty"`
+	PathMatcher []ComputeURLMapPathMatcher `json:"pathMatcher,omitempty"`
 
 	// The list of expected URL mappings.
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMap.tests
-	Tests []ComputeURLMapTest `json:"tests,omitempty"`
+	Test []ComputeURLMapTest `json:"test,omitempty"`
 }
 
 type ComputeURLMapDefaultService struct {
 	BackendBucketRef  *v1alpha1.ResourceRef `json:"backendBucketRef,omitempty"`
 	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.Duration
+type Duration struct {
+	// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
+	// +kcc:proto:field=google.cloud.compute.v1.Duration.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+
+	// Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive. Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years
+	// +kcc:proto:field=google.cloud.compute.v1.Duration.seconds
+	Seconds *string `json:"seconds,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.PathMatcher
@@ -100,7 +111,7 @@ type ComputeURLMapPathMatcher struct {
 	Name *string `json:"name,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.path_rules
-	PathRules []ComputeURLMapPathRule `json:"pathRules,omitempty"`
+	PathRule []ComputeURLMapPathRule `json:"pathRule,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.route_rules
 	RouteRules []ComputeURLMapHTTPRouteRule `json:"routeRules,omitempty"`

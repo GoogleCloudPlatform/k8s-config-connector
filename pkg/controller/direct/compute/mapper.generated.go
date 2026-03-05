@@ -1675,11 +1675,14 @@ func ComputeURLMapObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	out := &krm.ComputeURLMapObservedState{}
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Fingerprint = in.Fingerprint
+	// MISSING: HostRules
 	out.ID = in.Id
 	// MISSING: Kind
 	// MISSING: Name
+	// MISSING: PathMatchers
 	// MISSING: Region
 	out.SelfLink = in.SelfLink
+	// MISSING: Tests
 	return out
 }
 func ComputeURLMapObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeURLMapObservedState) *pb.UrlMap {
@@ -1689,11 +1692,14 @@ func ComputeURLMapObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out := &pb.UrlMap{}
 	out.CreationTimestamp = in.CreationTimestamp
 	out.Fingerprint = in.Fingerprint
+	// MISSING: HostRules
 	out.Id = in.ID
 	// MISSING: Kind
 	// MISSING: Name
+	// MISSING: PathMatchers
 	// MISSING: Region
 	out.SelfLink = in.SelfLink
+	// MISSING: Tests
 	return out
 }
 
@@ -1710,7 +1716,7 @@ func ComputeURLMapPathMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *p
 	out.Description = in.Description
 	out.HeaderAction = HTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
 	out.Name = in.Name
-	out.PathRules = direct.Slice_FromProto(mapCtx, in.PathRules, ComputeURLMapPathRule_v1beta1_FromProto)
+	// MISSING: PathRules
 	out.RouteRules = direct.Slice_FromProto(mapCtx, in.RouteRules, ComputeURLMapHTTPRouteRule_v1beta1_FromProto)
 	return out
 }
@@ -1729,7 +1735,7 @@ func ComputeURLMapPathMatcher_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Description = in.Description
 	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
 	out.Name = in.Name
-	out.PathRules = direct.Slice_ToProto(mapCtx, in.PathRules, ComputeURLMapPathRule_v1beta1_ToProto)
+	// MISSING: PathRules
 	out.RouteRules = direct.Slice_ToProto(mapCtx, in.RouteRules, ComputeURLMapHTTPRouteRule_v1beta1_ToProto)
 	return out
 }
@@ -1799,12 +1805,12 @@ func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMa
 	out.DefaultURLRedirect = HTTPRedirectAction_v1beta1_FromProto(mapCtx, in.GetDefaultUrlRedirect())
 	out.Description = in.Description
 	out.HeaderAction = HTTPHeaderAction_v1beta1_FromProto(mapCtx, in.GetHeaderAction())
-	out.HostRules = direct.Slice_FromProto(mapCtx, in.HostRules, HostRule_v1beta1_FromProto)
+	// MISSING: HostRules
 	// MISSING: Kind
 	// MISSING: Name
-	out.PathMatchers = direct.Slice_FromProto(mapCtx, in.PathMatchers, ComputeURLMapPathMatcher_v1beta1_FromProto)
+	// MISSING: PathMatchers
 	// MISSING: Region
-	out.Tests = direct.Slice_FromProto(mapCtx, in.Tests, ComputeURLMapTest_v1beta1_FromProto)
+	// MISSING: Tests
 	return out
 }
 */
@@ -1821,12 +1827,12 @@ func ComputeURLMapSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	out.DefaultUrlRedirect = HTTPRedirectAction_v1beta1_ToProto(mapCtx, in.DefaultURLRedirect)
 	out.Description = in.Description
 	out.HeaderAction = HTTPHeaderAction_v1beta1_ToProto(mapCtx, in.HeaderAction)
-	out.HostRules = direct.Slice_ToProto(mapCtx, in.HostRules, HostRule_v1beta1_ToProto)
+	// MISSING: HostRules
 	// MISSING: Kind
 	// MISSING: Name
-	out.PathMatchers = direct.Slice_ToProto(mapCtx, in.PathMatchers, ComputeURLMapPathMatcher_v1beta1_ToProto)
+	// MISSING: PathMatchers
 	// MISSING: Region
-	out.Tests = direct.Slice_ToProto(mapCtx, in.Tests, ComputeURLMapTest_v1beta1_ToProto)
+	// MISSING: Tests
 	return out
 }
 */
@@ -1976,6 +1982,8 @@ func Duration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1
 	out.Seconds = in.Seconds
 	return out
 }
+
+/* found existing non-generated mapping function "Duration_v1beta1_FromProto", skipping
 func Duration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm.Duration {
 	if in == nil {
 		return nil
@@ -1985,15 +1993,21 @@ func Duration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Duration) *krm
 	out.Seconds = in.Seconds
 	return out
 }
-func Duration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Duration) *pb.Duration {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "Duration_v1beta1_ToProto", skipping
+
+	func Duration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Duration) *pb.Duration {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Duration{}
+		out.Nanos = in.Nanos
+		out.Seconds = in.Seconds
+		return out
 	}
-	out := &pb.Duration{}
-	out.Nanos = in.Nanos
-	out.Seconds = in.Seconds
-	return out
-}
+*/
 func FirewallPolicyRuleMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
 	if in == nil {
 		return nil
