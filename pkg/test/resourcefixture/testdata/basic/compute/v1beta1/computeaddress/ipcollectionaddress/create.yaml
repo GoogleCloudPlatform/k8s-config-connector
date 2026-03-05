@@ -1,0 +1,11 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeaddress-ipcollection
+spec:
+  addressType: EXTERNAL
+  ipVersion: IPV4
+  purpose: IPV4_PD
+  location: us-central1
+  ipCollectionRef:
+    external: projects/${project_id}/regions/us-central1/publicDelegatedPrefixes/pdp-sample
