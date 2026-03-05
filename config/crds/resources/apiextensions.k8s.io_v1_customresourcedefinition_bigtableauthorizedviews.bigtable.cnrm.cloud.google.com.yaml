@@ -107,10 +107,10 @@ spec:
                       resource.
                     type: string
                   name:
-                    description: The name of a BigtableInstance resource.
+                    description: The name of a BigtableTable resource.
                     type: string
                   namespace:
-                    description: The namespace of a BigtableInstance resource.
+                    description: The namespace of a BigtableTable resource.
                     type: string
                 type: object
             required:
