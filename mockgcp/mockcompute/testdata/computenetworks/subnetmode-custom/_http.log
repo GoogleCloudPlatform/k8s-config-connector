@@ -150,7 +150,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -170,7 +171,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -190,7 +192,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -210,7 +213,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -230,7 +234,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -250,7 +255,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -270,7 +276,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -290,7 +297,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -310,7 +318,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -330,7 +339,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -350,7 +360,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -370,7 +381,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -390,7 +402,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -410,7 +423,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -430,7 +444,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -450,7 +465,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -470,7 +486,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -490,7 +507,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -510,7 +528,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -530,7 +549,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -550,7 +570,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -570,7 +591,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -590,7 +612,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -610,7 +633,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -630,7 +654,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -650,7 +675,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -682,7 +708,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -702,7 +729,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -722,7 +750,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -742,7 +771,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -762,7 +792,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -782,7 +813,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -802,7 +834,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -822,7 +855,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -842,7 +876,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -862,7 +897,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -882,7 +918,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -902,7 +939,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -922,7 +960,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -942,7 +981,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
@@ -962,7 +1002,8 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/default",
-          "stackType": "IPV4_ONLY"
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
         }
       ]
     },
