@@ -6,8 +6,6 @@ X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "error": {
@@ -52,8 +50,6 @@ X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -98,8 +94,6 @@ X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -144,8 +138,6 @@ X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -190,8 +182,6 @@ X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -237,8 +227,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "error": {
@@ -270,8 +258,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -292,8 +278,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -314,8 +298,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -343,8 +325,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -365,8 +345,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -387,8 +365,6 @@ X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -433,8 +409,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -455,8 +429,6 @@ X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "kind": "storage#objects"
@@ -472,8 +444,6 @@ X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 Content-Type: application/json
 Pragma: no-cache
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 
 ---
@@ -486,8 +456,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "error": {

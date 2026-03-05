@@ -1,17 +1,10 @@
-GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -23,7 +16,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations?%24alt=json%3Benum-encoding%3Dint&reservationId=bigqueryreservationreservation${uniqueId}
+POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations?$alt=json%3Benum-encoding%3Dint&reservationId=bigqueryreservationreservation${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
@@ -37,13 +30,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "autoscale": {
@@ -57,20 +43,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "autoscale": {
@@ -84,7 +63,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=ignoreIdleSlots%2Cautoscale
+PATCH https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=ignoreIdleSlots,autoscale
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: reservation.name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
@@ -100,13 +79,6 @@ X-Goog-Request-Params: reservation.name=projects%2F${projectId}%2Flocations%2Fus
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "autoscale": {
@@ -121,20 +93,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "autoscale": {
@@ -149,19 +114,12 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}

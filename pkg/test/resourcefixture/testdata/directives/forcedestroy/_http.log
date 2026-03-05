@@ -5,8 +5,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "error": {
@@ -54,8 +52,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -103,8 +99,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -166,8 +160,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "acl": [
@@ -292,8 +284,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -342,8 +332,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "kind": "storage#objects",
@@ -362,5 +350,3 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 Content-Type: application/json
 Pragma: no-cache
 Server: UploadServer
-Vary: Origin
-Vary: X-Origin

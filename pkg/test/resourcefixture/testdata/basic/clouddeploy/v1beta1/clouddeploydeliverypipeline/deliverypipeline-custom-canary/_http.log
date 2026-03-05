@@ -1,17 +1,10 @@
-GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-3-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -30,7 +23,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines?%24alt=json%3Benum-encoding%3Dint&deliveryPipelineId=clouddeploydeliverypipeline-full-3-${uniqueId}
+POST https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines?$alt=json%3Benum-encoding%3Dint&deliveryPipelineId=clouddeploydeliverypipeline-full-3-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1
@@ -72,13 +65,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -100,13 +86,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fope
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -162,20 +141,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-3-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -218,7 +190,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=name%2CserialPipeline.stages
+PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=name,serialPipeline.stages
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: delivery_pipeline.name=projects%2F${projectId}%2Flocations%2Fus-west1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-3-${uniqueId}
@@ -262,13 +234,6 @@ X-Goog-Request-Params: delivery_pipeline.name=projects%2F${projectId}%2Flocation
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -290,13 +255,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fope
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -353,20 +311,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-3-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -410,20 +361,13 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-3-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -445,13 +389,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fope
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,

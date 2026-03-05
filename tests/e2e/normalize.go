@@ -1030,7 +1030,12 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	// Remove header in response.
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
+	events.RemoveHTTPResponseHeader("Server")
 	events.RemoveHTTPResponseHeader("Server-Timing")
+	events.RemoveHTTPResponseHeader("Vary")
+	events.RemoveHTTPResponseHeader("X-Content-Type-Options")
+	events.RemoveHTTPResponseHeader("X-Frame-Options")
+	events.RemoveHTTPResponseHeader("X-Xss-Protection")
 	events.RemoveHTTPResponseHeader("X-Debug-Tracking-Id")
 	events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
 	events.RemoveHTTPResponseHeader("Etag")
@@ -1350,9 +1355,12 @@ func sortQueryParameters(u string) string {
 		query[k] = v
 	}
 	newQuery := query.Encode()
-	// Restore placeholders that were URL-encoded
+	// Restore placeholders and other characters that were URL-encoded
 	newQuery = strings.ReplaceAll(newQuery, "%7B", "{")
 	newQuery = strings.ReplaceAll(newQuery, "%7D", "}")
+	newQuery = strings.ReplaceAll(newQuery, "%24", "$")
+	newQuery = strings.ReplaceAll(newQuery, "%3A", ":")
+	newQuery = strings.ReplaceAll(newQuery, "%2C", ",")
 	return path + "?" + newQuery
 }
 

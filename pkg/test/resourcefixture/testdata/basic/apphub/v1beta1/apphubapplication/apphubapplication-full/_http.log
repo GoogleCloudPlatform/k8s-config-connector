@@ -1,17 +1,10 @@
-GET https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/test-application?%24alt=json%3Benum-encoding%3Dint
+GET https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/test-application?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapplications%2Ftest-application
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -30,7 +23,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications?%24alt=json%3Benum-encoding%3Dint&applicationId=test-application
+POST https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications?$alt=json%3Benum-encoding%3Dint&applicationId=test-application
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
@@ -72,13 +65,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -100,13 +86,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -162,20 +141,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/test-application?%24alt=json%3Benum-encoding%3Dint
+GET https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/test-application?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapplications%2Ftest-application
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "attributes": {
@@ -218,7 +190,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/test-application?%24alt=json%3Benum-encoding%3Dint&updateMask=attributes.businessOwners%2Cattributes.developerOwners%2Cattributes.operatorOwners%2Cdescription%2CdisplayName
+PATCH https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/test-application?$alt=json%3Benum-encoding%3Dint&updateMask=attributes.businessOwners,attributes.developerOwners,attributes.operatorOwners,description,displayName
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: application.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapplications%2Ftest-application
@@ -260,13 +232,6 @@ X-Goog-Request-Params: application.name=projects%2F${projectId}%2Flocations%2Fus
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -288,13 +253,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -350,20 +308,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/test-application?%24alt=json%3Benum-encoding%3Dint
+GET https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/test-application?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapplications%2Ftest-application
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "attributes": {
@@ -406,20 +357,13 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/test-application?%24alt=json%3Benum-encoding%3Dint
+DELETE https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/test-application?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapplications%2Ftest-application
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -441,13 +385,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,

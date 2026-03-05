@@ -4,13 +4,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -35,13 +28,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "labels": {
@@ -59,13 +45,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "labels": {
@@ -77,7 +56,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-${uniqueId}
@@ -85,13 +64,6 @@ X-Goog-User-Project: ${projectNumber}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -103,7 +75,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds?%24alt=json%3Benum-encoding%3Dint
+POST https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectNumber}
@@ -139,13 +111,6 @@ X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "assetNames": [
@@ -173,7 +138,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-${uniqueId}
@@ -181,13 +146,6 @@ X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "assetNames": [
@@ -215,7 +173,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: feed.name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-${uniqueId}
@@ -254,13 +212,6 @@ X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "assetNames": [
@@ -292,7 +243,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-${uniqueId}
@@ -300,13 +251,6 @@ X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "assetNames": [
@@ -338,7 +282,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-${uniqueId}
@@ -346,13 +290,6 @@ X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}
 
@@ -364,13 +301,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "labels": {
@@ -388,12 +318,5 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}

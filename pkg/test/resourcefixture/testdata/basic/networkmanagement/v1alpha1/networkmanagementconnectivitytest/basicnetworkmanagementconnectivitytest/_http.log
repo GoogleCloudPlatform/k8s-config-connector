@@ -1,17 +1,10 @@
-GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/networkmanagementconnectivitytest-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/networkmanagementconnectivitytest-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FconnectivityTests%2Fnetworkmanagementconnectivitytest-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -23,7 +16,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests?%24alt=json%3Benum-encoding%3Dint&testId=networkmanagementconnectivitytest-${uniqueId}
+POST https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests?$alt=json%3Benum-encoding%3Dint&testId=networkmanagementconnectivitytest-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
@@ -40,13 +33,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -68,13 +54,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fopera
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -171,20 +150,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/networkmanagementconnectivitytest-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/networkmanagementconnectivitytest-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FconnectivityTests%2Fnetworkmanagementconnectivitytest-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -268,7 +240,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/networkmanagementconnectivitytest-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+PATCH https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/networkmanagementconnectivitytest-${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=description
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: resource.name=projects%2F${projectId}%2Flocations%2Fglobal%2FconnectivityTests%2Fnetworkmanagementconnectivitytest-${uniqueId}
@@ -286,13 +258,6 @@ X-Goog-Request-Params: resource.name=projects%2F${projectId}%2Flocations%2Fgloba
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -314,13 +279,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fopera
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -418,20 +376,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/networkmanagementconnectivitytest-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/networkmanagementconnectivitytest-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FconnectivityTests%2Fnetworkmanagementconnectivitytest-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -516,20 +467,13 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/networkmanagementconnectivitytest-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://networkmanagement.googleapis.com/v1/projects/${projectId}/locations/global/connectivityTests/networkmanagementconnectivitytest-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FconnectivityTests%2Fnetworkmanagementconnectivitytest-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -551,13 +495,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fopera
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
