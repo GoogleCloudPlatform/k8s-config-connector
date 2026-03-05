@@ -130,6 +130,62 @@ type ComputeServiceAttachmentRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+type ComputeForwardingRuleRef struct {
+	/* The ComputeForwardingRule selflink in the form "projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}" when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeForwardingRule` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeForwardingRule` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
+func ResolveComputeForwardingRule(ctx context.Context, reader client.Reader, defaultNamespace string, ref *ComputeForwardingRuleRef) error {
+	if ref == nil {
+		return nil
+	}
+
+	if ref.External != "" {
+		return nil
+	}
+
+	if ref.Name == "" {
+		return fmt.Errorf("must specify either name or external on reference")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = defaultNamespace
+	}
+
+	computeForwardingRule := &unstructured.Unstructured{}
+	computeForwardingRule.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeForwardingRule",
+	})
+	if err := reader.Get(ctx, key, computeForwardingRule); err != nil {
+		if apierrors.IsNotFound(err) {
+			return k8s.NewReferenceNotFoundError(computeForwardingRule.GroupVersionKind(), key)
+		}
+		return fmt.Errorf("error reading referenced ComputeForwardingRule %v: %w", key, err)
+	}
+
+	// Read status.selfLink to parse external reference ID. This will need to be updated once we migrate this resource
+	// to direct controller, which uses status.externalRef.
+	selfLink, _, _ := unstructured.NestedString(computeForwardingRule.Object, "status", "selfLink")
+	if selfLink == "" {
+		return k8s.NewReferenceNotFoundError(computeForwardingRule.GroupVersionKind(), key)
+	}
+
+	externalRef := strings.TrimPrefix(selfLink, "https://www.googleapis.com/compute/beta/")
+	ref.External = externalRef
+
+	return nil
+}
+
 func ResolveComputeServiceAttachment(ctx context.Context, reader client.Reader, defaultNamespace string, ref *ComputeServiceAttachmentRef) error {
 	if ref == nil {
 		return nil

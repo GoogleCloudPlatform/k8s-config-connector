@@ -800,10 +800,11 @@ observedState:
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# This sample creates a Memorystore for Valkey instance.
 apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
 kind: MemorystoreInstance
 metadata:
-  name: memorystoreinstance-sample
+  name: memorystore-valkey-sample
 spec:
   shardCount: 6
   location: us-central1

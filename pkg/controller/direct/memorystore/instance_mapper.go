@@ -27,13 +27,33 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func DiscoveryEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryEndpoint) *krmv1beta1.DiscoveryEndpointObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.DiscoveryEndpointObservedState{}
+	out.Address = direct.LazyPtr(in.GetAddress())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	return out
+}
+func DiscoveryEndpoint_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.DiscoveryEndpointObservedState) *pb.DiscoveryEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveryEndpoint{}
+	out.Address = direct.ValueOf(in.Address)
+	out.Port = direct.ValueOf(in.Port)
+	out.Network = direct.ValueOf(in.Network)
+	return out
+}
 func Instance_ConnectionDetail_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krmv1beta1.Instance_ConnectionDetail {
 	if in == nil {
 		return nil
 	}
 	out := &krmv1beta1.Instance_ConnectionDetail{}
 	out.PscAutoConnection = PscAutoConnection_FromProto(mapCtx, in.GetPscAutoConnection())
-	// out.PscConnection = PscConnection_FromProto(mapCtx, in.GetPscConnection())
+	out.PscConnection = PscConnection_FromProto(mapCtx, in.GetPscConnection())
 	return out
 }
 func Instance_ConnectionDetail_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_ConnectionDetail) *pb.Instance_ConnectionDetail {
@@ -44,9 +64,9 @@ func Instance_ConnectionDetail_ToProto(mapCtx *direct.MapContext, in *krmv1beta1
 	if oneof := PscAutoConnection_ToProto(mapCtx, in.PscAutoConnection); oneof != nil {
 		out.Connection = &pb.Instance_ConnectionDetail_PscAutoConnection{PscAutoConnection: oneof}
 	}
-	// if oneof := PscConnection_ToProto(mapCtx, in.PscConnection); oneof != nil {
-	// 	out.Connection = &pb.Instance_ConnectionDetail_PscConnection{PscConnection: oneof}
-	// }
+	if oneof := PscConnection_ToProto(mapCtx, in.PscConnection); oneof != nil {
+		out.Connection = &pb.Instance_ConnectionDetail_PscConnection{PscConnection: oneof}
+	}
 	return out
 }
 func Instance_ConnectionDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krmv1beta1.Instance_ConnectionDetailObservedState {
@@ -55,7 +75,7 @@ func Instance_ConnectionDetailObservedState_FromProto(mapCtx *direct.MapContext,
 	}
 	out := &krmv1beta1.Instance_ConnectionDetailObservedState{}
 	out.PscAutoConnection = PscAutoConnectionObservedState_FromProto(mapCtx, in.GetPscAutoConnection())
-	// out.PscConnection = PscConnectionObservedState_FromProto(mapCtx, in.GetPscConnection())
+	out.PscConnection = PscConnectionObservedState_FromProto(mapCtx, in.GetPscConnection())
 	return out
 }
 func Instance_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_ConnectionDetailObservedState) *pb.Instance_ConnectionDetail {
@@ -66,9 +86,9 @@ func Instance_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, i
 	if oneof := PscAutoConnectionObservedState_ToProto(mapCtx, in.PscAutoConnection); oneof != nil {
 		out.Connection = &pb.Instance_ConnectionDetail_PscAutoConnection{PscAutoConnection: oneof}
 	}
-	// if oneof := PscConnectionObservedState_ToProto(mapCtx, in.PscConnection); oneof != nil {
-	// 	out.Connection = &pb.Instance_ConnectionDetail_PscConnection{PscConnection: oneof}
-	// }
+	if oneof := PscConnectionObservedState_ToProto(mapCtx, in.PscConnection); oneof != nil {
+		out.Connection = &pb.Instance_ConnectionDetail_PscConnection{PscConnection: oneof}
+	}
 	return out
 }
 func Instance_InstanceEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krmv1beta1.Instance_InstanceEndpoint {
@@ -178,6 +198,7 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.StateInfo = Instance_StateInfoObservedState_FromProto(mapCtx, in.GetStateInfo())
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.NodeConfig = NodeConfigObservedState_FromProto(mapCtx, in.GetNodeConfig())
+	out.DiscoveryEndpoints = direct.Slice_FromProto(mapCtx, in.DiscoveryEndpoints, DiscoveryEndpoint_FromProto)
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
 	return out
 }
@@ -192,6 +213,7 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.StateInfo = Instance_StateInfoObservedState_ToProto(mapCtx, in.StateInfo)
 	out.Uid = direct.ValueOf(in.Uid)
 	out.NodeConfig = NodeConfigObservedState_ToProto(mapCtx, in.NodeConfig)
+	out.DiscoveryEndpoints = direct.Slice_ToProto(mapCtx, in.DiscoveryEndpoints, DiscoveryEndpoint_ToProto)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
 	return out
 }
@@ -397,6 +419,12 @@ func PscConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *k
 	if in.GetIpAddress() != "" {
 		out.IpAddress = direct.LazyPtr(in.GetIpAddress())
 	}
+	if in.GetPort() != 0 {
+		out.Port = direct.LazyPtr(in.GetPort())
+	}
+	if in.GetForwardingRule() != "" {
+		out.ForwardingRuleRef = &refs.ComputeForwardingRuleRef{External: in.GetForwardingRule()}
+	}
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
@@ -412,6 +440,12 @@ func PscConnection_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PscConnecti
 	out := &pb.PscConnection{}
 	out.PscConnectionId = direct.ValueOf(in.PscConnectionID)
 	out.IpAddress = direct.ValueOf(in.IpAddress)
+	if in.Port != nil {
+		out.Ports = &pb.PscConnection_Port{Port: *in.Port}
+	}
+	if in.ForwardingRuleRef != nil {
+		out.ForwardingRule = in.ForwardingRuleRef.External
+	}
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
 	}

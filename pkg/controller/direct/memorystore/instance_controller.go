@@ -43,6 +43,8 @@ func init() {
 	registry.RegisterModel(krm.MemorystoreInstanceGVK, NewInstanceModel)
 }
 
+// NewInstanceModel returns a directbase.Model for the MemorystoreInstance resource,
+// which manages Memorystore for Valkey instances.
 func NewInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
 	return &modelInstance{config: *config}, nil
 }
@@ -111,17 +113,22 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 					}
 				}
 			}
-			// if connection.PscConnection != nil {
-			// 	userConnection := connection.PscConnection
-			// 	if userConnection.NetworkRef != nil {
-			// 		if err := userConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
-			// 			return err
-			// 		}
-			// 	}
-			// 	if err := refs.ResolveComputeServiceAttachment(ctx, reader, obj.GetNamespace(), userConnection.ServiceAttachmentRef); err != nil {
-			// 		return err
-			// 	}
-			// }
+			if connection.PscConnection != nil {
+				userConnection := connection.PscConnection
+				if userConnection.NetworkRef != nil {
+					if err := userConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
+						return err
+					}
+				}
+				if userConnection.ForwardingRuleRef != nil {
+					if err := refs.ResolveComputeForwardingRule(ctx, reader, obj.GetNamespace(), userConnection.ForwardingRuleRef); err != nil {
+						return err
+					}
+				}
+				if err := refs.ResolveComputeServiceAttachment(ctx, reader, obj.GetNamespace(), userConnection.ServiceAttachmentRef); err != nil {
+					return err
+				}
+			}
 		}
 	}
 	return nil
