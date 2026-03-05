@@ -5,18 +5,27 @@
 Config Connector can be configured to enable experimental versions of direct
 controllers for reconciling specific resources. This will allow users to test
 the new direct controller code for bug fixes or features not available in
-legacy controllers. It is possible to enable the direct controller code on a
-per-resource basis, by setting an annotation for each custom resource.
+legacy controllers.
 
-We recommend only enabling the experimental direct controller if it is
-necessary to work around a legacy controller bug or to enable a new feature that
-is only available in the direct controller.
+We recommend enabling the experimental direct controller primarily through
+namespace-level overrides in the `ConfigConnectorContext` resource. This
+provides a more manageable and centralized way to configure controller types.
 
+While it is still possible to enable the direct controller on a per-resource
+basis using an annotation, this is considered legacy behavior and is not
+recommended for new configurations.
 
-## Enabling
+## Enabling via ConfigConnectorContext (Recommended)
 
-To enable the direct controller for a specific resource, update the resource and
-specify the annotation:
+You can enable direct controllers for all resources of a specific kind
+within a namespace using the `experiments.controllerOverrides` field in the
+`ConfigConnectorContext` resource. For more details and examples, see the
+[Controller Implementation Overrides](./controller-configuration.md) documentation.
+
+## Enabling via Annotation (Legacy)
+
+To enable the direct controller for a specific resource instance, update the
+resource and specify the annotation:
 
 ```yaml
 metadata:
@@ -24,31 +33,10 @@ metadata:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
 ```
 
-For example:
-
-```yaml
-apiVersion: sql.cnrm.cloud.google.com/v1beta1
-kind: SQLInstance
-metadata:
-  name: my-sqlinstance
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
-spec:
-  databaseVersion: POSTGRES_16
-  region: us-central1
-  settings:
-    tier: db-custom-1-3840
-```
+For more details on legacy behaviors, see [Legacy Behavior](./legacy-behavior.md).
 
 The only supported value for the annotation is "direct", to enable the
 direct controller.
-
-### Namespace-level Overrides
-
-You can also enable direct controllers for all resources of a specific kind
-within a namespace using the `experiments.controllerOverrides` field in the
-`ConfigConnectorContext` resource. For more details, see the
-[Controller Configuration](./controller-configuration.md) documentation.
 
 While adding an annotation to enable experimental direct controllers for resources
 that do not yet support experimental direct controllers should be harmless, we

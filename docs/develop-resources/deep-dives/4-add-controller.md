@@ -4,9 +4,11 @@ This document describes how to add a new direct controller, and how to configure
 
 ## Controller Routing Logic
 
-A top-level parent controller routes reconciliation to one of three underlying controllers: Terraform (TF), DCL, or Direct. The controller is selected using the following order of precedence:
+A top-level parent controller routes reconciliation to one of three underlying controllers: Terraform (TF), DCL, or Direct. For detailed information on how to configure and override these controllers, see the [Controller Implementation Overrides](../../features/controller-configuration.md) documentation.
 
-1.  **Resource Annotation (deprecated):** A resource can specify a controller directly using the annotation `alpha.cnrm.cloud.google.com/reconciler: direct`. This is supported for backward compatibility, but its use is discouraged and it will be deprecated in the future.
+The controller is selected using the following order of precedence:
+
+1.  **Legacy Annotation:** A resource can specify a controller directly using the annotation `alpha.cnrm.cloud.google.com/reconciler: direct`. This is supported for backward compatibility, but its use is discouraged. See [Legacy Behavior](../../features/legacy-behavior.md).
 
 2.  **ConfigConnectorContext Override:** The `ConfigConnectorContext` resource allows for overriding the controller for a specific resource `GroupKind` using the `spec.experiments.controllerOverrides` field.
 
