@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
@@ -140,10 +141,11 @@ func (c *ControllerConfig) RESTClientOptions(options ...RESTClientOption) ([]opt
 		opts = append(opts, option.WithQuotaProject(quotaProject))
 	}
 
-	// TODO: support endpoints?
-	// if m.config.Endpoint != "" {
-	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
-	// }
+	if endpoint := os.Getenv("GCP_ENDPOINT"); endpoint != "" {
+		opts = append(opts, option.WithEndpoint(endpoint))
+		opts = append(opts, option.WithoutAuthentication())
+		opts = append(opts, option.WithGRPCDialOption(grpc.WithInsecure()))
+	}
 
 	return opts, nil
 }
@@ -163,10 +165,11 @@ func (c *ControllerConfig) GRPCClientOptions() ([]option.ClientOption, error) {
 		opts = append(opts, option.WithGRPCDialOption(grpc.WithUnaryInterceptor(c.GRPCUnaryClientInterceptor)))
 	}
 
-	// TODO: support endpoints?
-	// if m.config.Endpoint != "" {
-	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
-	// }
+	if endpoint := os.Getenv("GCP_ENDPOINT"); endpoint != "" {
+		opts = append(opts, option.WithEndpoint(endpoint))
+		opts = append(opts, option.WithoutAuthentication())
+		opts = append(opts, option.WithGRPCDialOption(grpc.WithInsecure()))
+	}
 
 	return opts, nil
 }
