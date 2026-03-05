@@ -409,7 +409,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -454,7 +454,7 @@ Content-Type: application/json
 
 {
   "healthChecks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
+    "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
   ],
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "${backendServiceID}",
@@ -548,7 +548,7 @@ X-Xss-Protection: 0
   "description": "",
   "fingerprint": "abcdef0123A=",
   "healthChecks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
+    "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
   ],
   "id": "000000000000000000000",
   "kind": "compute#backendService",
@@ -573,7 +573,7 @@ Content-Type: application/json
 
 {
   "healthChecks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
+    "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
   ],
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "${backendServiceID}",
@@ -643,7 +643,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -667,7 +667,7 @@ X-Xss-Protection: 0
   "description": "",
   "fingerprint": "abcdef0123A=",
   "healthChecks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
+    "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}"
   ],
   "id": "000000000000000000000",
   "kind": "compute#backendService",
@@ -691,7 +691,7 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "defaultService": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "name": "${urlMapID}"
 }
 
@@ -757,7 +757,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -774,7 +774,7 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+  "defaultService": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
@@ -793,7 +793,7 @@ Content-Type: application/json
 
 {
   "name": "${targetHttpProxyID}",
-  "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
+  "urlMap": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
 }
 
 200 OK
@@ -858,7 +858,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -881,7 +881,7 @@ X-Xss-Protection: 0
   "name": "${targetHttpProxyID}",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}",
-  "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
+  "urlMap": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
 }
 
 ---
@@ -897,7 +897,7 @@ Content-Type: application/json
   "name": "${forwardingRuleID}",
   "network": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "portRange": "80",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}"
+  "target": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}"
 }
 
 200 OK
@@ -994,7 +994,7 @@ X-Xss-Protection: 0
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}"
+  "target": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}"
 }
 
 ---
@@ -1112,7 +1112,7 @@ X-Xss-Protection: 0
           {
             "authority": "ext1.com",
             "name": "ext1",
-            "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+            "service": "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/backendServices/${backendServiceID}",
             "timeout": "0.100s"
           }
         ],
@@ -1123,7 +1123,7 @@ X-Xss-Protection: 0
       }
     ],
     "forwardingRules": [
-      "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
+      "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/forwardingRules/${forwardingRuleID}"
     ],
     "loadBalancingScheme": "EXTERNAL_MANAGED",
     "name": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
@@ -1156,7 +1156,7 @@ X-Xss-Protection: 0
         {
           "authority": "ext1.com",
           "name": "ext1",
-          "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+          "service": "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/backendServices/${backendServiceID}",
           "timeout": "0.100s"
         }
       ],
@@ -1167,7 +1167,7 @@ X-Xss-Protection: 0
     }
   ],
   "forwardingRules": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
+    "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/forwardingRules/${forwardingRuleID}"
   ],
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
@@ -1266,7 +1266,7 @@ X-Xss-Protection: 0
           {
             "authority": "ext1.com",
             "name": "ext1",
-            "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+            "service": "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/backendServices/${backendServiceID}",
             "timeout": "0.100s"
           }
         ],
@@ -1277,7 +1277,7 @@ X-Xss-Protection: 0
       }
     ],
     "forwardingRules": [
-      "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
+      "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/forwardingRules/${forwardingRuleID}"
     ],
     "loadBalancingScheme": "EXTERNAL_MANAGED",
     "name": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
@@ -1311,7 +1311,7 @@ X-Xss-Protection: 0
         {
           "authority": "ext1.com",
           "name": "ext1",
-          "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+          "service": "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/backendServices/${backendServiceID}",
           "timeout": "0.100s"
         }
       ],
@@ -1322,7 +1322,7 @@ X-Xss-Protection: 0
     }
   ],
   "forwardingRules": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
+    "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/forwardingRules/${forwardingRuleID}"
   ],
   "loadBalancingScheme": "EXTERNAL_MANAGED",
   "name": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
@@ -1357,7 +1357,7 @@ X-Xss-Protection: 0
             {
               "authority": "ext1.com",
               "name": "ext1",
-              "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+              "service": "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/backendServices/${backendServiceID}",
               "timeout": "0.100s"
             }
           ],
@@ -1368,7 +1368,7 @@ X-Xss-Protection: 0
         }
       ],
       "forwardingRules": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}"
+        "https://www.googleapis.com/compute/v1/projects/${projectNumber}/regions/us-central1/forwardingRules/${forwardingRuleID}"
       ],
       "loadBalancingScheme": "EXTERNAL_MANAGED",
       "name": "projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}",
@@ -1507,7 +1507,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpProxies/${targetHttpProxyID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -1574,7 +1574,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -1641,7 +1641,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -1775,7 +1775,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/${healthCheckID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive

@@ -21,6 +21,7 @@ package mocknetworkservices
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -94,6 +95,10 @@ func (s *NetworkServicesServer) CreateLbRouteExtension(ctx context.Context, req 
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
+	if err := s.normalizeLbRouteExtension(ctx, obj); err != nil {
+		return nil, err
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -160,6 +165,10 @@ func (s *NetworkServicesServer) UpdateLbRouteExtension(ctx context.Context, req 
 			}
 		}
 		obj.UpdateTime = timestamppb.New(now)
+	}
+
+	if err := s.normalizeLbRouteExtension(ctx, obj); err != nil {
+		return nil, err
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -273,4 +282,46 @@ func (s *NetworkServicesServer) parseLbRouteExtensionName(name string) (*lbRoute
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func (s *NetworkServicesServer) normalizeLbRouteExtension(ctx context.Context, obj *pb.LbRouteExtension) error {
+	for i, rule := range obj.ForwardingRules {
+		newRule, err := s.replaceProjectIDWithNumberInURL(ctx, rule)
+		if err != nil {
+			return err
+		}
+		obj.ForwardingRules[i] = newRule
+	}
+	for _, chain := range obj.ExtensionChains {
+		for _, extension := range chain.Extensions {
+			newService, err := s.replaceProjectIDWithNumberInURL(ctx, extension.Service)
+			if err != nil {
+				return err
+			}
+			extension.Service = newService
+		}
+	}
+	return nil
+}
+
+func (s *NetworkServicesServer) replaceProjectIDWithNumberInURL(ctx context.Context, url string) (string, error) {
+	if !strings.HasPrefix(url, "https://www.googleapis.com/compute/v1/projects/") &&
+		!strings.HasPrefix(url, "https://compute.googleapis.com/compute/v1/projects/") {
+		return url, nil
+	}
+
+	// Format is https://[hostname]/compute/v1/projects/[projectID]/...
+	tokens := strings.Split(url, "/")
+	if len(tokens) < 7 {
+		return url, nil
+	}
+
+	projectIDOrNumber := tokens[6]
+	project, err := s.Projects.GetProjectByIDOrNumber(projectIDOrNumber)
+	if err != nil {
+		return url, nil // Should we return error or just return original URL? Returning original for now.
+	}
+
+	tokens[6] = strconv.FormatInt(project.Number, 10)
+	return strings.Join(tokens, "/"), nil
 }

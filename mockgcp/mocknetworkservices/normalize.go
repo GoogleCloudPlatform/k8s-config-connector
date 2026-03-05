@@ -37,6 +37,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	// Only apply this logic if the request is for the networkservices API.
+	if !strings.Contains(event.URL(), "networkservices.googleapis.com") {
+		return
+	}
+
+	// Normalize compute reference URLs in responses to match real GCP behavior.
 	event.VisitResponseStringValues(func(path string, value string) {
 		if strings.HasPrefix(value, "https://compute.googleapis.com/compute/v1/") {
 			newValue := strings.Replace(value, "https://compute.googleapis.com/compute/v1/", "https://www.googleapis.com/compute/v1/", 1)
