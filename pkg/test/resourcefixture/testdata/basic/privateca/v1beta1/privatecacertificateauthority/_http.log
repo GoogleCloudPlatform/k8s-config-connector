@@ -505,10 +505,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
     "accessUrls": {
-      "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}/caCertificate",
-      "crlAccessUrls": [
-        "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}/crl"
-      ]
+      "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/privatecacertificateauthority-${uniqueId}/ca.crt"
     },
     "caCertificateDescriptions": [
       {
@@ -516,8 +513,32 @@ X-Xss-Protection: 0
           "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789privatecacertificateauthority-${uniqueId}"
         },
         "subjectDescription": {
+          "hexSerialNumber": "0123456789abcdef",
+          "lifetime": "86400s",
+          "notAfterTime": "2024-04-01T12:34:56.123456Z",
+          "notBeforeTime": "2024-04-01T12:34:56.123456Z",
           "subject": {
-            "commonName": "privatecacertificateauthority-${uniqueId}"
+            "commonName": "my-certificate-authority",
+            "organization": "Example"
+          },
+          "subjectAltName": {
+            "dnsNames": [
+              "example.com"
+            ]
+          }
+        },
+        "x509Description": {
+          "caOptions": {
+            "isCa": true
+          },
+          "keyUsage": {
+            "baseKeyUsage": {
+              "certSign": true,
+              "crlSign": true
+            },
+            "extendedKeyUsage": {
+              "serverAuth": true
+            }
           }
         }
       }
@@ -563,8 +584,6 @@ X-Xss-Protection: 0
     "pemCaCertificates": [
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
-    "satisfiesPzi": true,
-    "satisfiesPzs": true,
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -588,10 +607,7 @@ X-Xss-Protection: 0
 
 {
   "accessUrls": {
-    "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}/caCertificate",
-    "crlAccessUrls": [
-      "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}/crl"
-    ]
+    "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/privatecacertificateauthority-${uniqueId}/ca.crt"
   },
   "caCertificateDescriptions": [
     {
@@ -599,8 +615,32 @@ X-Xss-Protection: 0
         "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789privatecacertificateauthority-${uniqueId}"
       },
       "subjectDescription": {
+        "hexSerialNumber": "0123456789abcdef",
+        "lifetime": "86400s",
+        "notAfterTime": "2024-04-01T12:34:56.123456Z",
+        "notBeforeTime": "2024-04-01T12:34:56.123456Z",
         "subject": {
-          "commonName": "privatecacertificateauthority-${uniqueId}"
+          "commonName": "my-certificate-authority",
+          "organization": "Example"
+        },
+        "subjectAltName": {
+          "dnsNames": [
+            "example.com"
+          ]
+        }
+      },
+      "x509Description": {
+        "caOptions": {
+          "isCa": true
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "crlSign": true
+          },
+          "extendedKeyUsage": {
+            "serverAuth": true
+          }
         }
       }
     }
@@ -646,8 +686,6 @@ X-Xss-Protection: 0
   "pemCaCertificates": [
     "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
   ],
-  "satisfiesPzi": true,
-  "satisfiesPzs": true,
   "type": "SELF_SIGNED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -709,10 +747,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
     "accessUrls": {
-      "caCertificateAccessUrl": "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}/caCertificate",
-      "crlAccessUrls": [
-        "https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}/crl"
-      ]
+      "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/privatecacertificateauthority-${uniqueId}/ca.crt"
     },
     "caCertificateDescriptions": [
       {
@@ -720,8 +755,32 @@ X-Xss-Protection: 0
           "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789privatecacertificateauthority-${uniqueId}"
         },
         "subjectDescription": {
+          "hexSerialNumber": "0123456789abcdef",
+          "lifetime": "86400s",
+          "notAfterTime": "2024-04-01T12:34:56.123456Z",
+          "notBeforeTime": "2024-04-01T12:34:56.123456Z",
           "subject": {
-            "commonName": "privatecacertificateauthority-${uniqueId}"
+            "commonName": "my-certificate-authority",
+            "organization": "Example"
+          },
+          "subjectAltName": {
+            "dnsNames": [
+              "example.com"
+            ]
+          }
+        },
+        "x509Description": {
+          "caOptions": {
+            "isCa": true
+          },
+          "keyUsage": {
+            "baseKeyUsage": {
+              "certSign": true,
+              "crlSign": true
+            },
+            "extendedKeyUsage": {
+              "serverAuth": true
+            }
           }
         }
       }
@@ -769,8 +828,6 @@ X-Xss-Protection: 0
     "pemCaCertificates": [
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
-    "satisfiesPzi": true,
-    "satisfiesPzs": true,
     "state": "DELETED",
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"

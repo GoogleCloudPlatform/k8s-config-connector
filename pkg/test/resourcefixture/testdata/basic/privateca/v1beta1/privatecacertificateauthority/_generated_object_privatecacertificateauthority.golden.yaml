@@ -44,15 +44,30 @@ spec:
   type: SELF_SIGNED
 status:
   accessUrls:
-    caCertificateAccessUrl: https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}/caCertificate
-    crlAccessUrls:
-    - https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}/crl
+    caCertificateAccessUrl: http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/privatecacertificateauthority-${uniqueId}/ca.crt
   caCertificateDescriptions:
   - certFingerprint:
       sha256Hash: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789privatecacertificateauthority-${uniqueId}
     subjectDescription:
+      hexSerialNumber: 0123456789abcdef
+      lifetime: 86400s
+      notAfterTime: "2026-03-06T17:34:40.139715887Z"
+      notBeforeTime: "2026-03-05T17:34:40.139715887Z"
       subject:
-        commonName: privatecacertificateauthority-${uniqueId}
+        commonName: my-certificate-authority
+        organization: Example
+      subjectAltName:
+        dnsNames:
+        - example.com
+    x509Description:
+      caOptions:
+        isCa: true
+      keyUsage:
+        baseKeyUsage:
+          certSign: true
+          crlSign: true
+        extendedKeyUsage:
+          serverAuth: true
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
     message: The resource is up to date
