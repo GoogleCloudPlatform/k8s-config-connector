@@ -992,6 +992,7 @@ spec:
                    size.
                 type: object
               location:
+                description: The location that this resource belongs to.
                 type: string
                 x-kubernetes-validations:
                 - message: Location is immutable.
@@ -2168,6 +2169,7 @@ spec:
                    size.
                 type: object
               location:
+                description: The location that this resource belongs to.
                 type: string
                 x-kubernetes-validations:
                 - message: Location is immutable.

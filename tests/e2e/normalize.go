@@ -61,6 +61,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		// Deliberately volatile, ignore
 		annotations["test.cnrm.cloud.google.com/reconcile-cookie"] = "(removed)"
 	}
+	if annotations["cnrm.cloud.google.com/last-changed-cookie"] != "" {
+		annotations["cnrm.cloud.google.com/last-changed-cookie"] = "normalized-cookie"
+	}
 	for k, v := range annotations {
 		annotations[k] = replacements.ApplyReplacements(v)
 	}

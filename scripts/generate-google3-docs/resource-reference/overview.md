@@ -228,7 +228,7 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitymembership.md">CloudIdentityMembership</a></td>
 </tr>
 <tr>
-  <td><a href="/cloudids/docs/">{{ids_name}}</a></td>
+  <td><a href="/intrusion-detection-system/docs/">{{ids_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/cloudids/cloudidsendpoint.md">CloudIDSEndpoint</a></td>
 </tr>
 <tr>
