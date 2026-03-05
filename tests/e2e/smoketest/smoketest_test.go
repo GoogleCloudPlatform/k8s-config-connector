@@ -26,11 +26,11 @@ import (
 )
 
 func TestSmoketest(t *testing.T) {
-	if os.Getenv("E2E") != "1" {
-		t.Skip("skipping smoketest; E2E=1 not set")
+	if os.Getenv("RUN_E2E") != "1" {
+		t.Skip("skipping smoketest; RUN_E2E=1 not set")
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	repoRoot, err := exec.Command("git", "rev-parse", "--show-toplevel").Output()
 	if err != nil {
@@ -43,7 +43,8 @@ func TestSmoketest(t *testing.T) {
 	// Cleanup cluster at the end
 	t.Cleanup(func() {
 		t.Logf("Deleting kind cluster %q", clusterName)
-		cmd := exec.CommandContext(ctx, "kind", "delete", "cluster", "--name", clusterName)
+		// Use Background context for cleanup to ensure it runs even if ctx is cancelled
+		cmd := exec.CommandContext(context.Background(), "kind", "delete", "cluster", "--name", clusterName)
 		if output, err := cmd.CombinedOutput(); err != nil {
 			t.Logf("failed to delete kind cluster: %v\nOutput: %s", err, string(output))
 		}
@@ -54,7 +55,8 @@ func TestSmoketest(t *testing.T) {
 		t.Fatalf("failed to create kind cluster: %v", err)
 	}
 
-	imageTag := "dev-" + time.Now().Format("20060102T150405")
+	// Use a valid semver tag that is higher than any existing version to ensure it is kept by the operator's package manager.
+	imageTag := "10.0.0-dev." + time.Now().Format("20060102T150405")
 	imagePrefix := "registry.kind/"
 
 	t.Logf("Building images with tag %q", imageTag)
