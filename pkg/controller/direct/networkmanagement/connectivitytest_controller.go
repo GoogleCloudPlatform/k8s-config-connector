@@ -41,6 +41,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -195,6 +196,12 @@ func (a *connectivityTestAdapter) Update(ctx context.Context, updateOp *directba
 		// Still update the status to cover the use case of acquisition.
 		updated = a.actual
 	} else {
+		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+		for path := range paths {
+			report.AddField(path, nil, nil)
+		}
+		structuredreporting.ReportDiff(ctx, report)
+
 		updateMask := &fieldmaskpb.FieldMask{Paths: sets.List(topLevelFieldPaths)}
 		log.V(2).Info("updating fields", "name", a.id, "paths", updateMask.Paths)
 

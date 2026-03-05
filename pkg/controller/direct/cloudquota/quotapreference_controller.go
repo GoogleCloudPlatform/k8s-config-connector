@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -177,15 +178,20 @@ func (a *apiQuotaPreferenceAdapter) Update(ctx context.Context, updateOp *direct
 	}
 	resource.Name = a.id.String() // Set name for update request
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	// Only quota_config, justification, contact_email are updatable.
 	if desired.Spec.QuotaConfig != nil && !reflect.DeepEqual(resource.QuotaConfig, a.actual.QuotaConfig) {
+		report.AddField("quota_config", a.actual.QuotaConfig, resource.QuotaConfig)
 		paths = append(paths, "quota_config")
 	}
 	if desired.Spec.Justification != nil && !reflect.DeepEqual(resource.Justification, a.actual.Justification) {
+		report.AddField("justification", a.actual.Justification, resource.Justification)
 		paths = append(paths, "justification")
 	}
 	if desired.Spec.ContactEmail != nil && !reflect.DeepEqual(resource.ContactEmail, a.actual.ContactEmail) {
+		report.AddField("contact_email", a.actual.ContactEmail, resource.ContactEmail)
 		paths = append(paths, "contact_email")
 	}
 
@@ -194,6 +200,7 @@ func (a *apiQuotaPreferenceAdapter) Update(ctx context.Context, updateOp *direct
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual // Use the current actual state for status update
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		// Use the etag from the last read if not specified in spec
 		resource.Etag = a.actual.Etag
 

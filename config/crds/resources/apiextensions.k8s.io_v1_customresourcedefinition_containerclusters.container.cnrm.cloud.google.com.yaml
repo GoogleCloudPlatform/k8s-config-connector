@@ -232,7 +232,7 @@ spec:
                     properties:
                       bootDiskKMSKeyRef:
                         description: |-
-                          Immutable. The Customer Managed Encryption Key used to encrypt the
+                          The Customer Managed Encryption Key used to encrypt the
                           boot disk attached to each node in the node pool.
                         oneOf:
                         - not:
@@ -487,6 +487,10 @@ spec:
                         description: Controls whether user traffic is allowed over
                           this endpoint. Note that GCP-managed services may still
                           use the endpoint even if this is false.
+                        type: boolean
+                      enableK8sTokensViaDns:
+                        description: Controls whether the k8s token auth is allowed
+                          via DNS.
                         type: boolean
                     type: object
                   ipEndpointsConfig:

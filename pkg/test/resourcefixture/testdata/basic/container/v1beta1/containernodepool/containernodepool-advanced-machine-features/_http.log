@@ -45,7 +45,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     },
     "controlPlaneEndpointsConfig": {
       "dnsEndpointConfig": {
-        "allowExternalTraffic": false
+        "allowExternalTraffic": false,
+        "enableK8sTokensViaDns": false
       },
       "ipEndpointsConfig": {
         "authorizedNetworksConfig": {},
@@ -228,6 +229,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -574,6 +576,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -1644,6 +1647,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -2091,6 +2095,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
@@ -2665,6 +2670,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sTokensViaDns": false,
       "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {

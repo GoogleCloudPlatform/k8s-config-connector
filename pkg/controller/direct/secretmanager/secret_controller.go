@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -290,6 +291,12 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	report := &structuredreporting.Diff{Object: op.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	req := &secretmanagerpb.UpdateSecretRequest{
 		UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},

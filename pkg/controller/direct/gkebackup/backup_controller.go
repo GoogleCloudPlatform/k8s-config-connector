@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -161,17 +162,23 @@ func (a *backupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.GetDescription(), a.actual.GetDescription()) {
+		report.AddField("description", a.actual.GetDescription(), resource.GetDescription())
 		paths = append(paths, "description")
 	}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.GetLabels(), a.actual.GetLabels()) {
+		report.AddField("labels", a.actual.GetLabels(), resource.GetLabels())
 		paths = append(paths, "labels")
 	}
 	if desired.Spec.DeleteLockDays != nil && !reflect.DeepEqual(resource.GetDeleteLockDays(), a.actual.GetDeleteLockDays()) {
+		report.AddField("delete_lock_days", a.actual.GetDeleteLockDays(), resource.GetDeleteLockDays())
 		paths = append(paths, "delete_lock_days")
 	}
 	if desired.Spec.RetainDays != nil && !reflect.DeepEqual(resource.GetRetainDays(), a.actual.GetRetainDays()) {
+		report.AddField("retain_days", a.actual.GetRetainDays(), resource.GetRetainDays())
 		paths = append(paths, "retain_days")
 	}
 
@@ -181,6 +188,7 @@ func (a *backupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateBackupRequest{
 			Backup:     resource,

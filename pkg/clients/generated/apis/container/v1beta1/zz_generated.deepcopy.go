@@ -659,6 +659,11 @@ func (in *ClusterDnsEndpointConfig) DeepCopyInto(out *ClusterDnsEndpointConfig) 
 		*out = new(bool)
 		**out = **in
 	}
+	if in.EnableK8sTokensViaDns != nil {
+		in, out := &in.EnableK8sTokensViaDns, &out.EnableK8sTokensViaDns
+		*out = new(bool)
+		**out = **in
+	}
 	return
 }
 

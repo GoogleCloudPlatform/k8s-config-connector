@@ -63,12 +63,22 @@ func (s *RegionalURLMapsV1) Insert(ctx context.Context, req *pb.InsertRegionUrlM
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#urlMap")
+	obj.Region = PtrTo(buildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/regions/"+name.Region))
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a UrlMap resource in the specified project using the data included in the request.
@@ -93,7 +103,15 @@ func (s *RegionalURLMapsV1) Patch(ctx context.Context, req *pb.PatchRegionUrlMap
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a UrlMap resource in the specified project using the data included in the request.
@@ -117,7 +135,15 @@ func (s *RegionalURLMapsV1) Update(ctx context.Context, req *pb.UpdateRegionUrlM
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalURLMapsV1) Delete(ctx context.Context, req *pb.DeleteRegionUrlMapRequest) (*pb.Operation, error) {
@@ -134,7 +160,15 @@ func (s *RegionalURLMapsV1) Delete(ctx context.Context, req *pb.DeleteRegionUrlM
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type regionalUrlMapName struct {
