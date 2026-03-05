@@ -51,8 +51,8 @@ status:
     subjectDescription:
       hexSerialNumber: 0123456789abcdef
       lifetime: 86400s
-      notAfterTime: "2026-03-06T17:34:40.139715887Z"
-      notBeforeTime: "2026-03-05T17:34:40.139715887Z"
+      notAfterTime: "2024-04-01T12:34:56.123456Z"
+      notBeforeTime: "2024-04-01T12:34:56.123456Z"
       subject:
         commonName: my-certificate-authority
         organization: Example
