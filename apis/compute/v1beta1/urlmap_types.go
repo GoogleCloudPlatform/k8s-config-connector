@@ -48,7 +48,7 @@ type ComputeURLMapSpec struct {
 
 	// When none of the specified hostRules match, the request is redirected to a URL specified by defaultUrlRedirect.
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMap.default_url_redirect
-	DefaultURLRedirect *HTTPRedirectAction `json:"defaultURLRedirect,omitempty"`
+	DefaultURLRedirect *HTTPRedirectAction `json:"defaultUrlRedirect,omitempty"`
 
 	// An optional description of this resource.
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMap.description
@@ -99,7 +99,7 @@ type ComputeURLMapPathMatcher struct {
 	DefaultService *ComputeURLMapDefaultService `json:"defaultService,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.default_url_redirect
-	DefaultURLRedirect *HTTPRedirectAction `json:"defaultURLRedirect,omitempty"`
+	DefaultURLRedirect *HTTPRedirectAction `json:"defaultUrlRedirect,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.PathMatcher.description
 	Description *string `json:"description,omitempty"`
@@ -213,7 +213,7 @@ type ComputeURLMapTest struct {
 	Description *string `json:"description,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTest.expected_output_url
-	ExpectedOutputURL *string `json:"expectedOutputURL,omitempty"`
+	ExpectedOutputURL *string `json:"expectedOutputUrl,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.UrlMapTest.expected_redirect_response_code
 	ExpectedRedirectResponseCode *int32 `json:"expectedRedirectResponseCode,omitempty"`
