@@ -29,6 +29,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
+type engineService struct {
+	*MockService
+	pb.UnimplementedEngineServiceServer
+}
+
 func (s *engineService) GetEngine(ctx context.Context, req *pb.GetEngineRequest) (*pb.Engine, error) {
 	name, err := s.parseEngineName(req.Name)
 	if err != nil {
