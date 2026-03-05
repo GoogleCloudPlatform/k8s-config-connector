@@ -29,8 +29,8 @@ func init() {
 
 func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.FutureReservation{},
-		ComputeFutureReservationSpec_FromProto, ComputeFutureReservationSpec_ToProto,
-		ComputeFutureReservationObservedState_FromProto, ComputeFutureReservationObservedState_ToProto,
+		ComputeFutureReservationSpec_v1beta1_FromProto, ComputeFutureReservationSpec_v1beta1_ToProto,
+		ComputeFutureReservationObservedState_v1beta1_FromProto, ComputeFutureReservationObservedState_v1beta1_ToProto,
 	)
 
 	// Spec fields

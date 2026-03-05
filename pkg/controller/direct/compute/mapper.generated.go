@@ -149,36 +149,6 @@ func AllocationSpecificSkuAllocationReservedInstanceProperties_v1beta1_ToProto(m
 	out.MinCpuPlatform = in.MinCPUPlatform
 	return out
 }
-func ComputeFutureReservationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *computepb.FutureReservation) *krm.ComputeFutureReservationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ComputeFutureReservationObservedState{}
-	out.CreationTimestamp = in.CreationTimestamp
-	out.ID = in.Id
-	out.Kind = in.Kind
-	out.SelfLink = in.SelfLink
-	out.SelfLinkWithID = in.SelfLinkWithId
-	out.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_v1beta1_FromProto(mapCtx, in.GetSpecificSkuProperties())
-	// MISSING: Status
-	out.Zone = in.Zone
-	return out
-}
-func ComputeFutureReservationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFutureReservationObservedState) *computepb.FutureReservation {
-	if in == nil {
-		return nil
-	}
-	out := &computepb.FutureReservation{}
-	out.CreationTimestamp = in.CreationTimestamp
-	out.Id = in.ID
-	out.Kind = in.Kind
-	out.SelfLink = in.SelfLink
-	out.SelfLinkWithId = in.SelfLinkWithID
-	out.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_v1beta1_ToProto(mapCtx, in.SpecificSkuProperties)
-	// MISSING: Status
-	out.Zone = in.Zone
-	return out
-}
 func ComputeFutureReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *computepb.FutureReservation) *krm.ComputeFutureReservationSpec {
 	if in == nil {
 		return nil
