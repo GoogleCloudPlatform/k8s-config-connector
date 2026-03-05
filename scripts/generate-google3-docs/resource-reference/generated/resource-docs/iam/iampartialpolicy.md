@@ -172,6 +172,14 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td></td>
     </tr>
     <tr>
+        <td><code>DataCatalogPolicyTag</code></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><code>DataCatalogTaxonomy</code></td>
+        <td></td>
+    </tr>
+    <tr>
         <td><code>DataprocCluster</code></td>
         <td>Y</td>
     </tr>
@@ -258,6 +266,14 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
     <tr>
         <td><code>StorageBucket</code></td>
         <td>Y</td>
+    </tr>
+    <tr>
+        <td><code>TagsTagKey</code></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><code>TagsTagValue</code></td>
+        <td></td>
     </tr>
 </tbody>
 </table>
@@ -365,6 +381,18 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td><code>DNSManagedZone</code></td>
         <td>
             <p><code>{% verbatim %}projects/{{project}}/managedZones/{{name}}{% endverbatim %}</code></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>DataCatalogPolicyTag</code></td>
+        <td>
+            <p><code>{% verbatim %}{{name}}{% endverbatim %}</code></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>DataCatalogTaxonomy</code></td>
+        <td>
+            <p><code>{% verbatim %}{{name}}{% endverbatim %}</code></p>
         </td>
     </tr>
     <tr>
@@ -497,6 +525,18 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td><code>StorageBucket</code></td>
         <td>
             <p><code>{% verbatim %}{{name}}{% endverbatim %}</code></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>TagsTagKey</code></td>
+        <td>
+            <p><code>{% verbatim %}tagKeys/{{name}}{% endverbatim %}</code></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>TagsTagValue</code></td>
+        <td>
+            <p><code>{% verbatim %}tagValues/{{name}}{% endverbatim %}</code></p>
         </td>
     </tr>
 </tbody>
