@@ -58,6 +58,11 @@ func Execute(ctx context.Context, opts *Options) error {
 		return fmt.Errorf("error preloading the list of resources to reconcile: %w", err)
 	}
 
+	if recorder.RemainResourcesCount == 0 {
+		klog.V(0).Info("No resources found to reconcile")
+		return nil
+	}
+
 	authorization, err := getGCPAuthorization(ctx, opts)
 	if err != nil {
 		return fmt.Errorf("error building GCP authorization: %w", err)
