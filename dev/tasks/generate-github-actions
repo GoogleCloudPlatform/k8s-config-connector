@@ -51,8 +51,39 @@ on:
     types: [checks_requested]
     branches: ["master", "release-*"]
 
+permissions:
+  contents: read
+  packages: write
 
 jobs:
+
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      repo_lower: \${{ steps.lowercase.outputs.repo_lower }}
+    steps:
+      - id: lowercase
+        run: echo "repo_lower=\$(echo \${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> \$GITHUB_OUTPUT
+
+  build-e2e-image:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: 'go.mod'
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: \${{ github.actor }}
+          password: \${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push e2e test image
+        run: |
+          docker build -t ghcr.io/\${{ needs.setup.outputs.repo_lower }}/e2e-test-env:\${{ github.sha }} -f build/test-e2e/Dockerfile .
+          docker push ghcr.io/\${{ needs.setup.outputs.repo_lower }}/e2e-test-env:\${{ github.sha }}
+
 EOF
 
 
@@ -62,11 +93,11 @@ for f in $(find dev/ci/presubmits -type f | sort ); do
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
   ${name}:
-    runs-on: ubuntu-latest
 EOF
 
     if [[ "${name}" == "golangci-lint" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -89,6 +120,7 @@ EOF
 
     if [[ "${name}" == "license-lint" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -115,6 +147,24 @@ EOF
 
     if [[ "${name}" == tests-e2e-* ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    runs-on: ubuntu-latest
+    needs: [unit-tests, build-e2e-image, setup]
+    container:
+      image: ghcr.io/\${{ needs.setup.outputs.repo_lower }}/e2e-test-env:\${{ github.sha }}
+EOF
+    elif [[ "${name}" != "build-e2e-image" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+    runs-on: ubuntu-latest
+EOF
+    fi
+
+    if [[ "${name}" == tests-e2e-* ]]; then
+        # tests-e2e-* already has 'needs' set above
+        :
+    elif [[ "${name}" == unit-tests ]]; then
+        :
+    else
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     needs: unit-tests
 EOF
     fi
@@ -132,11 +182,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
+    if [[ "${name}" != tests-e2e-* ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
           go-version-file: 'go.mod'
 EOF
+    fi
 
     # TODO: We should look at the script to see if it needs gcloud
     if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" ]]; then
