@@ -22,6 +22,14 @@
 
 package v1beta1
 
+// +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation.Autoscale
+type Reservation_Autoscale struct {
+
+	// Number of slots to be scaled when needed.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.Autoscale.max_slots
+	MaxSlots *int64 `json:"maxSlots,omitempty"`
+}
+
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation.ReplicationStatus
 type Reservation_ReplicationStatus struct {
 }
