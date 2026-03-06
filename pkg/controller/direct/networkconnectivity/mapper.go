@@ -32,19 +32,12 @@ func NetworkConnectivityServiceConnectionPolicySpec_v1alpha1_FromProto(mapCtx *d
 		return nil
 	}
 	out := &krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicySpec{}
-	// MISSING: CreateTime
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: Etag
-	// MISSING: Infrastructure
-	// MISSING: Labels
-	// MISSING: Name
 	if in.Network != "" {
 		out.Network = &krmcomputev1beta1.ComputeNetworkRef{External: in.Network}
 	}
 	out.PscConfig = PscConfig_v1alpha1_FromProto(mapCtx, in.GetPscConfig())
-	// MISSING: PscConnections
 	out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
-	// MISSING: UpdateTime
 	return out
 }
 
@@ -70,6 +63,7 @@ func NetworkConnectivityServiceConnectionPolicyObservedState_v1alpha1_FromProto(
 	out.CreateTime = Timestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Infrastructure = direct.LazyPtr(in.GetInfrastructure())
+	out.PscConnections = direct.Slice_FromProto(mapCtx, in.GetPscConnections(), pscConnection_v1alpha1_FromProto)
 	out.UpdateTime = Timestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
@@ -82,7 +76,46 @@ func NetworkConnectivityServiceConnectionPolicyObservedState_v1alpha1_ToProto(ma
 	out.CreateTime = Timestamp_ToProto(mapCtx, in.CreateTime)
 	out.Etag = direct.ValueOf(in.Etag)
 	out.Infrastructure = direct.ValueOf(in.Infrastructure)
+	out.PscConnections = direct.Slice_ToProto(mapCtx, in.PscConnections, pscConnection_v1alpha1_ToProto)
 	out.UpdateTime = Timestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func pscConnection_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krmnetworkconnectivityv1alpha1.PscConnection {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkconnectivityv1alpha1.PscConnection{}
+	out.ConsumerAddress = direct.LazyPtr(in.GetConsumerAddress())
+	out.ConsumerForwardingRule = direct.LazyPtr(in.GetConsumerForwardingRule())
+	out.ConsumerTargetProject = direct.LazyPtr(in.GetConsumerTargetProject())
+	out.Error = GoogleRpcStatus_v1alpha1_FromProto(mapCtx, in.GetError())
+	out.ErrorInfo = GoogleRpcErrorInfo_v1alpha1_FromProto(mapCtx, in.GetErrorInfo())
+	out.ErrorType = direct.LazyPtr(in.GetErrorType())
+	out.GceOperation = direct.LazyPtr(in.GetGceOperation())
+	out.ProducerInstanceID = direct.LazyPtr(in.GetProducerInstanceId())
+	out.PscConnectionID = direct.LazyPtr(in.GetPscConnectionId())
+	out.SelectedSubnetwork = direct.LazyPtr(in.GetSelectedSubnetwork())
+	out.State = direct.LazyPtr(in.GetState())
+	return out
+}
+
+func pscConnection_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.PscConnection) *pb.PscConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscConnection{}
+	out.ConsumerAddress = direct.ValueOf(in.ConsumerAddress)
+	out.ConsumerForwardingRule = direct.ValueOf(in.ConsumerForwardingRule)
+	out.ConsumerTargetProject = direct.ValueOf(in.ConsumerTargetProject)
+	out.Error = GoogleRpcStatus_v1alpha1_ToProto(mapCtx, in.Error)
+	out.ErrorInfo = GoogleRpcErrorInfo_v1alpha1_ToProto(mapCtx, in.ErrorInfo)
+	out.ErrorType = direct.ValueOf(in.ErrorType)
+	out.GceOperation = direct.ValueOf(in.GceOperation)
+	out.ProducerInstanceId = direct.ValueOf(in.ProducerInstanceID)
+	out.PscConnectionId = direct.ValueOf(in.PscConnectionID)
+	out.SelectedSubnetwork = direct.ValueOf(in.SelectedSubnetwork)
+	out.State = direct.ValueOf(in.State)
 	return out
 }
 

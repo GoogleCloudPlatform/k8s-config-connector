@@ -3040,6 +3040,10 @@
 [missing_field] crd=namespacedcontrollerresources.customize.core.cnrm.cloud.google.com version=v1beta1: field ".spec.containers[].resources.requests" is not set in unstructured objects
 [missing_field] crd=namespacedcontrollerresources.customize.core.cnrm.cloud.google.com version=v1beta1: field ".spec.verticalPodAutoscalerMode" is not set in unstructured objects
 [missing_field] crd=networkconnectivityhubs.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.migration.source" is not set in unstructured objects
+[missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.migration.target" is not set in unstructured objects
+[missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.overlaps[]" is not set in unstructured objects
+[missing_field] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.targetCIDRRange[]" is not set in unstructured objects
 [missing_field] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedInterconnectAttachments.siteToSiteDataTransfer" is not set in unstructured objects
 [missing_field] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedInterconnectAttachments.uris[].external" is not set in unstructured objects
 [missing_field] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedInterconnectAttachments.uris[].name" is not set in unstructured objects

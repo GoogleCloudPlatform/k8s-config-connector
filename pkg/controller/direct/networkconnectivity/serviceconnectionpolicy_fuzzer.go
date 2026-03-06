@@ -39,6 +39,8 @@ func serviceConnectionPolicyFuzzer() fuzztesting.KRMFuzzer {
 	fuzzer.UnimplementedFields.Insert(".psc_connections[].ip_version")
 	fuzzer.UnimplementedFields.Insert(".psc_connections[].producer_instance_metadata")
 	fuzzer.UnimplementedFields.Insert(".psc_connections[].service_class")
+	fuzzer.UnimplementedFields.Insert(".psc_connections[].producer_instance_id")
+	fuzzer.UnimplementedFields.Insert(".psc_connections[].error_info.metadata")
 
 	fuzzer.SpecFields.Insert(".description")
 	fuzzer.SpecFields.Insert(".network")
