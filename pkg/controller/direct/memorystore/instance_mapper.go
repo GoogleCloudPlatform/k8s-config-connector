@@ -179,6 +179,7 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.NodeConfig = NodeConfigObservedState_FromProto(mapCtx, in.GetNodeConfig())
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
+	out.BackupCollection = direct.LazyPtr(in.GetBackupCollection())
 	return out
 }
 func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceObservedState) *pb.Instance {
@@ -193,6 +194,7 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Uid = direct.ValueOf(in.Uid)
 	out.NodeConfig = NodeConfigObservedState_ToProto(mapCtx, in.NodeConfig)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
+	out.BackupCollection = in.BackupCollection
 	return out
 }
 func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceSpec {
