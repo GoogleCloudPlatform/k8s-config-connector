@@ -183,6 +183,22 @@ type NodepoolKubeletConfig struct {
 	/* Control the CPU management policy on the node. */
 	CpuManagerPolicy string `json:"cpuManagerPolicy"`
 
+	/* The percent of disk usage before which image garbage collection is never run. Lowest priority. */
+	// +optional
+	ImageGcHighThresholdPercent *int64 `json:"imageGcHighThresholdPercent,omitempty"`
+
+	/* The percent of disk usage after which image garbage collection is always run. */
+	// +optional
+	ImageGcLowThresholdPercent *int64 `json:"imageGcLowThresholdPercent,omitempty"`
+
+	/* The maximum age for an unused image before it is garbage collected. */
+	// +optional
+	ImageMaximumGcAge *string `json:"imageMaximumGcAge,omitempty"`
+
+	/* The minimum age for an unused image before it is garbage collected. */
+	// +optional
+	ImageMinimumGcAge *string `json:"imageMinimumGcAge,omitempty"`
+
 	/* Controls the maximum number of processes allowed to run in a pod. */
 	// +optional
 	PodPidsLimit *int64 `json:"podPidsLimit,omitempty"`

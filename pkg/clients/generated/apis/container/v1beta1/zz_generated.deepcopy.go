@@ -1170,6 +1170,26 @@ func (in *ClusterKubeletConfig) DeepCopyInto(out *ClusterKubeletConfig) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ImageGcHighThresholdPercent != nil {
+		in, out := &in.ImageGcHighThresholdPercent, &out.ImageGcHighThresholdPercent
+		*out = new(int64)
+		**out = **in
+	}
+	if in.ImageGcLowThresholdPercent != nil {
+		in, out := &in.ImageGcLowThresholdPercent, &out.ImageGcLowThresholdPercent
+		*out = new(int64)
+		**out = **in
+	}
+	if in.ImageMaximumGcAge != nil {
+		in, out := &in.ImageMaximumGcAge, &out.ImageMaximumGcAge
+		*out = new(string)
+		**out = **in
+	}
+	if in.ImageMinimumGcAge != nil {
+		in, out := &in.ImageMinimumGcAge, &out.ImageMinimumGcAge
+		*out = new(string)
+		**out = **in
+	}
 	if in.PodPidsLimit != nil {
 		in, out := &in.PodPidsLimit, &out.PodPidsLimit
 		*out = new(int64)
@@ -3512,6 +3532,26 @@ func (in *NodepoolKubeletConfig) DeepCopyInto(out *NodepoolKubeletConfig) {
 	}
 	if in.CpuCfsQuotaPeriod != nil {
 		in, out := &in.CpuCfsQuotaPeriod, &out.CpuCfsQuotaPeriod
+		*out = new(string)
+		**out = **in
+	}
+	if in.ImageGcHighThresholdPercent != nil {
+		in, out := &in.ImageGcHighThresholdPercent, &out.ImageGcHighThresholdPercent
+		*out = new(int64)
+		**out = **in
+	}
+	if in.ImageGcLowThresholdPercent != nil {
+		in, out := &in.ImageGcLowThresholdPercent, &out.ImageGcLowThresholdPercent
+		*out = new(int64)
+		**out = **in
+	}
+	if in.ImageMaximumGcAge != nil {
+		in, out := &in.ImageMaximumGcAge, &out.ImageMaximumGcAge
+		*out = new(string)
+		**out = **in
+	}
+	if in.ImageMinimumGcAge != nil {
+		in, out := &in.ImageMinimumGcAge, &out.ImageMinimumGcAge
 		*out = new(string)
 		**out = **in
 	}
