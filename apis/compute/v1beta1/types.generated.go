@@ -19,6 +19,7 @@
 // proto.service: google.cloud.compute.v1
 // resource: ComputeAddress:Address
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
+// resource: ComputePublicDelegatedPrefix:PublicDelegatedPrefix
 // resource: ComputeForwardingRule:ForwardingRule
 // resource: ComputeSecurityPolicy:SecurityPolicy
 // resource: ComputeSubnetwork:Subnetwork
@@ -55,6 +56,47 @@ type FirewallPolicyRuleSecureTag struct {
 	//  Check the State enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleSecureTag.state
 	State *string `json:"state,omitempty"`
+}
+
+// +kcc:proto=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix
+type PublicDelegatedPrefixPublicDelegatedSubPrefix struct {
+	// The allocatable prefix length supported by this PublicDelegatedSubPrefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.allocatable_prefix_length
+	AllocatablePrefixLength *int32 `json:"allocatablePrefixLength,omitempty"`
+
+	// Name of the project scoping this PublicDelegatedSubPrefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.delegatee_project
+	DelegateeProject *string `json:"delegateeProject,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.description
+	Description *string `json:"description,omitempty"`
+
+	// The IP address range, in CIDR format, represented by this sub public delegated prefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.ip_cidr_range
+	IPCIDRRange *string `json:"ipCIDRRange,omitempty"`
+
+	// Whether the sub prefix is delegated to create Address resources in the delegatee project.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.is_address
+	IsAddress *bool `json:"isAddress,omitempty"`
+
+	// The PublicDelegatedSubPrefix mode for IPv6 only.
+	//  Check the Mode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// The name of the sub public delegated prefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] The region of the sub public delegated prefix if it is regional. If absent, the sub prefix is global.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] The status of the sub public delegated prefix.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.status
+	Status *string `json:"status,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig

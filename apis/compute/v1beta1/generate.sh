@@ -28,6 +28,7 @@ go run . generate-types \
   --api-version compute.cnrm.cloud.google.com/v1beta1  \
   --resource ComputeAddress:Address \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
+  --resource ComputePublicDelegatedPrefix:PublicDelegatedPrefix \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeSecurityPolicy:SecurityPolicy \
   --resource ComputeSubnetwork:Subnetwork \
