@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigquery/reservation/apiv1"
 
@@ -192,9 +193,13 @@ func (a *AssignmentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 }
 
 // Parent is changed. Move the assignment to another reservation
-func (a *AssignmentAdapter) moveAssignment(ctx context.Context, updateOp *directbase.UpdateOperation, desiredSpec *krm.BigQueryReservationAssignmentSpec) error {
+func (a *AssignmentAdapter) moveAssignment(ctx context.Context, updateOp *directbase.UpdateOperation, desiredSpec *krm.BigQueryReservationAssignmentSpec, currentReservation string) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("moving assignment to another reservation", "name", a.id.String())
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	report.AddField("reservationRef", currentReservation, a.destinationId)
+	structuredreporting.ReportDiff(ctx, report)
 
 	req := &pb.MoveAssignmentRequest{
 		Name:          a.actual.GetName(),
@@ -246,6 +251,12 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for _, path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
+
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: paths}
 
@@ -284,7 +295,7 @@ func (a *AssignmentAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 
 	// Case1: Move the assignment to another reservation
 	if currentReservation.String() != a.destinationId {
-		return a.moveAssignment(ctx, updateOp, desiredSpec)
+		return a.moveAssignment(ctx, updateOp, desiredSpec, currentReservation.String())
 	}
 
 	return a.updateAssignment(ctx, updateOp, desiredSpec)
