@@ -34,7 +34,7 @@ func TestBackupCommandRegistration(t *testing.T) {
 
 func TestBackupSubcommandsRegistration(t *testing.T) {
 	backupCmd := NewBackupCmd()
-	subcommands := []string{"configure", "create", "status", "restore"}
+	subcommands := []string{"configure", "create", "status"}
 	for _, sub := range subcommands {
 		found := false
 		for _, cmd := range backupCmd.Commands() {

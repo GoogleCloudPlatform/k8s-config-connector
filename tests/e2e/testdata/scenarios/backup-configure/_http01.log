@@ -1,0 +1,444 @@
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/config-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "cnrm-backup",
+  "serviceAccount": {
+    "displayName": "Config Connector Backup Service Account"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Config Connector Backup Service Account",
+  "email": "cnrm-backup@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Config Connector Backup Service Account",
+  "email": "cnrm-backup@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "config-bucket-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "config-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/config-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/config-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "config-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/config-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Config Connector Backup Service Account",
+  "email": "cnrm-backup@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/config-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "config-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/config-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/config-bucket-${uniqueId}/iam?alt=json&optionsRequestedPolicyVersion=3
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not Found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not Found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:${projectId}.svc.id.goog[${projectId}/cnrm-backup-manager]"
+        ],
+        "role": "roles/iam.workloadIdentityUser"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectId}.svc.id.goog[${projectId}/cnrm-backup-manager]"
+      ],
+      "role": "roles/iam.workloadIdentityUser"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/config-bucket-${uniqueId}/iam?alt=json&optionsRequestedPolicyVersion=3
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not Found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not Found",
+    "status": "NOT_FOUND"
+  }
+}

@@ -1,0 +1,4 @@
+# github.com/GoogleCloudPlatform/k8s-config-connector/tests/e2e [github.com/GoogleCloudPlatform/k8s-config-connector/tests/e2e.test]
+tests/e2e/script_test.go:802:8: undefined: regexp
+FAIL	github.com/GoogleCloudPlatform/k8s-config-connector/tests/e2e [build failed]
+FAIL

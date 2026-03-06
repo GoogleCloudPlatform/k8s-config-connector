@@ -38,6 +38,7 @@ import (
 
 	"github.com/ghodss/yaml" //nolint:depguard
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -196,6 +197,12 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 		return
 	case opv1beta1.ConfigConnectorContextGroupVersionKind.GroupKind():
 		logger.Info("ConfigConnectorContext object does not have status.conditions; assuming ready")
+		return
+	case schema.GroupKind{Group: "batch", Kind: "CronJob"}:
+		logger.Info("CronJob object does not have status.conditions; assuming ready")
+		return
+	case schema.GroupKind{Group: "batch", Kind: "Job"}:
+		logger.Info("Job object does not have status.conditions; assuming ready")
 		return
 	}
 

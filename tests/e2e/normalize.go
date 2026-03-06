@@ -1043,6 +1043,14 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 		normalizeKRMObject(t, u, project, folderID, uniqueID)
 	})
 
+	// Normalize timestamps like 2026-03-06-19-25-42
+	reTimestamp := regexp.MustCompile(`\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}`)
+	for _, event := range events {
+		event.Request.URL = reTimestamp.ReplaceAllString(event.Request.URL, "${timestamp}")
+		event.Request.Body = reTimestamp.ReplaceAllString(event.Request.Body, "${timestamp}")
+		event.Response.Body = reTimestamp.ReplaceAllString(event.Response.Body, "${timestamp}")
+	}
+
 	// Apply replacements
 	normalizer.Replacements.ApplyReplacementsToHTTPEvents(events)
 }

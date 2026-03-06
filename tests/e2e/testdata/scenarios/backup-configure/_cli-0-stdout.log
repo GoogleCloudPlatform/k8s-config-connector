@@ -1,0 +1,11 @@
+Applying backup configuration resources...
+- Applied ${projectID}/config-bucket-${uniqueId} (StorageBucket)
+- Applied ${projectID}/cnrm-backup (IAMServiceAccount)
+- Applied ${projectID}/cnrm-backup-wi (IAMPolicyMember)
+- Applied ${projectID}/cnrm-backup-bucket-admin (IAMPolicyMember)
+- Applied ${projectID}/cnrm-backup-manager (ServiceAccount)
+- Applied /cnrm-backup-reader (ClusterRole)
+- Applied /cnrm-backup-reader-binding (ClusterRoleBinding)
+- Applied ${projectID}/cnrm-backup-daily (CronJob)
+
+Backup configuration successful.

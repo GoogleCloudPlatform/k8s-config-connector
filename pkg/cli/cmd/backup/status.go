@@ -15,15 +15,17 @@
 package backup
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/kubecli"
 	"github.com/spf13/cobra"
+	"golang.org/x/oauth2"
+	"google.golang.org/api/option"
 	batchv1 "k8s.io/api/batch/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -32,6 +34,7 @@ import (
 )
 
 type statusOptions struct {
+	kubecli.ClusterOptions
 	cluster   string
 	location  string
 	project   string
@@ -46,10 +49,11 @@ func NewStatusCmd() *cobra.Command {
 		Use:   "status",
 		Short: "Check the status of recent backup jobs",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runStatus(cmd.Context(), options)
+			return runStatus(cmd, options)
 		},
 	}
 
+	options.ClusterOptions.AddFlags(cmd)
 	cmd.Flags().StringVar(&options.cluster, "cluster", "", "Name of the cluster")
 	cmd.Flags().StringVar(&options.location, "location", "", "Region of the cluster")
 	cmd.Flags().StringVar(&options.project, "project", "", "GCP project ID")
@@ -59,16 +63,17 @@ func NewStatusCmd() *cobra.Command {
 	return cmd
 }
 
-func runStatus(ctx context.Context, options *statusOptions) error {
-	kubeClient, err := kubecli.NewClient(ctx, kubecli.ClusterOptions{})
+func runStatus(cmd *cobra.Command, options *statusOptions) error {
+	ctx := cmd.Context()
+	kubeClient, err := kubecli.NewClient(ctx, options.ClusterOptions)
 	if err != nil {
 		return fmt.Errorf("creating kubernetes client: %w", err)
 	}
 
-	fmt.Printf("Recent Backup Jobs (Namespace: %s):\n", options.namespace)
+	fmt.Fprintf(cmd.OutOrStdout(), "Recent Backup Jobs (Namespace: %s):\n", options.namespace)
 	var jobs batchv1.JobList
 	if err := kubeClient.List(ctx, &jobs, client.InNamespace(options.namespace)); err != nil {
-		fmt.Printf("Error listing jobs: %v\n", err)
+		fmt.Fprintf(cmd.OutOrStdout(), "Error listing jobs: %v\n", err)
 	} else {
 		found := false
 		for _, job := range jobs.Items {
@@ -96,11 +101,11 @@ func runStatus(ctx context.Context, options *statusOptions) error {
 				if job.Status.CompletionTime != nil {
 					completionTime = job.Status.CompletionTime.Format(time.RFC3339)
 				}
-				fmt.Printf("- %s: %s (Completed: %s)\n", job.Name, status, completionTime)
+				fmt.Fprintf(cmd.OutOrStdout(), "- %s: %s (Completed: %s)\n", job.Name, status, completionTime)
 			}
 		}
 		if !found {
-			fmt.Println("No backup jobs found.")
+			fmt.Fprintln(cmd.OutOrStdout(), "No backup jobs found.")
 		}
 	}
 
@@ -109,8 +114,12 @@ func runStatus(ctx context.Context, options *statusOptions) error {
 		if clusterName == "" {
 			clusterName = "default-cluster"
 		}
-		fmt.Printf("\nRecent Backups for cluster %s in GCS (gs://%s/%s/):\n", clusterName, options.bucket, clusterName)
-		gcsClient, err := storage.NewClient(ctx)
+		fmt.Fprintf(cmd.OutOrStdout(), "\nRecent Backups for cluster %s in GCS (gs://%s/%s/):\n", clusterName, options.bucket, clusterName)
+		var gcsOptions []option.ClientOption
+		if httpClient := ctx.Value(oauth2.HTTPClient); httpClient != nil {
+			gcsOptions = append(gcsOptions, option.WithHTTPClient(httpClient.(*http.Client)))
+		}
+		gcsClient, err := storage.NewClient(ctx, gcsOptions...)
 		if err != nil {
 			return fmt.Errorf("creating GCS client: %w", err)
 		}
@@ -130,7 +139,7 @@ func runStatus(ctx context.Context, options *statusOptions) error {
 			if attrs.Prefix != "" {
 				// strip the cluster name prefix for display
 				displayPrefix := strings.TrimPrefix(attrs.Prefix, prefix)
-				fmt.Printf("- %s", displayPrefix)
+				fmt.Fprintf(cmd.OutOrStdout(), "- %s", displayPrefix)
 
 				// Try to read summary.json
 				summaryPath := attrs.Prefix + "summary.json"
@@ -142,20 +151,20 @@ func runStatus(ctx context.Context, options *statusOptions) error {
 						for _, count := range stats {
 							total += count
 						}
-						fmt.Printf(" (%d resources)", total)
+						fmt.Fprintf(cmd.OutOrStdout(), " (%d resources)", total)
 					}
 					rc.Close()
 				}
-				fmt.Println()
+				fmt.Fprintln(cmd.OutOrStdout())
 				count++
 			}
 			if count >= 10 {
-				fmt.Println("... (limited to 10)")
+				fmt.Fprintln(cmd.OutOrStdout(), "... (limited to 10)")
 				break
 			}
 		}
 		if count == 0 {
-			fmt.Println("No backup artifacts found for this cluster.")
+			fmt.Fprintln(cmd.OutOrStdout(), "No backup artifacts found for this cluster.")
 		}
 	}
 

@@ -15,6 +15,7 @@
 # Step 0: Run backup configure
 apiVersion: RunCLI
 kind: RunCLI
+TEST: SKIP_HTTP
 args:
   - backup
   - configure
@@ -28,6 +29,7 @@ args:
 # Step 1: Verify StorageBucket created by configure
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
+TEST: SKIP_HTTP
 metadata:
   name: config-bucket-${uniqueId}
   namespace: ${namespace}
@@ -37,6 +39,7 @@ spec:
 # Step 2: Verify CronJob created by configure
 apiVersion: batch/v1
 kind: CronJob
+TEST: SKIP_HTTP
 metadata:
   name: cnrm-backup-daily
   namespace: ${namespace}

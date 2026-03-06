@@ -20,6 +20,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -126,6 +127,7 @@ func TestE2EScript(t *testing.T) {
 						testCommand = "APPLY"
 					}
 
+					skipHTTP := testCommand == "SKIP_HTTP"
 					t.Logf("***/Step %d: %s %s %s/%s", i, testCommand, obj.GroupVersionKind().Kind, obj.GetNamespace(), obj.GetName())
 
 					if obj.GroupVersionKind().Kind == "RunCLI" {
@@ -136,6 +138,7 @@ func TestE2EScript(t *testing.T) {
 						}
 						baseOutputPath := filepath.Join(script.SourceDir, fmt.Sprintf("_cli-%d-", i))
 						runCLI(h, args, uniqueID, baseOutputPath)
+						captureHTTPLogEvents(skipHTTP)
 						continue
 					}
 
@@ -150,8 +153,7 @@ func TestE2EScript(t *testing.T) {
 						} else {
 							h.T.Logf("skipping MockGCPBackdoor command, because not running against mockgcp")
 						}
-
-						captureHTTPLogEvents(false)
+						captureHTTPLogEvents(skipHTTP)
 						continue
 					}
 
@@ -198,7 +200,7 @@ func TestE2EScript(t *testing.T) {
 
 					var targetStepForReadAndCompare int
 					switch testCommand {
-					case "APPLY":
+					case "APPLY", "SKIP_HTTP":
 						applyObject(h, obj)
 						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
 						appliedObjects = append(appliedObjects, obj)
@@ -423,7 +425,7 @@ func TestE2EScript(t *testing.T) {
 						}
 					}
 
-					captureHTTPLogEvents(false)
+					captureHTTPLogEvents(skipHTTP)
 				}
 
 				t.Logf("***/Finished Steps")
@@ -789,7 +791,8 @@ func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath st
 	options.Args = append(options.Args, args...)
 
 	t.Logf("running cli with args %+v", options.Args)
-	if err := cmd.ExecuteFromTest(&options); err != nil {
+	ctx := h.Ctx
+	if err := cmd.ExecuteFromTest(ctx, &options); err != nil {
 		t.Errorf("cli execution (args=%+v) failed: %v", options.Args, err)
 	}
 
@@ -797,12 +800,16 @@ func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath st
 	t.Logf("stdout: %v", stdout)
 	stdout = strings.ReplaceAll(stdout, project.ProjectID, "${projectID}")
 	stdout = strings.ReplaceAll(stdout, uniqueID, "${uniqueId}")
+	// Normalize timestamps like 2026-03-06-19-25-42
+	re := regexp.MustCompile(`\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}`)
+	stdout = re.ReplaceAllString(stdout, "${timestamp}")
 	test.CompareGoldenFile(t, baseOutputPath+"stdout.log", stdout)
 
 	stderr := options.Stderr.String()
 	t.Logf("stderr: %v", stderr)
 	stderr = strings.ReplaceAll(stderr, project.ProjectID, "${projectID}")
 	stderr = strings.ReplaceAll(stderr, uniqueID, "${uniqueId}")
+	stderr = re.ReplaceAllString(stderr, "${timestamp}")
 	test.CompareGoldenFile(t, baseOutputPath+"stderr.log", stderr)
 }
 

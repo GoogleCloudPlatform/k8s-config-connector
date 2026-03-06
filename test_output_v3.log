@@ -1,0 +1,4 @@
+# github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd
+pkg/cli/cmd/root.go:109:26: undefined: context
+FAIL	github.com/GoogleCloudPlatform/k8s-config-connector/tests/e2e [build failed]
+FAIL
