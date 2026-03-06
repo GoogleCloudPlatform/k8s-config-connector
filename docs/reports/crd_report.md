@@ -344,7 +344,7 @@
 | netapp.cnrm.cloud.google.com                  | NetAppBackupPolicy                              | True         | False       | False  | Direct     | True        |
 | netapp.cnrm.cloud.google.com                  | NetAppBackupVault                               | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com     | NetworkConnectivityHub                          | False        | True        | False  | DCL        | False       |
-| networkconnectivity.cnrm.cloud.google.com     | NetworkConnectivityInternalRange                | True         | False       | False  | Direct     | True        |
+| networkconnectivity.cnrm.cloud.google.com     | NetworkConnectivityInternalRange                | True         | True        | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com     | NetworkConnectivityServiceConnectionPolicy      | True         | False       | False  | Direct     | True        |
 | networkconnectivity.cnrm.cloud.google.com     | NetworkConnectivitySpoke                        | False        | True        | False  | DCL        | False       |
 | networkmanagement.cnrm.cloud.google.com       | NetworkManagementConnectivityTest               | True         | False       | False  | Direct     | True        |
