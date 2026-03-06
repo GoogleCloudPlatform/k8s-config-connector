@@ -66,7 +66,6 @@ func dashboardFuzzer() fuzztesting.KRMFuzzer {
 	}
 
 	fuzzer.UnimplementedFields.Insert(".name")
-	fuzzer.UnimplementedFields.Insert(".labels")
 
 	widgetPaths := []string{
 		".grid_layout.widgets[]",
@@ -76,24 +75,16 @@ func dashboardFuzzer() fuzztesting.KRMFuzzer {
 	}
 	for _, widgetPath := range widgetPaths {
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.time_series_filter.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.time_series_filter.pick_time_series_filter.interval")
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.time_series_filter_ratio.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
-		fuzzer.UnimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
 		// Resource names need to be in a special format.
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".logs_panel.resource_names") // the proto 'resource_names' needs to be a special format.

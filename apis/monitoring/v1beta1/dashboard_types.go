@@ -323,10 +323,17 @@ type PickTimeSeriesFilter struct {
 	// How to use the ranking to select time series that pass through the filter.
 	Direction *string `json:"direction,omitempty"`
 
-	/*NOTYET
 	// Select the top N streams/time series within this time interval
-	Interval *string `json:"interval,omitempty"`
-	*/
+	Interval *Interval `json:"interval,omitempty"`
+}
+
+// +kcc:proto=google.type.Interval
+type Interval struct {
+	// Optional. Exclusive start of the interval.
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Optional. Inclusive end of the interval.
+	EndTime *string `json:"endTime,omitempty"`
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.StatisticalTimeSeriesFilter
@@ -676,10 +683,8 @@ type MonitoringDashboardSpec struct {
 	// Filters to reduce the amount of data charted based on the filter criteria.
 	DashboardFilters []DashboardFilter `json:"dashboardFilters,omitempty"`
 
-	/*NOTYET
-	// Labels applied to the dashboard
-	Labels []Dashboard_LabelsEntry `json:"labels,omitempty"`
-	*/
+	// Optional. Labels applied to the dashboard
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 // +kcc:status:proto=google.monitoring.dashboard.v1.Dashboard
