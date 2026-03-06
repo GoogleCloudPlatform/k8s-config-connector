@@ -893,8 +893,16 @@ func validateDatabaseInstance(obj *pb.DatabaseInstance) error {
 	}
 
 	if obj.GetSettings().GetEdition() == pb.Settings_ENTERPRISE {
-		if strings.HasPrefix(obj.GetSettings().GetTier(), "db-c4a-") {
-			return status.Errorf(codes.InvalidArgument, "Invalid request: Invalid Tier (%s) for (ENTERPRISE) Edition.", obj.GetSettings().GetTier())
+		tier := obj.GetSettings().GetTier()
+		if strings.HasPrefix(tier, "db-c4a-") {
+			return status.Errorf(codes.InvalidArgument, "Invalid request: Invalid Tier (%s) for (ENTERPRISE) Edition.", tier)
+		}
+	}
+
+	if obj.GetSettings().GetEdition() == pb.Settings_ENTERPRISE_PLUS {
+		tier := obj.GetSettings().GetTier()
+		if strings.HasPrefix(tier, "db-custom-1-") {
+			return status.Errorf(codes.InvalidArgument, "Invalid request: Invalid Tier (%s) for (ENTERPRISE_PLUS) Edition.", tier)
 		}
 	}
 

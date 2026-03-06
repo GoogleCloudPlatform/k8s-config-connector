@@ -51,7 +51,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
-    "tier": "db-custom-1-3840",
+    "tier": "db-perf-optimized-N-4",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -204,7 +204,7 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
+    "tier": "db-perf-optimized-N-4",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -435,7 +435,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
-    "tier": "db-custom-1-3840",
+    "tier": "db-perf-optimized-N-4",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -588,7 +588,7 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
+    "tier": "db-perf-optimized-N-4",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -845,7 +845,7 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
+    "tier": "db-perf-optimized-N-4",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -992,7 +992,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
-    "tier": "db-custom-1-3840",
+    "tier": "db-perf-optimized-N-4",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -1146,7 +1146,7 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
+    "tier": "db-perf-optimized-N-4",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -1398,7 +1398,7 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
+    "tier": "db-perf-optimized-N-4",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
