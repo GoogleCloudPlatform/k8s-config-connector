@@ -17,13 +17,14 @@ package mockgcp
 import (
 	"bytes"
 	"crypto/md5"
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"slices"
 	"sort"
 
 	"cloud.google.com/go/iam/apiv1/iampb"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -37,8 +38,8 @@ func newMockIAMPolicies() *mockIAMPolicies {
 	}
 }
 
-func (m *mockIAMPolicies) buildResponse(obj any) (*http.Response, error) {
-	b, err := json.Marshal(obj)
+func (m *mockIAMPolicies) buildResponse(obj proto.Message) (*http.Response, error) {
+	b, err := protojson.Marshal(obj)
 	if err != nil {
 		return nil, err
 	}
@@ -71,12 +72,7 @@ func (m *mockIAMPolicies) getIAMPolicy(resourcePath string) (*iampb.Policy, erro
 	policy = proto.Clone(policy).(*iampb.Policy)
 
 	// Sort for determinism
-	for _, binding := range policy.Bindings {
-		sort.Strings(binding.Members)
-	}
-	sort.Slice(policy.Bindings, func(i, j int) bool {
-		return policy.Bindings[i].Role < policy.Bindings[j].Role
-	})
+	sortPolicy(policy)
 
 	if policy.Etag == nil {
 		policy.Etag = computeEtag(policy)
@@ -100,7 +96,7 @@ func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *ht
 	if err != nil {
 		return nil, err
 	}
-	if err := json.Unmarshal(requestBytes, request); err != nil {
+	if err := protojson.Unmarshal(requestBytes, request); err != nil {
 		return nil, err
 	}
 
@@ -139,10 +135,14 @@ func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *ht
 
 func sortPolicy(policy *iampb.Policy) {
 	sort.Slice(policy.Bindings, func(i, j int) bool {
-		return policy.Bindings[i].Role < policy.Bindings[j].Role
+		if policy.Bindings[i].Role != policy.Bindings[j].Role {
+			return policy.Bindings[i].Role < policy.Bindings[j].Role
+		}
+		// TODO: Sort by condition?
+		return false
 	})
 	for _, binding := range policy.Bindings {
-		sort.Strings(binding.Members)
+		slices.Sort(binding.Members)
 	}
 	sort.Slice(policy.AuditConfigs, func(i, j int) bool {
 		return policy.AuditConfigs[i].Service < policy.AuditConfigs[j].Service
@@ -155,7 +155,11 @@ func sortPolicy(policy *iampb.Policy) {
 }
 
 func computeEtag(policy *iampb.Policy) []byte {
-	b, err := proto.Marshal(policy)
+	// Create a copy and clear fields that shouldn't affect etag
+	temp := proto.Clone(policy).(*iampb.Policy)
+	temp.Etag = nil
+
+	b, err := proto.Marshal(temp)
 	if err != nil {
 		panic(fmt.Sprintf("converting to proto: %v", err))
 	}

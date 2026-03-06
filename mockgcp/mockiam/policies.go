@@ -24,12 +24,14 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/url"
+	"slices"
 	"sort"
 	"strings"
 	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
@@ -299,14 +301,20 @@ func (s *IAMV2PoliciesServer) DeletePolicy(ctx context.Context, req *pb.DeletePo
 
 func sortV2Policy(policy *pb.Policy) {
 	sort.Slice(policy.Rules, func(i, j int) bool {
-		return policy.Rules[i].Description < policy.Rules[j].Description
+		if policy.Rules[i].Description != policy.Rules[j].Description {
+			return policy.Rules[i].Description < policy.Rules[j].Description
+		}
+		// Fallback to JSON representation for stability
+		bi, _ := protojson.Marshal(policy.Rules[i])
+		bj, _ := protojson.Marshal(policy.Rules[j])
+		return string(bi) < string(bj)
 	})
 	for _, rule := range policy.Rules {
 		if denyRule := rule.GetDenyRule(); denyRule != nil {
-			sort.Strings(denyRule.DeniedPrincipals)
-			sort.Strings(denyRule.ExceptionPrincipals)
-			sort.Strings(denyRule.DeniedPermissions)
-			sort.Strings(denyRule.ExceptionPermissions)
+			slices.Sort(denyRule.DeniedPrincipals)
+			slices.Sort(denyRule.ExceptionPrincipals)
+			slices.Sort(denyRule.DeniedPermissions)
+			slices.Sort(denyRule.ExceptionPermissions)
 		}
 	}
 }
