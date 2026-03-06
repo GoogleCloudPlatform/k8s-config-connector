@@ -307,11 +307,16 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 
 				// Run with the fallback controller if we are forcing direct
 				if forceDirect {
-					t.Logf("also running scenario with fallback to old controller for fixture %q", fixture.TestKey)
-					scenarioOptionsWithFallback := scenarioOptions
-					scenarioOptionsWithFallback.FallbackToOldController = true
-					scenarioOptionsWithFallback.ForceDirectController = false
-					runScenario(ctx, t, scenarioOptionsWithFallback, fixture, loadFixture)
+					// Acquisition tests are designed for the Direct controller and will fail with Terraform
+					if testName == "tagkeyacquire" || testName == "tagvalueacquire" {
+						t.Logf("skipping scenario with fallback to old controller for acquisition test %q", fixture.TestKey)
+					} else {
+						t.Logf("also running scenario with fallback to old controller for fixture %q", fixture.TestKey)
+						scenarioOptionsWithFallback := scenarioOptions
+						scenarioOptionsWithFallback.FallbackToOldController = true
+						scenarioOptionsWithFallback.ForceDirectController = false
+						runScenario(ctx, t, scenarioOptionsWithFallback, fixture, loadFixture)
+					}
 				}
 
 				createDiffs(t, ctx, fixture)

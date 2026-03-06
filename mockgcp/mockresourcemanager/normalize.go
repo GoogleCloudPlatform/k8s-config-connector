@@ -34,11 +34,17 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	}
 	name := ""
 	event.VisitResponseStringValues(func(path string, value string) {
-		switch path {
-		case ".name":
+		if path == ".name" {
 			name = value
-		case ".projectNumber":
+		}
+		if path == ".projectNumber" {
 			replacements.ReplaceStringValue(value, "${projectNumber}")
+		}
+		if strings.HasSuffix(path, ".createTime") || strings.HasSuffix(path, ".updateTime") {
+			replacements.ReplaceStringValue(value, "${createTime}")
+		}
+		if strings.HasSuffix(path, ".etag") {
+			replacements.ReplaceStringValue(value, "${etag}")
 		}
 	})
 
