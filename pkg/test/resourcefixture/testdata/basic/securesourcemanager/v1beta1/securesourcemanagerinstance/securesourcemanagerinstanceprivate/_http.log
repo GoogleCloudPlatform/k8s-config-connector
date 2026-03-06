@@ -402,7 +402,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthoritiesprivatecacertificateauthority-${uniqueId}' was not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -469,7 +469,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthoritiesprivatecacertificateauthority-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -498,12 +498,51 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthoritiesprivatecacertificateauthority-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
+    "accessUrls": {
+      "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/privatecacertificateauthority-${uniqueId}/ca.crt"
+    },
+    "caCertificateDescriptions": [
+      {
+        "certFingerprint": {
+          "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789privatecacertificateauthority-${uniqueId}"
+        },
+        "subjectDescription": {
+          "hexSerialNumber": "0123456789abcdef",
+          "lifetime": "86400s",
+          "notAfterTime": "2024-04-01T12:34:56.123456Z",
+          "notBeforeTime": "2024-04-01T12:34:56.123456Z",
+          "subject": {
+            "commonName": "my-certificate-authority",
+            "organization": "Example"
+          },
+          "subjectAltName": {
+            "dnsNames": [
+              "example.com"
+            ]
+          }
+        },
+        "x509Description": {
+          "caOptions": {
+            "isCa": true
+          },
+          "keyUsage": {
+            "baseKeyUsage": {
+              "certSign": true,
+              "crlSign": true
+            },
+            "extendedKeyUsage": {
+              "serverAuth": true
+            }
+          }
+        }
+      }
+    ],
     "config": {
       "subjectConfig": {
         "subject": {
@@ -531,6 +570,7 @@ X-Xss-Protection: 0
         }
       }
     },
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "keySpec": {
       "algorithm": "RSA_PKCS1_4096_SHA256"
     },
@@ -540,8 +580,12 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "lifetime": "86400s",
-    "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthoritiesprivatecacertificateauthority-${uniqueId}",
-    "type": "SELF_SIGNED"
+    "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
+    "pemCaCertificates": [
+      "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+    ],
+    "type": "SELF_SIGNED",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -562,6 +606,45 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "accessUrls": {
+    "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/privatecacertificateauthority-${uniqueId}/ca.crt"
+  },
+  "caCertificateDescriptions": [
+    {
+      "certFingerprint": {
+        "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789privatecacertificateauthority-${uniqueId}"
+      },
+      "subjectDescription": {
+        "hexSerialNumber": "0123456789abcdef",
+        "lifetime": "86400s",
+        "notAfterTime": "2024-04-01T12:34:56.123456Z",
+        "notBeforeTime": "2024-04-01T12:34:56.123456Z",
+        "subject": {
+          "commonName": "my-certificate-authority",
+          "organization": "Example"
+        },
+        "subjectAltName": {
+          "dnsNames": [
+            "example.com"
+          ]
+        }
+      },
+      "x509Description": {
+        "caOptions": {
+          "isCa": true
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "crlSign": true
+          },
+          "extendedKeyUsage": {
+            "serverAuth": true
+          }
+        }
+      }
+    }
+  ],
   "config": {
     "subjectConfig": {
       "subject": {
@@ -589,6 +672,7 @@ X-Xss-Protection: 0
       }
     }
   },
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "keySpec": {
     "algorithm": "RSA_PKCS1_4096_SHA256"
   },
@@ -598,8 +682,12 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifetime": "86400s",
-  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthoritiesprivatecacertificateauthority-${uniqueId}",
-  "type": "SELF_SIGNED"
+  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
+  "pemCaCertificates": [
+    "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+  ],
+  "type": "SELF_SIGNED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -961,6 +1049,45 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "accessUrls": {
+    "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/privatecacertificateauthority-${uniqueId}/ca.crt"
+  },
+  "caCertificateDescriptions": [
+    {
+      "certFingerprint": {
+        "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789privatecacertificateauthority-${uniqueId}"
+      },
+      "subjectDescription": {
+        "hexSerialNumber": "0123456789abcdef",
+        "lifetime": "86400s",
+        "notAfterTime": "2024-04-01T12:34:56.123456Z",
+        "notBeforeTime": "2024-04-01T12:34:56.123456Z",
+        "subject": {
+          "commonName": "my-certificate-authority",
+          "organization": "Example"
+        },
+        "subjectAltName": {
+          "dnsNames": [
+            "example.com"
+          ]
+        }
+      },
+      "x509Description": {
+        "caOptions": {
+          "isCa": true
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "crlSign": true
+          },
+          "extendedKeyUsage": {
+            "serverAuth": true
+          }
+        }
+      }
+    }
+  ],
   "config": {
     "subjectConfig": {
       "subject": {
@@ -988,6 +1115,7 @@ X-Xss-Protection: 0
       }
     }
   },
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "keySpec": {
     "algorithm": "RSA_PKCS1_4096_SHA256"
   },
@@ -997,8 +1125,12 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifetime": "86400s",
-  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthoritiesprivatecacertificateauthority-${uniqueId}",
-  "type": "SELF_SIGNED"
+  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
+  "pemCaCertificates": [
+    "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+  ],
+  "type": "SELF_SIGNED",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -1022,7 +1154,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthoritiesprivatecacertificateauthority-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -1051,12 +1183,97 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthoritiesprivatecacertificateauthority-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
+    "accessUrls": {
+      "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/privatecacertificateauthority-${uniqueId}/ca.crt"
+    },
+    "caCertificateDescriptions": [
+      {
+        "certFingerprint": {
+          "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789privatecacertificateauthority-${uniqueId}"
+        },
+        "subjectDescription": {
+          "hexSerialNumber": "0123456789abcdef",
+          "lifetime": "86400s",
+          "notAfterTime": "2024-04-01T12:34:56.123456Z",
+          "notBeforeTime": "2024-04-01T12:34:56.123456Z",
+          "subject": {
+            "commonName": "my-certificate-authority",
+            "organization": "Example"
+          },
+          "subjectAltName": {
+            "dnsNames": [
+              "example.com"
+            ]
+          }
+        },
+        "x509Description": {
+          "caOptions": {
+            "isCa": true
+          },
+          "keyUsage": {
+            "baseKeyUsage": {
+              "certSign": true,
+              "crlSign": true
+            },
+            "extendedKeyUsage": {
+              "serverAuth": true
+            }
+          }
+        }
+      }
+    ],
+    "config": {
+      "subjectConfig": {
+        "subject": {
+          "commonName": "my-certificate-authority",
+          "organization": "Example"
+        },
+        "subjectAltName": {
+          "dnsNames": [
+            "example.com"
+          ]
+        }
+      },
+      "x509Config": {
+        "caOptions": {
+          "isCa": true
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "crlSign": true
+          },
+          "extendedKeyUsage": {
+            "serverAuth": true
+          }
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "keySpec": {
+      "algorithm": "RSA_PKCS1_4096_SHA256"
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "label-two": "value-two",
+      "managed-by-cnrm": "true"
+    },
+    "lifetime": "86400s",
+    "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
+    "pemCaCertificates": [
+      "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+    ],
+    "state": "DELETED",
+    "type": "SELF_SIGNED",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 

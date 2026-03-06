@@ -43,10 +43,41 @@ spec:
   resourceID: privatecacertificateauthority-${uniqueId}
   type: SELF_SIGNED
 status:
+  accessUrls:
+    caCertificateAccessUrl: http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/privatecacertificateauthority-${uniqueId}/ca.crt
+  caCertificateDescriptions:
+  - certFingerprint:
+      sha256Hash: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789privatecacertificateauthority-${uniqueId}
+    subjectDescription:
+      hexSerialNumber: 0123456789abcdef
+      lifetime: 86400s
+      notAfterTime: "2024-04-01T12:34:56.123456Z"
+      notBeforeTime: "2024-04-01T12:34:56.123456Z"
+      subject:
+        commonName: my-certificate-authority
+        organization: Example
+      subjectAltName:
+        dnsNames:
+        - example.com
+    x509Description:
+      caOptions:
+        isCa: true
+      keyUsage:
+        baseKeyUsage:
+          certSign: true
+          crlSign: true
+        extendedKeyUsage:
+          serverAuth: true
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
     message: The resource is up to date
     reason: UpToDate
     status: "True"
     type: Ready
+  createTime: "1970-01-01T00:00:00Z"
   observedGeneration: 2
+  pemCaCertificates:
+  - |
+    -----BEGIN CERTIFICATE-----
+    -----END CERTIFICATE-----
+  updateTime: "1970-01-01T00:00:00Z"
