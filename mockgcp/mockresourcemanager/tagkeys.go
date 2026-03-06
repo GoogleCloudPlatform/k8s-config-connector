@@ -62,7 +62,7 @@ func (s *TagKeys) ListTagKeys(ctx context.Context, req *pb.ListTagKeysRequest) (
 	findParent := ""
 	tokens := strings.Split(req.GetParent(), "/")
 	if len(tokens) == 2 && tokens[0] == "projects" {
-		project, err := s.Projects.GetProjectByIDOrNumber(req.Parent)
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}

@@ -27,11 +27,6 @@ import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 )
 
-type NetworkServicesServer struct {
-	*MockService
-	pb.UnimplementedNetworkServicesServer
-}
-
 func (s *NetworkServicesServer) ListMeshes(ctx context.Context, req *pb.ListMeshesRequest) (*pb.ListMeshesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListMeshes not implemented")
 }
