@@ -67,6 +67,7 @@ type CertificateManagerCertificateIssuanceConfigSpec struct {
 	// +optional
 	Lifetime *string `json:"lifetime,omitempty"`
 
+	/* The location that this resource belongs to. */
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */

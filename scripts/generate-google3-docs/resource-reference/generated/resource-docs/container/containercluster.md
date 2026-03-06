@@ -802,7 +802,7 @@ workloadIdentityConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The Customer Managed Encryption Key used to encrypt the
+            <p>{% verbatim %}The Customer Managed Encryption Key used to encrypt the
 boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
     </tr>
