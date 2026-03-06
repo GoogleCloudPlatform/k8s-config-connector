@@ -15,6 +15,8 @@
 package mocknetworkservices
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -23,7 +25,28 @@ const TimePlaceholder = "2024-04-01T12:34:56.123456Z"
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	replacements.ReplacePath(".createTime", TimePlaceholder)
+	replacements.ReplacePath(".updateTime", TimePlaceholder)
+	replacements.ReplacePath(".endTime", TimePlaceholder)
+
+	replacements.ReplacePath(".lbRouteExtensions[].createTime", TimePlaceholder)
+	replacements.ReplacePath(".lbRouteExtensions[].updateTime", TimePlaceholder)
+
+	replacements.ReplacePath(".metadata.createTime", TimePlaceholder)
+	replacements.ReplacePath(".metadata.endTime", TimePlaceholder)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	// Only apply this logic if the request is for the networkservices API.
+	if !strings.Contains(event.URL(), "networkservices.googleapis.com") {
+		return
+	}
+
+	// Normalize compute reference URLs in responses to match real GCP behavior.
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.HasPrefix(value, "https://compute.googleapis.com/compute/v1/") {
+			newValue := strings.Replace(value, "https://compute.googleapis.com/compute/v1/", "https://www.googleapis.com/compute/v1/", 1)
+			replacements.ReplaceStringValue(value, newValue)
+		}
+	})
 }
