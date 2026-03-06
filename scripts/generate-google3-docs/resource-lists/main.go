@@ -19,6 +19,8 @@ import (
 	"log"
 	"os"
 	"path"
+	"path/filepath"
+	"strings"
 	"text/template"
 
 	tfmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf/metadata"
@@ -32,7 +34,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
+	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/yaml"
 )
 
 type templateData struct {
@@ -106,16 +110,81 @@ func resourcesWithServerGeneratedResourceID(smLoader *servicemappingloader.Servi
 	if err != nil {
 		return nil, fmt.Errorf("error getting DCL-based resources with a server-generated resource ID: %w", err)
 	}
-	// todo: temporarily list current direct resources with generated ID until we can generate them by code
-	// This is needed otherwise "make resource-docs" will revert the resource-lists
-	directResources := []schema.GroupVersionKind{
-		{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataCatalogPolicyTag"},
-		{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataCatalogTaxonomy"},
-		{Group: "essentialcontacts.cnrm.cloud.google.com", Version: "v1beta1", Kind: "EssentialContactsContact"},
-		{Group: "tags.cnrm.cloud.google.com", Version: "v1beta1", Kind: "TagsTagBinding"},
-		{Group: "tags.cnrm.cloud.google.com", Version: "v1beta1", Kind: "TagsTagKey"},
-		{Group: "tags.cnrm.cloud.google.com", Version: "v1beta1", Kind: "TagsTagValue"}}
-	return k8s.SortGVKsByKind(append(append(tfResources, dclResources...), directResources...)), nil
+	resourcesFromCRDs, err := resourcesWithServerGeneratedResourceIDFromCRDs()
+	if err != nil {
+		return nil, fmt.Errorf("error getting resources with a server-generated resource ID from CRDs: %w", err)
+	}
+
+	allResources := append(append(tfResources, dclResources...), resourcesFromCRDs...)
+	return k8s.SortGVKsByKind(deduplicateGVKs(allResources)), nil
+}
+
+func resourcesWithServerGeneratedResourceIDFromCRDs() ([]schema.GroupVersionKind, error) {
+	crdsPath := repo.GetCRDsPath()
+	files, err := os.ReadDir(crdsPath)
+	if err != nil {
+		return nil, fmt.Errorf("error reading CRDs directory: %w", err)
+	}
+
+	gvkList := make([]schema.GroupVersionKind, 0)
+	for _, file := range files {
+		if file.IsDir() || filepath.Ext(file.Name()) != ".yaml" {
+			continue
+		}
+		crdPath := filepath.Join(crdsPath, file.Name())
+		crdBytes, err := os.ReadFile(crdPath)
+		if err != nil {
+			return nil, fmt.Errorf("error reading CRD file %s: %w", crdPath, err)
+		}
+		var crd apiextensions.CustomResourceDefinition
+		if err := yaml.Unmarshal(crdBytes, &crd); err != nil {
+			return nil, fmt.Errorf("error unmarshalling CRD file %s: %w", crdPath, err)
+		}
+
+		found := false
+		for _, version := range crd.Spec.Versions {
+			jsonSchema := version.Schema.OpenAPIV3Schema
+			if jsonSchema == nil {
+				continue
+			}
+
+			spec, ok := jsonSchema.Properties["spec"]
+			if !ok {
+				continue
+			}
+			resourceID, ok := spec.Properties["resourceID"]
+			if !ok {
+				continue
+			}
+			description := strings.ToLower(resourceID.Description)
+			if strings.Contains(description, "service-generated") || strings.Contains(description, "server-generated") {
+				found = true
+				break
+			}
+		}
+
+		if found {
+			gvk := schema.GroupVersionKind{
+				Group:   crd.Spec.Group,
+				Version: k8s.GetVersionFromCRD(&crd),
+				Kind:    crd.Spec.Names.Kind,
+			}
+			gvkList = append(gvkList, gvk)
+		}
+	}
+	return gvkList, nil
+}
+
+func deduplicateGVKs(gvks []schema.GroupVersionKind) []schema.GroupVersionKind {
+	uniqueGVKs := make(map[schema.GroupVersionKind]bool)
+	result := make([]schema.GroupVersionKind, 0)
+	for _, gvk := range gvks {
+		if !uniqueGVKs[gvk] {
+			uniqueGVKs[gvk] = true
+			result = append(result, gvk)
+		}
+	}
+	return result
 }
 
 func tfBasedResourcesWithServerGeneratedResourceID(smLoader *servicemappingloader.ServiceMappingLoader) []schema.GroupVersionKind {
