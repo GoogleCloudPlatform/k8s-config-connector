@@ -187,14 +187,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "appengine.cnrm.cloud.google.com",
 		Version: "v1alpha1",
-		Kind:    "AppEngineDomainMapping",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "appengine.cnrm.cloud.google.com",
-		Version: "v1alpha1",
 		Kind:    "AppEngineFirewallRule",
 	}: {
 		Terraform: true,
