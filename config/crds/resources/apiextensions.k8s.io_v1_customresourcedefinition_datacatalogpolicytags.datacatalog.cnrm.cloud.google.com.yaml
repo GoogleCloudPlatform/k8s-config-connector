@@ -196,6 +196,17 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  childPolicyTags:
+                    description: Resource names of child policy tags of this policy
+                      tag.
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    description: 'Resource name of this policy tag, whose format is:
+                      "projects/{project}/locations/{region}/taxonomies/{taxonomy}/policyTags/{policytag}".'
+                    type: string
                 type: object
             type: object
         required:

@@ -172,6 +172,10 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  name:
+                    description: 'Resource name of this taxonomy, whose format is:
+                      "projects/{project}/locations/{region}/taxonomies/{taxonomy}".'
+                    type: string
                   policyTagCount:
                     description: Output only. Number of policy tags in this taxonomy.
                     format: int32

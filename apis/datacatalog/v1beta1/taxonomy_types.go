@@ -83,7 +83,6 @@ type Taxonomy_Service struct {
 	Identity *string `json:"identity,omitempty"`
 }
 
-// +kcc:proto=google.cloud.datacatalog.v1.SystemTimestamps
 type SystemTimestamps struct {
 	// Creation timestamp of the resource within the given system.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.create_time
@@ -105,9 +104,23 @@ type SystemTimestamps struct {
 	ExpireTime *string `json:"expiredTime,omitempty"`
 }
 
+type SystemTimestampsObservedState struct {
+	// Output only. Expiration timestamp of the resource within the given system.
+	//
+	// Currently only applicable to BigQuery resources.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+}
+
 // DataCatalogTaxonomyObservedState is the state of the DataCatalogTaxonomy resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.datacatalog.v1.Taxonomy
 type DataCatalogTaxonomyObservedState struct {
+	/* Resource name of this taxonomy, whose format is:
+	"projects/{project}/locations/{region}/taxonomies/{taxonomy}". */
+	// +optional
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.name
+	Name *string `json:"name,omitempty"`
+
 	// Output only. Number of policy tags in this taxonomy.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.policy_tag_count
 	PolicyTagCount *int32 `json:"policyTagCount,omitempty"`

@@ -30,7 +30,7 @@ func DataCatalogTaxonomyObservedState_FromProto(mapCtx *direct.MapContext, in *p
 		return nil
 	}
 	out := &krmv1beta1.DataCatalogTaxonomyObservedState{}
-	// MISSING: Name
+	out.Name = direct.LazyPtr(in.GetName())
 	out.PolicyTagCount = direct.LazyPtr(in.GetPolicyTagCount())
 	out.TaxonomyTimestamps = SystemTimestampsv1beta1_FromProto(mapCtx, in.TaxonomyTimestamps)
 	out.Service = Taxonomy_Service_FromProto(mapCtx, in.GetService())
@@ -41,6 +41,7 @@ func DataCatalogTaxonomyObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.Taxonomy{}
+	out.Name = direct.ValueOf(in.Name)
 	out.PolicyTagCount = direct.ValueOf(in.PolicyTagCount)
 	out.TaxonomyTimestamps = SystemTimestampsv1beta1_ToProto(mapCtx, in.TaxonomyTimestamps)
 	out.Service = Taxonomy_Service_ToProto(mapCtx, in.Service)
