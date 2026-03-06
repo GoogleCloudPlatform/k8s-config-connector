@@ -1,0 +1,38 @@
+I'm building logic between go struct ${KIND} and proto message ${PACKAGE}.${PROTO}, you should help me.
+
+Read `${KIND}Spec` in "./apis/${SERVICE}/v1alpha1/${PROTO,,}_types.go", check each field to see if it fulfills this rule:
+- It is a "*string" type
+- It has a comment saying the value should be in a URL form. For example, "`projects/[project_id]/regions/[region]/clusters/[cluster_name]`"
+
+You should change all the "*string" to fulfill the rule to a reference format, for example "*refv1beta1.DataprocClusterRef"
+
+Here is the code example
+If you see 
+```
+type SparkHistoryServerConfigSpec struct {
+	// Optional. Resource name of an existing Dataproc Cluster to act as a Spark
+	//  History Server for the connection.
+	//
+	//  Example:
+	//
+	//  * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
+	DataprocCluster *string `json:"dataprocCluster,omitempty"`
+}
+```
+You should change the code to be
+
+```
+type SparkHistoryServerConfigSpec struct {
+	// Optional. Resource name of an existing Dataproc Cluster to act as a Spark
+	//  History Server for the connection.
+	//
+	//  Example:
+	//
+	//  * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
+	DataprocClusterRef *refv1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
+}
+```
+
+Some hints:
+* You should only find files under ${REPO_ROOT}/apis
+* You should consider the proto message to help making decisions.
