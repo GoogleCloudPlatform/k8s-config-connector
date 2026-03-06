@@ -143,7 +143,7 @@ compute.cnrm.cloud.google.com,ComputeNetworkFirewallPolicyAssociation,False,True
 compute.cnrm.cloud.google.com,ComputeNetworkFirewallPolicyRule,True,False,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeNetworkPeeringRoutesConfig,True,False,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeNetworkPeering,False,True,False,Terraform,False
-compute.cnrm.cloud.google.com,ComputeNetwork,False,True,False,Terraform,False
+compute.cnrm.cloud.google.com,ComputeNetwork,False,True,False,Direct,True
 compute.cnrm.cloud.google.com,ComputeNodeGroup,False,True,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeNodeTemplate,False,True,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeOrganizationSecurityPolicy,True,False,False,Terraform,False
