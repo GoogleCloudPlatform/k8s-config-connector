@@ -213,6 +213,12 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 	if obj.KubeletConfig.MaxParallelImagePulls == 0 {
 		obj.KubeletConfig.MaxParallelImagePulls = 2
 	}
+	if obj.KubeletConfig.ContainerLogMaxSize == "" {
+		obj.KubeletConfig.ContainerLogMaxSize = "10Mi"
+	}
+	if obj.KubeletConfig.ContainerLogMaxFiles == 0 {
+		obj.KubeletConfig.ContainerLogMaxFiles = 5
+	}
 
 	if obj.MachineType == "" {
 		obj.MachineType = "e2-medium"
@@ -338,10 +344,30 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	update := proto.Clone(req).(*pb.UpdateNodePoolRequest)
 	update.Name = ""
+	update.ProjectId = ""
+	update.Zone = ""
+	update.ClusterId = ""
+	update.NodePoolId = ""
 
 	if update.Taints != nil {
 		obj.Config.Taints = update.GetTaints().Taints
 		update.Taints = nil
+	}
+
+	if update.KubeletConfig != nil {
+		if obj.Config.KubeletConfig == nil {
+			obj.Config.KubeletConfig = &pb.NodeKubeletConfig{}
+		}
+		proto.Merge(obj.Config.KubeletConfig, update.KubeletConfig)
+		update.KubeletConfig = nil
+	}
+
+	if update.LinuxNodeConfig != nil {
+		if obj.Config.LinuxNodeConfig == nil {
+			obj.Config.LinuxNodeConfig = &pb.LinuxNodeConfig{}
+		}
+		proto.Merge(obj.Config.LinuxNodeConfig, update.LinuxNodeConfig)
+		update.LinuxNodeConfig = nil
 	}
 
 	// TODO: Support more updates!

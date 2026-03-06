@@ -11,21 +11,29 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-    label-one: value-one
   name: nodepool-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  autoscaling:
-    maxNodeCount: 5
-    minNodeCount: 1
   clusterRef:
     name: cluster-sample-${uniqueId}
+  initialNodeCount: 1
   location: us-central1-a
   nodeConfig:
-    taint:
-    - effect: NO_SCHEDULE
-      key: newKey
-      value: newValue
+    kubeletConfig:
+      containerLogMaxFiles: 4
+      containerLogMaxSize: 100Mi
+      cpuCfsQuota: false
+      cpuCfsQuotaPeriod: 200ms
+      cpuManagerPolicy: none
+      imageGcHighThresholdPercent: 70
+      imageGcLowThresholdPercent: 60
+      imageMaximumGcAge: 2h
+      imageMinimumGcAge: 3m
+      maxParallelImagePulls: 10
+      podPidsLimit: 2048
+    linuxNodeConfig:
+      sysctls:
+        net.core.somaxconn: "2048"
   resourceID: nodepool-sample-${uniqueId}
 status:
   conditions:
