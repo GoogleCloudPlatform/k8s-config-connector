@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
-	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/klog/v2"
@@ -32,7 +31,12 @@ type FieldChange struct {
 	DesiredValue protoreflect.Value
 }
 
-func buildDiff(ctx context.Context, desired protoreflect.Message, actual protoreflect.Message) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+// ProtoDiff compares the desired and actual protoreflect.Message and returns a Diff of the fields that have changed,
+// along with a FieldMask of the paths of the changed fields.
+// If there is an error retrieving a field, it is logged and the field is included in the Diff with whatever values could be retrieved;
+// the error does not cause ProtoDiff to fail.
+// We only consider "top level" differences; if a subfield has changed we consider that the entire top-level field has changed.
+func ProtoDiff(ctx context.Context, desired protoreflect.Message, actual protoreflect.Message) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	diff := &structuredreporting.Diff{}
 
 	var paths []string
@@ -108,12 +112,4 @@ func commonGetFieldByPath(msg protoreflect.Message, fieldPath string) (protorefl
 	default:
 		return protoreflect.Value{}, false, fmt.Errorf("field %q in %T is not a message", fieldName, msg)
 	}
-}
-
-func format(v protoreflect.Value) string {
-	o := v.Interface()
-	if msg, ok := o.(protoreflect.Message); ok {
-		return prototext.Format(msg.Interface())
-	}
-	return fmt.Sprintf("[%T]:%v", o, o)
 }

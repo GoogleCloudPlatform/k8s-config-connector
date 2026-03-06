@@ -960,7 +960,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "maintenanceVersion": "MYSQL_8_0_41.R20251004.01_07",
   "name": "sqlinstance-primary-direct-${uniqueId}",
   "region": "us-central1",
-  "replicationCluster": {},
+  "replicationCluster": {
+    "failoverDrReplicaName": "${projectId}:sqlinstance-replica-direct-${uniqueId}"
+  },
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
@@ -1094,7 +1096,9 @@ X-Xss-Protection: 0
   "name": "sqlinstance-primary-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "replicationCluster": {},
+  "replicationCluster": {
+    "failoverDrReplicaName": "${projectId}:sqlinstance-replica-direct-${uniqueId}"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-primary-direct-${uniqueId}",
   "serverCaCert": {
