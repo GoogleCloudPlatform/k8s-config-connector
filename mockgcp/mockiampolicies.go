@@ -17,6 +17,7 @@ package mockgcp
 import (
 	"bytes"
 	"crypto/md5"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -39,10 +40,20 @@ func newMockIAMPolicies() *mockIAMPolicies {
 }
 
 func (m *mockIAMPolicies) buildResponse(obj proto.Message) (*http.Response, error) {
-	b, err := protojson.Marshal(obj)
+	// Use json.Marshal via a map to get alphabetical field order for stability with existing golden files
+	jsonBytes, err := protojson.Marshal(obj)
 	if err != nil {
 		return nil, err
 	}
+	var data map[string]any
+	if err := json.Unmarshal(jsonBytes, &data); err != nil {
+		return nil, err
+	}
+	b, err := json.Marshal(data)
+	if err != nil {
+		return nil, err
+	}
+
 	body := io.NopCloser(bytes.NewReader(b))
 	w := &http.Response{StatusCode: http.StatusOK, Body: body}
 
@@ -130,7 +141,6 @@ func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *ht
 	m.policies[resourcePath] = request.Policy
 
 	return m.buildResponse(request.Policy)
-
 }
 
 func sortPolicy(policy *iampb.Policy) {
@@ -138,8 +148,10 @@ func sortPolicy(policy *iampb.Policy) {
 		if policy.Bindings[i].Role != policy.Bindings[j].Role {
 			return policy.Bindings[i].Role < policy.Bindings[j].Role
 		}
-		// TODO: Sort by condition?
-		return false
+		if policy.Bindings[i].Condition.GetTitle() != policy.Bindings[j].Condition.GetTitle() {
+			return policy.Bindings[i].Condition.GetTitle() < policy.Bindings[j].Condition.GetTitle()
+		}
+		return policy.Bindings[i].Condition.GetExpression() < policy.Bindings[j].Condition.GetExpression()
 	})
 	for _, binding := range policy.Bindings {
 		slices.Sort(binding.Members)
