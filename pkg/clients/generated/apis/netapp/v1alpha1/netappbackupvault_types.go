@@ -54,7 +54,7 @@ type NetAppBackupVaultSpec struct {
 }
 
 type BackupvaultObservedStateStatus struct {
-	/* Output only. Create time of the backup vault. */
+	/* Output only. The time when the backup vault was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 

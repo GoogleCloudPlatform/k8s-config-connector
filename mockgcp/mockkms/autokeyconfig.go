@@ -87,24 +87,28 @@ func (r *autokeyAdminServer) ShowEffectiveAutokeyConfig(ctx context.Context, req
 }
 
 type autokeyConfigName struct {
-	folder string
+	folder  string
+	project string
 }
 
 func (a *autokeyConfigName) String() string {
-	return "folders/" + a.folder + "/autokeyConfig"
+	if a.folder != "" {
+		return "folders/" + a.folder + "/autokeyConfig"
+	}
+	return "projects/" + a.project + "/autokeyConfig"
 }
 
 // parseAutokeyConfigName parses a string into an AutoKeyConfig name.
-// The expected form is `folders/{FOLDER_NUMBER}/autokeyConfig`.
+// The expected form is `folders/{FOLDER_NUMBER}/autokeyConfig` or `projects/{PROJECT}/autokeyConfig`.
 func (r *autokeyAdminServer) parseAutokeyConfigName(name string) (*autokeyConfigName, error) {
 	tokens := strings.Split(name, "/")
-	if len(tokens) == 3 && tokens[0] == "folders" && tokens[2] == "autokeyConfig" {
-		//fmt.Printf("Inside mock gcp controller %s\n\n", tokens[1])
-		name := &autokeyConfigName{
-			folder: tokens[1],
+	if len(tokens) == 3 && tokens[2] == "autokeyConfig" {
+		switch tokens[0] {
+		case "folders":
+			return &autokeyConfigName{folder: tokens[1]}, nil
+		case "projects":
+			return &autokeyConfigName{project: tokens[1]}, nil
 		}
-
-		return name, nil
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)

@@ -64,23 +64,35 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 		return nil
 	}
 	out := &krm.KMSAutokeyConfigSpec{}
-	parent, _ := krm.ParseKMSAutokeyConfigExternal(in.Name)
-	out.FolderRef = &refs.FolderRef{
-		External: parent.String(),
+	if identity, err := krm.ParseKMSAutokeyConfigExternal(in.Name); err == nil {
+		if parent := identity.Parent(); parent != nil {
+			switch {
+			case parent.FolderID != "":
+				out.FolderRef = &refs.FolderRef{External: parent.String()}
+				out.ProjectRef = nil
+			case parent.ProjectID != "":
+				out.ProjectRef = &refs.ProjectRef{External: parent.String()}
+				out.FolderRef = nil
+			}
+		}
 	}
 	if in.GetKeyProject() != "" {
 		out.KeyProjectRef = &refs.ProjectRef{
 			External: in.GetKeyProject(),
 		}
 	}
+	out.KeyProjectResolutionMode = direct.Enum_FromProto(mapCtx, in.GetKeyProjectResolutionMode())
 	return out
 }
 
-func KMSAutokeyConfig_FromFields(mapCtx *direct.MapContext, id *krm.KMSAutokeyConfigIdentity, keyProject *refs.ProjectIdentity) *pb.AutokeyConfig {
+func KMSAutokeyConfig_FromFields(mapCtx *direct.MapContext, id *krm.KMSAutokeyConfigIdentity, keyProject *refs.ProjectIdentity, desired *krm.KMSAutokeyConfig) *pb.AutokeyConfig {
 	out := &pb.AutokeyConfig{}
 	out.Name = id.String()
 	if keyProject != nil {
 		out.KeyProject = "projects/" + keyProject.ProjectID // keyProject expects project of the form `projects/<projectId>` or `projects/<projectNumber>`
+	}
+	if desired != nil && desired.Spec.KeyProjectResolutionMode != nil {
+		out.KeyProjectResolutionMode = direct.Enum_ToProto[pb.AutokeyConfig_KeyProjectResolutionMode](mapCtx, desired.Spec.KeyProjectResolutionMode)
 	}
 	return out
 }
