@@ -106,9 +106,9 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcil
 }
 
 func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
-	logger := log.FromContext(ctx)
+	logger := log.FromContext(ctx).WithValues("resource", req.NamespacedName)
 
-	logger.V(1).Info("parent reconciler starting", "resource", req.NamespacedName)
+	logger.V(1).Info("parent reconciler starting")
 
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(r.gvk)
@@ -122,22 +122,22 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 	}
 	resourceControllerConfig := resourceconfig.LoadConfig()
 	if !resourceconfig.IsControllerSupported(r.gvk, controllerType) {
-		logger.V(1).Info("controller type not supported for this resource", "resource", req.NamespacedName, "type", controllerType)
+		logger.V(1).Info("controller type not supported for this resource", "type", controllerType)
 		config, err := resourceControllerConfig.GetControllersForGVK(r.gvk)
 		if err != nil {
 			return reconcile.Result{}, fmt.Errorf("error getting controller config found for GroupKind %v", r.gvk.GroupKind())
 		}
-		logger.V(1).Info("supported controller types", "resource", req.NamespacedName, "supportedControllers", config.SupportedControllers)
+		logger.V(1).Info("supported controller types", "supportedControllers", config.SupportedControllers)
 
 		// Try to write a status on the CCC
 		ccc := &corekccv1alpha1.ConfigConnectorContext{}
 		cccNamespacedName := types.NamespacedName{
 			Namespace: req.Namespace,
-			Name:      "configconnectorcontext",
+			Name:      corekccv1alpha1.ConfigConnectorContextAllowedName,
 		}
 		if err := r.Get(ctx, cccNamespacedName, ccc); err != nil {
 			if !apierrors.IsNotFound(err) {
-				logger.Error(err, "error getting ConfigConnectorContext, cannot write status", "resource", req.NamespacedName)
+				logger.Error(err, "error getting ConfigConnectorContext, cannot write status")
 			}
 		} else {
 			msg := fmt.Sprintf("controller type %q is not supported for resource %q. Supported types are: %v. Falling back to default %q.",
@@ -148,12 +148,12 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 			cccToUpdate.Status.Errors = append(cccToUpdate.Status.Errors, msg)
 
 			if err := r.Status().Update(ctx, cccToUpdate); err != nil {
-				logger.Error(err, "error updating ConfigConnectorContext status", "resource", req.NamespacedName)
+				logger.Error(err, "error updating ConfigConnectorContext status")
 			}
 		}
 
 		controllerType = config.DefaultController
-		logger.V(1).Info("falling back to default controller type", "resource", req.NamespacedName, "type", controllerType)
+		logger.V(1).Info("falling back to default controller type", "type", controllerType)
 	}
 
 	logger.V(1).Info("routing to controller", "type", controllerType)
@@ -189,7 +189,7 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 func (r *ParentReconciler) determineControllerType(ctx context.Context, u *unstructured.Unstructured) (k8s.ReconcilerType, error) {
 	// Check for resource annotation
 	annotations := u.GetAnnotations()
-	if annotations[k8s.AlphaReconcilerAnnotation] == "direct" {
+	if annotations[k8s.AlphaReconcilerAnnotation] == "direct" || annotations[k8s.ReconcilerTypeAnnotation] == "direct" {
 		return k8s.ReconcilerTypeDirect, nil
 	}
 

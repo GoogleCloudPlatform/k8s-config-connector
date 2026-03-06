@@ -207,8 +207,9 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured, c client.Client) (k8s
 	case "IAMAuditConfig":
 		return k8s.ReconcilerTypeIAMAuditConfig, nil
 	default:
-		// Check for alpha annotation to opt in to direct reconciliation.
-		if _, ok := u.GetAnnotations()[k8s.ReconcilerTypeAnnotation]; ok {
+		// Check for reconciler annotation to opt in to direct reconciliation.
+		annotations := u.GetAnnotations()
+		if annotations[k8s.AlphaReconcilerAnnotation] == "direct" || annotations[k8s.ReconcilerTypeAnnotation] == "direct" {
 			return k8s.ReconcilerTypeDirect, nil
 		}
 
