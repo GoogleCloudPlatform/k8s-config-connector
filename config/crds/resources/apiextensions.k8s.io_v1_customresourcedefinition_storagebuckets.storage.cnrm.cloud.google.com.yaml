@@ -66,6 +66,11 @@ spec:
                       objects in your bucket to appropriate storage classes based
                       on each object's access pattern.
                     type: boolean
+                  terminalStorageClass:
+                    description: 'The storage class that objects in the bucket eventually
+                      transition to if they are not accessed for some time. Supported
+                      values include: NEARLINE, ARCHIVE.'
+                    type: string
                 required:
                 - enabled
                 type: object
@@ -366,6 +371,18 @@ spec:
               observedState:
                 description: The observed state of the underlying GCP resource.
                 properties:
+                  autoclass:
+                    description: The bucket's autoclass configuration.
+                    properties:
+                      terminalStorageClassUpdateTime:
+                        description: The time at which the terminal_storage_class
+                          was last updated. This value is in RFC 3339 format.
+                        type: string
+                      toggleTime:
+                        description: The time at which the autoclass toggle was last
+                          changed. This value is in RFC 3339 format.
+                        type: string
+                    type: object
                   softDeletePolicy:
                     description: The bucket's soft delete policy, which defines the
                       period of time that soft-deleted objects will be retained, and

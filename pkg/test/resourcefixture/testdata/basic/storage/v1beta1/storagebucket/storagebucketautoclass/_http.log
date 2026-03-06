@@ -1,0 +1,367 @@
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "autoclass": {
+    "enabled": true,
+    "terminalStorageClass": "NEARLINE"
+  },
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "US",
+  "name": "storagebucket-autoclass-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "autoclass": {
+    "enabled": true,
+    "terminalStorageClass": "NEARLINE",
+    "terminalStorageClassUpdateTime": "2024-04-01T12:34:56.123456Z",
+    "toggleTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "storagebucket-autoclass-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "autoclass": {
+    "enabled": true,
+    "terminalStorageClass": "NEARLINE",
+    "terminalStorageClassUpdateTime": "2024-04-01T12:34:56.123456Z",
+    "toggleTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "storagebucket-autoclass-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "autoclass": {
+    "enabled": true,
+    "terminalStorageClass": "ARCHIVE"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "acl": [
+    {
+      "bucket": "storagebucket-autoclass-${uniqueId}",
+      "entity": "project-owners-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "storagebucket-autoclass-${uniqueId}/project-owners-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "owners"
+      },
+      "role": "OWNER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}/acl/project-owners-${projectNumber}"
+    },
+    {
+      "bucket": "storagebucket-autoclass-${uniqueId}",
+      "entity": "project-editors-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "storagebucket-autoclass-${uniqueId}/project-editors-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "editors"
+      },
+      "role": "OWNER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}/acl/project-editors-${projectNumber}"
+    },
+    {
+      "bucket": "storagebucket-autoclass-${uniqueId}",
+      "entity": "project-viewers-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "storagebucket-autoclass-${uniqueId}/project-viewers-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "viewers"
+      },
+      "role": "READER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}/acl/project-viewers-${projectNumber}"
+    }
+  ],
+  "autoclass": {
+    "enabled": true,
+    "terminalStorageClass": "ARCHIVE",
+    "terminalStorageClassUpdateTime": "2024-04-01T12:34:56.123456Z",
+    "toggleTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "defaultObjectAcl": [
+    {
+      "entity": "project-owners-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "owners"
+      },
+      "role": "OWNER"
+    },
+    {
+      "entity": "project-editors-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "editors"
+      },
+      "role": "OWNER"
+    },
+    {
+      "entity": "project-viewers-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "viewers"
+      },
+      "role": "READER"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "2",
+  "name": "storagebucket-autoclass-${uniqueId}",
+  "owner": {
+    "entity": "project-owners-${projectNumber}"
+  },
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "autoclass": {
+    "enabled": true,
+    "terminalStorageClass": "ARCHIVE",
+    "terminalStorageClassUpdateTime": "2024-04-01T12:34:56.123456Z",
+    "toggleTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "2",
+  "name": "storagebucket-autoclass-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin

@@ -50,6 +50,10 @@ type BucketAction struct {
 type BucketAutoclass struct {
 	/* While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern. */
 	Enabled bool `json:"enabled"`
+
+	/* The storage class that objects in the bucket eventually transition to if they are not accessed for some time. Supported values include: NEARLINE, ARCHIVE. */
+	// +optional
+	TerminalStorageClass *string `json:"terminalStorageClass,omitempty"`
 }
 
 type BucketCondition struct {
@@ -248,7 +252,21 @@ type StorageBucketSpec struct {
 	Website *BucketWebsite `json:"website,omitempty"`
 }
 
+type BucketAutoclassStatus struct {
+	/* The time at which the terminal_storage_class was last updated. This value is in RFC 3339 format. */
+	// +optional
+	TerminalStorageClassUpdateTime *string `json:"terminalStorageClassUpdateTime,omitempty"`
+
+	/* The time at which the autoclass toggle was last changed. This value is in RFC 3339 format. */
+	// +optional
+	ToggleTime *string `json:"toggleTime,omitempty"`
+}
+
 type BucketObservedStateStatus struct {
+	/* The bucket's autoclass configuration. */
+	// +optional
+	Autoclass *BucketAutoclassStatus `json:"autoclass,omitempty"`
+
 	/* The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy. */
 	// +optional
 	SoftDeletePolicy *BucketSoftDeletePolicyStatus `json:"softDeletePolicy,omitempty"`
