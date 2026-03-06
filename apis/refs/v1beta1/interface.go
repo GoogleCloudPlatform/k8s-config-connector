@@ -64,6 +64,18 @@ type Ref interface {
 	// value. If "Namespace" is not specified in the reference, the
 	// `defaultNamespace“ will be used instead.
 	Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error
+
+	// Used to get external from custom fields (managed by Terraform/DCL-based reconciler) if status.externalRef is not set.
+	// This is used in two ways:
+	// 1. A one-off solution to support migration from Terraform/DCL-based reconciler to direct reconciler.
+	// 2. A fallback mechanism to support backward compatibility for existing resources created by Terraform/DCL-based reconciler.
+	//
+	// Returns a slice of field paths (in string format) to try to get the external reference from.
+	// Each field path is represented as a slice of strings, where each string is a field name in the path.
+	//
+	// For example, if the external reference can be found in spec.fieldA.subFieldB,
+	// the returned value should be []string{"spec", "fieldA", "subFieldB"}.
+	GetExternalFromCustomFields() []string
 }
 
 type ExternalRef interface {
@@ -105,7 +117,14 @@ func NormalizeWithFallback(ctx context.Context, reader client.Reader, ref Ref, d
 			externalRef = fallback(u)
 		}
 		if externalRef == "" {
-			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+			// Try to get external from legacy fields if status.externalRef is not set.
+			fieldPaths := ref.GetExternalFromCustomFields()
+			if fieldPaths == nil {
+				return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+			}
+			if externalRef, _, err = unstructured.NestedString(u.Object, fieldPaths...); err != nil {
+				return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+			}
 		}
 		ref.SetExternal(externalRef)
 	}
