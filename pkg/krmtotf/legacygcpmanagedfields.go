@@ -113,6 +113,14 @@ func resolveContainerClusterNodeVersion(r *Resource, config map[string]interface
 	if err != nil {
 		return fmt.Errorf("error determining if release channel is set: %w", err)
 	}
+
+	removeDefaultNodePoolKey := k8s.FormatAnnotation("remove-default-node-pool")
+	val, ok := k8s.GetAnnotation(removeDefaultNodePoolKey, r)
+	if ok && val == "true" {
+		unstructured.RemoveNestedField(config, "nodeVersion")
+		return nil
+	}
+
 	if !found || releaseChannel == nil {
 		// Release channel is not specified, so no special behavior required.
 		return nil
@@ -168,27 +176,28 @@ func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.Instanc
 		return nil
 	}
 
-	if err := removeFromConfigIfNotApplied(r, config, nodeConfigFieldInKRMConfig); err != nil {
-		return fmt.Errorf("error removing field '%v' in config: %w", nodeConfigFieldInKRMConfig, err)
-	}
+	// If the default node pool is already removed, we MUST NOT specify nodeConfig in the desired config,
+	// even if it was originally in the manifest, because it will conflict with remove_default_node_pool=true in TF.
+	unstructured.RemoveNestedField(config, nodeConfigFieldInKRMConfig)
 	return nil
 }
 
 func topLevelObjectFieldExistsInStateMap(state map[string]interface{}, field string) (bool, error) {
 	value, ok := state[field]
-	if !ok {
+	if !ok || value == nil {
 		return false, nil
 	}
-	listVal, ok := value.([]interface{})
-	if !ok {
-		return false, fmt.Errorf("field '%v' is not an object field", field)
+	switch v := value.(type) {
+	case map[string]interface{}:
+		return len(v) > 0, nil
+	case []interface{}:
+		if len(v) == 0 {
+			return false, nil
+		}
+		return v[0] != nil, nil
+	default:
+		return false, fmt.Errorf("field '%v' is not an object field (type %T)", field, value)
 	}
-	// An object field should be considered non-existent if no sub-field is specified.
-	if len(listVal) == 0 {
-		return false, nil
-	}
-	// The response returned by terraform may insert a list of size 1 for nested fields.
-	return listVal[0] != nil, nil
 }
 
 func resolveContainerNodePoolInitialNodeCount(r *Resource, config map[string]interface{}) error {

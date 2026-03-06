@@ -57,6 +57,11 @@ func resolveUnmanagedFields(spec map[string]interface{}, r *Resource, liveState 
 		if err = RemoveFieldsFromStateThatConflictWithSpec(stateAsKRM, spec, r.ResourceConfig, []string{}, r.TFResource.Schema); err != nil {
 			return nil, fmt.Errorf("error stripping fields from state that conflict with fields already in spec: %w", err)
 		}
+	case "ContainerCluster":
+		if val, ok := k8s.GetAnnotation(k8s.FormatAnnotation("remove-default-node-pool"), r); ok && val == "true" {
+			unstructured.RemoveNestedField(stateAsKRM, "nodeVersion")
+			unstructured.RemoveNestedField(stateAsKRM, "nodeConfig")
+		}
 	}
 
 	return k8s.OverlayManagedFieldsOntoState(spec, stateAsKRM, r.ManagedFields, jsonSchema, r.ResourceConfig.HierarchicalReferences)
