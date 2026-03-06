@@ -1,63 +1,223 @@
 #!/usr/bin/env python3
 
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # This script cherry-picks (merged) PRs from the main branch to a release branch,
 # and then sends a github PR for the changes.
 #
 # It assumes that the gh CLI is installed and authenticated.
 #
-# Usage: dev/tasks/cherry-pick <release-branch> <pr-number>
+# Usage: dev/tasks/cherry-pick <release-branch> <pr-number> [--force]
 
+import argparse
+import json
 import os
+import shlex
+import shutil
 import subprocess
 import sys
 import tempfile
-import json
 
-def run(cmd):
-    print(f"Running command: {' '.join(cmd)}")
-    return subprocess.run(cmd, check=True, capture_output=True, text=True)
+def run(cmd, **kwargs):
+    print(f"Running command: {shlex.join(cmd)}")
+    try:
+        return subprocess.run(cmd, check=True, capture_output=True, text=True, **kwargs)
+    except subprocess.CalledProcessError as e:
+        print(f"Command failed with exit code {e.returncode}")
+        if e.stderr:
+            print(f"Stderr: {e.stderr}")
+        if e.stdout:
+            print(f"Stdout: {e.stdout}")
+        raise
+
+
+def get_remotes():
+    """Returns a dictionary mapping remote names to their URLs."""
+    remotes = {}
+    try:
+        # Use subprocess.run directly to avoid circular dependency with run() if we wanted to be super safe,
+        # but calling run() is fine here.
+        result = subprocess.run(["git", "remote", "-v"], capture_output=True, text=True, check=True)
+        for line in result.stdout.splitlines():
+            parts = line.split()
+            if len(parts) >= 2:
+                name, url = parts[0], parts[1]
+                if name not in remotes:
+                    remotes[name] = url
+    except subprocess.CalledProcessError:
+        pass
+    return remotes
+
+
+def find_user_remote(remotes, github_username):
+    """Tries to find a git remote that points to the user's fork."""
+    patterns = [
+        f"github.com/{github_username}/",
+        f"github.com:{github_username}/"
+    ]
+    for name, url in remotes.items():
+        for pattern in patterns:
+            if pattern in url.lower():
+                return name
+    return None
+
+
+def find_upstream_remote(remotes):
+    """Tries to find a git remote that points to the official k8s-config-connector repository."""
+    patterns = [
+        "github.com/googlecloudplatform/k8s-config-connector",
+        "github.com:googlecloudplatform/k8s-config-connector"
+    ]
+    for name, url in remotes.items():
+        for pattern in patterns:
+            if pattern in url.lower():
+                return name
+    return None
 
 
 def main():
-    if len(sys.argv) != 3:
-        print("Usage: dev/tasks/cherry-pick <release-branch> <pr-number>")
-        sys.exit(1)
-    release_branch = sys.argv[1]
-    pr_number = sys.argv[2]
+    repo_root = os.getcwd()
+    tmpdir = None
+    keep_worktree = False
 
-    repo_root = run(["git", "rev-parse", "--show-toplevel"]).stdout.strip()
-    os.chdir(repo_root)
+    parser = argparse.ArgumentParser(description="Cherry-pick a PR to a release branch.")
+    parser.add_argument("release_branch", help="The target release branch (e.g., v1.123).")
+    parser.add_argument("pr_number", help="The PR number to cherry-pick.")
+    parser.add_argument("--force", action="store_true", help="Overwrite existing local/remote branches.")
+    args = parser.parse_args()
 
-    # Get the PR info
-    pr_info_results = run(["gh", "pr", "view", pr_number, "--json", "commits,title,body"])
-    pr_info = json.loads(pr_info_results.stdout)
+    release_branch = args.release_branch
+    pr_number = args.pr_number
+    force = args.force
 
-    pr_title = f"cherry-pick: {release_branch}: {pr_info['title']}"
-    pr_body = "Cherry picking PR #" + pr_number + "\n\n" + pr_info['body']
+    try:
+        repo_root = run(["git", "rev-parse", "--show-toplevel"]).stdout.strip()
+        os.chdir(repo_root)
 
-    branch_name = f"cherry-pick-{pr_number}-{release_branch}"
-    github_username = run(["gh", "api", "user", "-q", ".login"]).stdout.strip()
-    user_fork = f"https://github.com/{github_username}/k8s-config-connector"
+        # Get the PR info
+        print(f"Fetching information for PR #{pr_number}...")
+        pr_info_results = run(["gh", "pr", "view", pr_number, "--json", "commits,title,body"])
+        pr_info = json.loads(pr_info_results.stdout)
 
-    # Create a temporary worktree
-    with tempfile.TemporaryDirectory() as tmpdir:
-        run(["git", "worktree", "add", "-b", branch_name, tmpdir, release_branch])
+        if not pr_info.get('commits'):
+            print(f"Error: No commits found for PR #{pr_number}.")
+            sys.exit(1)
+
+        pr_title = f"cherry-pick: {release_branch}: {pr_info['title']}"
+        pr_body = "Cherry picking PR #" + pr_number + "\n\n" + pr_info['body']
+
+        branch_name = f"cherry-pick-{pr_number}-{release_branch}"
+        github_username = run(["gh", "api", "user", "-q", ".login"]).stdout.strip()
+        
+        remotes = get_remotes()
+        user_remote = find_user_remote(remotes, github_username)
+        if not user_remote:
+            print(f"Error: Could not find a git remote for your fork of k8s-config-connector.")
+            print(f"We looked for a remote pointing to github.com/{github_username}/k8s-config-connector.")
+            print("Please ensure you have a remote pointing to your fork.")
+            sys.exit(1)
+        
+        print(f"Using remote '{user_remote}' for your fork.")
+
+        upstream_remote = find_upstream_remote(remotes)
+        if not upstream_remote:
+            print("Error: Could not find a git remote pointing to the official k8s-config-connector repository.")
+            print("Please ensure you have a remote pointing to GoogleCloudPlatform/k8s-config-connector.")
+            sys.exit(1)
+            
+        print(f"Using remote '{upstream_remote}' as upstream.")
+
+        # Fetch latest from upstream to ensure we have the latest release branch
+        print(f"Fetching latest from {upstream_remote}...")
+        run(["git", "fetch", upstream_remote])
+
+        # Check for existing local branch
+        branch_exists_locally = subprocess.run(["git", "rev-parse", "--verify", branch_name], capture_output=True).returncode == 0
+        if branch_exists_locally:
+            if force:
+                print(f"Deleting existing local branch {branch_name}...")
+                run(["git", "branch", "-D", branch_name])
+            else:
+                print(f"Error: local branch '{branch_name}' already exists.")
+                print(f"Use --force to overwrite it, or delete it manually with 'git branch -D {branch_name}'.")
+                sys.exit(1)
+
+        # If force is enabled, also attempt to delete existing remote branch
+        if force:
+            print(f"Attempting to delete existing remote branch {branch_name} on {user_remote}...")
+            try:
+                run(["git", "push", user_remote, "--delete", branch_name])
+            except subprocess.CalledProcessError as e:
+                if "remote ref does not exist" in e.stderr:
+                    print(f"Remote branch '{branch_name}' did not exist. Continuing.")
+                else:
+                    print(f"Warning: failed to delete remote branch: {e.stderr}")
+
+        # Create a temporary worktree
+        tmpdir = tempfile.mkdtemp(prefix=f"cherry-pick-{pr_number}-")
+        print(f"Creating temporary worktree in {tmpdir} based on {upstream_remote}/{release_branch}...")
+        run(["git", "worktree", "add", "-b", branch_name, tmpdir, f"{upstream_remote}/{release_branch}"])
+        
         os.chdir(tmpdir)
 
         # Cherry-pick the commits
-        for commit in pr_info['commits']:
-            run(["git", "cherry-pick", commit['oid']])
+        commit_oids = [c['oid'] for c in pr_info['commits']]
+        print(f"Cherry-picking {len(commit_oids)} commits: {', '.join(commit_oids)}")
+        try:
+            run(["git", "cherry-pick"] + commit_oids)
+        except subprocess.CalledProcessError:
+            print(f"\n!!! Cherry-pick failed !!!")
+            print(f"The temporary worktree has been preserved at: {tmpdir}")
+            print("Please resolve the conflicts manually in that directory, then:")
+            print("  1. git cherry-pick --continue")
+            print("     (Repeat if there are more conflicts in subsequent commits)")
+            print(f"  2. git push {user_remote} {branch_name}")
+            
+            # Use shlex.quote to safely interpolate strings for the suggested command
+            quoted_title = shlex.quote(pr_title)
+            quoted_body = shlex.quote(pr_body)
+            print(f"  3. gh pr create --title {quoted_title} --body {quoted_body} --base {release_branch} --head {github_username}:{branch_name}")
+            
+            print("\nWhen finished, remember to remove the worktree:")
+            print(f"  cd {repo_root}")
+            print(f"  git worktree remove {tmpdir}")
+            keep_worktree = True
+            sys.exit(1)
 
         # Push the new branch
-        run(["git", "push", user_fork, f"{branch_name}:refs/heads/{branch_name}"])
+        print(f"Pushing branch {branch_name} to {user_remote}...")
+        run(["git", "push", user_remote, f"{branch_name}:refs/heads/{branch_name}"])
 
         # Create the PR
+        print("Creating GitHub Pull Request...")
         pr_output = run(["gh", "pr", "create", "--title", pr_title, "--body", pr_body, "--base", release_branch, "--head", f"{github_username}:{branch_name}"]).stdout.strip()
         print(f"Created PR for cherry-pick: {pr_output}")
 
-        # Remove the worktree
+    finally:
         os.chdir(repo_root)
-        run(["git", "worktree", "remove", tmpdir, "--force"])
+        if tmpdir and not keep_worktree:
+            print(f"Cleaning up worktree at {tmpdir}...")
+            # Check if it's a valid worktree before removing to avoid masking other errors
+            worktrees_result = subprocess.run(["git", "worktree", "list"], capture_output=True, text=True)
+            if worktrees_result.returncode == 0 and tmpdir in worktrees_result.stdout:
+                try:
+                    run(["git", "worktree", "remove", tmpdir, "--force"])
+                except subprocess.CalledProcessError as e:
+                    print(f"Warning: Failed to remove worktree {tmpdir}: {e}")
+            elif os.path.exists(tmpdir):
+                shutil.rmtree(tmpdir)
 
 if __name__ == "__main__":
     main()
