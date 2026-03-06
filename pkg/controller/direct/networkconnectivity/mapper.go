@@ -15,8 +15,6 @@
 package networkconnectivity
 
 import (
-	"time"
-
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	krmnetworkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
@@ -24,7 +22,6 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func NetworkConnectivityServiceConnectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicySpec {
@@ -60,11 +57,11 @@ func NetworkConnectivityServiceConnectionPolicyObservedState_v1alpha1_FromProto(
 		return nil
 	}
 	out := &krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicyObservedState{}
-	out.CreateTime = Timestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Infrastructure = direct.LazyPtr(in.GetInfrastructure())
 	out.PscConnections = direct.Slice_FromProto(mapCtx, in.GetPscConnections(), pscConnection_v1alpha1_FromProto)
-	out.UpdateTime = Timestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
 
@@ -73,11 +70,11 @@ func NetworkConnectivityServiceConnectionPolicyObservedState_v1alpha1_ToProto(ma
 		return nil
 	}
 	out := &pb.ServiceConnectionPolicy{}
-	out.CreateTime = Timestamp_ToProto(mapCtx, in.CreateTime)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.Etag = direct.ValueOf(in.Etag)
 	out.Infrastructure = direct.ValueOf(in.Infrastructure)
 	out.PscConnections = direct.Slice_ToProto(mapCtx, in.PscConnections, pscConnection_v1alpha1_ToProto)
-	out.UpdateTime = Timestamp_ToProto(mapCtx, in.UpdateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
 
@@ -346,25 +343,4 @@ func Expr_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivity
 	out.Location = direct.ValueOf(in.Location)
 	out.Title = direct.ValueOf(in.Title)
 	return out
-}
-
-func Timestamp_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	if in == nil {
-		return nil
-	}
-	t := in.AsTime()
-	s := t.Format(time.RFC3339Nano)
-	return &s
-}
-
-func Timestamp_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	if in == nil {
-		return nil
-	}
-	t, err := time.Parse(time.RFC3339Nano, *in)
-	if err != nil {
-		mapCtx.Errorf("parsing timestamp %q", *in)
-		return nil
-	}
-	return timestamppb.New(t)
 }
