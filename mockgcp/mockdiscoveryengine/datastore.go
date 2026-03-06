@@ -53,7 +53,7 @@ func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDa
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%d/locations/%s/collections/%s", name.Project.Number, name.Location, name.Collection)
+	prefix := fmt.Sprintf("projects/%s/locations/%s/collections/%s", name.Project.ID, name.Location, name.Collection)
 	// Returns with no createTime
 	lroRet := proto.Clone(obj).(*pb.DataStore)
 	lroRet.CreateTime = nil
@@ -73,7 +73,7 @@ func (s *dataStoreService) DeleteDataStore(ctx context.Context, req *pb.DeleteDa
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%d/locations/%s/collections/%s", name.Project.Number, name.Location, name.Collection)
+	prefix := fmt.Sprintf("projects/%s/locations/%s/collections/%s", name.Project.ID, name.Location, name.Collection)
 	return s.operations.DoneLRO(ctx, prefix, nil, nil)
 }
 
@@ -132,7 +132,7 @@ type dataStoreName struct {
 }
 
 func (n *dataStoreName) String() string {
-	return fmt.Sprintf("projects/%d/locations/%s/collections/%s/dataStores/%s", n.Project.Number, n.Location, n.Collection, n.DataStore)
+	return fmt.Sprintf("projects/%s/locations/%s/collections/%s/dataStores/%s", n.Project.ID, n.Location, n.Collection, n.DataStore)
 }
 
 func (s *MockService) parseDataStoreName(name string) (*dataStoreName, error) {

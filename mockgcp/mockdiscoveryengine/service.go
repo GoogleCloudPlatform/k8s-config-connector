@@ -32,22 +32,28 @@ import (
 // +tool:mockgcp-service
 // http.host: discoveryengine.googleapis.com
 // proto.service: google.cloud.discoveryengine.v1.DataStoreService
+// proto.service: google.cloud.discoveryengine.v1.EngineService
+// proto.service: google.cloud.discoveryengine.v1.SiteSearchEngineService
+// proto.service: google.cloud.discoveryengine.v1.SchemaService
 
 func init() {
 	mockgcpregistry.Register(New)
 }
 
-// MockService represents a mocked networkservices service.
 type MockService struct {
 	*common.MockEnvironment
-	storage storage.Storage
-
+	storage    storage.Storage
 	operations *operations.Operations
 }
 
 type dataStoreService struct {
 	*MockService
 	pb.UnimplementedDataStoreServiceServer
+}
+
+type engineService struct {
+	*MockService
+	pb.UnimplementedEngineServiceServer
 }
 
 // New creates a MockService.
@@ -66,11 +72,15 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataStoreServiceServer(grpcServer, &dataStoreService{MockService: s})
+	pb.RegisterEngineServiceServer(grpcServer, &engineService{MockService: s})
+	pb.RegisterSiteSearchEngineServiceServer(grpcServer, &siteSearchEngineService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pbhttp.RegisterDataStoreServiceHandler,
+		pbhttp.RegisterEngineServiceHandler,
+		pbhttp.RegisterSiteSearchEngineServiceHandler,
 	// s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}")
 	)
 	if err != nil {
