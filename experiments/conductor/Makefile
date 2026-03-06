@@ -26,6 +26,9 @@ run:
 bin:
 	mkdir bin
 
+fmt: 
+	go fmt ./...
+
 ## ---
 ## Clean build and related artifacts to make the repo 'clean'
 ## ---
