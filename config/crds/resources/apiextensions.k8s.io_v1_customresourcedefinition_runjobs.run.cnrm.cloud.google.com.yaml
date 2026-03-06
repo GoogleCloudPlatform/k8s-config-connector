@@ -568,11 +568,23 @@ spec:
                         description: Optional. The execution environment being used
                           to host this Task.
                         type: string
+                      gpuZonalRedundancyDisabled:
+                        description: Optional. True if GPU zonal redundancy is disabled
+                          on this task template.
+                        type: boolean
                       maxRetries:
                         description: Number of retries allowed per Task, before marking
                           this Task failed. Defaults to 3.
                         format: int32
                         type: integer
+                      nodeSelector:
+                        description: Optional. The node selector for the task template.
+                        properties:
+                          accelerator:
+                            description: Required. GPU accelerator type to attach
+                              to an instance.
+                            type: string
+                        type: object
                       serviceAccountRef:
                         description: Optional. Email address of the IAM service account
                           associated with the Task of a Job. The service account represents

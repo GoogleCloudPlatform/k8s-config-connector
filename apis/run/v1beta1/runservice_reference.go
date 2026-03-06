@@ -26,7 +26,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var RunServiceGVK = GroupVersion.WithKind("RunService")
+
 
 func init() {
 	refsv1beta1.Register(&RunServiceRef{})
