@@ -35,6 +35,7 @@ var (
 	AddToScheme = SchemeBuilder.AddToScheme
 
 	CloudBuildWorkerPoolKind = "CloudBuildWorkerPool"
+	CloudBuildTriggerKind    = "CloudBuildTrigger"
 
 	GroupVersionKind = schema.GroupVersionKind{
 		Group:   GroupVersion.Group,
