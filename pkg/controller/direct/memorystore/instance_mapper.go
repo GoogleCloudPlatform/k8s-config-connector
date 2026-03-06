@@ -21,11 +21,37 @@ package memorystore
 
 import (
 	pb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
+	"google.golang.org/genproto/googleapis/type/timeofday"
+
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+func TimeOfDay_FromProto(mapCtx *direct.MapContext, in *timeofday.TimeOfDay) *krmv1beta1.TimeOfDay {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.TimeOfDay{}
+	out.Hours = direct.LazyPtr(in.GetHours())
+	out.Minutes = direct.LazyPtr(in.GetMinutes())
+	out.Seconds = direct.LazyPtr(in.GetSeconds())
+	out.Nanos = direct.LazyPtr(in.GetNanos())
+	return out
+}
+
+func TimeOfDay_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.TimeOfDay) *timeofday.TimeOfDay {
+	if in == nil {
+		return nil
+	}
+	out := &timeofday.TimeOfDay{}
+	out.Hours = direct.ValueOf(in.Hours)
+	out.Minutes = direct.ValueOf(in.Minutes)
+	out.Seconds = direct.ValueOf(in.Seconds)
+	out.Nanos = direct.ValueOf(in.Nanos)
+	return out
+}
 
 func DiscoveryEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryEndpoint) *krmv1beta1.DiscoveryEndpointObservedState {
 	if in == nil {

@@ -228,9 +228,15 @@ spec:
                                       resource.
                                     type: string
                                 type: object
+                              port:
+                                description: Optional. Output only. The port of the
+                                  consumer forwarding rule.
+                                format: int32
+                                type: integer
                               pscConnectionID:
-                                description: Required. The PSC connection id of the
-                                  forwarding rule connected to the service attachment.
+                                description: Optional. Output only. The PSC connection
+                                  id of the forwarding rule connected to the service
+                                  attachment.
                                 type: string
                               serviceAttachmentRef:
                                 description: Required. The service attachment which
@@ -780,9 +786,15 @@ spec:
                                       resource.
                                     type: string
                                 type: object
+                              port:
+                                description: Optional. Output only. The port of the
+                                  consumer forwarding rule.
+                                format: int32
+                                type: integer
                               pscConnectionID:
-                                description: Required. The PSC connection id of the
-                                  forwarding rule connected to the service attachment.
+                                description: Optional. Output only. The PSC connection
+                                  id of the forwarding rule connected to the service
+                                  attachment.
                                 type: string
                               serviceAttachmentRef:
                                 description: Required. The service attachment which

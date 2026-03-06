@@ -1098,6 +1098,11 @@ func (in *PscConnection) DeepCopyInto(out *PscConnection) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Port != nil {
+		in, out := &in.Port, &out.Port
+		*out = new(int32)
+		**out = **in
+	}
 	if in.ForwardingRuleRef != nil {
 		in, out := &in.ForwardingRuleRef, &out.ForwardingRuleRef
 		*out = new(refsv1beta1.ComputeForwardingRuleRef)
