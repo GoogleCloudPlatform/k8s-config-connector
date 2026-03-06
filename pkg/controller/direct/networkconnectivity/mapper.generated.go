@@ -18,30 +18,31 @@
 
 // +generated:mapper
 // krm.group: networkconnectivity.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: mockgcp.cloud.networkconnectivity.v1
 
 package networkconnectivity
 
 import (
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
+	krmnetworkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func GoogleRpcErrorInfo_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcErrorInfo) *krm.GoogleRpcErrorInfo {
+func GoogleRpcErrorInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcErrorInfo) *krmnetworkconnectivityv1alpha1.GoogleRpcErrorInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GoogleRpcErrorInfo{}
+	out := &krmnetworkconnectivityv1alpha1.GoogleRpcErrorInfo{}
 	out.Domain = direct.LazyPtr(in.GetDomain())
 	out.Metadata = in.Metadata
 	out.Reason = direct.LazyPtr(in.GetReason())
 	return out
 }
-func GoogleRpcErrorInfo_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcErrorInfo) *pb.GoogleRpcErrorInfo {
+func GoogleRpcErrorInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.GoogleRpcErrorInfo) *pb.GoogleRpcErrorInfo {
 	if in == nil {
 		return nil
 	}
@@ -51,17 +52,17 @@ func GoogleRpcErrorInfo_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcErro
 	out.Reason = direct.ValueOf(in.Reason)
 	return out
 }
-func GoogleRpcStatus_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcStatus) *krm.GoogleRpcStatus {
+func GoogleRpcStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcStatus) *krmnetworkconnectivityv1alpha1.GoogleRpcStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GoogleRpcStatus{}
+	out := &krmnetworkconnectivityv1alpha1.GoogleRpcStatus{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	// MISSING: Details
 	out.Message = direct.LazyPtr(in.GetMessage())
 	return out
 }
-func GoogleRpcStatus_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcStatus) *pb.GoogleRpcStatus {
+func GoogleRpcStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.GoogleRpcStatus) *pb.GoogleRpcStatus {
 	if in == nil {
 		return nil
 	}
@@ -71,123 +72,31 @@ func GoogleRpcStatus_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcStatus)
 	out.Message = direct.ValueOf(in.Message)
 	return out
 }
-
-/* found existing non-generated mapping function "Migration_FromProto", skipping
-func Migration_FromProto(mapCtx *direct.MapContext, in *pb.Migration) *krm.Migration {
+func GoogleRpcStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcStatus) *krm.GoogleRpcStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Migration{}
-	out.Source = direct.LazyPtr(in.GetSource())
-	out.Target = direct.LazyPtr(in.GetTarget())
+	out := &krm.GoogleRpcStatus{}
+	out.Code = direct.LazyPtr(in.GetCode())
+	// MISSING: Details
+	out.Message = direct.LazyPtr(in.GetMessage())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "Migration_ToProto", skipping
-func Migration_ToProto(mapCtx *direct.MapContext, in *krm.Migration) *pb.Migration {
+func GoogleRpcStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcStatus) *pb.GoogleRpcStatus {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Migration{}
-	out.Source = direct.ValueOf(in.Source)
-	out.Target = direct.ValueOf(in.Target)
+	out := &pb.GoogleRpcStatus{}
+	out.Code = direct.ValueOf(in.Code)
+	// MISSING: Details
+	out.Message = direct.ValueOf(in.Message)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "NetworkConnectivityInternalRangeObservedState_FromProto", skipping
-func NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krm.NetworkConnectivityInternalRangeObservedState {
+func NetworkConnectivityRegionalEndpointObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RegionalEndpoint) *krmnetworkconnectivityv1alpha1.NetworkConnectivityRegionalEndpointObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkConnectivityInternalRangeObservedState{}
-	// MISSING: AllocationOptions
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	// MISSING: ExcludeCIDRRanges
-	// MISSING: Immutable
-	// MISSING: Name
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Users = in.Users
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "NetworkConnectivityInternalRangeObservedState_ToProto", skipping
-func NetworkConnectivityInternalRangeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeObservedState) *pb.InternalRange {
-	if in == nil {
-		return nil
-	}
-	out := &pb.InternalRange{}
-	// MISSING: AllocationOptions
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	// MISSING: ExcludeCIDRRanges
-	// MISSING: Immutable
-	// MISSING: Name
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Users = in.Users
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "NetworkConnectivityInternalRangeSpec_FromProto", skipping
-func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krm.NetworkConnectivityInternalRangeSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkConnectivityInternalRangeSpec{}
-	// MISSING: AllocationOptions
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: ExcludeCIDRRanges
-	// MISSING: Immutable
-	out.IPCIDRRange = direct.LazyPtr(in.GetIpCidrRange())
-	out.Labels = in.Labels
-	out.Migration = Migration_FromProto(mapCtx, in.GetMigration())
-	// MISSING: Name
-	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
-	}
-	out.Overlaps = in.Overlaps
-	out.Peering = direct.LazyPtr(in.GetPeering())
-	out.PrefixLength = direct.LazyPtr(in.GetPrefixLength())
-	out.TargetCIDRRange = in.TargetCidrRange
-	out.Usage = direct.LazyPtr(in.GetUsage())
-	return out
-}
-*/
-
-/*
-found existing non-generated mapping function "NetworkConnectivityInternalRangeSpec_ToProto", skipping
-
-	func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
-		if in == nil {
-			return nil
-		}
-		out := &pb.InternalRange{}
-		// MISSING: AllocationOptions
-		out.Description = direct.ValueOf(in.Description)
-		// MISSING: ExcludeCIDRRanges
-		// MISSING: Immutable
-		out.IpCidrRange = direct.ValueOf(in.IPCIDRRange)
-		out.Labels = in.Labels
-		out.Migration = Migration_ToProto(mapCtx, in.Migration)
-		// MISSING: Name
-		if in.NetworkRef != nil {
-			out.Network = in.NetworkRef.External
-		}
-		out.Overlaps = in.Overlaps
-		out.Peering = direct.ValueOf(in.Peering)
-		out.PrefixLength = direct.ValueOf(in.PrefixLength)
-		out.TargetCidrRange = in.TargetCIDRRange
-		out.Usage = direct.ValueOf(in.Usage)
-		return out
-	}
-*/
-func NetworkConnectivityRegionalEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RegionalEndpoint) *krm.NetworkConnectivityRegionalEndpointObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkConnectivityRegionalEndpointObservedState{}
+	out := &krmnetworkconnectivityv1alpha1.NetworkConnectivityRegionalEndpointObservedState{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
 	// MISSING: Labels
@@ -196,7 +105,7 @@ func NetworkConnectivityRegionalEndpointObservedState_FromProto(mapCtx *direct.M
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func NetworkConnectivityRegionalEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityRegionalEndpointObservedState) *pb.RegionalEndpoint {
+func NetworkConnectivityRegionalEndpointObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.NetworkConnectivityRegionalEndpointObservedState) *pb.RegionalEndpoint {
 	if in == nil {
 		return nil
 	}
@@ -209,11 +118,11 @@ func NetworkConnectivityRegionalEndpointObservedState_ToProto(mapCtx *direct.Map
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func NetworkConnectivityRegionalEndpointSpec_FromProto(mapCtx *direct.MapContext, in *pb.RegionalEndpoint) *krm.NetworkConnectivityRegionalEndpointSpec {
+func NetworkConnectivityRegionalEndpointSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RegionalEndpoint) *krmnetworkconnectivityv1alpha1.NetworkConnectivityRegionalEndpointSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkConnectivityRegionalEndpointSpec{}
+	out := &krmnetworkconnectivityv1alpha1.NetworkConnectivityRegionalEndpointSpec{}
 	out.AccessType = direct.LazyPtr(in.GetAccessType())
 	if in.GetAddress() != "" {
 		out.AddressRef = &refsv1beta1.ComputeAddressRef{External: in.GetAddress()}
@@ -230,7 +139,7 @@ func NetworkConnectivityRegionalEndpointSpec_FromProto(mapCtx *direct.MapContext
 	out.TargetGoogleAPI = direct.LazyPtr(in.GetTargetGoogleApi())
 	return out
 }
-func NetworkConnectivityRegionalEndpointSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityRegionalEndpointSpec) *pb.RegionalEndpoint {
+func NetworkConnectivityRegionalEndpointSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.NetworkConnectivityRegionalEndpointSpec) *pb.RegionalEndpoint {
 	if in == nil {
 		return nil
 	}
@@ -251,22 +160,22 @@ func NetworkConnectivityRegionalEndpointSpec_ToProto(mapCtx *direct.MapContext, 
 	out.TargetGoogleApi = direct.ValueOf(in.TargetGoogleAPI)
 	return out
 }
-func NetworkConnectivityServiceConnectionPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krm.NetworkConnectivityServiceConnectionPolicyObservedState {
+func NetworkConnectivityServiceConnectionPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkConnectivityServiceConnectionPolicyObservedState{}
+	out := &krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicyObservedState{}
 	// MISSING: AutoCreatedSubnetInfo
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Infrastructure = direct.LazyPtr(in.GetInfrastructure())
 	// MISSING: Labels
 	// MISSING: Name
-	out.PSCConnections = direct.Slice_FromProto(mapCtx, in.PscConnections, PSCConnection_FromProto)
+	out.PSCConnections = direct.Slice_FromProto(mapCtx, in.PscConnections, PSCConnection_v1alpha1_FromProto)
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func NetworkConnectivityServiceConnectionPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityServiceConnectionPolicyObservedState) *pb.ServiceConnectionPolicy {
+func NetworkConnectivityServiceConnectionPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicyObservedState) *pb.ServiceConnectionPolicy {
 	if in == nil {
 		return nil
 	}
@@ -277,30 +186,11 @@ func NetworkConnectivityServiceConnectionPolicyObservedState_ToProto(mapCtx *dir
 	out.Infrastructure = direct.ValueOf(in.Infrastructure)
 	// MISSING: Labels
 	// MISSING: Name
-	out.PscConnections = direct.Slice_ToProto(mapCtx, in.PSCConnections, PSCConnection_ToProto)
+	out.PscConnections = direct.Slice_ToProto(mapCtx, in.PSCConnections, PSCConnection_v1alpha1_ToProto)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-
-/*
-found existing non-generated mapping function "NetworkConnectivityServiceConnectionPolicySpec_FromProto", skipping
-
-	func NetworkConnectivityServiceConnectionPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krm.NetworkConnectivityServiceConnectionPolicySpec {
-		if in == nil {
-			return nil
-		}
-		out := &krm.NetworkConnectivityServiceConnectionPolicySpec{}
-		// MISSING: AutoCreatedSubnetInfo
-		out.Description = direct.LazyPtr(in.GetDescription())
-		// MISSING: Labels
-		// MISSING: Name
-		out.Network = direct.LazyPtr(in.GetNetwork())
-		out.PSCConfig = PSCConfig_FromProto(mapCtx, in.GetPscConfig())
-		out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
-		return out
-	}
-*/
-func NetworkConnectivityServiceConnectionPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityServiceConnectionPolicySpec) *pb.ServiceConnectionPolicy {
+func NetworkConnectivityServiceConnectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicySpec) *pb.ServiceConnectionPolicy {
 	if in == nil {
 		return nil
 	}
@@ -310,22 +200,22 @@ func NetworkConnectivityServiceConnectionPolicySpec_ToProto(mapCtx *direct.MapCo
 	// MISSING: Labels
 	// MISSING: Name
 	out.Network = NetworkConnectivityServiceConnectionPolicySpec_Network_ToProto(mapCtx, in.Network)
-	out.PscConfig = PSCConfig_ToProto(mapCtx, in.PSCConfig)
+	out.PscConfig = PSCConfig_v1alpha1_ToProto(mapCtx, in.PSCConfig)
 	out.ServiceClass = direct.ValueOf(in.ServiceClass)
 	return out
 }
-func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfig {
+func PSCConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krmnetworkconnectivityv1alpha1.PSCConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PSCConfig{}
+	out := &krmnetworkconnectivityv1alpha1.PSCConfig{}
 	// MISSING: AllowedGoogleProducersResourceHierarchyLevel
 	out.Limit = direct.LazyPtr(in.GetLimit())
 	out.ProducerInstanceLocation = direct.LazyPtr(in.GetProducerInstanceLocation())
 	out.Subnetworks = PSCConfig_Subnetworks_FromProto(mapCtx, in.Subnetworks)
 	return out
 }
-func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConfig {
+func PSCConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.PSCConfig) *pb.PscConfig {
 	if in == nil {
 		return nil
 	}
@@ -336,16 +226,16 @@ func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConf
 	out.Subnetworks = PSCConfig_Subnetworks_ToProto(mapCtx, in.Subnetworks)
 	return out
 }
-func PSCConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krm.PSCConnection {
+func PSCConnection_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krmnetworkconnectivityv1alpha1.PSCConnection {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PSCConnection{}
+	out := &krmnetworkconnectivityv1alpha1.PSCConnection{}
 	out.ConsumerAddress = direct.LazyPtr(in.GetConsumerAddress())
 	out.ConsumerForwardingRule = direct.LazyPtr(in.GetConsumerForwardingRule())
 	out.ConsumerTargetProject = direct.LazyPtr(in.GetConsumerTargetProject())
-	out.Error = GoogleRpcStatus_FromProto(mapCtx, in.GetError())
-	out.ErrorInfo = GoogleRpcErrorInfo_FromProto(mapCtx, in.GetErrorInfo())
+	out.Error = GoogleRpcStatus_v1alpha1_FromProto(mapCtx, in.GetError())
+	out.ErrorInfo = GoogleRpcErrorInfo_v1alpha1_FromProto(mapCtx, in.GetErrorInfo())
 	out.ErrorType = direct.LazyPtr(in.GetErrorType())
 	out.GCEOperation = direct.LazyPtr(in.GetGceOperation())
 	// MISSING: IPVersion
@@ -357,7 +247,7 @@ func PSCConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *k
 	out.State = direct.LazyPtr(in.GetState())
 	return out
 }
-func PSCConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnection) *pb.PscConnection {
+func PSCConnection_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.PSCConnection) *pb.PscConnection {
 	if in == nil {
 		return nil
 	}
@@ -365,8 +255,8 @@ func PSCConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnection) *pb
 	out.ConsumerAddress = direct.ValueOf(in.ConsumerAddress)
 	out.ConsumerForwardingRule = direct.ValueOf(in.ConsumerForwardingRule)
 	out.ConsumerTargetProject = direct.ValueOf(in.ConsumerTargetProject)
-	out.Error = GoogleRpcStatus_ToProto(mapCtx, in.Error)
-	out.ErrorInfo = GoogleRpcErrorInfo_ToProto(mapCtx, in.ErrorInfo)
+	out.Error = GoogleRpcStatus_v1alpha1_ToProto(mapCtx, in.Error)
+	out.ErrorInfo = GoogleRpcErrorInfo_v1alpha1_ToProto(mapCtx, in.ErrorInfo)
 	out.ErrorType = direct.ValueOf(in.ErrorType)
 	out.GceOperation = direct.ValueOf(in.GCEOperation)
 	// MISSING: IPVersion
