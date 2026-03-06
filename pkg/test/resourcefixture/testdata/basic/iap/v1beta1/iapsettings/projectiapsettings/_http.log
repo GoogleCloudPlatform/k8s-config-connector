@@ -1,17 +1,10 @@
-GET https://iap.googleapis.com/v1/projects/${projectId}:iapSettings?%24alt=json%3Benum-encoding%3Dint
+GET https://iap.googleapis.com/v1/projects/${projectId}:iapSettings?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}"
@@ -19,7 +12,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://iap.googleapis.com/v1/projects/${projectId}:iapSettings?%24alt=json%3Benum-encoding%3Dint&updateMask=iapSettings.accessSettings.corsSettings.allowHttpOptions%2CiapSettings.accessSettings.reauthSettings%2CiapSettings.applicationSettings.cookieDomain
+PATCH https://iap.googleapis.com/v1/projects/${projectId}:iapSettings?$alt=json%3Benum-encoding%3Dint&updateMask=iapSettings.accessSettings.corsSettings.allowHttpOptions,iapSettings.accessSettings.reauthSettings,iapSettings.applicationSettings.cookieDomain
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}
@@ -43,13 +36,6 @@ X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "accessSettings": {
@@ -70,20 +56,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://iap.googleapis.com/v1/projects/${projectId}:iapSettings?%24alt=json%3Benum-encoding%3Dint
+GET https://iap.googleapis.com/v1/projects/${projectId}:iapSettings?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "accessSettings": {
@@ -104,7 +83,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://iap.googleapis.com/v1/projects/${projectId}:iapSettings?%24alt=json%3Benum-encoding%3Dint&updateMask=iapSettings.accessSettings.corsSettings.allowHttpOptions%2CiapSettings.accessSettings.reauthSettings%2CiapSettings.applicationSettings.cookieDomain
+PATCH https://iap.googleapis.com/v1/projects/${projectId}:iapSettings?$alt=json%3Benum-encoding%3Dint&updateMask=iapSettings.accessSettings.corsSettings.allowHttpOptions,iapSettings.accessSettings.reauthSettings,iapSettings.applicationSettings.cookieDomain
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}
@@ -128,13 +107,6 @@ X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "accessSettings": {
@@ -155,20 +127,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://iap.googleapis.com/v1/projects/${projectId}:iapSettings?%24alt=json%3Benum-encoding%3Dint
+GET https://iap.googleapis.com/v1/projects/${projectId}:iapSettings?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "accessSettings": {
@@ -189,7 +154,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://iap.googleapis.com/v1/projects/${projectId}:iapSettings?%24alt=json%3Benum-encoding%3Dint
+PATCH https://iap.googleapis.com/v1/projects/${projectId}:iapSettings?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}
@@ -200,13 +165,6 @@ X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}"

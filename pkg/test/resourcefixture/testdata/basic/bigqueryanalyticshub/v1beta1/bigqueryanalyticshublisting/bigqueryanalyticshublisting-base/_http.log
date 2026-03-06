@@ -4,13 +4,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -47,13 +40,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "access": [
@@ -101,13 +87,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "access": [
@@ -158,11 +137,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExcha
 404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -187,11 +161,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2FUS
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "discoveryType": "DISCOVERY_TYPE_PRIVATE",
@@ -214,11 +183,6 @@ X-Goog-User-Project: ${projectId}
 404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -247,11 +211,6 @@ X-Goog-User-Project: ${projectId}
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "allowOnlyMetadataSharing": false,
@@ -292,11 +251,6 @@ X-Goog-User-Project: ${projectId}
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "allowOnlyMetadataSharing": false,
@@ -346,11 +300,6 @@ X-Goog-User-Project: ${projectId}
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "allowOnlyMetadataSharing": false,
@@ -391,11 +340,6 @@ X-Goog-User-Project: ${projectId}
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "allowOnlyMetadataSharing": false,
@@ -436,11 +380,6 @@ X-Goog-User-Project: ${projectId}
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}
 
@@ -454,11 +393,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExcha
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "discoveryType": "DISCOVERY_TYPE_PRIVATE",
@@ -480,11 +414,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExcha
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: scaffolding on HTTPServer2
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}
 
@@ -496,13 +425,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "access": [
@@ -551,10 +473,3 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0

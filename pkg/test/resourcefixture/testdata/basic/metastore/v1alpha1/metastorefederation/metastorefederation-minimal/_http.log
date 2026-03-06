@@ -1,17 +1,10 @@
-GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmsfed-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -23,7 +16,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services?%24alt=json%3Benum-encoding%3Dint&serviceId=msfed-${uniqueId}
+POST https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services?$alt=json%3Benum-encoding%3Dint&serviceId=msfed-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
@@ -37,13 +30,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -65,13 +51,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -117,20 +96,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffederations%2Fmsfed-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -142,7 +114,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations?%24alt=json%3Benum-encoding%3Dint&federationId=msfed-${uniqueId}
+POST https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations?$alt=json%3Benum-encoding%3Dint&federationId=msfed-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
@@ -159,13 +131,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -187,13 +152,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -226,20 +184,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffederations%2Fmsfed-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "backendMetastores": {
@@ -259,7 +210,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels%2CbackendMetastores
+PATCH https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=labels,backendMetastores
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: federation.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffederations%2Fmsfed-${uniqueId}
@@ -280,13 +231,6 @@ X-Goog-Request-Params: federation.name=projects%2F${projectId}%2Flocations%2Fus-
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -308,13 +252,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -350,20 +287,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffederations%2Fmsfed-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "backendMetastores": {
@@ -386,20 +316,13 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffederations%2Fmsfed-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -421,13 +344,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -447,20 +363,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmsfed-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "artifactGcsUri": "gs://gcs-bucket-msfed-${uniqueId}",
@@ -493,20 +402,13 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmsfed-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -528,13 +430,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,

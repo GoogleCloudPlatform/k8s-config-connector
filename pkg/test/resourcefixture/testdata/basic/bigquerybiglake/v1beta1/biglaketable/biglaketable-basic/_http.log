@@ -1,17 +1,10 @@
-GET https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables/biglaketable-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables/biglaketable-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcatalogs%2Fbiglaketable-dep-${uniqueId}%2Fdatabases%2Fbiglaketable-dep-${uniqueId}%2Ftables%2Fbiglaketable-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -30,7 +23,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables?%24alt=json%3Benum-encoding%3Dint&tableId=biglaketable-${uniqueId}
+POST https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables?$alt=json%3Benum-encoding%3Dint&tableId=biglaketable-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcatalogs%2Fbiglaketable-dep-${uniqueId}%2Fdatabases%2Fbiglaketable-dep-${uniqueId}
@@ -41,13 +34,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -58,20 +44,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables/biglaketable-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables/biglaketable-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcatalogs%2Fbiglaketable-dep-${uniqueId}%2Fdatabases%2Fbiglaketable-dep-${uniqueId}%2Ftables%2Fbiglaketable-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -82,7 +61,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables/biglaketable-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=hiveOptions.parameters%2ChiveOptions.storageDescriptor.inputFormat%2ChiveOptions.storageDescriptor.locationUri%2ChiveOptions.storageDescriptor.outputFormat%2ChiveOptions.storageDescriptor.serdeInfo.serializationLib%2ChiveOptions.tableType
+PATCH https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables/biglaketable-${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=hiveOptions.parameters,hiveOptions.storageDescriptor.inputFormat,hiveOptions.storageDescriptor.locationUri,hiveOptions.storageDescriptor.outputFormat,hiveOptions.storageDescriptor.serdeInfo.serializationLib,hiveOptions.tableType
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: table.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcatalogs%2Fbiglaketable-dep-${uniqueId}%2Fdatabases%2Fbiglaketable-dep-${uniqueId}%2Ftables%2Fbiglaketable-${uniqueId}
@@ -109,13 +88,6 @@ X-Goog-Request-Params: table.name=projects%2F${projectId}%2Flocations%2Fus-centr
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -141,20 +113,13 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables/biglaketable-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables/biglaketable-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcatalogs%2Fbiglaketable-dep-${uniqueId}%2Fdatabases%2Fbiglaketable-dep-${uniqueId}%2Ftables%2Fbiglaketable-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -180,20 +145,13 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables/biglaketable-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://biglake.googleapis.com/v1/projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables/biglaketable-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcatalogs%2Fbiglaketable-dep-${uniqueId}%2Fdatabases%2Fbiglaketable-dep-${uniqueId}%2Ftables%2Fbiglaketable-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",

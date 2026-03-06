@@ -1,0 +1,46 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeReservation
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+    label-one: value-one
+  name: computereservation-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Shared Reservation for 1 machines which will be shared with other projects.
+  resourceID: computereservation-${uniqueId}
+  shareSettings:
+    projectMap:
+    - idRef:
+        external: another-project-id-${uniqueId}
+      projectIDRef:
+        external: another-project-id-${uniqueId}
+    - idRef:
+        external: project-id-${uniqueId}
+      projectIDRef:
+        external: project-id-${uniqueId}
+    shareType: SPECIFIC_PROJECTS
+  specificReservation:
+    count: 1
+    instanceProperties:
+      machineType: n1-standard-1
+  zone: us-central1-a
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTimestamp: "1970-01-01T00:00:00Z"
+  observedGeneration: 3
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}
+  status: READY
