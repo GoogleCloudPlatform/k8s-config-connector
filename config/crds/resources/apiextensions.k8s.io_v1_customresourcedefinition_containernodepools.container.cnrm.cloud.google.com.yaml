@@ -796,6 +796,15 @@ spec:
                 required:
                 - type
                 type: object
+              queuedProvisioning:
+                description: Configuration for Queued Provisioning.
+                properties:
+                  enabled:
+                    description: Whether Queued Provisioning is enabled.
+                    type: boolean
+                required:
+                - enabled
+                type: object
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`

@@ -91,6 +91,10 @@ type ClusterAddonsConfig struct {
 	/* Whether we should enable the network policy addon for the master. This must be enabled in order to enable network policy for the nodes. To enable this, you must also define a network_policy block, otherwise nothing will happen. It can only be disabled if the nodes already do not have network policies enabled. Defaults to disabled; set disabled = false to enable. */
 	// +optional
 	NetworkPolicyConfig *ClusterNetworkPolicyConfig `json:"networkPolicyConfig,omitempty"`
+
+	/* The status of the Parallelstore CSI driver addon, which allows the usage of Parallelstore instance as volumes. Defaults to disabled; set enabled = true to enable. */
+	// +optional
+	ParallelstoreCsiDriverConfig *ClusterParallelstoreCsiDriverConfig `json:"parallelstoreCsiDriverConfig,omitempty"`
 }
 
 type ClusterAdvancedDatapathObservabilityConfig struct {
@@ -819,6 +823,11 @@ type ClusterPassword struct {
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
 	// +optional
 	ValueFrom *ClusterValueFrom `json:"valueFrom,omitempty"`
+}
+
+type ClusterParallelstoreCsiDriverConfig struct {
+	/* The status of the Parallelstore CSI driver addon, which allows the usage of Parallelstore instance as volumes. Defaults to disabled; set enabled = true to enable. */
+	Enabled bool `json:"enabled"`
 }
 
 type ClusterPodCidrOverprovisionConfig struct {

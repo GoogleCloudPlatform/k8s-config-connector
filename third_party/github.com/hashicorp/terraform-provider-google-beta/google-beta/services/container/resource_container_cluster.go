@@ -79,6 +79,7 @@ var (
 		"addons_config.0.gcs_fuse_csi_driver_config",
 		"addons_config.0.istio_config",
 		"addons_config.0.kalm_config",
+		"addons_config.0.parallelstore_csi_driver_config",
 	}
 
 	privateClusterConfigKeys = []string{
@@ -344,6 +345,22 @@ func ResourceContainerCluster() *schema.Resource {
 										Type:         schema.TypeString,
 										ValidateFunc: validation.StringInSlice([]string{"LOAD_BALANCER_TYPE_INTERNAL"}, false),
 										Optional:     true,
+									},
+								},
+							},
+						},
+						"parallelstore_csi_driver_config": {
+							Type:         schema.TypeList,
+							Optional:     true,
+							Computed:     true,
+							AtLeastOneOf: addonsConfigKeys,
+							MaxItems:     1,
+							Description:  `The status of the Parallelstore CSI driver addon, which allows the usage of Parallelstore instance as volumes. Defaults to disabled; set enabled = true to enable.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"enabled": {
+										Type:     schema.TypeBool,
+										Required: true,
 									},
 								},
 							},
@@ -4371,6 +4388,14 @@ func expandClusterAddonsConfig(configured interface{}) *container.AddonsConfig {
 		}
 	}
 
+	if v, ok := config["parallelstore_csi_driver_config"]; ok && len(v.([]interface{})) > 0 {
+		addon := v.([]interface{})[0].(map[string]interface{})
+		ac.ParallelstoreCsiDriverConfig = &container.ParallelstoreCsiDriverConfig{
+			Enabled:         addon["enabled"].(bool),
+			ForceSendFields: []string{"Enabled"},
+		}
+	}
+
 	if v, ok := config["istio_config"]; ok && len(v.([]interface{})) > 0 {
 		addon := v.([]interface{})[0].(map[string]interface{})
 		ac.IstioConfig = &container.IstioConfig{
@@ -5551,7 +5576,13 @@ func flattenClusterAddonsConfig(c *container.AddonsConfig) []map[string]interfac
 			},
 		}
 	}
-
+	if c.ParallelstoreCsiDriverConfig != nil {
+		result["parallelstore_csi_driver_config"] = []map[string]interface{}{
+			{
+				"enabled": c.ParallelstoreCsiDriverConfig.Enabled,
+			},
+		}
+	}
 	if c.IstioConfig != nil {
 		result["istio_config"] = []map[string]interface{}{
 			{
