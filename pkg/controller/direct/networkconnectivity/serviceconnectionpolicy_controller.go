@@ -110,7 +110,7 @@ func (m *serviceConnectionPolicyModel) AdapterForObject(ctx context.Context, op 
 	}
 
 	mapCtx := &direct.MapContext{}
-	desiredProto := NetworkConnectivityServiceConnectionPolicySpec_ToProto(mapCtx, &obj.Spec)
+	desiredProto := NetworkConnectivityServiceConnectionPolicySpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -265,7 +265,7 @@ func (a *serviceConnectionPolicyAdapter) Create(ctx context.Context, createOp *d
 	}
 
 	mapCtx := &direct.MapContext{}
-	observedState := NetworkConnectivityServiceConnectionPolicyObservedState_FromProto(mapCtx, createdPB)
+	observedState := NetworkConnectivityServiceConnectionPolicyObservedState_v1alpha1_FromProto(mapCtx, createdPB)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -312,7 +312,7 @@ func (a *serviceConnectionPolicyAdapter) Update(ctx context.Context, updateOp *d
 	}
 
 	mapCtx := &direct.MapContext{}
-	observedState := NetworkConnectivityServiceConnectionPolicyObservedState_FromProto(mapCtx, a.actual)
+	observedState := NetworkConnectivityServiceConnectionPolicyObservedState_v1alpha1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -325,7 +325,7 @@ func (a *serviceConnectionPolicyAdapter) Export(ctx context.Context) (*unstructu
 	}
 
 	mc := &direct.MapContext{}
-	spec := NetworkConnectivityServiceConnectionPolicySpec_FromProto(mc, a.actual)
+	spec := NetworkConnectivityServiceConnectionPolicySpec_v1alpha1_FromProto(mc, a.actual)
 	if err := mc.Err(); err != nil {
 		return nil, fmt.Errorf("error converting serviceConnectionPolicy from API %w", err)
 	}
