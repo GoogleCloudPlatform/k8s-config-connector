@@ -29,8 +29,8 @@ func init() {
 
 func dataCatalogEntryGroupFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.EntryGroup{},
-		DataCatalogEntryGroupSpec_FromProto, DataCatalogEntryGroupSpec_ToProto,
-		DataCatalogEntryGroupObservedState_FromProto, DataCatalogEntryGroupObservedState_ToProto,
+		DataCatalogEntryGroupSpec_v1alpha1_FromProto, DataCatalogEntryGroupSpec_v1alpha1_ToProto,
+		DataCatalogEntryGroupObservedState_v1alpha1_FromProto, DataCatalogEntryGroupObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".display_name")

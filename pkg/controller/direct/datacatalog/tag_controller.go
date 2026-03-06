@@ -195,7 +195,7 @@ func (a *tagAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 		return fmt.Errorf("resolving template reference: %w", err)
 	}
 
-	desiredProto := DataCatalogTagSpec_ToProto(mapCtx, &a.desired.Spec)
+	desiredProto := DataCatalogTagSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -214,7 +214,7 @@ func (a *tagAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	log.V(2).Info("successfully created datacatalog tag in gcp", "name", created.Name)
 
 	status := &krm.DataCatalogTagStatus{}
-	status.ObservedState = DataCatalogTagObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DataCatalogTagObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -244,7 +244,7 @@ func (a *tagAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 		return fmt.Errorf("resolving template reference: %w", err)
 	}
 
-	desiredProto := DataCatalogTagSpec_ToProto(mapCtx, &a.desired.Spec)
+	desiredProto := DataCatalogTagSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -287,7 +287,7 @@ func (a *tagAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	}
 
 	status := &krm.DataCatalogTagStatus{}
-	status.ObservedState = DataCatalogTagObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DataCatalogTagObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -302,7 +302,7 @@ func (a *tagAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 	mapCtx := &direct.MapContext{}
 
 	// Convert actual proto to KRM spec
-	spec := DataCatalogTagSpec_FromProto(mapCtx, a.actual)
+	spec := DataCatalogTagSpec_v1alpha1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
