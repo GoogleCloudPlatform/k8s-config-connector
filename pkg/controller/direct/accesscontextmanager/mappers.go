@@ -43,15 +43,15 @@ func AccessLevelExpr_ToProto(mapCtx *direct.MapContext, in acm.AccessLevelExpr) 
 	return out
 }
 
-func Condition_RequiredAccessLevels_FromProto(mapCtx *direct.MapContext, input []string) []acm.AccessLevelRef {
+func Condition_RequiredAccessLevels_FromProto(mapCtx *direct.MapContext, input []string) []acm.AccessContextManagerAccessLevelRef {
 	if input == nil {
 		return nil
 	}
-	out := make([]acm.AccessLevelRef, len(input))
+	out := make([]acm.AccessContextManagerAccessLevelRef, len(input))
 	for index, item := range input {
 		// TODO: determine the format of item and deserialize to Ref
-		var element acm.AccessLevelRef
-		element.External = direct.LazyPtr(item)
+		var element acm.AccessContextManagerAccessLevelRef
+		element.External = item
 
 		//	out.Kind = direct.LazyPtr(in.GetKind())
 		//	out.Name = direct.LazyPtr(in.GetName())
@@ -62,7 +62,7 @@ func Condition_RequiredAccessLevels_FromProto(mapCtx *direct.MapContext, input [
 	return out
 }
 
-func Condition_RequiredAccessLevels_ToProto(mapCtx *direct.MapContext, in []acm.AccessLevelRef) []string {
+func Condition_RequiredAccessLevels_ToProto(mapCtx *direct.MapContext, in []acm.AccessContextManagerAccessLevelRef) []string {
 	if in == nil {
 		return nil
 	}
@@ -70,7 +70,7 @@ func Condition_RequiredAccessLevels_ToProto(mapCtx *direct.MapContext, in []acm.
 	for index, item := range in {
 		// TODO: determine the format of item and deserialize to Ref
 		var element string
-		element = direct.ValueOf(item.External)
+		element = item.External
 
 		//	element.Kind = direct.ValueOf(in.Kind)
 		//	element.Name = direct.ValueOf(in.Name)
