@@ -18,6 +18,7 @@
 package compute
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"reflect"
@@ -36,6 +37,8 @@ func ResourceComputeAddress() *schema.Resource {
 		Read:   resourceComputeAddressRead,
 		Update: resourceComputeAddressUpdate,
 		Delete: resourceComputeAddressDelete,
+
+		CustomizeDiff: resourceComputeAddressCustomizeDiff,
 
 		Importer: &schema.ResourceImporter{
 			State: resourceComputeAddressImport,
@@ -101,6 +104,13 @@ Note: if you set this argument's value as 'INTERNAL' you need to leave the 'netw
 used for deciding which type of endpoint this address can be used after
 the external IPv6 address reservation. Possible values: ["VM", "NETLB"]`,
 			},
+			"ip_collection": {
+				Type:             schema.TypeString,
+				Optional:         true,
+				ForceNew:         true,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+				Description:      `The URL of the PublicDelegatedPrefix resource to which the IP addresses in this collection belong. Note: this field can only be used with EXTERNAL type with IPV4_PD purpose.`,
+			},
 			"labels": {
 				Type:        schema.TypeMap,
 				Optional:    true,
@@ -156,8 +166,10 @@ configuration. These addresses are regional resources.
 configure Private Service Connect. Only global internal addresses can use
 this purpose.
 
+* IPV4_PD for a public IPv4 prefix collection.
 
-This should only be set when using an Internal address.`,
+
+This should only be set when using an Internal address, except for IPV4_PD which is used with EXTERNAL addresses.`,
 			},
 			"region": {
 				Type:             schema.TypeString,
@@ -292,6 +304,12 @@ func resourceComputeAddressCreate(d *schema.ResourceData, meta interface{}) erro
 		return err
 	} else if v, ok := d.GetOkExists("ip_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(ipVersionProp)) && (ok || !reflect.DeepEqual(v, ipVersionProp)) {
 		obj["ipVersion"] = ipVersionProp
+	}
+	ipCollectionProp, err := expandComputeAddressIpCollection(d.Get("ip_collection"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("ip_collection"); !tpgresource.IsEmptyValue(reflect.ValueOf(ipCollectionProp)) && (ok || !reflect.DeepEqual(v, ipCollectionProp)) {
+		obj["ipCollection"] = ipCollectionProp
 	}
 	ipv6EndpointTypeProp, err := expandComputeAddressIpv6EndpointType(d.Get("ipv6_endpoint_type"), d, config)
 	if err != nil {
@@ -483,6 +501,9 @@ func resourceComputeAddressRead(d *schema.ResourceData, meta interface{}) error 
 		return fmt.Errorf("Error reading Address: %s", err)
 	}
 	if err := d.Set("ip_version", flattenComputeAddressIpVersion(res["ipVersion"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Address: %s", err)
+	}
+	if err := d.Set("ip_collection", flattenComputeAddressIpCollection(res["ipCollection"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Address: %s", err)
 	}
 	if err := d.Set("ipv6_endpoint_type", flattenComputeAddressIpv6EndpointType(res["ipv6EndpointType"], d, config)); err != nil {
@@ -806,4 +827,39 @@ func expandComputeAddressRegion(v interface{}, d tpgresource.TerraformResourceDa
 		return nil, fmt.Errorf("Invalid value for region: %s", err)
 	}
 	return f.RelativeLink(), nil
+}
+
+func flattenComputeAddressIpCollection(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return v
+	}
+	return tpgresource.ConvertSelfLinkToV1(v.(string))
+}
+
+func expandComputeAddressIpCollection(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	if v == nil || v.(string) == "" {
+		return nil, nil
+	}
+	f, err := tpgresource.ParseRegionalFieldValue("publicDelegatedPrefixes", v.(string), "project", "region", "zone", d, config, true)
+	if err != nil {
+		return nil, fmt.Errorf("Invalid value for ip_collection: %s", err)
+	}
+	return f.RelativeLink(), nil
+}
+
+func resourceComputeAddressCustomizeDiff(_ context.Context, d *schema.ResourceDiff, meta interface{}) error {
+	purpose := d.Get("purpose").(string)
+	ipCollection := d.Get("ip_collection").(string)
+
+	if purpose == "IPV4_PD" {
+		if ipCollection == "" {
+			return fmt.Errorf("ip_collection must be set when purpose is IPV4_PD")
+		}
+	} else {
+		if ipCollection != "" {
+			return fmt.Errorf("ip_collection can only be set when purpose is IPV4_PD")
+		}
+	}
+
+	return nil
 }
