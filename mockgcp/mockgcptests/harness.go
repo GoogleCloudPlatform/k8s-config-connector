@@ -43,6 +43,14 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+type GCPTargetMode string
+
+const (
+	GCPTargetModeReal GCPTargetMode = "real"
+	GCPTargetModeMock GCPTargetMode = "mock"
+	GCPTargetModeVCR  GCPTargetMode = "vcr"
+)
+
 type Harness struct {
 	*testing.T
 
@@ -70,16 +78,37 @@ type Harness struct {
 	ProxyEndpoint *net.TCPAddr
 
 	goldenFiles []string
+
+	// GCPTarget is the GCP mode to use (real, mock, vcr)
+	// If not set, will use the E2E_GCP_TARGET env var
+	GCPTarget GCPTargetMode
 }
 
-func NewHarness(t *testing.T) *Harness {
-	ctx := context.TODO()
+type HarnessOption func(*Harness)
+
+func WithGCPTarget(gcpTarget GCPTargetMode) HarnessOption {
+	return func(h *Harness) {
+		h.GCPTarget = gcpTarget
+	}
+}
+func NewHarness( t *testing.T, opts ...HarnessOption) *Harness {
+	ctx := t.Context()
+	
 	ctx, close := context.WithCancel(ctx)
 
 	h := &Harness{
 		T:   t,
 		Ctx: ctx,
 	}
+
+	for _, opt := range opts {
+		opt(h)
+	}
+
+	if h.GCPTarget == "" {
+		h.GCPTarget = GCPTargetMode(os.Getenv("E2E_GCP_TARGET"))
+	}
+
 	t.Cleanup(h.cleanup)
 	t.Cleanup(close)
 	return h
@@ -123,7 +152,7 @@ func (t *Harness) Init() {
 	log := klog.FromContext(ctx)
 
 	var mockCloudGRPCClientConnection *grpc.ClientConn
-	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+	if t.GCPTarget == GCPTargetModeMock {
 		t.Logf("creating mock gcp")
 
 		var kubeClient client.Client // TODO: We should replace this, it didn't work
@@ -148,7 +177,7 @@ func (t *Harness) Init() {
 
 		t.gcpAccessToken = "dummytoken"
 		// kccConfig.GCPAccessToken = h.gcpAccessToken
-	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
+	} else if t.GCPTarget == GCPTargetModeReal {
 		t.Logf("targeting real GCP")
 		// } else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
 		// 	t.Logf("creating vcr test")
@@ -158,7 +187,7 @@ func (t *Harness) Init() {
 		mockCloud := mockgcp.NewMockRoundTripperForTest(t.T, kubeClient, storage.NewInMemoryStorage())
 		t.registeredServices = mockCloud.(mockgcpregistry.Normalizer)
 	} else {
-		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
+		t.Fatalf("E2E_GCP_TARGET=%q not supported", t.GCPTarget)
 	}
 
 	if os.Getenv("E2E_GCP_TARGET") == "mock" {
@@ -249,7 +278,7 @@ func (t *Harness) Init() {
 		log.Info("env var ARTIFACTS is not set; will not record http log")
 	}
 
-	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
+	if t.GCPTarget == GCPTargetModeVCR {
 		t.Fatalf("vcr target not supported here")
 	} else {
 		// Intercept (and log) GRPC requests
@@ -357,4 +386,14 @@ func (t *Harness) RunCommand(cmdline string) {
 		t.Logf("stderr: %v", stderr.String())
 		t.Fatalf("running command %q: %v", strings.Join(args, " "), err)
 	}
+}
+
+func (h *Harness) GCPAuthorization() oauth2.TokenSource {
+	return oauth2.StaticTokenSource(&oauth2.Token{AccessToken: h.gcpAccessToken})
+}
+
+// GCPHTTPClient is the http.Client to use when talking to GCP
+// It is wired up to our mocks for tests.
+func (h *Harness) GCPHTTPClient() *http.Client {
+	return h.HTTPClient
 }

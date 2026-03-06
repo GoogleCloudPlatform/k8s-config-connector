@@ -21,6 +21,7 @@ import (
 	"time"
 
 	"golang.org/x/oauth2"
+	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
@@ -52,9 +53,13 @@ type PreviewInstance struct {
 
 // PreviewInstanceOptions are the options for creating a PreviewInstance.
 type PreviewInstanceOptions struct {
-	// UpstreamRESTConfig is the rest configuration to use when talking to upstream (real) kube-apiserver
+	// UpstreamKubeClient is the kube client to use when talking to upstream (real) kube-apiserver
 	// (Upstream kube-apiserver may be mocked in tests)
-	UpstreamRESTConfig *rest.Config
+	UpstreamKubeClient KubeClient
+
+	// UpstreamKubeRESTMapper is the rest mapper to use when talking to upstream (real) kube-apiserver
+	// (Upstream kube-apiserver may be mocked in tests)
+	UpstreamKubeRESTMapper meta.RESTMapper
 
 	// UpstreamGCPAuthorization is the authorization to use when talking to upstream (real) GCP
 	// (Upstream GCP may be mocked in tests)
@@ -79,14 +84,13 @@ type PreviewInstanceOptions struct {
 
 // NewPreviewInstance creates a new PreviewInstance.
 func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*PreviewInstance, error) {
-	upstreamRESTConfig := options.UpstreamRESTConfig
 	authorization := options.UpstreamGCPAuthorization
 	upstreamGCPHTTPClient := options.UpstreamGCPHTTPClient
 	if upstreamGCPHTTPClient == nil {
 		upstreamGCPHTTPClient = http.DefaultClient
 	}
 
-	hookKube, err := newInterceptingKubeClient(recorder, upstreamRESTConfig)
+	hookKube, err := newInterceptingKubeClient(recorder, options.UpstreamKubeClient, options.UpstreamKubeRESTMapper)
 	if err != nil {
 		return nil, err
 	}
