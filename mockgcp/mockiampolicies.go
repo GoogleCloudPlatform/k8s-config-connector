@@ -21,8 +21,11 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"slices"
+	"sort"
 
 	"cloud.google.com/go/iam/apiv1/iampb"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -36,11 +39,21 @@ func newMockIAMPolicies() *mockIAMPolicies {
 	}
 }
 
-func (m *mockIAMPolicies) buildResponse(obj any) (*http.Response, error) {
-	b, err := json.Marshal(obj)
+func (m *mockIAMPolicies) buildResponse(obj proto.Message) (*http.Response, error) {
+	// Use json.Marshal via a map to get alphabetical field order for stability with existing golden files
+	jsonBytes, err := protojson.Marshal(obj)
 	if err != nil {
 		return nil, err
 	}
+	var data map[string]any
+	if err := json.Unmarshal(jsonBytes, &data); err != nil {
+		return nil, err
+	}
+	b, err := json.Marshal(data)
+	if err != nil {
+		return nil, err
+	}
+
 	body := io.NopCloser(bytes.NewReader(b))
 	w := &http.Response{StatusCode: http.StatusOK, Body: body}
 
@@ -64,8 +77,18 @@ func (m *mockIAMPolicies) getIAMPolicy(resourcePath string) (*iampb.Policy, erro
 	policy := m.policies[resourcePath]
 	if policy == nil {
 		policy = &iampb.Policy{}
+	}
+
+	// Return a copy to avoid mutation
+	policy = proto.Clone(policy).(*iampb.Policy)
+
+	// Sort for determinism
+	sortPolicy(policy)
+
+	if policy.Etag == nil {
 		policy.Etag = computeEtag(policy)
 	}
+
 	return policy, nil
 }
 
@@ -84,7 +107,7 @@ func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *ht
 	if err != nil {
 		return nil, err
 	}
-	if err := json.Unmarshal(requestBytes, request); err != nil {
+	if err := protojson.Unmarshal(requestBytes, request); err != nil {
 		return nil, err
 	}
 
@@ -112,15 +135,43 @@ func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *ht
 		request.Policy.Version = 1
 	}
 
+	sortPolicy(request.Policy)
+
 	request.Policy.Etag = computeEtag(request.Policy)
 	m.policies[resourcePath] = request.Policy
 
 	return m.buildResponse(request.Policy)
+}
 
+func sortPolicy(policy *iampb.Policy) {
+	sort.Slice(policy.Bindings, func(i, j int) bool {
+		if policy.Bindings[i].Role != policy.Bindings[j].Role {
+			return policy.Bindings[i].Role < policy.Bindings[j].Role
+		}
+		if policy.Bindings[i].Condition.GetTitle() != policy.Bindings[j].Condition.GetTitle() {
+			return policy.Bindings[i].Condition.GetTitle() < policy.Bindings[j].Condition.GetTitle()
+		}
+		return policy.Bindings[i].Condition.GetExpression() < policy.Bindings[j].Condition.GetExpression()
+	})
+	for _, binding := range policy.Bindings {
+		slices.Sort(binding.Members)
+	}
+	sort.Slice(policy.AuditConfigs, func(i, j int) bool {
+		return policy.AuditConfigs[i].Service < policy.AuditConfigs[j].Service
+	})
+	for _, auditConfig := range policy.AuditConfigs {
+		sort.Slice(auditConfig.AuditLogConfigs, func(i, j int) bool {
+			return auditConfig.AuditLogConfigs[i].LogType < auditConfig.AuditLogConfigs[j].LogType
+		})
+	}
 }
 
 func computeEtag(policy *iampb.Policy) []byte {
-	b, err := proto.Marshal(policy)
+	// Create a copy and clear fields that shouldn't affect etag
+	temp := proto.Clone(policy).(*iampb.Policy)
+	temp.Etag = nil
+
+	b, err := proto.Marshal(temp)
 	if err != nil {
 		panic(fmt.Sprintf("converting to proto: %v", err))
 	}
