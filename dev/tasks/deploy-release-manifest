@@ -46,9 +46,9 @@ if [ ${#VERSIONS[@]} -eq 0 ]; then
 fi
 
 # Find the most recent release version
-NEWEST_VERSION=$(git log --oneline | 
-    grep "Release " | 
-    sed -n 's/.*Release \(.*\)/\1/p' | 
+NEWEST_VERSION=$(git log --oneline |
+    grep "Release " |
+    sed -n 's/.*Release \(.*\)/\1/p' |
     head -n 1)
 
 if [ -z "$NEWEST_VERSION" ]; then
@@ -74,6 +74,8 @@ echo "Added standard release manifest to ${MANUAL_DIR}/operator-system/configcon
 
 kustomize build ${REPO_ROOT}/config/installbundle/release-manifests/autopilot -o ${MANUAL_DIR}/operator-system/autopilot-configconnector-operator.yaml
 echo "Added autopilot release manifest to ${MANUAL_DIR}/operator-system/autopilot-configconnector-operator.yaml"
+
+go build -ldflags="-X 'github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion/pkg/version.kccVersion=$NEWEST_VERSION'" -o ${MANUAL_DIR}/operator-system/kompanion github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion
 
 cd ${REPO_ROOT}
 cp -rf operator/config/samples ${MANUAL_DIR}/
