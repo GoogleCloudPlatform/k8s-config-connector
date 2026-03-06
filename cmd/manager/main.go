@@ -182,7 +182,8 @@ func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace strin
 				},
 			},
 		},
-		MultiClusterLease: multiclusterlease,
+		MultiClusterLease:  multiclusterlease,
+		SkipNameValidation: true,
 	}
 
 	controllersCfg.UserProjectOverride = userProjectOverride
