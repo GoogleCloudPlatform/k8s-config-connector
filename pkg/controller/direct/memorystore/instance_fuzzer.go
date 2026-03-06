@@ -53,7 +53,6 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".managed_backup_source")
 	f.UnimplementedFields.Insert(".async_instance_endpoints_deletion_enabled")
 	f.UnimplementedFields.Insert(".ondemand_maintenance")
-	f.UnimplementedFields.Insert(".cross_instance_replication_config")
 	f.UnimplementedFields.Insert(".gcs_source")
 
 	f.SpecFields.Insert(".labels")
@@ -69,6 +68,7 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".deletion_protection_enabled")
 	f.SpecFields.Insert(".endpoints")
 	f.SpecFields.Insert(".mode")
+	f.SpecFields.Insert(".cross_instance_replication_config")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
@@ -77,6 +77,7 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".node_config") // NodeConfig is an output-only field in the proto, but KRM needs it for status.
 	f.StatusFields.Insert(".endpoints")
+	f.StatusFields.Insert(".cross_instance_replication_config")
 
 	f.Unimplemented_NotYetTriaged(".available_maintenance_versions")
 	f.Unimplemented_NotYetTriaged(".effective_maintenance_version")

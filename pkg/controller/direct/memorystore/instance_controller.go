@@ -124,7 +124,39 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 			// }
 		}
 	}
+	if obj.Spec.CrossInstanceReplicationConfig != nil {
+		crr := obj.Spec.CrossInstanceReplicationConfig
+		instanceRole := ""
+		if crr.InstanceRole != nil {
+			instanceRole = *crr.InstanceRole
+		}
+		switch instanceRole {
+		case "PRIMARY":
+			for _, secondaryInstance := range crr.SecondaryInstances {
+				if err := resolveRemoteInstanceRef(ctx, reader, obj, &secondaryInstance); err != nil {
+					return err
+				}
+			}
+		case "SECONDARY":
+			if err := resolveRemoteInstanceRef(ctx, reader, obj, crr.PrimaryInstance); err != nil {
+				return err
+			}
+		default:
+			// do nothing
+		}
+	}
 	return nil
+}
+
+func resolveRemoteInstanceRef(ctx context.Context, reader client.Reader, obj *krm.MemorystoreInstance, remoteInstance *krm.CrossInstanceReplicationConfig_RemoteInstance) error {
+	if remoteInstance == nil {
+		return nil
+	}
+	if remoteInstance.InstanceRef == nil {
+		return fmt.Errorf("InstanceRef is nil")
+	}
+	_, err := remoteInstance.InstanceRef.NormalizedExternal(ctx, reader, obj.Namespace)
+	return err
 }
 
 func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -187,6 +219,7 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if err != nil {
 		return fmt.Errorf("Instance %s waiting creation: %w", a.id, err)
 	}
+	a.actual = created
 	log.V(2).Info("successfully created Instance", "name", a.id)
 
 	status := &krm.MemorystoreInstanceStatus{}
@@ -261,6 +294,9 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		report.AddField("node_type", a.actual.NodeType, desiredPb.NodeType)
 		paths = append(paths, "node_type")
 	}
+	if a.desired.Spec.CrossInstanceReplicationConfig != nil && !reflect.DeepEqual(desiredPb.CrossInstanceReplicationConfig, a.actual.CrossInstanceReplicationConfig) {
+		paths = append(paths, "cross_instance_replication_config")
+	}
 
 	updated := a.actual
 	if len(paths) == 0 {
@@ -285,6 +321,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 			if err != nil {
 				return fmt.Errorf("instance %s waiting update: %w", a.id, err)
 			}
+			a.actual = updated
 			log.V(2).Info("successfully updated Instance", "name", a.id, "updateMask", path)
 		}
 		log.V(2).Info("successfully updated Instance", "name", a.id)
@@ -295,6 +332,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 

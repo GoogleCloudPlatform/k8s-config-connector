@@ -27,6 +27,110 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func CrossInstanceReplicationConfig_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krmv1beta1.CrossInstanceReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.CrossInstanceReplicationConfig{}
+	out.InstanceRole = direct.Enum_FromProto(mapCtx, in.GetInstanceRole())
+	switch in.GetInstanceRole() {
+	case pb.CrossInstanceReplicationConfig_PRIMARY:
+		out.SecondaryInstances = direct.Slice_FromProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstance_FromProto)
+	case pb.CrossInstanceReplicationConfig_SECONDARY:
+		out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstance_FromProto(mapCtx, in.GetPrimaryInstance())
+	default:
+		// do nothing
+	}
+	return out
+}
+func CrossInstanceReplicationConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CrossInstanceReplicationConfig) *pb.CrossInstanceReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossInstanceReplicationConfig{}
+	out.InstanceRole = direct.Enum_ToProto[pb.CrossInstanceReplicationConfig_InstanceRole](mapCtx, in.InstanceRole)
+	switch out.InstanceRole {
+	case pb.CrossInstanceReplicationConfig_PRIMARY:
+		out.SecondaryInstances = direct.Slice_ToProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstance_ToProto)
+	case pb.CrossInstanceReplicationConfig_SECONDARY:
+		out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstance_ToProto(mapCtx, in.PrimaryInstance)
+	default:
+		// do nothing
+	}
+	return out
+}
+func CrossInstanceReplicationConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krmv1beta1.CrossInstanceReplicationConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.CrossInstanceReplicationConfigObservedState{}
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Membership = CrossInstanceReplicationConfig_MembershipObservedState_FromProto(mapCtx, in.GetMembership())
+	return out
+}
+func CrossInstanceReplicationConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CrossInstanceReplicationConfigObservedState) *pb.CrossInstanceReplicationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossInstanceReplicationConfig{}
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Membership = CrossInstanceReplicationConfig_MembershipObservedState_ToProto(mapCtx, in.Membership)
+	return out
+}
+func CrossInstanceReplicationConfig_MembershipObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig_Membership) *krmv1beta1.CrossInstanceReplicationConfig_MembershipObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.CrossInstanceReplicationConfig_MembershipObservedState{}
+	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto(mapCtx, in.GetPrimaryInstance())
+	out.SecondaryInstances = direct.Slice_FromProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto)
+	return out
+}
+func CrossInstanceReplicationConfig_MembershipObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CrossInstanceReplicationConfig_MembershipObservedState) *pb.CrossInstanceReplicationConfig_Membership {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossInstanceReplicationConfig_Membership{}
+	out.PrimaryInstance = CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto(mapCtx, in.PrimaryInstance)
+	out.SecondaryInstances = direct.Slice_ToProto(mapCtx, in.SecondaryInstances, CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto)
+	return out
+}
+func CrossInstanceReplicationConfig_RemoteInstance_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig_RemoteInstance) *krmv1beta1.CrossInstanceReplicationConfig_RemoteInstance {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.CrossInstanceReplicationConfig_RemoteInstance{}
+	if in.GetInstance() != "" {
+		out.InstanceRef = &krmv1beta1.InstanceRef{External: in.GetInstance()}
+	}
+	return out
+}
+func CrossInstanceReplicationConfig_RemoteInstance_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CrossInstanceReplicationConfig_RemoteInstance) *pb.CrossInstanceReplicationConfig_RemoteInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossInstanceReplicationConfig_RemoteInstance{}
+	if in.InstanceRef != nil {
+		out.Instance = in.InstanceRef.External
+	}
+	return out
+}
+func CrossInstanceReplicationConfig_RemoteInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig_RemoteInstance) *krmv1beta1.CrossInstanceReplicationConfig_RemoteInstanceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.CrossInstanceReplicationConfig_RemoteInstanceObservedState{}
+	out.Uid = direct.LazyPtr(in.GetUid())
+	return out
+}
+func CrossInstanceReplicationConfig_RemoteInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CrossInstanceReplicationConfig_RemoteInstanceObservedState) *pb.CrossInstanceReplicationConfig_RemoteInstance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CrossInstanceReplicationConfig_RemoteInstance{}
+	out.Uid = direct.ValueOf(in.Uid)
+	return out
+}
 func Instance_ConnectionDetail_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krmv1beta1.Instance_ConnectionDetail {
 	if in == nil {
 		return nil
@@ -179,6 +283,7 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.NodeConfig = NodeConfigObservedState_FromProto(mapCtx, in.GetNodeConfig())
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	return out
 }
 func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceObservedState) *pb.Instance {
@@ -193,6 +298,7 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Uid = direct.ValueOf(in.Uid)
 	out.NodeConfig = NodeConfigObservedState_ToProto(mapCtx, in.NodeConfig)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfigObservedState_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	return out
 }
 func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceSpec {
@@ -213,6 +319,7 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_FromProto)
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_FromProto(mapCtx, in.GetCrossInstanceReplicationConfig())
 	return out
 }
 func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MemorystoreInstanceSpec) *pb.Instance {
@@ -233,6 +340,7 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.M
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_ToProto)
 	out.Mode = direct.Enum_ToProto[pb.Instance_Mode](mapCtx, in.Mode)
+	out.CrossInstanceReplicationConfig = CrossInstanceReplicationConfig_ToProto(mapCtx, in.CrossInstanceReplicationConfig)
 	return out
 }
 func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krmv1beta1.NodeConfig {

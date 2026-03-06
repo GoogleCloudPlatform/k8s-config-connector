@@ -620,6 +620,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossInstanceReplicationConfig": {
+      "instanceRole": "NONE"
+    },
     "deletionProtectionEnabled": true,
     "endpoints": [
       {
@@ -685,6 +688,9 @@ X-Xss-Protection: 0
 {
   "authorizationMode": 2,
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossInstanceReplicationConfig": {
+    "instanceRole": 1
+  },
   "deletionProtectionEnabled": true,
   "endpoints": [
     {
@@ -833,6 +839,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossInstanceReplicationConfig": {
+      "instanceRole": "NONE"
+    },
     "deletionProtectionEnabled": true,
     "endpoints": [
       {
@@ -983,6 +992,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossInstanceReplicationConfig": {
+      "instanceRole": "NONE"
+    },
     "deletionProtectionEnabled": true,
     "endpoints": [
       {
@@ -1133,6 +1145,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossInstanceReplicationConfig": {
+      "instanceRole": "NONE"
+    },
     "deletionProtectionEnabled": false,
     "endpoints": [
       {
@@ -1283,6 +1298,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossInstanceReplicationConfig": {
+      "instanceRole": "NONE"
+    },
     "deletionProtectionEnabled": false,
     "endpoints": [
       {
@@ -1434,6 +1452,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossInstanceReplicationConfig": {
+      "instanceRole": "NONE"
+    },
     "deletionProtectionEnabled": false,
     "endpoints": [
       {
@@ -1586,6 +1607,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossInstanceReplicationConfig": {
+      "instanceRole": "NONE"
+    },
     "deletionProtectionEnabled": false,
     "endpoints": [
       {
@@ -1738,6 +1762,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossInstanceReplicationConfig": {
+      "instanceRole": "NONE"
+    },
     "deletionProtectionEnabled": false,
     "endpoints": [
       {
@@ -1807,6 +1834,9 @@ X-Xss-Protection: 0
 {
   "authorizationMode": 2,
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossInstanceReplicationConfig": {
+    "instanceRole": 1
+  },
   "deletionProtectionEnabled": false,
   "endpoints": [
     {

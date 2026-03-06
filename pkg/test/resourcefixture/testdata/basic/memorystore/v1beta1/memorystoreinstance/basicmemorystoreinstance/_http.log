@@ -85,6 +85,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "AUTH_DISABLED",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossInstanceReplicationConfig": {
+      "instanceRole": "NONE"
+    },
     "deletionProtectionEnabled": false,
     "engineVersion": "VALKEY_7_2",
     "mode": "CLUSTER",
@@ -127,6 +130,9 @@ X-Xss-Protection: 0
 {
   "authorizationMode": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossInstanceReplicationConfig": {
+    "instanceRole": 1
+  },
   "deletionProtectionEnabled": false,
   "engineVersion": "VALKEY_7_2",
   "mode": 2,
@@ -213,6 +219,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.memorystore.v1.Instance",
     "authorizationMode": "AUTH_DISABLED",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "crossInstanceReplicationConfig": {
+      "instanceRole": "NONE"
+    },
     "deletionProtectionEnabled": false,
     "engineVersion": "VALKEY_7_2",
     "mode": "CLUSTER",
@@ -256,6 +265,9 @@ X-Xss-Protection: 0
 {
   "authorizationMode": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "crossInstanceReplicationConfig": {
+    "instanceRole": 1
+  },
   "deletionProtectionEnabled": false,
   "engineVersion": "VALKEY_7_2",
   "mode": 2,
