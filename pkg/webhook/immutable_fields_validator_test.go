@@ -16,6 +16,7 @@ package webhook
 
 import (
 	"container/list"
+	"context"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -2599,5 +2600,249 @@ func TestDirectResourcesAlwaysAllowed(t *testing.T) {
 		if response.Allowed != true {
 			t.Fatalf("unexpected value for Allowed: got '%v', want 'true'", response.Allowed)
 		}
+	}
+}
+
+func TestForceAcquireSkipsImmutableFieldValidationForTFResource(t *testing.T) {
+	t.Parallel()
+	// Create a new instance of the handler for each test function,
+	// because NewImmutableFieldsValidatorHandler may load different
+	// ServiceMappingLoaders.
+
+	tests := []struct {
+		name         string
+		obj          *unstructured.Unstructured
+		oldObj       *unstructured.Unstructured
+		tfSchemaName string
+		response     admission.Response
+	}{
+		{
+			name: "force-acquire annotation present, immutable field changed - should allow",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "bigquery.cnrm.cloud.google.com/v1beta1",
+					"kind":       "BigQueryDataset",
+					"metadata": map[string]interface{}{
+						"name": "test-dataset",
+						"annotations": map[string]interface{}{
+							k8s.ProjectIDAnnotation:    "my-project",
+							k8s.ForceAcquireAnnotation: "true",
+						},
+					},
+					"spec": map[string]interface{}{
+						"location": "EU", // Changed immutable field
+					},
+				},
+			},
+			oldObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "bigquery.cnrm.cloud.google.com/v1beta1",
+					"kind":       "BigQueryDataset",
+					"metadata": map[string]interface{}{
+						"name": "test-dataset",
+						"annotations": map[string]interface{}{
+							k8s.ProjectIDAnnotation:    "my-project",
+							k8s.ForceAcquireAnnotation: "true",
+						},
+					},
+					"spec": map[string]interface{}{
+						"location": "US", // Original immutable field value
+					},
+				},
+			},
+			tfSchemaName: "google_bigquery_dataset",
+			response:     allowedResponse,
+		},
+		{
+			name: "force-acquire annotation NOT present, immutable field changed - should deny",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "bigquery.cnrm.cloud.google.com/v1beta1",
+					"kind":       "BigQueryDataset",
+					"metadata": map[string]interface{}{
+						"name": "test-dataset",
+						"annotations": map[string]interface{}{
+							k8s.ProjectIDAnnotation: "my-project",
+							// k8s.ForceAcquireAnnotation: "true", // Annotation missing
+						},
+					},
+					"spec": map[string]interface{}{
+						"location": "EU", // Changed immutable field
+					},
+				},
+			},
+			oldObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "bigquery.cnrm.cloud.google.com/v1beta1",
+					"kind":       "BigQueryDataset",
+					"metadata": map[string]interface{}{
+						"name": "test-dataset",
+						"annotations": map[string]interface{}{
+							k8s.ProjectIDAnnotation: "my-project",
+						},
+					},
+					"spec": map[string]interface{}{
+						"location": "US", // Original immutable field value
+					},
+				},
+			},
+			tfSchemaName: "google_bigquery_dataset",
+			response: admission.Errored(http.StatusBadRequest,
+				k8s.NewImmutableFieldsMutationError([]string{"location"})),
+		},
+		{
+			name: "force-acquire annotation present on new object only, immutable field changed - should allow",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "bigquery.cnrm.cloud.google.com/v1beta1",
+					"kind":       "BigQueryDataset",
+					"metadata": map[string]interface{}{
+						"name": "test-dataset",
+						"annotations": map[string]interface{}{
+							k8s.ProjectIDAnnotation:    "my-project",
+							k8s.ForceAcquireAnnotation: "true", // Annotation present
+						},
+					},
+					"spec": map[string]interface{}{
+						"location": "EU", // Changed immutable field
+					},
+				},
+			},
+			oldObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "bigquery.cnrm.cloud.google.com/v1beta1",
+					"kind":       "BigQueryDataset",
+					"metadata": map[string]interface{}{
+						"name": "test-dataset",
+						"annotations": map[string]interface{}{
+							k8s.ProjectIDAnnotation: "my-project",
+							// k8s.ForceAcquireAnnotation: "true", // Annotation missing
+						},
+					},
+					"spec": map[string]interface{}{
+						"location": "US", // Original immutable field value
+					},
+				},
+			},
+			tfSchemaName: "google_bigquery_dataset",
+			response:     allowedResponse,
+		},
+		{
+			name: "force-acquire annotation present on old object only, immutable field changed - should deny",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "bigquery.cnrm.cloud.google.com/v1beta1",
+					"kind":       "BigQueryDataset",
+					"metadata": map[string]interface{}{
+						"name": "test-dataset",
+						"annotations": map[string]interface{}{
+							k8s.ProjectIDAnnotation: "my-project",
+							// k8s.ForceAcquireAnnotation: "true", // Annotation missing
+						},
+					},
+					"spec": map[string]interface{}{
+						"location": "EU", // Changed immutable field
+					},
+				},
+			},
+			oldObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "bigquery.cnrm.cloud.google.com/v1beta1",
+					"kind":       "BigQueryDataset",
+					"metadata": map[string]interface{}{
+						"name": "test-dataset",
+						"annotations": map[string]interface{}{
+							k8s.ProjectIDAnnotation:    "my-project",
+							k8s.ForceAcquireAnnotation: "true", // Annotation present
+						},
+					},
+					"spec": map[string]interface{}{
+						"location": "US", // Original immutable field value
+					},
+				},
+			},
+			tfSchemaName: "google_bigquery_dataset",
+			response: admission.Errored(http.StatusBadRequest,
+				k8s.NewImmutableFieldsMutationError([]string{"location"})),
+		},
+		{
+			name: "force-acquire annotation present but false, immutable field changed - should deny",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "bigquery.cnrm.cloud.google.com/v1beta1",
+					"kind":       "BigQueryDataset",
+					"metadata": map[string]interface{}{
+						"name": "test-dataset",
+						"annotations": map[string]interface{}{
+							k8s.ProjectIDAnnotation:    "my-project",
+							k8s.ForceAcquireAnnotation: "false", // Value is "false"
+						},
+					},
+					"spec": map[string]interface{}{
+						"location": "EU", // Changed immutable field
+					},
+				},
+			},
+			oldObj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "bigquery.cnrm.cloud.google.com/v1beta1",
+					"kind":       "BigQueryDataset",
+					"metadata": map[string]interface{}{
+						"name": "test-dataset",
+						"annotations": map[string]interface{}{
+							k8s.ProjectIDAnnotation:    "my-project",
+							k8s.ForceAcquireAnnotation: "false",
+						},
+					},
+					"spec": map[string]interface{}{
+						"location": "US", // Original immutable field value
+					},
+				},
+			},
+			tfSchemaName: "google_bigquery_dataset",
+			response: admission.Errored(http.StatusBadRequest,
+				k8s.NewImmutableFieldsMutationError([]string{"location"})),
+		},
+	}
+
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			newObjBytes, err := yaml.Marshal(tc.obj)
+			if err != nil {
+				t.Fatalf("Error marshaling new object YAML: %v", err)
+			}
+			oldObjBytes, err := yaml.Marshal(tc.oldObj)
+			if err != nil {
+				t.Fatalf("Error marshaling old object YAML: %v", err)
+			}
+
+			req := admission.Request{
+				AdmissionRequest: admissionv1.AdmissionRequest{
+					Object: runtime.RawExtension{
+						Raw: newObjBytes,
+					},
+					OldObject: runtime.RawExtension{
+						Raw: oldObjBytes,
+					},
+					Operation: admissionv1.Update, // Ensure it's an update operation
+				},
+			}
+
+			// Create a new handler for each test to avoid state interference
+			// Mock the SMloader for the handler
+			smLoader, err := servicemappingloader.New()
+			if err != nil {
+				t.Fatal(err)
+			}
+			// Pass nil for mgr, dclSchemaLoader as they are not directly used by this specific TF-based validation path within the test.
+			// Pass testservicemetadataloader.NewForUnitTest() for serviceMetadataLoader.
+			handler := NewImmutableFieldsValidatorHandler(smLoader, nil, testservicemetadataloader.NewForUnitTest())(nil)
+
+			actual := handler.Handle(context.Background(), req)
+			if !testutil.Equals(t, actual, tc.response) {
+				t.Fatalf("For test case '%s': got: %+v, but want: %+v", tc.name, actual, tc.response)
+			}
+		})
 	}
 }

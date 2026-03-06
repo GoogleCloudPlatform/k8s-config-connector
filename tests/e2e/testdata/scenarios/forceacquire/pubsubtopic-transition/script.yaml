@@ -1,0 +1,86 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Step 1: Create
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: pubsubtopic-transition-1-${uniqueId}
+spec:
+  resourceID: pubsubtopic-transition-${uniqueId}
+  messageRetentionDuration: "600s"
+
+---
+
+# Step 2: Abandon
+TEST: ABANDON
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: pubsubtopic-transition-1-${uniqueId}
+spec:
+  resourceID: pubsubtopic-transition-${uniqueId}
+  messageRetentionDuration: "600s"
+
+---
+
+# Step 3: Force Acquire
+TEST: APPLY
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: pubsubtopic-transition-2-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/force-acquire: "true"
+spec:
+  resourceID: pubsubtopic-transition-${uniqueId}
+  messageRetentionDuration: "600s"
+
+---
+
+# Step 4: Transition to Active Management (Remove Annotation)
+# Use APPLY-10-SEC to ensure we capture the reconciliation logs, as the object was already Ready.                                                                   │
+TEST: APPLY-10-SEC
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: pubsubtopic-transition-2-${uniqueId}
+  # Annotation removed
+spec:
+  resourceID: pubsubtopic-transition-${uniqueId}
+  messageRetentionDuration: "600s"
+
+---
+
+# Step 5: Verify Active Management (Update Field)
+TEST: APPLY
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: pubsubtopic-transition-2-${uniqueId}
+spec:
+  resourceID: pubsubtopic-transition-${uniqueId}
+  messageRetentionDuration: "700s"
+
+---
+
+# Step 6: Verify Delete deletes GCP resource
+TEST: DELETE
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: pubsubtopic-transition-2-${uniqueId}
+spec:
+  resourceID: pubsubtopic-transition-${uniqueId}
+  messageRetentionDuration: "700s"
