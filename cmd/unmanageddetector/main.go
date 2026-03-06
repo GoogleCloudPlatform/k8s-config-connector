@@ -36,6 +36,7 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	// Ensure built-in types are registered.
@@ -65,8 +66,10 @@ func main() {
 		logging.Fatal(fmt.Errorf("unknown value for --%s: %s, expected '%s' or '%s'", k8s.ManagerNamespaceIsolationFlag, managerNamespaceIsolation, k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated), "error starting unmanaged detector")
 	}
 
+	zapOpts := &zap.Options{}
+	zapOpts.BindFlags(goflag.CommandLine)
 	// Enable packages using the Kubernetes controller-runtime logging package to log
-	logging.SetupLogger()
+	logging.SetupLogger(zapOpts)
 
 	// Start pprof server if enabled
 	if enablePprof {

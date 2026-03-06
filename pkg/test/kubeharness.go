@@ -17,6 +17,7 @@ package test
 import (
 	"context"
 	"errors"
+	goflag "flag"
 	"fmt"
 	"net/http"
 	"os"
@@ -36,6 +37,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
@@ -141,7 +143,9 @@ func NewKubeHarness(ctx context.Context, t *testing.T) *KubeHarness {
 		h.client = client
 	}
 
-	logging.SetupLogger()
+	zapOpts := &zap.Options{}
+	zapOpts.BindFlags(goflag.CommandLine)
+	logging.SetupLogger(zapOpts)
 
 	if loadCRDs {
 		crds, err := crdloader.LoadAllCRDs()
