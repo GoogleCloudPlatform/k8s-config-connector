@@ -302,8 +302,8 @@ func (a *TagsTagKeyAdapter) updateStatus(ctx context.Context, op directbase.Oper
 	// Legacy status fields
 	status.Name = direct.PtrTo(strings.TrimPrefix(latest.GetName(), "tagKeys/"))
 	status.NamespacedName = direct.PtrTo(latest.GetNamespacedName())
-	status.CreateTime = direct.PtrTo(latest.GetCreateTime().AsTime().Format("2006-01-02T15:04:05Z07:00"))
-	status.UpdateTime = direct.PtrTo(latest.GetUpdateTime().AsTime().Format("2006-01-02T15:04:05Z07:00"))
+	status.CreateTime = direct.StringTimestamp_FromProto(nil, latest.GetCreateTime())
+	status.UpdateTime = direct.StringTimestamp_FromProto(nil, latest.GetUpdateTime())
 
 	return op.UpdateStatus(ctx, status, nil)
 }

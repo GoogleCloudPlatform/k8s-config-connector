@@ -308,7 +308,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=tagValues%2F${tagValueID}
 
-500 Internal Server Error
+404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -320,8 +320,16 @@ X-Xss-Protection: 0
 
 {
   "error": {
-    "code": 500,
-    "message": "error reading tagValue: rpc error: code = NotFound desc = tagValue \"tagValues/${tagValueID}\" not found"
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "tagValue \"tagValues/${tagValueID}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "tagValue \"tagValues/${tagValueID}\" not found",
+    "status": "NOT_FOUND"
   }
 }
 

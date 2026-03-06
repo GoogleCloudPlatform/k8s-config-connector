@@ -48,7 +48,7 @@ func (s *TagValues) GetTagValue(ctx context.Context, req *pb.GetTagValueRequest)
 
 	obj := &pb.TagValue{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "tagValue %q not found", name)
 		} else {
 			return nil, status.Errorf(codes.Internal, "error reading tagValue: %v", err)
@@ -113,7 +113,7 @@ func (s *TagValues) CreateTagValue(ctx context.Context, req *pb.CreateTagValueRe
 
 	parentTagKey := &pb.TagKey{}
 	if err := s.storage.Get(ctx, parentName.String(), parentTagKey); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "tagKey %q not found", req.GetTagValue().GetParent())
 		} else {
 			return nil, status.Errorf(codes.Internal, "error reading tagKey: %v", err)

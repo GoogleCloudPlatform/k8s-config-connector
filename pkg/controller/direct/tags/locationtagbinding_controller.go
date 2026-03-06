@@ -168,23 +168,72 @@ func (a *TagsLocationTagBindingAdapter) Create(ctx context.Context, createOp *di
 
 	op, err := a.tagBindingsClient.CreateTagBinding(ctx, req)
 	if err != nil {
+		if direct.IsAlreadyExists(err) {
+			log.V(0).Info("TagsLocationTagBinding already exists, attempting to acquire", "parent", a.desired.GetParent(), "tagValue", a.desired.GetTagValue())
+			return a.acquireExistingTagBinding(ctx, createOp)
+		}
 		return fmt.Errorf("creating TagsLocationTagBinding: %w", err)
 	}
 
 	created, err := op.Wait(ctx)
 	if err != nil {
+		if direct.IsAlreadyExists(err) {
+			log.V(0).Info("TagsLocationTagBinding already exists, attempting to acquire", "parent", a.desired.GetParent(), "tagValue", a.desired.GetTagValue())
+			return a.acquireExistingTagBinding(ctx, createOp)
+		}
 		return fmt.Errorf("waiting for creation of TagsLocationTagBinding: %w", err)
 	}
 	log.V(0).Info("created TagsLocationTagBinding", "name", created.GetName())
 
-	// For compatibility, we set spec.resourceID after creation because this is a server-generated-id resource that we are migrating from terraform/DCL.
-	// More info in docs/ai/server-generated-id.md
-	resourceID := created.GetName()
+	return a.setResourceIDAndStatus(ctx, createOp, created)
+}
+
+// acquireExistingTagBinding looks up an existing TagBinding by parent and tagValue after an ALREADY_EXISTS error,
+// then sets the resourceID and status to adopt the resource.
+func (a *TagsLocationTagBindingAdapter) acquireExistingTagBinding(ctx context.Context, createOp *directbase.CreateOperation) error {
+	log := klog.FromContext(ctx)
+
+	existing, err := a.findTagBindingByValue(ctx)
+	if err != nil {
+		return err
+	}
+	if existing == nil {
+		return fmt.Errorf("TagsLocationTagBinding with tagValue %q not found under %q despite ALREADY_EXISTS error", a.desired.GetTagValue(), a.desired.GetParent())
+	}
+	log.V(0).Info("acquired existing TagsLocationTagBinding", "name", existing.GetName())
+
+	return a.setResourceIDAndStatus(ctx, createOp, existing)
+}
+
+// setResourceIDAndStatus sets spec.resourceID and updates status from the given TagBinding.
+// For compatibility, we set spec.resourceID after creation because this is a server-generated-id resource that we are migrating from terraform/DCL.
+// More info in docs/ai/server-generated-id.md
+func (a *TagsLocationTagBindingAdapter) setResourceIDAndStatus(ctx context.Context, createOp *directbase.CreateOperation, tagBinding *pb.TagBinding) error {
+	resourceID := tagBinding.GetName()
 	if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {
 		return err
 	}
+	return a.updateStatus(ctx, createOp, tagBinding)
+}
 
-	return a.updateStatus(ctx, createOp, created)
+// findTagBindingByValue lists TagBindings under the parent and returns the one matching the desired tagValue.
+func (a *TagsLocationTagBindingAdapter) findTagBindingByValue(ctx context.Context) (*pb.TagBinding, error) {
+	parent := a.desired.GetParent()
+	req := &pb.ListTagBindingsRequest{Parent: parent}
+	it := a.tagBindingsClient.ListTagBindings(ctx, req)
+	for {
+		tagBinding, err := it.Next()
+		if err != nil {
+			if errors.Is(err, iterator.Done) {
+				break
+			}
+			return nil, fmt.Errorf("listing tag bindings under %q: %w", parent, err)
+		}
+		if tagBinding.TagValue == a.desired.GetTagValue() {
+			return tagBinding, nil
+		}
+	}
+	return nil, nil
 }
 
 func (a *TagsLocationTagBindingAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -197,12 +246,11 @@ func (a *TagsLocationTagBindingAdapter) Update(ctx context.Context, updateOp *di
 
 	structuredreporting.ReportDiff(ctx, diff)
 
-	latest := a.actual
 	if len(updateMask.Paths) != 0 {
 		return fmt.Errorf("cannot update TagsLocationTagBinding %q: fields changed: %v; TagBindings are immutable after creation", fqn, updateMask.Paths)
 	}
 
-	return a.updateStatus(ctx, updateOp, latest)
+	return a.updateStatus(ctx, updateOp, a.actual)
 }
 
 func (a *TagsLocationTagBindingAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.TagBinding) error {

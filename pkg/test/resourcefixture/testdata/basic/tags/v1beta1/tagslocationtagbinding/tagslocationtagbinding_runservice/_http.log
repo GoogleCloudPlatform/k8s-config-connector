@@ -119,7 +119,7 @@ X-Xss-Protection: 0
         "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
       }
     ],
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "updateTime": "${createTime}"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
@@ -193,14 +193,14 @@ X-Xss-Protection: 0
         "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
       }
     ],
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "updateTime": "${createTime}"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Service",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
-    "etag": "abcdef0123A=",
+    "etag": "${etag}",
     "generation": "1",
     "ingress": "INGRESS_TRAFFIC_ALL",
     "labels": {
@@ -377,7 +377,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "For keyname resources.",
-    "etag": "abcdef0123A=",
+    "etag": "${etag}",
     "name": "tagKeys/${tagKeyID}",
     "namespacedName": "${organizationID}/keyname${uniqueId}",
     "parent": "organizations/${organizationID}",
@@ -468,7 +468,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagValue",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "For valuename resources.",
-    "etag": "abcdef0123A=",
+    "etag": "${etag}",
     "name": "tagValues/${tagValueID}",
     "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
     "parent": "tagKeys/${tagKeyID}",
@@ -715,7 +715,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagValue",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "For valuename resources.",
-    "etag": "abcdef0123A=",
+    "etag": "${etag}",
     "name": "tagValues/${tagValueID}",
     "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
     "parent": "tagKeys/${tagKeyID}",
@@ -800,7 +800,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "For keyname resources.",
-    "etag": "abcdef0123A=",
+    "etag": "${etag}",
     "name": "tagKeys/${tagKeyID}",
     "namespacedName": "${organizationID}/keyname${uniqueId}",
     "parent": "organizations/${organizationID}",
@@ -947,7 +947,7 @@ X-Xss-Protection: 0
         "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
       }
     ],
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "updateTime": "${createTime}"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
@@ -1021,14 +1021,14 @@ X-Xss-Protection: 0
         "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
       }
     ],
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "updateTime": "${createTime}"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Service",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
-    "etag": "abcdef0123A=",
+    "etag": "${etag}",
     "generation": "1",
     "ingress": "INGRESS_TRAFFIC_ALL",
     "labels": {
