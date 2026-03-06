@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigquery/analyticshub/apiv1"
 	bigqueryanalyticshubpb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
@@ -159,37 +160,46 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	u := updateOp.GetUnstructured()
-
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating DataExchange", "name", a.id.String())
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	mapCtx := &direct.MapContext{}
+
+	desired := a.desired.DeepCopy()
+	resource := BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 
 	// TODO(kcc): Autogen "func immutable()" for each field
 	// TODO(kcc): autogen updateMastk.path for mutable gcp fields.
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
+	if !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, resource.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
-	if !reflect.DeepEqual(a.desired.Spec.Description, a.actual.Description) {
+	if !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, resource.Description)
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
-	if !reflect.DeepEqual(a.desired.Spec.PrimaryContact, a.actual.PrimaryContact) {
+	if !reflect.DeepEqual(resource.PrimaryContact, a.actual.PrimaryContact) {
+		report.AddField("primary_contact", a.actual.PrimaryContact, resource.PrimaryContact)
 		updateMask.Paths = append(updateMask.Paths, "primary_contact")
 	}
-	if !reflect.DeepEqual(a.desired.Spec.Documentation, a.actual.Documentation) {
+	if !reflect.DeepEqual(resource.Documentation, a.actual.Documentation) {
+		report.AddField("documentation", a.actual.Documentation, resource.Documentation)
 		updateMask.Paths = append(updateMask.Paths, "documentation")
 	}
 	// not yet
 	// if !reflect.DeepEqual(a.desired.Spec.Icon, string(a.actual.Icon)) {
 	// 	updateMask.Paths = append(updateMask.Paths, "icon")
 	// }
-	if a.desired.Spec.DiscoveryType != nil && !reflect.DeepEqual(a.desired.Spec.DiscoveryType, a.actual.DiscoveryType.String()) {
+	if desired.Spec.DiscoveryType != nil && !reflect.DeepEqual(resource.DiscoveryType, a.actual.DiscoveryType) {
+		report.AddField("discovery_type", a.actual.DiscoveryType, resource.DiscoveryType)
 		updateMask.Paths = append(updateMask.Paths, "discovery_type")
 	}
 
-	desired := a.desired.DeepCopy()
-	resource := BigQueryAnalyticsHubDataExchangeSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -211,7 +221,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	return setStatus(u, status)
+	return setStatus(updateOp.GetUnstructured(), status)
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
