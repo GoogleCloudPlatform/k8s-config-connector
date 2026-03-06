@@ -143,3 +143,27 @@ func (m *gcpClient) newGlobalAddressClient(ctx context.Context) (*compute.Global
 	}
 	return client, err
 }
+
+func (m *gcpClient) publicDelegatedPrefixesClient(ctx context.Context) (*compute.PublicDelegatedPrefixesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewPublicDelegatedPrefixesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputePublicDelegatedPrefix client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newGlobalPublicDelegatedPrefixesClient(ctx context.Context) (*compute.GlobalPublicDelegatedPrefixesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewGlobalPublicDelegatedPrefixesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building global ComputePublicDelegatedPrefix client: %w", err)
+	}
+	return client, err
+}

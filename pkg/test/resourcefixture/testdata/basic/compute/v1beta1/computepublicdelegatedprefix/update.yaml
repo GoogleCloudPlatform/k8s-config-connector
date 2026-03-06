@@ -1,0 +1,8 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputePublicDelegatedPrefix
+metadata:
+  name: computepublicdelegatedprefix-${uniqueId}
+spec:
+  location: us-central1
+  ipCidrRange: 1.2.3.0/24
+  description: "Updated Test Public Delegated Prefix"

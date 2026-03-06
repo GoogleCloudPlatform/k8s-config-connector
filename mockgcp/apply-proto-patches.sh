@@ -149,3 +149,12 @@ go run . --file ${API_PROTO} --service "ProjectsServer" --mode "append" <<EOF
 EOF
 
 sed -i 's/^syntax = "proto3";/syntax = "proto2";/' ${API_PROTO}
+
+# Compute patches
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/compute/v1/compute.proto --message Address --mode append <<INNEREOF
+
+  // Resource reference of a PublicDelegatedPrefix.
+  optional string ip_collection = 176818358;
+
+INNEREOF

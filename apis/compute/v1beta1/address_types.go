@@ -54,6 +54,9 @@ type ComputeAddressSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1.Address.ip_collection
 	IpCollection *string `json:"ipCollection,omitempty"`
 
+	/* Immutable. The IP range of the IPv6 address. */
+	IpCollectionRef *ComputePublicDelegatedPrefixRef `json:"ipCollectionRef,omitempty"`
+
 	/* Location represents the geographical location of the ComputeAddress. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
@@ -76,7 +79,7 @@ type ComputeAddressSpec struct {
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
 
 	// The project that this resource belongs to.
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
 
 	/* Immutable. The purpose of this resource, which can be one of the following values.
 
@@ -151,10 +154,11 @@ type ComputeAddressObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpcomputeaddress;gcpcomputeaddresss
+// +kubebuilder:resource:categories=gcp,shortName=gcpcomputeaddress;gcpcomputeaddresses
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:annotations="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

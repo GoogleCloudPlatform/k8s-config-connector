@@ -23,6 +23,7 @@ import (
 
 	gcp "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -163,6 +164,12 @@ func (a *addressAdapter) Create(ctx context.Context, createOp *directbase.Create
 	if desired.Spec.IpCollection != nil {
 		address.IpCollection = desired.Spec.IpCollection
 	}
+	if desired.Spec.IpCollectionRef != nil {
+		if err := desired.Spec.IpCollectionRef.Normalize(ctx, a.reader, a.desired.Namespace); err != nil {
+			return fmt.Errorf("resolving IpCollectionRef: %w", err)
+		}
+		address.IpCollection = direct.LazyPtr(desired.Spec.IpCollectionRef.External)
+	}
 	address.Name = direct.LazyPtr(a.id.ResourceID)
 	address.Labels = sanitizedLabels
 
@@ -296,6 +303,9 @@ func (a *addressAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	// Manual mapping for IpCollection as it is missing in the generator's proto definition
 	if a.actual.IpCollection != nil {
 		spec.IpCollection = a.actual.IpCollection
+		spec.IpCollectionRef = &v1beta1.ComputePublicDelegatedPrefixRef{
+			External: *a.actual.IpCollection,
+		}
 	}
 	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
 	if err != nil {
