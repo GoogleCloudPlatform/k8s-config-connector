@@ -372,6 +372,7 @@
 | osconfig.cnrm.cloud.google.com                | OSConfigPatchDeployment                         | True         | False       | False  | Terraform  | False       |
 | oslogin.cnrm.cloud.google.com                 | OSLoginSSHPublicKey                             | True         | False       | False  | Terraform  | False       |
 | parametermanager.cnrm.cloud.google.com        | ParameterManagerParameter                       | True         | False       | False  | Direct     | True        |
+| parametermanager.cnrm.cloud.google.com        | ParameterManagerParameterVersion                | True         | False       | False  | Direct     | True        |
 | privateca.cnrm.cloud.google.com               | PrivateCACAPool                                 | False        | True        | False  | DCL        | True        |
 | privateca.cnrm.cloud.google.com               | PrivateCACertificateAuthority                   | False        | True        | False  | DCL        | False       |
 | privateca.cnrm.cloud.google.com               | PrivateCACertificate                            | False        | True        | False  | DCL        | False       |
