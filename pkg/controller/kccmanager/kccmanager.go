@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
+	syncerv1alpha1 "github.com/gke-labs/kube-etl/syncer/api/v1alpha1"
 	mclv1alpha1 "github.com/gke-labs/multicluster-leader-election/api/v1alpha1"
 	mcleclient "github.com/gke-labs/multicluster-leader-election/pkg/client"
 	"golang.org/x/oauth2"
@@ -101,6 +102,9 @@ type Config struct {
 	// Configure manager to participate in leader election if MultiClusterLease is enabled.
 	MultiClusterLease bool
 
+	// Enable integration with KRMSyncer for multi-cluster leader election.
+	SyncerIntegration bool
+
 	// used for smoke testing only; options not meant to be used in production.
 	testConfig
 }
@@ -120,7 +124,7 @@ type testConfig struct {
 	suppressExitOnLeadershipLoss bool
 }
 
-func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme *runtime.Scheme, explicitConfig *operatorv1beta1.MultiClusterLeaseSpec, existOnLeadershipLoss bool) (*leaderelection.LeaderElectionConfig, *operatorv1beta1.MultiClusterLeaseSpec, error) {
+func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme *runtime.Scheme, explicitConfig *operatorv1beta1.MultiClusterLeaseSpec, exitOnLeadershipLoss bool) (*leaderelection.LeaderElectionConfig, *operatorv1beta1.MultiClusterLeaseSpec, bool, error) {
 	var leaseSpec *operatorv1beta1.MultiClusterLeaseSpec
 
 	if explicitConfig != nil {
@@ -130,7 +134,7 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 		// Create a temporary client to read the ConfigConnector object for leader election config.
 		c, err := crclient.New(restConfig, crclient.Options{Scheme: scheme})
 		if err != nil {
-			return nil, nil, fmt.Errorf("error creating temporary client: %w", err)
+			return nil, nil, false, fmt.Errorf("error creating temporary client: %w", err)
 		}
 
 		// Get the ConfigConnector object.
@@ -140,7 +144,7 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 		if err := c.Get(ctx, ccName, cc); err != nil {
 			// If the ConfigConnector object is not found, proceed with default leader election.
 			klog.Infof("ConfigConnector object not found, using default in-cluster leader election")
-			return nil, nil, nil
+			return nil, nil, false, nil
 		}
 		klog.Infof("found ConfigConnector object")
 		if cc.Spec.Experiments != nil && cc.Spec.Experiments.MultiClusterLease != nil {
@@ -153,7 +157,7 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 		// Create a new client for the lock to ensure it uses the correct configuration
 		c, err := crclient.New(restConfig, crclient.Options{Scheme: scheme})
 		if err != nil {
-			return nil, nil, fmt.Errorf("error creating client for lock: %w", err)
+			return nil, nil, false, fmt.Errorf("error creating client for lock: %w", err)
 		}
 
 		lock := mcleclient.New(
@@ -172,21 +176,23 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme
 			Callbacks: leaderelection.LeaderCallbacks{
 				OnStoppedLeading: func() {
 					klog.Info("leaderelection lost")
-					if existOnLeadershipLoss {
+					if exitOnLeadershipLoss {
 						klog.FlushAndExit(klog.ExitFlushTimeout, 1)
 					}
 				},
 			},
-		}, leaseSpec, nil
+		}, leaseSpec, exitOnLeadershipLoss, nil
 	}
 
-	return nil, nil, nil
+	return nil, nil, false, nil
 }
 
 type leaderElectionManager struct {
 	manager.Manager
-	leConfig  *leaderelection.LeaderElectionConfig
-	mclConfig *operatorv1beta1.MultiClusterLeaseSpec
+	leConfig             *leaderelection.LeaderElectionConfig
+	mclConfig            *operatorv1beta1.MultiClusterLeaseSpec
+	exitOnLeadershipLoss bool
+	syncerInteg          *SyncerIntegration
 
 	// onFatal is a callback that is called when the manager encounters a fatal error.
 	// If nil, klog.Fatalf is called.
@@ -220,8 +226,32 @@ func (m *leaderElectionManager) Start(ctx context.Context) error {
 			m.fatal("inconsistent state: started leading but MultiClusterLease status.globalHolderIdentity is %q (expected %q)", globalHolderIdentity, m.leConfig.Lock.Identity())
 		}
 
+		if m.syncerInteg != nil {
+			if err := m.syncerInteg.EnsureSuspended(ctx); err != nil {
+				klog.Errorf("error ensuring syncer is suspended: %v", err)
+			}
+		}
+
 		if err := m.Manager.Start(ctx); err != nil {
 			m.fatal("error running manager: %v", err)
+		}
+	}
+	m.leConfig.Callbacks.OnStoppedLeading = func() {
+		myIdentity := m.leConfig.Lock.Identity()
+		klog.Infof("stopped leading; identity: %s", myIdentity)
+
+		if m.syncerInteg != nil {
+			// We use a background context as the main context may be cancelled
+			stopCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			defer cancel()
+
+			if err := m.syncerInteg.EnsurePullingFromLeader(stopCtx, m.Manager.GetAPIReader(), myIdentity); err != nil {
+				klog.Errorf("error ensuring syncer is pulling from leader: %v", err)
+			}
+		}
+
+		if m.exitOnLeadershipLoss {
+			klog.FlushAndExit(klog.ExitFlushTimeout, 1)
 		}
 	}
 	leaderelection.RunOrDie(ctx, *m.leConfig)
@@ -259,8 +289,9 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 
 	var leConfig *leaderelection.LeaderElectionConfig
 	var mclConfig *operatorv1beta1.MultiClusterLeaseSpec
+	var exitOnLeadershipLoss bool
 	if cfg.MultiClusterLease {
-		leConfig, mclConfig, err = setUpMultiClusterLease(ctx, restConfig, opts.Scheme, cfg.multiClusterLeaseConfig, !cfg.suppressExitOnLeadershipLoss)
+		leConfig, mclConfig, exitOnLeadershipLoss, err = setUpMultiClusterLease(ctx, restConfig, opts.Scheme, cfg.multiClusterLeaseConfig, !cfg.suppressExitOnLeadershipLoss)
 		if err != nil {
 			return nil, fmt.Errorf("error setting up multi-cluster leader election: %w", err)
 		}
@@ -380,7 +411,23 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	}
 
 	if leConfig != nil {
-		return &leaderElectionManager{Manager: mgr, leConfig: leConfig, mclConfig: mclConfig}, nil
+		var syncerInteg *SyncerIntegration
+		if mclConfig != nil && cfg.SyncerIntegration {
+			syncerInteg = &SyncerIntegration{
+				client: mgr.GetClient(),
+				name: types.NamespacedName{
+					Namespace: mclConfig.Namespace,
+					Name:      mclConfig.LeaseName,
+				},
+			}
+		}
+		return &leaderElectionManager{
+			Manager:              mgr,
+			leConfig:             leConfig,
+			mclConfig:            mclConfig,
+			exitOnLeadershipLoss: exitOnLeadershipLoss,
+			syncerInteg:          syncerInteg,
+		}, nil
 	}
 	return mgr, nil
 }
@@ -400,6 +447,9 @@ func addSchemes(scheme *runtime.Scheme) error {
 	}
 	if err := mclv1alpha1.AddToScheme(scheme); err != nil {
 		return fmt.Errorf("error adding 'mclv1alpha1' resources to the scheme: %w", err)
+	}
+	if err := syncerv1alpha1.AddToScheme(scheme); err != nil {
+		return fmt.Errorf("error adding 'syncerv1alpha1' resources to the scheme: %w", err)
 	}
 	return nil
 }

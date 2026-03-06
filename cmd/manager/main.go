@@ -61,6 +61,7 @@ func main() {
 		rateLimitQps             float32
 		rateLimitBurst           int
 		leaderElectionMode       string
+		syncerIntegration        bool
 	)
 	flag.StringVar(&prometheusScrapeEndpoint, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
 	flag.BoolVar(&controllermetrics.ResourceNameLabel, "resource-name-label", false, "option to enable the resource name label on some Prometheus metrics; false by default")
@@ -72,6 +73,7 @@ func main() {
 	flag.Float32Var(&rateLimitQps, "qps", 20.0, "The client-side token bucket rate limit qps.")
 	flag.IntVar(&rateLimitBurst, "burst", 30, "The client-side token bucket rate limit burst.")
 	flag.StringVar(&leaderElectionMode, "leader-election-type", "disabled", "Leader election mode. One of: default, multicluster.")
+	flag.BoolVar(&syncerIntegration, "syncer-integration", false, "Enable integration with the KRMSyncer for suspending sync operations. Must be used with multi-cluster leader election.")
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.Parse()
@@ -84,6 +86,10 @@ func main() {
 		multiClusterElection = true
 	default:
 		logging.Fatal(fmt.Errorf("invalid leader-election-mode: %v", leaderElectionMode), "error parsing flags")
+	}
+
+	if syncerIntegration && leaderElectionMode == "disabled" {
+		logging.Fatal(fmt.Errorf("syncer integration can only be enabled if leader-election-type is not disabled"), "error validating flags")
 	}
 
 	// Discard everything logged onto the Go standard logger. We do this since
@@ -116,7 +122,7 @@ func main() {
 	// Set client site rate limiter to optimize the configconnector re-reconciliation performance.
 	ratelimiter.SetMasterRateLimiter(restCfg, rateLimitQps, rateLimitBurst)
 	logger.Info("Creating the manager")
-	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection)
+	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection, syncerIntegration)
 	if err != nil {
 		logging.Fatal(err, "error creating the manager")
 	}
@@ -172,7 +178,7 @@ func main() {
 	logging.ExitInfo("main.go finished execution; exiting ...")
 }
 
-func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool) (manager.Manager, error) {
+func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool, syncerIntegration bool) (manager.Manager, error) {
 	krmtotf.SetUserAgentForTerraformProvider()
 	controllersCfg := kccmanager.Config{
 		ManagerOptions: manager.Options{
@@ -183,6 +189,7 @@ func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace strin
 			},
 		},
 		MultiClusterLease: multiclusterlease,
+		SyncerIntegration: syncerIntegration,
 	}
 
 	controllersCfg.UserProjectOverride = userProjectOverride
