@@ -1,8 +1,6 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
 
-go 1.24.0
-
-toolchain go1.24.6
+go 1.25.0
 
 replace github.com/GoogleCloudPlatform/k8s-config-connector => ./..
 
@@ -14,6 +12,7 @@ require (
 	cloud.google.com/go/analytics v0.30.1
 	cloud.google.com/go/apigateway v1.7.7
 	cloud.google.com/go/batch v1.14.0
+	cloud.google.com/go/bigquery v1.72.0
 	cloud.google.com/go/bigtable v1.41.0
 	cloud.google.com/go/billing v1.21.0
 	cloud.google.com/go/clouddms v1.8.8
@@ -27,6 +26,8 @@ require (
 	cloud.google.com/go/iap v1.11.3
 	cloud.google.com/go/logging v1.13.1
 	cloud.google.com/go/longrunning v0.7.0
+	cloud.google.com/go/managedkafka v0.8.1
+	cloud.google.com/go/netapp v1.11.0
 	cloud.google.com/go/networksecurity v0.11.0
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.12.7
@@ -34,6 +35,7 @@ require (
 	cloud.google.com/go/osconfig v1.15.1
 	cloud.google.com/go/recaptchaenterprise/v2 v2.21.0
 	cloud.google.com/go/storage v1.58.0
+	cloud.google.com/go/workflows v1.14.3
 	github.com/GoogleCloudPlatform/k8s-config-connector v1.129.2
 	github.com/golang/protobuf v1.5.4
 	github.com/google/uuid v1.6.0
@@ -41,8 +43,8 @@ require (
 	golang.org/x/oauth2 v0.34.0
 	google.golang.org/api v0.258.0
 	google.golang.org/genproto v0.0.0-20250922171735-9219d122eba9
-	google.golang.org/genproto/googleapis/api v0.0.0-20251111163417-95abcf5c77ba
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20251213004720-97cd9d5aeac2
+	google.golang.org/genproto/googleapis/api v0.0.0-20260226221140-a57be14db171
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260217215200-42d3e9bedb6d
 	google.golang.org/grpc v1.77.0
 	google.golang.org/protobuf v1.36.11
 	k8s.io/api v0.33.0
