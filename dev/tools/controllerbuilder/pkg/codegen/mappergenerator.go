@@ -1097,6 +1097,8 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.UInt64Value_FromProto"
 	case "google.protobuf.BytesValue":
 		return "direct.BytesValue_FromProto"
+	case "google.rpc.Status":
+		return "direct.Status_FromProto"
 	}
 	klog.Fatalf("unhandled case in krmFromProtoFunctionName for proto field %s", fullname)
 	return ""
@@ -1129,6 +1131,8 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.UInt64Value_ToProto"
 	case "google.protobuf.BytesValue":
 		return "direct.BytesValue_ToProto"
+	case "google.rpc.Status":
+		return "direct.Status_ToProto"
 	}
 	klog.Fatalf("unhandled case in krmToProtoFunctionName for proto field %s", fullname)
 	return ""
