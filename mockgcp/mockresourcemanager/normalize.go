@@ -30,21 +30,35 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	if !isCloudResourceManagerAPI(event) {
 		return
-
 	}
+
+	u, err := url.Parse(event.URL())
+	if err != nil {
+		klog.Errorf("cannot parse URL %q: %v", event.URL(), err)
+		return
+	}
+
+	isV3API := strings.Contains(u.Path, "/v3/")
+
 	name := ""
 	event.VisitResponseStringValues(func(path string, value string) {
-		if path == ".name" {
+		if path == ".name" || path == ".response.name" {
 			name = value
 		}
 		if path == ".projectNumber" {
 			replacements.ReplaceStringValue(value, "${projectNumber}")
 		}
-		if strings.HasSuffix(path, ".createTime") || strings.HasSuffix(path, ".updateTime") {
-			replacements.ReplaceStringValue(value, "${createTime}")
-		}
-		if strings.HasSuffix(path, ".etag") {
-			replacements.ReplaceStringValue(value, "${etag}")
+		if isV3API {
+			if strings.HasSuffix(path, ".createTime") || strings.HasSuffix(path, ".updateTime") {
+				if value != "2024-04-01T12:34:56.123456Z" && value != "2024-04-01T12:34:56.123Z" {
+					replacements.ReplaceStringValue(value, "${createTime}")
+				}
+			}
+			if strings.HasSuffix(path, ".etag") {
+				if value != "abcdef0123A=" {
+					replacements.ReplaceStringValue(value, "${etag}")
+				}
+			}
 		}
 	})
 
