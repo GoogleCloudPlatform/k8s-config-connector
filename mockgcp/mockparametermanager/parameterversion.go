@@ -28,7 +28,7 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/parametermanager/v1"
 )
 
-// Creates a new [Parameter][google.cloud.parametermanager.v1.Parameter].
+// Creates a new [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion].
 func (s *ParameterManagerV1) CreateParameterVersion(ctx context.Context, req *pb.CreateParameterVersionRequest) (*pb.ParameterVersion, error) {
 	ParameterVersionId := req.ParameterVersionId
 	if ParameterVersionId == "" {
@@ -55,29 +55,37 @@ func (s *ParameterManagerV1) CreateParameterVersion(ctx context.Context, req *pb
 		return nil, err
 	}
 
+	if obj.GetDisabled() {
+		obj.Payload = nil
+	}
+
 	return obj, nil
 }
 
-// Gets metadata for a given [Parameter][google.cloud.parametermanager.v1.Parameter].
+// Gets metadata for a given [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion].
 func (s *ParameterManagerV1) GetParameterVersion(ctx context.Context, req *pb.GetParameterVersionRequest) (*pb.ParameterVersion, error) {
 	name, err := s.parseParameterVersionName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
-	var parameter pb.ParameterVersion
+	var parameterVersion pb.ParameterVersion
 	fqn := name.String()
-	if err := s.storage.Get(ctx, fqn, &parameter); err != nil {
+	if err := s.storage.Get(ctx, fqn, &parameterVersion); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found.", fqn)
 		}
 		return nil, err
 	}
 
-	return &parameter, nil
+	if parameterVersion.GetDisabled() {
+		parameterVersion.Payload = nil
+	}
+
+	return &parameterVersion, nil
 }
 
-// Deletes a [Parameter][google.cloud.parametermanager.v1.Parameter].
+// Deletes a [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion].
 func (s *ParameterManagerV1) DeleteParameterVersion(ctx context.Context, req *pb.DeleteParameterVersionRequest) (*emptypb.Empty, error) {
 	name, err := s.parseParameterVersionName(req.Name)
 	if err != nil {
@@ -94,7 +102,7 @@ func (s *ParameterManagerV1) DeleteParameterVersion(ctx context.Context, req *pb
 	return &emptypb.Empty{}, nil
 }
 
-// Update metadata for a given [Parameter][google.cloud.parametermanager.v1.Parameter].
+// Update metadata for a given [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion].
 func (s *ParameterManagerV1) UpdateParameterVersion(ctx context.Context, req *pb.UpdateParameterVersionRequest) (*pb.ParameterVersion, error) {
 	name, err := s.parseParameterVersionName(req.ParameterVersion.Name)
 	if err != nil {
@@ -128,6 +136,9 @@ func (s *ParameterManagerV1) UpdateParameterVersion(ctx context.Context, req *pb
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
+	if updated.GetDisabled() {
+		updated.Payload = nil
+	}
 	return updated, nil
 }
 
@@ -140,8 +151,8 @@ func (n *parameterVersionName) String() string {
 	return n.parent.String() + "/" + "versions" + "/" + n.ParameterVersion
 }
 
-// parseParameterName parses a string into a parameterName.
-// The expected form is projects/<projectID>/locations/<location>/parameters/<parameterName>
+// parseParameterVersionName parses a string into a parameterVersionName.
+// The expected form is projects/<projectID>/locations/<location>/parameters/<parameterName>/versions/<version>
 func (s *MockService) parseParameterVersionName(name string) (*parameterVersionName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "parameters" && tokens[6] == "versions" {
