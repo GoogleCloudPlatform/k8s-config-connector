@@ -1,0 +1,8 @@
+---
+name: KCC Release
+description: Kick starts the KCC release process by running the generation script.
+schedule: "@daily"
+---
+1. Run the script `dev/release/generate-release.sh`.
+2. Identify the generated changes (new branch, updated files).
+3. Create a Pull Request in the KCC OSS repository with the title "Release <version>". The version should be extracted from the changes made by the script.
