@@ -3329,7 +3329,6 @@
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.pscConfig[].pscEnabled" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.locationPreference.followGaeApplication" is not set in unstructured objects
 [missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.password.value" is not set in unstructured objects
-[missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.autoclass.enabled" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.bucketPolicyOnly" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.cors[].maxAgeSeconds" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.cors[].method[]" is not set in unstructured objects
@@ -3349,7 +3348,6 @@
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.lifecycleRule[].condition.noncurrentTimeBefore" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.lifecycleRule[].condition.numNewerVersions" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.lifecycleRule[].condition.withState" is not set in unstructured objects
-[missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.logging.logBucket" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.logging.logObjectPrefix" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.publicAccessPrevention" is not set in unstructured objects

@@ -200,6 +200,15 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	}
 	softDeletePolicy.EffectiveTime = now
 
+	if obj.Autoclass != nil {
+		if obj.Autoclass.GetEnabled() {
+			obj.Autoclass.ToggleTime = now
+		}
+		if obj.Autoclass.TerminalStorageClass != nil {
+			obj.Autoclass.TerminalStorageClassUpdateTime = now
+		}
+	}
+
 	if err := s.populateDefaults(ctx, project, obj); err != nil {
 		return nil, err
 	}
@@ -295,6 +304,24 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 		}
 		if patch.Versioning != nil {
 			obj.Versioning = patch.Versioning
+		}
+
+		if patch.Autoclass != nil {
+			if obj.Autoclass == nil {
+				obj.Autoclass = &pb.BucketAutoclass{}
+			}
+			if patch.Autoclass.Enabled != nil {
+				if obj.Autoclass.GetEnabled() != patch.Autoclass.GetEnabled() {
+					obj.Autoclass.ToggleTime = timestamppb.Now()
+				}
+				obj.Autoclass.Enabled = patch.Autoclass.Enabled
+			}
+			if patch.Autoclass.TerminalStorageClass != nil {
+				if obj.Autoclass.GetTerminalStorageClass() != patch.Autoclass.GetTerminalStorageClass() {
+					obj.Autoclass.TerminalStorageClassUpdateTime = timestamppb.Now()
+				}
+				obj.Autoclass.TerminalStorageClass = patch.Autoclass.TerminalStorageClass
+			}
 		}
 
 		if patch.SoftDeletePolicy != nil {
