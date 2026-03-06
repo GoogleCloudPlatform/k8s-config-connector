@@ -1,0 +1,76 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computetargethttpsproxywithcertificatemanager-${uniqueId}
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computetargethttpsproxywithcertificatemanager-${uniqueId}
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  networkRef:
+    name: computetargethttpsproxywithcertificatemanager-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRegionHealthCheck
+metadata:
+  name: computetargethttpsproxywithcertificatemanager-${uniqueId}
+spec:
+  region: us-central1
+  httpHealthCheck:
+    port: 80
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRegionBackendService
+metadata:
+  name: computetargethttpsproxywithcertificatemanager-${uniqueId}
+spec:
+  healthChecks:
+    - name: computetargethttpsproxywithcertificatemanager-${uniqueId}
+  region: us-central1
+  loadBalancingScheme: INTERNAL_MANAGED
+  protocol: HTTP
+  networkRef:
+    name: computetargethttpsproxywithcertificatemanager-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRegionURLMap
+metadata:
+  name: computetargethttpsproxywithcertificatemanager-${uniqueId}
+spec:
+  region: us-central1
+  defaultService:
+    name: computetargethttpsproxywithcertificatemanager-${uniqueId}
+---
+apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+kind: CertificateManagerCertificate
+metadata:
+  name: computetargethttpsproxywithcertificatemanager-${uniqueId}
+spec:
+  location: us-central1
+  selfManaged:
+    pemCertificate: |-
+      -----BEGIN CERTIFICATE-----
+      MIICaTCCAg+gAwIBAgIRANYR5t91b1n0kP6WjYd+HjYwCgYIKoZIzj0EAwIwFjEU
+      MBIGA1UEAxMLZXhhbXBsZS5jb20wHhcNMjIwNTEyMTA0MDU3WhcNMjMwNTEyMTA0
+      MDU3WjAWMRQwEgYDVQQDEwtleGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49
+      AwEHA0IABHnQd8Zf9kQkH/Wf3+H8G6nJ8/jE4iEwH9n7YqR3U1nZJbX8e+M0kU7w
+      P9l1m7i/h0V4/M2/A9m1h3dGgK1pGkOjgbswgbgwDgYDVR0PAQH/BAQDAgWgMB0G
+      A1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB0GA1Ud
+      DgQWBBQyH9U/Yp3E9I8/zI3e6/p8/I4YMjAfBgNVHSMEGDAWgBQyH9U/Yp3E9I8/
+      zI3e6/p8/I4YMjAoBgNVHREEITAfggtleGFtcGxlLmNvbYIQd3d3LmV4YW1wbGUu
+      Y29tMAoGCCqGSM49BAMCA0kAMEYCIQCy3B3h7l7E8I5sL7tqJb7u0T+C3vP+R3b8
+      Q9p3vE/BxgIhAMp/q9W1xQvB4Kx8eF+E0Xl/uE9rL4p5/sL+s8I3R2pP
+      -----END CERTIFICATE-----
+    pemPrivateKey:
+      value: |-
+        -----BEGIN PRIVATE KEY-----
+        MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgN4P+nFk1vX6/H5vD
+        8m4V5k3p/8A+Q9B0C5b1/b8d7T+hRANCAAR50HfGX/ZEJB/1n9/h/BupyfP4xOIh
+        MB/Z+2Kkd1NZ2SW1/HvjNJFO8D/ZdZu4v4dFePzNvwPZtYd3RoCtaRpD
+        -----END PRIVATE KEY-----

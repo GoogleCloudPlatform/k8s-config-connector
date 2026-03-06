@@ -1,0 +1,10 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetHTTPSProxy
+metadata:
+  name: computetargethttpsproxywithcertificatemanager-${uniqueId}
+spec:
+  location: us-central1
+  urlMapRef:
+    name: computetargethttpsproxywithcertificatemanager-${uniqueId}
+  certificateManagerCertificates:
+    - name: computetargethttpsproxywithcertificatemanager-${uniqueId}
