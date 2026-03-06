@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,19 +22,22 @@ import (
 var DataCatalogPolicyTagGVK = GroupVersion.WithKind("DataCatalogPolicyTag")
 
 // DataCatalogPolicyTagSpec defines the desired state of DataCatalogPolicyTag
-// +kcc:spec:proto=google.cloud.datacatalog.v1beta1.PolicyTag
+// +kcc:spec:proto=google.cloud.datacatalog.v1.PolicyTag
 type DataCatalogPolicyTagSpec struct {
+	/* User defined name of this policy tag. It must: be unique within the parent
+	taxonomy; contain only unicode letters, numbers, underscores, dashes and spaces;
+	not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8. */
+	// +required
+	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.display_name
+	DisplayName *string `json:"displayName"`
+
 	/* Description of this policy tag. It must: contain only unicode characters, tabs,
 	newlines, carriage returns and page breaks; and be at most 2000 bytes long when
 	encoded in UTF-8. If not set, defaults to an empty description.
 	If not set, defaults to an empty description. */
 	// +optional
+	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.description
 	Description *string `json:"description,omitempty"`
-
-	/* User defined name of this policy tag. It must: be unique within the parent
-	taxonomy; contain only unicode letters, numbers, underscores, dashes and spaces;
-	not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8. */
-	DisplayName string `json:"displayName"`
 
 	// +optional
 	ParentPolicyTagRef *PolicyTagRef `json:"parentPolicyTagRef,omitempty"`
@@ -72,7 +75,7 @@ type DataCatalogPolicyTagStatus struct {
 }
 
 // DataCatalogPolicyTagObservedState is the state of the DataCatalogPolicyTag resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.datacatalog.v1beta1.PolicyTag
+// +kcc:observedstate:proto=google.cloud.datacatalog.v1.PolicyTag
 type DataCatalogPolicyTagObservedState struct {
 }
 
