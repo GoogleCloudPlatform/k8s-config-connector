@@ -274,24 +274,31 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 	if field.IsMap() {
 		entryMsg := field.Message()
 		keyKind := entryMsg.Fields().ByName("key").Kind()
-		valueKind := entryMsg.Fields().ByName("value").Kind()
-		if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
+		valueField := entryMsg.Fields().ByName("value")
+		valueKind := valueField.Kind()
+
+		if keyKind != protoreflect.StringKind {
+			return "", fmt.Errorf("unsupported map type with key %v (only string key is supported) and value %v", keyKind, valueKind)
+		}
+
+		switch valueKind {
+		case protoreflect.StringKind:
 			return "map[string]string", nil
-		} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
+		case protoreflect.Int64Kind:
 			return "map[string]int64", nil
-		} else {
-			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyKind, valueKind)
+		case protoreflect.MessageKind:
+			valueGoType := goTypeNameForMessage(valueField.Message(), isTransitiveOutput)
+
+			return fmt.Sprintf("map[string]%s", valueGoType), nil
+		default:
+			return "", fmt.Errorf("unsupported map type with key string and value %v", valueKind)
 		}
 	}
 
 	var goType string
 	switch field.Kind() {
 	case protoreflect.MessageKind:
-		if isTransitiveOutput {
-			goType = goNameForOutputProtoMessage(field.Message())
-		} else {
-			goType = GoNameForProtoMessage(field.Message())
-		}
+		goType = goTypeNameForMessage(field.Message(), isTransitiveOutput)
 	case protoreflect.EnumKind:
 		goType = "string"
 	default:
@@ -314,6 +321,13 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 	}
 
 	return goType, nil
+}
+
+func goTypeNameForMessage(msg protoreflect.MessageDescriptor, isTransitiveOutput bool) string {
+	if isTransitiveOutput {
+		return goNameForOutputProtoMessage(msg)
+	}
+	return GoNameForProtoMessage(msg)
 }
 
 func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int, isTransitiveOutput bool) {
