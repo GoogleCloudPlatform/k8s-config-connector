@@ -58,6 +58,77 @@ spec:
             type: object
           spec:
             properties:
+              defaultCustomErrorResponsePolicy:
+                description: defaultCustomErrorResponsePolicy specifies how the Load
+                  Balancer returns error responses when BackendService or BackendBucket
+                  responds with an error.
+                properties:
+                  errorResponseRules:
+                    description: Specifies rules for returning error responses.
+                    items:
+                      properties:
+                        matchResponseCodes:
+                          description: 'Valid values include: - A number between 400
+                            and 599: For example 401 or 503, in which case the load
+                            balancer applies the policy if the error code exactly
+                            matches this value. - 5xx: Load Balancer will apply the
+                            policy if the backend service responds with any response
+                            code in the range of 500 to 599. - 4xx: Load Balancer
+                            will apply the policy if the backend service responds
+                            with any response code in the range of 400 to 499. Values
+                            must be unique within matchResponseCodes and across all
+                            errorResponseRules of CustomErrorResponsePolicy.'
+                          items:
+                            type: string
+                          type: array
+                        overrideResponseCode:
+                          description: The HTTP status code returned with the response
+                            containing the custom error content. If overrideResponseCode
+                            is not supplied, the same response code returned by the
+                            original backend bucket or backend service is returned
+                            to the client.
+                          type: integer
+                        path:
+                          description: 'The full path to a file within backendBucket
+                            . For example: /errors/defaultError.html path must start
+                            with a leading slash. path cannot have trailing slashes.
+                            If the file is not available in backendBucket or the load
+                            balancer cannot reach the BackendBucket, a simple Not
+                            Found Error is returned to the client. The value must
+                            be from 1 to 1024 characters.'
+                          type: string
+                      type: object
+                    type: array
+                  errorServiceRef:
+                    description: The full or partial URL to the BackendBucket resource
+                      that contains the custom error content.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `selfLink` field of a `ComputeBackendBucket`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                type: object
               defaultRouteAction:
                 description: |-
                   defaultRouteAction takes effect when none of the hostRules match. The load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend. If defaultRouteAction specifies any weightedBackendServices, defaultService must not be set. Conversely if defaultService is set, defaultRouteAction cannot contain any weightedBackendServices.
@@ -641,6 +712,79 @@ spec:
                 description: The list of named PathMatchers to use against the URL.
                 items:
                   properties:
+                    defaultCustomErrorResponsePolicy:
+                      description: defaultCustomErrorResponsePolicy specifies how
+                        the Load Balancer returns error responses when BackendService
+                        or BackendBucket responds with an error.
+                      properties:
+                        errorResponseRules:
+                          description: Specifies rules for returning error responses.
+                          items:
+                            properties:
+                              matchResponseCodes:
+                                description: 'Valid values include: - A number between
+                                  400 and 599: For example 401 or 503, in which case
+                                  the load balancer applies the policy if the error
+                                  code exactly matches this value. - 5xx: Load Balancer
+                                  will apply the policy if the backend service responds
+                                  with any response code in the range of 500 to 599.
+                                  - 4xx: Load Balancer will apply the policy if the
+                                  backend service responds with any response code
+                                  in the range of 400 to 499. Values must be unique
+                                  within matchResponseCodes and across all errorResponseRules
+                                  of CustomErrorResponsePolicy.'
+                                items:
+                                  type: string
+                                type: array
+                              overrideResponseCode:
+                                description: The HTTP status code returned with the
+                                  response containing the custom error content. If
+                                  overrideResponseCode is not supplied, the same response
+                                  code returned by the original backend bucket or
+                                  backend service is returned to the client.
+                                type: integer
+                              path:
+                                description: 'The full path to a file within backendBucket
+                                  . For example: /errors/defaultError.html path must
+                                  start with a leading slash. path cannot have trailing
+                                  slashes. If the file is not available in backendBucket
+                                  or the load balancer cannot reach the BackendBucket,
+                                  a simple Not Found Error is returned to the client.
+                                  The value must be from 1 to 1024 characters.'
+                                type: string
+                            type: object
+                          type: array
+                        errorServiceRef:
+                          description: The full or partial URL to the BackendBucket
+                            resource that contains the custom error content.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeBackendBucket` resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
+                      type: object
                     defaultRouteAction:
                       description: |-
                         defaultRouteAction takes effect when none of the pathRules or routeRules match. The load balancer performs
@@ -1217,6 +1361,83 @@ spec:
                         given pathMatcher, only one of pathRules or routeRules must be set.
                       items:
                         properties:
+                          customErrorResponsePolicy:
+                            description: customErrorResponsePolicy specifies how the
+                              Load Balancer returns error responses when BackendService
+                              or BackendBucket responds with an error.
+                            properties:
+                              errorResponseRules:
+                                description: Specifies rules for returning error responses.
+                                items:
+                                  properties:
+                                    matchResponseCodes:
+                                      description: 'Valid values include: - A number
+                                        between 400 and 599: For example 401 or 503,
+                                        in which case the load balancer applies the
+                                        policy if the error code exactly matches this
+                                        value. - 5xx: Load Balancer will apply the
+                                        policy if the backend service responds with
+                                        any response code in the range of 500 to 599.
+                                        - 4xx: Load Balancer will apply the policy
+                                        if the backend service responds with any response
+                                        code in the range of 400 to 499. Values must
+                                        be unique within matchResponseCodes and across
+                                        all errorResponseRules of CustomErrorResponsePolicy.'
+                                      items:
+                                        type: string
+                                      type: array
+                                    overrideResponseCode:
+                                      description: The HTTP status code returned with
+                                        the response containing the custom error content.
+                                        If overrideResponseCode is not supplied, the
+                                        same response code returned by the original
+                                        backend bucket or backend service is returned
+                                        to the client.
+                                      type: integer
+                                    path:
+                                      description: 'The full path to a file within
+                                        backendBucket . For example: /errors/defaultError.html
+                                        path must start with a leading slash. path
+                                        cannot have trailing slashes. If the file
+                                        is not available in backendBucket or the load
+                                        balancer cannot reach the BackendBucket, a
+                                        simple Not Found Error is returned to the
+                                        client. The value must be from 1 to 1024 characters.'
+                                      type: string
+                                  type: object
+                                type: array
+                              errorServiceRef:
+                                description: The full or partial URL to the BackendBucket
+                                  resource that contains the custom error content.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: 'Allowed value: The `selfLink` field
+                                      of a `ComputeBackendBucket` resource.'
+                                    type: string
+                                  name:
+                                    description: 'Name of the referent. More info:
+                                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                    type: string
+                                  namespace:
+                                    description: 'Namespace of the referent. More
+                                      info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                    type: string
+                                type: object
+                            type: object
                           paths:
                             description: |-
                               The list of path patterns to match. Each must start with / and the only place a
@@ -1777,6 +1998,83 @@ spec:
                         External load balancers.
                       items:
                         properties:
+                          customErrorResponsePolicy:
+                            description: customErrorResponsePolicy specifies how the
+                              Load Balancer returns error responses when BackendService
+                              or BackendBucket responds with an error.
+                            properties:
+                              errorResponseRules:
+                                description: Specifies rules for returning error responses.
+                                items:
+                                  properties:
+                                    matchResponseCodes:
+                                      description: 'Valid values include: - A number
+                                        between 400 and 599: For example 401 or 503,
+                                        in which case the load balancer applies the
+                                        policy if the error code exactly matches this
+                                        value. - 5xx: Load Balancer will apply the
+                                        policy if the backend service responds with
+                                        any response code in the range of 500 to 599.
+                                        - 4xx: Load Balancer will apply the policy
+                                        if the backend service responds with any response
+                                        code in the range of 400 to 499. Values must
+                                        be unique within matchResponseCodes and across
+                                        all errorResponseRules of CustomErrorResponsePolicy.'
+                                      items:
+                                        type: string
+                                      type: array
+                                    overrideResponseCode:
+                                      description: The HTTP status code returned with
+                                        the response containing the custom error content.
+                                        If overrideResponseCode is not supplied, the
+                                        same response code returned by the original
+                                        backend bucket or backend service is returned
+                                        to the client.
+                                      type: integer
+                                    path:
+                                      description: 'The full path to a file within
+                                        backendBucket . For example: /errors/defaultError.html
+                                        path must start with a leading slash. path
+                                        cannot have trailing slashes. If the file
+                                        is not available in backendBucket or the load
+                                        balancer cannot reach the BackendBucket, a
+                                        simple Not Found Error is returned to the
+                                        client. The value must be from 1 to 1024 characters.'
+                                      type: string
+                                  type: object
+                                type: array
+                              errorServiceRef:
+                                description: The full or partial URL to the BackendBucket
+                                  resource that contains the custom error content.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: 'Allowed value: The `selfLink` field
+                                      of a `ComputeBackendBucket` resource.'
+                                    type: string
+                                  name:
+                                    description: 'Name of the referent. More info:
+                                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                    type: string
+                                  namespace:
+                                    description: 'Namespace of the referent. More
+                                      info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                    type: string
+                                type: object
+                            type: object
                           headerAction:
                             description: |-
                               Specifies changes to request and response headers that need to take effect for

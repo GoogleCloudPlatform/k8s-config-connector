@@ -581,6 +581,49 @@ the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENT
 				ConflictsWith: []string{"default_route_action"},
 				ExactlyOneOf:  []string{"default_service", "default_url_redirect", "default_route_action.0.weighted_backend_services"},
 			},
+			"default_custom_error_response_policy": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Description: `defaultCustomErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendService or BackendBucket responds with an error.`,
+				MaxItems: 1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"error_response_rules": {
+							Type:     schema.TypeList,
+							Optional: true,
+							Description: `Specifies rules for returning error responses.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"match_response_codes": {
+										Type:     schema.TypeList,
+										Optional: true,
+										Description: `Valid values include: - A number between 400 and 599: For example 401 or 503, in which case the load balancer applies the policy if the error code exactly matches this value. - 5xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 500 to 599. - 4xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 400 to 499. Values must be unique within matchResponseCodes and across all errorResponseRules of CustomErrorResponsePolicy.`,
+										Elem: &schema.Schema{
+											Type: schema.TypeString,
+										},
+									},
+									"override_response_code": {
+										Type:     schema.TypeInt,
+										Optional: true,
+										Description: `The HTTP status code returned with the response containing the custom error content. If overrideResponseCode is not supplied, the same response code returned by the original backend bucket or backend service is returned to the client.`,
+									},
+									"path": {
+										Type:     schema.TypeString,
+										Optional: true,
+										Description: `The full path to a file within backendBucket . For example: /errors/defaultError.html path must start with a leading slash. path cannot have trailing slashes. If the file is not available in backendBucket or the load balancer cannot reach the BackendBucket, a simple Not Found Error is returned to the client. The value must be from 1 to 1024 characters`,
+									},
+								},
+							},
+						},
+						"error_service": {
+							Type:             schema.TypeString,
+							Optional:         true,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+							Description:      `The full or partial URL to the BackendBucket resource that contains the custom error content.`,
+						},
+					},
+				},
+			},
 			"description": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -604,6 +647,49 @@ you create the resource.`,
 							Type:        schema.TypeString,
 							Required:    true,
 							Description: `The name to which this PathMatcher is referred by the HostRule.`,
+						},
+						"default_custom_error_response_policy": {
+							Type:     schema.TypeList,
+							Optional: true,
+							Description: `defaultCustomErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendService or BackendBucket responds with an error.`,
+							MaxItems: 1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"error_response_rules": {
+										Type:     schema.TypeList,
+										Optional: true,
+										Description: `Specifies rules for returning error responses.`,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"match_response_codes": {
+													Type:     schema.TypeList,
+													Optional: true,
+													Description: `Valid values include: - A number between 400 and 599: For example 401 or 503, in which case the load balancer applies the policy if the error code exactly matches this value. - 5xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 500 to 599. - 4xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 400 to 499. Values must be unique within matchResponseCodes and across all errorResponseRules of CustomErrorResponsePolicy.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"override_response_code": {
+													Type:     schema.TypeInt,
+													Optional: true,
+													Description: `The HTTP status code returned with the response containing the custom error content. If overrideResponseCode is not supplied, the same response code returned by the original backend bucket or backend service is returned to the client.`,
+												},
+												"path": {
+													Type:     schema.TypeString,
+													Optional: true,
+													Description: `The full path to a file within backendBucket . For example: /errors/defaultError.html path must start with a leading slash. path cannot have trailing slashes. If the file is not available in backendBucket or the load balancer cannot reach the BackendBucket, a simple Not Found Error is returned to the client. The value must be from 1 to 1024 characters`,
+												},
+											},
+										},
+									},
+									"error_service": {
+										Type:             schema.TypeString,
+										Optional:         true,
+										DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+										Description:      `The full or partial URL to the BackendBucket resource that contains the custom error content.`,
+									},
+								},
+							},
 						},
 						"default_service": {
 							Type:             schema.TypeString,
@@ -711,6 +797,49 @@ allowed here.`,
 											Type: schema.TypeString,
 										},
 										Set: schema.HashString,
+									},
+									"custom_error_response_policy": {
+										Type:     schema.TypeList,
+										Optional: true,
+										Description: `customErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendService or BackendBucket responds with an error.`,
+										MaxItems: 1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"error_response_rules": {
+													Type:     schema.TypeList,
+													Optional: true,
+													Description: `Specifies rules for returning error responses.`,
+													Elem: &schema.Resource{
+														Schema: map[string]*schema.Schema{
+															"match_response_codes": {
+																Type:     schema.TypeList,
+																Optional: true,
+																Description: `Valid values include: - A number between 400 and 599: For example 401 or 503, in which case the load balancer applies the policy if the error code exactly matches this value. - 5xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 500 to 599. - 4xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 400 to 499. Values must be unique within matchResponseCodes and across all errorResponseRules of CustomErrorResponsePolicy.`,
+																Elem: &schema.Schema{
+																	Type: schema.TypeString,
+																},
+															},
+															"override_response_code": {
+																Type:     schema.TypeInt,
+																Optional: true,
+																Description: `The HTTP status code returned with the response containing the custom error content. If overrideResponseCode is not supplied, the same response code returned by the original backend bucket or backend service is returned to the client.`,
+															},
+															"path": {
+																Type:     schema.TypeString,
+																Optional: true,
+																Description: `The full path to a file within backendBucket . For example: /errors/defaultError.html path must start with a leading slash. path cannot have trailing slashes. If the file is not available in backendBucket or the load balancer cannot reach the BackendBucket, a simple Not Found Error is returned to the client. The value must be from 1 to 1024 characters`,
+															},
+														},
+													},
+												},
+												"error_service": {
+													Type:             schema.TypeString,
+													Optional:         true,
+													DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+													Description:      `The full or partial URL to the BackendBucket resource that contains the custom error content.`,
+												},
+											},
+										},
 									},
 									"route_action": {
 										Type:     schema.TypeList,
@@ -1253,6 +1382,49 @@ in the future without affecting the rest of the rules. For example,
 1, 2, 3, 4, 5, 9, 12, 16 is a valid series of priority numbers to which
 you could add rules numbered from 6 to 8, 10 to 11, and 13 to 15 in the
 future without any impact on existing rules.`,
+									},
+									"custom_error_response_policy": {
+										Type:     schema.TypeList,
+										Optional: true,
+										Description: `customErrorResponsePolicy specifies how the Load Balancer returns error responses when BackendService or BackendBucket responds with an error.`,
+										MaxItems: 1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"error_response_rules": {
+													Type:     schema.TypeList,
+													Optional: true,
+													Description: `Specifies rules for returning error responses.`,
+													Elem: &schema.Resource{
+														Schema: map[string]*schema.Schema{
+															"match_response_codes": {
+																Type:     schema.TypeList,
+																Optional: true,
+																Description: `Valid values include: - A number between 400 and 599: For example 401 or 503, in which case the load balancer applies the policy if the error code exactly matches this value. - 5xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 500 to 599. - 4xx: Load Balancer will apply the policy if the backend service responds with any response code in the range of 400 to 499. Values must be unique within matchResponseCodes and across all errorResponseRules of CustomErrorResponsePolicy.`,
+																Elem: &schema.Schema{
+																	Type: schema.TypeString,
+																},
+															},
+															"override_response_code": {
+																Type:     schema.TypeInt,
+																Optional: true,
+																Description: `The HTTP status code returned with the response containing the custom error content. If overrideResponseCode is not supplied, the same response code returned by the original backend bucket or backend service is returned to the client.`,
+															},
+															"path": {
+																Type:     schema.TypeString,
+																Optional: true,
+																Description: `The full path to a file within backendBucket . For example: /errors/defaultError.html path must start with a leading slash. path cannot have trailing slashes. If the file is not available in backendBucket or the load balancer cannot reach the BackendBucket, a simple Not Found Error is returned to the client. The value must be from 1 to 1024 characters`,
+															},
+														},
+													},
+												},
+												"error_service": {
+													Type:             schema.TypeString,
+													Optional:         true,
+													DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+													Description:      `The full or partial URL to the BackendBucket resource that contains the custom error content.`,
+												},
+											},
+										},
 									},
 									"header_action": {
 										Type:     schema.TypeList,

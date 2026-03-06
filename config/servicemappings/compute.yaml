@@ -1813,6 +1813,42 @@ spec:
                 version: v1beta1
                 group: compute.cnrm.cloud.google.com
               targetField: self_link
+        - tfField: default_custom_error_response_policy.error_service
+          key: errorServiceRef
+          description: |-
+            The full or partial URL to the BackendBucket resource that contains the custom error content.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendBucket
+          targetField: self_link
+        - tfField: path_matcher.default_custom_error_response_policy.error_service
+          key: errorServiceRef
+          description: |-
+            The full or partial URL to the BackendBucket resource that contains the custom error content.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendBucket
+          targetField: self_link
+        - tfField: path_matcher.path_rule.custom_error_response_policy.error_service
+          key: errorServiceRef
+          description: |-
+            The full or partial URL to the BackendBucket resource that contains the custom error content.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendBucket
+          targetField: self_link
+        - tfField: path_matcher.route_rules.custom_error_response_policy.error_service
+          key: errorServiceRef
+          description: |-
+            The full or partial URL to the BackendBucket resource that contains the custom error content.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendBucket
+          targetField: self_link
         - tfField: default_route_action.request_mirror_policy.backend_service
           key: backendServiceRef
           description: |-
@@ -2736,6 +2772,42 @@ spec:
                 version: v1beta1
                 group: compute.cnrm.cloud.google.com
               targetField: self_link
+        - tfField: default_custom_error_response_policy.error_service
+          key: errorServiceRef
+          description: |-
+            The full or partial URL to the BackendBucket resource that contains the custom error content.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendBucket
+          targetField: self_link
+        - tfField: path_matcher.default_custom_error_response_policy.error_service
+          key: errorServiceRef
+          description: |-
+            The full or partial URL to the BackendBucket resource that contains the custom error content.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendBucket
+          targetField: self_link
+        - tfField: path_matcher.path_rule.custom_error_response_policy.error_service
+          key: errorServiceRef
+          description: |-
+            The full or partial URL to the BackendBucket resource that contains the custom error content.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendBucket
+          targetField: self_link
+        - tfField: path_matcher.route_rules.custom_error_response_policy.error_service
+          key: errorServiceRef
+          description: |-
+            The full or partial URL to the BackendBucket resource that contains the custom error content.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendBucket
+          targetField: self_link
         - tfField: default_route_action.request_mirror_policy.backend_service
           key: backendServiceRef
           description: |-
