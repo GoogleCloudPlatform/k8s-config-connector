@@ -34,7 +34,8 @@ import (
 
 // operationBase defines common functionality for multiple operation types.
 type operationBase struct {
-	client client.Client
+	client           client.Client
+	lifecycleHandler lifecyclehandler.LifecycleHandler
 
 	object *unstructured.Unstructured
 
@@ -54,6 +55,9 @@ type Operation interface {
 	// RequestRequeue requests a requeue of the operation, by returning Requeue = true from the reconcile loop.
 	RequestRequeue()
 
+	// RecordUpdatingEvent records an event indicating the resource is being updated.
+	RecordUpdatingEvent()
+
 	// SetLastModifiedCookie sets the last-changed-cookie annotation on the object.
 	SetLastModifiedCookie(ctx context.Context, desired, actual proto.Message) error
 
@@ -66,12 +70,67 @@ func (o *operationBase) GetUnstructured() *unstructured.Unstructured {
 	return o.object
 }
 
+func (o *operationBase) RecordUpdatingEvent() {
+	r := o.lifecycleHandler.Recorder
+	r.Event(o.object, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
+}
+
+// RecordUpdateError records a failure to update the resource.
+func (o *operationBase) RecordUpdateError(ctx context.Context, typedStatus any, err error, message ...string) error {
+	if err == nil {
+		return nil
+	}
+	if _, _, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(err); ok {
+		if !o.HasSetReadyCondition {
+			return err
+		}
+	}
+	msg := fmt.Sprintf("Failed to update resource: %v", err)
+	if len(message) > 0 && message[0] != "" {
+		msg = message[0]
+	}
+	readyCondition := &v1alpha1.Condition{
+		Type:    v1alpha1.ReadyConditionType,
+		Status:  corev1.ConditionFalse,
+		Reason:  k8s.UpdateFailed,
+		Message: msg,
+	}
+	if err2 := o.UpdateStatus(ctx, typedStatus, readyCondition); err2 != nil {
+		klog.FromContext(ctx).Error(err2, "error updating status to UpdateFailed")
+	}
+	return err
+}
+
+// RecordCreateError records a failure to create the resource.
+func (o *operationBase) RecordCreateError(ctx context.Context, typedStatus any, err error, message ...string) error {
+	if err == nil {
+		return nil
+	}
+	if _, _, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(err); ok {
+		if !o.HasSetReadyCondition {
+			return err
+		}
+	}
+	msg := fmt.Sprintf("Failed to create resource: %v", err)
+	if len(message) > 0 && message[0] != "" {
+		msg = message[0]
+	}
+	readyCondition := &v1alpha1.Condition{
+		Type:    v1alpha1.ReadyConditionType,
+		Status:  corev1.ConditionFalse,
+		Reason:  k8s.CreateFailed,
+		Message: msg,
+	}
+	if err2 := o.UpdateStatus(ctx, &statusWithConditions{}, readyCondition); err2 != nil {
+		klog.FromContext(ctx).Error(err2, "error updating status to CreateFailed")
+	}
+	return err
+}
+
 var _ Operation = &UpdateOperation{}
 
 type UpdateOperation struct {
 	operationBase
-
-	lifecycleHandler lifecyclehandler.LifecycleHandler
 }
 
 func NewUpdateOperation(lifecycleHandler lifecyclehandler.LifecycleHandler, client client.Client, object *unstructured.Unstructured) *UpdateOperation {
@@ -82,16 +141,10 @@ func NewUpdateOperation(lifecycleHandler lifecyclehandler.LifecycleHandler, clie
 	return op
 }
 
-func (o *UpdateOperation) RecordUpdatingEvent() {
-	r := o.lifecycleHandler.Recorder
-	r.Event(o.object, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
-}
-
 var _ Operation = &CreateOperation{}
 
 type CreateOperation struct {
 	operationBase
-	lifecycleHandler lifecyclehandler.LifecycleHandler
 }
 
 func NewCreateOperation(lifecycleHandler lifecyclehandler.LifecycleHandler, client client.Client, object *unstructured.Unstructured) *CreateOperation {
@@ -100,11 +153,6 @@ func NewCreateOperation(lifecycleHandler lifecyclehandler.LifecycleHandler, clie
 	op.client = client
 	op.object = object
 	return op
-}
-
-func (o *CreateOperation) RecordUpdatingEvent() {
-	r := o.lifecycleHandler.Recorder
-	r.Event(o.object, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
 }
 
 // SetSpecResourceID sets the spec.resourceID field of the resource after creation.
@@ -159,9 +207,16 @@ func (o *AdapterForObjectOperation) IsDeleting() bool {
 // UpdateStatus writes the status and ready condition to the object's status subresource.
 // We split out the readyCondition so that we will not write it from the reconcile loop if we wrote it here.
 func (o *operationBase) UpdateStatus(ctx context.Context, typedStatus any, readyCondition *v1alpha1.Condition) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
-	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
+	var status map[string]any
+	if typedStatus != nil {
+		var err error
+		status, err = runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
+		if err != nil {
+			return fmt.Errorf("error converting status to unstructured: %w", err)
+		}
+	}
+	if status == nil {
+		status = make(map[string]any)
 	}
 
 	old, _, _ := unstructured.NestedMap(o.object.Object, "status")
