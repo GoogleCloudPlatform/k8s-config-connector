@@ -18,7 +18,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 FILE=${1:-}
 [[ -z "${FILE:-}" ]] && { echo "Error: file not specified" >&2; exit 1; }
