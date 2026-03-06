@@ -15,12 +15,12 @@ apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: mock-project
+    cnrm.cloud.google.com/project-id: ${projectId}
   name: containercluster-${uniqueId}
 spec:
   location: us-central1-a
   workloadIdentityConfig:
-    workloadPool:  mock-project.svc.id.goog
+    workloadPool:  ${projectId}.svc.id.goog
 ---
 apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubFeature
@@ -28,7 +28,7 @@ metadata:
   name: gkehubfeature-${uniqueId}
 spec:
   projectRef:
-    external: projects/mock-project
+    external: projects/${projectId}
   location: global
   resourceID: configmanagement
 ---
@@ -36,12 +36,12 @@ apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubMembership
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: mock-project
+    cnrm.cloud.google.com/project-id: ${projectId}
   name: gkehubmembership-${uniqueId}
 spec:
   location: global
   authority:
-    issuer: https://container.googleapis.com/v1/projects/mock-project/locations/us-central1-a/clusters/containercluster-${uniqueId}
+    issuer: https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}
   description: A sample GKE Hub membership
   endpoint:
     gkeCluster:
@@ -52,7 +52,7 @@ apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: mock-project
+    cnrm.cloud.google.com/project-id: ${projectId}
   name: sa-${uniqueId}
 spec:
   displayName: Example Service Account
@@ -64,12 +64,12 @@ metadata:
   name: gkehubfeaturemembership-${uniqueId}
 spec:
   projectRef:
-    external: projects/mock-project
+    external: projects/${projectId}
   location: global
   membershipRef:
-    name: gkehubmembership-${uniqueId}
+    external: projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/${projectId}/locations/global/features/gkehubfeature-${uniqueId}
   configmanagement:
     configSync:
       git:
@@ -92,12 +92,12 @@ metadata:
   name: gkehubfeaturemembership-${uniqueId}
 spec:
   projectRef:
-    external: projects/mock-project
+    external: projects/${projectId}
   location: global
   membershipRef:
-    name: gkehubmembership-${uniqueId}
+    external: projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    external: projects/${projectId}/locations/global/features/gkehubfeature-${uniqueId}
   configmanagement:
     configSync:
       git:
