@@ -320,6 +320,7 @@
 [acronyms] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].defaultUrlRedirect.prefixRedirect" should be ".spec.pathMatcher[].defaultURLRedirect.prefixRedirect"
 [acronyms] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].defaultUrlRedirect.redirectResponseCode" should be ".spec.pathMatcher[].defaultURLRedirect.redirectResponseCode"
 [acronyms] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].defaultUrlRedirect.stripQuery" should be ".spec.pathMatcher[].defaultURLRedirect.stripQuery"
+[acronyms] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.test[].expectedOutputUrl" should be ".spec.test[].expectedOutputURL"
 [acronyms] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".status.mapId" should be ".status.mapID"
 [acronyms] crd=computevpntunnels.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.peerIp" should be ".spec.peerIP"
 [acronyms] crd=computevpntunnels.compute.cnrm.cloud.google.com version=v1beta1: field ".status.tunnelId" should be ".status.tunnelID"
