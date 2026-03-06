@@ -20,5 +20,5 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
-export E2E=1
+export RUN_E2E=1
 go test -v -timeout 60m ./tests/e2e/smoketest/

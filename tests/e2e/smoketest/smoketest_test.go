@@ -26,11 +26,11 @@ import (
 )
 
 func TestSmoketest(t *testing.T) {
-	if os.Getenv("E2E") != "1" {
-		t.Skip("skipping smoketest; E2E=1 not set")
+	if os.Getenv("RUN_E2E") != "1" {
+		t.Skip("skipping smoketest; RUN_E2E=1 not set")
 	}
 
-	ctx := context.Background()
+	ctx := t.Context()
 
 	repoRoot, err := exec.Command("git", "rev-parse", "--show-toplevel").Output()
 	if err != nil {
@@ -43,7 +43,8 @@ func TestSmoketest(t *testing.T) {
 	// Cleanup cluster at the end
 	t.Cleanup(func() {
 		t.Logf("Deleting kind cluster %q", clusterName)
-		cmd := exec.CommandContext(ctx, "kind", "delete", "cluster", "--name", clusterName)
+		// Use Background context for cleanup to ensure it runs even if ctx is cancelled
+		cmd := exec.CommandContext(context.Background(), "kind", "delete", "cluster", "--name", clusterName)
 		if output, err := cmd.CombinedOutput(); err != nil {
 			t.Logf("failed to delete kind cluster: %v\nOutput: %s", err, string(output))
 		}
@@ -54,8 +55,9 @@ func TestSmoketest(t *testing.T) {
 		t.Fatalf("failed to create kind cluster: %v", err)
 	}
 
+	// Revert imageTag to use 'dev-' prefix.
 	imageTag := "dev-" + time.Now().Format("20060102T150405")
-	imagePrefix := "registry.kind/"
+	imagePrefix := "gcr.io/gke-release/cnrm/"
 
 	t.Logf("Building images with tag %q", imageTag)
 	buildCmd := exec.CommandContext(ctx, filepath.Join(root, "dev/tasks/build-images"))
@@ -63,15 +65,28 @@ func TestSmoketest(t *testing.T) {
 	buildCmd.Env = append(os.Environ(),
 		"IMAGE_TAG="+imageTag,
 		"IMAGE_PREFIX="+imagePrefix,
+		"UPGRADE_CHANNELS=1",
 	)
 	if output, err := buildCmd.CombinedOutput(); err != nil {
 		t.Fatalf("failed to build images: %v\nOutput: %s", err, string(output))
 	}
 
-	t.Logf("Loading operator image into kind")
-	operatorImage := imagePrefix + "operator:" + imageTag
-	if err := runCommand(ctx, t, root, "kind", "load", "--name", clusterName, "docker-image", operatorImage); err != nil {
-		t.Fatalf("failed to load image into kind: %v", err)
+	t.Logf("Loading images into kind")
+	images := []string{
+		"operator",
+		"controller",
+		"recorder",
+		"webhook",
+		"deletiondefender",
+		"unmanageddetector",
+	}
+	// Optimization: load all images in one command
+	var imageFullNames []string
+	for _, img := range images {
+		imageFullNames = append(imageFullNames, imagePrefix+img+":"+imageTag)
+	}
+	if err := runCommand(ctx, t, root, "kind", append([]string{"load", "docker-image", "--name", clusterName}, imageFullNames...)...); err != nil {
+		t.Fatalf("failed to load images into kind: %v", err)
 	}
 
 	t.Logf("Deploying operator to kind")
@@ -82,13 +97,7 @@ func TestSmoketest(t *testing.T) {
 	}
 
 	manifests := string(kustomizeOutput)
-	// Replace operator image and pull policy
-	// The kustomize output should have the image we set during build if we ran make docker-build
-	// But let's be safe and do a replacement here too if needed, or just ensure we use the built one.
-	// Actually, dev/tasks/build-images calls make -C operator docker-build which updates manager_image_patch.yaml
-	// So kustomize build should already have the right image.
-	// However, we want to ensure imagePullPolicy is IfNotPresent so kind uses the loaded image.
-	manifests = strings.ReplaceAll(manifests, "imagePullPolicy: Always", "imagePullPolicy: IfNotPresent")
+	// imagePullPolicy is now IfNotPresent in the manifests because of the templates.
 
 	applyCmd := exec.CommandContext(ctx, "kubectl", "apply", "--server-side", "-f", "-")
 	applyCmd.Stdin = strings.NewReader(manifests)

@@ -23,3 +23,4 @@ spec:
       # Change the value of image field below to your controller image URL
       - image: IMAGE_URL
         name: manager
+        imagePullPolicy: IfNotPresent
