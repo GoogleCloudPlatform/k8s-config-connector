@@ -2260,6 +2260,7 @@
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.endpoints[].connections[].pscConnection.forwardingRuleRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.endpoints[].connections[].pscConnection.ipAddress" is not set in unstructured objects
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.endpoints[].connections[].pscConnection.networkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.endpoints[].connections[].pscConnection.port" is not set in unstructured objects
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.endpoints[].connections[].pscConnection.pscConnectionID" is not set in unstructured objects
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.endpoints[].connections[].pscConnection.serviceAttachmentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringalertpolicies.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.alertStrategy.autoClose" is not set in unstructured objects
@@ -3422,4 +3423,4 @@
 [missing_field] crd=workstationconfigs.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.container.env[].value" is not set in unstructured objects
 [missing_field] crd=workstationconfigs.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.container.runAsUser" is not set in unstructured objects
 [missing_field] crd=workstationconfigs.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.container.workingDir" is not set in unstructured objects
-[missing_field] crd=workstationconfigs.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.persistentDirectories[].gcePD.sourceSnapshot" is not set in unstructured objects[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.endpoints[].connections[].pscConnection.port" is not set in unstructured objects
+[missing_field] crd=workstationconfigs.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.persistentDirectories[].gcePD.sourceSnapshot" is not set in unstructured objects

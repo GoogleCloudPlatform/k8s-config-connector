@@ -621,6 +621,13 @@ X-Xss-Protection: 0
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": true,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "network": "projects/${projectId}/global/networks/default",
+        "port": 6379
+      }
+    ],
     "endpoints": [
       {
         "connections": [
@@ -686,6 +693,13 @@ X-Xss-Protection: 0
   "authorizationMode": 2,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": true,
+  "discoveryEndpoints": [
+    {
+      "address": "10.11.12.13",
+      "network": "projects/${projectId}/global/networks/default",
+      "port": 6379
+    }
+  ],
   "endpoints": [
     {
       "connections": [
@@ -834,6 +848,13 @@ X-Xss-Protection: 0
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": true,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "network": "projects/${projectId}/global/networks/default",
+        "port": 6379
+      }
+    ],
     "endpoints": [
       {
         "connections": [
@@ -984,6 +1005,13 @@ X-Xss-Protection: 0
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": true,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "network": "projects/${projectId}/global/networks/default",
+        "port": 6379
+      }
+    ],
     "endpoints": [
       {
         "connections": [
@@ -1134,6 +1162,13 @@ X-Xss-Protection: 0
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "network": "projects/${projectId}/global/networks/default",
+        "port": 6379
+      }
+    ],
     "endpoints": [
       {
         "connections": [
@@ -1284,6 +1319,13 @@ X-Xss-Protection: 0
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "network": "projects/${projectId}/global/networks/default",
+        "port": 6379
+      }
+    ],
     "endpoints": [
       {
         "connections": [
@@ -1435,6 +1477,13 @@ X-Xss-Protection: 0
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "network": "projects/${projectId}/global/networks/default",
+        "port": 6379
+      }
+    ],
     "endpoints": [
       {
         "connections": [
@@ -1587,6 +1636,13 @@ X-Xss-Protection: 0
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "network": "projects/${projectId}/global/networks/default",
+        "port": 6379
+      }
+    ],
     "endpoints": [
       {
         "connections": [
@@ -1739,6 +1795,13 @@ X-Xss-Protection: 0
     "authorizationMode": "IAM_AUTH",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "network": "projects/${projectId}/global/networks/default",
+        "port": 6379
+      }
+    ],
     "endpoints": [
       {
         "connections": [
@@ -1808,6 +1871,13 @@ X-Xss-Protection: 0
   "authorizationMode": 2,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "discoveryEndpoints": [
+    {
+      "address": "10.11.12.13",
+      "network": "projects/${projectId}/global/networks/default",
+      "port": 6379
+    }
+  ],
   "endpoints": [
     {
       "connections": [

@@ -86,6 +86,13 @@ X-Xss-Protection: 0
     "authorizationMode": "AUTH_DISABLED",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "network": "projects/${projectId}/global/networks/default",
+        "port": 6379
+      }
+    ],
     "engineVersion": "VALKEY_7_2",
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
@@ -128,6 +135,13 @@ X-Xss-Protection: 0
   "authorizationMode": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "discoveryEndpoints": [
+    {
+      "address": "10.11.12.13",
+      "network": "projects/${projectId}/global/networks/default",
+      "port": 6379
+    }
+  ],
   "engineVersion": "VALKEY_7_2",
   "mode": 2,
   "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
@@ -214,6 +228,13 @@ X-Xss-Protection: 0
     "authorizationMode": "AUTH_DISABLED",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "network": "projects/${projectId}/global/networks/default",
+        "port": 6379
+      }
+    ],
     "engineVersion": "VALKEY_7_2",
     "mode": "CLUSTER",
     "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
@@ -257,6 +278,13 @@ X-Xss-Protection: 0
   "authorizationMode": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
+  "discoveryEndpoints": [
+    {
+      "address": "10.11.12.13",
+      "network": "projects/${projectId}/global/networks/default",
+      "port": 6379
+    }
+  ],
   "engineVersion": "VALKEY_7_2",
   "mode": 2,
   "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
