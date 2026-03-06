@@ -75,6 +75,24 @@ type CCExperiments struct {
 	// MultiClusterLease defines configuration specific to multi-cluster leader election.
 	// +optional
 	MultiClusterLease *MultiClusterLeaseSpec `json:"multiClusterLease,omitempty"`
+
+	// ResourceSettings allows specifying which resources to enable or disable.
+	// +optional
+	ResourceSettings []ResourceSetting `json:"resourceSettings,omitempty"`
+}
+
+type ResourceSetting struct {
+	// Group is the API group of the resource.
+	// +required
+	Group string `json:"group"`
+
+	// Kind is the Kind of the resource.
+	// +required
+	Kind string `json:"kind"`
+
+	// Enabled controls whether the controller for this resource is enabled.
+	// +required
+	Enabled bool `json:"enabled"`
 }
 
 // MultiClusterLeaseSpec defines the configuration for a multi-cluster lease.
