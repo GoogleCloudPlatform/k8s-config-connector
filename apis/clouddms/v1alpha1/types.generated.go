@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,8 +20,60 @@
 // resource: CloudDMSConversionWorkspace:ConversionWorkspace
 // resource: CloudDMSPrivateConnection:PrivateConnection
 // resource: CloudDMSMigrationJob:MigrationJob
+// resource: CloudDMSConnectionProfile:ConnectionProfile
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.clouddms.v1.AlloyDbConnectionProfile
+type AlloyDbConnectionProfile struct {
+	// Required. The AlloyDB cluster ID that this connection profile is associated
+	//  with.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbConnectionProfile.cluster_id
+	ClusterID *string `json:"clusterID,omitempty"`
+
+	// Immutable. Metadata used to create the destination AlloyDB cluster.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbConnectionProfile.settings
+	Settings *AlloyDbSettings `json:"settings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings
+type AlloyDbSettings_PrimaryInstanceSettings struct {
+	// Required. The ID of the AlloyDB primary instance. The ID must satisfy the
+	//  regex expression "[a-z0-9-]+".
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.id
+	ID *string `json:"id,omitempty"`
+
+	// Configuration for the machines that host the underlying
+	//  database engine.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.machine_config
+	MachineConfig *AlloyDbSettings_PrimaryInstanceSettings_MachineConfig `json:"machineConfig,omitempty"`
+
+	// Database flags to pass to AlloyDB when DMS is creating the AlloyDB
+	//  cluster and instances. See the AlloyDB documentation for how these can be
+	//  used.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.database_flags
+	DatabaseFlags map[string]string `json:"databaseFlags,omitempty"`
+
+	// Labels for the AlloyDB primary instance created by DMS. An object
+	//  containing a list of 'key', 'value' pairs.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.MachineConfig
+type AlloyDbSettings_PrimaryInstanceSettings_MachineConfig struct {
+	// The number of CPU's in the VM instance.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.MachineConfig.cpu_count
+	CPUCount *int32 `json:"cpuCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.CloudSqlConnectionProfile
+type CloudSQLConnectionProfile struct {
+
+	// Immutable. Metadata used to create the destination Cloud SQL database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.settings
+	Settings *CloudSQLSettings `json:"settings,omitempty"`
+}
 
 // +kcc:proto=google.cloud.clouddms.v1.ConversionWorkspaceInfo
 type ConversionWorkspaceInfo struct {
@@ -81,6 +133,79 @@ type MigrationJob_PerformanceConfig struct {
 	DumpParallelLevel *string `json:"dumpParallelLevel,omitempty"`
 }
 
+// +kcc:proto=google.cloud.clouddms.v1.SqlAclEntry
+type SQLAclEntry struct {
+	// The allowlisted value for the access control list.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlAclEntry.value
+	Value *string `json:"value,omitempty"`
+
+	// The time when this access control entry expires in
+	//  [RFC 3339](https://tools.ietf.org/html/rfc3339) format, for example:
+	//  `2012-11-15T16:19:00.094Z`.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlAclEntry.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Input only. The time-to-leave of this access control entry.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlAclEntry.ttl
+	TTL *string `json:"ttl,omitempty"`
+
+	// A label to identify this entry.
+	// +kcc:proto:field=google.cloud.clouddms.v1.SqlAclEntry.label
+	Label *string `json:"label,omitempty"`
+}
+
 // +kcc:proto=google.cloud.clouddms.v1.StaticIpConnectivity
 type StaticIPConnectivity struct {
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.StaticServiceIpConnectivity
+type StaticServiceIPConnectivity struct {
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbConnectionProfile
+type AlloyDbConnectionProfileObservedState struct {
+	// Immutable. Metadata used to create the destination AlloyDB cluster.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbConnectionProfile.settings
+	Settings *AlloyDbSettingsObservedState `json:"settings,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings
+type AlloyDbSettings_PrimaryInstanceSettingsObservedState struct {
+	// Output only. The private IP address for the Instance.
+	//  This is the connection endpoint for an end-user application.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.private_ip
+	PrivateIP *string `json:"privateIP,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.CloudSqlConnectionProfile
+type CloudSQLConnectionProfileObservedState struct {
+	// Output only. The Cloud SQL instance ID that this connection profile is
+	//  associated with.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.cloud_sql_id
+	CloudSQLID *string `json:"cloudSQLID,omitempty"`
+
+	// Immutable. Metadata used to create the destination Cloud SQL database.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.settings
+	Settings *CloudSQLSettingsObservedState `json:"settings,omitempty"`
+
+	// Output only. The Cloud SQL database instance's private IP.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.private_ip
+	PrivateIP *string `json:"privateIP,omitempty"`
+
+	// Output only. The Cloud SQL database instance's public IP.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.public_ip
+	PublicIP *string `json:"publicIP,omitempty"`
+
+	// Output only. The Cloud SQL database instance's additional (outgoing) public
+	//  IP. Used when the Cloud SQL database availability type is REGIONAL (i.e.
+	//  multiple zones / highly available).
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.additional_public_ip
+	AdditionalPublicIP *string `json:"additionalPublicIP,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.CloudSqlSettings
+type CloudSQLSettingsObservedState struct {
+	// Output only. Indicates If this connection profile root password is stored.
+	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.root_password_set
+	RootPasswordSet *bool `json:"rootPasswordSet,omitempty"`
 }
