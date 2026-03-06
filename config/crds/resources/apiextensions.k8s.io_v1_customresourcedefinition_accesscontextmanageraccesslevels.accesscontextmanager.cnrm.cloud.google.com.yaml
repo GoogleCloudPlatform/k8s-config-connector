@@ -84,8 +84,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed AccessContextManagerAccessPolicy
-                      resource. As per https://docs.cloud.google.com/asset-inventory/docs/asset-names
-                      Should be in the format "accessPolicies/{{accesspolicyID}}".
+                      resource. Should be in the format "accessPolicies/{{accessPolicy}}".
                     type: string
                   name:
                     description: The name of a AccessContextManagerAccessPolicy resource.

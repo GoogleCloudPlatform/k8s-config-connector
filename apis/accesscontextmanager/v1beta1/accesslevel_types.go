@@ -27,7 +27,7 @@ var AccessContextManagerAccessLevelGVK = GroupVersion.WithKind("AccessContextMan
 type AccessContextManagerAccessLevelSpec struct {
 	// The AccessPolicy that this resource belongs to.
 	// +required
-	AccessPolicyRef *AccessPolicyRef `json:"accessPolicyRef,omitempty"`
+	AccessPolicyRef *AccessContextManagerAccessPolicyRef `json:"accessPolicyRef,omitempty"`
 
 	// The AccessContextManagerAccessLevel name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
