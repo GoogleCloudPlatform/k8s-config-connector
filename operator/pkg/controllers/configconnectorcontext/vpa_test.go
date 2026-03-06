@@ -118,7 +118,7 @@ func TestVPAIntegration(t *testing.T) {
 	// Create ConfigConnectorContext
 	ccc := &corev1beta1.ConfigConnectorContext{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "configconnectorcontext.core.cnrm.cloud.google.com",
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
 			Namespace: testNamespace,
 		},
 		Spec: corev1beta1.ConfigConnectorContextSpec{
