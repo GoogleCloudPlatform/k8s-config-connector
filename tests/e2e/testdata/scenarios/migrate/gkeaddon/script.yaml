@@ -1,0 +1,63 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+  mode: cluster
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: storagebucket-${uniqueId}
+spec:
+  location: US
+---
+# Step 2: Prepare migration
+kind: RunCLI
+args: [ "migrate", "gke-addon", "prepare", "--output=backup.yaml" ]
+---
+# Step 3: Verify CC is paused
+TEST: READ-OBJECT
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  name: configconnector.core.cnrm.cloud.google.com
+---
+# Step 4: Verify Bucket has no finalizers
+TEST: READ-OBJECT
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: storagebucket-${uniqueId}
+---
+# Step 5: Finish migration
+kind: RunCLI
+args: [ "migrate", "gke-addon", "finish", "--input=backup.yaml" ]
+---
+# Step 6: Verify CC is resumed
+TEST: READ-OBJECT
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  name: configconnector.core.cnrm.cloud.google.com
+---
+# Step 7: Verify Bucket still exists (re-applied)
+TEST: READ-OBJECT
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: storagebucket-${uniqueId}
