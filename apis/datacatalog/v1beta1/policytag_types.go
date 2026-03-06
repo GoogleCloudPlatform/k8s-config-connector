@@ -33,8 +33,7 @@ type DataCatalogPolicyTagSpec struct {
 
 	/* Description of this policy tag. It must: contain only unicode characters, tabs,
 	newlines, carriage returns and page breaks; and be at most 2000 bytes long when
-	encoded in UTF-8. If not set, defaults to an empty description.
-	If not set, defaults to an empty description. */
+	encoded in UTF-8. If not set, defaults to an empty description. */
 	// +optional
 	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.description
 	Description *string `json:"description,omitempty"`
@@ -46,6 +45,7 @@ type DataCatalogPolicyTagSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// +required
 	TaxonomyRef TaxonomyRef `json:"taxonomyRef"`
 }
 

@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -94,7 +94,7 @@ func NewPolicyTagIdentity(ctx context.Context, reader client.Reader, obj *DataCa
 			return nil, fmt.Errorf("Location changed, expect %s, got %s", actualParent.Location, location)
 		}
 		if actualParent.TaxonomyID != taxonomyID {
-			return nil, fmt.Errorf("Taxonomy Id changed, expect %s, got %s", actualParent.Location, location)
+			return nil, fmt.Errorf("Taxonomy ID changed, expect %s, got %s", actualParent.TaxonomyID, taxonomyID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -117,9 +117,10 @@ func ParsePolicyTagExternal(external string) (parent *PolicyTagParent, resourceI
 		return nil, "", fmt.Errorf("format of DataCatalogPolicyTag external=%q was not known (use projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}}/policyTags/{{policytagID}})", external)
 	}
 	parent = &PolicyTagParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID:  tokens[1],
+		Location:   tokens[3],
+		TaxonomyID: tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
