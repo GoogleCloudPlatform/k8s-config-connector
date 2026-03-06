@@ -24,7 +24,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -94,21 +93,9 @@ func (obj *ComputeAddress) GetIdentity(ctx context.Context, reader client.Reader
 }
 
 func (obj *ComputeAddress) GetParentIdentity(ctx context.Context, reader client.Reader) (*parent.ComputeParent, error) {
-	projectID, err := refsv1beta1.ResolveProjectFromAnnotation(ctx, reader, obj)
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
-		// Try to look up the project ID from the namespace
-		// We can't use ResolveProjectFromAnnotation because that only looks at the object.
-		// We could potentially update ResolveProjectFromAnnotation, but it's in a shared package.
-		key := client.ObjectKey{Name: obj.GetNamespace()}
-		ns := &corev1.Namespace{}
-		if err := reader.Get(ctx, key, ns); err != nil {
-			return nil, fmt.Errorf("error getting namespace %q: %w", obj.GetNamespace(), err)
-		}
-		if id := ns.Annotations["cnrm.cloud.google.com/project-id"]; id != "" {
-			projectID = &refsv1beta1.ProjectIdentity{ProjectID: id}
-		} else {
-			return nil, fmt.Errorf("no value found for annotation cnrm.cloud.google.com/project-id on resource or namespace")
-		}
+		return nil, err
 	}
 
 	// Get Location
@@ -119,5 +106,5 @@ func (obj *ComputeAddress) GetParentIdentity(ctx context.Context, reader client.
 		location = obj.Spec.Location
 	}
 
-	return &parent.ComputeParent{ProjectID: projectID.ProjectID, Location: location}, nil
+	return &parent.ComputeParent{ProjectID: projectID, Location: location}, nil
 }

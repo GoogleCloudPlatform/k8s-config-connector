@@ -1009,6 +1009,96 @@ func ComputeNodeTemplateStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: StatusMessage
 	return out
 }
+func ComputePublicDelegatedPrefixObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PublicDelegatedPrefix) *krm.ComputePublicDelegatedPrefixObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputePublicDelegatedPrefixObservedState{}
+	// MISSING: AllocatablePrefixLength
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// MISSING: IsLiveMigration
+	// MISSING: Kind
+	// MISSING: Mode
+	// MISSING: Name
+	// MISSING: PublicDelegatedSubPrefixs
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	return out
+}
+func ComputePublicDelegatedPrefixObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputePublicDelegatedPrefixObservedState) *pb.PublicDelegatedPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicDelegatedPrefix{}
+	// MISSING: AllocatablePrefixLength
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// MISSING: IsLiveMigration
+	// MISSING: Kind
+	// MISSING: Mode
+	// MISSING: Name
+	// MISSING: PublicDelegatedSubPrefixs
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	return out
+}
+func ComputePublicDelegatedPrefixSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PublicDelegatedPrefix) *krm.ComputePublicDelegatedPrefixSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputePublicDelegatedPrefixSpec{}
+	// MISSING: AllocatablePrefixLength
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// (near miss): "IPCIDRRange" vs "IPCidrRange"
+	// MISSING: IsLiveMigration
+	// MISSING: Kind
+	// MISSING: Mode
+	// MISSING: Name
+	out.ParentPrefix = in.ParentPrefix
+	// MISSING: PublicDelegatedSubPrefixs
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	return out
+}
+func ComputePublicDelegatedPrefixSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputePublicDelegatedPrefixSpec) *pb.PublicDelegatedPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicDelegatedPrefix{}
+	// MISSING: AllocatablePrefixLength
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// (near miss): "IPCIDRRange" vs "IPCidrRange"
+	// MISSING: IsLiveMigration
+	// MISSING: Kind
+	// MISSING: Mode
+	// MISSING: Name
+	out.ParentPrefix = in.ParentPrefix
+	// MISSING: PublicDelegatedSubPrefixs
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	return out
+}
 func ComputeReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ComputeReservationSpec {
 	if in == nil {
 		return nil

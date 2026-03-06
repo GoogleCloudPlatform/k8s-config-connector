@@ -19,6 +19,7 @@
 // proto.service: google.cloud.compute.v1
 // resource: ComputeAddress:Address
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
+// resource: ComputePublicDelegatedPrefix:PublicDelegatedPrefix
 // resource: ComputeForwardingRule:ForwardingRule
 // resource: ComputeResourcePolicy:ResourcePolicy
 // resource: ComputeSecurityPolicy:SecurityPolicy
@@ -1077,6 +1078,122 @@ type NodeTemplateNodeTypeFlexibility struct {
 
 	// +kcc:proto:field=google.cloud.compute.v1.NodeTemplateNodeTypeFlexibility.memory
 	Memory *string `json:"memory,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.PublicDelegatedPrefix", skipping
+
+// +kcc:proto=google.cloud.compute.v1.PublicDelegatedPrefix
+type PublicDelegatedPrefix struct {
+	// The allocatable prefix length supported by this public delegated prefix. This field is optional and cannot be set for prefixes in DELEGATION mode. It cannot be set for IPv4 prefixes either, and it always defaults to 32.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.allocatable_prefix_length
+	AllocatablePrefixLength *int32 `json:"allocatablePrefixLength,omitempty"`
+
+	// [Output Only] The version of BYOIP API.
+	//  Check the ByoipApiVersion enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.byoip_api_version
+	ByoipAPIVersion *string `json:"byoipAPIVersion,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.description
+	Description *string `json:"description,omitempty"`
+
+	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a new PublicDelegatedPrefix. An up-to-date fingerprint must be provided in order to update the PublicDelegatedPrefix, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve a PublicDelegatedPrefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// The IP address range, in CIDR format, represented by this public delegated prefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.ip_cidr_range
+	IPCIDRRange *string `json:"ipCIDRRange,omitempty"`
+
+	// If true, the prefix will be live migrated.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.is_live_migration
+	IsLiveMigration *bool `json:"isLiveMigration,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#publicDelegatedPrefix for public delegated prefixes.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The public delegated prefix mode for IPv6 only.
+	//  Check the Mode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.name
+	Name *string `json:"name,omitempty"`
+
+	// The URL of parent prefix. Either PublicAdvertisedPrefix or PublicDelegatedPrefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.parent_prefix
+	ParentPrefix *string `json:"parentPrefix,omitempty"`
+
+	// The list of sub public delegated prefixes that exist for this public delegated prefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.public_delegated_sub_prefixs
+	PublicDelegatedSubPrefixs []PublicDelegatedPrefixPublicDelegatedSubPrefix `json:"publicDelegatedSubPrefixs,omitempty"`
+
+	// [Output Only] URL of the region where the public delegated prefix resides. This field applies only to the region resource. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] The status of the public delegated prefix, which can be one of following values: - `INITIALIZING` The public delegated prefix is being initialized and addresses cannot be created yet. - `READY_TO_ANNOUNCE` The public delegated prefix is a live migration prefix and is active. - `ANNOUNCED` The public delegated prefix is announced and ready to use. - `DELETING` The public delegated prefix is being deprovsioned.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefix.status
+	Status *string `json:"status,omitempty"`
+}
+*/
+
+/* unreachable type PublicDelegatedPrefixPublicDelegatedSubPrefix
+// +kcc:proto=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix
+type PublicDelegatedPrefixPublicDelegatedSubPrefix struct {
+	// The allocatable prefix length supported by this PublicDelegatedSubPrefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.allocatable_prefix_length
+	AllocatablePrefixLength *int32 `json:"allocatablePrefixLength,omitempty"`
+
+	// Name of the project scoping this PublicDelegatedSubPrefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.delegatee_project
+	DelegateeProject *string `json:"delegateeProject,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.description
+	Description *string `json:"description,omitempty"`
+
+	// The IP address range, in CIDR format, represented by this sub public delegated prefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.ip_cidr_range
+	IPCIDRRange *string `json:"ipCIDRRange,omitempty"`
+
+	// Whether the sub prefix is delegated to create Address resources in the delegatee project.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.is_address
+	IsAddress *bool `json:"isAddress,omitempty"`
+
+	// The PublicDelegatedSubPrefix mode for IPv6 only.
+	//  Check the Mode enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// The name of the sub public delegated prefix.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] The region of the sub public delegated prefix if it is regional. If absent, the sub prefix is global.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] The status of the sub public delegated prefix.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.PublicDelegatedPrefixPublicDelegatedSubPrefix.status
+	Status *string `json:"status,omitempty"`
 }
 */
 
