@@ -240,6 +240,10 @@ spec:
                           type: object
                         type: array
                       workerPool:
+                        description: |-
+                          Option to specify a WorkerPool for the build. Format projects/{project}/workerPools/{workerPool}
+
+                          This field is experimental.
                         type: string
                     type: object
                   queueTtl:

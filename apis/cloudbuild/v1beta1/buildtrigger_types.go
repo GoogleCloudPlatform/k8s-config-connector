@@ -93,7 +93,10 @@ type CloudBuildTriggerSpec_Build_Options struct {
 	SourceProvenanceHash  []string                                          `json:"sourceProvenanceHash,omitempty"`
 	SubstitutionOption    *string                                           `json:"substitutionOption,omitempty"`
 	Volumes               []CloudBuildTriggerSpec_Build_Options_VolumesItem `json:"volumes,omitempty"`
-	WorkerPool            *string                                           `json:"workerPool,omitempty"`
+	// Option to specify a WorkerPool for the build. Format projects/{project}/workerPools/{workerPool}
+	//
+	// This field is experimental.
+	WorkerPool *string `json:"workerPool,omitempty"`
 }
 type CloudBuildTriggerSpec_Build_SecretItem_KmsKeyRef struct {
 	External  *string `json:"external,omitempty"`
