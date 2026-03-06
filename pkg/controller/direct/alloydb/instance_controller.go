@@ -269,8 +269,10 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	// TODO: Change to CompareProtoMessage once we support all the files in the instance pb.
-	updatePaths, err := compareInstance(ctx, parsedActual, &a.desired.Spec)
+	updatePaths, err := compareInstance(ctx, parsedActual, &a.desired.Spec, report)
 	if err != nil {
 		return err
 	}
@@ -282,6 +284,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if !reflect.DeepEqual(a.actual.GetLabels(), desiredLabels) {
 		log.V(2).Info("'metadata.labels' field is updated (-old +new)", cmp.Diff(a.actual.GetLabels(), desiredLabels))
 		updatePaths = append(updatePaths, "labels")
+		report.AddField("labels", a.actual.GetLabels(), desiredLabels)
 	}
 
 	if len(updatePaths) == 0 {
@@ -300,10 +303,6 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return nil
 	}
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	for _, path := range updatePaths {
-		report.AddField(path, nil, nil)
-	}
 	structuredreporting.ReportDiff(ctx, report)
 
 	updateMask := &fieldmaskpb.FieldMask{
@@ -343,47 +342,59 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 // HELPER FUNCTION STARTS
 
 // Helper function to compare boolean pointers
-func boolPtrChanged(actual, desired *bool, basePath string, log klog.Logger) (string, bool) {
+func boolPtrChanged(actual, desired *bool, basePath string, log klog.Logger, report *structuredreporting.Diff) (string, bool) {
 	if desired == nil {
 		return "", false // Desired is not set, so no update for this field
 	}
 	if actual == nil || *actual != *desired {
 		log.V(2).Info(fmt.Sprintf("'%s' field is updated (-old +new)", basePath), "diff", cmp.Diff(actual, desired))
+		if report != nil {
+			report.AddField(basePath, actual, desired)
+		}
 		return basePath, true
 	}
 	return "", false
 }
 
 // Helper function to compare int32 pointers
-func int32PtrChanged(actual, desired *int32, basePath string, log klog.Logger) (string, bool) {
+func int32PtrChanged(actual, desired *int32, basePath string, log klog.Logger, report *structuredreporting.Diff) (string, bool) {
 	if desired == nil {
 		return "", false // Desired is not set, so no update for this field
 	}
 	if actual == nil || *actual != *desired {
 		log.V(2).Info(fmt.Sprintf("'%s' field is updated (-old +new)", basePath), "diff", cmp.Diff(actual, desired))
+		if report != nil {
+			report.AddField(basePath, actual, desired)
+		}
 		return basePath, true
 	}
 	return "", false
 }
 
-func unsignedInt32PtrChanged(actual, desired *uint32, basePath string, log klog.Logger) (string, bool) {
+func unsignedInt32PtrChanged(actual, desired *uint32, basePath string, log klog.Logger, report *structuredreporting.Diff) (string, bool) {
 	if desired == nil {
 		return "", false
 	}
 	if actual == nil || *actual != *desired {
 		log.V(2).Info(fmt.Sprintf("'%s' field is updated (-old +new)", basePath), "diff", cmp.Diff(actual, desired))
+		if report != nil {
+			report.AddField(basePath, actual, desired)
+		}
 		return basePath, true
 	}
 	return "", false
 }
 
 // Helper function to compare string pointers
-func stringPtrChanged(actual, desired *string, basePath string, log klog.Logger) (string, bool) {
+func stringPtrChanged(actual, desired *string, basePath string, log klog.Logger, report *structuredreporting.Diff) (string, bool) {
 	if desired == nil {
 		return "", false // Desired is not set, so no update for this field
 	}
 	if actual == nil || *actual != *desired {
 		log.V(2).Info(fmt.Sprintf("'%s' field is updated (-old +new)", basePath), "diff", cmp.Diff(actual, desired))
+		if report != nil {
+			report.AddField(basePath, actual, desired)
+		}
 		return basePath, true
 	}
 	return "", false
@@ -391,26 +402,38 @@ func stringPtrChanged(actual, desired *string, basePath string, log klog.Logger)
 
 // HELPER FUNCTION ENDS
 
-func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSpec) (updatePaths []string, err error) {
+func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSpec, report *structuredreporting.Diff) (updatePaths []string, err error) {
 	log := klog.FromContext(ctx)
 	updatePaths = make([]string, 0)
 	if !reflect.DeepEqual(actual.Annotations, desired.Annotations) {
 		log.V(2).Info("'spec.annotations' field is updated (-old +new)", cmp.Diff(actual.Annotations, desired.Annotations))
 		updatePaths = append(updatePaths, "annotations")
+		if report != nil {
+			report.AddField("annotations", actual.Annotations, desired.Annotations)
+		}
 	}
 	// TODO: Test case with availability type unset.
 	if desired.AvailabilityType != nil && !reflect.DeepEqual(actual.AvailabilityType, desired.AvailabilityType) {
 		log.V(2).Info("'spec.availabilityType' field is updated (-old +new)", cmp.Diff(actual.AvailabilityType, desired.AvailabilityType))
 		updatePaths = append(updatePaths, "availability_type")
+		if report != nil {
+			report.AddField("availability_type", actual.AvailabilityType, desired.AvailabilityType)
+		}
 	}
 	if desired.ConnectionPoolConfig != nil {
 		if desired.ConnectionPoolConfig.Enabled != nil && !reflect.DeepEqual(actual.ConnectionPoolConfig.Enabled, desired.ConnectionPoolConfig.Enabled) {
 			log.V(2).Info("'spec.connectionPoolConfig.enabled' field is updated (-old +new)", cmp.Diff(actual.ConnectionPoolConfig.Enabled, desired.ConnectionPoolConfig.Enabled))
 			updatePaths = append(updatePaths, "connection_pool_config.enabled")
+			if report != nil {
+				report.AddField("connection_pool_config.enabled", actual.ConnectionPoolConfig.Enabled, desired.ConnectionPoolConfig.Enabled)
+			}
 		}
 		if desired.ConnectionPoolConfig.Flags != nil && !reflect.DeepEqual(actual.ConnectionPoolConfig.Flags, desired.ConnectionPoolConfig.Flags) {
 			log.V(2).Info("'spec.connectionPoolConfig.flags' field is updated (-old +new)", cmp.Diff(actual.ConnectionPoolConfig.Flags, desired.ConnectionPoolConfig.Flags))
 			updatePaths = append(updatePaths, "connection_pool_config.flags")
+			if report != nil {
+				report.AddField("connection_pool_config.flags", actual.ConnectionPoolConfig.Flags, desired.ConnectionPoolConfig.Flags)
+			}
 		}
 	}
 	// TODO: Test "copied" behavior for read pool
@@ -420,14 +443,23 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 	if desired.DatabaseFlags != nil && !reflect.DeepEqual(actual.DatabaseFlags, desired.DatabaseFlags) {
 		log.V(2).Info("'spec.databaseFlags' field is updated (-old +new)", cmp.Diff(actual.DatabaseFlags, desired.DatabaseFlags))
 		updatePaths = append(updatePaths, "database_flags")
+		if report != nil {
+			report.AddField("database_flags", actual.DatabaseFlags, desired.DatabaseFlags)
+		}
 	}
 	if desired.DisplayName != nil && !reflect.DeepEqual(actual.DisplayName, desired.DisplayName) {
 		log.V(2).Info("'spec.displayName' field is updated (-old +new)", cmp.Diff(actual.DisplayName, desired.DisplayName))
 		updatePaths = append(updatePaths, "display_name")
+		if report != nil {
+			report.AddField("display_name", actual.DisplayName, desired.DisplayName)
+		}
 	}
 	if desired.GCEZone != nil && !reflect.DeepEqual(actual.GCEZone, desired.GCEZone) {
 		log.V(2).Info("'spec.gceZone' field is updated (-old +new)", cmp.Diff(actual.GCEZone, desired.GCEZone))
 		updatePaths = append(updatePaths, "gce_zone")
+		if report != nil {
+			report.AddField("gce_zone", actual.GCEZone, desired.GCEZone)
+		}
 	}
 	if desired.InstanceTypeRef != nil && !reflect.DeepEqual(actual.InstanceTypeRef.External, desired.InstanceTypeRef.External) {
 		log.V(2).Info("'spec.instanceTypeRef' field is updated (-old +new)", cmp.Diff(actual.InstanceTypeRef.External, desired.InstanceTypeRef.External))
@@ -438,30 +470,48 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		if desired.MachineConfig.CPUCount != nil && !reflect.DeepEqual(actual.MachineConfig.CPUCount, desired.MachineConfig.CPUCount) {
 			log.V(2).Info("'spec.machineConfig.cpuCount' field is updated (-old +new)", cmp.Diff(actual.MachineConfig.CPUCount, desired.MachineConfig.CPUCount))
 			updatePaths = append(updatePaths, "machine_config.cpu_count")
+			if report != nil {
+				report.AddField("machine_config.cpu_count", actual.MachineConfig.CPUCount, desired.MachineConfig.CPUCount)
+			}
 		}
 		if desired.MachineConfig.MachineType != nil && !reflect.DeepEqual(actual.MachineConfig.MachineType, desired.MachineConfig.MachineType) {
 			log.V(2).Info("'spec.machineConfig.machineType' field is updated (-old +new)", cmp.Diff(actual.MachineConfig.MachineType, desired.MachineConfig.MachineType))
 			updatePaths = append(updatePaths, "machine_config.machine_type")
+			if report != nil {
+				report.AddField("machine_config.machine_type", actual.MachineConfig.MachineType, desired.MachineConfig.MachineType)
+			}
 		}
 	}
 	if desired.NetworkConfig != nil {
 		if desired.NetworkConfig.EnablePublicIP != nil && !reflect.DeepEqual(actual.NetworkConfig.EnablePublicIP, desired.NetworkConfig.EnablePublicIP) {
-			log.V(2).Info("'spec.networkConfig.enablePublicIp' field is updated (-old +new)", cmp.Diff(actual.NetworkConfig.EnablePublicIP, desired.NetworkConfig.EnablePublicIP))
+			log.V(2).Info("'spec.networkConfig.enablePublicIp' field is updated (-old +new)", cmp.Diff(actual.NetworkConfig.EnablePublicIP, desired.NetworkConfig.EnablePublicIP) )
 			updatePaths = append(updatePaths, "network_config.enable_public_ip")
+			if report != nil {
+				report.AddField("network_config.enable_public_ip", actual.NetworkConfig.EnablePublicIP, desired.NetworkConfig.EnablePublicIP)
+			}
 		}
 		if desired.NetworkConfig.EnableOutboundPublicIP != nil && !reflect.DeepEqual(actual.NetworkConfig.EnableOutboundPublicIP, desired.NetworkConfig.EnableOutboundPublicIP) {
 			log.V(2).Info("'spec.networkConfig.enableOutboundPublicIp' field is updated (-old +new)", cmp.Diff(actual.NetworkConfig.EnableOutboundPublicIP, desired.NetworkConfig.EnableOutboundPublicIP))
 			updatePaths = append(updatePaths, "network_config.enable_outbound_public_ip")
+			if report != nil {
+				report.AddField("network_config.enable_outbound_public_ip", actual.NetworkConfig.EnableOutboundPublicIP, desired.NetworkConfig.EnableOutboundPublicIP)
+			}
 		}
 		if desired.NetworkConfig.AuthorizedExternalNetworks != nil && !reflect.DeepEqual(actual.NetworkConfig.AuthorizedExternalNetworks, desired.NetworkConfig.AuthorizedExternalNetworks) {
 			log.V(2).Info("'spec.networkConfig.authorizedExternalNetworks' field is updated (-old +new)", cmp.Diff(actual.NetworkConfig.AuthorizedExternalNetworks, desired.NetworkConfig.AuthorizedExternalNetworks))
 			updatePaths = append(updatePaths, "network_config.authorized_external_networks")
+			if report != nil {
+				report.AddField("network_config.authorized_external_networks", actual.NetworkConfig.AuthorizedExternalNetworks, desired.NetworkConfig.AuthorizedExternalNetworks)
+			}
 		}
 	}
 	if desired.ReadPoolConfig != nil {
 		if desired.ReadPoolConfig.NodeCount != nil && !reflect.DeepEqual(actual.ReadPoolConfig.NodeCount, desired.ReadPoolConfig.NodeCount) {
 			log.V(2).Info("'spec.readPoolConfig.nodeCount' field is updated (-old +new)", cmp.Diff(actual.ReadPoolConfig.NodeCount, desired.ReadPoolConfig.NodeCount))
 			updatePaths = append(updatePaths, "read_pool_config.node_count")
+			if report != nil {
+				report.AddField("read_pool_config.node_count", actual.ReadPoolConfig.NodeCount, desired.ReadPoolConfig.NodeCount)
+			}
 		}
 	}
 
@@ -473,32 +523,32 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		}
 		desiredObs := desired.ObservabilityInstanceConfig
 
-		if path, changed := boolPtrChanged(actualObs.Enabled, desiredObs.Enabled, "observability_config.enabled", log); changed {
+		if path, changed := boolPtrChanged(actualObs.Enabled, desiredObs.Enabled, "observability_config.enabled", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
-		if path, changed := boolPtrChanged(actualObs.PreserveComments, desiredObs.PreserveComments, "observability_config.preserve_comments", log); changed {
+		if path, changed := boolPtrChanged(actualObs.PreserveComments, desiredObs.PreserveComments, "observability_config.preserve_comments", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
-		if path, changed := boolPtrChanged(actualObs.TrackWaitEvents, desiredObs.TrackWaitEvents, "observability_config.track_wait_events", log); changed {
+		if path, changed := boolPtrChanged(actualObs.TrackWaitEvents, desiredObs.TrackWaitEvents, "observability_config.track_wait_events", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
-		if path, changed := int32PtrChanged(actualObs.MaxQueryStringLength, desiredObs.MaxQueryStringLength, "observability_config.max_query_string_length", log); changed {
+		if path, changed := int32PtrChanged(actualObs.MaxQueryStringLength, desiredObs.MaxQueryStringLength, "observability_config.max_query_string_length", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
-		if path, changed := boolPtrChanged(actualObs.RecordApplicationTags, desiredObs.RecordApplicationTags, "observability_config.record_application_tags", log); changed {
+		if path, changed := boolPtrChanged(actualObs.RecordApplicationTags, desiredObs.RecordApplicationTags, "observability_config.record_application_tags", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
-		if path, changed := int32PtrChanged(actualObs.QueryPlansPerMinute, desiredObs.QueryPlansPerMinute, "observability_config.query_plans_per_minute", log); changed {
+		if path, changed := int32PtrChanged(actualObs.QueryPlansPerMinute, desiredObs.QueryPlansPerMinute, "observability_config.query_plans_per_minute", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
-		if path, changed := boolPtrChanged(actualObs.TrackActiveQueries, desiredObs.TrackActiveQueries, "observability_config.track_active_queries", log); changed {
+		if path, changed := boolPtrChanged(actualObs.TrackActiveQueries, desiredObs.TrackActiveQueries, "observability_config.track_active_queries", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
 		// TrackClientAcddress is in v1beta but is not in v1
-		if path, changed := boolPtrChanged(actualObs.TrackClientAddress, desiredObs.TrackClientAddress, "observability_config.track_client_address", log); changed {
+		if path, changed := boolPtrChanged(actualObs.TrackClientAddress, desiredObs.TrackClientAddress, "observability_config.track_client_address", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
-		if path, changed := boolPtrChanged(actualObs.TrackClientAddress, desiredObs.TrackClientAddress, "observability_config.assistive_experiences_enabled", log); changed {
+		if path, changed := boolPtrChanged(actualObs.TrackClientAddress, desiredObs.TrackClientAddress, "observability_config.assistive_experiences_enabled", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
 	}
@@ -511,18 +561,18 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 
 		desiredInsights := desired.QueryInsightsInstanceConfig
 
-		if path, changed := boolPtrChanged(actualInsights.RecordApplicationTags, desiredInsights.RecordApplicationTags, "query_insights_config.record_application_tags", log); changed {
+		if path, changed := boolPtrChanged(actualInsights.RecordApplicationTags, desiredInsights.RecordApplicationTags, "query_insights_config.record_application_tags", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
 
-		if path, changed := boolPtrChanged(actualInsights.RecordClientAddress, desiredInsights.RecordClientAddress, "query_insights_config.record_client_address", log); changed {
+		if path, changed := boolPtrChanged(actualInsights.RecordClientAddress, desiredInsights.RecordClientAddress, "query_insights_config.record_client_address", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
 
-		if path, changed := unsignedInt32PtrChanged(actualInsights.QueryStringLength, desiredInsights.QueryStringLength, "query_insights_config.query_string_length", log); changed {
+		if path, changed := unsignedInt32PtrChanged(actualInsights.QueryStringLength, desiredInsights.QueryStringLength, "query_insights_config.query_string_length", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
-		if path, changed := unsignedInt32PtrChanged(actualInsights.QueryPlansPerMinute, desiredInsights.QueryPlansPerMinute, "query_insights_config.query_plans_per_minute", log); changed {
+		if path, changed := unsignedInt32PtrChanged(actualInsights.QueryPlansPerMinute, desiredInsights.QueryPlansPerMinute, "query_insights_config.query_plans_per_minute", log, report); changed {
 			updatePaths = append(updatePaths, path)
 		}
 	}
