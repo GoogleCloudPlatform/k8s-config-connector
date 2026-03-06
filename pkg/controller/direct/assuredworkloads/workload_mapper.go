@@ -22,21 +22,66 @@ package assuredworkloads
 import (
 	pb "cloud.google.com/go/assuredworkloads/apiv1/assuredworkloadspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/assuredworkloads/v1alpha1"
+	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+func AssuredWorkloadsWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.AssuredWorkloadsWorkloadSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssuredWorkloadsWorkloadSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ComplianceRegime = direct.Enum_FromProto(mapCtx, in.GetComplianceRegime())
+	if in.GetBillingAccount() != "" {
+		out.BillingAccountRef = &billingv1alpha1.BillingAccountRef{External: in.GetBillingAccount()}
+	}
+	// MISSING: Etag
+	out.Labels = in.Labels
+	if in.GetProvisionedResourcesParent() != "" {
+		out.ProvisionedResourcesParentRef = &refs.FolderRef{External: in.GetProvisionedResourcesParent()}
+	}
+	out.KMSSettings = Workload_KMSSettings_FromProto(mapCtx, in.GetKmsSettings())
+	out.ResourceSettings = direct.Slice_FromProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_FromProto)
+	out.EnableSovereignControls = direct.LazyPtr(in.GetEnableSovereignControls())
+	out.Partner = direct.Enum_FromProto(mapCtx, in.GetPartner())
+	return out
+}
+
+func AssuredWorkloadsWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.AssuredWorkloadsWorkloadSpec) *pb.Workload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workload{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ComplianceRegime = direct.Enum_ToProto[pb.Workload_ComplianceRegime](mapCtx, in.ComplianceRegime)
+	if in.BillingAccountRef != nil {
+		out.BillingAccount = in.BillingAccountRef.External
+	}
+	// MISSING: Etag
+	out.Labels = in.Labels
+	if in.ProvisionedResourcesParentRef != nil {
+		out.ProvisionedResourcesParent = in.ProvisionedResourcesParentRef.External
+	}
+	out.KmsSettings = Workload_KMSSettings_ToProto(mapCtx, in.KMSSettings)
+	out.ResourceSettings = direct.Slice_ToProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_ToProto)
+	out.EnableSovereignControls = direct.ValueOf(in.EnableSovereignControls)
+	out.Partner = direct.Enum_ToProto[pb.Workload_Partner](mapCtx, in.Partner)
+	return out
+}
 
 func Workload_SaaEnrollmentResponse_FromProto(mapCtx *direct.MapContext, in *pb.Workload_SaaEnrollmentResponse) *krm.Workload_SaaEnrollmentResponse {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Workload_SaaEnrollmentResponse{}
-	if in.SetupErrors != nil {
-		out.SetupErrors = []string{}
-		for _, e := range in.SetupErrors {
-			out.SetupErrors = append(out.SetupErrors, e.String())
-		}
+	out.SetupErrors = direct.EnumSlice_FromProto(mapCtx, in.SetupErrors)
+	if in.SetupStatus != nil {
+		out.SetupStatus = direct.ZeroBasedEnum_FromProto(mapCtx, in.GetSetupStatus())
 	}
-	out.SetupStatus = direct.LazyPtr(in.SetupStatus.String())
 	return out
 }
 
@@ -45,13 +90,9 @@ func Workload_SaaEnrollmentResponse_ToProto(mapCtx *direct.MapContext, in *krm.W
 		return nil
 	}
 	out := &pb.Workload_SaaEnrollmentResponse{}
-	out.SetupErrors = []pb.Workload_SaaEnrollmentResponse_SetupError{}
-	for _, e := range in.SetupErrors {
-		setupErr := pb.Workload_SaaEnrollmentResponse_SetupError_value[e]
-		out.SetupErrors = append(out.SetupErrors, pb.Workload_SaaEnrollmentResponse_SetupError(setupErr))
+	out.SetupErrors = direct.EnumSlice_ToProto[pb.Workload_SaaEnrollmentResponse_SetupError](mapCtx, in.SetupErrors)
+	if in.SetupStatus != nil {
+		out.SetupStatus = direct.PtrTo(direct.Enum_ToProto[pb.Workload_SaaEnrollmentResponse_SetupState](mapCtx, in.SetupStatus))
 	}
-
-	setupState := pb.Workload_SaaEnrollmentResponse_SetupState_value[direct.ValueOf(in.SetupStatus)]
-	out.SetupStatus = direct.LazyPtr(pb.Workload_SaaEnrollmentResponse_SetupState(setupState))
 	return out
 }

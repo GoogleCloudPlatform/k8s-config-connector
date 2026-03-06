@@ -1,0 +1,249 @@
+GET https://assuredworkloads.googleapis.com/v1/organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F123456789012%2Flocations%2Fus-central1%2Fworkloads%2Fassuredworkloadsworkload-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "workload \"organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "workload \"organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://assuredworkloads.googleapis.com/v1/organizations/123456789012/locations/us-central1/workloads?%24alt=json%3Benum-encoding%3Dint&externalId=assuredworkloadsworkload-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F123456789012%2Flocations%2Fus-central1
+
+{
+  "billingAccount": "billingAccounts/000000-000000-000000",
+  "complianceRegime": 4,
+  "displayName": "Test Workload ${uniqueId}",
+  "enableSovereignControls": true,
+  "labels": {
+    "label-one": "value-one"
+  },
+  "resourceSettings": [
+    {
+      "displayName": "Custom Project",
+      "resourceId": "my-custom-project",
+      "resourceType": 1
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.assuredworkloads.v1.Workload",
+    "billingAccount": "billingAccounts/000000-000000-000000",
+    "complianceRegime": 4,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Test Workload ${uniqueId}",
+    "enableSovereignControls": true,
+    "labels": {
+      "label-one": "value-one"
+    },
+    "name": "organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}",
+    "resourceSettings": [
+      {
+        "displayName": "Custom Project",
+        "resourceId": "my-custom-project",
+        "resourceType": 1
+      }
+    ],
+    "resources": [
+      {
+        "resourceId": "123456789",
+        "resourceType": 4
+      }
+    ]
+  }
+}
+
+---
+
+GET https://assuredworkloads.googleapis.com/v1/organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F123456789012%2Flocations%2Fus-central1%2Fworkloads%2Fassuredworkloadsworkload-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccount": "billingAccounts/000000-000000-000000",
+  "complianceRegime": 4,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Test Workload ${uniqueId}",
+  "enableSovereignControls": true,
+  "labels": {
+    "label-one": "value-one"
+  },
+  "name": "organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}",
+  "resourceSettings": [
+    {
+      "displayName": "Custom Project",
+      "resourceId": "my-custom-project",
+      "resourceType": 1
+    }
+  ],
+  "resources": [
+    {
+      "resourceId": "123456789",
+      "resourceType": 4
+    }
+  ]
+}
+
+---
+
+PATCH https://assuredworkloads.googleapis.com/v1/organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: workload.name=organizations%2F123456789012%2Flocations%2Fus-central1%2Fworkloads%2Fassuredworkloadsworkload-${uniqueId}
+
+{
+  "billingAccount": "billingAccounts/000000-000000-000000",
+  "complianceRegime": 4,
+  "displayName": "Test Workload Updated ${uniqueId}",
+  "enableSovereignControls": true,
+  "labels": {
+    "label-one": "value-one"
+  },
+  "name": "organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccount": "billingAccounts/000000-000000-000000",
+  "complianceRegime": 4,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Test Workload Updated ${uniqueId}",
+  "enableSovereignControls": true,
+  "labels": {
+    "label-one": "value-one"
+  },
+  "name": "organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}",
+  "resourceSettings": [
+    {
+      "displayName": "Custom Project",
+      "resourceId": "my-custom-project",
+      "resourceType": 1
+    }
+  ],
+  "resources": [
+    {
+      "resourceId": "123456789",
+      "resourceType": 4
+    }
+  ]
+}
+
+---
+
+GET https://assuredworkloads.googleapis.com/v1/organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F123456789012%2Flocations%2Fus-central1%2Fworkloads%2Fassuredworkloadsworkload-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccount": "billingAccounts/000000-000000-000000",
+  "complianceRegime": 4,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Test Workload Updated ${uniqueId}",
+  "enableSovereignControls": true,
+  "labels": {
+    "label-one": "value-one"
+  },
+  "name": "organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}",
+  "resourceSettings": [
+    {
+      "displayName": "Custom Project",
+      "resourceId": "my-custom-project",
+      "resourceType": 1
+    }
+  ],
+  "resources": [
+    {
+      "resourceId": "123456789",
+      "resourceType": 4
+    }
+  ]
+}
+
+---
+
+DELETE https://assuredworkloads.googleapis.com/v1/organizations/123456789012/locations/us-central1/workloads/assuredworkloadsworkload-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F123456789012%2Flocations%2Fus-central1%2Fworkloads%2Fassuredworkloadsworkload-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
