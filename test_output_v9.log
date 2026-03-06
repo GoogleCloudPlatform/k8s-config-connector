@@ -1,5 +1,0 @@
-# github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create
-config/tests/samples/create/samples.go:200:7: undefined: schema
-config/tests/samples/create/samples.go:203:7: undefined: schema
-FAIL	github.com/GoogleCloudPlatform/k8s-config-connector/tests/e2e [build failed]
-FAIL

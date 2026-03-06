@@ -1,5 +1,0 @@
-# github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/backup
-pkg/cli/cmd/backup/configure.go:19:2: "context" imported and not used
-pkg/cli/cmd/backup/status.go:18:2: "context" imported and not used
-FAIL	github.com/GoogleCloudPlatform/k8s-config-connector/tests/e2e [build failed]
-FAIL
