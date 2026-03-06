@@ -46,42 +46,6 @@ func AllocationOptions_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Alloca
 	out.FirstAvailableRangesLookupSize = direct.ValueOf(in.FirstAvailableRangesLookupSize)
 	return out
 }
-func AuditConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuditConfig) *krmnetworkconnectivityv1alpha1.AuditConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkconnectivityv1alpha1.AuditConfig{}
-	out.AuditLogConfigs = direct.Slice_FromProto(mapCtx, in.AuditLogConfigs, AuditLogConfig_v1alpha1_FromProto)
-	out.Service = direct.LazyPtr(in.GetService())
-	return out
-}
-func AuditConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.AuditConfig) *pb.AuditConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuditConfig{}
-	out.AuditLogConfigs = direct.Slice_ToProto(mapCtx, in.AuditLogConfigs, AuditLogConfig_v1alpha1_ToProto)
-	out.Service = direct.ValueOf(in.Service)
-	return out
-}
-func AuditLogConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuditLogConfig) *krmnetworkconnectivityv1alpha1.AuditLogConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkconnectivityv1alpha1.AuditLogConfig{}
-	out.ExemptedMembers = in.ExemptedMembers
-	out.LogType = direct.LazyPtr(in.GetLogType())
-	return out
-}
-func AuditLogConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.AuditLogConfig) *pb.AuditLogConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuditLogConfig{}
-	out.ExemptedMembers = in.ExemptedMembers
-	out.LogType = direct.ValueOf(in.LogType)
-	return out
-}
 func AutoAccept_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoAccept) *krmnetworkconnectivityv1alpha1.AutoAccept {
 	if in == nil {
 		return nil
@@ -96,26 +60,6 @@ func AutoAccept_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnec
 	}
 	out := &pb.AutoAccept{}
 	out.AutoAcceptProjects = in.AutoAcceptProjects
-	return out
-}
-func Binding_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Binding) *krmnetworkconnectivityv1alpha1.Binding {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkconnectivityv1alpha1.Binding{}
-	out.Condition = Expr_v1alpha1_FromProto(mapCtx, in.GetCondition())
-	out.Members = in.Members
-	out.Role = direct.LazyPtr(in.GetRole())
-	return out
-}
-func Binding_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.Binding) *pb.Binding {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Binding{}
-	out.Condition = Expr_v1alpha1_ToProto(mapCtx, in.Condition)
-	out.Members = in.Members
-	out.Role = direct.ValueOf(in.Role)
 	return out
 }
 func ConsumerPscConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerPscConfig) *krmnetworkconnectivityv1alpha1.ConsumerPscConfig {
@@ -218,28 +162,6 @@ func Empty_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivit
 		return nil
 	}
 	out := &pb.Empty{}
-	return out
-}
-func Expr_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Expr) *krmnetworkconnectivityv1alpha1.Expr {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkconnectivityv1alpha1.Expr{}
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Expression = direct.LazyPtr(in.GetExpression())
-	out.Location = direct.LazyPtr(in.GetLocation())
-	out.Title = direct.LazyPtr(in.GetTitle())
-	return out
-}
-func Expr_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.Expr) *pb.Expr {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Expr{}
-	out.Description = direct.ValueOf(in.Description)
-	out.Expression = direct.ValueOf(in.Expression)
-	out.Location = direct.ValueOf(in.Location)
-	out.Title = direct.ValueOf(in.Title)
 	return out
 }
 func Filter_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Filter) *krmnetworkconnectivityv1alpha1.Filter {
@@ -610,29 +532,11 @@ func Migration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnect
 	out.Target = direct.ValueOf(in.Target)
 	return out
 }
-func Migration_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Migration) *krm.Migration {
+func NetworkConnectivityInternalRangeObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krmnetworkconnectivityv1alpha1.NetworkConnectivityInternalRangeObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Migration{}
-	out.Source = direct.LazyPtr(in.GetSource())
-	out.Target = direct.LazyPtr(in.GetTarget())
-	return out
-}
-func Migration_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Migration) *pb.Migration {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Migration{}
-	out.Source = direct.ValueOf(in.Source)
-	out.Target = direct.ValueOf(in.Target)
-	return out
-}
-func NetworkConnectivityInternalRangeObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krm.NetworkConnectivityInternalRangeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkConnectivityInternalRangeObservedState{}
+	out := &krmnetworkconnectivityv1alpha1.NetworkConnectivityInternalRangeObservedState{}
 	// MISSING: AllocationOptions
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	// MISSING: ExcludeCIDRRanges
@@ -642,7 +546,7 @@ func NetworkConnectivityInternalRangeObservedState_v1beta1_FromProto(mapCtx *dir
 	out.Users = in.Users
 	return out
 }
-func NetworkConnectivityInternalRangeObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeObservedState) *pb.InternalRange {
+func NetworkConnectivityInternalRangeObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.NetworkConnectivityInternalRangeObservedState) *pb.InternalRange {
 	if in == nil {
 		return nil
 	}
@@ -656,18 +560,18 @@ func NetworkConnectivityInternalRangeObservedState_v1beta1_ToProto(mapCtx *direc
 	out.Users = in.Users
 	return out
 }
-func NetworkConnectivityInternalRangeSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krm.NetworkConnectivityInternalRangeSpec {
+func NetworkConnectivityInternalRangeSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krmnetworkconnectivityv1alpha1.NetworkConnectivityInternalRangeSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkConnectivityInternalRangeSpec{}
+	out := &krmnetworkconnectivityv1alpha1.NetworkConnectivityInternalRangeSpec{}
 	// MISSING: AllocationOptions
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: ExcludeCIDRRanges
 	// MISSING: Immutable
 	out.IPCIDRRange = direct.LazyPtr(in.GetIpCidrRange())
 	out.Labels = in.Labels
-	out.Migration = Migration_v1beta1_FromProto(mapCtx, in.GetMigration())
+	out.Migration = Migration_v1alpha1_FromProto(mapCtx, in.GetMigration())
 	// MISSING: Name
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
@@ -679,7 +583,7 @@ func NetworkConnectivityInternalRangeSpec_v1beta1_FromProto(mapCtx *direct.MapCo
 	out.Usage = direct.LazyPtr(in.GetUsage())
 	return out
 }
-func NetworkConnectivityInternalRangeSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
+func NetworkConnectivityInternalRangeSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
 	if in == nil {
 		return nil
 	}
@@ -690,7 +594,7 @@ func NetworkConnectivityInternalRangeSpec_v1beta1_ToProto(mapCtx *direct.MapCont
 	// MISSING: Immutable
 	out.IpCidrRange = direct.ValueOf(in.IPCIDRRange)
 	out.Labels = in.Labels
-	out.Migration = Migration_v1beta1_ToProto(mapCtx, in.Migration)
+	out.Migration = Migration_v1alpha1_ToProto(mapCtx, in.Migration)
 	// MISSING: Name
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
@@ -700,71 +604,6 @@ func NetworkConnectivityInternalRangeSpec_v1beta1_ToProto(mapCtx *direct.MapCont
 	out.PrefixLength = direct.ValueOf(in.PrefixLength)
 	out.TargetCidrRange = in.TargetCIDRRange
 	out.Usage = direct.ValueOf(in.Usage)
-	return out
-}
-func NetworkConnectivityServiceConnectionPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicyObservedState{}
-	// MISSING: AutoCreatedSubnetInfo
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Infrastructure = direct.LazyPtr(in.GetInfrastructure())
-	// MISSING: Labels
-	// MISSING: Name
-	// MISSING: PSCConfig
-	// MISSING: PSCConnections
-	// (near miss): "PSCConnections" vs "PscConnections"
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	return out
-}
-func NetworkConnectivityServiceConnectionPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicyObservedState) *pb.ServiceConnectionPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServiceConnectionPolicy{}
-	// MISSING: AutoCreatedSubnetInfo
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Infrastructure = direct.ValueOf(in.Infrastructure)
-	// MISSING: Labels
-	// MISSING: Name
-	// MISSING: PSCConfig
-	// MISSING: PSCConnections
-	// (near miss): "PSCConnections" vs "PscConnections"
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
-func NetworkConnectivityServiceConnectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicySpec{}
-	// MISSING: AutoCreatedSubnetInfo
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: Labels
-	// MISSING: Name
-	if in.GetNetwork() != "" {
-		out.Network = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
-	}
-	out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
-	return out
-}
-func NetworkConnectivityServiceConnectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.NetworkConnectivityServiceConnectionPolicySpec) *pb.ServiceConnectionPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServiceConnectionPolicy{}
-	// MISSING: AutoCreatedSubnetInfo
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: Labels
-	// MISSING: Name
-	out.Network = NetworkConnectivityServiceConnectionPolicySpec_Network_ToProto(mapCtx, in.Network)
-	// MISSING: PSCConfig
-	// (near miss): "PSCConfig" vs "PscConfig"
-	// MISSING: PSCConnections
-	out.ServiceClass = direct.ValueOf(in.ServiceClass)
 	return out
 }
 func NextHopInterconnectAttachment_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NextHopInterconnectAttachment) *krmnetworkconnectivityv1alpha1.NextHopInterconnectAttachment {
@@ -857,28 +696,6 @@ func NextHopVpcNetwork_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetwor
 	// (near miss): "URI" vs "Uri"
 	return out
 }
-func Policy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krmnetworkconnectivityv1alpha1.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkconnectivityv1alpha1.Policy{}
-	out.AuditConfigs = direct.Slice_FromProto(mapCtx, in.AuditConfigs, AuditConfig_v1alpha1_FromProto)
-	out.Bindings = direct.Slice_FromProto(mapCtx, in.Bindings, Binding_v1alpha1_FromProto)
-	out.Etag = in.GetEtag()
-	out.Version = direct.LazyPtr(in.GetVersion())
-	return out
-}
-func Policy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.Policy) *pb.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Policy{}
-	out.AuditConfigs = direct.Slice_ToProto(mapCtx, in.AuditConfigs, AuditConfig_v1alpha1_ToProto)
-	out.Bindings = direct.Slice_ToProto(mapCtx, in.Bindings, Binding_v1alpha1_ToProto)
-	out.Etag = in.Etag
-	out.Version = direct.ValueOf(in.Version)
-	return out
-}
 func PolicyBasedRoute_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PolicyBasedRoute) *krmnetworkconnectivityv1alpha1.PolicyBasedRoute {
 	if in == nil {
 		return nil
@@ -943,28 +760,6 @@ func ProducerPscConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetwor
 	// MISSING: AutomatedDNSCreationSpec
 	// MISSING: ServiceAttachmentURI
 	// (near miss): "ServiceAttachmentURI" vs "ServiceAttachmentUri"
-	return out
-}
-func PscConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krmnetworkconnectivityv1alpha1.PscConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworkconnectivityv1alpha1.PscConfig{}
-	// MISSING: AllowedGoogleProducersResourceHierarchyLevel
-	out.Limit = direct.LazyPtr(in.GetLimit())
-	out.ProducerInstanceLocation = direct.LazyPtr(in.GetProducerInstanceLocation())
-	out.Subnetworks = PscConfig_Subnetworks_FromProto(mapCtx, in.Subnetworks)
-	return out
-}
-func PscConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkconnectivityv1alpha1.PscConfig) *pb.PscConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PscConfig{}
-	// MISSING: AllowedGoogleProducersResourceHierarchyLevel
-	out.Limit = direct.ValueOf(in.Limit)
-	out.ProducerInstanceLocation = direct.ValueOf(in.ProducerInstanceLocation)
-	out.Subnetworks = PscConfig_Subnetworks_ToProto(mapCtx, in.Subnetworks)
 	return out
 }
 func PscConnection_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krmnetworkconnectivityv1alpha1.PscConnection {
@@ -1268,6 +1063,10 @@ func ServiceConnectionPolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *p
 	out.Labels = in.Labels
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Network = direct.LazyPtr(in.GetNetwork())
+	// MISSING: PSCConfig
+	// (near miss): "PSCConfig" vs "PscConfig"
+	// MISSING: PSCConnections
+	// (near miss): "PSCConnections" vs "PscConnections"
 	out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
