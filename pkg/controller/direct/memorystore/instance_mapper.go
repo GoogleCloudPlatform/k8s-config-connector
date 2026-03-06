@@ -34,10 +34,10 @@ func TimeOfDay_FromProto(mapCtx *direct.MapContext, in *timeofday.TimeOfDay) *kr
 		return nil
 	}
 	out := &krmv1beta1.TimeOfDay{}
-	out.Hours = direct.LazyPtr(in.GetHours())
-	out.Minutes = direct.LazyPtr(in.GetMinutes())
-	out.Seconds = direct.LazyPtr(in.GetSeconds())
-	out.Nanos = direct.LazyPtr(in.GetNanos())
+	out.Hours = direct.PtrTo(in.GetHours())
+	out.Minutes = direct.PtrTo(in.GetMinutes())
+	out.Seconds = direct.PtrTo(in.GetSeconds())
+	out.Nanos = direct.PtrTo(in.GetNanos())
 	return out
 }
 
