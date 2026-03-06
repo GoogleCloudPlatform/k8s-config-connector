@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	appenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/appengine/v1beta1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -130,17 +131,17 @@ func (in *AppEngineParent) DeepCopyInto(out *AppEngineParent) {
 	}
 	if in.ApplicationRef != nil {
 		in, out := &in.ApplicationRef, &out.ApplicationRef
-		*out = new(v1beta1.AppEngineApplicationRef)
+		*out = new(appenginev1beta1.AppEngineApplicationRef)
 		**out = **in
 	}
 	if in.ServiceRef != nil {
 		in, out := &in.ServiceRef, &out.ServiceRef
-		*out = new(v1beta1.AppEngineServiceRef)
+		*out = new(appenginev1beta1.AppEngineServiceRef)
 		**out = **in
 	}
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(v1beta1.AppEngineVersionRef)
+		*out = new(appenginev1beta1.AppEngineVersionRef)
 		**out = **in
 	}
 }
@@ -165,17 +166,17 @@ func (in *AppEngineRef) DeepCopyInto(out *AppEngineRef) {
 	}
 	if in.ApplicationRef != nil {
 		in, out := &in.ApplicationRef, &out.ApplicationRef
-		*out = new(v1beta1.AppEngineApplicationRef)
+		*out = new(appenginev1beta1.AppEngineApplicationRef)
 		**out = **in
 	}
 	if in.ServiceRef != nil {
 		in, out := &in.ServiceRef, &out.ServiceRef
-		*out = new(v1beta1.AppEngineServiceRef)
+		*out = new(appenginev1beta1.AppEngineServiceRef)
 		**out = **in
 	}
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(v1beta1.AppEngineVersionRef)
+		*out = new(appenginev1beta1.AppEngineVersionRef)
 		**out = **in
 	}
 }
