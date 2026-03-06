@@ -190,8 +190,8 @@ func RunMockgcpGenerateGcloudTest(ctx context.Context, opts MockgcpGenerateGclou
 	// Run the LLM to generate the file.
 	cfg := CommandConfig{
 		Name:         "Generate script",
-		Cmd:          "codebot",
-		Args:         []string{"--ui-type=prompt", "--prompt=" + promptPath},
+		Cmd:          "gemini",
+		Args:         []string{"--prompt=" + promptPath},
 		WorkDir:      filepath.Join(opts.RepoRoot, "mockgcp"),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
