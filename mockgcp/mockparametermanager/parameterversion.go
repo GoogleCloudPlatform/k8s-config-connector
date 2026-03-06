@@ -180,8 +180,8 @@ func (s *MockService) parseParameterVersionName(name string) (*parameterVersionN
 		return parameterVersionName, nil
 	} else {
 		return nil, status.Errorf(
-			codes.InvalidArgument, 
-			"name %q is not valid. expected format is projects/<projectID>/locations/<location>/parameters/<parameterName>/versions/<version>", 
+			codes.InvalidArgument,
+			"name %q is not valid. expected format is projects/<projectID>/locations/<location>/parameters/<parameterName>/versions/<version>",
 			name,
 		)
 	}
