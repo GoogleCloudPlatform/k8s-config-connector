@@ -26,7 +26,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func NetworkConnectivityServiceConnectionPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krm.NetworkConnectivityServiceConnectionPolicySpec {
+func NetworkConnectivityServiceConnectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krm.NetworkConnectivityServiceConnectionPolicySpec {
 	if in == nil {
 		return nil
 	}
@@ -40,19 +40,49 @@ func NetworkConnectivityServiceConnectionPolicySpec_FromProto(mapCtx *direct.Map
 	if in.Network != "" {
 		out.Network = &computev1beta1.ComputeNetworkRef{External: in.Network}
 	}
-	out.PscConfig = PscConfig_FromProto(mapCtx, in.GetPscConfig())
+	out.PscConfig = PscConfig_v1alpha1_FromProto(mapCtx, in.GetPscConfig())
 	// MISSING: PscConnections
 	out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
 	// MISSING: UpdateTime
 	return out
 }
-func NetworkConnectivityServiceConnectionPolicySpec_Network_ToProto(mapCtx *direct.MapContext, in *computev1beta1.ComputeNetworkRef) string {
+func NetworkConnectivityServiceConnectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityServiceConnectionPolicySpec) *pb.ServiceConnectionPolicy {
 	if in == nil {
-		return ""
+		return nil
 	}
-	return in.External
+	out := &pb.ServiceConnectionPolicy{}
+	out.Description = direct.ValueOf(in.Description)
+	if in.Network != nil {
+		out.Network = in.Network.External
+	}
+	out.PscConfig = PscConfig_v1alpha1_ToProto(mapCtx, in.PscConfig)
+	out.ServiceClass = direct.ValueOf(in.ServiceClass)
+	return out
 }
-func PscConfig_Subnetworks_FromProto(mapCtx *direct.MapContext, in []string) []refs.ComputeSubnetworkRef {
+
+func PscConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PscConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PscConfig{}
+	out.Limit = direct.LazyPtr(in.GetLimit())
+	out.ProducerInstanceLocation = direct.LazyPtr(in.GetProducerInstanceLocation())
+	out.Subnetworks = PscConfig_Subnetworks_v1alpha1_FromProto(mapCtx, in.GetSubnetworks())
+	return out
+}
+
+func PscConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.PscConfig) *pb.PscConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscConfig{}
+	out.Limit = direct.ValueOf(in.Limit)
+	out.ProducerInstanceLocation = direct.ValueOf(in.ProducerInstanceLocation)
+	out.Subnetworks = PscConfig_Subnetworks_v1alpha1_ToProto(mapCtx, in.Subnetworks)
+	return out
+}
+
+func PscConfig_Subnetworks_v1alpha1_FromProto(mapCtx *direct.MapContext, in []string) []refs.ComputeSubnetworkRef {
 	if in == nil {
 		return nil
 	}
@@ -62,7 +92,7 @@ func PscConfig_Subnetworks_FromProto(mapCtx *direct.MapContext, in []string) []r
 	}
 	return out
 }
-func PscConfig_Subnetworks_ToProto(mapCtx *direct.MapContext, in []refs.ComputeSubnetworkRef) []string {
+func PscConfig_Subnetworks_v1alpha1_ToProto(mapCtx *direct.MapContext, in []refs.ComputeSubnetworkRef) []string {
 	if in == nil {
 		return nil
 	}
@@ -73,242 +103,266 @@ func PscConfig_Subnetworks_ToProto(mapCtx *direct.MapContext, in []refs.ComputeS
 	return out
 }
 
-func Group_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func Group_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func Group_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
-}
-
-func Group_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
-}
-func Group_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func Group_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func InternalRange_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func Group_v1alpha1_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func InternalRange_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
-}
-
-func InternalRange_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
-}
-func InternalRange_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func Group_v1alpha1_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func Hub_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func InternalRange_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func Hub_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
-}
-
-func Hub_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
-}
-func Hub_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func InternalRange_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func ServiceConnectionPolicy_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func InternalRange_v1alpha1_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+	mapCtx.NotImplemented()
+	return nil
+}
+func InternalRange_v1alpha1_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+	mapCtx.NotImplemented()
+	return nil
+}
+
+func Hub_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+	mapCtx.NotImplemented()
+	return nil
+}
+func Hub_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+	mapCtx.NotImplemented()
+	return nil
+}
+
+func Hub_v1alpha1_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+	mapCtx.NotImplemented()
+	return nil
+}
+func Hub_v1alpha1_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+	mapCtx.NotImplemented()
+	return nil
+}
+
+func ServiceConnectionPolicy_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	return Timestamp_FromProto(mapCtx, in)
 }
 
-func ServiceConnectionPolicy_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func ServiceConnectionPolicy_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	return Timestamp_ToProto(mapCtx, in)
 }
 
-func ServiceConnectionPolicy_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func ServiceConnectionPolicy_v1alpha1_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	return Timestamp_FromProto(mapCtx, in)
 }
-func ServiceConnectionPolicy_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func ServiceConnectionPolicy_v1alpha1_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	return Timestamp_ToProto(mapCtx, in)
 }
 
-func OperationMetadata_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func Policy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Policy{}
+	out.AuditConfigs = direct.Slice_FromProto(mapCtx, in.AuditConfigs, AuditConfig_v1alpha1_FromProto)
+	out.Bindings = direct.Slice_FromProto(mapCtx, in.Bindings, Binding_v1alpha1_FromProto)
+	out.Etag = in.GetEtag()
+	out.Version = direct.LazyPtr(in.GetVersion())
+	return out
+}
+
+func Policy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Policy) *pb.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Policy{}
+	out.AuditConfigs = direct.Slice_ToProto(mapCtx, in.AuditConfigs, AuditConfig_v1alpha1_ToProto)
+	out.Bindings = direct.Slice_ToProto(mapCtx, in.Bindings, Binding_v1alpha1_ToProto)
+	out.Etag = in.Etag
+	out.Version = direct.ValueOf(in.Version)
+	return out
+}
+
+func OperationMetadata_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func OperationMetadata_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func OperationMetadata_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func OperationMetadata_EndTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func OperationMetadata_v1alpha1_EndTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func OperationMetadata_EndTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
-}
-
-func RegionalEndpoint_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
-}
-func RegionalEndpoint_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func OperationMetadata_v1alpha1_EndTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func RegionalEndpoint_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func RegionalEndpoint_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func RegionalEndpoint_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
-}
-
-func PolicyBasedRoute_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
-}
-func PolicyBasedRoute_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func RegionalEndpoint_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func PolicyBasedRoute_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func RegionalEndpoint_v1alpha1_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func PolicyBasedRoute_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
-}
-
-func Route_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
-}
-func Route_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func RegionalEndpoint_v1alpha1_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func Route_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func PolicyBasedRoute_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func Route_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
-}
-
-func RouteTable_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
-}
-func RouteTable_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func PolicyBasedRoute_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func RouteTable_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func PolicyBasedRoute_v1alpha1_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func RouteTable_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
-}
-
-func ServiceClass_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
-}
-func ServiceClass_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func PolicyBasedRoute_v1alpha1_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func ServiceClass_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func Route_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func ServiceClass_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
-}
-
-func ServiceConnectionMap_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
-}
-func ServiceConnectionMap_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func Route_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func ServiceConnectionMap_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func Route_v1alpha1_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func ServiceConnectionMap_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
-}
-
-func ServiceConnectionToken_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
-}
-func ServiceConnectionToken_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func Route_v1alpha1_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func ServiceConnectionToken_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func RouteTable_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func ServiceConnectionToken_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.NotImplemented()
-	return nil
-}
-
-func Spoke_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.NotImplemented()
-	return nil
-}
-func Spoke_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func RouteTable_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func Spoke_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func RouteTable_v1alpha1_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func Spoke_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func RouteTable_v1alpha1_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
 
-func ServiceConnectionToken_ExpireTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+func ServiceClass_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.NotImplemented()
 	return nil
 }
-func ServiceConnectionToken_ExpireTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+func ServiceClass_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+	mapCtx.NotImplemented()
+	return nil
+}
+
+func ServiceClass_v1alpha1_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+	mapCtx.NotImplemented()
+	return nil
+}
+func ServiceClass_v1alpha1_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+	mapCtx.NotImplemented()
+	return nil
+}
+
+func ServiceConnectionMap_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+	mapCtx.NotImplemented()
+	return nil
+}
+func ServiceConnectionMap_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+	mapCtx.NotImplemented()
+	return nil
+}
+
+func ServiceConnectionMap_v1alpha1_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+	mapCtx.NotImplemented()
+	return nil
+}
+func ServiceConnectionMap_v1alpha1_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+	mapCtx.NotImplemented()
+	return nil
+}
+
+func ServiceConnectionToken_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+	mapCtx.NotImplemented()
+	return nil
+}
+func ServiceConnectionToken_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+	mapCtx.NotImplemented()
+	return nil
+}
+
+func ServiceConnectionToken_v1alpha1_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+	mapCtx.NotImplemented()
+	return nil
+}
+func ServiceConnectionToken_v1alpha1_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+	mapCtx.NotImplemented()
+	return nil
+}
+
+func Spoke_v1alpha1_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+	mapCtx.NotImplemented()
+	return nil
+}
+func Spoke_v1alpha1_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+	mapCtx.NotImplemented()
+	return nil
+}
+
+func Spoke_v1alpha1_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+	mapCtx.NotImplemented()
+	return nil
+}
+func Spoke_v1alpha1_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
+	mapCtx.NotImplemented()
+	return nil
+}
+
+func ServiceConnectionToken_v1alpha1_ExpireTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
+	mapCtx.NotImplemented()
+	return nil
+}
+func ServiceConnectionToken_v1alpha1_ExpireTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.NotImplemented()
 	return nil
 }
