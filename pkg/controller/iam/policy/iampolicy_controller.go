@@ -388,12 +388,12 @@ func (r *reconcileContext) handleUnresolvableDeps(policy *iamv1beta1.IAMPolicy, 
 		timeoutPeriod := r.Reconciler.jitterGen.WatchJitteredTimeout()
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
-		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
+		logger.V(2).Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
 		if err := watcher.WaitForResourceToBeReadyOrDeleted(ctx, refNN, refGVK); err != nil {
-			logger.Error(err, "error while waiting for resource's reference to be ready")
+			logger.V(2).Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}
-		logger.Info("enqueuing resource for immediate reconciliation now that its reference is ready")
+		logger.V(2).Info("enqueuing resource for immediate reconciliation now that its reference is ready")
 		r.Reconciler.enqueueForImmediateReconciliation(resource.GetNamespacedName())
 	}()
 

@@ -150,7 +150,7 @@ type reconcileContext struct {
 
 // Reconcile checks k8s for the current state of the resource.
 func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
-	logger.Info("Starting reconcile", "resource", request.NamespacedName)
+	logger.V(2).Info("Starting reconcile", "resource", request.NamespacedName)
 	startTime := time.Now()
 	ctx, cancel := context.WithTimeout(ctx, k8s.ReconcileDeadline)
 	defer cancel()
@@ -200,7 +200,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	}
 	requeueDelay := r.requeueRateLimiter.When(request)
 	requeueAfter := jitteredPeriod + requeueDelay
-	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", requeueAfter)
+	logger.V(2).Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", requeueAfter)
 	return reconcile.Result{RequeueAfter: requeueAfter}, nil
 }
 
@@ -278,7 +278,7 @@ func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember)
 	}
 	if _, err := r.Reconciler.iamClient.GetPolicyMember(r.Ctx, policyMember); err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
+			logger.V(2).Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
 			return r.handleUnresolvableDeps(policyMember, unwrappedErr)
 		}
 		if !errors.Is(err, kcciamclient.ErrNotFound) {
@@ -292,7 +292,7 @@ func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember)
 	}
 	if _, err := r.Reconciler.iamClient.SetPolicyMember(r.Ctx, policyMember); err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
+			logger.V(2).Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
 			return r.handleUnresolvableDeps(policyMember, unwrappedErr)
 		}
 		return false, r.handleUpdateFailed(policyMember, fmt.Errorf("error setting policy member: %w", err))
@@ -393,12 +393,12 @@ func (r *reconcileContext) handleUnresolvableDeps(policyMember *iamv1beta1.IAMPo
 		timeoutPeriod := r.Reconciler.jitterGen.WatchJitteredTimeout()
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
-		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
+		logger.V(2).Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
 		if err := watcher.WaitForResourceToBeReadyOrDeleted(ctx, refNN, refGVK); err != nil {
-			logger.Error(err, "error while waiting for resource's reference to be ready")
+			logger.V(2).Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}
-		logger.Info("enqueuing resource for immediate reconciliation now that its reference is ready")
+		logger.V(2).Info("enqueuing resource for immediate reconciliation now that its reference is ready")
 		r.Reconciler.enqueueForImmediateReconciliation(resource.GetNamespacedName())
 	}()
 

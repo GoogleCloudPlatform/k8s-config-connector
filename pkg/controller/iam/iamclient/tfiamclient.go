@@ -77,7 +77,7 @@ func (t *TFIAMClient) SetPolicyMember(ctx context.Context, policyMember *v1beta1
 		return nil, k8s.NewImmutableFieldsMutationError(tfresource.ImmutableFieldsFromDiff(diff))
 	}
 	if diff.Empty() {
-		logger.Info("underlying resource is already up to date", "resource", k8s.GetNamespacedName(policyMember))
+		logger.V(2).Info("underlying resource is already up to date", "resource", k8s.GetNamespacedName(policyMember))
 		return policyMember, nil
 	}
 
@@ -189,7 +189,7 @@ func (t *TFIAMClient) SetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) 
 		return nil, k8s.NewImmutableFieldsMutationError(tfresource.ImmutableFieldsFromDiff(diff))
 	}
 	if diff.Empty() {
-		logger.Info("underlying resource is already up to date", "resource", k8s.GetNamespacedName(policy))
+		logger.V(2).Info("underlying resource is already up to date", "resource", k8s.GetNamespacedName(policy))
 		return policy, nil
 	}
 	newState, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, t.provider.Meta())
@@ -281,7 +281,7 @@ func (t *TFIAMClient) SetAuditConfig(ctx context.Context, auditConfig *v1beta1.I
 		return nil, k8s.NewImmutableFieldsMutationError(tfresource.ImmutableFieldsFromDiff(diff))
 	}
 	if diff.Empty() {
-		logger.Info("underlying resource is already up to date", "resource", k8s.GetNamespacedName(auditConfig))
+		logger.V(2).Info("underlying resource is already up to date", "resource", k8s.GetNamespacedName(auditConfig))
 		return auditConfig, nil
 	}
 	newState, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, t.provider.Meta())
