@@ -530,6 +530,7 @@ type TaskExecution struct {
 type TaskGroup struct {
 
 	// Required. Tasks in the group share the same task spec.
+	// +required
 	// +kcc:proto:field=google.cloud.batch.v1.TaskGroup.task_spec
 	TaskSpec *TaskSpec `json:"taskSpec,omitempty"`
 
@@ -600,6 +601,7 @@ type TaskSpec struct {
 	//  + The runnable didn't finish, but you enabled its `background` subfield.
 	//  + The runnable exited with a non-zero status, but you enabled its
 	//    `ignore_exit_status` subfield.
+	// +required
 	// +kcc:proto:field=google.cloud.batch.v1.TaskSpec.runnables
 	Runnables []Runnable `json:"runnables,omitempty"`
 

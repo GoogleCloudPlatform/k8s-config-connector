@@ -72,6 +72,9 @@ spec:
                   version:
                     description: Required. Engine named version, for example 12.c.1.
                     type: string
+                required:
+                - engine
+                - version
                 type: object
               displayName:
                 description: Optional. The display name for the workspace.
@@ -134,6 +137,9 @@ spec:
                   version:
                     description: Required. Engine named version, for example 12.c.1.
                     type: string
+                required:
+                - engine
+                - version
                 type: object
             required:
             - location
