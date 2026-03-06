@@ -40,10 +40,24 @@ func NetworkConnectivityServiceConnectionPolicySpec_FromProto(mapCtx *direct.Map
 	if in.Network != "" {
 		out.Network = &computev1beta1.ComputeNetworkRef{External: in.Network}
 	}
-	out.PscConfig = PscConfig_FromProto(mapCtx, in.GetPscConfig())
+	out.PscConfig = PscConfig_v1alpha1_FromProto(mapCtx, in.GetPscConfig())
 	// MISSING: PscConnections
 	out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
 	// MISSING: UpdateTime
+	return out
+}
+
+func NetworkConnectivityServiceConnectionPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityServiceConnectionPolicySpec) *pb.ServiceConnectionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceConnectionPolicy{}
+	out.Description = direct.ValueOf(in.Description)
+	if in.Network != nil {
+		out.Network = in.Network.External
+	}
+	out.PscConfig = PscConfig_v1alpha1_ToProto(mapCtx, in.PscConfig)
+	out.ServiceClass = direct.ValueOf(in.ServiceClass)
 	return out
 }
 func NetworkConnectivityServiceConnectionPolicySpec_Network_ToProto(mapCtx *direct.MapContext, in *computev1beta1.ComputeNetworkRef) string {
@@ -332,4 +346,28 @@ func Timestamp_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Times
 		return nil
 	}
 	return timestamppb.New(t)
+}
+
+func NetworkConnectivityServiceConnectionPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krm.NetworkConnectivityServiceConnectionPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityServiceConnectionPolicyObservedState{}
+	out.CreateTime = Timestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Infrastructure = direct.LazyPtr(in.GetInfrastructure())
+	out.UpdateTime = Timestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func NetworkConnectivityServiceConnectionPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityServiceConnectionPolicyObservedState) *pb.ServiceConnectionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceConnectionPolicy{}
+	out.CreateTime = Timestamp_ToProto(mapCtx, in.CreateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Infrastructure = direct.ValueOf(in.Infrastructure)
+	out.UpdateTime = Timestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
 }
