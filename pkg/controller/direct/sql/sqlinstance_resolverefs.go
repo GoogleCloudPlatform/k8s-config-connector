@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"strings"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
@@ -55,7 +54,20 @@ func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQ
 	if err := resolveSourceSQLInstanceRef(ctx, kube, obj); err != nil {
 		return err
 	}
+	if err := resolveReplicationClusterRef(ctx, kube, obj); err != nil {
+		return err
+	}
 	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func resolveReplicationClusterRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+	if obj.Spec.ReplicationCluster == nil || obj.Spec.ReplicationCluster.FailoverDrReplicaRef == nil {
+		return nil
+	}
+	if err := obj.Spec.ReplicationCluster.FailoverDrReplicaRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
 		return err
 	}
 	return nil
@@ -110,48 +122,10 @@ func resolveMasterInstanceRef(ctx context.Context, kube client.Reader, obj *krm.
 	if obj.Spec.MasterInstanceRef == nil {
 		return nil
 	}
-
-	if obj.Spec.MasterInstanceRef.External != "" && obj.Spec.MasterInstanceRef.Name != "" {
-		return fmt.Errorf("cannot specify both spec.masterInstanceRef.external and spec.masterInstanceRef.name")
+	if err := obj.Spec.MasterInstanceRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
+		return err
 	}
-
-	if obj.Spec.MasterInstanceRef.External != "" {
-		return nil
-	} else if obj.Spec.MasterInstanceRef.Name != "" {
-		if obj.Spec.MasterInstanceRef.Namespace == "" {
-			obj.Spec.MasterInstanceRef.Namespace = obj.Namespace
-		}
-
-		key := types.NamespacedName{
-			Namespace: obj.Spec.MasterInstanceRef.Namespace,
-			Name:      obj.Spec.MasterInstanceRef.Name,
-		}
-
-		masterInstance := &unstructured.Unstructured{}
-		masterInstance.SetGroupVersionKind(krm.SQLInstanceGVK)
-		if err := kube.Get(ctx, key, masterInstance); err != nil {
-			if apierrors.IsNotFound(err) {
-				return k8s.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
-			}
-			return fmt.Errorf("error reading referenced master instance %v: %w", key, err)
-		}
-
-		masterInstanceName, err := refs.GetResourceID(masterInstance)
-		if err != nil {
-			return err
-		}
-
-		masterInstanceProject, ok := masterInstance.GetAnnotations()[k8s.ProjectIDAnnotation]
-		if !ok {
-			masterInstanceProject = masterInstance.GetNamespace()
-		}
-
-		obj.Spec.MasterInstanceRef.External = fmt.Sprintf("%s:%s", masterInstanceProject, masterInstanceName)
-
-		return nil
-	} else {
-		return fmt.Errorf("must specify either spec.masterInstanceRef.external or spec.masterInstanceRef.name")
-	}
+	return nil
 }
 
 func resolveReplicaPasswordRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
@@ -260,43 +234,8 @@ func resolveSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj *k
 	if obj.Spec.CloneSource == nil {
 		return nil
 	}
-
-	sqlInstanceRef := obj.Spec.CloneSource.SQLInstanceRef
-
-	if sqlInstanceRef.External != "" && sqlInstanceRef.Name != "" {
-		return fmt.Errorf("cannot specify both spec.settings.cloneSource.sqlInstanceRef.external and spec.settings.cloneSource.sqlInstanceRef.name")
+	if err := obj.Spec.CloneSource.SQLInstanceRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
+		return err
 	}
-
-	if sqlInstanceRef.External != "" {
-		return nil
-	} else if sqlInstanceRef.Name != "" {
-		if sqlInstanceRef.Namespace == "" {
-			sqlInstanceRef.Namespace = obj.Namespace
-		}
-
-		key := types.NamespacedName{
-			Namespace: sqlInstanceRef.Namespace,
-			Name:      sqlInstanceRef.Name,
-		}
-
-		sqlInstance := &unstructured.Unstructured{}
-		sqlInstance.SetGroupVersionKind(krm.SQLInstanceGVK)
-		if err := kube.Get(ctx, key, sqlInstance); err != nil {
-			if apierrors.IsNotFound(err) {
-				return k8s.NewReferenceNotFoundError(krm.SQLInstanceGVK, key)
-			}
-			return fmt.Errorf("error reading referenced SQLInstance %v: %w", key, err)
-		}
-
-		sqlInstanceName, err := refs.GetResourceID(sqlInstance)
-		if err != nil {
-			return err
-		}
-
-		obj.Spec.CloneSource.SQLInstanceRef.External = sqlInstanceName
-
-		return nil
-	} else {
-		return fmt.Errorf("must specify either spec.settings.cloneSource.sqlInstanceRef.external or spec.settings.cloneSource.sqlInstanceRef.name")
-	}
+	return nil
 }

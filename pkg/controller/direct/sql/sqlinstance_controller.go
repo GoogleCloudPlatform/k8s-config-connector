@@ -28,7 +28,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -509,8 +508,7 @@ type sqlInstanceModel struct {
 var _ directbase.Model = &sqlInstanceModel{}
 
 type sqlInstanceAdapter struct {
-	projectID  string
-	resourceID string
+	identity *krm.SQLInstanceIdentity
 
 	desired *krm.SQLInstance
 	actual  *api.DatabaseInstance
@@ -531,16 +529,12 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("converting to %T failed: %w", obj, err)
 	}
 
-	resourceID, err := refs.GetResourceID(u)
+	id, err := obj.GetIdentity(ctx, kube)
 	if err != nil {
 		return nil, err
 	}
-	obj.Spec.ResourceID = &resourceID
-
-	projectID, ok := u.GetAnnotations()[k8s.ProjectIDAnnotation]
-	if !ok {
-		projectID = u.GetNamespace()
-	}
+	identity := id.(*krm.SQLInstanceIdentity)
+	obj.Spec.ResourceID = &identity.Instance
 
 	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {
@@ -559,8 +553,7 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, op *directbase.
 	}
 
 	adapter := &sqlInstanceAdapter{
-		projectID:           projectID,
-		resourceID:          resourceID,
+		identity:            identity,
 		desired:             obj.DeepCopy(),
 		sqlOperationsClient: gcpClient.sqlOperationsClient(),
 		sqlInstancesClient:  gcpClient.sqlInstancesClient(),
@@ -589,21 +582,40 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, op *directbase.
 }
 
 func (m *sqlInstanceModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	identity := &krm.SQLInstanceIdentity{}
+	if err := identity.FromExternal(url); err != nil {
+		return nil, nil // Not a SQLInstance URL
+	}
+
+	gcpClient, err := newGCPClient(ctx, m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
+	}
+
+	adapter := &sqlInstanceAdapter{
+		identity:            identity,
+		sqlOperationsClient: gcpClient.sqlOperationsClient(),
+		sqlInstancesClient:  gcpClient.sqlInstancesClient(),
+		sqlUsersClient:      gcpClient.sqlUsersClient(),
+		fieldMeta:           make(map[string]*FieldMetadata),
+	}
+	return adapter, nil
 }
 
 func (a *sqlInstanceAdapter) Find(ctx context.Context) (bool, error) {
-	if a.resourceID == "" {
+	if a.identity.Instance == "" {
 		return false, nil
 	}
 
-	instance, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+	instance, err := a.sqlInstancesClient.Get(a.identity.Project, a.identity.Instance).Context(ctx).Do()
 	if err != nil {
 		return false, nil
 	}
 
 	a.actual = instance
+	if a.identity.Location == "" {
+		a.identity.Location = a.actual.Region
+	}
 
 	log := klog.FromContext(ctx)
 	log.V(2).Info("found SQLInstance", "actual", a.actual)
@@ -615,10 +627,10 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating SQLInstance", "desired", a.desired)
 
-	if a.projectID == "" {
+	if a.identity.Project == "" {
 		return fmt.Errorf("project is empty")
 	}
-	if a.resourceID == "" {
+	if a.identity.Instance == "" {
 		return fmt.Errorf("resourceID is empty")
 	}
 
@@ -642,19 +654,19 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.Cr
 				MaintenanceVersion: maintenanceVersion,
 			}
 
-			op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newMaintDb).Context(ctx).Do()
+			op, err := a.sqlInstancesClient.Patch(a.identity.Project, a.identity.Instance, newMaintDb).Context(ctx).Do()
 			if err != nil {
-				return fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.resourceID, err)
+				return fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.identity.Instance, err)
 			}
 			if err := a.pollForLROCompletion(ctx, op, "maintenanceVersion patch"); err != nil {
 				return err
 			}
 
-			updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+			updated, err := a.sqlInstancesClient.Get(a.identity.Project, a.identity.Instance).Context(ctx).Do()
 			if err != nil {
-				return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+				return fmt.Errorf("getting SQLInstance %s failed: %w", a.identity.Instance, err)
 			}
-
+			a.identity.Location = updated.Region
 			log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
 		}
 		return nil
@@ -670,7 +682,10 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, createOp *direct
 	}
 
 	sourceInstance := a.desired.Spec.CloneSource.SQLInstanceRef.External
-	op, err := a.sqlInstancesClient.Clone(a.projectID, sourceInstance, desiredGCP).Context(ctx).Do()
+	if id := (&krm.SQLInstanceIdentity{}); id.FromExternal(sourceInstance) == nil {
+		sourceInstance = id.Instance
+	}
+	op, err := a.sqlInstancesClient.Clone(a.identity.Project, sourceInstance, desiredGCP).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("cloning SQLInstance %s failed: %w", a.desired.Name, err)
 	}
@@ -678,7 +693,7 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, createOp *direct
 		return err
 	}
 
-	created, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+	created, err := a.sqlInstancesClient.Get(a.identity.Project, a.identity.Instance).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("getting SQLInstance %s failed: %w", a.desired.Name, err)
 	}
@@ -705,7 +720,7 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, createOp *direc
 		return err
 	}
 
-	op, err := a.sqlInstancesClient.Insert(a.projectID, desiredGCP).Context(ctx).Do()
+	op, err := a.sqlInstancesClient.Insert(a.identity.Project, desiredGCP).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating SQLInstance %s failed: %w", a.desired.Name, err)
 	}
@@ -713,12 +728,12 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, createOp *direc
 		return err
 	}
 
-	created, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+	created, err := a.sqlInstancesClient.Get(a.identity.Project, a.identity.Instance).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("getting SQLInstance %s failed: %w", a.desired.Name, err)
 	}
 
-	users, err := a.sqlUsersClient.List(a.projectID, a.resourceID).Context(ctx).Do()
+	users, err := a.sqlUsersClient.List(a.identity.Project, a.identity.Instance).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("listing SQLInstance %s users failed: %w", a.desired.Name, err)
 	}
@@ -728,7 +743,7 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, createOp *direc
 			if user.Name == "root" && strings.HasPrefix(created.DatabaseVersion, "MYSQL") {
 				// Delete "root" user to match Terraform behavior, to improve default security.
 				// Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/sql_database_instance
-				op, err := a.sqlUsersClient.Delete(a.projectID, a.resourceID).Context(ctx).Name(user.Name).Host(user.Host).Do()
+				op, err := a.sqlUsersClient.Delete(a.identity.Project, a.identity.Instance).Context(ctx).Name(user.Name).Host(user.Host).Do()
 				if err != nil {
 					return fmt.Errorf("deleting SQLInstance %s root user failed: %w", a.desired.Name, err)
 				}
@@ -780,21 +795,21 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			structuredreporting.ReportDiff(ctx, report)
 		}
 
-		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newVersionDb).Context(ctx).Do()
+		op, err := a.sqlInstancesClient.Patch(a.identity.Project, a.identity.Instance, newVersionDb).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("patching SQLInstance %s version failed: %w", a.resourceID, err)
+			return fmt.Errorf("patching SQLInstance %s version failed: %w", a.identity.Instance, err)
 		}
 		if err := a.pollForLROCompletion(ctx, op, "version patch"); err != nil {
 			return err
 		}
 
-		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+		updated, err := a.sqlInstancesClient.Get(a.identity.Project, a.identity.Instance).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+			return fmt.Errorf("getting SQLInstance %s failed: %w", a.identity.Instance, err)
 		}
+		a.identity.Location = updated.Region
 
 		log.V(2).Info("instance version updated", "op", op, "instance", updated)
-
 		a.actual = updated
 	}
 
@@ -837,18 +852,19 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 				structuredreporting.ReportDiff(ctx, report)
 			}
 
-			op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newEditionDb).Context(ctx).Do()
+			op, err := a.sqlInstancesClient.Patch(a.identity.Project, a.identity.Instance, newEditionDb).Context(ctx).Do()
 			if err != nil {
-				return fmt.Errorf("patching SQLInstance %s edition failed: %w", a.resourceID, err)
+				return fmt.Errorf("patching SQLInstance %s edition failed: %w", a.identity.Instance, err)
 			}
 			if err := a.pollForLROCompletion(ctx, op, "edition patch"); err != nil {
 				return err
 			}
 
-			updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+			updated, err := a.sqlInstancesClient.Get(a.identity.Project, a.identity.Instance).Context(ctx).Do()
 			if err != nil {
-				return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+				return fmt.Errorf("getting SQLInstance %s failed: %w", a.identity.Instance, err)
 			}
+			a.identity.Location = updated.Region
 
 			log.V(2).Info("instance edition updated", "op", op, "instance", updated)
 
@@ -873,18 +889,19 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			structuredreporting.ReportDiff(ctx, report)
 		}
 
-		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newMaintDb).Context(ctx).Do()
+		op, err := a.sqlInstancesClient.Patch(a.identity.Project, a.identity.Instance, newMaintDb).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.resourceID, err)
+			return fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.identity.Instance, err)
 		}
 		if err := a.pollForLROCompletion(ctx, op, "maintenanceVersion patch"); err != nil {
 			return err
 		}
 
-		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+		updated, err := a.sqlInstancesClient.Get(a.identity.Project, a.identity.Instance).Context(ctx).Do()
 		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+			return fmt.Errorf("getting SQLInstance %s failed: %w", a.identity.Instance, err)
 		}
+		a.identity.Location = updated.Region
 
 		log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
 	}
@@ -905,7 +922,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			structuredreporting.ReportDiff(ctx, instanceDiff)
 		}
 
-		op, err := a.sqlInstancesClient.Update(a.projectID, desiredGCP.Name, desiredGCP).Context(ctx).Do()
+		op, err := a.sqlInstancesClient.Update(a.identity.Project, desiredGCP.Name, desiredGCP).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("updating SQLInstance %s failed: %w", desiredGCP.Name, err)
 		}
@@ -913,13 +930,14 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			return err
 		}
 
-		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+		updated, err := a.sqlInstancesClient.Get(a.identity.Project, a.identity.Instance).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("getting SQLInstance %s failed: %w", desiredGCP.Name, err)
 		}
 
 		log.V(2).Info("instance updated", "op", op, "instance", updated)
 		instanceForStatus = updated
+		a.identity.Location = instanceForStatus.Region
 	}
 
 	status, err := SQLInstanceStatusGCPToKRM(instanceForStatus)
@@ -974,14 +992,14 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting SQLInstance", "actual", a.actual)
 
-	op, err := a.sqlInstancesClient.Delete(a.projectID, a.resourceID).Context(ctx).Do()
+	op, err := a.sqlInstancesClient.Delete(a.identity.Project, a.identity.Instance).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent SQLInstance, assuming it was already deleted", "name", a.resourceID)
+			log.V(2).Info("skipping delete for non-existent SQLInstance, assuming it was already deleted", "name", a.identity.Instance)
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting SQLInstance %s failed: %w", a.resourceID, err)
+		return false, fmt.Errorf("deleting SQLInstance %s failed: %w", a.identity.Instance, err)
 	}
 	if err := a.pollForLROCompletion(ctx, op, "delete"); err != nil {
 		return false, err
@@ -994,7 +1012,7 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 
 func (a *sqlInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
-		return nil, fmt.Errorf("SQLInstance %q not found", a.resourceID)
+		return nil, fmt.Errorf("SQLInstance %q not found", a.identity.Instance)
 	}
 
 	sqlInstance, err := SQLInstanceGCPToKRM(a.actual)
@@ -1010,7 +1028,7 @@ func (a *sqlInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	u := &unstructured.Unstructured{
 		Object: sqlInstanceObj,
 	}
-	u.SetName(a.resourceID)
+	u.SetName(a.identity.Instance)
 	u.SetGroupVersionKind(krm.SQLInstanceGVK)
 
 	return u, nil
@@ -1032,11 +1050,11 @@ func (a *sqlInstanceAdapter) pollForLROCompletion(ctx context.Context, op *api.O
 			break
 		}
 		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-			return fmt.Errorf("waiting for SQLInstance %s %s failed: %w", a.resourceID, verb, err)
+			return fmt.Errorf("waiting for SQLInstance %s %s failed: %w", a.identity.Instance, verb, err)
 		}
-		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
+		op, err = a.sqlOperationsClient.Get(a.identity.Project, op.Name).Do()
 		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s %s operation %s failed: %w", a.resourceID, verb, op.Name, err)
+			return fmt.Errorf("getting SQLInstance %s %s operation %s failed: %w", a.identity.Instance, verb, op.Name, err)
 		}
 	}
 
