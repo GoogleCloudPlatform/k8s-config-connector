@@ -27,37 +27,36 @@ import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 )
 
-func (s *NetworkServicesServer) ListMeshes(ctx context.Context, req *pb.ListMeshesRequest) (*pb.ListMeshesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListMeshes not implemented")
+func (s *NetworkServicesServer) ListHttpRoutes(ctx context.Context, req *pb.ListHttpRoutesRequest) (*pb.ListHttpRoutesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListHttpRoutes not implemented")
 }
 
-func (s *NetworkServicesServer) GetMesh(ctx context.Context, req *pb.GetMeshRequest) (*pb.Mesh, error) {
-	name, err := s.parseMeshName(req.Name)
+func (s *NetworkServicesServer) GetHttpRoute(ctx context.Context, req *pb.GetHttpRouteRequest) (*pb.HttpRoute, error) {
+	name, err := s.parseHttpRouteName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.Mesh{}
+	obj := &pb.HttpRoute{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
 }
-func (s *NetworkServicesServer) CreateMesh(ctx context.Context, req *pb.CreateMeshRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/meshes/" + req.MeshId
-	name, err := s.parseMeshName(reqName)
+func (s *NetworkServicesServer) CreateHttpRoute(ctx context.Context, req *pb.CreateHttpRouteRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/httpRoutes/" + req.HttpRouteId
+	name, err := s.parseHttpRouteName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Mesh).(*pb.Mesh)
+	obj := proto.Clone(req.HttpRoute).(*pb.HttpRoute)
 	obj.Name = fqn
-	obj.SelfLink = buildSelfLink(ctx, fqn)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -66,22 +65,22 @@ func (s *NetworkServicesServer) CreateMesh(ctx context.Context, req *pb.CreateMe
 	return s.operations.NewLRO(ctx)
 }
 
-func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMeshRequest) (*longrunning.Operation, error) {
-	reqName := req.GetMesh().GetName()
+func (s *NetworkServicesServer) UpdateHttpRoute(ctx context.Context, req *pb.UpdateHttpRouteRequest) (*longrunning.Operation, error) {
+	reqName := req.GetHttpRoute().GetName()
 
-	name, err := s.parseMeshName(reqName)
+	name, err := s.parseHttpRouteName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := &pb.Mesh{}
+	obj := &pb.HttpRoute{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	// Field mask is used to specify the fields to be overwritten in the
-	// Mesh resource by the update.
+	// HttpRoute resource by the update.
 	// The fields specified in the update_mask are relative to the resource, not
 	// the full request. A field will be overwritten if it is in the mask. If the
 	// user does not provide a mask then all fields will be overwritten.
@@ -90,11 +89,17 @@ func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMe
 	for _, path := range paths {
 		switch path {
 		case "description":
-			obj.Description = req.GetMesh().GetDescription()
-		case "interceptionPort":
-			obj.InterceptionPort = req.GetMesh().GetInterceptionPort()
+			obj.Description = req.GetHttpRoute().GetDescription()
 		case "labels":
-			obj.Labels = req.GetMesh().GetLabels()
+			obj.Labels = req.GetHttpRoute().GetLabels()
+		case "hostnames":
+			obj.Hostnames = req.GetHttpRoute().GetHostnames()
+		case "rules":
+			obj.Rules = req.GetHttpRoute().GetRules()
+		case "gateways":
+			obj.Gateways = req.GetHttpRoute().GetGateways()
+		case "meshes":
+			obj.Meshes = req.GetHttpRoute().GetMeshes()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -103,19 +108,18 @@ func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMe
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	obj.SelfLink = buildSelfLink(ctx, fqn)
 	return s.operations.NewLRO(ctx)
 }
 
-func (s *NetworkServicesServer) DeleteMesh(ctx context.Context, req *pb.DeleteMeshRequest) (*longrunning.Operation, error) {
-	name, err := s.parseMeshName(req.Name)
+func (s *NetworkServicesServer) DeleteHttpRoute(ctx context.Context, req *pb.DeleteHttpRouteRequest) (*longrunning.Operation, error) {
+	name, err := s.parseHttpRouteName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	deletedObj := &pb.Mesh{}
+	deletedObj := &pb.HttpRoute{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
@@ -123,31 +127,31 @@ func (s *NetworkServicesServer) DeleteMesh(ctx context.Context, req *pb.DeleteMe
 	return s.operations.NewLRO(ctx)
 }
 
-type meshName struct {
-	Project  *projects.ProjectData
-	Location string
-	MeshName string
+type httpRouteName struct {
+	Project       *projects.ProjectData
+	Location      string
+	HttpRouteName string
 }
 
-func (n *meshName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/meshes/" + n.MeshName
+func (n *httpRouteName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/httpRoutes/" + n.HttpRouteName
 }
 
-// parseMeshName parses a string into a meshName.
-// The expected form is `projects/*/locations/global/meshes/*`.
-func (s *MockService) parseMeshName(name string) (*meshName, error) {
+// parseHttpRouteName parses a string into a httpRouteName.
+// The expected form is `projects/*/locations/*/httpRoutes/*`.
+func (s *MockService) parseHttpRouteName(name string) (*httpRouteName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[3] == "global" && tokens[4] == "meshes" {
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "httpRoutes" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
 
-		name := &meshName{
-			Project:  project,
-			Location: "global",
-			MeshName: tokens[5],
+		name := &httpRouteName{
+			Project:       project,
+			Location:      tokens[3],
+			HttpRouteName: tokens[5],
 		}
 
 		return name, nil
