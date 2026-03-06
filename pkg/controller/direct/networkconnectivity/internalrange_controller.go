@@ -273,7 +273,7 @@ func (a *internalRangeAdapter) Export(ctx context.Context) (*unstructured.Unstru
 		return nil, err
 	}
 
-	u.SetName(a.actual.Name)
+	u.SetName(lastComponent(a.actual.Name))
 	u.SetGroupVersionKind(krmv1beta1.NetworkConnectivityInternalRangeGVK)
 	u.Object = uObj
 	return u, nil
@@ -312,6 +312,9 @@ func (a *internalRangeAdapter) waitForOperation(ctx context.Context, op *api.Goo
 		}
 
 		if latest.Done {
+			if latest.Error != nil {
+				return fmt.Errorf("operation failed: %v", latest.Error.Message)
+			}
 			return nil
 		}
 

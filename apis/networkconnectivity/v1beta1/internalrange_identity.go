@@ -68,7 +68,7 @@ func getIdentityFromInternalRangeSpec(ctx context.Context, reader client.Reader,
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+		return nil, fmt.Errorf("cannot resolve location")
 	}
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)

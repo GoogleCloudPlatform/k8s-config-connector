@@ -193,6 +193,9 @@ func (a *serviceConnectionPolicyAdapter) waitForOperation(ctx context.Context, o
 		}
 
 		if latest.Done {
+			if latest.Error != nil {
+				return fmt.Errorf("operation failed: %v", latest.Error.Message)
+			}
 			return nil
 		}
 
