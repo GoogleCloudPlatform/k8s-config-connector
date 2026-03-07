@@ -1,0 +1,41 @@
+apiVersion: modelarmor.cnrm.cloud.google.com/v1alpha1
+kind: ModelArmorTemplate
+metadata:
+  name: modelarmortemplate-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: "us-central1"
+  labels:
+    foo: bar
+  filterConfig:
+    raiSettings:
+      raiFilters:
+      - filterType: "HATE_SPEECH"
+        confidenceLevel: "LOW_AND_ABOVE"
+      - filterType: "SEXUALLY_EXPLICIT"
+        confidenceLevel: "LOW_AND_ABOVE"
+    sdpSettings:
+      basicConfig:
+        filterEnforcement: "ENABLED"
+      advancedConfig:
+        inspectTemplateRef:
+          external: "projects/test-project/locations/us-central1/inspectTemplates/test-inspect-template"
+        deidentifyTemplateRef:
+          external: "projects/test-project/locations/us-central1/deidentifyTemplates/test-deidentify-template"
+    piAndJailbreakFilterSettings:
+      filterEnforcement: "ENABLED"
+      confidenceLevel: "LOW_AND_ABOVE"
+    maliciousURIFilterSettings:
+      filterEnforcement: "ENABLED"
+  templateMetadata:
+    ignorePartialInvocationFailures: true
+    customPromptSafetyErrorCode: 400
+    customPromptSafetyErrorMessage: "Prompt safety error"
+    customLlmResponseSafetyErrorCode: 400
+    customLlmResponseSafetyErrorMessage: "LLM response safety error"
+    logTemplateOperations: true
+    logSanitizeOperations: true
+    enforcementType: "INSPECT_AND_BLOCK"
+    multiLanguageDetection:
+      enableMultiLanguageDetection: true

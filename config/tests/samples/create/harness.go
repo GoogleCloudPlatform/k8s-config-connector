@@ -835,6 +835,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 				continue
 			case "certificatemanager.cnrm.cloud.google.com":
 				continue
+			case "modelarmor.cnrm.cloud.google.com":
+				continue
 			}
 
 			switch gvk.GroupKind() {

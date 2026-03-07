@@ -1,0 +1,291 @@
+GET https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/us-central1/floorSetting?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FfloorSetting
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "floorSetting \"projects/${projectId}/locations/us-central1/floorSetting\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "floorSetting \"projects/${projectId}/locations/us-central1/floorSetting\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+PATCH https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/us-central1/floorSetting?%24alt=json%3Benum-encoding%3Dint&updateMask=aiPlatformFloorSetting.enableCloudLogging%2CenableFloorSettingEnforcement%2CfilterConfig.maliciousUriFilterSettings.filterEnforcement%2CfilterConfig.piAndJailbreakFilterSettings.confidenceLevel%2CfilterConfig.piAndJailbreakFilterSettings.filterEnforcement%2CfilterConfig.raiSettings.raiFilters%2CfilterConfig.sdpSettings.advancedConfig.deidentifyTemplate%2CfilterConfig.sdpSettings.advancedConfig.inspectTemplate%2CfloorSettingMetadata.multiLanguageDetection.enableMultiLanguageDetection%2CintegratedServices%2Cname
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: floor_setting.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FfloorSetting
+
+{
+  "aiPlatformFloorSetting": {
+    "enableCloudLogging": true,
+    "inspectAndBlock": false
+  },
+  "enableFloorSettingEnforcement": true,
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": 1
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 1,
+      "filterEnforcement": 1
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": 1,
+          "filterType": 3
+        }
+      ]
+    },
+    "sdpSettings": {
+      "advancedConfig": {
+        "deidentifyTemplate": "projects/test-project/locations/us-central1/deidentifyTemplates/test-deidentify-template",
+        "inspectTemplate": "projects/test-project/locations/us-central1/inspectTemplates/test-inspect-template"
+      }
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "integratedServices": [
+    1
+  ],
+  "name": "projects/${projectId}/locations/us-central1/floorSetting"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "aiPlatformFloorSetting": {
+    "enableCloudLogging": true,
+    "inspectAndBlock": false
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableFloorSettingEnforcement": true,
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": 1
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 1,
+      "filterEnforcement": 1
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": 1,
+          "filterType": 3
+        }
+      ]
+    },
+    "sdpSettings": {
+      "advancedConfig": {
+        "deidentifyTemplate": "projects/test-project/locations/us-central1/deidentifyTemplates/test-deidentify-template",
+        "inspectTemplate": "projects/test-project/locations/us-central1/inspectTemplates/test-inspect-template"
+      }
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "integratedServices": [
+    1
+  ],
+  "name": "projects/${projectId}/locations/us-central1/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/us-central1/floorSetting?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FfloorSetting
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "aiPlatformFloorSetting": {
+    "enableCloudLogging": true,
+    "inspectAndBlock": false
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableFloorSettingEnforcement": true,
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": 1
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 1,
+      "filterEnforcement": 1
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": 1,
+          "filterType": 3
+        }
+      ]
+    },
+    "sdpSettings": {
+      "advancedConfig": {
+        "deidentifyTemplate": "projects/test-project/locations/us-central1/deidentifyTemplates/test-deidentify-template",
+        "inspectTemplate": "projects/test-project/locations/us-central1/inspectTemplates/test-inspect-template"
+      }
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "integratedServices": [
+    1
+  ],
+  "name": "projects/${projectId}/locations/us-central1/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/us-central1/floorSetting?%24alt=json%3Benum-encoding%3Dint&updateMask=aiPlatformFloorSetting.enableCloudLogging%2CenableFloorSettingEnforcement%2CfilterConfig.maliciousUriFilterSettings.filterEnforcement%2CfilterConfig.piAndJailbreakFilterSettings.confidenceLevel%2CfilterConfig.piAndJailbreakFilterSettings.filterEnforcement%2CfilterConfig.raiSettings.raiFilters%2CfilterConfig.sdpSettings.advancedConfig.deidentifyTemplate%2CfilterConfig.sdpSettings.advancedConfig.inspectTemplate%2CfloorSettingMetadata.multiLanguageDetection.enableMultiLanguageDetection%2CintegratedServices
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: floor_setting.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FfloorSetting
+
+{
+  "filterConfig": {
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": 2,
+          "filterType": 3
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/floorSetting"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "aiPlatformFloorSetting": {
+    "inspectAndBlock": false
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableFloorSettingEnforcement": false,
+  "filterConfig": {
+    "maliciousUriFilterSettings": {},
+    "piAndJailbreakFilterSettings": {},
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": 2,
+          "filterType": 3
+        }
+      ]
+    },
+    "sdpSettings": {
+      "advancedConfig": {}
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {}
+  },
+  "name": "projects/${projectId}/locations/us-central1/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/us-central1/floorSetting?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FfloorSetting
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "aiPlatformFloorSetting": {
+    "inspectAndBlock": false
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableFloorSettingEnforcement": false,
+  "filterConfig": {
+    "maliciousUriFilterSettings": {},
+    "piAndJailbreakFilterSettings": {},
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": 2,
+          "filterType": 3
+        }
+      ]
+    },
+    "sdpSettings": {
+      "advancedConfig": {}
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {}
+  },
+  "name": "projects/${projectId}/locations/us-central1/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

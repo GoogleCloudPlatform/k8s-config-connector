@@ -30,6 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/modelarmor/v1"
 )
 
@@ -96,7 +97,15 @@ func (s *ModelArmorV1) UpdateTemplate(ctx context.Context, req *pb.UpdateTemplat
 		return nil, err
 	}
 
-	proto.Merge(obj, req.Template)
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		// Default is full update
+		proto.Merge(obj, req.Template)
+	} else {
+		if err := fields.UpdateByFieldMask(obj, req.Template, paths); err != nil {
+			return nil, err
+		}
+	}
 	obj.UpdateTime = timestamppb.New(time.Now())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {

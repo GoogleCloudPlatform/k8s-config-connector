@@ -119,7 +119,7 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		if strings.HasSuffix(fullName, "OperationMetadata") {
 			return "", false
 		}
-		if strings.HasSuffix(fullName, "Metadata") {
+		if strings.HasSuffix(fullName, "Metadata") && !strings.Contains(fullName, "modelarmor") {
 			return "", false
 		}
 		matchedService := false

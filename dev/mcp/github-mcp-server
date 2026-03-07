@@ -20,7 +20,7 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-VERSION="v0.26.3"
+VERSION="v0.31.0"
 
 BINDIR="${REPO_ROOT}/.build/mcp/bin/github/${VERSION}"
 mkdir -p "${BINDIR}"

@@ -1,0 +1,334 @@
+GET https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftemplates%2Fmodelarmortemplate-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "template \"projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "template \"projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates?%24alt=json%3Benum-encoding%3Dint&templateId=modelarmortemplate-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": 1
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 1,
+      "filterEnforcement": 1
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": 1,
+          "filterType": 3
+        },
+        {
+          "confidenceLevel": 1,
+          "filterType": 2
+        }
+      ]
+    },
+    "sdpSettings": {
+      "advancedConfig": {
+        "deidentifyTemplate": "projects/test-project/locations/us-central1/deidentifyTemplates/test-deidentify-template",
+        "inspectTemplate": "projects/test-project/locations/us-central1/inspectTemplates/test-inspect-template"
+      }
+    }
+  },
+  "labels": {
+    "foo": "bar"
+  },
+  "templateMetadata": {
+    "customLlmResponseSafetyErrorCode": 400,
+    "customLlmResponseSafetyErrorMessage": "LLM response safety error",
+    "customPromptSafetyErrorCode": 400,
+    "customPromptSafetyErrorMessage": "Prompt safety error",
+    "enforcementType": 2,
+    "ignorePartialInvocationFailures": true,
+    "logSanitizeOperations": true,
+    "logTemplateOperations": true,
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": 1
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 1,
+      "filterEnforcement": 1
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": 1,
+          "filterType": 3
+        },
+        {
+          "confidenceLevel": 1,
+          "filterType": 2
+        }
+      ]
+    },
+    "sdpSettings": {
+      "advancedConfig": {
+        "deidentifyTemplate": "projects/test-project/locations/us-central1/deidentifyTemplates/test-deidentify-template",
+        "inspectTemplate": "projects/test-project/locations/us-central1/inspectTemplates/test-inspect-template"
+      }
+    }
+  },
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {
+    "customLlmResponseSafetyErrorCode": 400,
+    "customLlmResponseSafetyErrorMessage": "LLM response safety error",
+    "customPromptSafetyErrorCode": 400,
+    "customPromptSafetyErrorMessage": "Prompt safety error",
+    "enforcementType": 2,
+    "ignorePartialInvocationFailures": true,
+    "logSanitizeOperations": true,
+    "logTemplateOperations": true,
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftemplates%2Fmodelarmortemplate-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": 1
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 1,
+      "filterEnforcement": 1
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": 1,
+          "filterType": 3
+        },
+        {
+          "confidenceLevel": 1,
+          "filterType": 2
+        }
+      ]
+    },
+    "sdpSettings": {
+      "advancedConfig": {
+        "deidentifyTemplate": "projects/test-project/locations/us-central1/deidentifyTemplates/test-deidentify-template",
+        "inspectTemplate": "projects/test-project/locations/us-central1/inspectTemplates/test-inspect-template"
+      }
+    }
+  },
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {
+    "customLlmResponseSafetyErrorCode": 400,
+    "customLlmResponseSafetyErrorMessage": "LLM response safety error",
+    "customPromptSafetyErrorCode": 400,
+    "customPromptSafetyErrorMessage": "Prompt safety error",
+    "enforcementType": 2,
+    "ignorePartialInvocationFailures": true,
+    "logSanitizeOperations": true,
+    "logTemplateOperations": true,
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filterConfig.maliciousUriFilterSettings.filterEnforcement%2CfilterConfig.piAndJailbreakFilterSettings.confidenceLevel%2CfilterConfig.piAndJailbreakFilterSettings.filterEnforcement%2CfilterConfig.raiSettings.raiFilters%2CfilterConfig.sdpSettings.advancedConfig.deidentifyTemplate%2CfilterConfig.sdpSettings.advancedConfig.inspectTemplate%2Clabels%2CtemplateMetadata.customLlmResponseSafetyErrorCode%2CtemplateMetadata.customLlmResponseSafetyErrorMessage%2CtemplateMetadata.customPromptSafetyErrorCode%2CtemplateMetadata.customPromptSafetyErrorMessage%2CtemplateMetadata.enforcementType%2CtemplateMetadata.ignorePartialInvocationFailures%2CtemplateMetadata.logSanitizeOperations%2CtemplateMetadata.logTemplateOperations%2CtemplateMetadata.multiLanguageDetection.enableMultiLanguageDetection
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: template.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftemplates%2Fmodelarmortemplate-${uniqueId}
+
+{
+  "filterConfig": {
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": 2,
+          "filterType": 3
+        },
+        {
+          "confidenceLevel": 1,
+          "filterType": 2
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {},
+    "piAndJailbreakFilterSettings": {},
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": 2,
+          "filterType": 3
+        },
+        {
+          "confidenceLevel": 1,
+          "filterType": 2
+        }
+      ]
+    },
+    "sdpSettings": {
+      "advancedConfig": {}
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {
+    "multiLanguageDetection": {}
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftemplates%2Fmodelarmortemplate-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {},
+    "piAndJailbreakFilterSettings": {},
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": 2,
+          "filterType": 3
+        },
+        {
+          "confidenceLevel": 1,
+          "filterType": 2
+        }
+      ]
+    },
+    "sdpSettings": {
+      "advancedConfig": {}
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {
+    "multiLanguageDetection": {}
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftemplates%2Fmodelarmortemplate-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
