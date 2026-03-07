@@ -160,7 +160,7 @@ compute.cnrm.cloud.google.com,ComputeRegionSSLPolicy,True,False,False,Terraform,
 compute.cnrm.cloud.google.com,ComputeReservation,False,True,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeResourcePolicy,False,True,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeRouterInterface,False,True,False,Terraform,False
-compute.cnrm.cloud.google.com,ComputeRouterNAT,False,True,False,Terraform,False
+compute.cnrm.cloud.google.com,ComputeRouterNAT,False,True,False,Direct,True
 compute.cnrm.cloud.google.com,ComputeRouterPeer,False,True,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeRouter,False,True,False,Terraform,False
 compute.cnrm.cloud.google.com,ComputeRoute,False,True,False,Terraform,False
