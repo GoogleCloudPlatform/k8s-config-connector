@@ -15,8 +15,10 @@ spec:
       basicConfig:
         filterEnforcement: "ENABLED"
       advancedConfig:
-        inspectTemplate: "projects/test-project/locations/us-central1/inspectTemplates/test-inspect-template"
-        deidentifyTemplate: "projects/test-project/locations/us-central1/deidentifyTemplates/test-deidentify-template"
+        inspectTemplateRef:
+          external: "projects/test-project/locations/us-central1/inspectTemplates/test-inspect-template"
+        deidentifyTemplateRef:
+          external: "projects/test-project/locations/us-central1/deidentifyTemplates/test-deidentify-template"
     piAndJailbreakFilterSettings:
       filterEnforcement: "ENABLED"
       confidenceLevel: "LOW_AND_ABOVE"

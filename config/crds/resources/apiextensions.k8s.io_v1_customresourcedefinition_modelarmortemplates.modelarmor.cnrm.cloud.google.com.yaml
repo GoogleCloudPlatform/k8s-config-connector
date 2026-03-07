@@ -119,32 +119,68 @@ spec:
                           templates. Supports both Sensitive Data Protection inspection
                           and de-identification operations.
                         properties:
-                          deidentifyTemplate:
-                            description: |-
-                              Optional. Optional Sensitive Data Protection Deidentify template resource
-                               name.
-
-                               If provided then DeidentifyContent action is performed during Sanitization
-                               using this template and inspect template. The De-identified data will
-                               be returned in SdpDeidentifyResult.
-                               Note that all info-types present in the deidentify template must be present
-                               in inspect template.
-
-                               e.g.
-                               `projects/{project}/locations/{location}/deidentifyTemplates/{deidentify_template}`
-                            type: string
-                          inspectTemplate:
-                            description: |-
-                              Optional. Sensitive Data Protection inspect template resource name
-
-                               If only inspect template is provided (de-identify template not provided),
-                               then Sensitive Data Protection InspectContent action is performed during
-                               Sanitization. All Sensitive Data Protection findings identified during
-                               inspection will be returned as SdpFinding in SdpInsepctionResult.
-
-                               e.g.
-                               `projects/{project}/locations/{location}/inspectTemplates/{inspect_template}`
-                            type: string
+                          deidentifyTemplateRef:
+                            description: Optional. Optional Sensitive Data Protection
+                              Deidentify template resource name.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: The `name` of a `DLPDeidentifyTemplate`
+                                  resource.
+                                type: string
+                              name:
+                                description: The `name` field of a `DLPDeidentifyTemplate`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `namespace` field of a `DLPDeidentifyTemplate`
+                                  resource.
+                                type: string
+                            type: object
+                          inspectTemplateRef:
+                            description: Optional. Sensitive Data Protection inspect
+                              template resource name
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: The `name` of a `DLPInspectTemplate`
+                                  resource.
+                                type: string
+                              name:
+                                description: The `name` field of a `DLPInspectTemplate`
+                                  resource.
+                                type: string
+                              namespace:
+                                description: The `namespace` field of a `DLPInspectTemplate`
+                                  resource.
+                                type: string
+                            type: object
                         type: object
                       basicConfig:
                         description: Optional. Basic Sensitive Data Protection configuration

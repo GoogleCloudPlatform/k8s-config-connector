@@ -277,8 +277,12 @@ func SdpAdvancedConfig_FromProto(mapCtx *direct.MapContext, in *pb.SdpAdvancedCo
 		return nil
 	}
 	out := &krm.SdpAdvancedConfig{}
-	out.InspectTemplate = direct.LazyPtr(in.GetInspectTemplate())
-	out.DeidentifyTemplate = direct.LazyPtr(in.GetDeidentifyTemplate())
+	if in.GetInspectTemplate() != "" {
+		out.InspectTemplateRef = &krm.DLPInspectTemplateRef{External: in.GetInspectTemplate()}
+	}
+	if in.GetDeidentifyTemplate() != "" {
+		out.DeidentifyTemplateRef = &krm.DLPDeidentifyTemplateRef{External: in.GetDeidentifyTemplate()}
+	}
 	return out
 }
 func SdpAdvancedConfig_ToProto(mapCtx *direct.MapContext, in *krm.SdpAdvancedConfig) *pb.SdpAdvancedConfig {
@@ -286,8 +290,12 @@ func SdpAdvancedConfig_ToProto(mapCtx *direct.MapContext, in *krm.SdpAdvancedCon
 		return nil
 	}
 	out := &pb.SdpAdvancedConfig{}
-	out.InspectTemplate = direct.ValueOf(in.InspectTemplate)
-	out.DeidentifyTemplate = direct.ValueOf(in.DeidentifyTemplate)
+	if in.InspectTemplateRef != nil {
+		out.InspectTemplate = in.InspectTemplateRef.External
+	}
+	if in.DeidentifyTemplateRef != nil {
+		out.DeidentifyTemplate = in.DeidentifyTemplateRef.External
+	}
 	return out
 }
 func SdpBasicConfig_FromProto(mapCtx *direct.MapContext, in *pb.SdpBasicConfig) *krm.SdpBasicConfig {
