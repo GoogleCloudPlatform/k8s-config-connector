@@ -16,6 +16,7 @@ package cmd
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io/ioutil"
 	golog "log"
@@ -63,6 +64,7 @@ func init() {
 	AddLicensesCommand(rootCmd)
 	rootCmd.AddCommand(applyCmd)
 	rootCmd.AddCommand(NewPreviewCmd())
+	rootCmd.AddCommand(NewBackupCmd())
 
 	powertools.AddCommands(rootCmd)
 
@@ -105,14 +107,14 @@ type TestInvocationOptions struct {
 }
 
 // ExecuteFromTest allows for invocation of the CLI from a test
-func ExecuteFromTest(options *TestInvocationOptions) error {
+func ExecuteFromTest(ctx context.Context, options *TestInvocationOptions) error {
 	rootCmd.SetIn(&options.Stdin)
 	rootCmd.SetOut(&options.Stdout)
 	rootCmd.SetErr(&options.Stderr)
 	rootCmd.SetArgs(options.Args[1:])
 
 	defaultToBulkExport(options.Args)
-	err := rootCmd.Execute()
+	err := rootCmd.ExecuteContext(ctx)
 	if err != nil {
 		fmt.Fprintf(&options.Stderr, "%v\n", err)
 	}
