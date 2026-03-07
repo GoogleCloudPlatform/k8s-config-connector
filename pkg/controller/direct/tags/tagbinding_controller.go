@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -92,6 +93,7 @@ func (m *TagsTagBindingModel) AdapterForObject(ctx context.Context, op *directba
 		id:                id,
 		tagBindingsClient: tagBindingsClient,
 		desired:           desired,
+		projectMapper:     m.config.ProjectMapper,
 	}, nil
 }
 
@@ -114,6 +116,7 @@ func (m *TagsTagBindingModel) AdapterForURL(ctx context.Context, url string) (di
 	return &TagsTagBindingAdapter{
 		id:                id,
 		tagBindingsClient: tagBindingsClient,
+		projectMapper:     m.config.ProjectMapper,
 	}, nil
 }
 
@@ -122,6 +125,7 @@ type TagsTagBindingAdapter struct {
 	tagBindingsClient *api.TagBindingsClient
 	desired           *pb.TagBinding
 	actual            *pb.TagBinding
+	projectMapper     *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &TagsTagBindingAdapter{}
@@ -176,23 +180,72 @@ func (a *TagsTagBindingAdapter) Create(ctx context.Context, createOp *directbase
 
 	op, err := a.tagBindingsClient.CreateTagBinding(ctx, req)
 	if err != nil {
+		if direct.IsAlreadyExists(err) {
+			log.V(0).Info("TagsTagBinding already exists, attempting to acquire", "parent", a.desired.GetParent(), "tagValue", a.desired.GetTagValue())
+			return a.acquireExistingTagBinding(ctx, createOp)
+		}
 		return fmt.Errorf("creating TagsTagBinding: %w", err)
 	}
 
 	created, err := op.Wait(ctx)
 	if err != nil {
+		if direct.IsAlreadyExists(err) {
+			log.V(0).Info("TagsTagBinding already exists, attempting to acquire", "parent", a.desired.GetParent(), "tagValue", a.desired.GetTagValue())
+			return a.acquireExistingTagBinding(ctx, createOp)
+		}
 		return fmt.Errorf("waiting for creation of TagsTagBinding: %w", err)
 	}
 	log.V(0).Info("created TagsTagBinding", "name", created.GetName())
 
-	// For compatibility, we set spec.resourceID after creation because this is a server-generated-id resource that we are migrating from terraform/DCL.
-	// More info in docs/ai/server-generated-id.md
-	resourceID := strings.TrimPrefix(created.GetName(), "tagBindings/")
+	return a.setResourceIDAndStatus(ctx, createOp, created)
+}
+
+// acquireExistingTagBinding looks up an existing TagBinding by parent and tagValue after an ALREADY_EXISTS error,
+// then sets the resourceID and status to adopt the resource.
+func (a *TagsTagBindingAdapter) acquireExistingTagBinding(ctx context.Context, createOp *directbase.CreateOperation) error {
+	log := klog.FromContext(ctx)
+
+	existing, err := a.findTagBindingByValue(ctx)
+	if err != nil {
+		return err
+	}
+	if existing == nil {
+		return fmt.Errorf("TagsTagBinding with tagValue %q not found under %q despite ALREADY_EXISTS error", a.desired.GetTagValue(), a.desired.GetParent())
+	}
+	log.V(0).Info("acquired existing TagsTagBinding", "name", existing.GetName())
+
+	return a.setResourceIDAndStatus(ctx, createOp, existing)
+}
+
+// setResourceIDAndStatus sets spec.resourceID and updates status from the given TagBinding.
+// For compatibility, we set spec.resourceID after creation because this is a server-generated-id resource that we are migrating from terraform/DCL.
+// More info in docs/ai/server-generated-id.md
+func (a *TagsTagBindingAdapter) setResourceIDAndStatus(ctx context.Context, createOp *directbase.CreateOperation, tagBinding *pb.TagBinding) error {
+	resourceID := strings.TrimPrefix(tagBinding.GetName(), "tagBindings/")
 	if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {
 		return err
 	}
+	return a.updateStatus(ctx, createOp, tagBinding)
+}
 
-	return a.updateStatus(ctx, createOp, created)
+// findTagBindingByValue lists TagBindings under the parent and returns the one matching the desired tagValue.
+func (a *TagsTagBindingAdapter) findTagBindingByValue(ctx context.Context) (*pb.TagBinding, error) {
+	parent := a.desired.GetParent()
+	req := &pb.ListTagBindingsRequest{Parent: parent}
+	it := a.tagBindingsClient.ListTagBindings(ctx, req)
+	for {
+		tagBinding, err := it.Next()
+		if err != nil {
+			if errors.Is(err, iterator.Done) {
+				break
+			}
+			return nil, fmt.Errorf("listing tag bindings under %q: %w", parent, err)
+		}
+		if tagBinding.TagValue == a.desired.GetTagValue() {
+			return tagBinding, nil
+		}
+	}
+	return nil, nil
 }
 
 func (a *TagsTagBindingAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -205,12 +258,11 @@ func (a *TagsTagBindingAdapter) Update(ctx context.Context, updateOp *directbase
 
 	structuredreporting.ReportDiff(ctx, diff)
 
-	latest := a.actual
 	if len(updateMask.Paths) != 0 {
 		return fmt.Errorf("cannot update TagsTagBinding %q: fields changed: %v; TagBindings are immutable after creation", fqn, updateMask.Paths)
 	}
 
-	return a.updateStatus(ctx, updateOp, latest)
+	return a.updateStatus(ctx, updateOp, a.actual)
 }
 
 func (a *TagsTagBindingAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.TagBinding) error {
@@ -295,14 +347,35 @@ func (a *TagsTagBindingAdapter) Delete(ctx context.Context, deleteOp *directbase
 
 // TODO: Make this function generic and reuse across models.
 func (a *TagsTagBindingAdapter) changedFields(ctx context.Context) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	// Normalize desired state
+	desired := direct.ProtoClone(a.desired)
+	if desired.GetParent() != "" {
+		normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, desired.GetParent())
+		if err != nil {
+			return nil, nil, fmt.Errorf("normalizing desired parent link %q: %w", desired.GetParent(), err)
+		}
+		desired.Parent = normalized
+	}
+
 	// Compute the actual with only the spec fields populated.
 	var actualMasked protoreflect.Message
 	{
+		// Normalize actual state
+		actual := direct.ProtoClone(a.actual)
+		if actual.GetParent() != "" {
+			normalized, err := a.projectMapper.ReplaceProjectNumberWithIDInLink(ctx, actual.GetParent())
+			if err != nil {
+				return nil, nil, fmt.Errorf("normalizing actual parent link %q: %w", actual.GetParent(), err)
+			}
+			actual.Parent = normalized
+		}
+
 		mapCtx := &direct.MapContext{}
-		actualSpec := TagsTagBindingSpec_FromProto(mapCtx, a.actual)
+		actualSpec := TagsTagBindingSpec_FromProto(mapCtx, actual)
 		if mapCtx.Err() != nil {
 			return nil, nil, mapCtx.Err()
 		}
+
 		mapCtx = &direct.MapContext{}
 		specProto := TagsTagBindingSpec_ToProto(mapCtx, actualSpec)
 		if mapCtx.Err() != nil {
@@ -311,5 +384,5 @@ func (a *TagsTagBindingAdapter) changedFields(ctx context.Context) (*structuredr
 		actualMasked = specProto.ProtoReflect()
 	}
 
-	return buildDiff(ctx, a.desired.ProtoReflect(), actualMasked)
+	return buildDiff(ctx, desired.ProtoReflect(), actualMasked)
 }
