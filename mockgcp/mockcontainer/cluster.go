@@ -202,6 +202,50 @@ func locationToZone(location string) (string, error) {
 	return "", fmt.Errorf("incorrect location: %v", location)
 }
 
+func (s *ClusterManagerV1) SetMasterAuth(ctx context.Context, req *pb.SetMasterAuthRequest) (*pb.Operation, error) {
+	name, err := s.parseClusterName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Cluster{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if obj.MasterAuth == nil {
+		obj.MasterAuth = &pb.MasterAuth{}
+	}
+
+	update := req.GetUpdate()
+	if update != nil {
+		if update.Username != "" {
+			obj.MasterAuth.Username = update.Username
+		}
+		if update.Password != "" {
+			obj.MasterAuth.Password = update.Password
+		}
+		if update.ClientCertificateConfig != nil {
+			obj.MasterAuth.ClientCertificateConfig = update.ClientCertificateConfig
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		Zone:          name.Location,
+		OperationType: pb.Operation_SET_MASTER_AUTH,
+		TargetLink:    buildTargetLink(ctx, name),
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
 func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*pb.Operation, error) {
 	reqName := req.GetName()
 
