@@ -1,0 +1,60 @@
+--- a/v1alpha1
++++ b/v1beta1
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		"apiVersion": {Description: "APIVersion defines the versioned schema of this representation o"..., Type: "string"},
+  		"kind":       {Description: "Kind is a string value representing the REST resource this objec"..., Type: "string"},
+  		"metadata":   {Type: "object"},
+  		"spec": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				... // 2 identical entries
+  				"labels":   {Description: "User-defined labels.", Type: "object", AdditionalProperties: &{Allows: true, Schema: &{Type: "string"}}},
+  				"location": {Description: "Required. The location of the application.", Type: "string"},
+  				"migration": {
+  					... // 26 identical fields
+  					AnyOf: nil,
+  					Not:   nil,
+  					Properties: map[string]v1.JSONSchemaProps{
+  						"source": {Description: "Immutable. Resource path as an URI of the source resource, for e"..., Type: "string"},
+  						"target": {
+  							ID:     "",
+  							Schema: "",
+  							Ref:    nil,
+  							Description: strings.Join({
+  								"Immutable. Resource path of the target resource. The target proj",
+  								"ect can be different, as in the cases when migrating to peer net",
+  								"works. ",
+- 								"The resource ",
+  								"For example: /projects/{project}/regions/{region}/subnetworks/{s",
+  								"ubnet}",
+  							}, ""),
+  							Type:   "string",
+  							Format: "",
+  							... // 38 identical fields
+  						},
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
+  				"networkRef": {Description: "The network in which to reserve the internal range. The network "..., Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The value of an externally managed ComputeNetwork resource. Shou"..., Type: "string"}, "name": {Description: "The name of a ComputeNetwork resource.", Type: "string"}, "namespace": {Description: "The namespace of a ComputeNetwork resource.", Type: "string"}}, ...},
+  				"overlaps":   {Description: "Optional. Types of resources that are allowed to overlap with th"..., Type: "array", Items: &{Schema: &{Type: "string"}}},
+  				... // 6 identical entries
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  		"status": {Description: "NetworkConnectivityInternalRangeStatus defines the config connec"..., Type: "object", Properties: {"conditions": {Description: "Conditions represent the latest available observations of the ob"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}}, "externalRef": {Description: "A unique specifier for the NetworkConnectivityInternalRange reso"..., Type: "string"}, "observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer", Format: "int64"}, "observedState": {Description: "ObservedState is the state of the resource as most recently obse"..., Type: "object", Properties: {"createTime": {Description: "Time when the internal range was created.", Type: "string"}, "updateTime": {Description: "Time when the internal range was updated.", Type: "string"}, "users": {Description: "Output only. The list of resources that refer to this internal r"..., Type: "array", Items: &{Schema: &{Type: "string"}}}}}}},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }
+
