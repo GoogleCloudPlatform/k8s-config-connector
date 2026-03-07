@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"strings"
 
-	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -28,7 +28,7 @@ import (
 // SchemaBundleIdentity defines the resource reference to BigtableSchemaBundle, which "External" field
 // holds the GCP identifier for the KRM object.
 type SchemaBundleIdentity struct {
-	parent *bigtablev1beta1.TableIdentity
+	parent *krmv1beta1.TableIdentity
 	id     string
 }
 
@@ -40,7 +40,7 @@ func (i *SchemaBundleIdentity) ID() string {
 	return i.id
 }
 
-func (i *SchemaBundleIdentity) Parent() *bigtablev1beta1.TableIdentity {
+func (i *SchemaBundleIdentity) Parent() *krmv1beta1.TableIdentity {
 	return i.parent
 }
 
@@ -52,7 +52,7 @@ func NewSchemaBundleIdentity(ctx context.Context, reader client.Reader, obj *Big
 	if err != nil {
 		return nil, err
 	}
-	tableParent, tableID, err := bigtablev1beta1.ParseTableExternal(tableRef)
+	tableParent, tableID, err := krmv1beta1.ParseTableExternal(tableRef)
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +89,7 @@ func NewSchemaBundleIdentity(ctx context.Context, reader client.Reader, obj *Big
 		}
 	}
 	return &SchemaBundleIdentity{
-		parent: &bigtablev1beta1.TableIdentity{
+		parent: &krmv1beta1.TableIdentity{
 			Parent: tableParent,
 			Id:     tableID,
 		},
@@ -97,13 +97,13 @@ func NewSchemaBundleIdentity(ctx context.Context, reader client.Reader, obj *Big
 	}, nil
 }
 
-func ParseSchemaBundleExternal(external string) (*bigtablev1beta1.TableIdentity, string, error) {
+func ParseSchemaBundleExternal(external string) (*krmv1beta1.TableIdentity, string, error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "tables" || tokens[6] != "schemaBundles" {
 		return nil, "", fmt.Errorf("format of BigtableSchemaBundle external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/tables/{{tableID}}/schemaBundles/{{schemaBundleID}})", external)
 	}
-	return &bigtablev1beta1.TableIdentity{
-		Parent: &bigtablev1beta1.InstanceIdentity{
+	return &krmv1beta1.TableIdentity{
+		Parent: &krmv1beta1.InstanceIdentity{
 			Parent: &parent.ProjectParent{ProjectID: tokens[1]},
 			Id:     tokens[3],
 		},
