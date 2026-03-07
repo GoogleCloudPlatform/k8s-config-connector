@@ -1267,14 +1267,12 @@ func ResourceContainerCluster() *schema.Resource {
 							Optional:     true,
 							Computed:     true,
 							AtLeastOneOf: []string{"master_auth.0.password", "master_auth.0.username", "master_auth.0.client_certificate_config"},
-							ForceNew:     true,
 							Description:  `Whether client certificate authorization is enabled for this cluster.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"issue_client_certificate": {
 										Type:        schema.TypeBool,
 										Required:    true,
-										ForceNew:    true,
 										Description: `Whether client certificate authorization is enabled for this cluster.`,
 									},
 								},
