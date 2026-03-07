@@ -809,7 +809,6 @@
 [missing_field] crd=computenetworkpeerings.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.exportSubnetRoutesWithPublicIp" is not set in unstructured objects
 [missing_field] crd=computenetworkpeerings.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.importSubnetRoutesWithPublicIp" is not set in unstructured objects
 [missing_field] crd=computenetworkpeerings.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.stackType" is not set in unstructured objects
-[missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.deleteDefaultRoutesOnCreate" is not set in unstructured objects
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.internalIpv6Range" is not set in unstructured objects
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.mtu" is not set in unstructured objects
