@@ -32,14 +32,6 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		return
 	}
 
-	u, err := url.Parse(event.URL())
-	if err != nil {
-		klog.Errorf("cannot parse URL %q: %v", event.URL(), err)
-		return
-	}
-
-	isV3API := strings.Contains(u.Path, "/v3/")
-
 	name := ""
 	event.VisitResponseStringValues(func(path string, value string) {
 		if path == ".name" || path == ".response.name" {
@@ -48,30 +40,18 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		if path == ".projectNumber" {
 			replacements.ReplaceStringValue(value, "${projectNumber}")
 		}
-		if isV3API {
-			if strings.HasSuffix(path, ".createTime") || strings.HasSuffix(path, ".updateTime") {
-				if value != "2024-04-01T12:34:56.123456Z" && value != "2024-04-01T12:34:56.123Z" {
-					replacements.ReplaceStringValue(value, "${createTime}")
-				}
-			}
-			if strings.HasSuffix(path, ".etag") {
-				if value != "abcdef0123A=" {
-					replacements.ReplaceStringValue(value, "${etag}")
-				}
-			}
-		}
 	})
 
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 2 && tokens[0] == "tagKeys" {
-		if name == "namespaced" {
+		if tokens[1] == "namespaced" {
 			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys/getNamespaced
 		} else {
 			replacements.ReplaceStringValue(tokens[1], "${tagKeyID}")
 		}
 	}
 	if len(tokens) == 2 && tokens[0] == "tagValues" {
-		if name == "namespaced" {
+		if tokens[1] == "namespaced" {
 			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagValues/getNamespaced
 		} else {
 			replacements.ReplaceStringValue(tokens[1], "${tagValueID}")
