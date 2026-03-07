@@ -816,12 +816,12 @@ spec:
                       to authenticate to the cluster endpoint.
                     type: string
                   clientCertificateConfig:
-                    description: Immutable. Whether client certificate authorization
-                      is enabled for this cluster.
+                    description: Whether client certificate authorization is enabled
+                      for this cluster.
                     properties:
                       issueClientCertificate:
-                        description: Immutable. Whether client certificate authorization
-                          is enabled for this cluster.
+                        description: Whether client certificate authorization is enabled
+                          for this cluster.
                         type: boolean
                     required:
                     - issueClientCertificate
