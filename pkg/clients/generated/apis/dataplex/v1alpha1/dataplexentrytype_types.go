@@ -62,6 +62,7 @@ type DataplexEntryTypeSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
+	/* The location that this resource belongs to. */
 	Location string `json:"location"`
 
 	/* Optional. The platform that Entries of this type belongs to. */

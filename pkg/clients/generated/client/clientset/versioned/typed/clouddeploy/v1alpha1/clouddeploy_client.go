@@ -32,6 +32,7 @@ import (
 type ClouddeployV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	CloudDeployDeployPoliciesGetter
+	CloudDeployTargetsGetter
 	DeployCustomTargetTypesGetter
 }
 
@@ -42,6 +43,10 @@ type ClouddeployV1alpha1Client struct {
 
 func (c *ClouddeployV1alpha1Client) CloudDeployDeployPolicies(namespace string) CloudDeployDeployPolicyInterface {
 	return newCloudDeployDeployPolicies(c, namespace)
+}
+
+func (c *ClouddeployV1alpha1Client) CloudDeployTargets(namespace string) CloudDeployTargetInterface {
+	return newCloudDeployTargets(c, namespace)
 }
 
 func (c *ClouddeployV1alpha1Client) DeployCustomTargetTypes(namespace string) DeployCustomTargetTypeInterface {

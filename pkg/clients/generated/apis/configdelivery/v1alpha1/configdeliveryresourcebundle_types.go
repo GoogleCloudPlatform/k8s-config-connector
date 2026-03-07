@@ -43,6 +43,7 @@ type ConfigDeliveryResourceBundleSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* The location that this resource belongs to. */
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
