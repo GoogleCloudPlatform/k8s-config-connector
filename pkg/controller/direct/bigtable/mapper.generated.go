@@ -23,20 +23,20 @@ package bigtable
 import (
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
-	krmbigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AppProfile_DataBoostIsolationReadOnly_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_DataBoostIsolationReadOnly) *krmbigtablev1beta1.AppProfile_DataBoostIsolationReadOnly {
+func AppProfile_DataBoostIsolationReadOnly_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_DataBoostIsolationReadOnly) *krmv1beta1.AppProfile_DataBoostIsolationReadOnly {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.AppProfile_DataBoostIsolationReadOnly{}
+	out := &krmv1beta1.AppProfile_DataBoostIsolationReadOnly{}
 	out.ComputeBillingOwner = direct.Enum_FromProto(mapCtx, in.GetComputeBillingOwner())
 	return out
 }
-func AppProfile_DataBoostIsolationReadOnly_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_DataBoostIsolationReadOnly) *pb.AppProfile_DataBoostIsolationReadOnly {
+func AppProfile_DataBoostIsolationReadOnly_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile_DataBoostIsolationReadOnly) *pb.AppProfile_DataBoostIsolationReadOnly {
 	if in == nil {
 		return nil
 	}
@@ -46,16 +46,16 @@ func AppProfile_DataBoostIsolationReadOnly_v1beta1_ToProto(mapCtx *direct.MapCon
 	}
 	return out
 }
-func AppProfile_MultiClusterRoutingUseAny_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_MultiClusterRoutingUseAny) *krmbigtablev1beta1.AppProfile_MultiClusterRoutingUseAny {
+func AppProfile_MultiClusterRoutingUseAny_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_MultiClusterRoutingUseAny) *krmv1beta1.AppProfile_MultiClusterRoutingUseAny {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.AppProfile_MultiClusterRoutingUseAny{}
+	out := &krmv1beta1.AppProfile_MultiClusterRoutingUseAny{}
 	out.ClusterIds = in.ClusterIds
 	out.RowAffinity = AppProfile_MultiClusterRoutingUseAny_RowAffinity_v1beta1_FromProto(mapCtx, in.GetRowAffinity())
 	return out
 }
-func AppProfile_MultiClusterRoutingUseAny_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_MultiClusterRoutingUseAny) *pb.AppProfile_MultiClusterRoutingUseAny {
+func AppProfile_MultiClusterRoutingUseAny_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile_MultiClusterRoutingUseAny) *pb.AppProfile_MultiClusterRoutingUseAny {
 	if in == nil {
 		return nil
 	}
@@ -66,30 +66,30 @@ func AppProfile_MultiClusterRoutingUseAny_v1beta1_ToProto(mapCtx *direct.MapCont
 	}
 	return out
 }
-func AppProfile_MultiClusterRoutingUseAny_RowAffinity_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity) *krmbigtablev1beta1.AppProfile_MultiClusterRoutingUseAny_RowAffinity {
+func AppProfile_MultiClusterRoutingUseAny_RowAffinity_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity) *krmv1beta1.AppProfile_MultiClusterRoutingUseAny_RowAffinity {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.AppProfile_MultiClusterRoutingUseAny_RowAffinity{}
+	out := &krmv1beta1.AppProfile_MultiClusterRoutingUseAny_RowAffinity{}
 	return out
 }
-func AppProfile_MultiClusterRoutingUseAny_RowAffinity_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_MultiClusterRoutingUseAny_RowAffinity) *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity {
+func AppProfile_MultiClusterRoutingUseAny_RowAffinity_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile_MultiClusterRoutingUseAny_RowAffinity) *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity{}
 	return out
 }
-func AppProfile_SingleClusterRouting_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_SingleClusterRouting) *krmbigtablev1beta1.AppProfile_SingleClusterRouting {
+func AppProfile_SingleClusterRouting_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_SingleClusterRouting) *krmv1beta1.AppProfile_SingleClusterRouting {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.AppProfile_SingleClusterRouting{}
+	out := &krmv1beta1.AppProfile_SingleClusterRouting{}
 	out.ClusterID = direct.LazyPtr(in.GetClusterId())
 	out.AllowTransactionalWrites = direct.LazyPtr(in.GetAllowTransactionalWrites())
 	return out
 }
-func AppProfile_SingleClusterRouting_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_SingleClusterRouting) *pb.AppProfile_SingleClusterRouting {
+func AppProfile_SingleClusterRouting_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile_SingleClusterRouting) *pb.AppProfile_SingleClusterRouting {
 	if in == nil {
 		return nil
 	}
@@ -98,15 +98,15 @@ func AppProfile_SingleClusterRouting_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	out.AllowTransactionalWrites = direct.ValueOf(in.AllowTransactionalWrites)
 	return out
 }
-func AppProfile_StandardIsolation_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_StandardIsolation) *krmbigtablev1beta1.AppProfile_StandardIsolation {
+func AppProfile_StandardIsolation_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_StandardIsolation) *krmv1beta1.AppProfile_StandardIsolation {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.AppProfile_StandardIsolation{}
+	out := &krmv1beta1.AppProfile_StandardIsolation{}
 	out.Priority = direct.Enum_FromProto(mapCtx, in.GetPriority())
 	return out
 }
-func AppProfile_StandardIsolation_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_StandardIsolation) *pb.AppProfile_StandardIsolation {
+func AppProfile_StandardIsolation_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile_StandardIsolation) *pb.AppProfile_StandardIsolation {
 	if in == nil {
 		return nil
 	}
@@ -188,11 +188,11 @@ func AutoscalingTargets_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Auto
 	// (near miss): "StorageUtilizationGibPerNode" vs "StorageUtilizationGiBPerNode"
 	return out
 }
-func BackupInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupInfo) *krmbigtablev1beta1.BackupInfo {
+func BackupInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupInfo) *krmv1beta1.BackupInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.BackupInfo{}
+	out := &krmv1beta1.BackupInfo{}
 	// MISSING: Backup
 	// MISSING: StartTime
 	// MISSING: EndTime
@@ -200,7 +200,7 @@ func BackupInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupInfo) 
 	// MISSING: SourceBackup
 	return out
 }
-func BackupInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.BackupInfo) *pb.BackupInfo {
+func BackupInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BackupInfo) *pb.BackupInfo {
 	if in == nil {
 		return nil
 	}
@@ -212,11 +212,11 @@ func BackupInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta
 	// MISSING: SourceBackup
 	return out
 }
-func BackupInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupInfo) *krmbigtablev1beta1.BackupInfoObservedState {
+func BackupInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupInfo) *krmv1beta1.BackupInfoObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.BackupInfoObservedState{}
+	out := &krmv1beta1.BackupInfoObservedState{}
 	out.Backup = direct.LazyPtr(in.GetBackup())
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
@@ -224,7 +224,7 @@ func BackupInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb
 	out.SourceBackup = direct.LazyPtr(in.GetSourceBackup())
 	return out
 }
-func BackupInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.BackupInfoObservedState) *pb.BackupInfo {
+func BackupInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BackupInfoObservedState) *pb.BackupInfo {
 	if in == nil {
 		return nil
 	}
@@ -236,17 +236,17 @@ func BackupInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmb
 	out.SourceBackup = direct.ValueOf(in.SourceBackup)
 	return out
 }
-func BigtableAppProfileObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmbigtablev1beta1.BigtableAppProfileObservedState {
+func BigtableAppProfileObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmv1beta1.BigtableAppProfileObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.BigtableAppProfileObservedState{}
+	out := &krmv1beta1.BigtableAppProfileObservedState{}
 	// MISSING: Name
 	// MISSING: Etag
 	// MISSING: Priority
 	return out
 }
-func BigtableAppProfileObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.BigtableAppProfileObservedState) *pb.AppProfile {
+func BigtableAppProfileObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigtableAppProfileObservedState) *pb.AppProfile {
 	if in == nil {
 		return nil
 	}
@@ -333,7 +333,7 @@ func BigtableBackupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Bac
 	out := &krm.BigtableBackupSpec{}
 	// MISSING: Name
 	if in.GetSourceTable() != "" {
-		out.SourceTableRef = &krmbigtablev1beta1.TableRef{External: in.GetSourceTable()}
+		out.SourceTableRef = &krmv1beta1.TableRef{External: in.GetSourceTable()}
 	}
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	out.BackupType = direct.Enum_FromProto(mapCtx, in.GetBackupType())
@@ -402,11 +402,11 @@ func BigtableClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Big
 	out.EncryptionConfig = Cluster_EncryptionConfig_v1alpha1_ToProto(mapCtx, in.EncryptionConfig)
 	return out
 }
-func BigtableInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmbigtablev1beta1.BigtableInstanceSpec {
+func BigtableInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.BigtableInstanceSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.BigtableInstanceSpec{}
+	out := &krmv1beta1.BigtableInstanceSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: State
@@ -418,7 +418,7 @@ func BigtableInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	// MISSING: Tags
 	return out
 }
-func BigtableInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.BigtableInstanceSpec) *pb.Instance {
+func BigtableInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigtableInstanceSpec) *pb.Instance {
 	if in == nil {
 		return nil
 	}
@@ -552,15 +552,15 @@ func BigtableSchemaBundleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	return out
 }
-func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krmbigtablev1beta1.ChangeStreamConfig {
+func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krmv1beta1.ChangeStreamConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.ChangeStreamConfig{}
+	out := &krmv1beta1.ChangeStreamConfig{}
 	out.RetentionPeriod = direct.StringDuration_FromProto(mapCtx, in.GetRetentionPeriod())
 	return out
 }
-func ChangeStreamConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.ChangeStreamConfig) *pb.ChangeStreamConfig {
+func ChangeStreamConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ChangeStreamConfig) *pb.ChangeStreamConfig {
 	if in == nil {
 		return nil
 	}
@@ -642,18 +642,18 @@ func EncryptionInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Encrypti
 	// MISSING: KMSKeyVersion
 	return out
 }
-func EncryptionInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krmbigtablev1beta1.EncryptionInfo {
+func EncryptionInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krmv1beta1.EncryptionInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.EncryptionInfo{}
+	out := &krmv1beta1.EncryptionInfo{}
 	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
 	// MISSING: EncryptionStatus
 	// MISSING: KMSKeyVersion
 	// (near miss): "KMSKeyVersion" vs "KmsKeyVersion"
 	return out
 }
-func EncryptionInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.EncryptionInfo) *pb.EncryptionInfo {
+func EncryptionInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.EncryptionInfo) *pb.EncryptionInfo {
 	if in == nil {
 		return nil
 	}
@@ -684,18 +684,18 @@ func EncryptionInfoObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.KmsKeyVersion = direct.ValueOf(in.KMSKeyVersion)
 	return out
 }
-func GcRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcRule) *krmbigtablev1beta1.GcRule {
+func GcRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcRule) *krmv1beta1.GcRule {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.GcRule{}
+	out := &krmv1beta1.GcRule{}
 	out.MaxNumVersions = direct.LazyPtr(in.GetMaxNumVersions())
 	out.MaxAge = direct.StringDuration_FromProto(mapCtx, in.GetMaxAge())
 	out.Intersection = GcRule_Intersection_v1beta1_FromProto(mapCtx, in.GetIntersection())
 	out.Union = GcRule_Union_v1beta1_FromProto(mapCtx, in.GetUnion())
 	return out
 }
-func GcRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.GcRule) *pb.GcRule {
+func GcRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.GcRule) *pb.GcRule {
 	if in == nil {
 		return nil
 	}
@@ -720,15 +720,15 @@ func GcRule_MaxNumVersions_ToProto(mapCtx *direct.MapContext, in *int32) *pb.GcR
 	}
 	return &pb.GcRule_MaxNumVersions{MaxNumVersions: *in}
 }
-func GcRule_Intersection_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcRule_Intersection) *krmbigtablev1beta1.GcRule_Intersection {
+func GcRule_Intersection_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcRule_Intersection) *krmv1beta1.GcRule_Intersection {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.GcRule_Intersection{}
+	out := &krmv1beta1.GcRule_Intersection{}
 	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, GcRule_v1beta1_FromProto)
 	return out
 }
-func GcRule_Intersection_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.GcRule_Intersection) *pb.GcRule_Intersection {
+func GcRule_Intersection_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.GcRule_Intersection) *pb.GcRule_Intersection {
 	if in == nil {
 		return nil
 	}
@@ -736,15 +736,15 @@ func GcRule_Intersection_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigta
 	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, GcRule_v1beta1_ToProto)
 	return out
 }
-func GcRule_Union_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcRule_Union) *krmbigtablev1beta1.GcRule_Union {
+func GcRule_Union_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcRule_Union) *krmv1beta1.GcRule_Union {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.GcRule_Union{}
+	out := &krmv1beta1.GcRule_Union{}
 	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, GcRule_v1beta1_FromProto)
 	return out
 }
-func GcRule_Union_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.GcRule_Union) *pb.GcRule_Union {
+func GcRule_Union_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.GcRule_Union) *pb.GcRule_Union {
 	if in == nil {
 		return nil
 	}
@@ -752,16 +752,16 @@ func GcRule_Union_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1be
 	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, GcRule_v1beta1_ToProto)
 	return out
 }
-func RestoreInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RestoreInfo) *krmbigtablev1beta1.RestoreInfo {
+func RestoreInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RestoreInfo) *krmv1beta1.RestoreInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.RestoreInfo{}
+	out := &krmv1beta1.RestoreInfo{}
 	out.SourceType = direct.Enum_FromProto(mapCtx, in.GetSourceType())
 	out.BackupInfo = BackupInfo_v1beta1_FromProto(mapCtx, in.GetBackupInfo())
 	return out
 }
-func RestoreInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.RestoreInfo) *pb.RestoreInfo {
+func RestoreInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.RestoreInfo) *pb.RestoreInfo {
 	if in == nil {
 		return nil
 	}
@@ -772,16 +772,16 @@ func RestoreInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1bet
 	}
 	return out
 }
-func RestoreInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RestoreInfo) *krmbigtablev1beta1.RestoreInfoObservedState {
+func RestoreInfoObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RestoreInfo) *krmv1beta1.RestoreInfoObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.RestoreInfoObservedState{}
+	out := &krmv1beta1.RestoreInfoObservedState{}
 	// MISSING: SourceType
 	out.BackupInfo = BackupInfoObservedState_v1beta1_FromProto(mapCtx, in.GetBackupInfo())
 	return out
 }
-func RestoreInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.RestoreInfoObservedState) *pb.RestoreInfo {
+func RestoreInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.RestoreInfoObservedState) *pb.RestoreInfo {
 	if in == nil {
 		return nil
 	}
@@ -792,16 +792,16 @@ func RestoreInfoObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	return out
 }
-func TableColumnFamily_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ColumnFamily) *krmbigtablev1beta1.TableColumnFamily {
+func TableColumnFamily_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ColumnFamily) *krmv1beta1.TableColumnFamily {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.TableColumnFamily{}
+	out := &krmv1beta1.TableColumnFamily{}
 	// MISSING: GcRule
 	// MISSING: ValueType
 	return out
 }
-func TableColumnFamily_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.TableColumnFamily) *pb.ColumnFamily {
+func TableColumnFamily_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.TableColumnFamily) *pb.ColumnFamily {
 	if in == nil {
 		return nil
 	}
@@ -810,16 +810,16 @@ func TableColumnFamily_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtabl
 	// MISSING: ValueType
 	return out
 }
-func Table_AutomatedBackupPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table_AutomatedBackupPolicy) *krmbigtablev1beta1.Table_AutomatedBackupPolicy {
+func Table_AutomatedBackupPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table_AutomatedBackupPolicy) *krmv1beta1.Table_AutomatedBackupPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Table_AutomatedBackupPolicy{}
+	out := &krmv1beta1.Table_AutomatedBackupPolicy{}
 	out.RetentionPeriod = direct.StringDuration_FromProto(mapCtx, in.GetRetentionPeriod())
 	out.Frequency = direct.StringDuration_FromProto(mapCtx, in.GetFrequency())
 	return out
 }
-func Table_AutomatedBackupPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Table_AutomatedBackupPolicy) *pb.Table_AutomatedBackupPolicy {
+func Table_AutomatedBackupPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Table_AutomatedBackupPolicy) *pb.Table_AutomatedBackupPolicy {
 	if in == nil {
 		return nil
 	}
@@ -828,16 +828,16 @@ func Table_AutomatedBackupPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	out.Frequency = direct.StringDuration_ToProto(mapCtx, in.Frequency)
 	return out
 }
-func Table_ClusterState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table_ClusterState) *krmbigtablev1beta1.Table_ClusterState {
+func Table_ClusterState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table_ClusterState) *krmv1beta1.Table_ClusterState {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Table_ClusterState{}
+	out := &krmv1beta1.Table_ClusterState{}
 	// MISSING: ReplicationState
 	// MISSING: EncryptionInfo
 	return out
 }
-func Table_ClusterState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Table_ClusterState) *pb.Table_ClusterState {
+func Table_ClusterState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Table_ClusterState) *pb.Table_ClusterState {
 	if in == nil {
 		return nil
 	}
@@ -846,11 +846,11 @@ func Table_ClusterState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtab
 	// MISSING: EncryptionInfo
 	return out
 }
-func Type_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type) *krmbigtablev1beta1.Type {
+func Type_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type) *krmv1beta1.Type {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type{}
+	out := &krmv1beta1.Type{}
 	out.BytesType = Type_Bytes_v1beta1_FromProto(mapCtx, in.GetBytesType())
 	out.StringType = Type_String_v1beta1_FromProto(mapCtx, in.GetStringType())
 	out.Int64Type = Type_Int64_v1beta1_FromProto(mapCtx, in.GetInt64Type())
@@ -867,7 +867,7 @@ func Type_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type) *krmbigtable
 	out.EnumType = Type_Enum_v1beta1_FromProto(mapCtx, in.GetEnumType())
 	return out
 }
-func Type_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type) *pb.Type {
+func Type_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type) *pb.Type {
 	if in == nil {
 		return nil
 	}
@@ -916,11 +916,11 @@ func Type_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type
 	}
 	return out
 }
-func TypeObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type) *krmbigtablev1beta1.TypeObservedState {
+func TypeObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type) *krmv1beta1.TypeObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.TypeObservedState{}
+	out := &krmv1beta1.TypeObservedState{}
 	// MISSING: BytesType
 	// MISSING: StringType
 	// MISSING: Int64Type
@@ -937,7 +937,7 @@ func TypeObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type)
 	// MISSING: EnumType
 	return out
 }
-func TypeObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.TypeObservedState) *pb.Type {
+func TypeObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.TypeObservedState) *pb.Type {
 	if in == nil {
 		return nil
 	}
@@ -960,11 +960,11 @@ func TypeObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtabl
 	// MISSING: EnumType
 	return out
 }
-func Type_Aggregate_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate) *krmbigtablev1beta1.Type_Aggregate {
+func Type_Aggregate_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate) *krmv1beta1.Type_Aggregate {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Aggregate{}
+	out := &krmv1beta1.Type_Aggregate{}
 	out.InputType = Type_v1beta1_FromProto(mapCtx, in.GetInputType())
 	// MISSING: StateType
 	out.Sum = Type_Aggregate_Sum_v1beta1_FromProto(mapCtx, in.GetSum())
@@ -973,7 +973,7 @@ func Type_Aggregate_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Agg
 	out.Min = Type_Aggregate_Min_v1beta1_FromProto(mapCtx, in.GetMin())
 	return out
 }
-func Type_Aggregate_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Aggregate) *pb.Type_Aggregate {
+func Type_Aggregate_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Aggregate) *pb.Type_Aggregate {
 	if in == nil {
 		return nil
 	}
@@ -994,11 +994,11 @@ func Type_Aggregate_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1
 	}
 	return out
 }
-func Type_AggregateObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate) *krmbigtablev1beta1.Type_AggregateObservedState {
+func Type_AggregateObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate) *krmv1beta1.Type_AggregateObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_AggregateObservedState{}
+	out := &krmv1beta1.Type_AggregateObservedState{}
 	// MISSING: InputType
 	out.StateType = Type_v1beta1_FromProto(mapCtx, in.GetStateType())
 	// MISSING: Sum
@@ -1007,7 +1007,7 @@ func Type_AggregateObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: Min
 	return out
 }
-func Type_AggregateObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_AggregateObservedState) *pb.Type_Aggregate {
+func Type_AggregateObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_AggregateObservedState) *pb.Type_Aggregate {
 	if in == nil {
 		return nil
 	}
@@ -1020,71 +1020,71 @@ func Type_AggregateObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Min
 	return out
 }
-func Type_Aggregate_HyperLogLogPlusPlusUniqueCount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate_HyperLogLogPlusPlusUniqueCount) *krmbigtablev1beta1.Type_Aggregate_HyperLogLogPlusPlusUniqueCount {
+func Type_Aggregate_HyperLogLogPlusPlusUniqueCount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate_HyperLogLogPlusPlusUniqueCount) *krmv1beta1.Type_Aggregate_HyperLogLogPlusPlusUniqueCount {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Aggregate_HyperLogLogPlusPlusUniqueCount{}
+	out := &krmv1beta1.Type_Aggregate_HyperLogLogPlusPlusUniqueCount{}
 	return out
 }
-func Type_Aggregate_HyperLogLogPlusPlusUniqueCount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Aggregate_HyperLogLogPlusPlusUniqueCount) *pb.Type_Aggregate_HyperLogLogPlusPlusUniqueCount {
+func Type_Aggregate_HyperLogLogPlusPlusUniqueCount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Aggregate_HyperLogLogPlusPlusUniqueCount) *pb.Type_Aggregate_HyperLogLogPlusPlusUniqueCount {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_Aggregate_HyperLogLogPlusPlusUniqueCount{}
 	return out
 }
-func Type_Aggregate_Max_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate_Max) *krmbigtablev1beta1.Type_Aggregate_Max {
+func Type_Aggregate_Max_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate_Max) *krmv1beta1.Type_Aggregate_Max {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Aggregate_Max{}
+	out := &krmv1beta1.Type_Aggregate_Max{}
 	return out
 }
-func Type_Aggregate_Max_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Aggregate_Max) *pb.Type_Aggregate_Max {
+func Type_Aggregate_Max_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Aggregate_Max) *pb.Type_Aggregate_Max {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_Aggregate_Max{}
 	return out
 }
-func Type_Aggregate_Min_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate_Min) *krmbigtablev1beta1.Type_Aggregate_Min {
+func Type_Aggregate_Min_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate_Min) *krmv1beta1.Type_Aggregate_Min {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Aggregate_Min{}
+	out := &krmv1beta1.Type_Aggregate_Min{}
 	return out
 }
-func Type_Aggregate_Min_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Aggregate_Min) *pb.Type_Aggregate_Min {
+func Type_Aggregate_Min_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Aggregate_Min) *pb.Type_Aggregate_Min {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_Aggregate_Min{}
 	return out
 }
-func Type_Aggregate_Sum_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate_Sum) *krmbigtablev1beta1.Type_Aggregate_Sum {
+func Type_Aggregate_Sum_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Aggregate_Sum) *krmv1beta1.Type_Aggregate_Sum {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Aggregate_Sum{}
+	out := &krmv1beta1.Type_Aggregate_Sum{}
 	return out
 }
-func Type_Aggregate_Sum_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Aggregate_Sum) *pb.Type_Aggregate_Sum {
+func Type_Aggregate_Sum_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Aggregate_Sum) *pb.Type_Aggregate_Sum {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_Aggregate_Sum{}
 	return out
 }
-func Type_Array_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Array) *krmbigtablev1beta1.Type_Array {
+func Type_Array_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Array) *krmv1beta1.Type_Array {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Array{}
+	out := &krmv1beta1.Type_Array{}
 	out.ElementType = Type_v1beta1_FromProto(mapCtx, in.GetElementType())
 	return out
 }
-func Type_Array_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Array) *pb.Type_Array {
+func Type_Array_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Array) *pb.Type_Array {
 	if in == nil {
 		return nil
 	}
@@ -1092,29 +1092,29 @@ func Type_Array_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta
 	out.ElementType = Type_v1beta1_ToProto(mapCtx, in.ElementType)
 	return out
 }
-func Type_Bool_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Bool) *krmbigtablev1beta1.Type_Bool {
+func Type_Bool_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Bool) *krmv1beta1.Type_Bool {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Bool{}
+	out := &krmv1beta1.Type_Bool{}
 	return out
 }
-func Type_Bool_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Bool) *pb.Type_Bool {
+func Type_Bool_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Bool) *pb.Type_Bool {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_Bool{}
 	return out
 }
-func Type_Bytes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Bytes) *krmbigtablev1beta1.Type_Bytes {
+func Type_Bytes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Bytes) *krmv1beta1.Type_Bytes {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Bytes{}
+	out := &krmv1beta1.Type_Bytes{}
 	out.Encoding = Type_Bytes_Encoding_v1beta1_FromProto(mapCtx, in.GetEncoding())
 	return out
 }
-func Type_Bytes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Bytes) *pb.Type_Bytes {
+func Type_Bytes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Bytes) *pb.Type_Bytes {
 	if in == nil {
 		return nil
 	}
@@ -1122,15 +1122,15 @@ func Type_Bytes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta
 	out.Encoding = Type_Bytes_Encoding_v1beta1_ToProto(mapCtx, in.Encoding)
 	return out
 }
-func Type_Bytes_Encoding_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Bytes_Encoding) *krmbigtablev1beta1.Type_Bytes_Encoding {
+func Type_Bytes_Encoding_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Bytes_Encoding) *krmv1beta1.Type_Bytes_Encoding {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Bytes_Encoding{}
+	out := &krmv1beta1.Type_Bytes_Encoding{}
 	out.Raw = Type_Bytes_Encoding_Raw_v1beta1_FromProto(mapCtx, in.GetRaw())
 	return out
 }
-func Type_Bytes_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Bytes_Encoding) *pb.Type_Bytes_Encoding {
+func Type_Bytes_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Bytes_Encoding) *pb.Type_Bytes_Encoding {
 	if in == nil {
 		return nil
 	}
@@ -1140,44 +1140,44 @@ func Type_Bytes_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigta
 	}
 	return out
 }
-func Type_Bytes_Encoding_Raw_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Bytes_Encoding_Raw) *krmbigtablev1beta1.Type_Bytes_Encoding_Raw {
+func Type_Bytes_Encoding_Raw_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Bytes_Encoding_Raw) *krmv1beta1.Type_Bytes_Encoding_Raw {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Bytes_Encoding_Raw{}
+	out := &krmv1beta1.Type_Bytes_Encoding_Raw{}
 	return out
 }
-func Type_Bytes_Encoding_Raw_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Bytes_Encoding_Raw) *pb.Type_Bytes_Encoding_Raw {
+func Type_Bytes_Encoding_Raw_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Bytes_Encoding_Raw) *pb.Type_Bytes_Encoding_Raw {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_Bytes_Encoding_Raw{}
 	return out
 }
-func Type_Date_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Date) *krmbigtablev1beta1.Type_Date {
+func Type_Date_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Date) *krmv1beta1.Type_Date {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Date{}
+	out := &krmv1beta1.Type_Date{}
 	return out
 }
-func Type_Date_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Date) *pb.Type_Date {
+func Type_Date_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Date) *pb.Type_Date {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_Date{}
 	return out
 }
-func Type_Enum_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Enum) *krmbigtablev1beta1.Type_Enum {
+func Type_Enum_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Enum) *krmv1beta1.Type_Enum {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Enum{}
+	out := &krmv1beta1.Type_Enum{}
 	out.SchemaBundleID = direct.LazyPtr(in.GetSchemaBundleId())
 	out.EnumName = direct.LazyPtr(in.GetEnumName())
 	return out
 }
-func Type_Enum_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Enum) *pb.Type_Enum {
+func Type_Enum_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Enum) *pb.Type_Enum {
 	if in == nil {
 		return nil
 	}
@@ -1186,43 +1186,43 @@ func Type_Enum_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1
 	out.EnumName = direct.ValueOf(in.EnumName)
 	return out
 }
-func Type_Float32_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Float32) *krmbigtablev1beta1.Type_Float32 {
+func Type_Float32_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Float32) *krmv1beta1.Type_Float32 {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Float32{}
+	out := &krmv1beta1.Type_Float32{}
 	return out
 }
-func Type_Float32_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Float32) *pb.Type_Float32 {
+func Type_Float32_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Float32) *pb.Type_Float32 {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_Float32{}
 	return out
 }
-func Type_Float64_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Float64) *krmbigtablev1beta1.Type_Float64 {
+func Type_Float64_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Float64) *krmv1beta1.Type_Float64 {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Float64{}
+	out := &krmv1beta1.Type_Float64{}
 	return out
 }
-func Type_Float64_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Float64) *pb.Type_Float64 {
+func Type_Float64_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Float64) *pb.Type_Float64 {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_Float64{}
 	return out
 }
-func Type_Int64_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Int64) *krmbigtablev1beta1.Type_Int64 {
+func Type_Int64_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Int64) *krmv1beta1.Type_Int64 {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Int64{}
+	out := &krmv1beta1.Type_Int64{}
 	out.Encoding = Type_Int64_Encoding_v1beta1_FromProto(mapCtx, in.GetEncoding())
 	return out
 }
-func Type_Int64_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Int64) *pb.Type_Int64 {
+func Type_Int64_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Int64) *pb.Type_Int64 {
 	if in == nil {
 		return nil
 	}
@@ -1230,16 +1230,16 @@ func Type_Int64_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta
 	out.Encoding = Type_Int64_Encoding_v1beta1_ToProto(mapCtx, in.Encoding)
 	return out
 }
-func Type_Int64_Encoding_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Int64_Encoding) *krmbigtablev1beta1.Type_Int64_Encoding {
+func Type_Int64_Encoding_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Int64_Encoding) *krmv1beta1.Type_Int64_Encoding {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Int64_Encoding{}
+	out := &krmv1beta1.Type_Int64_Encoding{}
 	out.BigEndianBytes = Type_Int64_Encoding_BigEndianBytes_v1beta1_FromProto(mapCtx, in.GetBigEndianBytes())
 	out.OrderedCodeBytes = Type_Int64_Encoding_OrderedCodeBytes_v1beta1_FromProto(mapCtx, in.GetOrderedCodeBytes())
 	return out
 }
-func Type_Int64_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Int64_Encoding) *pb.Type_Int64_Encoding {
+func Type_Int64_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Int64_Encoding) *pb.Type_Int64_Encoding {
 	if in == nil {
 		return nil
 	}
@@ -1252,15 +1252,15 @@ func Type_Int64_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigta
 	}
 	return out
 }
-func Type_Int64_Encoding_BigEndianBytes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Int64_Encoding_BigEndianBytes) *krmbigtablev1beta1.Type_Int64_Encoding_BigEndianBytes {
+func Type_Int64_Encoding_BigEndianBytes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Int64_Encoding_BigEndianBytes) *krmv1beta1.Type_Int64_Encoding_BigEndianBytes {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Int64_Encoding_BigEndianBytes{}
+	out := &krmv1beta1.Type_Int64_Encoding_BigEndianBytes{}
 	out.BytesType = Type_Bytes_v1beta1_FromProto(mapCtx, in.GetBytesType())
 	return out
 }
-func Type_Int64_Encoding_BigEndianBytes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Int64_Encoding_BigEndianBytes) *pb.Type_Int64_Encoding_BigEndianBytes {
+func Type_Int64_Encoding_BigEndianBytes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Int64_Encoding_BigEndianBytes) *pb.Type_Int64_Encoding_BigEndianBytes {
 	if in == nil {
 		return nil
 	}
@@ -1268,30 +1268,30 @@ func Type_Int64_Encoding_BigEndianBytes_v1beta1_ToProto(mapCtx *direct.MapContex
 	out.BytesType = Type_Bytes_v1beta1_ToProto(mapCtx, in.BytesType)
 	return out
 }
-func Type_Int64_Encoding_OrderedCodeBytes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Int64_Encoding_OrderedCodeBytes) *krmbigtablev1beta1.Type_Int64_Encoding_OrderedCodeBytes {
+func Type_Int64_Encoding_OrderedCodeBytes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Int64_Encoding_OrderedCodeBytes) *krmv1beta1.Type_Int64_Encoding_OrderedCodeBytes {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Int64_Encoding_OrderedCodeBytes{}
+	out := &krmv1beta1.Type_Int64_Encoding_OrderedCodeBytes{}
 	return out
 }
-func Type_Int64_Encoding_OrderedCodeBytes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Int64_Encoding_OrderedCodeBytes) *pb.Type_Int64_Encoding_OrderedCodeBytes {
+func Type_Int64_Encoding_OrderedCodeBytes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Int64_Encoding_OrderedCodeBytes) *pb.Type_Int64_Encoding_OrderedCodeBytes {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_Int64_Encoding_OrderedCodeBytes{}
 	return out
 }
-func Type_Map_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Map) *krmbigtablev1beta1.Type_Map {
+func Type_Map_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Map) *krmv1beta1.Type_Map {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Map{}
+	out := &krmv1beta1.Type_Map{}
 	out.KeyType = Type_v1beta1_FromProto(mapCtx, in.GetKeyType())
 	out.ValueType = Type_v1beta1_FromProto(mapCtx, in.GetValueType())
 	return out
 }
-func Type_Map_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Map) *pb.Type_Map {
+func Type_Map_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Map) *pb.Type_Map {
 	if in == nil {
 		return nil
 	}
@@ -1300,16 +1300,16 @@ func Type_Map_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.
 	out.ValueType = Type_v1beta1_ToProto(mapCtx, in.ValueType)
 	return out
 }
-func Type_Proto_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Proto) *krmbigtablev1beta1.Type_Proto {
+func Type_Proto_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Proto) *krmv1beta1.Type_Proto {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Proto{}
+	out := &krmv1beta1.Type_Proto{}
 	out.SchemaBundleID = direct.LazyPtr(in.GetSchemaBundleId())
 	out.MessageName = direct.LazyPtr(in.GetMessageName())
 	return out
 }
-func Type_Proto_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Proto) *pb.Type_Proto {
+func Type_Proto_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Proto) *pb.Type_Proto {
 	if in == nil {
 		return nil
 	}
@@ -1318,15 +1318,15 @@ func Type_Proto_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta
 	out.MessageName = direct.ValueOf(in.MessageName)
 	return out
 }
-func Type_String_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_String) *krmbigtablev1beta1.Type_String {
+func Type_String_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_String) *krmv1beta1.Type_String {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_String{}
+	out := &krmv1beta1.Type_String{}
 	out.Encoding = Type_String_Encoding_v1beta1_FromProto(mapCtx, in.GetEncoding())
 	return out
 }
-func Type_String_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_String) *pb.Type_String {
+func Type_String_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_String) *pb.Type_String {
 	if in == nil {
 		return nil
 	}
@@ -1334,16 +1334,16 @@ func Type_String_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1bet
 	out.Encoding = Type_String_Encoding_v1beta1_ToProto(mapCtx, in.Encoding)
 	return out
 }
-func Type_String_Encoding_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_String_Encoding) *krmbigtablev1beta1.Type_String_Encoding {
+func Type_String_Encoding_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_String_Encoding) *krmv1beta1.Type_String_Encoding {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_String_Encoding{}
+	out := &krmv1beta1.Type_String_Encoding{}
 	out.Utf8Raw = Type_String_Encoding_Utf8Raw_v1beta1_FromProto(mapCtx, in.GetUtf8Raw())
 	out.Utf8Bytes = Type_String_Encoding_Utf8Bytes_v1beta1_FromProto(mapCtx, in.GetUtf8Bytes())
 	return out
 }
-func Type_String_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_String_Encoding) *pb.Type_String_Encoding {
+func Type_String_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_String_Encoding) *pb.Type_String_Encoding {
 	if in == nil {
 		return nil
 	}
@@ -1356,44 +1356,44 @@ func Type_String_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigt
 	}
 	return out
 }
-func Type_String_Encoding_Utf8Bytes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_String_Encoding_Utf8Bytes) *krmbigtablev1beta1.Type_String_Encoding_Utf8Bytes {
+func Type_String_Encoding_Utf8Bytes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_String_Encoding_Utf8Bytes) *krmv1beta1.Type_String_Encoding_Utf8Bytes {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_String_Encoding_Utf8Bytes{}
+	out := &krmv1beta1.Type_String_Encoding_Utf8Bytes{}
 	return out
 }
-func Type_String_Encoding_Utf8Bytes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_String_Encoding_Utf8Bytes) *pb.Type_String_Encoding_Utf8Bytes {
+func Type_String_Encoding_Utf8Bytes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_String_Encoding_Utf8Bytes) *pb.Type_String_Encoding_Utf8Bytes {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_String_Encoding_Utf8Bytes{}
 	return out
 }
-func Type_String_Encoding_Utf8Raw_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_String_Encoding_Utf8Raw) *krmbigtablev1beta1.Type_String_Encoding_Utf8Raw {
+func Type_String_Encoding_Utf8Raw_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_String_Encoding_Utf8Raw) *krmv1beta1.Type_String_Encoding_Utf8Raw {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_String_Encoding_Utf8Raw{}
+	out := &krmv1beta1.Type_String_Encoding_Utf8Raw{}
 	return out
 }
-func Type_String_Encoding_Utf8Raw_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_String_Encoding_Utf8Raw) *pb.Type_String_Encoding_Utf8Raw {
+func Type_String_Encoding_Utf8Raw_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_String_Encoding_Utf8Raw) *pb.Type_String_Encoding_Utf8Raw {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_String_Encoding_Utf8Raw{}
 	return out
 }
-func Type_Struct_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct) *krmbigtablev1beta1.Type_Struct {
+func Type_Struct_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct) *krmv1beta1.Type_Struct {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Struct{}
+	out := &krmv1beta1.Type_Struct{}
 	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, Type_Struct_Field_v1beta1_FromProto)
 	out.Encoding = Type_Struct_Encoding_v1beta1_FromProto(mapCtx, in.GetEncoding())
 	return out
 }
-func Type_Struct_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Struct) *pb.Type_Struct {
+func Type_Struct_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Struct) *pb.Type_Struct {
 	if in == nil {
 		return nil
 	}
@@ -1402,16 +1402,16 @@ func Type_Struct_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1bet
 	out.Encoding = Type_Struct_Encoding_v1beta1_ToProto(mapCtx, in.Encoding)
 	return out
 }
-func Type_StructObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct) *krmbigtablev1beta1.Type_StructObservedState {
+func Type_StructObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct) *krmv1beta1.Type_StructObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_StructObservedState{}
+	out := &krmv1beta1.Type_StructObservedState{}
 	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, Type_Struct_FieldObservedState_v1beta1_FromProto)
 	// MISSING: Encoding
 	return out
 }
-func Type_StructObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_StructObservedState) *pb.Type_Struct {
+func Type_StructObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_StructObservedState) *pb.Type_Struct {
 	if in == nil {
 		return nil
 	}
@@ -1420,17 +1420,17 @@ func Type_StructObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Encoding
 	return out
 }
-func Type_Struct_Encoding_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct_Encoding) *krmbigtablev1beta1.Type_Struct_Encoding {
+func Type_Struct_Encoding_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct_Encoding) *krmv1beta1.Type_Struct_Encoding {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Struct_Encoding{}
+	out := &krmv1beta1.Type_Struct_Encoding{}
 	out.Singleton = Type_Struct_Encoding_Singleton_v1beta1_FromProto(mapCtx, in.GetSingleton())
 	out.DelimitedBytes = Type_Struct_Encoding_DelimitedBytes_v1beta1_FromProto(mapCtx, in.GetDelimitedBytes())
 	out.OrderedCodeBytes = Type_Struct_Encoding_OrderedCodeBytes_v1beta1_FromProto(mapCtx, in.GetOrderedCodeBytes())
 	return out
 }
-func Type_Struct_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Struct_Encoding) *pb.Type_Struct_Encoding {
+func Type_Struct_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Struct_Encoding) *pb.Type_Struct_Encoding {
 	if in == nil {
 		return nil
 	}
@@ -1446,44 +1446,44 @@ func Type_Struct_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigt
 	}
 	return out
 }
-func Type_Struct_Encoding_OrderedCodeBytes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct_Encoding_OrderedCodeBytes) *krmbigtablev1beta1.Type_Struct_Encoding_OrderedCodeBytes {
+func Type_Struct_Encoding_OrderedCodeBytes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct_Encoding_OrderedCodeBytes) *krmv1beta1.Type_Struct_Encoding_OrderedCodeBytes {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Struct_Encoding_OrderedCodeBytes{}
+	out := &krmv1beta1.Type_Struct_Encoding_OrderedCodeBytes{}
 	return out
 }
-func Type_Struct_Encoding_OrderedCodeBytes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Struct_Encoding_OrderedCodeBytes) *pb.Type_Struct_Encoding_OrderedCodeBytes {
+func Type_Struct_Encoding_OrderedCodeBytes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Struct_Encoding_OrderedCodeBytes) *pb.Type_Struct_Encoding_OrderedCodeBytes {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_Struct_Encoding_OrderedCodeBytes{}
 	return out
 }
-func Type_Struct_Encoding_Singleton_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct_Encoding_Singleton) *krmbigtablev1beta1.Type_Struct_Encoding_Singleton {
+func Type_Struct_Encoding_Singleton_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct_Encoding_Singleton) *krmv1beta1.Type_Struct_Encoding_Singleton {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Struct_Encoding_Singleton{}
+	out := &krmv1beta1.Type_Struct_Encoding_Singleton{}
 	return out
 }
-func Type_Struct_Encoding_Singleton_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Struct_Encoding_Singleton) *pb.Type_Struct_Encoding_Singleton {
+func Type_Struct_Encoding_Singleton_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Struct_Encoding_Singleton) *pb.Type_Struct_Encoding_Singleton {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Type_Struct_Encoding_Singleton{}
 	return out
 }
-func Type_Struct_Field_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct_Field) *krmbigtablev1beta1.Type_Struct_Field {
+func Type_Struct_Field_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct_Field) *krmv1beta1.Type_Struct_Field {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Struct_Field{}
+	out := &krmv1beta1.Type_Struct_Field{}
 	out.FieldName = direct.LazyPtr(in.GetFieldName())
 	out.Type = Type_v1beta1_FromProto(mapCtx, in.GetType())
 	return out
 }
-func Type_Struct_Field_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Struct_Field) *pb.Type_Struct_Field {
+func Type_Struct_Field_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Struct_Field) *pb.Type_Struct_Field {
 	if in == nil {
 		return nil
 	}
@@ -1492,16 +1492,16 @@ func Type_Struct_Field_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtabl
 	out.Type = Type_v1beta1_ToProto(mapCtx, in.Type)
 	return out
 }
-func Type_Struct_FieldObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct_Field) *krmbigtablev1beta1.Type_Struct_FieldObservedState {
+func Type_Struct_FieldObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Struct_Field) *krmv1beta1.Type_Struct_FieldObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Struct_FieldObservedState{}
+	out := &krmv1beta1.Type_Struct_FieldObservedState{}
 	// MISSING: FieldName
 	out.Type = TypeObservedState_v1beta1_FromProto(mapCtx, in.GetType())
 	return out
 }
-func Type_Struct_FieldObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Struct_FieldObservedState) *pb.Type_Struct_Field {
+func Type_Struct_FieldObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Struct_FieldObservedState) *pb.Type_Struct_Field {
 	if in == nil {
 		return nil
 	}
@@ -1510,15 +1510,15 @@ func Type_Struct_FieldObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, i
 	out.Type = TypeObservedState_v1beta1_ToProto(mapCtx, in.Type)
 	return out
 }
-func Type_Timestamp_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Timestamp) *krmbigtablev1beta1.Type_Timestamp {
+func Type_Timestamp_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Timestamp) *krmv1beta1.Type_Timestamp {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Timestamp{}
+	out := &krmv1beta1.Type_Timestamp{}
 	out.Encoding = Type_Timestamp_Encoding_v1beta1_FromProto(mapCtx, in.GetEncoding())
 	return out
 }
-func Type_Timestamp_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Timestamp) *pb.Type_Timestamp {
+func Type_Timestamp_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Timestamp) *pb.Type_Timestamp {
 	if in == nil {
 		return nil
 	}
@@ -1526,15 +1526,15 @@ func Type_Timestamp_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1
 	out.Encoding = Type_Timestamp_Encoding_v1beta1_ToProto(mapCtx, in.Encoding)
 	return out
 }
-func Type_Timestamp_Encoding_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Timestamp_Encoding) *krmbigtablev1beta1.Type_Timestamp_Encoding {
+func Type_Timestamp_Encoding_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Type_Timestamp_Encoding) *krmv1beta1.Type_Timestamp_Encoding {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1beta1.Type_Timestamp_Encoding{}
+	out := &krmv1beta1.Type_Timestamp_Encoding{}
 	out.UnixMicrosInt64 = Type_Int64_Encoding_v1beta1_FromProto(mapCtx, in.GetUnixMicrosInt64())
 	return out
 }
-func Type_Timestamp_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Type_Timestamp_Encoding) *pb.Type_Timestamp_Encoding {
+func Type_Timestamp_Encoding_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Type_Timestamp_Encoding) *pb.Type_Timestamp_Encoding {
 	if in == nil {
 		return nil
 	}

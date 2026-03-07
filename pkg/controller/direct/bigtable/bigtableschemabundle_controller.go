@@ -20,7 +20,7 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
-	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -290,7 +290,7 @@ func (a *BigtableSchemaBundleAdapter) Export(ctx context.Context) (*unstructured
 	if err != nil {
 		return nil, err
 	}
-	obj.Spec.TableRef = bigtablev1beta1.TableRef{External: tableID.String()}
+	obj.Spec.TableRef = krmv1beta1.TableRef{External: tableID.String()}
 	obj.Spec.ResourceID = direct.LazyPtr(resourceID)
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
