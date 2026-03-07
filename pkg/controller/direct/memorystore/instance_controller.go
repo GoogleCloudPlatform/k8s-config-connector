@@ -241,25 +241,31 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 
 	// Mask out some fields in the persistenceConfig, to accommodate KRM "discriminated union" semantics
-	switch desiredPb.GetPersistenceConfig().GetMode() {
-	case memorystorepb.PersistenceConfig_DISABLED:
-		desiredPb.PersistenceConfig.AofConfig = nil
-		desiredPb.PersistenceConfig.RdbConfig = nil
-	case memorystorepb.PersistenceConfig_RDB:
-		desiredPb.PersistenceConfig.AofConfig = nil
-	case memorystorepb.PersistenceConfig_AOF:
-		desiredPb.PersistenceConfig.RdbConfig = nil
+	if desiredPb.PersistenceConfig != nil {
+		switch desiredPb.GetPersistenceConfig().GetMode() {
+		case memorystorepb.PersistenceConfig_DISABLED:
+			desiredPb.PersistenceConfig.AofConfig = nil
+			desiredPb.PersistenceConfig.RdbConfig = nil
+		case memorystorepb.PersistenceConfig_RDB:
+			desiredPb.PersistenceConfig.AofConfig = nil
+		case memorystorepb.PersistenceConfig_AOF:
+			desiredPb.PersistenceConfig.RdbConfig = nil
+		}
 	}
 
 	// Need to unset the fields to allow for switchover in cross region replication.
-	switch desiredPb.GetCrossInstanceReplicationConfig().GetInstanceRole() {
-	case memorystorepb.CrossInstanceReplicationConfig_PRIMARY:
-		desiredPb.CrossInstanceReplicationConfig.PrimaryInstance.Instance = ""
-	case memorystorepb.CrossInstanceReplicationConfig_SECONDARY:
-		desiredPb.CrossInstanceReplicationConfig.SecondaryInstances = nil
-	default:
-		desiredPb.CrossInstanceReplicationConfig.PrimaryInstance.Instance = ""
-		desiredPb.CrossInstanceReplicationConfig.SecondaryInstances = nil
+	if desiredPb.CrossInstanceReplicationConfig != nil {
+		switch desiredPb.GetCrossInstanceReplicationConfig().GetInstanceRole() {
+		case memorystorepb.CrossInstanceReplicationConfig_PRIMARY:
+			desiredPb.CrossInstanceReplicationConfig.PrimaryInstance =
+				&memorystorepb.CrossInstanceReplicationConfig_RemoteInstance{Instance: ""}
+		case memorystorepb.CrossInstanceReplicationConfig_SECONDARY:
+			desiredPb.CrossInstanceReplicationConfig.SecondaryInstances = nil
+		default:
+			desiredPb.CrossInstanceReplicationConfig.PrimaryInstance =
+				&memorystorepb.CrossInstanceReplicationConfig_RemoteInstance{Instance: ""}
+			desiredPb.CrossInstanceReplicationConfig.SecondaryInstances = nil
+		}
 	}
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
