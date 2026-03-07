@@ -809,7 +809,6 @@
 [missing_field] crd=computenetworkpeerings.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.exportSubnetRoutesWithPublicIp" is not set in unstructured objects
 [missing_field] crd=computenetworkpeerings.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.importSubnetRoutesWithPublicIp" is not set in unstructured objects
 [missing_field] crd=computenetworkpeerings.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.stackType" is not set in unstructured objects
-[missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.deleteDefaultRoutesOnCreate" is not set in unstructured objects
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.internalIpv6Range" is not set in unstructured objects
 [missing_field] crd=computenetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.mtu" is not set in unstructured objects
@@ -1483,6 +1482,12 @@
 [missing_field] crd=dataflowjobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataflowjobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.region" is not set in unstructured objects
 [missing_field] crd=dataflowjobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.transformNameMapping" is not set in unstructured objects
+[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitRemoteSettings.sshAuthenticationConfig.hostPublicKey" is not set in unstructured objects
+[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.gitRemoteSettings.sshAuthenticationConfig.userPrivateKeySecretVersionRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.npmrcEnvironmentVariablesSecretVersionRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1beta1: field ".spec.setAuthenticatedUserAdmin" is not set in unstructured objects
 [missing_field] crd=datafusioninstances.datafusion.cnrm.cloud.google.com version=v1beta1: field ".spec.options" is not set in unstructured objects
 [missing_field] crd=datafusioninstances.datafusion.cnrm.cloud.google.com version=v1beta1: field ".spec.version" is not set in unstructured objects
 [missing_field] crd=datafusioninstances.datafusion.cnrm.cloud.google.com version=v1beta1: field ".spec.zone" is not set in unstructured objects
@@ -3287,6 +3292,10 @@
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.timeout" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].cloudSqlInstance.instances[].external" is not set in unstructured objects
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].cloudSqlInstance.instances[].namespace" is not set in unstructured objects
+[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].secret.defaultMode" is not set in unstructured objects
+[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].secret.items[].mode" is not set in unstructured objects
+[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].secret.items[].path" is not set in unstructured objects
+[missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].secret.items[].versionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.vpcAccess.networkInterfaces[].networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.vpcAccess.networkInterfaces[].subnetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.vpcAccess.networkInterfaces[].tags[]" is not set in unstructured objects
@@ -3318,8 +3327,10 @@
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.dumpFilePath" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.failoverTarget" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.masterHeartbeatPeriod" is not set in unstructured objects
+[missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.password.value" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.password.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.sslCipher" is not set in unstructured objects
+[missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.username" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.verifyServerCertificate" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.rootPassword.value" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.activeDirectoryConfig.domain" is not set in unstructured objects
@@ -3328,6 +3339,8 @@
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.pscConfig[].allowedConsumerProjects[]" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.pscConfig[].pscEnabled" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.locationPreference.followGaeApplication" is not set in unstructured objects
+[missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.pricingPlan" is not set in unstructured objects
+[missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.replicationType" is not set in unstructured objects
 [missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.password.value" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.autoclass.enabled" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.bucketPolicyOnly" is not set in unstructured objects

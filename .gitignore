@@ -159,6 +159,7 @@ go.work.sum
 e2e.log
 testlogs/
 log
+run-*.log
 
 # experiments/conductor
 experiments/conductor/logs
