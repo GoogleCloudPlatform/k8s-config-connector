@@ -84,7 +84,7 @@ type Taxonomy_Service struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.SystemTimestamps
-type SystemTimestamps struct {
+type TaxonomySystemTimestamps struct {
 	// Creation timestamp of the resource within the given system.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.create_time
 	CreateTime *string `json:"createTime,omitempty"`
@@ -114,7 +114,7 @@ type DataCatalogTaxonomyObservedState struct {
 
 	// Output only. Creation and modification timestamps of this taxonomy.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.taxonomy_timestamps
-	TaxonomyTimestamps *SystemTimestamps `json:"taxonomyTimestamps,omitempty"`
+	TaxonomyTimestamps *TaxonomySystemTimestamps `json:"taxonomyTimestamps,omitempty"`
 
 	// Output only. Identity of the service which owns the Taxonomy. This field is
 	//  only populated when the taxonomy is created by a Google Cloud service.

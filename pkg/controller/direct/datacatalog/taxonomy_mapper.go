@@ -32,7 +32,7 @@ func DataCatalogTaxonomyObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out := &krmv1beta1.DataCatalogTaxonomyObservedState{}
 	// MISSING: Name
 	out.PolicyTagCount = direct.LazyPtr(in.GetPolicyTagCount())
-	out.TaxonomyTimestamps = SystemTimestampsv1beta1_FromProto(mapCtx, in.TaxonomyTimestamps)
+	out.TaxonomyTimestamps = TaxonomySystemTimestamps_FromProto(mapCtx, in.TaxonomyTimestamps)
 	out.Service = Taxonomy_Service_FromProto(mapCtx, in.GetService())
 	return out
 }
@@ -42,7 +42,7 @@ func DataCatalogTaxonomyObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	out := &pb.Taxonomy{}
 	out.PolicyTagCount = direct.ValueOf(in.PolicyTagCount)
-	out.TaxonomyTimestamps = SystemTimestampsv1beta1_ToProto(mapCtx, in.TaxonomyTimestamps)
+	out.TaxonomyTimestamps = TaxonomySystemTimestamps_ToProto(mapCtx, in.TaxonomyTimestamps)
 	out.Service = Taxonomy_Service_ToProto(mapCtx, in.Service)
 	return out
 }
@@ -85,17 +85,17 @@ func Taxonomy_Service_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Taxonomy
 	return out
 }
 
-func SystemTimestampsv1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestamps) *krmv1beta1.SystemTimestamps {
+func TaxonomySystemTimestamps_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestamps) *krmv1beta1.TaxonomySystemTimestamps {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.SystemTimestamps{}
+	out := &krmv1beta1.TaxonomySystemTimestamps{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	return out
 }
-func SystemTimestampsv1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.SystemTimestamps) *pb.SystemTimestamps {
+func TaxonomySystemTimestamps_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.TaxonomySystemTimestamps) *pb.SystemTimestamps {
 	if in == nil {
 		return nil
 	}
