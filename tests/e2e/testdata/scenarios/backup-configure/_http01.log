@@ -112,6 +112,25 @@ X-Xss-Protection: 0
 
 ---
 
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -238,50 +257,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "displayName": "Config Connector Backup Service Account",
-  "email": "cnrm-backup@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
-}
-
----
-
 POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/cnrm-backup@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -341,6 +316,34 @@ X-Xss-Protection: 0
   ],
   "etag": "abcdef0123A=",
   "version": 1
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/config-bucket-${uniqueId}/iam?alt=json&optionsRequestedPolicyVersion=3
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not Found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not Found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---

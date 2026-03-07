@@ -30,7 +30,7 @@ spec:
             - ${projectId}
             - --namespace
             - ${projectId}
-            image: gcr.io/gke-release/cnrm/config-connector-cli:1.145.0
+            image: gcr.io/gke-release/cnrm/config-connector-cli:1.146.0
             imagePullPolicy: IfNotPresent
             name: backup
             resources: {}
