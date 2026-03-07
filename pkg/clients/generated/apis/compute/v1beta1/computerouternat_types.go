@@ -39,11 +39,21 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type RouternatAction struct {
+	/* A list of URLs of the IP resources used for this NAT rule. These IP addresses must be valid static external IP addresses assigned to the project. This field is used for public NAT. */
 	// +optional
 	SourceNatActiveIpsRefs []v1alpha1.ResourceRef `json:"sourceNatActiveIpsRefs,omitempty"`
 
+	/* A list of URLs of the subnetworks used as source ranges for this NAT Rule. These subnetworks must have purpose set to PRIVATE_NAT. This field is used for private NAT. */
+	// +optional
+	SourceNatActiveRangesRefs []v1alpha1.ResourceRef `json:"sourceNatActiveRangesRefs,omitempty"`
+
+	/* A list of URLs of the IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT. These IPs should be used for updating/patching a NAT rule only. This field is used for public NAT. */
 	// +optional
 	SourceNatDrainIpsRefs []v1alpha1.ResourceRef `json:"sourceNatDrainIpsRefs,omitempty"`
+
+	/* A list of URLs of subnetworks representing source ranges to be drained. This is only supported on patch/update, and these subnetworks must have previously been used as active ranges in this NAT Rule. This field is used for private NAT. */
+	// +optional
+	SourceNatDrainRangesRefs []v1alpha1.ResourceRef `json:"sourceNatDrainRangesRefs,omitempty"`
 }
 
 type RouternatLogConfig struct {
@@ -52,6 +62,11 @@ type RouternatLogConfig struct {
 
 	/* Specifies the desired filtering of logs on this NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"]. */
 	Filter string `json:"filter"`
+}
+
+type RouternatNat64Subnetworks struct {
+	/* The subnetwork to NAT. */
+	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
 }
 
 type RouternatRules struct {
@@ -63,37 +78,19 @@ type RouternatRules struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* CEL expression that specifies the match condition that egress traffic from a VM is evaluated against.
-	If it evaluates to true, the corresponding action is enforced.
-
-	The following examples are valid match expressions for public NAT:
-
-	"inIpRange(destination.ip, '1.1.0.0/16') || inIpRange(destination.ip, '2.2.0.0/16')"
-
-	"destination.ip == '1.1.0.1' || destination.ip == '8.8.8.8'"
-
-	The following example is a valid match expression for private NAT:
-
-	"nexthop.hub == 'https://networkconnectivity.googleapis.com/v1alpha1/projects/my-project/global/hub/hub-1'". */
+	/* CEL expression that specifies the match condition that egress traffic from a VM is evaluated against. If it evaluates to true, the corresponding `action` is enforced. */
 	Match string `json:"match"`
 
-	/* An integer uniquely identifying a rule in the list.
-	The rule number must be a positive value between 0 and 65000, and must be unique among rules within a NAT. */
-	RuleNumber int64 `json:"ruleNumber"`
+	/* An integer uniquely identifying a rule in the list. The rule number must be a positive value between 0 and 65000, and must be unique among rules within a NAT. */
+	RuleNumber int32 `json:"ruleNumber"`
 }
 
 type RouternatSubnetwork struct {
-	/* List of the secondary ranges of the subnetwork that are allowed
-	to use NAT. This can be populated only if
-	'LIST_OF_SECONDARY_IP_RANGES' is one of the values in
-	sourceIpRangesToNat. */
+	/* List of the secondary ranges of the subnetwork that are allowed to use NAT. This can be populated only if "LIST_OF_SECONDARY_IP_RANGES" is one of the values in sourceIpRangesToNat. */
 	// +optional
 	SecondaryIpRangeNames []string `json:"secondaryIpRangeNames,omitempty"`
 
-	/* List of options for which source IPs in the subnetwork
-	should have NAT enabled. Supported values include:
-	'ALL_IP_RANGES', 'LIST_OF_SECONDARY_IP_RANGES',
-	'PRIMARY_IP_RANGE'. */
+	/* List of options for which source IPs in the subnetwork should have NAT enabled. Supported values include: 'ALL_IP_RANGES', 'LIST_OF_SECONDARY_IP_RANGES', 'PRIMARY_IP_RANGE'. */
 	SourceIpRangesToNat []string `json:"sourceIpRangesToNat"`
 
 	/* The subnetwork to NAT. */
@@ -101,46 +98,51 @@ type RouternatSubnetwork struct {
 }
 
 type ComputeRouterNATSpec struct {
+	/* The network tier to use when automatically reserving NAT IP addresses. Must be one of: PREMIUM, STANDARD. If not specified, then the current project-level default tier is used. Possible values: ["PREMIUM", "STANDARD"] */
+	// +optional
+	AutoNetworkTier *string `json:"autoNetworkTier,omitempty"`
+
+	/* A list of URLs of the IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT. These IPs should be used for updating/patching a NAT only. */
 	// +optional
 	DrainNatIps []v1alpha1.ResourceRef `json:"drainNatIps,omitempty"`
 
-	/* Enable Dynamic Port Allocation.
-	If minPortsPerVm is set, minPortsPerVm must be set to a power of two greater than or equal to 32.
-	If minPortsPerVm is not set, a minimum of 32 ports will be allocated to a VM from this NAT config.
-	If maxPortsPerVm is set, maxPortsPerVm must be set to a power of two greater than minPortsPerVm.
-	If maxPortsPerVm is not set, a maximum of 65536 ports will be allocated to a VM from this NAT config.
-
-	Mutually exclusive with enableEndpointIndependentMapping. */
+	/* Enable Dynamic Port Allocation. If not specified, it is disabled by default. */
 	// +optional
 	EnableDynamicPortAllocation *bool `json:"enableDynamicPortAllocation,omitempty"`
 
-	/* Specifies if endpoint independent mapping is enabled. This is enabled by default. For more information
-	see the [official documentation](https://cloud.google.com/nat/docs/overview#specs-rfcs). */
+	/* Specifies if endpoint independent mapping is enabled. This is enabled by default. */
 	// +optional
 	EnableEndpointIndependentMapping *bool `json:"enableEndpointIndependentMapping,omitempty"`
 
+	/* List of NAT-ted endpoint types supported by the Nat Gateway. If the list is empty, then it will be equivalent to include ENDPOINT_TYPE_VM. Possible values: ["ENDPOINT_TYPE_VM", "ENDPOINT_TYPE_SWG"] */
+	// +optional
+	EndpointTypes []string `json:"endpointTypes,omitempty"`
+
 	/* Timeout (in seconds) for ICMP connections. Defaults to 30s if not set. */
 	// +optional
-	IcmpIdleTimeoutSec *int64 `json:"icmpIdleTimeoutSec,omitempty"`
+	IcmpIdleTimeoutSec *int32 `json:"icmpIdleTimeoutSec,omitempty"`
 
-	/* Configuration for logging on NAT. */
+	/* Configure logging on this NAT. */
 	// +optional
 	LogConfig *RouternatLogConfig `json:"logConfig,omitempty"`
 
-	/* Maximum number of ports allocated to a VM from this NAT.
-	This field can only be set when enableDynamicPortAllocation is enabled. */
+	/* Maximum number of ports allocated to a VM from this NAT config when Dynamic Port Allocation is enabled. */
 	// +optional
-	MaxPortsPerVm *int64 `json:"maxPortsPerVm,omitempty"`
+	MaxPortsPerVm *int32 `json:"maxPortsPerVm,omitempty"`
 
-	/* Minimum number of ports allocated to a VM from this NAT. */
+	/* Minimum number of ports allocated to a VM from this NAT config. If not set, a default number of ports is allocated to a VM. */
 	// +optional
-	MinPortsPerVm *int64 `json:"minPortsPerVm,omitempty"`
+	MinPortsPerVm *int32 `json:"minPortsPerVm,omitempty"`
 
-	/* How external IPs should be allocated for this NAT. Valid values are
-	'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
-	Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]. */
-	NatIpAllocateOption string `json:"natIpAllocateOption"`
+	/* A list of Subnetwork resources whose traffic should be translated by NAT64 Gateway. It is used only when LIST_OF_IPV6_SUBNETWORKS is selected for the SubnetworkIpRangeToNat64Option above. */
+	// +optional
+	Nat64Subnetworks []RouternatNat64Subnetworks `json:"nat64Subnetworks,omitempty"`
 
+	/* How external IPs should be allocated for this NAT. Valid values are 'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]. */
+	// +optional
+	NatIpAllocateOption *string `json:"natIpAllocateOption,omitempty"`
+
+	/* A list of URLs of the IP resources used for this Nat service. These IP addresses must be valid static external IP addresses assigned to the project. */
 	// +optional
 	NatIps []v1alpha1.ResourceRef `json:"natIps,omitempty"`
 
@@ -158,47 +160,46 @@ type ComputeRouterNATSpec struct {
 	// +optional
 	Rules []RouternatRules `json:"rules,omitempty"`
 
-	/* How NAT should be configured per Subnetwork.
-	If 'ALL_SUBNETWORKS_ALL_IP_RANGES', all of the
-	IP ranges in every Subnetwork are allowed to Nat.
-	If 'ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES', all of the primary IP
-	ranges in every Subnetwork are allowed to Nat.
-	'LIST_OF_SUBNETWORKS': A list of Subnetworks are allowed to Nat
-	(specified in the field subnetwork below). Note that if this field
-	contains ALL_SUBNETWORKS_ALL_IP_RANGES or
-	ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not be any
-	other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"]. */
+	/* How NAT should be configured per Subnetwork. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"]. */
 	SourceSubnetworkIpRangesToNat string `json:"sourceSubnetworkIpRangesToNat"`
 
-	/* One or more subnetwork NAT configurations. Only used if
-	'source_subnetwork_ip_ranges_to_nat' is set to 'LIST_OF_SUBNETWORKS'. */
+	/* How NAT64 should be configured per Subnetwork. Possible values: ["ALL_IPV6_SUBNETWORKS", "LIST_OF_IPV6_SUBNETWORKS"]. */
+	// +optional
+	SourceSubnetworkIpRangesToNat64 *string `json:"sourceSubnetworkIpRangesToNat64,omitempty"`
+
+	/* A list of Subnetwork resources whose traffic should be translated by NAT Gateway. It is used only when LIST_OF_SUBNETWORKS is selected for the SubnetworkIpRangeToNatOption above. */
 	// +optional
 	Subnetwork []RouternatSubnetwork `json:"subnetwork,omitempty"`
 
-	/* Timeout (in seconds) for TCP established connections.
-	Defaults to 1200s if not set. */
+	/* Timeout (in seconds) for TCP established connections. Defaults to 1200s if not set. */
 	// +optional
-	TcpEstablishedIdleTimeoutSec *int64 `json:"tcpEstablishedIdleTimeoutSec,omitempty"`
+	TcpEstablishedIdleTimeoutSec *int32 `json:"tcpEstablishedIdleTimeoutSec,omitempty"`
 
-	/* Timeout (in seconds) for TCP connections that are in TIME_WAIT state.
-	Defaults to 120s if not set. */
+	/* Timeout (in seconds) for TCP connections that are in TIME_WAIT state. Defaults to 120s if not set. */
 	// +optional
-	TcpTimeWaitTimeoutSec *int64 `json:"tcpTimeWaitTimeoutSec,omitempty"`
+	TcpTimeWaitTimeoutSec *int32 `json:"tcpTimeWaitTimeoutSec,omitempty"`
 
-	/* Timeout (in seconds) for TCP transitory connections.
-	Defaults to 30s if not set. */
+	/* Timeout (in seconds) for TCP transitory connections. Defaults to 30s if not set. */
 	// +optional
-	TcpTransitoryIdleTimeoutSec *int64 `json:"tcpTransitoryIdleTimeoutSec,omitempty"`
+	TcpTransitoryIdleTimeoutSec *int32 `json:"tcpTransitoryIdleTimeoutSec,omitempty"`
+
+	/* Indicates whether this NAT is used for public or private IP translation. If unspecified, it defaults to PUBLIC. Possible values: ["PUBLIC", "PRIVATE"]. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 
 	/* Timeout (in seconds) for UDP connections. Defaults to 30s if not set. */
 	// +optional
-	UdpIdleTimeoutSec *int64 `json:"udpIdleTimeoutSec,omitempty"`
+	UdpIdleTimeoutSec *int32 `json:"udpIdleTimeoutSec,omitempty"`
 }
 
 type ComputeRouterNATStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeRouterNAT's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique Config Connector specifier for the resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
@@ -208,10 +209,10 @@ type ComputeRouterNATStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputerouternat;gcpcomputerouternats
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/default-controller=direct"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
