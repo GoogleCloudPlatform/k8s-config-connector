@@ -23,7 +23,8 @@ import (
 
 var MemorystoreInstanceGVK = GroupVersion.WithKind("MemorystoreInstance")
 
-// MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
+// MemorystoreInstanceSpec defines the desired state of a Memorystore for Valkey instance.
+// Note: this resource does not manage Redis instances, which are handled by RedisInstance.
 // +kcc:spec:proto=google.cloud.memorystore.v1.Instance
 type MemorystoreInstanceSpec struct {
 
@@ -97,7 +98,7 @@ type Parent struct {
 	Location string `json:"location"`
 }
 
-// MemorystoreInstanceStatus defines the config connector machine state of MemorystoreInstance
+// MemorystoreInstanceStatus defines the config connector machine state of a Memorystore for Valkey instance
 type MemorystoreInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
@@ -140,6 +141,10 @@ type MemorystoreInstanceObservedState struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.node_config
 	NodeConfig *NodeConfigObservedState `json:"nodeConfig,omitempty"`
 
+	// Output only. Discovery endpoints for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.discovery_endpoints
+	DiscoveryEndpoints []DiscoveryEndpointObservedState `json:"discoveryEndpoints,omitempty"`
+
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.endpoints
 	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
@@ -154,7 +159,7 @@ type Instance_ConnectionDetail struct {
 
 	// Detailed information of a PSC connection that is created by the user.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_connection
-	// PscConnection *PscConnection `json:"pscConnection,omitempty"`
+	PscConnection *PscConnection `json:"pscConnection,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1.Instance.InstanceEndpoint
@@ -230,8 +235,7 @@ type PscAutoConnection struct {
 
 // +kcc:proto=google.cloud.memorystore.v1.PscConnection
 type PscConnection struct {
-
-	// Required. The PSC connection id of the forwarding rule connected to the
+	// Optional. Output only. The PSC connection id of the forwarding rule connected to the
 	//  service attachment.
 	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.psc_connection_id
 	PscConnectionID *string `json:"pscConnectionID,omitempty"`
@@ -242,12 +246,16 @@ type PscConnection struct {
 	// +required
 	IpAddress *string `json:"ipAddress,omitempty"`
 
+	// Optional. Output only. The port of the consumer forwarding rule.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.port
+	Port *int32 `json:"port,omitempty"`
+
 	// Required. The URI of the consumer side forwarding rule.
 	//  Format:
 	//  projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}
 	// +kcc:proto:field=google.cloud.memorystore.v1.PscConnection.forwarding_rule
 	// +required
-	//ForwardingRuleRef *refs.ComputeForwardingRuleRef `json:"forwardingRuleRef,omitempty"`
+	ForwardingRuleRef *refs.ComputeForwardingRuleRef `json:"forwardingRuleRef,omitempty"`
 
 	// Required. The consumer network where the IP address resides, in the form of
 	//  projects/{project_id}/global/networks/{network_id}.
@@ -300,7 +308,7 @@ type Instance_ConnectionDetailObservedState struct {
 	PscAutoConnection *PscAutoConnectionObservedState `json:"pscAutoConnection,omitempty"`
 	// Detailed information of a PSC connection that is created by the user.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.ConnectionDetail.psc_connection
-	// PscConnection *PscConnectionObservedState `json:"pscConnection,omitempty"`
+	PscConnection *PscConnectionObservedState `json:"pscConnection,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1.Instance.InstanceEndpoint
@@ -400,13 +408,16 @@ type PscConnectionObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpmemorystoreinstance;gcpmemorystoreinstances
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"internal.cloud.google.com/additional-versions=v1alpha1"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// MemorystoreInstance is the Schema for the MemorystoreInstance API
+// MemorystoreInstance is the Schema for the MemorystoreInstance API. This resource manages Memorystore for Valkey instances (https://cloud.google.com/memorystore/docs/valkey).
 // +k8s:openapi-gen=true
 // +kubebuilder:storageversion
 type MemorystoreInstance struct {

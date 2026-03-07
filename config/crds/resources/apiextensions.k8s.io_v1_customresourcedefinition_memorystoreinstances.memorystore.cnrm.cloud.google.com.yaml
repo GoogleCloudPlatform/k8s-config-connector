@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: memorystoreinstances.memorystore.cnrm.cloud.google.com
 spec:
@@ -45,7 +46,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: MemorystoreInstance is the Schema for the MemorystoreInstance
-          API
+          API. This resource manages Memorystore for Valkey instances (https://cloud.google.com/memorystore/docs/valkey).
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -60,7 +61,9 @@ spec:
           metadata:
             type: object
           spec:
-            description: MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
+            description: 'MemorystoreInstanceSpec defines the desired state of a Memorystore
+              for Valkey instance. Note: this resource does not manage Redis instances,
+              which are handled by RedisInstance.'
             properties:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
@@ -154,6 +157,127 @@ spec:
                             required:
                             - networkRef
                             - projectRef
+                            type: object
+                          pscConnection:
+                            description: Detailed information of a PSC connection
+                              that is created by the user.
+                            properties:
+                              forwardingRuleRef:
+                                description: 'Required. The URI of the consumer side
+                                  forwarding rule. Format: projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}'
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: The ComputeForwardingRule selflink
+                                      in the form "projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}"
+                                      when not managed by Config Connector.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `ComputeForwardingRule`
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `ComputeForwardingRule`
+                                      resource.
+                                    type: string
+                                type: object
+                              ipAddress:
+                                description: Required. The IP allocated on the consumer
+                                  network for the PSC forwarding rule.
+                                type: string
+                              networkRef:
+                                description: Required. The consumer network where
+                                  the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: The value of an externally managed
+                                      ComputeNetwork resource. Should be in the format
+                                      "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
+                                      or "projects/{{projectId}}/global/networks/{{networkId}}"
+                                    type: string
+                                  name:
+                                    description: The name of a ComputeNetwork resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a ComputeNetwork
+                                      resource.
+                                    type: string
+                                type: object
+                              port:
+                                description: Optional. Output only. The port of the
+                                  consumer forwarding rule.
+                                format: int32
+                                type: integer
+                              pscConnectionID:
+                                description: Optional. Output only. The PSC connection
+                                  id of the forwarding rule connected to the service
+                                  attachment.
+                                type: string
+                              serviceAttachmentRef:
+                                description: Required. The service attachment which
+                                  is the target of the PSC connection, in the form
+                                  of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: The ComputeServiceAttachment selflink
+                                      in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
+                                      when not managed by Config Connector.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `ComputeServiceAttachment`
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `ComputeServiceAttachment`
+                                      resource.
+                                    type: string
+                                type: object
+                            required:
+                            - forwardingRuleRef
+                            - ipAddress
+                            - networkRef
+                            - serviceAttachmentRef
                             type: object
                         type: object
                       type: array
@@ -282,7 +406,7 @@ spec:
             type: object
           status:
             description: MemorystoreInstanceStatus defines the config connector machine
-              state of MemorystoreInstance
+              state of a Memorystore for Valkey instance
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -329,6 +453,26 @@ spec:
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
+                  discoveryEndpoints:
+                    description: Output only. Discovery endpoints for the instance.
+                    items:
+                      properties:
+                        address:
+                          description: Output only. IP address of the exposed endpoint
+                            clients connect to.
+                          type: string
+                        network:
+                          description: Output only. The network where the IP address
+                            of the discovery endpoint will be reserved, in the form
+                            of projects/{network_project}/global/networks/{network_id}.
+                          type: string
+                        port:
+                          description: Output only. The port number of the exposed
+                            endpoint.
+                          format: int32
+                          type: integer
+                      type: object
+                    type: array
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
@@ -378,6 +522,26 @@ spec:
                                     description: Output only. The service attachment
                                       which is the target of the PSC connection, in
                                       the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                                    type: string
+                                type: object
+                              pscConnection:
+                                description: Detailed information of a PSC connection
+                                  that is created by the user.
+                                properties:
+                                  connectionType:
+                                    description: Output only. Type of the PSC connection.
+                                    type: string
+                                  projectID:
+                                    description: Output only. The consumer project_id
+                                      where the forwarding rule is created from.
+                                    type: string
+                                  pscConnectionStatus:
+                                    description: 'Output only. The status of the PSC
+                                      connection: whether a connection exists and
+                                      ACTIVE or it no longer exists. Please note that
+                                      this value is updated periodically. Please use
+                                      Private Service Connect APIs for the latest
+                                      status.'
                                     type: string
                                 type: object
                             type: object
@@ -440,7 +604,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: MemorystoreInstance is the Schema for the MemorystoreInstance
-          API
+          API. This resource manages Memorystore for Valkey instances (https://cloud.google.com/memorystore/docs/valkey).
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -455,7 +619,9 @@ spec:
           metadata:
             type: object
           spec:
-            description: MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
+            description: 'MemorystoreInstanceSpec defines the desired state of a Memorystore
+              for Valkey instance. Note: this resource does not manage Redis instances,
+              which are handled by RedisInstance.'
             properties:
               authorizationMode:
                 description: Optional. Immutable. Authorization mode of the instance.
@@ -549,6 +715,127 @@ spec:
                             required:
                             - networkRef
                             - projectRef
+                            type: object
+                          pscConnection:
+                            description: Detailed information of a PSC connection
+                              that is created by the user.
+                            properties:
+                              forwardingRuleRef:
+                                description: 'Required. The URI of the consumer side
+                                  forwarding rule. Format: projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}'
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: The ComputeForwardingRule selflink
+                                      in the form "projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}"
+                                      when not managed by Config Connector.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `ComputeForwardingRule`
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `ComputeForwardingRule`
+                                      resource.
+                                    type: string
+                                type: object
+                              ipAddress:
+                                description: Required. The IP allocated on the consumer
+                                  network for the PSC forwarding rule.
+                                type: string
+                              networkRef:
+                                description: Required. The consumer network where
+                                  the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: The value of an externally managed
+                                      ComputeNetwork resource. Should be in the format
+                                      "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
+                                      or "projects/{{projectId}}/global/networks/{{networkId}}"
+                                    type: string
+                                  name:
+                                    description: The name of a ComputeNetwork resource.
+                                    type: string
+                                  namespace:
+                                    description: The namespace of a ComputeNetwork
+                                      resource.
+                                    type: string
+                                type: object
+                              port:
+                                description: Optional. Output only. The port of the
+                                  consumer forwarding rule.
+                                format: int32
+                                type: integer
+                              pscConnectionID:
+                                description: Optional. Output only. The PSC connection
+                                  id of the forwarding rule connected to the service
+                                  attachment.
+                                type: string
+                              serviceAttachmentRef:
+                                description: Required. The service attachment which
+                                  is the target of the PSC connection, in the form
+                                  of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: The ComputeServiceAttachment selflink
+                                      in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
+                                      when not managed by Config Connector.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `ComputeServiceAttachment`
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `ComputeServiceAttachment`
+                                      resource.
+                                    type: string
+                                type: object
+                            required:
+                            - forwardingRuleRef
+                            - ipAddress
+                            - networkRef
+                            - serviceAttachmentRef
                             type: object
                         type: object
                       type: array
@@ -677,7 +964,7 @@ spec:
             type: object
           status:
             description: MemorystoreInstanceStatus defines the config connector machine
-              state of MemorystoreInstance
+              state of a Memorystore for Valkey instance
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -724,6 +1011,26 @@ spec:
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
+                  discoveryEndpoints:
+                    description: Output only. Discovery endpoints for the instance.
+                    items:
+                      properties:
+                        address:
+                          description: Output only. IP address of the exposed endpoint
+                            clients connect to.
+                          type: string
+                        network:
+                          description: Output only. The network where the IP address
+                            of the discovery endpoint will be reserved, in the form
+                            of projects/{network_project}/global/networks/{network_id}.
+                          type: string
+                        port:
+                          description: Output only. The port number of the exposed
+                            endpoint.
+                          format: int32
+                          type: integer
+                      type: object
+                    type: array
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
@@ -773,6 +1080,26 @@ spec:
                                     description: Output only. The service attachment
                                       which is the target of the PSC connection, in
                                       the form of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                                    type: string
+                                type: object
+                              pscConnection:
+                                description: Detailed information of a PSC connection
+                                  that is created by the user.
+                                properties:
+                                  connectionType:
+                                    description: Output only. Type of the PSC connection.
+                                    type: string
+                                  projectID:
+                                    description: Output only. The consumer project_id
+                                      where the forwarding rule is created from.
+                                    type: string
+                                  pscConnectionStatus:
+                                    description: 'Output only. The status of the PSC
+                                      connection: whether a connection exists and
+                                      ACTIVE or it no longer exists. Please note that
+                                      this value is updated periodically. Please use
+                                      Private Service Connect APIs for the latest
+                                      status.'
                                     type: string
                                 type: object
                             type: object

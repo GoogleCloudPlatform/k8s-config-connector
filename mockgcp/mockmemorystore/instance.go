@@ -199,6 +199,16 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.EngineVersion == "" {
 		obj.EngineVersion = "VALKEY_7_2"
 	}
+
+	if len(obj.DiscoveryEndpoints) == 0 {
+		obj.DiscoveryEndpoints = []*pb.DiscoveryEndpoint{
+			{
+				Address: "10.0.0.1",
+				Port:    6379,
+				Network: fmt.Sprintf("projects/%s/global/networks/%s", name.Project.ID, "default"),
+			},
+		}
+	}
 	return nil
 }
 
