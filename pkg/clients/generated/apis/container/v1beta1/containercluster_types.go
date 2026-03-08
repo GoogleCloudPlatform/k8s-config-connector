@@ -118,7 +118,7 @@ type ClusterAuthenticatorGroupsConfig struct {
 }
 
 type ClusterAutoProvisioningDefaults struct {
-	/* Immutable. The Customer Managed Encryption Key used to encrypt the
+	/* The Customer Managed Encryption Key used to encrypt the
 	boot disk attached to each node in the node pool. */
 	// +optional
 	BootDiskKMSKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSKeyRef,omitempty"`
@@ -231,6 +231,10 @@ type ClusterClusterTelemetry struct {
 }
 
 type ClusterConfidentialNodes struct {
+	/* Immutable. Confidential instance type for the cluster nodes. Valid values are SEV and SEV_SNP. */
+	// +optional
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
+
 	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool. */
 	Enabled bool `json:"enabled"`
 }

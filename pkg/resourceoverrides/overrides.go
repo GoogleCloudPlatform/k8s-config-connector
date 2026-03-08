@@ -225,6 +225,7 @@ func init() {
 	Handler.Register(GetStorageBucketResourceOverrides())
 	Handler.Register(GetSQLInstanceResourceOverrides())
 	Handler.Register(GetContainerClusterResourceOverrides())
+	Handler.Register(GetContainerNodePoolResourceOverrides())
 	Handler.Register(GetLoggingLogSinkResourceOverrides())
 	Handler.Register(GetComputeInstanceResourceOverrides())
 	Handler.Register(GetDNSRecordSetOverrides())
