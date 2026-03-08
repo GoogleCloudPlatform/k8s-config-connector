@@ -44,17 +44,17 @@ status:
       membership:
         primaryInstance:
           instance: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-b-${uniqueId}
-          uid: a7f98ccc-3af9-4b1b-8c04-45cb42d6f6b3
+          uid: instance-memorystoreinstance-us-central1-b-${uniqueId}
         secondaryInstances:
         - instance: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-us-central1-a-${uniqueId}
-          uid: 8e8b1ff9-3480-42fd-a801-daff2cf2235f
-      updateTime: "2026-03-04T05:18:19.507715947Z"
+          uid: instance-memorystoreinstance-us-central1-a-${uniqueId}
+      updateTime: "2024-04-01T12:34:56.123456Z"
     nodeConfig:
       sizeGB: 1.4
     pscAttachmentDetails:
     - connectionType: CONNECTION_TYPE_DISCOVERY
-      serviceAttachment: projects/403202615937/regions/us-central1/serviceAttachments/gcp-memorystore-auto-f0399a78988f5001-psc-sa
-    - serviceAttachment: projects/403202615937/regions/us-central1/serviceAttachments/gcp-memorystore-auto-f0399a78988f5001-psc-sa-2
+      serviceAttachment: projects/tp-memorystoreinstance-us-central1-b-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-us-central1-b-${uniqueId}
+    - serviceAttachment: projects/tp-memorystoreinstance-us-central1-b-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-us-central1-b-${uniqueId}-2
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"

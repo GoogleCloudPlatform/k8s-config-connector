@@ -19,19 +19,19 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/backupCollections/a61daf03-9de9-42f6-be4c-ea2feda2f221/backups/memorystoreinstancebackup-1-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-central1/backupCollections/backupCollection-memorystoreinstance-1-${uniqueId}/backups/memorystoreinstancebackup-1-${uniqueId}
   observedGeneration: 1
   observedState:
     backupFiles:
-    - createTime: "2026-03-03T08:39:00.856Z"
-      fileName: a2fbf67e8d02032a18b4d8d02be0074ff9413e2e.rdb
+    - createTime: "2024-04-01T12:34:56.123456Z"
+      fileName: file-memorystoreinstancebackup-1-${uniqueId}.rdb
       sizeBytes: 141
     backupType: ON_DEMAND
     createTime: "1970-01-01T00:00:00Z"
     engineVersion: VALKEY_7_2
     expireTime: "2024-04-01T12:34:56.123456Z"
     instance: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}
-    instanceUid: 692729c4-f954-4658-b8b2-c23dbf86403b
+    instanceUid: instance-memorystoreinstance-1-${uniqueId}
     nodeType: SHARED_CORE_NANO
     shardCount: 1
     state: ACTIVE
