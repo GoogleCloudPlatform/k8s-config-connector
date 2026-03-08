@@ -663,6 +663,13 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						switch event.Request.Method {
 						case "GET":
 							isReadOnly = true
+						case "GRPC":
+							// gRPC calls are considered read-only if they are Get or List calls.
+							// We can check the URL (which for gRPC is the full method name).
+							method := event.Request.URL
+							if strings.Contains(method, "/Get") || strings.Contains(method, "/List") {
+								isReadOnly = true
+							}
 						}
 						if !isReadOnly {
 							t.Errorf("FAIL: unexpected event during re-reconciliation: %v", event)
