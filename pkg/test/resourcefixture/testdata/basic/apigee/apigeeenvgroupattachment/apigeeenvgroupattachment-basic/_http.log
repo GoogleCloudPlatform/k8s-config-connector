@@ -21,6 +21,30 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "resource organizations/${projectId}/environments/apgenv-${uniqueId} not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
 POST https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -92,6 +116,30 @@ X-Xss-Protection: 0
     ],
     "name": "apgenvg-${uniqueId}",
     "state": "ACTIVE"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "resource organizations/${projectId}/environments/apgenv-${uniqueId} not found",
+    "status": "NOT_FOUND"
   }
 }
 
@@ -293,6 +341,52 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apgenvg-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createdAt": "1711974896",
+  "hostnames": [
+    "${uniqueId}.mytesthost.net"
+  ],
+  "lastModifiedAt": "1711974896",
+  "name": "apgenvg-${uniqueId}",
+  "state": "ACTIVE"
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apgenvg-${uniqueId}/attachments/$%7BattachmentId%7D?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createdAt": "1711974896",
+  "environment": "apgenv-${uniqueId}",
+  "name": "${attachmentId}"
+}
+
+---
+
 DELETE https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apgenvg-${uniqueId}/attachments/$%7BattachmentId%7D?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -364,60 +458,6 @@ X-Xss-Protection: 0
 {
   "name": "apgenv-${uniqueId}",
   "properties": {}
-}
-
----
-
-DELETE https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
-    "operationType": "DELETE",
-    "state": "FINISHED",
-    "targetResourceName": "organizations/${projectId}/environments/apgenv-${uniqueId}"
-  },
-  "name": "organizations/${projectId}/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
-}
-
----
-
-GET https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "resource organizations/${projectId}/environments/apgenv-${uniqueId} not found",
-    "status": "NOT_FOUND"
-  }
 }
 
 ---
@@ -500,5 +540,80 @@ X-Xss-Protection: 0
   "name": "organizations/${projectId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "apgenv-${uniqueId}",
+  "properties": {}
+}
+
+---
+
+DELETE https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "DELETE",
+    "state": "FINISHED",
+    "targetResourceName": "organizations/${projectId}/environments/apgenv-${uniqueId}"
+  },
+  "name": "organizations/${projectId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "resource organizations/${projectId}/environments/apgenv-${uniqueId} not found",
+    "status": "NOT_FOUND"
   }
 }

@@ -1,283 +1,3 @@
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The specified bucket does not exist.",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The specified bucket does not exist."
-  }
-}
-
----
-
-POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "iamConfiguration": {
-    "uniformBucketLevelAccess": {
-      "enabled": true
-    }
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycle": {
-    "rule": []
-  },
-  "location": "us-central1",
-  "name": "storagebucket-1-${uniqueId}",
-  "storageClass": "STANDARD"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US-CENTRAL1",
-  "locationType": "region",
-  "metageneration": "1",
-  "name": "storagebucket-1-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US-CENTRAL1",
-  "locationType": "region",
-  "metageneration": "1",
-  "name": "storagebucket-1-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The specified bucket does not exist.",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The specified bucket does not exist."
-  }
-}
-
----
-
-POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "iamConfiguration": {
-    "uniformBucketLevelAccess": {
-      "enabled": true
-    }
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycle": {
-    "rule": []
-  },
-  "location": "us-central1",
-  "name": "storagebucket-2-${uniqueId}",
-  "storageClass": "STANDARD"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US-CENTRAL1",
-  "locationType": "region",
-  "metageneration": "1",
-  "name": "storagebucket-2-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US-CENTRAL1",
-  "locationType": "region",
-  "metageneration": "1",
-  "name": "storagebucket-2-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -298,6 +18,58 @@ X-Xss-Protection: 0
     "code": 404,
     "message": "job \"projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}\" not found",
     "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
   }
 }
 
@@ -555,6 +327,375 @@ X-Xss-Protection: 0
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": true
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "storagebucket-2-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "storagebucket-2-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": true
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "storagebucket-1-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "storagebucket-1-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "storagebucket-2-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "storagebucket-1-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "storagebucket-2-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "storagebucket-1-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-1-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "storagebucket-2-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-2-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

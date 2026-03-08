@@ -2,13 +2,11 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   annotations:
-    cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     label-one: value-two
@@ -17,7 +15,6 @@ metadata:
 spec:
   autoCreateSubnetworks: true
   enableUlaInternalIpv6: false
-  resourceID: ${networkID}
   routingMode: GLOBAL
 status:
   conditions:
@@ -26,5 +23,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 3
+  externalRef: projects/${projectId}/global/networks/${networkID}
+  observedGeneration: 2
+  observedState: {}
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
