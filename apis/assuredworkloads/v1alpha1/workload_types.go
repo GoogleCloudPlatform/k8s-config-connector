@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -27,6 +28,12 @@ var AssuredWorkloadsWorkloadGVK = GroupVersion.WithKind("AssuredWorkloadsWorkloa
 type AssuredWorkloadsWorkloadSpec struct {
 	// The AssuredWorkloadsWorkload name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Immutable. The Organization that this resource belongs to.
+	OrganizationRef *refs.OrganizationRef `json:"organizationRef"`
+
+	// Immutable. The location for the workload.
+	Location string `json:"location"`
 
 	// Required. The user-assigned display name of the Workload.
 	//  When present it must be between 4 to 30 characters.
@@ -59,7 +66,7 @@ type AssuredWorkloadsWorkloadSpec struct {
 
 	// Optional. Labels applied to the workload.
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.labels
-	// Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 
 	// Input only. The parent resource for the resources managed by this Assured Workload. May
 	//  be either empty or a folder resource which is a child of the
@@ -68,7 +75,7 @@ type AssuredWorkloadsWorkloadSpec struct {
 	//  Format:
 	//  folders/{folder_id}
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.provisioned_resources_parent
-	// ProvisionedResourcesParent *string `json:"provisionedResourcesParent,omitempty"`
+	ProvisionedResourcesParentRef *refs.FolderRef `json:"provisionedResourcesParentRef,omitempty"`
 
 	// DEPRECATED
 	// Input only. Settings used to create a CMEK crypto key. When set, a project with a KMS
@@ -77,7 +84,7 @@ type AssuredWorkloadsWorkloadSpec struct {
 	//  In order to create a Keyring, callers should specify,
 	//  ENCRYPTION_KEYS_PROJECT or KEYRING in ResourceSettings.resource_type field.
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.kms_settings
-	// KMSSettings *Workload_KMSSettings `json:"kmsSettings,omitempty"`
+	KMSSettings *Workload_KMSSettings `json:"kmsSettings,omitempty"`
 
 	// Input only. Resource properties that are used to customize workload resources.
 	//  These properties (such as custom project id) will be used to create
