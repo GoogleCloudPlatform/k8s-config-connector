@@ -37,7 +37,46 @@ func GetContainerClusterResourceOverrides() ResourceOverrides {
 	// Preserve the legacy field 'workloadIdentityConfig.identityNamespace' that has been removed from Terraform 4.x upgrade.
 	// See b/206133327 for context.
 	ro.Overrides = append(ro.Overrides, keepIdentityNamespaceField())
+	ro.Overrides = append(ro.Overrides, addConfidentialInstanceTypeEnumForCluster())
 	return ro
+}
+
+func addConfidentialInstanceTypeEnumForCluster() ResourceOverride {
+	o := ResourceOverride{}
+	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
+		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+		spec := schema.Properties["spec"]
+
+		// confidentialNodes at top-level
+		if cn, ok := spec.Properties["confidentialNodes"]; ok {
+			if cit, ok := cn.Properties["confidentialInstanceType"]; ok {
+				cit.Enum = []apiextensions.JSON{
+					{Raw: []byte(`"SEV"`)},
+					{Raw: []byte(`"SEV_SNP"`)},
+				}
+				cn.Properties["confidentialInstanceType"] = cit
+				spec.Properties["confidentialNodes"] = cn
+			}
+		}
+
+		// confidentialNodes in nodeConfig
+		if nc, ok := spec.Properties["nodeConfig"]; ok {
+			if cn, ok := nc.Properties["confidentialNodes"]; ok {
+				if cit, ok := cn.Properties["confidentialInstanceType"]; ok {
+					cit.Enum = []apiextensions.JSON{
+						{Raw: []byte(`"SEV"`)},
+						{Raw: []byte(`"SEV_SNP"`)},
+					}
+					cn.Properties["confidentialInstanceType"] = cit
+					nc.Properties["confidentialNodes"] = cn
+					spec.Properties["nodeConfig"] = nc
+				}
+			}
+		}
+		schema.Properties["spec"] = spec
+		return nil
+	}
+	return o
 }
 
 func keepIdentityNamespaceField() ResourceOverride {

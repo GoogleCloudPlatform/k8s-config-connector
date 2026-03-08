@@ -97,9 +97,7 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/api/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/bigtable/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/bigquery/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/cloud/*/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*/*.proto \
+    $(find ${THIRD_PARTY}/googleapis/google/cloud -name "*.proto" | grep -v "apihub") \
     ${THIRD_PARTY}/googleapis/google/dataflow/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/firestore/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/firestore/*/*/*.proto \
