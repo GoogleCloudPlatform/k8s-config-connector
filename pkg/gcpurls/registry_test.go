@@ -72,6 +72,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}":                       true,
 		"//bigtableadmin.googleapis.com/projects/{}/instances/{}/appProfiles/{}":                  true,
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
+		"//assuredworkloads.googleapis.com/organizations/{}/locations/{}/workloads/{}":            true,
 	}
 
 	for _, tmpl := range templates {
