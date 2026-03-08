@@ -179,6 +179,7 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	if obj.StackType == nil {
 		obj.StackType = PtrTo("IPV4_ONLY")
 	}
+	obj.State = PtrTo("READY")
 	networkName, err := s.parseNetworkSelfLink(obj.GetNetwork())
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
@@ -331,6 +332,17 @@ func (s *MockService) parseSubnetName(name string) (*subnetName, error) {
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+// parseSubnetSelfLink parses a selfLink string into a subnetName.
+// The expected form is `https://www.googleapis.com/compute/{version}/projects/*/regions/*/subnetworks/*`.
+func (s *MockService) parseSubnetSelfLink(selfLink string) (*subnetName, error) {
+	name := selfLink
+	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/beta/")
+	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/v1/")
+	name = strings.TrimPrefix(name, "https://compute.googleapis.com/compute/v1/")
+
+	return s.parseSubnetName(name)
 }
 
 // newSubnetName builds a normalized subnetName from the constituent parts.

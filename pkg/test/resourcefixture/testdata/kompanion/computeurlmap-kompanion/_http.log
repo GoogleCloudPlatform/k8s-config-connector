@@ -128,7 +128,6 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "Default Backend Service for computeurlmap-kompanion",
-  "enableCDN": false,
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -277,7 +276,6 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "Chaosmonkey Backend Service for computeurlmap-kompanion",
-  "enableCDN": false,
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -426,7 +424,6 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "Chaosmonkeymulti Backend Service for computeurlmap-kompanion",
-  "enableCDN": false,
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -728,7 +725,6 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "Chaosmonkeymulti Backend Service for computeurlmap-kompanion",
-  "enableCDN": false,
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -830,7 +826,6 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "Chaosmonkey Backend Service for computeurlmap-kompanion",
-  "enableCDN": false,
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
@@ -932,7 +927,6 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "Default Backend Service for computeurlmap-kompanion",
-  "enableCDN": false,
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,

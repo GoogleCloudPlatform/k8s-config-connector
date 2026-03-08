@@ -43,6 +43,12 @@ type MockService struct {
 	v1 *NetworkServicesServer
 }
 
+type NetworkServicesServer struct {
+	*MockService
+	pb.UnimplementedNetworkServicesServer
+	pb.UnimplementedDepServiceServer
+}
+
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
@@ -60,11 +66,13 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworkServicesServer(grpcServer, s.v1)
+	pb.RegisterDepServiceServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pbhttp.RegisterNetworkServicesHandler,
+		pbhttp.RegisterDepServiceHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err

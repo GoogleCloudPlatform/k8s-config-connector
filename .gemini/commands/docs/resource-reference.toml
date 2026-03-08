@@ -10,6 +10,53 @@ You need to generate the documentation template and configure the references for
 
 **Important**: When referring to the 'Kind' of the resource, ensure it is in PascalCase (e.g., 'StorageBucket'). For the 'Group', ensure it is in lowercase (e.g., 'storage'). These casing conventions should be applied when gathering information, creating filenames (e.g., `[Group_Lowercase]_[Kind_Lowercase].tmpl`), and populating template content.
 
+## Google Public Document Writing Standards
+To ensure the generated document is compliant with Google standards, follow these guidelines:
+
+### Core Writing Principles
+- **Active Voice**: Use active voice to make content clearer and more concise.
+- **Concision**: Follow the plain language formula: subject + verb + object. Replace excess modifiers with singular words (e.g., use "to" instead of "in order to").
+- **Present Tense**: Use present tense verbs to keep writing direct and user-focused.
+- **Approachable Tone**: Use familiar contractions (e.g., "you're," "don't") to make content feel conversational.
+- **Prescriptive Writing**: State a clear purpose, provide example scenarios, and use "must" for required actions versus "can" for optional ones.
+
+### Structure and Organization
+- **Sentences**: Aim for 20 words or fewer. Front-load sentences with goals or conditions before providing instructions. Consider breaking a long sentence into two instead of using a semicolon or complex parentheses.
+- **Paragraphs**: Limit each paragraph to one central idea and no more than five or six sentences.
+- **Headings**: Use task-based language, keep headings under 60 characters, and capitalize only the first word and proper nouns.
+- **Timelessness**: Avoid terms that make promises, like "currently," "at this time," or "eventually." Don't use terms like "latest" or "newest" that quickly become outdated. If using "new," include a specific date for reference.
+
+### Grammar and Word Choice
+- **Abbreviations**: Use parentheses to define jargon or an acronym upon first use. Avoid using acronyms as verbs.
+- **Jargon**: Replace or define specialized terms (e.g., "P0") for a broader audience.
+- **Absolutes**: Avoid superlatives like "best" or "always" unless legally required.
+- **Pronouns**: Use second-person ("you") to address the reader. Use first-person pronouns with caution (e.g., when referring to support). Use the singular "they" for gender-neutral examples.
+- **Slashes**: Avoid using slashes for alternatives (use "or"), fractions, or for "and/or".
+- **Ampersands**: Don't use ampersands as shorthand for "and" in article text. Use only if part of a product name or in very limited space (e.g., UI text, article titles).
+- **Apostrophes**: Use to designate ownership. Don't use for plurals (e.g., "2020s", not "2020's"), age groups (e.g., "30s"), or for "Dos and don'ts".
+- **Dates**: Spell out full months and days. If space is tight, use standard abbreviations (e.g., "Jan", "Feb", "Mon", "Tue").
+
+### Punctuation and Formatting
+- **Oxford Comma**: Always use the serial (Oxford) comma in lists of three or more items.
+- **Lists**: Introduce lists with a summary sentence. Use ordered lists for sequences and bulleted lists for optional items. Don't use a period if the list item is a single noun, lacks a verb, or is a link/title.
+- **Numbers**: Use numerals (simple numbers) instead of cardinal words (e.g., "1", not "one"). Spell out all ordinal numbers in text. Use a non-line-breaking space between a number and its noun. Avoid starting a sentence with a number.
+- **Text Formatting**: Use bold for clickable UI elements and italics for defining new terms. Never underline or use capitalization (all-caps) for emphasis. Only use underlines for link text.
+- **Quotation Marks**: Use quotation marks for UI elements that users notice but don't interact with, titles of works (articles, books, etc.), and spoken words. Put commas and periods inside quotation marks.
+- **Parentheses**: Use sparingly for short notes. Never use them for important information. End a complete sentence inside parentheses with a period (unless it's a question).
+- **Hyphens**: Use for dates and number ranges without spaces (e.g., "1-10"). Use to separate word parts or combine terms into a unit. Avoid en dashes; use a hyphen or em dash instead.
+- **Exclamation Marks**: Use sparingly for critical messages. Never use in error messages or more than once in short copy.
+- **Time**: Use the 12-hour clock. Use capital letters for AM/PM and time zone designations (e.g., "8 AM PST"). Use a space before and after AM/PM and time zone codes. Don't use zeros for round numbers (e.g., "8 AM", not "8:00 AM").
+- **Capitalization**: Use only for proper nouns, acronyms, and the first word in any phrase.
+
+### Accessibility and Inclusivity
+- **Inclusive Writing**: Use person-first language and avoid ableist or violent terms. Use singular "they" when gender is irrelevant.
+- **Visual Accessibility**: Provide descriptive alt text for images and avoid directional language like "right sidebar."
+- **Links**: Use descriptive link text that describes the destination; do not use "click here."
+
+### Guidelines for Writing about AI
+- **Transparency**: Clearly explain how an AI tool uses data and avoid claiming AI-generated content is 100% accurate.
+- **Pitfall Planning**: State clearly how users can opt in or out of AI features.
+
 Resource Information:
 - Kind: {{args.kind}}
 - Group: {{args.group}}
