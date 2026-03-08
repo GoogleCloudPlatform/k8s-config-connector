@@ -437,7 +437,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -577,7 +578,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -1570,6 +1572,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -1579,6 +1582,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}"
 }
@@ -1647,6 +1651,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -1660,6 +1665,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}"
 }
@@ -1794,6 +1800,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -1803,6 +1810,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}-2"
 }
@@ -1871,6 +1879,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -1884,6 +1893,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}-2"
 }
@@ -2018,6 +2028,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2027,6 +2038,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}"
 }
@@ -2095,6 +2107,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2108,6 +2121,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}"
 }
@@ -2242,6 +2256,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2251,6 +2266,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}-2"
 }
@@ -2319,6 +2335,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2332,6 +2349,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}-2"
 }
@@ -2442,6 +2460,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2455,6 +2474,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}"
 }
@@ -2481,6 +2501,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2494,6 +2515,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}-2"
 }
@@ -2839,6 +2861,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2852,6 +2875,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}"
 }
@@ -2878,6 +2902,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2891,6 +2916,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}-2"
 }
@@ -2917,6 +2943,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2930,6 +2957,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}"
 }
@@ -2956,6 +2984,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -2969,6 +2998,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}-2"
 }
@@ -3549,6 +3579,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -3562,6 +3593,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}-2"
 }
@@ -3655,6 +3687,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -3668,6 +3701,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}"
 }
@@ -3761,6 +3795,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -3774,6 +3809,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}-2"
 }
@@ -3867,6 +3903,7 @@ X-Xss-Protection: 0
   "IPProtocol": "TCP",
   "allowPscGlobalAccess": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
@@ -3880,6 +3917,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "target": "projects/tp-memorystoreinstance-1-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-1-${uniqueId}"
 }
@@ -4388,7 +4426,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -4488,7 +4527,8 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
