@@ -190,7 +190,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetworkFirewallPolicyRule"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetworkPeeringRoutesConfig"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetworkPeering"}:
-	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetwork"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNodeGroup"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNodeTemplate"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeOrganizationSecurityPolicy"}:

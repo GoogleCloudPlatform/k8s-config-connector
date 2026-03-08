@@ -6,10 +6,10 @@ metadata:
     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"deleteDefaultRoutesOnCreate":true}}'
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/state-into-spec: absent
-    cnrm.cloud.google.com/supports-ssa: "true"
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
+  generation: 2
   labels:
     cnrm-test: "true"
     label-one: value-one
@@ -27,5 +27,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 0
+  observedGeneration: 2
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
