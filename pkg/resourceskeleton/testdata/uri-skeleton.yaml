@@ -441,9 +441,6 @@
   ResourceConfigId: ComputeRouterInterface
   URI: ""
 - ExpectedSkeleton: null
-  ResourceConfigId: ComputeRouterNAT
-  URI: ""
-- ExpectedSkeleton: null
   ResourceConfigId: ComputeRouterPeer
   URI: ""
 - ExpectedSkeleton:
