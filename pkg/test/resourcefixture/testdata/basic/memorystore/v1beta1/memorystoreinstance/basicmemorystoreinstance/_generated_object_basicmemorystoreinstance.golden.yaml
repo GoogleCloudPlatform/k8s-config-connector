@@ -29,8 +29,8 @@ status:
       sizeGB: 13
     pscAttachmentDetails:
     - connectionType: CONNECTION_TYPE_DISCOVERY
-      serviceAttachment: projects/753639365304/regions/us-central1/serviceAttachments/gcp-memorystore-auto-c8bc7f04c7f6677a-psc-sa
-    - serviceAttachment: projects/753639365304/regions/us-central1/serviceAttachments/gcp-memorystore-auto-c8bc7f04c7f6677a-psc-sa-2
+      serviceAttachment: projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}
+    - serviceAttachment: projects/tp-memorystoreinstance-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-${uniqueId}-2
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"
