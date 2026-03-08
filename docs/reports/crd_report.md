@@ -89,7 +89,7 @@
 | cloudasset.cnrm.cloud.google.com              | CloudAssetFolderFeed                            | True         | False       | False  | Terraform  | False       |
 | cloudasset.cnrm.cloud.google.com              | CloudAssetOrganizationFeed                      | True         | False       | False  | Terraform  | False       |
 | cloudasset.cnrm.cloud.google.com              | CloudAssetProjectFeed                           | True         | False       | False  | Terraform  | False       |
-| cloudbuild.cnrm.cloud.google.com              | CloudBuildTrigger                               | False        | True        | False  | Terraform  | True        |
+| cloudbuild.cnrm.cloud.google.com              | CloudBuildTrigger                               | False        | True        | False  | Terraform  | False       |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildWorkerPool                            | True         | True        | False  | Direct     | True        |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeliveryPipeline                     | True         | True        | False  | Direct     | True        |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeployPolicy                         | True         | False       | False  | Direct     | True        |
@@ -146,7 +146,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeNetworkFirewallPolicyRule                | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkPeeringRoutesConfig               | True         | False       | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNetworkPeering                           | False        | True        | False  | Terraform  | False       |
-| compute.cnrm.cloud.google.com                 | ComputeNetwork                                  | False        | True        | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                 | ComputeNetwork                                  | False        | True        | False  | Direct     | True        |
 | compute.cnrm.cloud.google.com                 | ComputeNodeGroup                                | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeNodeTemplate                             | False        | True        | False  | Terraform  | False       |
 | compute.cnrm.cloud.google.com                 | ComputeOrganizationSecurityPolicy               | True         | False       | False  | Terraform  | False       |
