@@ -31,7 +31,7 @@ func TestDCLSchemaSupportsLeasing(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"intKey": &openapi.Schema{
+					"intKey": {
 						Type: "integer",
 					},
 				},
@@ -43,7 +43,7 @@ func TestDCLSchemaSupportsLeasing(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-kubernetes-immutable": true,
@@ -61,7 +61,7 @@ func TestDCLSchemaSupportsLeasing(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 					},
 				},
@@ -76,10 +76,10 @@ func TestDCLSchemaSupportsLeasing(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"setting": &openapi.Schema{
+					"setting": {
 						Type: "object",
 						Properties: map[string]*openapi.Schema{
-							"labels": &openapi.Schema{
+							"labels": {
 								Type: "string",
 								Extension: map[string]interface{}{
 									"x-kubernetes-immutable": true,
@@ -99,10 +99,10 @@ func TestDCLSchemaSupportsLeasing(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"setting": &openapi.Schema{
+					"setting": {
 						Type: "object",
 						Properties: map[string]*openapi.Schema{
-							"labels": &openapi.Schema{
+							"labels": {
 								Type: "string",
 							},
 						},

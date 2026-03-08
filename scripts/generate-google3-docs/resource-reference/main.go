@@ -452,7 +452,7 @@ func iamExternalReferenceFormatsFor(gvk schema.GroupVersionKind, rcs []*v1alpha1
 			}
 		}
 		formatList := make([]string, 0)
-		for f, _ := range formatSet {
+		for f := range formatSet {
 			formatList = append(formatList, f)
 		}
 		if len(formatList) == 0 {

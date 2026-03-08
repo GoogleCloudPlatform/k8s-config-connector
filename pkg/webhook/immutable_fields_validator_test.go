@@ -96,7 +96,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"location": &openapi.Schema{
+					"location": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-kubernetes-immutable": true,
@@ -143,7 +143,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"name": &openapi.Schema{
+					"name": {
 						Type: "string",
 					},
 				},
@@ -195,22 +195,22 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"location": &openapi.Schema{
+					"location": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-kubernetes-immutable": true,
 						},
 					},
-					"nestedObjectKey": &openapi.Schema{
+					"nestedObjectKey": {
 						Type: "object",
 						Properties: map[string]*openapi.Schema{
-							"nestedIntField": &openapi.Schema{
+							"nestedIntField": {
 								Type: "integer",
 								Extension: map[string]interface{}{
 									"x-kubernetes-immutable": true,
 								},
 							},
-							"nestedStringField": &openapi.Schema{
+							"nestedStringField": {
 								Type: "string",
 							},
 						},
@@ -294,7 +294,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -339,7 +339,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -394,7 +394,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -449,7 +449,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -492,7 +492,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -545,7 +545,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -604,7 +604,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"stringArrayKey": &openapi.Schema{
+					"stringArrayKey": {
 						Type: "array",
 						Items: &openapi.Schema{
 							Type: "string",
@@ -658,7 +658,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"stringMapKey": &openapi.Schema{
+					"stringMapKey": {
 						Type: "object",
 						AdditionalProperties: &openapi.Schema{
 							Type: "string",
@@ -722,12 +722,12 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"objectMapKey": &openapi.Schema{
+					"objectMapKey": {
 						Type: "object",
 						AdditionalProperties: &openapi.Schema{
 							Type: "object",
 							Properties: map[string]*openapi.Schema{
-								"objectField": &openapi.Schema{
+								"objectField": {
 									Type: "string",
 								},
 							},
@@ -790,12 +790,12 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"objectMapKey": &openapi.Schema{
+					"objectMapKey": {
 						Type: "object",
 						AdditionalProperties: &openapi.Schema{
 							Type: "object",
 							Properties: map[string]*openapi.Schema{
-								"objectField": &openapi.Schema{
+								"objectField": {
 									Type: "string",
 								},
 							},
@@ -859,12 +859,12 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"objectMapKey": &openapi.Schema{
+					"objectMapKey": {
 						Type: "object",
 						AdditionalProperties: &openapi.Schema{
 							Type: "object",
 							Properties: map[string]*openapi.Schema{
-								"objectField": &openapi.Schema{
+								"objectField": {
 									Type: "string",
 								},
 							},
@@ -931,12 +931,12 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"objectMapKey": &openapi.Schema{
+					"objectMapKey": {
 						Type: "object",
 						AdditionalProperties: &openapi.Schema{
 							Type: "object",
 							Properties: map[string]*openapi.Schema{
-								"objectField": &openapi.Schema{
+								"objectField": {
 									Type: "string",
 								},
 							},
@@ -997,12 +997,12 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"objectMapKey": &openapi.Schema{
+					"objectMapKey": {
 						Type: "object",
 						AdditionalProperties: &openapi.Schema{
 							Type: "object",
 							Properties: map[string]*openapi.Schema{
-								"objectField": &openapi.Schema{
+								"objectField": {
 									Type: "string",
 								},
 							},
@@ -1066,12 +1066,12 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"objectMapKey": &openapi.Schema{
+					"objectMapKey": {
 						Type: "object",
 						AdditionalProperties: &openapi.Schema{
 							Type: "object",
 							Properties: map[string]*openapi.Schema{
-								"objectField": &openapi.Schema{
+								"objectField": {
 									Type: "string",
 								},
 							},
@@ -1131,7 +1131,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"arrayMapKey": &openapi.Schema{
+					"arrayMapKey": {
 						Type: "object",
 						AdditionalProperties: &openapi.Schema{
 							Type: "array",
@@ -1197,7 +1197,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"arrayMapKey": &openapi.Schema{
+					"arrayMapKey": {
 						Type: "object",
 						AdditionalProperties: &openapi.Schema{
 							Type: "array",
@@ -1265,7 +1265,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"arrayMapKey": &openapi.Schema{
+					"arrayMapKey": {
 						Type: "object",
 						AdditionalProperties: &openapi.Schema{
 							Type: "array",
@@ -1335,7 +1335,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"arrayMapKey": &openapi.Schema{
+					"arrayMapKey": {
 						Type: "object",
 						AdditionalProperties: &openapi.Schema{
 							Type: "array",
@@ -1402,7 +1402,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"arrayMapKey": &openapi.Schema{
+					"arrayMapKey": {
 						Type: "object",
 						AdditionalProperties: &openapi.Schema{
 							Type: "array",
@@ -1494,16 +1494,16 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"location": &openapi.Schema{
+					"location": {
 						Type: "string",
 					},
-					"nestedObjectKey": &openapi.Schema{
+					"nestedObjectKey": {
 						Type: "object",
 						Properties: map[string]*openapi.Schema{
-							"nestedIntField": &openapi.Schema{
+							"nestedIntField": {
 								Type: "integer",
 							},
-							"nestedStringField": &openapi.Schema{
+							"nestedStringField": {
 								Type: "string",
 							},
 						},

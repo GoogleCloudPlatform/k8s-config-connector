@@ -361,7 +361,7 @@ func tfSampleToKRMTestData(testKind string, tf map[string]interface{}, tfToGVK m
 	// still need to go through other configs whose TF types are not involved in
 	// any reference.
 	sortedNonRefDependencyTypes := make([]string, 0)
-	for tfType, _ := range dependencyMap {
+	for tfType := range dependencyMap {
 		sortedNonRefDependencyTypes = append(sortedNonRefDependencyTypes, tfType)
 	}
 	sort.Strings(sortedNonRefDependencyTypes)

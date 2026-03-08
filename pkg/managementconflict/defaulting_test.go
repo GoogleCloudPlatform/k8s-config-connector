@@ -225,7 +225,7 @@ func TestValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResou
 			Schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 					},
 				},
@@ -243,7 +243,7 @@ func TestValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResou
 			Schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 					},
 				},
@@ -271,7 +271,7 @@ func TestValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResou
 			Schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 					},
 				},
@@ -289,7 +289,7 @@ func TestValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResou
 			Schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 					},
 				},
@@ -307,7 +307,7 @@ func TestValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResou
 			Schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 					},
 				},
@@ -334,7 +334,7 @@ func TestValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResou
 			Schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-kubernetes-immutable": true,
@@ -365,7 +365,7 @@ func TestValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResou
 			Schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-kubernetes-immutable": true,
@@ -416,7 +416,7 @@ func TestValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResou
 			Schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-kubernetes-immutable": true,
@@ -437,7 +437,7 @@ func TestValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResou
 			Schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"labels": &openapi.Schema{
+					"labels": {
 						Type: "string",
 					},
 				},

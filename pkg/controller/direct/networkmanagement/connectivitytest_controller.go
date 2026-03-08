@@ -183,7 +183,7 @@ func (a *connectivityTestAdapter) Update(ctx context.Context, updateOp *directba
 	}
 
 	topLevelFieldPaths := sets.New[string]()
-	for path, _ := range paths {
+	for path := range paths {
 		tokens := strings.Split(path, ".")
 		topLevelFieldPaths.Insert(tokens[0])
 	}
