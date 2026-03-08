@@ -21,8 +21,12 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	replacements.ReplacePath(".pscAttachmentDetails[].serviceAttachment", "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment")
-	replacements.ReplacePath(".response.pscAttachmentDetails[].serviceAttachment", "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment")
+	replacements.ReplacePath(".backupFiles[].createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".crossInstanceReplicationConfig.updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.backupFiles[].createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.crossInstanceReplicationConfig.updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".status.observedState.backupFiles[].createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".status.observedState.crossInstanceReplicationConfig.updateTime", "2024-04-01T12:34:56.123456Z")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

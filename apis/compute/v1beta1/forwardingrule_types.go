@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	refsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -84,6 +85,9 @@ type ForwardingruleServiceDirectoryRegistrations struct {
 type Target struct {
 	// +optional
 	GoogleAPIsBundle *string `json:"googleAPIsBundle,omitempty"`
+
+	// +optional
+	MemorystoreInstanceServiceAttachmentRef *refsv1alpha1.MemorystoreInstanceServiceAttachmentRef `json:"memorystoreInstanceServiceAttachmentRef,omitempty"`
 
 	// +optional
 	ServiceAttachmentRef *refs.ComputeServiceAttachmentRef `json:"serviceAttachmentRef,omitempty"`

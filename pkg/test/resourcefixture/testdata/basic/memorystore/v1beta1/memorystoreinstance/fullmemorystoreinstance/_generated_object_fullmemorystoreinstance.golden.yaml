@@ -11,6 +11,12 @@ metadata:
   namespace: ${uniqueId}
 spec:
   authorizationMode: IAM_AUTH
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    fixedFrequencySchedule:
+      startTime:
+        hours: 2
+    retention: 86500s
   deletionProtectionEnabled: false
   endpoints:
   - connections:
@@ -21,13 +27,18 @@ spec:
           external: ${projectId}
   engineConfigs:
     maxclients: "10000"
-    maxmemory-policy: volatile-ttl
-  engineVersion: VALKEY_7_2
+    maxmemory-policy: allkeys-lru
+  engineVersion: VALKEY_8_0
   labels:
     key1: val1
-    key2: val2
-    keyx: valx
+    key2: val2modified
+    key3: val3
   location: us-central1
+  maintenancePolicy:
+    weeklyMaintenanceWindow:
+    - day: MONDAY
+      startTime:
+        hours: 1
   mode: CLUSTER
   nodeType: STANDARD_SMALL
   persistenceConfig:
@@ -39,8 +50,8 @@ spec:
       rdbSnapshotStartTime: "2029-10-02T15:01:23Z"
   projectRef:
     external: ${projectId}
-  replicaCount: 1
-  shardCount: 12
+  replicaCount: 2
+  shardCount: 2
   transitEncryptionMode: SERVER_AUTHENTICATION
   zoneDistributionConfig:
     mode: SINGLE_ZONE
@@ -58,9 +69,24 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     endpoints:
     - connections:
-      - pscAutoConnection: {}
+      - pscAutoConnection:
+          connectionType: CONNECTION_TYPE_DISCOVERY
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98115
+          ipAddress: 10.128.0.21
+          pscConnectionID: "1234567890123456789"
+          serviceAttachment: projects/tp-memorystore-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystore-${uniqueId}
+      - pscAutoConnection:
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-112210f47de98116
+          ipAddress: 10.128.0.22
+          pscConnectionID: "1234567890123456790"
+          serviceAttachment: projects/tp-memorystore-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystore-${uniqueId}-2
+    maintenancePolicy: {}
     nodeConfig:
       sizeGB: 6.5
+    pscAttachmentDetails:
+    - connectionType: CONNECTION_TYPE_DISCOVERY
+      serviceAttachment: projects/tp-memorystore-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystore-${uniqueId}
+    - serviceAttachment: projects/tp-memorystore-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystore-${uniqueId}-2
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"
