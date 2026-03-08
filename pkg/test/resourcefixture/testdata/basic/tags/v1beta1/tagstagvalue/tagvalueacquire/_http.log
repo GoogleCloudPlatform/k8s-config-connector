@@ -201,14 +201,14 @@ X-Xss-Protection: 0
 {
   "tagValues": [
     {
-      "createTime": "${createTime}",
+      "createTime": "2024-04-01T12:34:56.123456Z",
       "description": "For valuename resources.",
-      "etag": "${etag}",
+      "etag": "abcdef0123A=",
       "name": "tagValues/${tagValueID}",
       "namespacedName": "${projectId}/keyname${uniqueId}/valuename${uniqueId}",
       "parent": "tagKeys/${tagKeyID}",
       "shortName": "valuename${uniqueId}",
-      "updateTime": "${createTime}"
+      "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
 }

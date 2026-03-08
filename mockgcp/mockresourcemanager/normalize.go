@@ -25,6 +25,34 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "cloudresourcemanager.googleapis.com") {
+		return
+	}
+
+	// Normalization for TagKeys and TagValues
+	replacements.ReplacePath(".createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".etag", "abcdef0123A=")
+
+	replacements.ReplacePath(".response.createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.etag", "abcdef0123A=")
+
+	replacements.ReplacePath(".tagKeys[].createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".tagKeys[].updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".tagKeys[].etag", "abcdef0123A=")
+
+	replacements.ReplacePath(".tagValues[].createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".tagValues[].updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".tagValues[].etag", "abcdef0123A=")
+
+	replacements.ReplacePath(".response.tagKeys[].createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.tagKeys[].updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.tagKeys[].etag", "abcdef0123A=")
+
+	replacements.ReplacePath(".response.tagValues[].createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.tagValues[].updateTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".response.tagValues[].etag", "abcdef0123A=")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
