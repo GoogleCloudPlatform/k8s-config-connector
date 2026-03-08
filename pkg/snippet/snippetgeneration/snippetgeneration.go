@@ -102,7 +102,6 @@ var preferredSampleForResource = map[string]string{
 	"monitoringservicelevelobjective":    "window-based-gtr-distribution-cut",
 	"monitoringuptimecheckconfig":        "http-uptime-check-config",
 	"osconfigospolicyassignment":         "fixed-os-policy-assignment",
-	"parametermanagerparameter":          "globalparameter",
 	"privatecacertificate":               "basic-certificate",
 	"privilegedaccessmanagerentitlement": "project-level-entitlement",
 	"project":                            "project-in-folder",
