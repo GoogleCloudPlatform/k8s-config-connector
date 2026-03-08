@@ -1229,6 +1229,38 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&network=${networkID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
 GET https://compute.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/getRule?priority=9000
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -1285,6 +1317,30 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -1350,7 +1406,24 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1364,13 +1437,30 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "email": "sa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/sa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
   "oauth2ClientId": "888888888888888888888",
   "projectId": "${projectId}",
   "uniqueId": "111111111111111111111"
 }
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
 
 ---
 
@@ -1438,23 +1528,6 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -1485,47 +1558,6 @@ X-Xss-Protection: 0
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-  "oauth2ClientId": "888888888888888888888",
-  "projectId": "${projectId}",
-  "uniqueId": "111111111111111111111"
-}
-
----
-
-DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
 
 ---
 
