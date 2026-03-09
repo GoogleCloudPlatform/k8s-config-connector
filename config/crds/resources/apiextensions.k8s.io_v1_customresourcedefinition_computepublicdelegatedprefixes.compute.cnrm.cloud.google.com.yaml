@@ -81,10 +81,38 @@ spec:
               location:
                 description: The location of this resource.
                 type: string
-              parentPrefix:
+              parentPrefixRef:
                 description: The URL of parent prefix. Either Create constructed or
                   specified by the user.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `external` field of a `ComputePublicAdvertisedPrefix`
+                      or `ComputePublicDelegatedPrefix` resource.
+                    type: string
+                  kind:
+                    description: "Kind of the referent. Allowed values: ComputePublicAdvertisedPrefix (default), ComputePublicDelegatedPrefix"
+                    type: string
+                  name:
+                    description: Name of the referent.
+                    type: string
+                  namespace:
+                    description: Namespace of the referent.
+                    type: string
+                type: object
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:

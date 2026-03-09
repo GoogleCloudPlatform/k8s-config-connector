@@ -37,8 +37,7 @@ gcloud services enable container.googleapis.com
 # zone for gcloud. Set the default zone for gcloud to us-west1-a.
 gcloud config set compute/zone us-west1-a
 # Define the name of your GKE cluster as cnrm-dev.
-#export CLUSTER_NAME="cnrm-dev"
-export CLUSTER_NAME="standard-ew3"
+export CLUSTER_NAME="cnrm-dev"
 
 if [[ ! $(gcloud beta container clusters list | grep ${CLUSTER_NAME}) ]]; then
     # Create a GKE cluster with Workload Identity enabled.

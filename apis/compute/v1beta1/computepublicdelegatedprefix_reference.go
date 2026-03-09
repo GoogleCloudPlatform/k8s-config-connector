@@ -96,7 +96,6 @@ func (r *ComputePublicDelegatedPrefixRef) Normalize(ctx context.Context, reader 
 		return fmt.Errorf("reading referenced %s %s: %w", ComputePublicDelegatedPrefixGVK, key, err)
 	}
 
-	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
 		return fmt.Errorf("reading status.externalRef: %w", err)
@@ -112,7 +111,7 @@ func (r *ComputePublicDelegatedPrefixRef) Normalize(ctx context.Context, reader 
 		return fmt.Errorf("reading status.selfLink: %w", err)
 	}
 	if selfLink == "" {
-		return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
 
 	// Parse selfLink to identity to ensure it is in consistent format
