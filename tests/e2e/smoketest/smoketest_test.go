@@ -107,7 +107,7 @@ func TestSmoketest(t *testing.T) {
 	t.Cleanup(func() {
 		t.Logf("Reverting manifest patches")
 		revertManifests := func(dir string) {
-			filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+			if err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 				if err != nil {
 					return err
 				}
@@ -120,11 +120,15 @@ func TestSmoketest(t *testing.T) {
 					newContent = strings.ReplaceAll(newContent, "imagePullPolicy: IfNotPresent", "imagePullPolicy: Always")
 					newContent = strings.ReplaceAll(newContent, ":"+imageTag, ":"+stableVersion)
 					if newContent != string(content) {
-						os.WriteFile(path, []byte(newContent), info.Mode())
+						if err := os.WriteFile(path, []byte(newContent), info.Mode()); err != nil {
+							return err
+						}
 					}
 				}
 				return nil
-			})
+			}); err != nil {
+				t.Errorf("failed to revert manifests in %s: %v", dir, err)
+			}
 		}
 		revertManifests(filepath.Join(root, "operator/channels/packages/configconnector"))
 		revertManifests(filepath.Join(root, "operator/autopilot-channels/packages/configconnector"))
