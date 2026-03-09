@@ -422,15 +422,9 @@ func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration) *api.IpCon
 	}
 
 	// We should always send fields in an update, so we add ForceSendFields for all optional fields.
-	// TODO: Roll this out more widely once we confirm it works well for IpConfiguration.
 	out.ForceSendFields = append(out.ForceSendFields, "EnablePrivatePathForGoogleCloudServices")
-
-	if in.Ipv4Enabled != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "Ipv4Enabled")
-	}
-	if in.RequireSsl != nil {
-		out.ForceSendFields = append(out.ForceSendFields, "RequireSsl")
-	}
+	out.ForceSendFields = append(out.ForceSendFields, "Ipv4Enabled")
+	out.ForceSendFields = append(out.ForceSendFields, "RequireSsl")
 
 	return out
 }
