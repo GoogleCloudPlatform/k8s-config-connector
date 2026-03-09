@@ -17,4 +17,4 @@ kind: ComputeNetwork
 metadata:
   name: computenetwork-dep
   annotations:
-    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}spec: {}
