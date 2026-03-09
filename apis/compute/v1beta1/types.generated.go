@@ -22,6 +22,7 @@
 // resource: ComputeSecurityPolicy:SecurityPolicy
 // resource: ComputeSubnetwork:Subnetwork
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
+// resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
 
 package v1beta1
 

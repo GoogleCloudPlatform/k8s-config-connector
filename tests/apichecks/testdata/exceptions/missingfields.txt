@@ -977,6 +977,7 @@
 [missing_field] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.certificateManagerCertificates[].external" is not set in unstructured objects
 [missing_field] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.certificateManagerCertificates[].namespace" is not set in unstructured objects
 [missing_field] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.httpKeepAliveTimeoutSec" is not set in unstructured objects
+[missing_field] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.proxyBind" is not set in unstructured objects
 [missing_field] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serverTlsPolicyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sslCertificates[].external" is not set in unstructured objects
