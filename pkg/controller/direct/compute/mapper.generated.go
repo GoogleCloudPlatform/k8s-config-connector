@@ -1142,7 +1142,7 @@ func ComputePublicDelegatedPrefixSpec_v1beta1_FromProto(mapCtx *direct.MapContex
 	// MISSING: Kind
 	// MISSING: Mode
 	// MISSING: Name
-	out.ParentPrefix = in.ParentPrefix
+	// MISSING: ParentPrefix
 	// MISSING: PublicDelegatedSubPrefixs
 	// MISSING: Region
 	// MISSING: SelfLink
@@ -1166,7 +1166,7 @@ func ComputePublicDelegatedPrefixSpec_v1beta1_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Kind
 	// MISSING: Mode
 	// MISSING: Name
-	out.ParentPrefix = in.ParentPrefix
+	// MISSING: ParentPrefix
 	// MISSING: PublicDelegatedSubPrefixs
 	// MISSING: Region
 	// MISSING: SelfLink

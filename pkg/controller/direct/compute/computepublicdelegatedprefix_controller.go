@@ -31,7 +31,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
 
 func init() {
@@ -140,6 +143,15 @@ func (a *publicDelegatedPrefixAdapter) Create(ctx context.Context, createOp *dir
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
+	if desired.Spec.ParentPrefixRef != nil {
+		parentPrefix, err := resolveParentPrefixRef(ctx, a.reader, a.desired, desired.Spec.ParentPrefixRef)
+		if err != nil {
+			return err
+		}
+		pdp.ParentPrefix = direct.LazyPtr(parentPrefix)
+	}
+
 	pdp.Name = direct.LazyPtr(a.id.ResourceID)
 
 	op := &gcp.Operation{}
@@ -198,6 +210,15 @@ func (a *publicDelegatedPrefixAdapter) Update(ctx context.Context, updateOp *dir
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
+	if desired.Spec.ParentPrefixRef != nil {
+		parentPrefix, err := resolveParentPrefixRef(ctx, a.reader, a.desired, desired.Spec.ParentPrefixRef)
+		if err != nil {
+			return err
+		}
+		pdp.ParentPrefix = direct.LazyPtr(parentPrefix)
+	}
+
 	pdp.Name = direct.LazyPtr(a.id.ResourceID)
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
@@ -256,6 +277,14 @@ func (a *publicDelegatedPrefixAdapter) Export(ctx context.Context) (*unstructure
 
 	mc := &direct.MapContext{}
 	spec := ComputePublicDelegatedPrefixSpec_v1beta1_FromProto(mc, a.actual)
+	
+	// Map returned string parent prefix back to ParentPrefixRef
+	if a.actual.ParentPrefix != nil {
+		spec.ParentPrefixRef = &krm.ComputePublicDelegatedPrefixParentPrefixRef{
+			External: *a.actual.ParentPrefix,
+		}
+	}
+	
 	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
 	if err != nil {
 		return nil, fmt.Errorf("error converting publicDelegatedPrefix spec to unstructured: %w", err)
@@ -334,4 +363,66 @@ func setPublicDelegatedPrefixStatus(u *unstructured.Unstructured, status interfa
 		return fmt.Errorf("converting status to unstructured: %w", err)
 	}
 	return unstructured.SetNestedField(u.Object, statusMap, "status")
+}
+
+func resolveParentPrefixRef(ctx context.Context, reader client.Reader, src client.Object, ref *krm.ComputePublicDelegatedPrefixParentPrefixRef) (string, error) {
+	if ref == nil {
+		return "", nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return "", fmt.Errorf("cannot specify both name and external on parentPrefixRef")
+		}
+		return ref.External, nil
+	}
+
+	if ref.Name == "" {
+		return "", fmt.Errorf("must specify either name or external on parentPrefixRef")
+	}
+
+	key := client.ObjectKey{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	kind := ref.Kind
+	if kind == "" {
+		kind = "ComputePublicAdvertisedPrefix"
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    kind,
+	})
+
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return "", fmt.Errorf("reading referenced %s %s: %w", kind, key, err)
+	}
+
+	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err != nil {
+		return "", fmt.Errorf("reading status.externalRef on %s %s: %w", kind, key, err)
+	}
+	if actualExternalRef != "" {
+		return actualExternalRef, nil
+	}
+
+	selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
+	if err != nil {
+		return "", fmt.Errorf("reading status.selfLink on %s %s: %w", kind, key, err)
+	}
+	if selfLink != "" {
+		return selfLink, nil
+	}
+
+	return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 }
