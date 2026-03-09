@@ -109,6 +109,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterRegionNetworkEndpointGroupsServer(grpcServer, &RegionNetworkEndpointGroupV1{MockService: s})
 
 	pb.RegisterRoutesServer(grpcServer, &RoutesV1{MockService: s})
+	pb.RegisterPublicAdvertisedPrefixesServer(grpcServer, &PublicAdvertisedPrefixesV1{MockService: s})
 
 	pb.RegisterServiceAttachmentsServer(grpcServer, &RegionalServiceAttachmentV1{MockService: s})
 
@@ -168,6 +169,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterTargetVpnGatewaysHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterPublicAdvertisedPrefixesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 

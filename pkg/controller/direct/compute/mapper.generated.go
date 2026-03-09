@@ -124,6 +124,80 @@ func ComputeAddressSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Compu
 	// MISSING: Users
 	return out
 }
+func ComputePublicAdvertisedPrefixObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PublicAdvertisedPrefix) *krm.ComputePublicAdvertisedPrefixObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputePublicAdvertisedPrefixObservedState{}
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PdpScope
+	// MISSING: PublicDelegatedPrefixs
+	out.SelfLink = in.SelfLink
+	out.SharedSecret = in.SharedSecret
+	out.Status = in.Status
+	return out
+}
+func ComputePublicAdvertisedPrefixObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputePublicAdvertisedPrefixObservedState) *pb.PublicAdvertisedPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicAdvertisedPrefix{}
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PdpScope
+	// MISSING: PublicDelegatedPrefixs
+	out.SelfLink = in.SelfLink
+	out.SharedSecret = in.SharedSecret
+	out.Status = in.Status
+	return out
+}
+func ComputePublicAdvertisedPrefixSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PublicAdvertisedPrefix) *krm.ComputePublicAdvertisedPrefixSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputePublicAdvertisedPrefixSpec{}
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DNSVerificationIP = in.DnsVerificationIp
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// (near miss): "IPCIDRRange" vs "IPCidrRange"
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PdpScope
+	// MISSING: PublicDelegatedPrefixs
+	return out
+}
+func ComputePublicAdvertisedPrefixSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputePublicAdvertisedPrefixSpec) *pb.PublicAdvertisedPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicAdvertisedPrefix{}
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DnsVerificationIp = in.DNSVerificationIP
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// (near miss): "IPCIDRRange" vs "IPCidrRange"
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PdpScope
+	// MISSING: PublicDelegatedPrefixs
+	return out
+}
 func ComputePublicDelegatedPrefixObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PublicDelegatedPrefix) *krm.ComputePublicDelegatedPrefixObservedState {
 	if in == nil {
 		return nil

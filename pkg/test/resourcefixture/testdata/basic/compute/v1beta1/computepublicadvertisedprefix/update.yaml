@@ -1,0 +1,10 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputePublicAdvertisedPrefix
+metadata:
+  name: computepublicadvertisedprefix-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  description: "An updated public advertised prefix for testing"
+  dnsVerificationIp: "127.127.127.127"
+  ipCidrRange: "127.127.127.0/24"
