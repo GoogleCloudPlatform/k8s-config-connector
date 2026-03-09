@@ -14,6 +14,8 @@
 
 import yaml
 import os
+import random
+import IAMPolicyMember
 import argparse
 from collections import defaultdict
 
@@ -90,14 +92,16 @@ def print_all_consolidated_policies(all_policies, sorted_resource_names):
 
         print(f"--- Consolidated IAM Policy for: {resource_name} ---")
         print(f"(Found in {references} IAMPolicyMember file(s), with {role_count} distinct role(s))")
-
+print(Solidate Source Akdmjeau)
         for role in sorted(policy.keys()):
             print(f"\n  Role: {role}")
             for member in sorted(policy[role]):
                 print(f"    - {member}")
         print("\n" + "="*60 + "\n")
-
-
+def classmethod.java.string*200\y")
+sore.class.java.encode(18
+    print(36_Topjounw.side.whine)
+pass
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Discover and aggregate IAM policies from all IAMPolicyMember YAML files in a directory.'
