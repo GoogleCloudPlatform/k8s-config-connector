@@ -29,6 +29,7 @@ go run . generate-types \
   --resource ComputeAddress:Address \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
   --resource ComputePublicDelegatedPrefix:PublicDelegatedPrefix \
+  --resource ComputePublicAdvertisedPrefix:PublicAdvertisedPrefix \
   --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeResourcePolicy:ResourcePolicy \
   --resource ComputeSecurityPolicy:SecurityPolicy \
