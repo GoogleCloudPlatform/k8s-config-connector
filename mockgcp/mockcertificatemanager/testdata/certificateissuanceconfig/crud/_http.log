@@ -75,31 +75,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Not Found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
 GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
@@ -241,13 +216,17 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
-    "accessUrls": {
-      "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/test-ca-${uniqueId}/ca.crt"
-    },
     "caCertificateDescriptions": [
       {
+        "authorityKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+        },
         "certFingerprint": {
           "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+        },
+        "publicKey": {
+          "format": "PEM",
+          "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
         },
         "subjectDescription": {
           "hexSerialNumber": "0123456789abcdef",
@@ -258,6 +237,9 @@ X-Xss-Protection: 0
             "commonName": "test-ca-${uniqueId}"
           },
           "subjectAltName": {}
+        },
+        "subjectKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
         },
         "x509Description": {
           "caOptions": {
@@ -300,6 +282,8 @@ X-Xss-Protection: 0
     "pemCaCertificates": [
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
+    "state": "STAGED",
+    "tier": "DEVOPS",
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -368,13 +352,17 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
-    "accessUrls": {
-      "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/test-ca-${uniqueId}/ca.crt"
-    },
     "caCertificateDescriptions": [
       {
+        "authorityKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+        },
         "certFingerprint": {
           "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+        },
+        "publicKey": {
+          "format": "PEM",
+          "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
         },
         "subjectDescription": {
           "hexSerialNumber": "0123456789abcdef",
@@ -385,6 +373,9 @@ X-Xss-Protection: 0
             "commonName": "test-ca-${uniqueId}"
           },
           "subjectAltName": {}
+        },
+        "subjectKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
         },
         "x509Description": {
           "caOptions": {
@@ -428,6 +419,7 @@ X-Xss-Protection: 0
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
     "state": "ENABLED",
+    "tier": "DEVOPS",
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -676,13 +668,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "accessUrls": {
-    "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/test-ca-${uniqueId}/ca.crt"
-  },
   "caCertificateDescriptions": [
     {
+      "authorityKeyId": {
+        "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+      },
       "certFingerprint": {
         "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+      },
+      "publicKey": {
+        "format": "PEM",
+        "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
       },
       "subjectDescription": {
         "hexSerialNumber": "0123456789abcdef",
@@ -693,6 +689,9 @@ X-Xss-Protection: 0
           "commonName": "test-ca-${uniqueId}"
         },
         "subjectAltName": {}
+      },
+      "subjectKeyId": {
+        "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
       },
       "x509Description": {
         "caOptions": {
@@ -736,6 +735,7 @@ X-Xss-Protection: 0
     "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
   ],
   "state": "ENABLED",
+  "tier": "DEVOPS",
   "type": "SELF_SIGNED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -804,13 +804,17 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
-    "accessUrls": {
-      "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/test-ca-${uniqueId}/ca.crt"
-    },
     "caCertificateDescriptions": [
       {
+        "authorityKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+        },
         "certFingerprint": {
           "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+        },
+        "publicKey": {
+          "format": "PEM",
+          "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
         },
         "subjectDescription": {
           "hexSerialNumber": "0123456789abcdef",
@@ -821,6 +825,9 @@ X-Xss-Protection: 0
             "commonName": "test-ca-${uniqueId}"
           },
           "subjectAltName": {}
+        },
+        "subjectKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
         },
         "x509Description": {
           "caOptions": {
@@ -864,6 +871,7 @@ X-Xss-Protection: 0
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
     "state": "DISABLED",
+    "tier": "DEVOPS",
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -887,13 +895,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "accessUrls": {
-    "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/test-ca-${uniqueId}/ca.crt"
-  },
   "caCertificateDescriptions": [
     {
+      "authorityKeyId": {
+        "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+      },
       "certFingerprint": {
         "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+      },
+      "publicKey": {
+        "format": "PEM",
+        "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
       },
       "subjectDescription": {
         "hexSerialNumber": "0123456789abcdef",
@@ -904,6 +916,9 @@ X-Xss-Protection: 0
           "commonName": "test-ca-${uniqueId}"
         },
         "subjectAltName": {}
+      },
+      "subjectKeyId": {
+        "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
       },
       "x509Description": {
         "caOptions": {
@@ -947,6 +962,7 @@ X-Xss-Protection: 0
     "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
   ],
   "state": "DISABLED",
+  "tier": "DEVOPS",
   "type": "SELF_SIGNED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -1009,13 +1025,17 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateAuthority",
-    "accessUrls": {
-      "caCertificateAccessUrl": "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/test-ca-${uniqueId}/ca.crt"
-    },
     "caCertificateDescriptions": [
       {
+        "authorityKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
+        },
         "certFingerprint": {
           "sha256Hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789test-ca-${uniqueId}"
+        },
+        "publicKey": {
+          "format": "PEM",
+          "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFyeGt3dVBoREZTNlc1eEgvMW1MVApTYXhzMTNONnpGYlRXSUY4aG4vTlk1cXlJYmFpd0FYdEVOeU53NkhSSmd4R2c0WElkRXlMVGpCK1VNVVVLYU9OCnd0WFJTUW9CeGR2VitKeWRlL05jTUUzM3QyT3d1UDBRVzY2UnRLak52b2R5dzRLTHphVmp6T1hPY0YwV0NNYy8KRjV4cU5uUHpOalVncUlBanozSHkrejROWmNnT0lnM3dVdEJRRlNTUm16TmtzdjMwejhLQjdXUXJkaElWb3JuOQpuWVFPeW11eTZPT0dLM3FIUXRZYk1MYU9oREY1VnJ3amozblUxeStQMzdRR1kwdG5KS3VYbGNwR3hJN0tkWTI5CjRJM1F6K0JHemI0Wll0WE1uTzNOZFZVaTRteG14VTBMbVE3VlJkdHpkTGN6cTJDUEoyV2JjTTZkUldmVERoNisKYzdDQys3K1ZBdzlxeW1OSnFXN0wxb2JNSkNuTHpwcHBPVWg0RjNXU1V0SXVLcUZ2alo1eFMzUXBFSGJsRFoybgpUaTY1Tm4yR2JzeVYrc2FxTkpOdUdmVEpvUzRJOGFoakljY2hDaXUzRDMxNm5MczlENmMwckRLNmxsbUpHdFRLCmZsSVEyQkZmY2FtV2VlSXlNU1dIK3Uza2lKTTY2YWF1NVJrNlFXWWlKMTRhaWswNmsvK1pMRnNMazUvbVV3eVEKTWFUMXNPUGQ1Z3FSeUsrdGgyVXNkb1p1dE5PZFZYMWdRNjk4cXdVZk1oTmpkSzNLZUkzNWQvY2xuR2F1UGVPSgo2ZlgySy9WN1hTblQrcGRjRTExZjNFU0FZVEIybnJJSXgzK3NjYXdZalREd0Qrd2JQZ0p4ZG4wc1ppOTNtV2FKCkFPdTV4QjBOSStsYXhZT2tPZHhrYklVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo="
         },
         "subjectDescription": {
           "hexSerialNumber": "0123456789abcdef",
@@ -1026,6 +1046,9 @@ X-Xss-Protection: 0
             "commonName": "test-ca-${uniqueId}"
           },
           "subjectAltName": {}
+        },
+        "subjectKeyId": {
+          "keyId": "58ff0120decc0d87caa30eb45fef39e38133e733"
         },
         "x509Description": {
           "caOptions": {
@@ -1071,6 +1094,7 @@ X-Xss-Protection: 0
       "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
     ],
     "state": "DELETED",
+    "tier": "DEVOPS",
     "type": "SELF_SIGNED",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }

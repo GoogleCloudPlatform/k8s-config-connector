@@ -42,6 +42,8 @@ func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.Norma
 
 	visitor.ReplacePath(".metadata.createTime", NormalizedTimestamp)
 	visitor.ReplacePath(".metadata.endTime", NormalizedTimestamp)
+	visitor.ReplacePath(".metadata.requestedCancellation", false)
+	visitor.ReplacePath(".done", true)
 
 	visitor.ReplacePath(".caCertificateDescriptions[].subjectDescription.notBeforeTime", NormalizedTimestamp)
 	visitor.ReplacePath(".caCertificateDescriptions[].subjectDescription.notAfterTime", NormalizedTimestamp)
