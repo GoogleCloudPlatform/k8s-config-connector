@@ -20,13 +20,13 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
   --service google.cloud.datacatalog.v1 \
   --api-version datacatalog.cnrm.cloud.google.com/v1beta1 \
   --resource DataCatalogPolicyTag:PolicyTag \
   --include-skipped-output
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
   --service google.cloud.datacatalog.v1 \
   --api-version datacatalog.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output

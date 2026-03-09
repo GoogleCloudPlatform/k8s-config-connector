@@ -23,11 +23,11 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
     --service google.pubsub.v1 \
     --api-version pubsub.cnrm.cloud.google.com/v1beta1 \
     --resource PubSubSnapshot:Snapshot
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
     --service google.pubsub.v1 \
     --api-version pubsub.cnrm.cloud.google.com/v1beta1

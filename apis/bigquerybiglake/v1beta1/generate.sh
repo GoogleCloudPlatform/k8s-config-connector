@@ -23,12 +23,12 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
     --service google.cloud.bigquery.biglake.v1 \
     --api-version "bigquerybiglake.cnrm.cloud.google.com/v1beta1" \
     --resource BigLakeTable:Table
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
     --multiversion \
     --service google.cloud.bigquery.biglake.v1 \
     --api-version "bigquerybiglake.cnrm.cloud.google.com/v1beta1"
@@ -36,4 +36,4 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/bigquerybiglake/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/bigquerybiglake/

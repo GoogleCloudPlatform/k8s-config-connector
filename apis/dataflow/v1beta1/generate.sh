@@ -23,16 +23,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
   --service google.dataflow.v1beta3 \
   --api-version dataflow.cnrm.cloud.google.com/v1beta1  \
   --resource DataflowFlexTemplateJob:FlexTemplateRuntimeEnvironment # Note: this is an unusual resource, and the mapping is not 1:1
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
   --service google.dataflow.v1beta3 \
   --api-version dataflow.cnrm.cloud.google.com/v1beta1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/dataflow/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/dataflow/

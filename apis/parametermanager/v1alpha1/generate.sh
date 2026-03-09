@@ -21,13 +21,13 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # Generate the KCC type structs from the GCP proto definitions
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
   --service google.cloud.parametermanager.v1 \
   --api-version parametermanager.cnrm.cloud.google.com/v1alpha1  \
   --resource ParameterManagerParameter:Parameter
 
 # Generate the mapper functions that convert between the KCC structs and the GCP proto structs
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
   --service google.cloud.parametermanager.v1 \
   --api-version parametermanager.cnrm.cloud.google.com/v1alpha1
 
@@ -38,4 +38,4 @@ cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 # Format the generated Go code
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg/controller/direct/parametermanager/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w pkg/controller/direct/parametermanager/

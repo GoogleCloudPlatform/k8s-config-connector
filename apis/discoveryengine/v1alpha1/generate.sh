@@ -23,15 +23,15 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+${CONTROLLERBUILDER:-go run .} generate-types --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineDataStore:DataStore \
   --resource DiscoveryEngineEngine:Engine \
   --resource DiscoveryEngineTargetSite:TargetSite
 
-go run . generate-mapper --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
+${CONTROLLERBUILDER:-go run .} generate-mapper --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
 
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/discoveryengine/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/discoveryengine/

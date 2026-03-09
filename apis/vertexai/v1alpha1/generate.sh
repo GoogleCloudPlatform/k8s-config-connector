@@ -23,12 +23,12 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1     --resource VertexAIFeaturestore:Featurestore
+${CONTROLLERBUILDER:-go run .} generate-types     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1     --resource VertexAIFeaturestore:Featurestore
 
-go run . generate-mapper     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1
+${CONTROLLERBUILDER:-go run .} generate-mapper     --service google.cloud.aiplatform.v1beta1     --api-version vertexai.cnrm.cloud.google.com/v1alpha1
 
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/vertexai/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/vertexai/

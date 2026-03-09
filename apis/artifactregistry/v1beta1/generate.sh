@@ -22,11 +22,11 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
   --service google.devtools.artifactregistry.v1 \
   --api-version artifactregistry.cnrm.cloud.google.com/v1beta1  \
   --resource ArtifactRegistryRepository:Repository
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
   --service google.devtools.artifactregistry.v1 \
   --api-version artifactregistry.cnrm.cloud.google.com/v1beta1

@@ -23,16 +23,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
     --service google.logging.v2 \
     --api-version "logging.cnrm.cloud.google.com/v1beta1" \
     --resource LoggingLink:Link
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
     --service google.logging.v2 \
     --api-version "logging.cnrm.cloud.google.com/v1beta1"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/logging/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/logging/

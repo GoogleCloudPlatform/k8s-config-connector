@@ -23,14 +23,14 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
   --service google.cloud.sql.v1beta4 \
   --api-version sql.cnrm.cloud.google.com/v1beta1  \
   --resource SQLInstance:DatabaseInstance \
   --skip-scaffold-files \
   --include-skipped-output
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
   --service google.cloud.sql.v1beta4 \
   --api-version sql.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
@@ -38,5 +38,5 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/sql/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/sql/
 

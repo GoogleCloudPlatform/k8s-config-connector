@@ -23,16 +23,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
     --service google.analytics.admin.v1beta \
     --api-version "analytics.cnrm.cloud.google.com/v1alpha1" \
     --resource AnalyticsAccount:Account
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
     --service google.analytics.admin.v1beta \
     --api-version "analytics.cnrm.cloud.google.com/v1alpha1"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/analytics/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/analytics/

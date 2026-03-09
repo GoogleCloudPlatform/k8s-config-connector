@@ -23,17 +23,17 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
     --service google.cloud.bigquery.reservation.v1 \
     --api-version "bigqueryreservation.cnrm.cloud.google.com/v1beta1" \
     --resource BigQueryReservationReservation:Reservation \
     --resource BigQueryReservationAssignment:Assignment
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
     --service google.cloud.bigquery.reservation.v1 \
     --api-version "bigqueryreservation.cnrm.cloud.google.com/v1beta1"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/bigqueryreservation/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/bigqueryreservation/

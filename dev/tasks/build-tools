@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+mkdir -p bin
+
+echo "Building controllerbuilder..."
+go build -o bin/controllerbuilder ./dev/tools/controllerbuilder
+
+echo "Building controller-gen..."
+GOBIN=${REPO_ROOT}/bin go install sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5
+
+echo "Building kustomize..."
+GOBIN=${REPO_ROOT}/bin go install sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
+
+echo "Building addlicense..."
+GOBIN=${REPO_ROOT}/bin go install github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153
+
+echo "Building goimports..."
+GOBIN=${REPO_ROOT}/bin go install golang.org/x/tools/cmd/goimports@latest
+
+echo "Building generate-crds..."
+go build -o bin/generate-crds ./scripts/generate-crds

@@ -27,7 +27,7 @@ fi
 
 # Run controller-gen to generate CRDs (including deepcopy)
 cd ${REPO_ROOT}/apis
-go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 \
+${CONTROLLER_GEN:-go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5} \
   object:headerFile=${REPO_ROOT}/hack/boilerplate.go.txt \
   crd:crdVersions=v1,allowDangerousTypes=true,ignoreUnexportedFields=true \
   output:crd:artifacts:config=config/crd/ \
@@ -91,4 +91,4 @@ go run ./scripts/generate-gvks/main.go -output-dir=pkg/gvks/supportedgvks
 go run ./scripts/generate-cnrm-cluster-roles/main.go
 
 # controller-gen sometimes leaves empty imports in the api files.
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w apis
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w apis
