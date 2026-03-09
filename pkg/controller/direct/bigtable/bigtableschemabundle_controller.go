@@ -102,6 +102,7 @@ var _ directbase.Adapter = &BigtableSchemaBundleAdapter{}
 
 func (a *BigtableSchemaBundleAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("getting BigtableSchemaBundle", "name", a.id)
 
 	bigtableschemabundleinfo, err := a.gcpClient.GetSchemaBundle(ctx, a.id.Parent().Id, a.id.ID())
@@ -118,6 +119,7 @@ func (a *BigtableSchemaBundleAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *BigtableSchemaBundleAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("creating BigtableSchemaBundle", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -177,6 +179,7 @@ func (a *BigtableSchemaBundleAdapter) Create(ctx context.Context, createOp *dire
 
 func (a *BigtableSchemaBundleAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("updating BigtableSchemaBundle", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -197,62 +200,65 @@ func (a *BigtableSchemaBundleAdapter) Update(ctx context.Context, updateOp *dire
 		needsUpdate = true
 	}
 
-	if needsUpdate {
-		structuredreporting.ReportDiff(ctx, report)
-
-		conf := gcp.UpdateSchemaBundleConf{
-			SchemaBundleConf: gcp.SchemaBundleConf{
-				TableID:        a.id.Parent().Id,
-				SchemaBundleID: a.id.ID(),
-				ProtoSchema: &gcp.ProtoSchemaInfo{
-					ProtoDescriptors: desiredSchema,
-				},
+	if !needsUpdate {
+		log.V(2).Info("no field needs update", "name", a.id)
+		if a.desired.Status.ExternalRef == nil || a.desired.Status.ObservedState == nil {
+			status := &krm.BigtableSchemaBundleStatus{}
+			pbActual := &bigtablepb.SchemaBundle{
+				Name: a.id.String(),
 				Etag: a.actual.Etag,
-			},
-		}
-
-		err := a.gcpClient.UpdateSchemaBundle(ctx, conf)
-		if err != nil {
-			return fmt.Errorf("updating BigtableSchemaBundle %s: %w", a.id, err)
-		}
-		log.V(2).Info("successfully updated BigtableSchemaBundle", "name", a.id)
-
-		// Get the updated resource
-		updated, err := a.gcpClient.GetSchemaBundle(ctx, a.id.Parent().Id, a.id.ID())
-		if err != nil {
-			return fmt.Errorf("getting updated BigtableSchemaBundle %s: %w", a.id, err)
-		}
-
-		status := &krm.BigtableSchemaBundleStatus{}
-		pbUpdated := &bigtablepb.SchemaBundle{
-			Name: a.id.String(),
-			Etag: updated.Etag,
-			Type: &bigtablepb.SchemaBundle_ProtoSchema{
-				ProtoSchema: &bigtablepb.ProtoSchema{
-					ProtoDescriptors: updated.SchemaBundle,
+				Type: &bigtablepb.SchemaBundle_ProtoSchema{
+					ProtoSchema: &bigtablepb.ProtoSchema{
+						ProtoDescriptors: a.actual.SchemaBundle,
+					},
 				},
-			},
+			}
+			status.ObservedState = BigtableSchemaBundleObservedState_v1alpha1_FromProto(mapCtx, pbActual)
+			if mapCtx.Err() != nil {
+				return mapCtx.Err()
+			}
+			status.ExternalRef = direct.LazyPtr(a.id.String())
+			return updateOp.UpdateStatus(ctx, status, nil)
 		}
-		status.ObservedState = BigtableSchemaBundleObservedState_v1alpha1_FromProto(mapCtx, pbUpdated)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-		status.ExternalRef = direct.LazyPtr(a.id.String())
-		return updateOp.UpdateStatus(ctx, status, nil)
+		return nil
 	}
 
-	log.V(2).Info("no field needs update", "name", a.id)
+	structuredreporting.ReportDiff(ctx, report)
+
+	conf := gcp.UpdateSchemaBundleConf{
+		SchemaBundleConf: gcp.SchemaBundleConf{
+			TableID:        a.id.Parent().Id,
+			SchemaBundleID: a.id.ID(),
+			ProtoSchema: &gcp.ProtoSchemaInfo{
+				ProtoDescriptors: desiredSchema,
+			},
+			Etag: a.actual.Etag,
+		},
+	}
+
+	err := a.gcpClient.UpdateSchemaBundle(ctx, conf)
+	if err != nil {
+		return fmt.Errorf("updating BigtableSchemaBundle %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully updated BigtableSchemaBundle", "name", a.id)
+
+	// Get the updated resource
+	updated, err := a.gcpClient.GetSchemaBundle(ctx, a.id.Parent().Id, a.id.ID())
+	if err != nil {
+		return fmt.Errorf("getting updated BigtableSchemaBundle %s: %w", a.id, err)
+	}
+
 	status := &krm.BigtableSchemaBundleStatus{}
-	pbActual := &bigtablepb.SchemaBundle{
+	pbUpdated := &bigtablepb.SchemaBundle{
 		Name: a.id.String(),
-		Etag: a.actual.Etag,
+		Etag: updated.Etag,
 		Type: &bigtablepb.SchemaBundle_ProtoSchema{
 			ProtoSchema: &bigtablepb.ProtoSchema{
-				ProtoDescriptors: a.actual.SchemaBundle,
+				ProtoDescriptors: updated.SchemaBundle,
 			},
 		},
 	}
-	status.ObservedState = BigtableSchemaBundleObservedState_v1alpha1_FromProto(mapCtx, pbActual)
+	status.ObservedState = BigtableSchemaBundleObservedState_v1alpha1_FromProto(mapCtx, pbUpdated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -261,6 +267,7 @@ func (a *BigtableSchemaBundleAdapter) Update(ctx context.Context, updateOp *dire
 }
 
 func (a *BigtableSchemaBundleAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	defer a.gcpClient.Close()
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
@@ -307,6 +314,7 @@ func (a *BigtableSchemaBundleAdapter) Export(ctx context.Context) (*unstructured
 
 func (a *BigtableSchemaBundleAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("deleting BigtableSchemaBundle", "name", a.id)
 
 	err := a.gcpClient.DeleteSchemaBundle(ctx, a.id.Parent().Id, a.id.ID())

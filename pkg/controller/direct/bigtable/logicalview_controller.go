@@ -125,6 +125,7 @@ var _ directbase.Adapter = &LogicalViewAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *LogicalViewAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("getting BigtableLogicalView", "name", a.id)
 
 	logicalViewInfo, err := a.gcpClient.LogicalViewInfo(ctx, a.id.ParentInstanceIdString(), a.id.ID())
@@ -166,6 +167,7 @@ func convertLogicalViewToLogicalViewInfo(in *bigtablepb.LogicalView) *gcp.Logica
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("creating LogicalView", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -203,6 +205,7 @@ func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.Cr
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("updating LogicalView", "name", a.id)
 
 	spec := a.desired.Spec
@@ -223,49 +226,42 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-	} else {
-		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
-		structuredreporting.ReportDiff(ctx, report)
-
-		mapCtx := &direct.MapContext{}
-
-		lv := BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
+		if a.desired.Status.ExternalRef == nil {
+			status := &krm.BigtableLogicalViewStatus{}
+			status.ExternalRef = direct.LazyPtr(a.id.String())
+			status.Name = direct.LazyPtr(a.id.String())
+			return updateOp.UpdateStatus(ctx, status, nil)
 		}
-		lv.Name = a.id.ID()
-		lvi := convertLogicalViewToLogicalViewInfo(lv)
-
-		log.V(2).Info("Updating logical view with desired logical view", lvi)
-
-		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), *lvi)
-		if err != nil {
-			return fmt.Errorf("updating LogicalView %s: %w", a.id, err)
-		}
-		log.V(2).Info("successfully updated LogicalView", "name", a.id)
-		status := &krm.BigtableLogicalViewStatus{}
-		status.Name = direct.LazyPtr(a.id.String())
-		// TODO: Add ObservedState
-		// status.ObservedState = LogicalViewObservedState_FromProto(mapCtx, updated)
-		// if mapCtx.Err() != nil {
-		// 	return mapCtx.Err()
-		// }
-		return updateOp.UpdateStatus(ctx, status, nil)
+		return nil
 	}
 
+	log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
+	structuredreporting.ReportDiff(ctx, report)
+
+	mapCtx := &direct.MapContext{}
+
+	lv := BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	lv.Name = a.id.ID()
+	lvi := convertLogicalViewToLogicalViewInfo(lv)
+
+	log.V(2).Info("Updating logical view with desired logical view", lvi)
+
+	if err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), *lvi); err != nil {
+		return fmt.Errorf("updating LogicalView %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully updated LogicalView", "name", a.id)
 	status := &krm.BigtableLogicalViewStatus{}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	status.Name = direct.LazyPtr(a.id.String())
-	// TODO: Add ObservedState
-	// status.ObservedState = LogicalViewObservedState_FromProto(mapCtx, updated)
-	// if mapCtx.Err() != nil {
-	// 	return mapCtx.Err()
-	// }
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
 func (a *LogicalViewAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	defer a.gcpClient.Close()
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
@@ -295,6 +291,7 @@ func (a *LogicalViewAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *LogicalViewAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("deleting LogicalView", "name", a.id)
 
 	err := a.gcpClient.DeleteLogicalView(ctx, a.id.ParentInstanceIdString(), a.id.ID())
