@@ -1,0 +1,121 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1beta1
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	corev1 "k8s.io/api/core/v1"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var _ identity.Identity = &PublicAdvertisedPrefixIdentity{}
+
+// PublicAdvertisedPrefixIdentity defines the resource reference to ComputePublicAdvertisedPrefix, which "External" field
+// holds the GCP identifier for the KRM object.
+type PublicAdvertisedPrefixIdentity struct {
+	ParentID   *parent.ComputeParent
+	ResourceID string
+}
+
+func (i *PublicAdvertisedPrefixIdentity) String() string {
+	return i.ParentID.String() + "/publicAdvertisedPrefixes/" + i.ResourceID
+}
+
+func (i *PublicAdvertisedPrefixIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	if len(tokens) < 2 {
+		return fmt.Errorf("format of ComputePublicAdvertisedPrefix external=%q was not known: too short", ref)
+	}
+	p, err := parent.ParseComputeParent(strings.Join(tokens[:len(tokens)-2], "/"))
+	if err != nil {
+		return err
+	}
+	if tokens[len(tokens)-2] != "publicAdvertisedPrefixes" {
+		return fmt.Errorf("format of ComputePublicAdvertisedPrefix external=%q was not known (use %s/publicAdvertisedPrefixes/{{publicAdvertisedPrefixID}}", ref, p)
+	}
+	i.ResourceID = tokens[len(tokens)-1]
+	i.ParentID = p
+	return nil
+}
+
+var _ identity.Resource = &ComputePublicAdvertisedPrefix{}
+
+func (obj *ComputePublicAdvertisedPrefix) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	// Get parent ID
+	parentID, err := obj.GetParentIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get resource ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	id := &PublicAdvertisedPrefixIdentity{
+		ParentID:   parentID,
+		ResourceID: resourceID,
+	}
+
+	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		previousID := &PublicAdvertisedPrefixIdentity{}
+		if err := previousID.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+		if id.String() != previousID.String() {
+			return nil, fmt.Errorf("cannot update ComputePublicAdvertisedPrefix identity (old=%q, new=%q): identity is immutable", previousID.String(), id.String())
+		}
+	}
+
+	return id, nil
+}
+
+func (obj *ComputePublicAdvertisedPrefix) GetParentIdentity(ctx context.Context, reader client.Reader) (*parent.ComputeParent, error) {
+	projectID, err := refsv1beta1.ResolveProjectFromAnnotation(ctx, reader, obj)
+	if err != nil {
+		// Try to look up the project ID from the namespace
+		// We can't use ResolveProjectFromAnnotation because that only looks at the object.
+		// We could potentially update ResolveProjectFromAnnotation, but it's in a shared package.
+		key := client.ObjectKey{Name: obj.GetNamespace()}
+		ns := &corev1.Namespace{}
+		if err := reader.Get(ctx, key, ns); err != nil {
+			return nil, fmt.Errorf("error getting namespace %q: %w", obj.GetNamespace(), err)
+		}
+		if id := ns.Annotations["cnrm.cloud.google.com/project-id"]; id != "" {
+			projectID = &refsv1beta1.ProjectIdentity{ProjectID: id}
+		} else {
+			return nil, fmt.Errorf("no value found for annotation cnrm.cloud.google.com/project-id on resource or namespace")
+		}
+	}
+
+	// Get Location
+	location := "global"
+
+	return &parent.ComputeParent{ProjectID: projectID.ProjectID, Location: location}, nil
+}
