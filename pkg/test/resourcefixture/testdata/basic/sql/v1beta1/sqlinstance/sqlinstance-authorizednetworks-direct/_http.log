@@ -54,6 +54,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       ],
       "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
+      "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -417,6 +418,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       ],
       "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
+      "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
