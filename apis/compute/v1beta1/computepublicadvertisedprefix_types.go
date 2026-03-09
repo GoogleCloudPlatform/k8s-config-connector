@@ -41,6 +41,12 @@ type ComputePublicAdvertisedPrefixSpec struct {
 
 	// The ComputePublicAdvertisedPrefix name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Specifies how child public delegated prefix will be scoped. It could be one of following values:
+	// "GLOBAL" - The public delegated prefix is global only. The provisioning will take ~4 weeks.
+	// "REGIONAL" - The public delegated prefix is regional only. The provisioning will take a few minutes.
+	// "GLOBAL_AND_REGIONAL" - Output only.: The public delegated prefixes is BYOIP V1 legacy prefix. This is output only value and no longer supported in BYOIP V2.
+	PdpScope *string `json:"pdpScope,omitempty"`
 }
 
 // ComputePublicAdvertisedPrefixStatus defines the config connector machine state of ComputePublicAdvertisedPrefix

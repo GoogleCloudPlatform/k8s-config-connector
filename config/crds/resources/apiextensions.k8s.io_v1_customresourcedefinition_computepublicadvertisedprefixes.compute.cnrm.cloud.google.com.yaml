@@ -74,6 +74,13 @@ spec:
                 description: The IPv4 address range, in CIDR format, represented by
                   this public advertised prefix.
                 type: string
+              pdpScope:
+                description: Specifies how child public delegated prefix will be scoped.
+                  It could be one of following values "GLOBAL" - Child public delegated
+                  prefix will be scoped to the same region as the parent public advertised
+                  prefix. "REGIONAL" - Child public delegated prefix will be scoped
+                  to the same region as the parent public advertised prefix.
+                type: string
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:

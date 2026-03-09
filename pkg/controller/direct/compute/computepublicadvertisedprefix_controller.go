@@ -278,6 +278,7 @@ func ComputePublicAdvertisedPrefixSpecToAPI(ctx *direct.MapContext, in *krm.Comp
 	out.Description = in.Description
 	out.DnsVerificationIp = in.DNSVerificationIP
 	out.IpCidrRange = in.IPCidrRange
+	out.PdpScope = in.PdpScope
 	return out
 }
 
@@ -288,6 +289,7 @@ func ComputePublicAdvertisedPrefixSpecFromAPI(ctx *direct.MapContext, in *comput
 	out.Description = in.Description
 	out.DNSVerificationIP = in.DnsVerificationIp
 	out.IPCidrRange = in.IpCidrRange
+	out.PdpScope = in.PdpScope
 }
 
 func setPublicAdvertisedPrefixStatus(u *unstructured.Unstructured, status interface{}) error {
