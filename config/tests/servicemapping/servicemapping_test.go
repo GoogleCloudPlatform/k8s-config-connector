@@ -512,6 +512,11 @@ func validateTypeConfigGVK(t *testing.T, rc v1alpha1.ResourceConfig, ref v1alpha
 		{
 			Group:   "compute.cnrm.cloud.google.com",
 			Version: "v1beta1",
+			Kind:    "ComputePublicAdvertisedPrefix",
+		},
+		{
+			Group:   "compute.cnrm.cloud.google.com",
+			Version: "v1beta1",
 			Kind:    "ComputePublicDelegatedPrefix",
 		},
 		{

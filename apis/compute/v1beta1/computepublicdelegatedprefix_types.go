@@ -41,13 +41,27 @@ type ComputePublicDelegatedPrefixSpec struct {
 	IPCidrRange *string `json:"ipCidrRange,omitempty"`
 
 	// The URL of parent prefix. Either Create constructed or specified by the user.
-	ParentPrefix *string `json:"parentPrefix,omitempty"`
+	ParentPrefixRef *ComputePublicDelegatedPrefixParentPrefixRef `json:"parentPrefixRef,omitempty"`
 
 	// AllocatablePrefixes: The list of sub-prefixes that are delegated IPv4
 	// sub-prefixes. The length of the delegated sub-prefixes must be
 	// /64.
 	// +optional
 	AllocatablePrefixes []string `json:"allocatablePrefixes,omitempty"`
+}
+
+type ComputePublicDelegatedPrefixParentPrefixRef struct {
+	// The `external` field of a `ComputePublicAdvertisedPrefix` or `ComputePublicDelegatedPrefix` resource.
+	External string `json:"external,omitempty"`
+	// Kind of the referent. Allowed values: ComputePublicAdvertisedPrefix (default), ComputePublicDelegatedPrefix
+	// +optional
+	Kind string `json:"kind,omitempty"`
+	// Name of the referent.
+	// +optional
+	Name string `json:"name,omitempty"`
+	// Namespace of the referent.
+	// +optional
+	Namespace string `json:"namespace,omitempty"`
 }
 
 // ComputePublicDelegatedPrefixStatus defines the config connector machine state of ComputePublicDelegatedPrefix
