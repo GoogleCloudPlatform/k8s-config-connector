@@ -120,6 +120,7 @@ var _ directbase.Adapter = &BigtableAppProfileAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *BigtableAppProfileAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("getting BigtableAppProfile", "name", a.id)
 
 	bigtableappprofilepb, err := a.gcpClient.GetAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID())
@@ -137,6 +138,7 @@ func (a *BigtableAppProfileAdapter) Find(ctx context.Context) (bool, error) {
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *BigtableAppProfileAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("creating BigtableAppProfile", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -209,6 +211,7 @@ func (a *BigtableAppProfileAdapter) Create(ctx context.Context, createOp *direct
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("updating BigtableAppProfile", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -270,28 +273,30 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 
 	if !hasChanges {
 		log.V(2).Info("no changes to update", "name", a.id)
-	} else {
-		structuredreporting.ReportDiff(ctx, report)
-		err := a.gcpClient.UpdateAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID(), fieldsToUpdate)
-		if err != nil {
-			return fmt.Errorf("updating BigtableAppProfile %s: %w", a.id, err)
+		if a.desired.Status.ExternalRef == nil {
+			status := &krm.BigtableAppProfileStatus{}
+			status.ExternalRef = direct.LazyPtr(a.id.String())
+			status.Name = direct.LazyPtr(a.id.String())
+			return updateOp.UpdateStatus(ctx, status, nil)
 		}
-		log.V(2).Info("successfully updated BigtableAppProfile", "name", a.id)
+		return nil
 	}
 
-	status := &krm.BigtableAppProfileStatus{}
-	status.Name = direct.LazyPtr(a.id.String())
-	// TODO: Add ObservedState
-	// status.ObservedState = AppProfileObservedState_FromProto(mapCtx, updated)
-	// if mapCtx.Err() != nil {
-	// 	return mapCtx.Err()
-	// }
-	return updateOp.UpdateStatus(ctx, status, nil)
+	structuredreporting.ReportDiff(ctx, report)
+	if err := a.gcpClient.UpdateAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID(), fieldsToUpdate); err != nil {
+		return fmt.Errorf("updating BigtableAppProfile %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully updated BigtableAppProfile", "name", a.id)
 
+	status := &krm.BigtableAppProfileStatus{}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	status.Name = direct.LazyPtr(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
 func (a *BigtableAppProfileAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	defer a.gcpClient.Close()
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
@@ -320,6 +325,7 @@ func (a *BigtableAppProfileAdapter) Export(ctx context.Context) (*unstructured.U
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *BigtableAppProfileAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("deleting BigtableAppProfile", "name", a.id)
 
 	err := a.gcpClient.DeleteAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID())
