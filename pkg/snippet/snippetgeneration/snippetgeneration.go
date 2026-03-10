@@ -97,6 +97,7 @@ var preferredSampleForResource = map[string]string{
 	"logginglogmetric":                   "linear-log-metric",
 	"logginglogsink":                     "project-sink",
 	"logginglogview":                     "project-log-view",
+	"memorystoreinstance":                "basic",
 	"monitoringalertpolicy":              "network-connectivity-alert-policy",
 	"monitoringnotificationchannel":      "sms-monitoring-notification-channel",
 	"monitoringservicelevelobjective":    "window-based-gtr-distribution-cut",
