@@ -75,6 +75,31 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not Found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
 GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
