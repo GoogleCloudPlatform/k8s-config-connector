@@ -420,7 +420,10 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 						defer errsMutex.Unlock()
 						errs = append(errs, fmt.Errorf("error creating crd %v: %w", crd.GroupVersionKind(), err))
 					}
-					h.waitForCRDReady(crd)
+					// mockkubeapiserver does not support CRD conditions
+					if h.KubeTarget != "mock" {
+						h.waitForCRDReady(crd)
+					}
 				}()
 			}
 			wg.Wait()
@@ -747,20 +750,23 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	}()
 
 	// Wait for the webhook server to start (mgr.Start runs asynchronously)
-	webhookWaitStart := time.Now()
-	webhookTimeout := 10 * time.Second
-	for {
-		webhookStarted := mgr.GetWebhookServer().StartedChecker()
-		req := &http.Request{}
-		err := webhookStarted(req)
-		if err == nil {
-			break
+	// mockkubeapiserver does not support webhooks
+	if h.KubeTarget != "mock" {
+		webhookWaitStart := time.Now()
+		webhookTimeout := 10 * time.Second
+		for {
+			webhookStarted := mgr.GetWebhookServer().StartedChecker()
+			req := &http.Request{}
+			err := webhookStarted(req)
+			if err == nil {
+				break
+			}
+			if time.Since(webhookWaitStart) > webhookTimeout {
+				t.Fatalf("webhook did not start within %v timeout", webhookTimeout)
+			}
+			t.Logf("waiting for webhook to start (%v)", err)
+			time.Sleep(100 * time.Millisecond)
 		}
-		if time.Since(webhookWaitStart) > webhookTimeout {
-			t.Fatalf("webhook did not start within %v timeout", webhookTimeout)
-		}
-		t.Logf("waiting for webhook to start (%v)", err)
-		time.Sleep(100 * time.Millisecond)
 	}
 
 	return h

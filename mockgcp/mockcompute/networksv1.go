@@ -104,7 +104,6 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 }
 
 // Patches the specified network with the data included in the request.
-// Only the following fields can be modified: routingConfig.routingMode.
 func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*pb.Operation, error) {
 	name, err := s.newNetworkName(req.GetProject(), req.GetNetwork())
 	if err != nil {
@@ -117,14 +116,12 @@ func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*p
 		return nil, err
 	}
 
-	if req.GetNetworkResource().RoutingConfig != nil {
-		if req.GetNetworkResource().GetRoutingConfig().RoutingMode != nil {
-			if obj.RoutingConfig == nil {
-				obj.RoutingConfig = &pb.NetworkRoutingConfig{}
-			}
-			obj.RoutingConfig.RoutingMode = req.GetNetworkResource().GetRoutingConfig().RoutingMode
-		}
-	}
+	patch := req.GetNetworkResource()
+
+	// Use proto.Merge to apply the patch.
+	// Note: proto.Merge will overwrite fields in obj with non-default values from patch.
+	// Since Compute API uses pointers for optional fields in the generated code, this works well.
+	proto.Merge(obj, patch)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
