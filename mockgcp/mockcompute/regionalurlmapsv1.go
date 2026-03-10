@@ -99,6 +99,8 @@ func (s *RegionalURLMapsV1) Patch(ctx context.Context, req *pb.PatchRegionUrlMap
 	// TODO: Implement helper to implement the full rules here
 	proto.Merge(obj, req.GetUrlMapResource())
 
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -130,6 +132,8 @@ func (s *RegionalURLMapsV1) Update(ctx context.Context, req *pb.UpdateRegionUrlM
 
 	// TODO: Implement helper to implement the full rules here
 	proto.Merge(obj, req.GetUrlMapResource())
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
