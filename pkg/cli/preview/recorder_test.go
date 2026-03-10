@@ -118,6 +118,24 @@ func TestToTrackedGVR(t *testing.T) {
 			},
 			wantOk: false,
 		},
+		{
+			name: "Fake CNRM group (ignored)",
+			apiResource: metav1.APIResource{
+				Name:    "storagebuckets",
+				Group:   "fake-cnrm.cloud.google.com",
+				Version: "v1beta1",
+			},
+			apiResourceListGroupVersion: schema.GroupVersion{
+				Group:   "fake-cnrm.cloud.google.com",
+				Version: "v1beta1",
+			},
+			wantGVR: schema.GroupVersionResource{
+				Group:    "fake-cnrm.cloud.google.com",
+				Version:  "v1beta1",
+				Resource: "storagebuckets",
+			},
+			wantOk: false,
+		},
 	}
 
 	for _, tc := range tests {

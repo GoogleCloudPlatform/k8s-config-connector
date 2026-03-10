@@ -369,7 +369,7 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config, namespa
 		return fmt.Errorf("failed to get preferred resources: %w", err)
 	}
 	for _, apiResourceList := range apiResourceLists {
-		if !strings.Contains(apiResourceList.GroupVersion, ".cnrm.cloud.google.com/") {
+		if !strings.Contains(apiResourceList.GroupVersion, "."+constants.CNRMDomain+"/") {
 			continue
 		}
 
@@ -452,12 +452,12 @@ func toTrackedGVR(apiResource metav1.APIResource, apiResourceListGroupVersion sc
 		gvr.Version = apiResourceListGroupVersion.Version
 	}
 	// Not tracking CC and CCC objects.
-	if strings.HasSuffix(gvr.Group, "core.cnrm.cloud.google.com") {
+	if strings.HasSuffix(gvr.Group, constants.CoreCNRMGroup) {
 		return gvr, false
 	}
 
 	// Not tracking non-CNRM objects.
-	if !strings.Contains(gvr.Group, "cnrm.cloud.google.com") {
+	if !(strings.HasSuffix(gvr.Group, "."+constants.CNRMDomain) || gvr.Group == constants.CNRMDomain) {
 		return gvr, false
 	}
 
