@@ -19,6 +19,7 @@
 // proto.service: google.cloud.compute.v1
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
 // resource: ComputeForwardingRule:ForwardingRule
+// resource: ComputeRouterNAT:RouterNat
 // resource: ComputeSecurityPolicy:SecurityPolicy
 // resource: ComputeSubnetwork:Subnetwork
 // resource: ComputeTargetTcpProxy:TargetTcpProxy

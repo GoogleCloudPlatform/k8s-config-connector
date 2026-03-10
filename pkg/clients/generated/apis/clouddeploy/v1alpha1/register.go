@@ -59,6 +59,12 @@ var (
 		Kind:    reflect.TypeOf(CloudDeployDeployPolicy{}).Name(),
 	}
 
+	CloudDeployTargetGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudDeployTarget{}).Name(),
+	}
+
 	DeployCustomTargetTypeGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

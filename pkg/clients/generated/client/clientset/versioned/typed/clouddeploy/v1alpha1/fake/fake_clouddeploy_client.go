@@ -35,6 +35,10 @@ func (c *FakeClouddeployV1alpha1) CloudDeployDeployPolicies(namespace string) v1
 	return &FakeCloudDeployDeployPolicies{c, namespace}
 }
 
+func (c *FakeClouddeployV1alpha1) CloudDeployTargets(namespace string) v1alpha1.CloudDeployTargetInterface {
+	return &FakeCloudDeployTargets{c, namespace}
+}
+
 func (c *FakeClouddeployV1alpha1) DeployCustomTargetTypes(namespace string) v1alpha1.DeployCustomTargetTypeInterface {
 	return &FakeDeployCustomTargetTypes{c, namespace}
 }

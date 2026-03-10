@@ -501,8 +501,6 @@
 # not supported by asset inventory
 - resourceConfigId: ComputeRouterInterface
 # not supported by asset inventory
-- resourceConfigId: ComputeRouterNAT
-# not supported by asset inventory
 - resourceConfigId: ComputeRouterPeer
 - asset:
     ancestors:

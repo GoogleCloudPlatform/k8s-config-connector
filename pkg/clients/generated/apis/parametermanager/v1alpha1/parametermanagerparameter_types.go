@@ -47,6 +47,7 @@ type ParameterManagerParameterSpec struct {
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
+	/* The location that this resource belongs to. */
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
