@@ -1,0 +1,694 @@
+build-images	UNKNOWN STEP	﻿2026-03-03T22:15:56.4018851Z Current runner version: '2.331.0'
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4042969Z ##[group]Runner Image Provisioner
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4043739Z Hosted Compute Agent
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4044360Z Version: 20260213.493
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4044951Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4045659Z Build Date: 2026-02-13T00:28:41Z
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4046345Z Worker ID: {de682db7-efd6-434a-a37b-3d365fb056c9}
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4047022Z Azure Region: westus
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4047556Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4049036Z ##[group]Operating System
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4049743Z Ubuntu
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4050182Z 22.04.5
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4050646Z LTS
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4051424Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4051979Z ##[group]Runner Image
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4052543Z Image: ubuntu-22.04
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4053105Z Version: 20260224.45.1
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4054242Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20260224.45/images/ubuntu/Ubuntu2204-Readme.md
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4055737Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20260224.45
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4056590Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4057688Z ##[group]GITHUB_TOKEN Permissions
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4059654Z Contents: read
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4060201Z Metadata: read
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4060735Z Packages: read
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4061552Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4063514Z Secret source: None
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4064256Z Prepare workflow directory
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4440695Z Prepare all required actions
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.4478783Z Getting action download info
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.8667753Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+build-images	UNKNOWN STEP	2026-03-03T22:15:56.9948279Z Download action repository 'actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c' (SHA:4dc6199c7b1a012772edbd06daecab0f50c9053c)
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0235046Z Complete job name: build-images
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0955880Z ##[group]Run actions/checkout@v4
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0956846Z with:
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0957482Z   repository: GoogleCloudPlatform/k8s-config-connector
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0958406Z   token: ***
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0958867Z   ssh-strict: true
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0959349Z   ssh-user: git
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0959804Z   persist-credentials: true
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0960322Z   clean: true
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0960792Z   sparse-checkout-cone-mode: true
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0961503Z   fetch-depth: 1
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0961944Z   fetch-tags: false
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0962409Z   show-progress: true
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0962886Z   lfs: false
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0963326Z   submodules: false
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0963814Z   set-safe-directory: true
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0964576Z env:
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0965024Z   PROJECT_ID: cnrm-test
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.0965544Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2042844Z Syncing repository: GoogleCloudPlatform/k8s-config-connector
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2044986Z ##[group]Getting Git version info
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2045951Z Working directory is '/home/runner/work/k8s-config-connector/k8s-config-connector'
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2047180Z [command]/usr/bin/git version
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2140381Z git version 2.53.0
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2166353Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2180608Z Temporarily overriding HOME='/home/runner/work/_temp/e96e8e3d-3acf-4b39-8ba9-f39e65e9a59c' before making global git config changes
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2182360Z Adding repository directory to the temporary git global config as a safe directory
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2186186Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/k8s-config-connector/k8s-config-connector
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2227208Z Deleting the contents of '/home/runner/work/k8s-config-connector/k8s-config-connector'
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2230424Z ##[group]Initializing the repository
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2234918Z [command]/usr/bin/git init /home/runner/work/k8s-config-connector/k8s-config-connector
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2367898Z hint: Using 'master' as the name for the initial branch. This default branch name
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2369668Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2371646Z hint: to use in all of your new repositories, which will suppress this warning,
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2372973Z hint: call:
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2373808Z hint:
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2374879Z hint: 	git config --global init.defaultBranch <name>
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2376206Z hint:
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2377419Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2379512Z hint: 'development'. The just-created branch can be renamed via this command:
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2381346Z hint:
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2382206Z hint: 	git branch -m <name>
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2383211Z hint:
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2384536Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2387012Z Initialized empty Git repository in /home/runner/work/k8s-config-connector/k8s-config-connector/.git/
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2390574Z [command]/usr/bin/git remote add origin https://github.com/GoogleCloudPlatform/k8s-config-connector
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2420027Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2421695Z ##[group]Disabling automatic garbage collection
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2424883Z [command]/usr/bin/git config --local gc.auto 0
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2453465Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2454933Z ##[group]Setting up auth
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2460966Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2490879Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2817464Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.2846452Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.3064379Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.3094714Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.3319719Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.3355633Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.3357202Z ##[group]Fetching the repository
+build-images	UNKNOWN STEP	2026-03-03T22:15:58.3365931Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +6d24e5f25c71887f2acecfe2d8b841e7973f0b96:refs/remotes/pull/6854/merge
+build-images	UNKNOWN STEP	2026-03-03T22:16:09.4590364Z From https://github.com/GoogleCloudPlatform/k8s-config-connector
+build-images	UNKNOWN STEP	2026-03-03T22:16:09.4592225Z  * [new ref]           6d24e5f25c71887f2acecfe2d8b841e7973f0b96 -> pull/6854/merge
+build-images	UNKNOWN STEP	2026-03-03T22:16:09.4628825Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:16:09.4632641Z ##[group]Determining the checkout info
+build-images	UNKNOWN STEP	2026-03-03T22:16:09.4633417Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:16:09.4638537Z [command]/usr/bin/git sparse-checkout disable
+build-images	UNKNOWN STEP	2026-03-03T22:16:09.4682126Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build-images	UNKNOWN STEP	2026-03-03T22:16:09.4712401Z ##[group]Checking out the ref
+build-images	UNKNOWN STEP	2026-03-03T22:16:09.4718001Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/6854/merge
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.5165207Z Updating files:  35% (10829/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.5477558Z Updating files:  36% (11036/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.5675004Z Updating files:  37% (11343/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.5848506Z Updating files:  38% (11649/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.6036755Z Updating files:  39% (11956/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.6217065Z Updating files:  40% (12262/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.6422475Z Updating files:  41% (12569/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.6605369Z Updating files:  42% (12876/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.6789365Z Updating files:  43% (13182/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.6962294Z Updating files:  44% (13489/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.7127233Z Updating files:  45% (13795/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.7290316Z Updating files:  46% (14102/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.7437452Z Updating files:  47% (14408/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.7789515Z Updating files:  48% (14715/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.7969492Z Updating files:  49% (15021/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.8188534Z Updating files:  50% (15328/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.8422196Z Updating files:  51% (15635/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.8655282Z Updating files:  52% (15941/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.8850783Z Updating files:  53% (16248/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.8974014Z Updating files:  54% (16554/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.9131225Z Updating files:  55% (16861/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.9299527Z Updating files:  56% (17167/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.9504895Z Updating files:  57% (17474/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.9720246Z Updating files:  58% (17780/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:10.9933031Z Updating files:  59% (18087/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.0273592Z Updating files:  60% (18393/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.0498644Z Updating files:  61% (18700/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.0728914Z Updating files:  62% (19007/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.1040788Z Updating files:  63% (19313/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.1308116Z Updating files:  64% (19620/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.1591833Z Updating files:  65% (19926/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.1793029Z Updating files:  66% (20233/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.2047404Z Updating files:  67% (20539/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.2599857Z Updating files:  68% (20846/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.2777693Z Updating files:  69% (21152/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.2972046Z Updating files:  70% (21459/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.3346365Z Updating files:  71% (21766/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.3528972Z Updating files:  72% (22072/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.3796655Z Updating files:  73% (22379/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.4027313Z Updating files:  74% (22685/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.4309618Z Updating files:  75% (22992/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.4435961Z Updating files:  76% (23298/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.4569129Z Updating files:  77% (23605/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.4707735Z Updating files:  78% (23911/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.4838054Z Updating files:  79% (24218/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.4971196Z Updating files:  80% (24524/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.5047452Z Updating files:  81% (24831/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.5113986Z Updating files:  81% (24996/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.5246725Z Updating files:  82% (25138/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.5377168Z Updating files:  83% (25444/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.5507902Z Updating files:  84% (25751/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.5642592Z Updating files:  85% (26057/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.5780063Z Updating files:  86% (26364/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.5922726Z Updating files:  87% (26670/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.6060220Z Updating files:  88% (26977/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.6300441Z Updating files:  89% (27283/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.6550466Z Updating files:  90% (27590/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.6793728Z Updating files:  91% (27897/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.7060248Z Updating files:  92% (28203/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.7282504Z Updating files:  93% (28510/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.7476697Z Updating files:  94% (28816/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.7657934Z Updating files:  95% (29123/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.7837558Z Updating files:  96% (29429/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.7989450Z Updating files:  97% (29736/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8215224Z Updating files:  98% (30042/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8409519Z Updating files:  99% (30349/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8409895Z Updating files: 100% (30655/30655)
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8410242Z Updating files: 100% (30655/30655), done.
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8821833Z Note: switching to 'refs/remotes/pull/6854/merge'.
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8822234Z 
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8822545Z You are in 'detached HEAD' state. You can look around, make experimental
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8823486Z changes and commit them, and you can discard any commits you make in this
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8824466Z state without impacting any branches by switching back to a branch.
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8824877Z 
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8825135Z If you want to create a new branch to retain commits you create, you may
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8825808Z do so (now or later) by using -c with the switch command. Example:
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8826191Z 
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8826329Z   git switch -c <new-branch-name>
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8826579Z 
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8826712Z Or undo this operation with:
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8826944Z 
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8827060Z   git switch -
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8827222Z 
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8827537Z Turn off this advice by setting config variable advice.detachedHead to false
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8828028Z 
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8828597Z HEAD is now at 6d24e5f2 Merge 7b56c36ae65bece3d118fd00b7b7a1fd0759d965 into c23f9cfbc9f350c2e7086f1e0fa3bac2da3ab951
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8887356Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8924282Z [command]/usr/bin/git log -1 --format=%H
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.8950031Z 6d24e5f25c71887f2acecfe2d8b841e7973f0b96
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.9123335Z ##[group]Run dev/tasks/free-disk-space-on-github-actions-runner
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.9123829Z [36;1mdev/tasks/free-disk-space-on-github-actions-runner[0m
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.9194991Z shell: /usr/bin/bash -e {0}
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.9195233Z env:
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.9195406Z   PROJECT_ID: cnrm-test
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.9195617Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.9310363Z Before cleanup:
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.9327358Z Filesystem      Size  Used Avail Use% Mounted on
+build-images	UNKNOWN STEP	2026-03-03T22:16:11.9327689Z /dev/root       146G   56G   90G  39% /
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8664373Z Total reclaimed space: 0B
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8688507Z After cleanup:
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8700682Z Filesystem      Size  Used Avail Use% Mounted on
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8701381Z /dev/root       146G   33G  113G  23% /
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8788094Z ##[group]Run actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8788466Z with:
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8788646Z   go-version-file: go.mod
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8788859Z   check-latest: false
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8789176Z   token: ***
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8789341Z   cache: true
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8789493Z env:
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8789655Z   PROJECT_ID: cnrm-test
+build-images	UNKNOWN STEP	2026-03-03T22:17:58.8789848Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:17:59.0413715Z Setup go version spec 1.24.6
+build-images	UNKNOWN STEP	2026-03-03T22:17:59.0425710Z Attempting to download 1.24.6...
+build-images	UNKNOWN STEP	2026-03-03T22:17:59.7758044Z matching 1.24.6...
+build-images	UNKNOWN STEP	2026-03-03T22:17:59.7825752Z Acquiring 1.24.6 from https://github.com/actions/go-versions/releases/download/1.24.6-16792114823/go-1.24.6-linux-x64.tar.gz
+build-images	UNKNOWN STEP	2026-03-03T22:18:00.3873536Z Extracting Go...
+build-images	UNKNOWN STEP	2026-03-03T22:18:00.3973412Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/c8de0e05-3215-45e7-9aaf-a3abeb38eae1 -f /home/runner/work/_temp/e13b174a-cc7a-4587-b481-e75de3c0092c
+build-images	UNKNOWN STEP	2026-03-03T22:18:02.1072057Z Successfully extracted go to /home/runner/work/_temp/c8de0e05-3215-45e7-9aaf-a3abeb38eae1
+build-images	UNKNOWN STEP	2026-03-03T22:18:02.1072795Z Adding to the cache ...
+build-images	UNKNOWN STEP	2026-03-03T22:18:06.7246537Z Successfully cached go to /opt/hostedtoolcache/go/1.24.6/x64
+build-images	UNKNOWN STEP	2026-03-03T22:18:06.7251832Z Added go to the path
+build-images	UNKNOWN STEP	2026-03-03T22:18:06.7252266Z Successfully set up Go version 1.24.6
+build-images	UNKNOWN STEP	2026-03-03T22:18:06.7443890Z [command]/opt/hostedtoolcache/go/1.24.6/x64/bin/go env GOMODCACHE
+build-images	UNKNOWN STEP	2026-03-03T22:18:06.7469711Z [command]/opt/hostedtoolcache/go/1.24.6/x64/bin/go env GOCACHE
+build-images	UNKNOWN STEP	2026-03-03T22:18:06.7497796Z /home/runner/go/pkg/mod
+build-images	UNKNOWN STEP	2026-03-03T22:18:06.7512254Z /home/runner/.cache/go-build
+build-images	UNKNOWN STEP	2026-03-03T22:18:07.0365414Z Cache hit for: setup-go-Linux-x64-ubuntu22-go-1.24.6-38aeb6058b2b948351c58b83d9d3468daa88777ea1b24224536b1c7536b16a8c
+build-images	UNKNOWN STEP	2026-03-03T22:18:13.3207510Z Received 4194304 of 566014746 (0.7%), 4.0 MBs/sec
+build-images	UNKNOWN STEP	2026-03-03T22:18:14.3216993Z Received 130023424 of 566014746 (23.0%), 62.0 MBs/sec
+build-images	UNKNOWN STEP	2026-03-03T22:18:15.3232083Z Received 230686720 of 566014746 (40.8%), 73.3 MBs/sec
+build-images	UNKNOWN STEP	2026-03-03T22:18:16.3228451Z Received 348127232 of 566014746 (61.5%), 83.0 MBs/sec
+build-images	UNKNOWN STEP	2026-03-03T22:18:17.3228818Z Received 473956352 of 566014746 (83.7%), 90.4 MBs/sec
+build-images	UNKNOWN STEP	2026-03-03T22:18:18.3232948Z Received 532676608 of 566014746 (94.1%), 84.6 MBs/sec
+build-images	UNKNOWN STEP	2026-03-03T22:18:19.1366162Z Received 566014746 of 566014746 (100.0%), 79.2 MBs/sec
+build-images	UNKNOWN STEP	2026-03-03T22:18:19.1367005Z Cache Size: ~540 MB (566014746 B)
+build-images	UNKNOWN STEP	2026-03-03T22:18:19.1481385Z [command]/usr/bin/tar -xf /home/runner/work/_temp/81430999-a108-4b37-ba79-315bfc9165e0/cache.tzst -P -C /home/runner/work/k8s-config-connector/k8s-config-connector --use-compress-program unzstd
+build-images	UNKNOWN STEP	2026-03-03T22:18:23.9897407Z Cache restored successfully
+build-images	UNKNOWN STEP	2026-03-03T22:18:24.2017324Z Cache restored from key: setup-go-Linux-x64-ubuntu22-go-1.24.6-38aeb6058b2b948351c58b83d9d3468daa88777ea1b24224536b1c7536b16a8c
+build-images	UNKNOWN STEP	2026-03-03T22:18:24.2048586Z go version go1.24.6 linux/amd64
+build-images	UNKNOWN STEP	2026-03-03T22:18:24.2048980Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:24.2049427Z ##[group]go env
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0783647Z AR='ar'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0783943Z CC='gcc'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0784255Z CGO_CFLAGS='-O2 -g'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0784644Z CGO_CPPFLAGS=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0784963Z CGO_CXXFLAGS='-O2 -g'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0785273Z CGO_ENABLED='1'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0785457Z CGO_FFLAGS='-O2 -g'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0785716Z CGO_LDFLAGS='-O2 -g'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0785910Z CXX='g++'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0786086Z GCCGO='gccgo'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0786265Z GO111MODULE=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0786436Z GOAMD64='v1'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0786606Z GOARCH='amd64'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0786780Z GOAUTH='netrc'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0786943Z GOBIN=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0787136Z GOCACHE='/home/runner/.cache/go-build'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0787385Z GOCACHEPROG=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0787556Z GODEBUG=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0787749Z GOENV='/home/runner/.config/go/env'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0787981Z GOEXE=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0788149Z GOEXPERIMENT=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0788325Z GOFIPS140='off'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0788760Z GOFLAGS=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0789428Z GOGCCFLAGS='-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=/tmp/go-build617004376=/tmp/go-build -gno-record-gcc-switches'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0790084Z GOHOSTARCH='amd64'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0790271Z GOHOSTOS='linux'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0790447Z GOINSECURE=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0790757Z GOMOD='/home/runner/work/k8s-config-connector/k8s-config-connector/go.mod'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0791393Z GOMODCACHE='/home/runner/go/pkg/mod'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0791650Z GONOPROXY=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0791816Z GONOSUMDB=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0791978Z GOOS='linux'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0792158Z GOPATH='/home/runner/go'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0792375Z GOPRIVATE=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0792703Z GOPROXY='https://proxy.golang.org,direct'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0793007Z GOROOT='/opt/hostedtoolcache/go/1.24.6/x64'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0793280Z GOSUMDB='sum.golang.org'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0793484Z GOTELEMETRY='local'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0793733Z GOTELEMETRYDIR='/home/runner/.config/go/telemetry'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0794011Z GOTMPDIR=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0794177Z GOTOOLCHAIN='local'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0794481Z GOTOOLDIR='/opt/hostedtoolcache/go/1.24.6/x64/pkg/tool/linux_amd64'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0794817Z GOVCS=''
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0794986Z GOVERSION='go1.24.6'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0795318Z GOWORK='/home/runner/work/k8s-config-connector/k8s-config-connector/go.work'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0795705Z PKG_CONFIG='pkg-config'
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0795839Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0796147Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0921966Z ##[group]Run dev/tasks/build-images
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0922299Z [36;1mdev/tasks/build-images[0m
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0962216Z shell: /usr/bin/bash -e {0}
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0962447Z env:
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0962616Z   PROJECT_ID: cnrm-test
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0962830Z   GOTOOLCHAIN: local
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.0963020Z ##[endgroup]
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.1089299Z Building images with tag: 6d24e5f
+build-images	UNKNOWN STEP	2026-03-03T22:18:26.1353915Z DOCKER_BUILDKIT=1 docker build . -f build/builder/Dockerfile -t builder:6d24e5f
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.0684961Z #0 building with "default" instance using docker driver
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.0685765Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.0685958Z #1 [internal] load build definition from Dockerfile
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.0686363Z #1 transferring dockerfile: 2.45kB done
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.0686663Z #1 DONE 0.0s
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.0686792Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.0687000Z #2 [internal] load metadata for docker.io/library/golang:1.26.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.2917994Z #2 ...
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.2918372Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.2918705Z #3 [auth] library/golang:pull token for registry-1.docker.io
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.2919168Z #3 DONE 0.0s
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.4421009Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.4421799Z #2 [internal] load metadata for docker.io/library/golang:1.26.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.7792342Z #2 DONE 0.9s
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9016780Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9017561Z #4 [internal] load .dockerignore
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9018086Z #4 transferring context: 638B done
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9018521Z #4 DONE 0.0s
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9018700Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9019367Z #5 [ 1/17] FROM docker.io/library/golang:1.26.0@sha256:fb612b7831d53a89cbc0aaa7855b69ad7b0caf603715860cf538df854d047b84
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9020857Z #5 resolve docker.io/library/golang:1.26.0@sha256:fb612b7831d53a89cbc0aaa7855b69ad7b0caf603715860cf538df854d047b84 done
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9022366Z #5 sha256:324a6d89573c3e72f69aa7b5b1a8b9bd6870ce9dbaa254548b0d7516d3720598 2.32kB / 2.32kB done
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9023520Z #5 sha256:866771c43bf5eb77362eeeb163c0c825e194c2806d0b697028434e3b9c02f59d 0B / 49.29MB 0.1s
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9024624Z #5 sha256:9da421ddeb655bdfb3960e490b39373b0d1351e3eaba61d01978107920638392 0B / 67.78MB 0.1s
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9025738Z #5 sha256:fb612b7831d53a89cbc0aaa7855b69ad7b0caf603715860cf538df854d047b84 9.70kB / 9.70kB done
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9026880Z #5 sha256:b50ab73b54863fcdf3d0c657635ef04e7214cb12963b3e7732a868423e73867b 3.04kB / 3.04kB done
+build-images	UNKNOWN STEP	2026-03-03T22:18:30.9046160Z #5 sha256:ed881fbf1b07b42dd470cd5b56a8feb684d60879c6f8028a9e7a8715e0e72361 0B / 25.61MB 0.1s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.0029006Z #5 sha256:866771c43bf5eb77362eeeb163c0c825e194c2806d0b697028434e3b9c02f59d 24.12MB / 49.29MB 0.2s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.1053786Z #5 sha256:866771c43bf5eb77362eeeb163c0c825e194c2806d0b697028434e3b9c02f59d 48.55MB / 49.29MB 0.3s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.1058606Z #5 sha256:9da421ddeb655bdfb3960e490b39373b0d1351e3eaba61d01978107920638392 24.12MB / 67.78MB 0.3s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.1059915Z #5 sha256:ed881fbf1b07b42dd470cd5b56a8feb684d60879c6f8028a9e7a8715e0e72361 15.73MB / 25.61MB 0.3s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.2082887Z #5 sha256:866771c43bf5eb77362eeeb163c0c825e194c2806d0b697028434e3b9c02f59d 49.29MB / 49.29MB 0.3s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.2085485Z #5 sha256:9da421ddeb655bdfb3960e490b39373b0d1351e3eaba61d01978107920638392 46.14MB / 67.78MB 0.4s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.2089998Z #5 sha256:ed881fbf1b07b42dd470cd5b56a8feb684d60879c6f8028a9e7a8715e0e72361 25.61MB / 25.61MB 0.4s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.2091364Z #5 sha256:a069ea1e4db555aaa432873bc33f67ff652f145b73a6832b11cbe7e05b718d1c 0B / 102.17MB 0.4s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.2092511Z #5 sha256:8ede2856567d2593950de6f98f5d2763ae304caeb0ff577a1318c065a8fd650c 0B / 67.18MB 0.4s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.4053716Z #5 sha256:9da421ddeb655bdfb3960e490b39373b0d1351e3eaba61d01978107920638392 54.53MB / 67.78MB 0.5s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.4055603Z #5 sha256:a069ea1e4db555aaa432873bc33f67ff652f145b73a6832b11cbe7e05b718d1c 16.78MB / 102.17MB 0.5s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.4057841Z #5 sha256:8ede2856567d2593950de6f98f5d2763ae304caeb0ff577a1318c065a8fd650c 5.78MB / 67.18MB 0.5s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.4059042Z #5 extracting sha256:866771c43bf5eb77362eeeb163c0c825e194c2806d0b697028434e3b9c02f59d 0.1s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.5083744Z #5 sha256:9da421ddeb655bdfb3960e490b39373b0d1351e3eaba61d01978107920638392 67.11MB / 67.78MB 0.7s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.5089199Z #5 sha256:a069ea1e4db555aaa432873bc33f67ff652f145b73a6832b11cbe7e05b718d1c 61.15MB / 102.17MB 0.7s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.5090453Z #5 sha256:8ede2856567d2593950de6f98f5d2763ae304caeb0ff577a1318c065a8fd650c 45.09MB / 67.18MB 0.7s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.6087170Z #5 sha256:9da421ddeb655bdfb3960e490b39373b0d1351e3eaba61d01978107920638392 67.78MB / 67.78MB 0.7s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.6088857Z #5 sha256:a069ea1e4db555aaa432873bc33f67ff652f145b73a6832b11cbe7e05b718d1c 78.64MB / 102.17MB 0.8s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.6090051Z #5 sha256:8ede2856567d2593950de6f98f5d2763ae304caeb0ff577a1318c065a8fd650c 63.96MB / 67.18MB 0.8s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.6091446Z #5 sha256:5ec41210057e053bb052a2039a683dbb9e18b55a8f2e434938fa1ed62804063e 0B / 127B 0.8s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.7087770Z #5 sha256:a069ea1e4db555aaa432873bc33f67ff652f145b73a6832b11cbe7e05b718d1c 101.71MB / 102.17MB 0.9s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.7089007Z #5 sha256:8ede2856567d2593950de6f98f5d2763ae304caeb0ff577a1318c065a8fd650c 67.18MB / 67.18MB 0.9s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.7090303Z #5 sha256:5ec41210057e053bb052a2039a683dbb9e18b55a8f2e434938fa1ed62804063e 127B / 127B 0.8s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.7091647Z #5 sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 0B / 32B 0.9s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.8090203Z #5 sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 32B / 32B 1.0s
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.9579003Z #5 sha256:a069ea1e4db555aaa432873bc33f67ff652f145b73a6832b11cbe7e05b718d1c 102.17MB / 102.17MB 1.0s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:31.9580377Z #5 sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 32B / 32B 1.0s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:34.5554003Z #5 extracting sha256:866771c43bf5eb77362eeeb163c0c825e194c2806d0b697028434e3b9c02f59d 3.2s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:34.7008357Z #5 extracting sha256:ed881fbf1b07b42dd470cd5b56a8feb684d60879c6f8028a9e7a8715e0e72361 0.1s
+build-images	UNKNOWN STEP	2026-03-03T22:18:36.1045031Z #5 ...
+build-images	UNKNOWN STEP	2026-03-03T22:18:36.1045271Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:36.1045444Z #6 [internal] load build context
+build-images	UNKNOWN STEP	2026-03-03T22:18:36.1045859Z #6 transferring context: 496.48MB 5.2s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:36.1046145Z #6 DONE 5.3s
+build-images	UNKNOWN STEP	2026-03-03T22:18:36.1046249Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:36.1046754Z #5 [ 1/17] FROM docker.io/library/golang:1.26.0@sha256:fb612b7831d53a89cbc0aaa7855b69ad7b0caf603715860cf538df854d047b84
+build-images	UNKNOWN STEP	2026-03-03T22:18:36.1048040Z #5 extracting sha256:ed881fbf1b07b42dd470cd5b56a8feb684d60879c6f8028a9e7a8715e0e72361 1.4s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:39.1230071Z #5 extracting sha256:9da421ddeb655bdfb3960e490b39373b0d1351e3eaba61d01978107920638392
+build-images	UNKNOWN STEP	2026-03-03T22:18:41.5747446Z #5 extracting sha256:9da421ddeb655bdfb3960e490b39373b0d1351e3eaba61d01978107920638392 2.3s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:41.7225487Z #5 extracting sha256:a069ea1e4db555aaa432873bc33f67ff652f145b73a6832b11cbe7e05b718d1c
+build-images	UNKNOWN STEP	2026-03-03T22:18:44.1343141Z #5 extracting sha256:a069ea1e4db555aaa432873bc33f67ff652f145b73a6832b11cbe7e05b718d1c 2.3s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:44.4702727Z #5 extracting sha256:8ede2856567d2593950de6f98f5d2763ae304caeb0ff577a1318c065a8fd650c
+build-images	UNKNOWN STEP	2026-03-03T22:18:48.6525378Z #5 extracting sha256:8ede2856567d2593950de6f98f5d2763ae304caeb0ff577a1318c065a8fd650c 4.2s done
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.2654952Z #5 extracting sha256:5ec41210057e053bb052a2039a683dbb9e18b55a8f2e434938fa1ed62804063e
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.4735241Z #5 extracting sha256:5ec41210057e053bb052a2039a683dbb9e18b55a8f2e434938fa1ed62804063e done
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.4736418Z #5 extracting sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 done
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.4737196Z #5 DONE 18.5s
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.4737384Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.4737787Z #7 [ 2/17] WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.4738414Z #7 DONE 0.0s
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.4738597Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.4738743Z #8 [ 3/17] COPY apis/   apis/
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.5002438Z #8 DONE 0.2s
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.6649940Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.6650467Z #9 [ 4/17] COPY dev/metadata/   dev/metadata/
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.6650992Z #9 DONE 0.0s
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.6651461Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:49.6651626Z #10 [ 5/17] COPY pkg/    pkg/
+build-images	UNKNOWN STEP	2026-03-03T22:18:50.6677540Z #10 DONE 1.2s
+build-images	UNKNOWN STEP	2026-03-03T22:18:50.8313546Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:50.8314258Z #11 [ 6/17] COPY cmd/    cmd/
+build-images	UNKNOWN STEP	2026-03-03T22:18:50.8314544Z #11 DONE 0.0s
+build-images	UNKNOWN STEP	2026-03-03T22:18:50.8314662Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:50.8314758Z #12 [ 7/17] COPY config/ config/
+build-images	UNKNOWN STEP	2026-03-03T22:18:50.9828318Z #12 DONE 0.3s
+build-images	UNKNOWN STEP	2026-03-03T22:18:51.1343744Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:51.1344140Z #13 [ 8/17] COPY mockgcp/ mockgcp/
+build-images	UNKNOWN STEP	2026-03-03T22:18:51.3499284Z #13 DONE 0.4s
+build-images	UNKNOWN STEP	2026-03-03T22:18:51.5010187Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:51.5010643Z #14 [ 9/17] COPY operator/ operator/
+build-images	UNKNOWN STEP	2026-03-03T22:18:51.6154821Z #14 DONE 0.3s
+build-images	UNKNOWN STEP	2026-03-03T22:18:51.7667013Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:51.7667574Z #15 [10/17] COPY third_party/ third_party/
+build-images	UNKNOWN STEP	2026-03-03T22:18:53.7469996Z #15 DONE 2.1s
+build-images	UNKNOWN STEP	2026-03-03T22:18:53.9218267Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:53.9218744Z #16 [11/17] COPY version/ version/
+build-images	UNKNOWN STEP	2026-03-03T22:18:53.9219105Z #16 DONE 0.0s
+build-images	UNKNOWN STEP	2026-03-03T22:18:53.9219320Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:53.9219686Z #17 [12/17] COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
+build-images	UNKNOWN STEP	2026-03-03T22:18:53.9220325Z #17 DONE 0.0s
+build-images	UNKNOWN STEP	2026-03-03T22:18:53.9220447Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:53.9220651Z #18 [13/17] COPY scripts/resource-autogen scripts/resource-autogen
+build-images	UNKNOWN STEP	2026-03-03T22:18:53.9881488Z #18 DONE 0.2s
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.1590334Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.1590863Z #19 [14/17] COPY go.mod go.mod
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.1591513Z #19 DONE 0.0s
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.1591692Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.1591843Z #20 [15/17] COPY go.sum go.sum
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.1592211Z #20 DONE 0.0s
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.1592385Z 
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.1598269Z #21 [16/17] RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o webhook github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.1689182Z #21 0.160 go: downloading github.com/spf13/pflag v1.0.5
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.1689906Z #21 0.160 go: downloading k8s.io/apiextensions-apiserver v0.33.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.3429660Z #21 0.184 go: downloading sigs.k8s.io/controller-runtime v0.20.4
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.3949790Z #21 0.386 go: downloading k8s.io/apimachinery v0.33.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.5450256Z #21 0.421 go: downloading github.com/hashicorp/terraform-plugin-sdk/v2 v2.24.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.5451295Z #21 0.536 go: downloading k8s.io/client-go v0.33.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.6521833Z #21 0.545 go: downloading golang.org/x/sync v0.19.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.6524084Z #21 0.586 go: downloading cloud.google.com/go/profiler v0.4.3
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.6524874Z #21 0.599 go: downloading cloud.google.com/go v0.123.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.6525501Z #21 0.600 go: downloading github.com/go-logr/logr v1.4.3
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.6526127Z #21 0.627 go: downloading github.com/go-logr/zapr v1.3.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.6526709Z #21 0.644 go: downloading go.uber.org/zap v1.27.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.8536413Z #21 0.675 go: downloading github.com/nasa9084/go-openapi v0.0.0-20200604141640-2875b7376353
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.8537221Z #21 0.694 go: downloading k8s.io/api v0.33.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:54.9791930Z #21 0.970 go: downloading k8s.io/klog/v2 v2.130.1
+build-images	UNKNOWN STEP	2026-03-03T22:18:55.1916877Z #21 1.054 go: downloading github.com/evanphx/json-patch/v5 v5.9.11
+build-images	UNKNOWN STEP	2026-03-03T22:18:55.1917687Z #21 1.183 go: downloading k8s.io/utils v0.0.0-20241104100929-3ea5e8cea738
+build-images	UNKNOWN STEP	2026-03-03T22:18:55.3978977Z #21 1.212 go: downloading bitbucket.org/creachadair/stringset v0.0.8
+build-images	UNKNOWN STEP	2026-03-03T22:18:55.3979615Z #21 1.216 go: downloading github.com/cenkalti/backoff v2.2.1+incompatible
+build-images	UNKNOWN STEP	2026-03-03T22:18:55.3980133Z #21 1.218 go: downloading github.com/golang/glog v1.2.5
+build-images	UNKNOWN STEP	2026-03-03T22:18:55.3980695Z #21 1.223 go: downloading github.com/google/go-cpy v0.0.0-20211218193943-a9c933c06932
+build-images	UNKNOWN STEP	2026-03-03T22:18:55.3981950Z #21 1.234 go: downloading github.com/kylelemons/godebug v1.1.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:55.3982413Z #21 1.237 go: downloading golang.org/x/oauth2 v0.34.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:55.3982857Z #21 1.239 go: downloading google.golang.org/api v0.258.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:58.6195680Z #21 4.611 go: downloading cloud.google.com/go/iam v1.5.3
+build-images	UNKNOWN STEP	2026-03-03T22:18:58.6196470Z #21 4.611 go: downloading cloud.google.com/go/resourcemanager v1.10.7
+build-images	UNKNOWN STEP	2026-03-03T22:18:58.7219953Z #21 4.611 go: downloading sigs.k8s.io/structured-merge-diff/v4 v4.6.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:58.7220704Z #21 4.713 go: downloading sigs.k8s.io/yaml v1.4.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:58.8454407Z #21 4.713 go: downloading github.com/gogo/protobuf v1.3.2
+build-images	UNKNOWN STEP	2026-03-03T22:18:58.8455119Z #21 4.733 go: downloading google.golang.org/grpc v1.77.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:58.8455736Z #21 4.837 go: downloading google.golang.org/protobuf v1.36.11
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.0864065Z #21 5.078 go: downloading sigs.k8s.io/randfill v1.0.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.0864831Z #21 5.078 go: downloading cloud.google.com/go/alloydb v1.20.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.1876838Z #21 5.140 go: downloading github.com/golang/protobuf v1.5.4
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.1877552Z #21 5.141 go: downloading github.com/google/go-cmp v0.7.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.1878418Z #21 5.142 go: downloading google.golang.org/genproto v0.0.0-20250922171735-9219d122eba9
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.1879340Z #21 5.179 go: downloading cloud.google.com/go/apigateway v1.7.7
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.4018528Z #21 5.200 go: downloading cloud.google.com/go/apikeys v1.2.7
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.4023434Z #21 5.225 go: downloading cloud.google.com/go/apphub v0.4.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.4024211Z #21 5.242 go: downloading cloud.google.com/go/asset v1.22.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.7674767Z #21 5.759 go: downloading cloud.google.com/go/backupdr v1.6.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.9226435Z #21 5.760 go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20251213004720-97cd9d5aeac2
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.9227495Z #21 5.760 go: downloading cloud.google.com/go/batch v1.14.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.9228266Z #21 5.777 go: downloading cloud.google.com/go/bigquery v1.72.0
+build-images	UNKNOWN STEP	2026-03-03T22:18:59.9228984Z #21 5.914 go: downloading cloud.google.com/go/bigtable v1.41.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.0403421Z #21 5.916 go: downloading cloud.google.com/go/billing v1.21.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.0404233Z #21 5.916 go: downloading github.com/googleapis/gax-go/v2 v2.15.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.0404799Z #21 5.944 go: downloading cloud.google.com/go/cloudbuild v1.25.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.0405274Z #21 5.966 go: downloading cloud.google.com/go/certificatemanager v1.9.6
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.0405704Z #21 5.980 go: downloading cloud.google.com/go/deploy v1.27.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.0406087Z #21 6.005 go: downloading cloud.google.com/go/cloudtasks v1.13.7
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.0406462Z #21 6.032 go: downloading cloud.google.com/go/cloudquotas v1.4.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.1860161Z #21 6.047 go: downloading cloud.google.com/go/orchestration v1.11.10
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.1860999Z #21 6.067 go: downloading cloud.google.com/go/aiplatform v1.112.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.1861923Z #21 6.177 go: downloading cloud.google.com/go/datacatalog v1.26.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.3651733Z #21 6.221 go: downloading cloud.google.com/go/compute v1.52.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.3652336Z #21 6.356 go: downloading cloud.google.com/go/dataflow v0.11.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.4667213Z #21 6.382 go: downloading cloud.google.com/go/dataform v0.12.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.4668489Z #21 6.414 go: downloading cloud.google.com/go/dataplex v1.28.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.4669208Z #21 6.458 go: downloading cloud.google.com/go/dataproc/v2 v2.15.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.6729442Z #21 6.500 go: downloading cloud.google.com/go/datastream v1.15.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.6730770Z #21 6.529 go: downloading cloud.google.com/go/discoveryengine v1.22.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.6731732Z #21 6.664 go: downloading cloud.google.com/go/documentai v1.39.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.7994199Z #21 6.706 go: downloading cloud.google.com/go/edgecontainer v1.4.4
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.7995009Z #21 6.707 go: downloading cloud.google.com/go/essentialcontacts v1.7.7
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.7999798Z #21 6.708 go: downloading cloud.google.com/go/eventarc v1.18.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.8000467Z #21 6.721 go: downloading cloud.google.com/go/firestore v1.20.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.8001303Z #21 6.791 go: downloading cloud.google.com/go/gkebackup v1.8.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.9244852Z #21 6.794 go: downloading cloud.google.com/go/iap v1.11.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.9245590Z #21 6.811 go: downloading cloud.google.com/go/kms v1.23.2
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.9246251Z #21 6.817 go: downloading cloud.google.com/go/logging v1.13.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.9246939Z #21 6.849 go: downloading cloud.google.com/go/managedkafka v0.8.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.9247631Z #21 6.850 go: downloading cloud.google.com/go/memorystore v0.4.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.9248299Z #21 6.877 go: downloading cloud.google.com/go/metastore v1.14.8
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.9248977Z #21 6.878 go: downloading cloud.google.com/go/monitoring v1.24.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:00.9249920Z #21 6.916 go: downloading google.golang.org/genproto/googleapis/api v0.0.0-20251111163417-95abcf5c77ba
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.0324022Z #21 6.939 go: downloading cloud.google.com/go/netapp v1.11.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.0325505Z #21 6.940 go: downloading cloud.google.com/go/networkmanagement v1.21.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.0326672Z #21 6.965 go: downloading cloud.google.com/go/networksecurity v0.11.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.0327970Z #21 6.967 go: downloading cloud.google.com/go/notebooks v1.12.7
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.0328695Z #21 7.008 go: downloading cloud.google.com/go/networkservices v0.6.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.0329383Z #21 7.009 go: downloading cloud.google.com/go/orgpolicy v1.15.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.0330038Z #21 7.024 go: downloading cloud.google.com/go/security v1.19.2
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.1323432Z #21 7.037 go: downloading cloud.google.com/go/privilegedaccessmanager v0.3.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.1324033Z #21 7.050 go: downloading cloud.google.com/go/recaptchaenterprise/v2 v2.21.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.1324504Z #21 7.050 go: downloading cloud.google.com/go/pubsub/v2 v2.3.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.1324913Z #21 7.076 go: downloading cloud.google.com/go/run v1.13.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.1325287Z #21 7.095 go: downloading cloud.google.com/go/redis v1.18.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.1325684Z #21 7.118 go: downloading cloud.google.com/go/secretmanager v1.16.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.1326150Z #21 7.124 go: downloading cloud.google.com/go/securesourcemanager v1.4.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.2453335Z #21 7.138 go: downloading google.golang.org/genproto/googleapis/api/serviceusage v0.0.0-20250519155744-55703ea1f237
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.2454542Z #21 7.139 go: downloading cloud.google.com/go/spanner v1.87.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.2455278Z #21 7.236 go: downloading cloud.google.com/go/speech v1.28.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.3482266Z #21 7.239 go: downloading cloud.google.com/go/storage v1.58.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.3485273Z #21 7.270 go: downloading go.uber.org/mock v0.5.2
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.3486054Z #21 7.276 go: downloading cloud.google.com/go/vmwareengine v1.3.6
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.3486793Z #21 7.303 go: downloading cloud.google.com/go/workflows v1.14.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.3487500Z #21 7.329 go: downloading cloud.google.com/go/workstations v1.1.6
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.3488014Z #21 7.333 go: downloading cloud.google.com/go/compute/metadata v0.9.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.3488527Z #21 7.340 go: downloading github.com/google/pprof v0.0.0-20250602020802-c6617b811d0e
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.4985697Z #21 7.367 go: downloading gopkg.in/yaml.v2 v2.4.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.4986922Z #21 7.368 go: downloading github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.4987674Z #21 7.490 go: downloading go.uber.org/multierr v1.11.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.4988087Z #21 7.490 go: downloading github.com/hashicorp/go-multierror v1.1.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.4988545Z #21 7.490 go: downloading github.com/hashicorp/terraform-plugin-go v0.14.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.6098094Z #21 7.507 go: downloading github.com/hashicorp/terraform-plugin-log v0.7.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.6100870Z #21 7.539 go: downloading github.com/mitchellh/copystructure v1.2.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.6102234Z #21 7.546 go: downloading github.com/mitchellh/go-testing-interface v1.14.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.6103026Z #21 7.554 go: downloading github.com/mitchellh/mapstructure v1.5.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.6103735Z #21 7.560 go: downloading gomodules.xyz/jsonpatch/v2 v2.4.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.6104611Z #21 7.577 go: downloading sigs.k8s.io/json v0.0.0-20241010143419-9aa6b5e7a4b3
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.6105473Z #21 7.577 go: downloading k8s.io/kube-openapi v0.0.0-20250318190949-c8a335a9a2ff
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.6106359Z #21 7.601 go: downloading github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.7192067Z #21 7.611 go: downloading golang.org/x/net v0.48.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.7192838Z #21 7.613 go: downloading github.com/prometheus/client_golang v1.22.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.7193528Z #21 7.682 go: downloading golang.org/x/term v0.38.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.7194129Z #21 7.710 go: downloading cloud.google.com/go/auth v0.18.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.8322001Z #21 7.823 go: downloading cloud.google.com/go/auth/oauth2adapt v0.2.8
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.9463762Z #21 7.823 go: downloading go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.61.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.9464393Z #21 7.824 go: downloading cloud.google.com/go/longrunning v0.7.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.9464807Z #21 7.843 go: downloading github.com/json-iterator/go v1.1.12
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.9465219Z #21 7.844 go: downloading github.com/ghodss/yaml v1.0.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.9465775Z #21 7.851 go: downloading sigs.k8s.io/kubebuilder-declarative-pattern v0.20.0-beta.1.0.20250514194322-871029137730
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.9466310Z #21 7.861 go: downloading go.opencensus.io v0.24.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.9466631Z #21 7.886 go: downloading golang.org/x/time v0.14.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.9466988Z #21 7.907 go: downloading github.com/hashicorp/go-uuid v1.0.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.9467367Z #21 7.918 go: downloading github.com/mitchellh/reflectwalk v1.0.2
+build-images	UNKNOWN STEP	2026-03-03T22:19:01.9467806Z #21 7.938 go: downloading github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.0562981Z #21 7.938 go: downloading github.com/hashicorp/errwrap v1.0.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.0563930Z #21 7.944 go: downloading github.com/hashicorp/go-cleanhttp v0.5.2
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.0564818Z #21 7.944 go: downloading github.com/hashicorp/terraform-plugin-framework-validators v0.9.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.0565517Z #21 7.954 go: downloading github.com/hashicorp/terraform-plugin-framework v1.1.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.0565990Z #21 7.995 go: downloading github.com/sirupsen/logrus v1.9.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.0566334Z #21 8.028 go: downloading gopkg.in/inf.v0 v0.9.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.0566663Z #21 8.036 go: downloading github.com/google/btree v1.1.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.0567081Z #21 8.048 go: downloading cloud.google.com/go/accesscontextmanager v1.9.7
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.2254439Z #21 8.048 go: downloading cloud.google.com/go/osconfig v1.15.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.2255176Z #21 8.066 go: downloading github.com/apache/arrow/go/v15 v15.0.2
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.4328329Z #21 8.424 go: downloading github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.6446310Z #21 8.424 go: downloading github.com/google/uuid v1.6.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.6447093Z #21 8.424 go: downloading go.opentelemetry.io/contrib/detectors/gcp v1.38.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.6447848Z #21 8.424 go: downloading go.opentelemetry.io/otel v1.38.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.6448800Z #21 8.451 go: downloading go.opentelemetry.io/otel/metric v1.38.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.6449557Z #21 8.451 go: downloading go.opentelemetry.io/otel/sdk/metric v1.38.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.6450272Z #21 8.485 go: downloading go.opentelemetry.io/otel/sdk v1.38.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.6776965Z #21 8.669 go: downloading github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.8172909Z #21 8.670 go: downloading go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.63.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.8174379Z #21 8.702 go: downloading golang.org/x/text v0.32.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.8175185Z #21 8.704 go: downloading github.com/hashicorp/go-version v1.6.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.8177372Z #21 8.719 go: downloading github.com/apparentlymart/go-cidr v1.1.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.8178120Z #21 8.736 go: downloading github.com/mitchellh/hashstructure v1.1.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.8178957Z #21 8.744 go: downloading github.com/gammazero/workerpool v0.0.0-20190608213748-0ed5e40ec55e
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.8179944Z #21 8.768 go: downloading github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.8180764Z #21 8.808 go: downloading github.com/mitchellh/go-homedir v1.1.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.9425888Z #21 8.828 go: downloading github.com/vmihailenco/msgpack v4.0.4+incompatible
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.9430214Z #21 8.839 go: downloading github.com/hashicorp/go-hclog v1.2.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.9430934Z #21 8.839 go: downloading github.com/vmihailenco/msgpack/v4 v4.3.12
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.9431780Z #21 8.851 go: downloading github.com/fsnotify/fsnotify v1.7.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.9432399Z #21 8.874 go: downloading github.com/fxamacker/cbor/v2 v2.7.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.9433089Z #21 8.876 go: downloading github.com/google/gnostic-models v0.6.9
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.9433788Z #21 8.891 go: downloading github.com/prometheus/client_model v0.6.2
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.9434471Z #21 8.901 go: downloading github.com/prometheus/common v0.63.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.9435031Z #21 8.906 go: downloading golang.org/x/sys v0.39.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.9435571Z #21 8.908 go: downloading gopkg.in/yaml.v3 v3.0.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:02.9436130Z #21 8.933 go: downloading github.com/google/s2a-go v0.1.9
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.0474811Z #21 8.950 go: downloading github.com/go-openapi/jsonreference v0.21.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.0478091Z #21 8.962 go: downloading github.com/go-openapi/swag v0.23.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.0479615Z #21 8.988 go: downloading github.com/googleapis/enterprise-certificate-proxy v0.3.7
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.0480728Z #21 8.995 go: downloading github.com/felixge/httpsnoop v1.0.4
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.0482429Z #21 9.014 go: downloading go.opentelemetry.io/otel/trace v1.38.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.0483284Z #21 9.021 go: downloading github.com/beorn7/perks v1.0.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.0484446Z #21 9.033 go: downloading github.com/cespare/xxhash/v2 v2.3.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.0485335Z #21 9.039 go: downloading github.com/prometheus/procfs v0.16.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.1707273Z #21 9.048 go: downloading contrib.go.opencensus.io/exporter/prometheus v0.1.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.1709617Z #21 9.065 go: downloading github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.1712621Z #21 9.091 go: downloading github.com/modern-go/reflect2 v1.0.2
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.1715055Z #21 9.127 go: downloading sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.1717285Z #21 9.162 go: downloading github.com/hashicorp/hcl/v2 v2.24.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.3042517Z #21 9.186 go: downloading github.com/zclconf/go-cty v1.16.4
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.3043223Z #21 9.256 go: downloading github.com/hashicorp/hcl v1.0.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.3043916Z #21 9.295 go: downloading github.com/hashicorp/logutils v1.0.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.4528723Z #21 9.305 go: downloading github.com/hashicorp/terraform-exec v0.17.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.4529561Z #21 9.352 go: downloading github.com/hashicorp/terraform-json v0.14.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.4530349Z #21 9.444 go: downloading golang.org/x/exp v0.0.0-20251125195548-87e1e737ad39
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.5838007Z #21 9.474 go: downloading golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.5838958Z #21 9.489 go: downloading github.com/google/flatbuffers v24.3.25+incompatible
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.5839544Z #21 9.503 go: downloading github.com/klauspost/compress v1.18.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.5839963Z #21 9.503 go: downloading github.com/pierrec/lz4/v4 v4.1.18
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.5840573Z #21 9.575 go: downloading github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.54.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.7350511Z #21 9.582 go: downloading github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.30.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.7354791Z #21 9.598 go: downloading github.com/gammazero/deque v0.0.0-20190521012701-46e4ffb7a622
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.7356802Z #21 9.610 go: downloading github.com/vmihailenco/tagparser v0.1.2
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.7357558Z #21 9.622 go: downloading github.com/fatih/color v1.18.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.7358283Z #21 9.631 go: downloading github.com/mattn/go-isatty v0.0.20
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.7358970Z #21 9.645 go: downloading github.com/x448/float16 v0.8.4
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.7359701Z #21 9.726 go: downloading github.com/go-openapi/jsonpointer v0.21.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.9735068Z #21 9.734 go: downloading github.com/mailru/easyjson v0.7.7
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.9735780Z #21 9.761 go: downloading github.com/agext/levenshtein v1.2.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.9736350Z #21 9.782 go: downloading github.com/apparentlymart/go-textseg/v15 v15.0.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.9736937Z #21 9.804 go: downloading github.com/mitchellh/go-wordwrap v1.0.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:03.9737488Z #21 9.814 go: downloading github.com/hashicorp/hc-install v0.4.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:04.9488313Z #21 10.94 go: downloading github.com/hashicorp/go-plugin v1.4.8
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.1004297Z #21 10.94 go: downloading github.com/goccy/go-json v0.10.2
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.1511331Z #21 11.14 go: downloading github.com/zeebo/xxh3 v1.0.2
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.3716000Z #21 11.14 go: downloading github.com/go-logr/stdr v1.2.2
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.3747945Z #21 11.20 go: downloading go.opentelemetry.io/auto/sdk v1.2.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.3748802Z #21 11.21 go: downloading github.com/envoyproxy/go-control-plane/envoy v1.35.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.6624105Z #21 11.65 go: downloading github.com/mattn/go-colorable v0.1.13
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.8964164Z #21 11.67 go: downloading gopkg.in/evanphx/json-patch.v4 v4.12.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.8965372Z #21 11.68 go: downloading github.com/josharian/intern v1.0.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.8966330Z #21 11.69 go: downloading github.com/hashicorp/go-checkpoint v0.5.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.8967217Z #21 11.70 go: downloading github.com/hashicorp/yamux v0.0.0-20181012175058-2f1d1f20f75d
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.8967972Z #21 11.71 go: downloading github.com/oklog/run v1.0.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.8968575Z #21 11.72 go: downloading github.com/klauspost/cpuid/v2 v2.3.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.8969267Z #21 11.74 go: downloading github.com/spiffe/go-spiffe/v2 v2.6.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:05.9324628Z #21 11.92 go: downloading github.com/cncf/xds/go v0.0.0-20251022180443-0feb69152e9f
+build-images	UNKNOWN STEP	2026-03-03T22:19:06.1503927Z #21 11.92 go: downloading github.com/emicklei/go-restful/v3 v3.12.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:06.1504651Z #21 11.97 go: downloading github.com/pkg/errors v0.9.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:06.1505451Z #21 11.97 go: downloading github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8
+build-images	UNKNOWN STEP	2026-03-03T22:19:06.1506207Z #21 11.97 go: downloading golang.org/x/crypto v0.46.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:06.1506967Z #21 11.98 go: downloading github.com/hashicorp/terraform-registry-address v0.1.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:06.1507800Z #21 11.99 go: downloading github.com/go-jose/go-jose/v4 v4.1.3
+build-images	UNKNOWN STEP	2026-03-03T22:19:06.1508664Z #21 11.99 go: downloading github.com/envoyproxy/protoc-gen-validate v1.2.1
+build-images	UNKNOWN STEP	2026-03-03T22:19:06.1509398Z #21 12.14 go: downloading cel.dev/expr v0.24.0
+build-images	UNKNOWN STEP	2026-03-03T22:19:06.3008298Z #21 12.14 go: downloading github.com/hashicorp/terraform-svchost v0.0.0-20200729002733-f050f53b9734
+build-images	UNKNOWN STEP	2026-03-03T22:22:27.0956662Z #21 213.1 # github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute
+build-images	UNKNOWN STEP	2026-03-03T22:22:27.0986780Z ##[error]#21 213.1 pkg/controller/direct/compute/mapper.generated.go:300:27: undefined: ComputeURLMapHTTPRouteAction_v1beta1_FromProto
+build-images	UNKNOWN STEP	2026-03-03T22:22:27.1000572Z ##[error]#21 213.1 pkg/controller/direct/compute/mapper.generated.go:301:23: cannot use in.DefaultService (variable of type *string) as *"github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1".ComputeURLMapDefaultService value in assignment
+build-images	UNKNOWN STEP	2026-03-03T22:22:27.1007107Z ##[error]#21 213.1 pkg/controller/direct/compute/mapper.generated.go:309:69: undefined: ComputeURLMapPathMatcher_v1beta1_FromProto
+build-images	UNKNOWN STEP	2026-03-03T22:22:27.1010432Z ##[error]#21 213.1 pkg/controller/direct/compute/mapper.generated.go:311:55: undefined: ComputeURLMapTest_v1beta1_FromProto
+build-images	UNKNOWN STEP	2026-03-03T22:22:27.1013275Z ##[error]#21 213.1 pkg/controller/direct/compute/mapper.generated.go:320:27: undefined: ComputeURLMapHTTPRouteAction_v1beta1_ToProto
+build-images	UNKNOWN STEP	2026-03-03T22:22:27.1017661Z ##[error]#21 213.1 pkg/controller/direct/compute/mapper.generated.go:321:23: cannot use in.DefaultService (variable of type *"github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1".ComputeURLMapDefaultService) as *string value in assignment
+build-images	UNKNOWN STEP	2026-03-03T22:22:27.1021389Z ##[error]#21 213.1 pkg/controller/direct/compute/mapper.generated.go:329:67: undefined: ComputeURLMapPathMatcher_v1beta1_ToProto
+build-images	UNKNOWN STEP	2026-03-03T22:22:27.1024971Z ##[error]#21 213.1 pkg/controller/direct/compute/mapper.generated.go:331:53: undefined: ComputeURLMapTest_v1beta1_ToProto
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3245171Z #21 ERROR: process "/bin/sh -c CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags \"-s -w\" -o deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags \"-s -w\" -o webhook github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags \"-s -w\" -o recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags \"-s -w\" -o unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags \"-s -w\" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags \"-s -w\" -o config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector" did not complete successfully: exit code: 1
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3343530Z ------
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3350105Z  > [16/17] RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o webhook github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector:
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3355628Z 12.14 go: downloading github.com/hashicorp/terraform-svchost v0.0.0-20200729002733-f050f53b9734
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3356322Z 213.1 # github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3357997Z ##[error]213.1 pkg/controller/direct/compute/mapper.generated.go:300:27: undefined: ComputeURLMapHTTPRouteAction_v1beta1_FromProto
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3364236Z ##[error]213.1 pkg/controller/direct/compute/mapper.generated.go:301:23: cannot use in.DefaultService (variable of type *string) as *"github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1".ComputeURLMapDefaultService value in assignment
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3367773Z ##[error]213.1 pkg/controller/direct/compute/mapper.generated.go:309:69: undefined: ComputeURLMapPathMatcher_v1beta1_FromProto
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3370435Z ##[error]213.1 pkg/controller/direct/compute/mapper.generated.go:311:55: undefined: ComputeURLMapTest_v1beta1_FromProto
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3373905Z ##[error]213.1 pkg/controller/direct/compute/mapper.generated.go:320:27: undefined: ComputeURLMapHTTPRouteAction_v1beta1_ToProto
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3378552Z ##[error]213.1 pkg/controller/direct/compute/mapper.generated.go:321:23: cannot use in.DefaultService (variable of type *"github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1".ComputeURLMapDefaultService) as *string value in assignment
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3382502Z ##[error]213.1 pkg/controller/direct/compute/mapper.generated.go:329:67: undefined: ComputeURLMapPathMatcher_v1beta1_ToProto
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3385301Z ##[error]213.1 pkg/controller/direct/compute/mapper.generated.go:331:53: undefined: ComputeURLMapTest_v1beta1_ToProto
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3387150Z ------
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3387527Z Dockerfile:36
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3387824Z --------------------
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3388413Z   35 |     # needed for debuggers, but not the line numbers for panics
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3389977Z   36 | >>> RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender && \
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3392327Z   37 | >>>     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o webhook github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook && \
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3394284Z   38 | >>>     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder && \
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3396425Z   39 | >>>     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector && \
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3398508Z   40 | >>>     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager && \
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3400594Z   41 | >>>     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3402011Z   42 |     
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3402317Z --------------------
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3409286Z ERROR: failed to build: failed to solve: process "/bin/sh -c CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags \"-s -w\" -o deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags \"-s -w\" -o webhook github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags \"-s -w\" -o recorder github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags \"-s -w\" -o unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags \"-s -w\" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager &&     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags \"-s -w\" -o config-connector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector" did not complete successfully: exit code: 1
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3416409Z make: *** [Makefile:168: docker-build-builder] Error 1
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3419463Z ##[error]Process completed with exit code 2.
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.3523654Z Post job cleanup.
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.5665179Z [command]/usr/bin/git version
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.5718896Z git version 2.53.0
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.5794607Z Temporarily overriding HOME='/home/runner/work/_temp/39e811a4-8d8b-473f-a991-e7f947d2f600' before making global git config changes
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.5796295Z Adding repository directory to the temporary git global config as a safe directory
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.5802463Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/k8s-config-connector/k8s-config-connector
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.5847422Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.5891297Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.6341774Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.6372075Z http.https://github.com/.extraheader
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.6390004Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.6432750Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.6792349Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.6844799Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build-images	UNKNOWN STEP	2026-03-03T22:24:19.7277029Z Cleaning up orphan processes
