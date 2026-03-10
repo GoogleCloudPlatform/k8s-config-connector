@@ -85,6 +85,11 @@ func getIdentityFromCloudBuildTriggerSpec(ctx context.Context, reader client.Rea
 }
 
 func (obj *CloudBuildTrigger) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromCloudBuildTriggerSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
 	// Use Status.ExternalRef if it exists
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
@@ -92,12 +97,17 @@ func (obj *CloudBuildTrigger) GetIdentity(ctx context.Context, reader client.Rea
 		if err := actualIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		return actualIdentity, nil
-	}
 
-	specIdentity, err := getIdentityFromCloudBuildTriggerSpec(ctx, reader, obj)
-	if err != nil {
-		return nil, err
+		if specIdentity != nil {
+			if actualIdentity.Project != specIdentity.Project {
+				return nil, fmt.Errorf("project changed, expect %s, got %s", actualIdentity.Project, specIdentity.Project)
+			}
+			if actualIdentity.Location != specIdentity.Location {
+				return nil, fmt.Errorf("location changed, expect %s, got %s", actualIdentity.Location, specIdentity.Location)
+			}
+		}
+
+		return actualIdentity, nil
 	}
 
 	if specIdentity == nil {

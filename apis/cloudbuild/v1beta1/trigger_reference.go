@@ -82,10 +82,6 @@ func (r *CloudBuildTriggerRef) ParseExternalToIdentity() (identity.Identity, err
 
 func (r *CloudBuildTriggerRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		if externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef"); externalRef != "" {
-			return externalRef
-		}
-
 		// Trigger ID is server-generated, so we need it from status.
 		triggerID, _, _ := unstructured.NestedString(u.Object, "status", "triggerId")
 		if triggerID == "" {
