@@ -88,8 +88,8 @@ func (r *CloudBuildTriggerRef) Normalize(ctx context.Context, reader client.Read
 			return ""
 		}
 
-		location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
-		if location == "" {
+		location, err := refs.GetLocation(u)
+		if err != nil || location == "" {
 			return ""
 		}
 
