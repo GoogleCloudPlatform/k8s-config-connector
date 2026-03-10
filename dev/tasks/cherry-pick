@@ -30,34 +30,33 @@ import subprocess
 import sys
 import tempfile
 
-def run(cmd, **kwargs):
+def run(cmd, stream_output=False, **kwargs):
     print(f"Running command: {shlex.join(cmd)}")
     try:
+        if stream_output:
+            return subprocess.run(cmd, check=True, capture_output=False, text=True, **kwargs)
         return subprocess.run(cmd, check=True, capture_output=True, text=True, **kwargs)
     except subprocess.CalledProcessError as e:
         print(f"Command failed with exit code {e.returncode}")
-        if e.stderr:
-            print(f"Stderr: {e.stderr}")
-        if e.stdout:
-            print(f"Stdout: {e.stdout}")
+        if not stream_output:
+            if e.stderr:
+                print(f"Stderr: {e.stderr}")
+            if e.stdout:
+                print(f"Stdout: {e.stdout}")
         raise
 
 
 def get_remotes():
     """Returns a dictionary mapping remote names to their URLs."""
     remotes = {}
-    try:
-        # Use subprocess.run directly to avoid circular dependency with run() if we wanted to be super safe,
-        # but calling run() is fine here.
-        result = subprocess.run(["git", "remote", "-v"], capture_output=True, text=True, check=True)
-        for line in result.stdout.splitlines():
-            parts = line.split()
-            if len(parts) >= 2:
-                name, url = parts[0], parts[1]
-                if name not in remotes:
-                    remotes[name] = url
-    except subprocess.CalledProcessError:
-        pass
+    # Do not swallow CalledProcessError here to avoid masking root causes.
+    result = run(["git", "remote", "-v"])
+    for line in result.stdout.splitlines():
+        parts = line.split()
+        if len(parts) >= 2:
+            name, url = parts[0], parts[1]
+            if name not in remotes:
+                remotes[name] = url
     return remotes
 
 
@@ -71,6 +70,9 @@ def find_user_remote(remotes, github_username):
         for pattern in patterns:
             if pattern in url.lower():
                 return name
+    # Fallback to 'origin' if it exists and we can't find a better match
+    if "origin" in remotes:
+        return "origin"
     return None
 
 
@@ -108,15 +110,24 @@ def main():
 
         # Get the PR info
         print(f"Fetching information for PR #{pr_number}...")
-        pr_info_results = run(["gh", "pr", "view", pr_number, "--json", "commits,title,body"])
+        pr_info_results = run(["gh", "pr", "view", pr_number, "--json", "commits,title,body,mergeCommit"])
         pr_info = json.loads(pr_info_results.stdout)
 
-        if not pr_info.get('commits'):
+        if not pr_info.get('mergeCommit') and not pr_info.get('commits'):
             print(f"Error: No commits found for PR #{pr_number}.")
             sys.exit(1)
 
         pr_title = f"cherry-pick: {release_branch}: {pr_info['title']}"
-        pr_body = "Cherry picking PR #" + pr_number + "\n\n" + pr_info['body']
+        
+        # Modify the body to avoid auto-closing original issues.
+        # Replace "Fixes #", "Closes #", etc. with "Cherry-pick of #".
+        original_body = pr_info['body']
+        modified_body = original_body
+        for keyword in ["Fixes", "Closes", "Resolves"]:
+            modified_body = modified_body.replace(f"{keyword} #", f"{keyword} (via cherry-pick) #")
+            modified_body = modified_body.replace(f"{keyword.lower()} #", f"{keyword.lower()} (via cherry-pick) #")
+
+        pr_body = f"Cherry picking PR #{pr_number} to {release_branch}\n\n{modified_body}"
 
         branch_name = f"cherry-pick-{pr_number}-{release_branch}"
         github_username = run(["gh", "api", "user", "-q", ".login"]).stdout.strip()
@@ -126,7 +137,7 @@ def main():
         if not user_remote:
             print(f"Error: Could not find a git remote for your fork of k8s-config-connector.")
             print(f"We looked for a remote pointing to github.com/{github_username}/k8s-config-connector.")
-            print("Please ensure you have a remote pointing to your fork.")
+            print("Please ensure you have a remote pointing to your fork, or that 'origin' points to it.")
             sys.exit(1)
         
         print(f"Using remote '{user_remote}' for your fork.")
@@ -140,8 +151,9 @@ def main():
         print(f"Using remote '{upstream_remote}' as upstream.")
 
         # Fetch latest from upstream to ensure we have the latest release branch
-        print(f"Fetching latest from {upstream_remote}...")
-        run(["git", "fetch", upstream_remote])
+        # Optimization: Fetch only the target release branch.
+        print(f"Fetching latest from {upstream_remote}/{release_branch}...")
+        run(["git", "fetch", upstream_remote, release_branch], stream_output=True)
 
         # Check for existing local branch
         branch_exists_locally = subprocess.run(["git", "rev-parse", "--verify", branch_name], capture_output=True).returncode == 0
@@ -173,8 +185,13 @@ def main():
         os.chdir(tmpdir)
 
         # Cherry-pick the commits
-        commit_oids = [c['oid'] for c in pr_info['commits']]
-        print(f"Cherry-picking {len(commit_oids)} commits: {', '.join(commit_oids)}")
+        if pr_info.get('mergeCommit'):
+            commit_oids = [pr_info['mergeCommit']['oid']]
+            print(f"Cherry-picking squash commit {commit_oids[0]} from main...")
+        else:
+            commit_oids = [c['oid'] for c in pr_info['commits']]
+            print(f"Cherry-picking {len(commit_oids)} commits from PR branch: {', '.join(commit_oids)}")
+
         try:
             run(["git", "cherry-pick"] + commit_oids)
         except subprocess.CalledProcessError:
@@ -198,12 +215,20 @@ def main():
 
         # Push the new branch
         print(f"Pushing branch {branch_name} to {user_remote}...")
-        run(["git", "push", user_remote, f"{branch_name}:refs/heads/{branch_name}"])
+        run(["git", "push", user_remote, f"{branch_name}:refs/heads/{branch_name}"], stream_output=True)
 
         # Create the PR
         print("Creating GitHub Pull Request...")
-        pr_output = run(["gh", "pr", "create", "--title", pr_title, "--body", pr_body, "--base", release_branch, "--head", f"{github_username}:{branch_name}"]).stdout.strip()
-        print(f"Created PR for cherry-pick: {pr_output}")
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as f:
+            f.write(pr_body)
+            body_file = f.name
+        
+        try:
+            pr_output = run(["gh", "pr", "create", "--title", pr_title, "--body-file", body_file, "--base", release_branch, "--head", f"{github_username}:{branch_name}"]).stdout.strip()
+            print(f"Created PR for cherry-pick: {pr_output}")
+        finally:
+            if os.path.exists(body_file):
+                os.remove(body_file)
 
     finally:
         os.chdir(repo_root)
