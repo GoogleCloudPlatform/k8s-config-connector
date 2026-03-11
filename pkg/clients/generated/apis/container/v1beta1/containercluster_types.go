@@ -1132,6 +1132,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	ConfidentialNodes *ClusterConfidentialNodes `json:"confidentialNodes,omitempty"`
 
+	/* Immutable. The name of the Customer Managed Encryption Key used to encrypt the control plane's boot disk. */
+	// +optional
+	ControlPlaneDiskEncryptionKeyRef *v1alpha1.ResourceRef `json:"controlPlaneDiskEncryptionKeyRef,omitempty"`
+
 	/* Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disable IP endpoint. Other IP endpoint configurations are available in private_cluster_config. */
 	// +optional
 	ControlPlaneEndpointsConfig *ClusterControlPlaneEndpointsConfig `json:"controlPlaneEndpointsConfig,omitempty"`

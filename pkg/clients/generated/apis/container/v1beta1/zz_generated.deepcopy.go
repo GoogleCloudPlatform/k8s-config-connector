@@ -2678,6 +2678,11 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 		*out = new(ClusterConfidentialNodes)
 		**out = **in
 	}
+	if in.ControlPlaneDiskEncryptionKeyRef != nil {
+		in, out := &in.ControlPlaneDiskEncryptionKeyRef, &out.ControlPlaneDiskEncryptionKeyRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.ControlPlaneEndpointsConfig != nil {
 		in, out := &in.ControlPlaneEndpointsConfig, &out.ControlPlaneEndpointsConfig
 		*out = new(ClusterControlPlaneEndpointsConfig)
