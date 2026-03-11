@@ -106,6 +106,10 @@ type NodepoolBlueGreenSettings struct {
 type NodepoolConfidentialNodes struct {
 	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool. */
 	Enabled bool `json:"enabled"`
+
+	/* Immutable. The type of confidential nodes to use. */
+	// +optional
+	ConfidentialInstanceType *string `json:"confidentialInstanceType,omitempty"`
 }
 
 type NodepoolEphemeralStorageConfig struct {
