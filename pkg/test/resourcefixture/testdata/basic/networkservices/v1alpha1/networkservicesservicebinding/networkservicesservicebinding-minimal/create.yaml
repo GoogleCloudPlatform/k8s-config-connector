@@ -7,5 +7,5 @@ spec:
     external: ${projectId}
   location: global
   description: "Initial description"
-  service:
+  serviceRef:
     external: "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}/services/service-${uniqueId}"
