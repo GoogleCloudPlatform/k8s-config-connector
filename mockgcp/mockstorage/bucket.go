@@ -25,7 +25,6 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -127,6 +126,7 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	now := timestamppb.Now()
 
 	obj := proto.Clone(req.GetBucket()).(*pb.Bucket)
+
 	obj.Id = PtrTo(name.Bucket)
 	obj.Kind = PtrTo("storage#bucket")
 	obj.Name = PtrTo(name.Bucket)
@@ -370,6 +370,5 @@ func (s *MockService) parseBucketName(name string) (*bucketName, error) {
 		return name, nil
 	}
 
-	klog.Infof("Invalid bucket name: %q", name)
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid (expected format: buckets/*)", name)
 }

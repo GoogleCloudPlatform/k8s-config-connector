@@ -798,7 +798,7 @@ func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath st
 
 	stdout := options.Stdout.String()
 	t.Logf("stdout: %v", stdout)
-	stdout = strings.ReplaceAll(stdout, project.ProjectID, "${projectID}")
+	stdout = strings.ReplaceAll(stdout, project.ProjectID, "${projectId}")
 	stdout = strings.ReplaceAll(stdout, uniqueID, "${uniqueId}")
 	// Normalize timestamps like 2026_03_06_19_25_42
 	re := regexp.MustCompile(`\d{4}_\d{2}_\d{2}_\d{2}_\d{2}_\d{2}`)
@@ -807,7 +807,7 @@ func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath st
 
 	stderr := options.Stderr.String()
 	t.Logf("stderr: %v", stderr)
-	stderr = strings.ReplaceAll(stderr, project.ProjectID, "${projectID}")
+	stderr = strings.ReplaceAll(stderr, project.ProjectID, "${projectId}")
 	stderr = strings.ReplaceAll(stderr, uniqueID, "${uniqueId}")
 	stderr = re.ReplaceAllString(stderr, "${timestamp}")
 	test.CompareGoldenFile(t, baseOutputPath+"stderr.log", stderr)

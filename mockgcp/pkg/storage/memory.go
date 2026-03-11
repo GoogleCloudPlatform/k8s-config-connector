@@ -58,7 +58,7 @@ func (s *InMemoryStorage) getTypeStorage(name protoreflect.FullName) *typeStorag
 		objectTypeName = strings.ToLower(string(objectTypeName[0])) + objectTypeName[1:]
 		ts = &typeStorage{
 			objectTypeName: objectTypeName,
-			byKey:          make(map[string]protoreflect.ProtoMessage),
+			byKey:          make(map[string]proto.Message),
 		}
 		s.byType[name] = ts
 	}

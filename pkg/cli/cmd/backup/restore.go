@@ -19,12 +19,15 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/http"
 	"sort"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/kubecli"
 	"github.com/spf13/cobra"
+	"golang.org/x/oauth2"
 	"google.golang.org/api/iterator"
+	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -34,6 +37,7 @@ import (
 )
 
 type restoreOptions struct {
+	kubecli.ClusterOptions
 	cluster               string
 	targetClusterLocation string
 	sourceBucket          string
@@ -54,6 +58,7 @@ func NewRestoreCmd() *cobra.Command {
 		},
 	}
 
+	options.ClusterOptions.AddFlags(cmd)
 	cmd.Flags().StringVar(&options.cluster, "cluster", "", "Name of the cluster")
 	cmd.Flags().StringVar(&options.targetClusterLocation, "target-cluster-location", "", "Location of the target cluster")
 	cmd.Flags().StringVar(&options.sourceBucket, "source-bucket", "", "Source GCS bucket name")
@@ -73,12 +78,16 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 		return fmt.Errorf("--backup-timestamp is required")
 	}
 
-	kubeClient, err := kubecli.NewClient(ctx, kubecli.ClusterOptions{})
+	kubeClient, err := kubecli.NewClient(ctx, options.ClusterOptions)
 	if err != nil {
 		return fmt.Errorf("creating kubernetes client: %w", err)
 	}
 
-	gcsClient, err := storage.NewClient(ctx)
+	var gcsOptions []option.ClientOption
+	if httpClient := ctx.Value(oauth2.HTTPClient); httpClient != nil {
+		gcsOptions = append(gcsOptions, option.WithHTTPClient(httpClient.(*http.Client)))
+	}
+	gcsClient, err := storage.NewClient(ctx, gcsOptions...)
 	if err != nil {
 		return fmt.Errorf("creating GCS client: %w", err)
 	}
@@ -291,8 +300,12 @@ func applyObject(ctx context.Context, kubeClient *kubecli.Client, obj *unstructu
 	unstructured.RemoveNestedField(obj.Object, "metadata", "resourceVersion")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "managedFields")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "ownerReferences")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "finalizers")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "generation")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "creationTimestamp")
+
+	// Remove status as it is derived from GCP and can cause issues during apply (e.g. SSA emulation)
+	unstructured.RemoveNestedField(obj.Object, "status")
 
 	// Acquisition
 	annotations := obj.GetAnnotations()
