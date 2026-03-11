@@ -20,13 +20,13 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(fuzzNetworkConnectivityInteralRange())
+	fuzztesting.RegisterKRMFuzzer(fuzzNetworkConnectivityInternalRange())
 }
 
-func fuzzNetworkConnectivityInteralRange() fuzztesting.KRMFuzzer {
+func fuzzNetworkConnectivityInternalRange() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.InternalRange{},
-		NetworkConnectivityInternalRangeSpec_FromProto, NetworkConnectivityInternalRangeSpec_ToProto,
-		NetworkConnectivityInternalRangeObservedState_FromProto, NetworkConnectivityInternalRangeObservedState_ToProto,
+		NetworkConnectivityInternalRangeSpec_v1beta1_FromProto, NetworkConnectivityInternalRangeSpec_v1beta1_ToProto,
+		NetworkConnectivityInternalRangeObservedState_v1beta1_FromProto, NetworkConnectivityInternalRangeObservedState_v1beta1_ToProto,
 	)
 	f.UnimplementedFields.Insert(".name")
 
