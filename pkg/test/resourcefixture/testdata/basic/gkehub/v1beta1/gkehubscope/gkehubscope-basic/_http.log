@@ -1,0 +1,170 @@
+GET https://gkehub.googleapis.com/v1/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "scope \"projects/${project_id}/locations/global/scopes/gkehubscope-basic\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://gkehub.googleapis.com/v1/projects/$%7Bproject_id%7D/locations/global/scopes?alt=json&prettyPrint=false&scopeId=gkehubscope-basic
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "env": "dev"
+  },
+  "namespaceLabels": {
+    "team": "platform"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.longrunning.Operation"
+  },
+  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-basic/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.longrunning.Operation"
+  },
+  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-basic/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.Scope",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "env": "dev"
+    },
+    "name": "projects/${project_id}/locations/global/scopes/gkehubscope-basic",
+    "namespaceLabels": {
+      "team": "platform"
+    },
+    "state": {
+      "code": "READY"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "env": "dev"
+  },
+  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-basic",
+  "namespaceLabels": {
+    "team": "platform"
+  },
+  "state": {
+    "code": "READY"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://gkehub.googleapis.com/v1/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.longrunning.Operation"
+  },
+  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-basic/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1/projects/$%7Bproject_id%7D/locations/global/scopes/gkehubscope-basic/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.longrunning.Operation"
+  },
+  "name": "projects/${project_id}/locations/global/scopes/gkehubscope-basic/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1.Scope"
+  }
+}
