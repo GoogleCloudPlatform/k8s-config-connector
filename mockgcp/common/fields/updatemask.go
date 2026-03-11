@@ -95,12 +95,12 @@ func walk(original, update proto.Message, path string) error {
 
 func replace(original, update protoreflect.Message, fieldName string) error {
 	originalFd := original.Descriptor().Fields().ByJSONName(fieldName)
-	originalVal := original.Get(originalFd)
 	updateFd := update.Descriptor().Fields().ByJSONName(fieldName)
 	updateVal := update.Get(updateFd)
 
 	// Update Map
 	if originalFd.IsMap() {
+		originalVal := original.Mutable(originalFd)
 		originalVal.Map().Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
 			originalVal.Map().Clear(k)
 			return true
@@ -113,6 +113,7 @@ func replace(original, update protoreflect.Message, fieldName string) error {
 	}
 	// Update List
 	if originalFd.IsList() {
+		originalVal := original.Mutable(originalFd)
 		originalVal.List().Truncate(0)
 		for i := 0; i < updateVal.List().Len(); i++ {
 			originalVal.List().Append(updateVal.List().Get(i))
