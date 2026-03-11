@@ -62,7 +62,10 @@ func TestReferenceDoc(t *testing.T) {
 	}
 
 	sort.Strings(missing)
-	want := strings.Join(missing, "\n")
+	want := ""
+	if len(missing) > 0 {
+		want = strings.Join(missing, "\n") + "\n"
+	}
 	test.CompareGoldenFile(t, "testdata/missing_reference.txt", want)
 }
 
