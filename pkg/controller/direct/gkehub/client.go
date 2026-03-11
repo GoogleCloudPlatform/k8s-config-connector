@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	gkehubv1 "google.golang.org/api/gkehub/v1"
 	featureapi "google.golang.org/api/gkehub/v1beta"
 )
 
@@ -37,6 +38,10 @@ type gkeHubClient struct {
 	featureClient   *featureapi.ProjectsLocationsFeaturesService
 	scopeClient     *featureapi.ProjectsLocationsScopesService
 	operationClient *featureapi.ProjectsLocationsOperationsService
+
+	namespaceClient   *gkehubv1.ProjectsLocationsScopesNamespacesService
+	v1ScopeClient     *gkehubv1.ProjectsLocationsScopesService
+	v1OperationClient *gkehubv1.ProjectsLocationsOperationsService
 }
 
 func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) {
@@ -46,11 +51,20 @@ func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) 
 	}
 	service, err := featureapi.NewService(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building service for gkehub: %w", err)
+		return nil, fmt.Errorf("building service for gkehub v1beta: %w", err)
 	}
+
+	servicev1, err := gkehubv1.NewService(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building service for gkehub v1: %w", err)
+	}
+
 	return &gkeHubClient{
-		featureClient:   featureapi.NewProjectsLocationsFeaturesService(service),
-		scopeClient:     featureapi.NewProjectsLocationsScopesService(service),
-		operationClient: featureapi.NewProjectsLocationsOperationsService(service),
+		featureClient:     featureapi.NewProjectsLocationsFeaturesService(service),
+		scopeClient:       featureapi.NewProjectsLocationsScopesService(service),
+		operationClient:   featureapi.NewProjectsLocationsOperationsService(service),
+		namespaceClient:   gkehubv1.NewProjectsLocationsScopesNamespacesService(servicev1),
+		v1ScopeClient:     gkehubv1.NewProjectsLocationsScopesService(servicev1),
+		v1OperationClient: gkehubv1.NewProjectsLocationsOperationsService(servicev1),
 	}, nil
 }

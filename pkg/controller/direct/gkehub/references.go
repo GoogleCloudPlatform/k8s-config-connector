@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -32,6 +33,10 @@ type Membership struct {
 }
 
 type Feature struct {
+	id string
+}
+
+type Scope struct {
 	id string
 }
 
@@ -102,4 +107,24 @@ func resolveFeatureRef(ctx context.Context, reader client.Reader, obj *krm.GKEHu
 	return &Feature{
 		id: fmt.Sprintf("projects/%s/locations/%s/features/%s", projectID, featureLocation, featureName),
 	}, nil
+}
+
+func resolveScopeRef(ctx context.Context, reader client.Reader, obj *krm.GKEHubNamespace, projectID string) (*Scope, error) {
+	ref := &obj.Spec.ScopeRef
+	if err := ref.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
+	}
+
+	return &Scope{id: ref.External}, nil
+}
+
+func resolveProjectID(ctx context.Context, reader client.Reader, namespace string, projectRef refs.ProjectRef) (string, error) {
+	project, err := refs.ResolveProject(ctx, reader, namespace, &projectRef)
+	if err != nil {
+		return "", err
+	}
+	if project.ProjectID == "" {
+		return "", fmt.Errorf("resolved project ID is empty")
+	}
+	return project.ProjectID, nil
 }
