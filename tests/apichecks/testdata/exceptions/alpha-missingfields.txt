@@ -453,6 +453,20 @@
 [missing_field] crd=cloudassetprojectfeeds.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.feedId" is not set in unstructured objects
 [missing_field] crd=cloudassetprojectfeeds.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.feedOutputConfig.pubsubDestination.topic" is not set in unstructured objects
 [missing_field] crd=cloudassetprojectfeeds.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.deployAction" is not set in unstructured objects
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].configs[]" is not set in unstructured objects
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].git.path" is not set in unstructured objects
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].git.ref" is not set in unstructured objects
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].git.repo" is not set in unstructured objects
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].googleCloudBuildRepo.path" is not set in unstructured objects
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].googleCloudBuildRepo.ref" is not set in unstructured objects
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].googleCloudBuildRepo.repositoryRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].googleCloudStorage.path" is not set in unstructured objects
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].googleCloudStorage.source" is not set in unstructured objects
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.renderAction" is not set in unstructured objects
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=clouddeploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
@@ -1267,20 +1281,6 @@
 [missing_field] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceConfig.postgresqlSourceConfig.publication" is not set in unstructured objects
 [missing_field] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceConfig.postgresqlSourceConfig.replicationSlot" is not set in unstructured objects
 [missing_field] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceConfig.sourceConnectionProfile" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.deployAction" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].configs[]" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].git.path" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].git.ref" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].git.repo" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].googleCloudBuildRepo.path" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].googleCloudBuildRepo.ref" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].googleCloudBuildRepo.repositoryRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].googleCloudStorage.path" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.includeSkaffoldModules[].googleCloudStorage.source" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.customActions.renderAction" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=deploycustomtargettypes.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=deploymentmanagerdeployments.deploymentmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPolicy" is not set in unstructured objects
 [missing_field] crd=deploymentmanagerdeployments.deploymentmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.deletePolicy" is not set in unstructured objects
 [missing_field] crd=deploymentmanagerdeployments.deploymentmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects

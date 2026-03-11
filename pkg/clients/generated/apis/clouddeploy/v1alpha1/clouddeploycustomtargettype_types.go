@@ -38,21 +38,21 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type DeploycustomtargettypeCustomActions struct {
+type CustomtargettypeCustomActions struct {
 	/* Required. The Skaffold custom action responsible for deploy operations. */
 	// +optional
 	DeployAction *string `json:"deployAction,omitempty"`
 
 	/* Optional. List of Skaffold modules Cloud Deploy will include in the Skaffold Config as required before performing diagnose. */
 	// +optional
-	IncludeSkaffoldModules []DeploycustomtargettypeIncludeSkaffoldModules `json:"includeSkaffoldModules,omitempty"`
+	IncludeSkaffoldModules []CustomtargettypeIncludeSkaffoldModules `json:"includeSkaffoldModules,omitempty"`
 
 	/* Optional. The Skaffold custom action responsible for render operations. If not provided then Cloud Deploy will perform the render operations via `skaffold render`. */
 	// +optional
 	RenderAction *string `json:"renderAction,omitempty"`
 }
 
-type DeploycustomtargettypeGit struct {
+type CustomtargettypeGit struct {
 	/* Optional. Relative path from the repository root to the Skaffold file. */
 	// +optional
 	Path *string `json:"path,omitempty"`
@@ -66,7 +66,7 @@ type DeploycustomtargettypeGit struct {
 	Repo *string `json:"repo,omitempty"`
 }
 
-type DeploycustomtargettypeGoogleCloudBuildRepo struct {
+type CustomtargettypeGoogleCloudBuildRepo struct {
 	/* Optional. Relative path from the repository root to the Skaffold Config file. */
 	// +optional
 	Path *string `json:"path,omitempty"`
@@ -80,7 +80,7 @@ type DeploycustomtargettypeGoogleCloudBuildRepo struct {
 	RepositoryRef *v1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
 }
 
-type DeploycustomtargettypeGoogleCloudStorage struct {
+type CustomtargettypeGoogleCloudStorage struct {
 	/* Optional. Relative path from the source to the Skaffold file. */
 	// +optional
 	Path *string `json:"path,omitempty"`
@@ -90,28 +90,28 @@ type DeploycustomtargettypeGoogleCloudStorage struct {
 	Source *string `json:"source,omitempty"`
 }
 
-type DeploycustomtargettypeIncludeSkaffoldModules struct {
+type CustomtargettypeIncludeSkaffoldModules struct {
 	/* Optional. The Skaffold Config modules to use from the specified source. */
 	// +optional
 	Configs []string `json:"configs,omitempty"`
 
 	/* Optional. Remote git repository containing the Skaffold Config modules. */
 	// +optional
-	Git *DeploycustomtargettypeGit `json:"git,omitempty"`
+	Git *CustomtargettypeGit `json:"git,omitempty"`
 
 	/* Optional. Cloud Build V2 repository containing the Skaffold Config modules. */
 	// +optional
-	GoogleCloudBuildRepo *DeploycustomtargettypeGoogleCloudBuildRepo `json:"googleCloudBuildRepo,omitempty"`
+	GoogleCloudBuildRepo *CustomtargettypeGoogleCloudBuildRepo `json:"googleCloudBuildRepo,omitempty"`
 
 	/* Optional. Cloud Storage bucket containing the Skaffold Config modules. */
 	// +optional
-	GoogleCloudStorage *DeploycustomtargettypeGoogleCloudStorage `json:"googleCloudStorage,omitempty"`
+	GoogleCloudStorage *CustomtargettypeGoogleCloudStorage `json:"googleCloudStorage,omitempty"`
 }
 
-type DeployCustomTargetTypeSpec struct {
+type CloudDeployCustomTargetTypeSpec struct {
 	/* Configures render and deploy for the `CustomTargetType` using Skaffold custom actions. */
 	// +optional
-	CustomActions *DeploycustomtargettypeCustomActions `json:"customActions,omitempty"`
+	CustomActions *CustomtargettypeCustomActions `json:"customActions,omitempty"`
 
 	/* Optional. Description of the `CustomTargetType`. Max length is 255 characters. */
 	// +optional
@@ -122,12 +122,12 @@ type DeployCustomTargetTypeSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The DeployCustomTargetType name. If not given, the metadata.name will be used. */
+	/* The CloudDeployCustomTargetType name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type DeploycustomtargettypeObservedStateStatus struct {
+type CustomtargettypeObservedStateStatus struct {
 	/* Output only. Time at which the `CustomTargetType` was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -145,11 +145,11 @@ type DeploycustomtargettypeObservedStateStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type DeployCustomTargetTypeStatus struct {
+type CloudDeployCustomTargetTypeStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DeployCustomTargetType's current state. */
+	   CloudDeployCustomTargetType's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DeployCustomTargetType resource in GCP. */
+	/* A unique specifier for the CloudDeployCustomTargetType resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -159,12 +159,12 @@ type DeployCustomTargetTypeStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *DeploycustomtargettypeObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *CustomtargettypeObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpdeploycustomtargettype;gcpdeploycustomtargettypes
+// +kubebuilder:resource:categories=gcp,shortName=gcpclouddeploycustomtargettype;gcpclouddeploycustomtargettypes
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
@@ -173,25 +173,25 @@ type DeployCustomTargetTypeStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// DeployCustomTargetType is the Schema for the clouddeploy API
+// CloudDeployCustomTargetType is the Schema for the clouddeploy API
 // +k8s:openapi-gen=true
-type DeployCustomTargetType struct {
+type CloudDeployCustomTargetType struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DeployCustomTargetTypeSpec   `json:"spec,omitempty"`
-	Status DeployCustomTargetTypeStatus `json:"status,omitempty"`
+	Spec   CloudDeployCustomTargetTypeSpec   `json:"spec,omitempty"`
+	Status CloudDeployCustomTargetTypeStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// DeployCustomTargetTypeList contains a list of DeployCustomTargetType
-type DeployCustomTargetTypeList struct {
+// CloudDeployCustomTargetTypeList contains a list of CloudDeployCustomTargetType
+type CloudDeployCustomTargetTypeList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DeployCustomTargetType `json:"items"`
+	Items           []CloudDeployCustomTargetType `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&DeployCustomTargetType{}, &DeployCustomTargetTypeList{})
+	SchemeBuilder.Register(&CloudDeployCustomTargetType{}, &CloudDeployCustomTargetTypeList{})
 }
