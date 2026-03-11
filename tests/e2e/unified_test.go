@@ -272,6 +272,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 							// ComputeNetwork is currently failing with SSA in mockkubeapiserver
 							// because of boolean fields.
 							opt.DoNotUseServerSideApplyForCreate = true
+							opt.DoNotUseServerSideApplyForUpdate = true
 						} else {
 							// Share the rereconiliation ratchet, rather than introducing a second long list
 							if ShouldTestRereconiliation(t, fixture.Name, primaryResource) {

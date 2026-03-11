@@ -116,12 +116,14 @@ func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*p
 		return nil, err
 	}
 
-	patch := req.GetNetworkResource()
-
-	// Use proto.Merge to apply the patch.
-	// Note: proto.Merge will overwrite fields in obj with non-default values from patch.
-	// Since Compute API uses pointers for optional fields in the generated code, this works well.
-	proto.Merge(obj, patch)
+	if req.GetNetworkResource().RoutingConfig != nil {
+		if req.GetNetworkResource().GetRoutingConfig().RoutingMode != nil {
+			if obj.RoutingConfig == nil {
+				obj.RoutingConfig = &pb.NetworkRoutingConfig{}
+			}
+			obj.RoutingConfig.RoutingMode = req.GetNetworkResource().GetRoutingConfig().RoutingMode
+		}
+	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

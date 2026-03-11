@@ -121,6 +121,9 @@ type CreateDeleteTestOptions struct { //nolint:revive
 	// Note: we should use server-side apply for both create and update.
 	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field
 	DoNotUseServerSideApplyForCreate bool
+
+	// DoNotUseServerSideApplyForUpdate uses a normal update for object update
+	DoNotUseServerSideApplyForUpdate bool
 }
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
@@ -154,7 +157,7 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	if len(opt.Updates) != 0 {
 		// treat as a patch
 		for _, updateUnstruct := range opt.Updates {
-			if opt.DoNotUseServerSideApplyForCreate {
+			if opt.DoNotUseServerSideApplyForUpdate {
 				t.Log("using legacy update to update object (should ideally use server-side apply)", "GVK", updateUnstruct.GroupVersionKind().String(), "name", updateUnstruct.GetName())
 				// We need to get the object first to get the resourceVersion and merge
 				current := &unstructured.Unstructured{}
