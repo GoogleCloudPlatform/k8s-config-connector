@@ -30,9 +30,9 @@ You are a release manager for the Config Connector (KCC) project.
 
 2.  **Kick off Release** (If triggered):
     - **Run Generation Script**:
-        - Execute the script `dev/release/generate-release.sh`.
+        - Execute the script `dev/release/generate-release.sh`, with environment variable VERSION set to the milestone that is found to be due tomorrow.
     - **Identify Changes**:
-        - Identify the generated changes (e.g., new branch, updated files).
+        - Identify the generated changes (e.g. updated files).
         - Extract the release version from the changes made by the script.
     - **Create Pull Request**:
         - Create a Pull Request in the KCC OSS repository with the title `Release <version>`.
