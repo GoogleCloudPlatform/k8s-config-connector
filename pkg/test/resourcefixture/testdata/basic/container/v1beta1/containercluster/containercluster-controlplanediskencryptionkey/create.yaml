@@ -21,3 +21,7 @@ spec:
   initialNodeCount: 1
   controlPlaneDiskEncryptionKeyRef:
     name: kmscryptokey-${uniqueId}
+  controlPlaneEndpointsConfig:
+    dnsEndpointConfig:
+      allowExternalTraffic: false
+      enableK8sTokensViaDns: false

@@ -18,6 +18,10 @@ metadata:
 spec:
   controlPlaneDiskEncryptionKeyRef:
     name: kmscryptokey-${uniqueId}
+  controlPlaneEndpointsConfig:
+    dnsEndpointConfig:
+      allowExternalTraffic: false
+      enableK8sTokensViaDns: false
   initialNodeCount: 1
   location: us-west2
   resourceID: containercluster-${uniqueId}
