@@ -288,10 +288,20 @@ spec:
   uniformBucketLevelAccess: true
 `, ns, ns)
 
-	applyBucket := exec.CommandContext(ctx, "kubectl", "apply", "-f", "-")
-	applyBucket.Stdin = strings.NewReader(bucketManifest)
-	if output, err := applyBucket.CombinedOutput(); err != nil {
-		t.Fatalf("failed to apply StorageBucket: %v\nOutput: %s", err, string(output))
+	var applyOutput []byte
+	var applyErr error
+	for i := 0; i < 5; i++ {
+		applyBucket := exec.CommandContext(ctx, "kubectl", "apply", "-f", "-")
+		applyBucket.Stdin = strings.NewReader(bucketManifest)
+		applyOutput, applyErr = applyBucket.CombinedOutput()
+		if applyErr == nil {
+			break
+		}
+		t.Logf("failed to apply StorageBucket (attempt %d): %v\nOutput: %s", i+1, applyErr, string(applyOutput))
+		time.Sleep(5 * time.Second)
+	}
+	if applyErr != nil {
+		t.Fatalf("failed to apply StorageBucket after retries: %v\nOutput: %s", applyErr, string(applyOutput))
 	}
 
 	t.Logf("Waiting for StorageBucket reconciliation (expected to fail with permission error)")
