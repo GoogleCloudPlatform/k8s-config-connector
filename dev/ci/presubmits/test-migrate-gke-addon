@@ -20,6 +20,9 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
+# setup envtest
+. ${REPO_ROOT}/dev/tasks/setup-envtest
+
 export RUN_E2E=1
 export E2E_KUBE_TARGET=envtest
 export E2E_GCP_TARGET=mock

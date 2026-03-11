@@ -17,6 +17,7 @@ package migrate
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 
@@ -43,7 +44,7 @@ var (
 		Use:   "prepare",
 		Short: "Prepare for migration: backup resources, pause reconciliation, and remove finalizers",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runPrepare(cmd.Context())
+			return runPrepare(cmd)
 		},
 	}
 
@@ -51,7 +52,7 @@ var (
 		Use:   "finish",
 		Short: "Finish migration: re-apply resources and resume reconciliation",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runFinish(cmd.Context())
+			return runFinish(cmd)
 		},
 	}
 )
@@ -67,73 +68,77 @@ func init() {
 	migrateGKEAddonFinishCmd.Flags().StringVarP(&outputFile, "input", "i", "kcc-backup.yaml", "Path to the backup file")
 }
 
-func runPrepare(ctx context.Context) error {
+func runPrepare(cmd *cobra.Command) error {
+	ctx := cmd.Context()
+	out := cmd.OutOrStdout()
 	kubeClient, err := kubecli.NewClient(ctx, clusterOptions)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("1. Discovering all Config Connector resources...")
-	resources, err := getAllKCCResources(ctx, kubeClient)
+	fmt.Fprintln(out, "1. Discovering all Config Connector resources...")
+	resources, err := getAllKCCResources(ctx, kubeClient, out)
 	if err != nil {
 		return fmt.Errorf("error getting KCC resources: %w", err)
 	}
-	fmt.Printf("Found %d resources.\n", len(resources))
+	fmt.Fprintf(out, "Found %d resources.\n", len(resources))
 
-	fmt.Printf("2. Backing up resources to %s...\n", outputFile)
+	fmt.Fprintf(out, "2. Backing up resources to %s...\n", outputFile)
 	if err := backupResources(resources, outputFile); err != nil {
 		return fmt.Errorf("error backing up resources: %w", err)
 	}
 
-	fmt.Println("3. Pausing reconciliation...")
-	if err := pauseReconciliation(ctx, kubeClient); err != nil {
+	fmt.Fprintln(out, "3. Pausing reconciliation...")
+	if err := pauseReconciliation(ctx, kubeClient, out); err != nil {
 		return fmt.Errorf("error pausing reconciliation: %w", err)
 	}
 
-	fmt.Println("4. Removing finalizers from resources to decouple them from GCP...")
-	if err := removeFinalizers(ctx, kubeClient, resources); err != nil {
+	fmt.Fprintln(out, "4. Removing finalizers from resources to decouple them from GCP...")
+	if err := removeFinalizers(ctx, kubeClient, resources, out); err != nil {
 		return fmt.Errorf("error removing finalizers: %w", err)
 	}
 
-	fmt.Println("\nPreparation complete!")
-	fmt.Println("Next steps:")
-	fmt.Println("1. Disable the Config Connector addon in your GKE cluster:")
-	fmt.Println("   gcloud container clusters update <cluster-name> --update-addons ConfigConnector=DISABLED")
-	fmt.Println("2. Install the Config Connector operator manually:")
-	fmt.Println("   https://cloud.google.com/config-connector/docs/how-to/install-manually")
-	fmt.Println("3. Run the finish command to resume reconciliation:")
-	fmt.Println("   config-connector migrate gke-addon finish")
+	fmt.Fprintln(out, "\nPreparation complete!")
+	fmt.Fprintln(out, "Next steps:")
+	fmt.Fprintln(out, "1. Disable the Config Connector addon in your GKE cluster:")
+	fmt.Fprintln(out, "   gcloud container clusters update <cluster-name> --update-addons ConfigConnector=DISABLED")
+	fmt.Fprintln(out, "2. Install the Config Connector operator manually:")
+	fmt.Fprintln(out, "   https://cloud.google.com/config-connector/docs/how-to/install-manually")
+	fmt.Fprintln(out, "3. Run the finish command to resume reconciliation:")
+	fmt.Fprintln(out, "   config-connector migrate gke-addon finish")
 
 	return nil
 }
 
-func runFinish(ctx context.Context) error {
+func runFinish(cmd *cobra.Command) error {
+	ctx := cmd.Context()
+	out := cmd.OutOrStdout()
 	kubeClient, err := kubecli.NewClient(ctx, clusterOptions)
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("1. Loading backed up resources from %s...\n", outputFile)
+	fmt.Fprintf(out, "1. Loading backed up resources from %s...\n", outputFile)
 	resources, err := loadResources(outputFile)
 	if err != nil {
 		return fmt.Errorf("error loading resources: %w", err)
 	}
 
-	fmt.Println("2. Re-applying resources...")
-	if err := applyResources(ctx, kubeClient, resources); err != nil {
+	fmt.Fprintln(out, "2. Re-applying resources...")
+	if err := applyResources(ctx, kubeClient, resources, out); err != nil {
 		return fmt.Errorf("error applying resources: %w", err)
 	}
 
-	fmt.Println("3. Resuming reconciliation...")
-	if err := resumeReconciliation(ctx, kubeClient); err != nil {
+	fmt.Fprintln(out, "3. Resuming reconciliation...")
+	if err := resumeReconciliation(ctx, kubeClient, out); err != nil {
 		return fmt.Errorf("error resuming reconciliation: %w", err)
 	}
 
-	fmt.Println("\nMigration complete!")
+	fmt.Fprintln(out, "\nMigration complete!")
 	return nil
 }
 
-func getAllKCCResources(ctx context.Context, kubeClient *kubecli.Client) ([]unstructured.Unstructured, error) {
+func getAllKCCResources(ctx context.Context, kubeClient *kubecli.Client, out io.Writer) ([]unstructured.Unstructured, error) {
 	crdList := &unstructured.UnstructuredList{}
 	crdList.SetGroupVersionKind(schema.GroupVersionKind{
 		Group:   "apiextensions.k8s.io",
@@ -192,7 +197,7 @@ func getAllKCCResources(ctx context.Context, kubeClient *kubecli.Client) ([]unst
 		list := &unstructured.UnstructuredList{}
 		list.SetGroupVersionKind(gvk)
 		if err := kubeClient.List(ctx, list); err != nil {
-			fmt.Printf("Warning: failed to list %s: %v\n", gvk.Kind, err)
+			fmt.Fprintf(out, "Warning: failed to list %s: %v\n", gvk.Kind, err)
 			continue
 		}
 		kccResources = append(kccResources, list.Items...)
@@ -238,7 +243,7 @@ func cleanResourceForBackup(res *unstructured.Unstructured) {
 	unstructured.RemoveNestedField(res.Object, "status")
 }
 
-func pauseReconciliation(ctx context.Context, kubeClient *kubecli.Client) error {
+func pauseReconciliation(ctx context.Context, kubeClient *kubecli.Client, out io.Writer) error {
 	gvkList := []schema.GroupVersionKind{
 		{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnector"},
 		{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnectorContext"},
@@ -248,7 +253,7 @@ func pauseReconciliation(ctx context.Context, kubeClient *kubecli.Client) error 
 		list := &unstructured.UnstructuredList{}
 		list.SetGroupVersionKind(gvk)
 		if err := kubeClient.List(ctx, list); err != nil {
-			fmt.Printf("Warning: failed to list %s: %v\n", gvk.Kind, err)
+			fmt.Fprintf(out, "Warning: failed to list %s: %v\n", gvk.Kind, err)
 			continue
 		}
 
@@ -260,13 +265,13 @@ func pauseReconciliation(ctx context.Context, kubeClient *kubecli.Client) error 
 			if err := kubeClient.Update(ctx, res); err != nil {
 				return fmt.Errorf("error updating %s %s/%s: %w", res.GetKind(), res.GetNamespace(), res.GetName(), err)
 			}
-			fmt.Printf("Paused %s %s/%s\n", res.GetKind(), res.GetNamespace(), res.GetName())
+			fmt.Fprintf(out, "Paused %s %s/%s\n", res.GetKind(), res.GetNamespace(), res.GetName())
 		}
 	}
 	return nil
 }
 
-func removeFinalizers(ctx context.Context, kubeClient *kubecli.Client, resources []unstructured.Unstructured) error {
+func removeFinalizers(ctx context.Context, kubeClient *kubecli.Client, resources []unstructured.Unstructured, out io.Writer) error {
 	for i := range resources {
 		res := &resources[i]
 		if len(res.GetFinalizers()) == 0 {
@@ -275,7 +280,7 @@ func removeFinalizers(ctx context.Context, kubeClient *kubecli.Client, resources
 		res.SetFinalizers(nil)
 		if err := kubeClient.Update(ctx, res); err != nil {
 			// Don't fail the whole process if one finalizer removal fails, but warn the user.
-			fmt.Printf("Warning: failed to remove finalizers from %s %s/%s: %v\n", res.GetKind(), res.GetNamespace(), res.GetName(), err)
+			fmt.Fprintf(out, "Warning: failed to remove finalizers from %s %s/%s: %v\n", res.GetKind(), res.GetNamespace(), res.GetName(), err)
 		}
 	}
 	return nil
@@ -302,7 +307,7 @@ func loadResources(path string) ([]unstructured.Unstructured, error) {
 	return resources, nil
 }
 
-func applyResources(ctx context.Context, kubeClient *kubecli.Client, resources []unstructured.Unstructured) error {
+func applyResources(ctx context.Context, kubeClient *kubecli.Client, resources []unstructured.Unstructured, out io.Writer) error {
 	for _, res := range resources {
 		// Use Patch to create or update
 		data, err := yaml.Marshal(res.Object)
@@ -310,13 +315,13 @@ func applyResources(ctx context.Context, kubeClient *kubecli.Client, resources [
 			return err
 		}
 		if err := kubeClient.Patch(ctx, &res, client.RawPatch(types.ApplyPatchType, data), client.FieldOwner("kcc-migration-tool"), client.ForceOwnership); err != nil {
-			fmt.Printf("Warning: failed to apply %s %s/%s: %v\n", res.GetKind(), res.GetNamespace(), res.GetName(), err)
+			fmt.Fprintf(out, "Warning: failed to apply %s %s/%s: %v\n", res.GetKind(), res.GetNamespace(), res.GetName(), err)
 		}
 	}
 	return nil
 }
 
-func resumeReconciliation(ctx context.Context, kubeClient *kubecli.Client) error {
+func resumeReconciliation(ctx context.Context, kubeClient *kubecli.Client, out io.Writer) error {
 	gvkList := []schema.GroupVersionKind{
 		{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnector"},
 		{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnectorContext"},
@@ -326,7 +331,7 @@ func resumeReconciliation(ctx context.Context, kubeClient *kubecli.Client) error
 		list := &unstructured.UnstructuredList{}
 		list.SetGroupVersionKind(gvk)
 		if err := kubeClient.List(ctx, list); err != nil {
-			fmt.Printf("Warning: failed to list %s: %v\n", gvk.Kind, err)
+			fmt.Fprintf(out, "Warning: failed to list %s: %v\n", gvk.Kind, err)
 			continue
 		}
 
@@ -338,7 +343,7 @@ func resumeReconciliation(ctx context.Context, kubeClient *kubecli.Client) error
 			if err := kubeClient.Update(ctx, res); err != nil {
 				return fmt.Errorf("error updating %s %s/%s: %w", res.GetKind(), res.GetNamespace(), res.GetName(), err)
 			}
-			fmt.Printf("Resumed %s %s/%s\n", res.GetKind(), res.GetNamespace(), res.GetName())
+			fmt.Fprintf(out, "Resumed %s %s/%s\n", res.GetKind(), res.GetNamespace(), res.GetName())
 		}
 	}
 	return nil
