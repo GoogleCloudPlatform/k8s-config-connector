@@ -252,6 +252,10 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 				return nil, fmt.Errorf("creating postgres user: %w", err)
 			}
 		}
+
+		if err := s.ensureMasterReflectsReplica(ctx, *name, nil, obj); err != nil {
+			return nil, fmt.Errorf("ensuring master reflects replica: %w", err)
+		}
 	}
 
 	op := &pb.Operation{
@@ -265,6 +269,115 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
 		return obj, nil
 	})
+}
+
+func (s *sqlInstancesService) ensureMasterReflectsReplica(ctx context.Context, name InstanceName, oldInstance *pb.DatabaseInstance, newInstance *pb.DatabaseInstance) error {
+	// If this is a replica instance, we also need to update the master instance to add the replica name.
+
+	newMasterInstanceName := ""
+	if newInstance != nil {
+		newMasterInstanceName = newInstance.MasterInstanceName
+	}
+
+	oldMasterInstanceName := ""
+	if oldInstance != nil {
+		oldMasterInstanceName = oldInstance.MasterInstanceName
+	}
+
+	if newMasterInstanceName != "" && newMasterInstanceName != oldMasterInstanceName {
+		masterName := name
+
+		tokens := strings.Split(newMasterInstanceName, ":")
+		if len(tokens) >= 2 {
+			masterName.Project = &projects.ProjectData{ID: tokens[0]}
+			masterName.InstanceName = tokens[1]
+		} else {
+			masterName.InstanceName = tokens[0]
+		}
+
+		masterFQN := masterName.String()
+
+		master := &pb.DatabaseInstance{}
+		if err := s.storage.Get(ctx, masterFQN, master); err != nil {
+			return fmt.Errorf("getting old master instance: %w", err)
+		}
+
+		shouldUpdate := false
+
+		// Add to replicaNames
+		{
+			found := false
+			replicaName := name.InstanceName
+			if name.Project.ID != masterName.Project.ID {
+				replicaName = name.Project.ID + ":" + name.InstanceName
+			}
+
+			for _, s := range master.ReplicaNames {
+				if s == replicaName {
+					found = true
+				}
+			}
+			if !found {
+				master.ReplicaNames = append(master.ReplicaNames, replicaName)
+				shouldUpdate = true
+			}
+		}
+
+		if shouldUpdate {
+			if err := s.storage.Update(ctx, masterFQN, master); err != nil {
+				return fmt.Errorf("updating old master instance: %w", err)
+			}
+		}
+	}
+
+	if oldMasterInstanceName != "" && newMasterInstanceName != oldMasterInstanceName {
+		masterName := name
+
+		tokens := strings.Split(oldMasterInstanceName, ":")
+		if len(tokens) >= 2 {
+			masterName.Project = &projects.ProjectData{ID: tokens[0]}
+			masterName.InstanceName = tokens[1]
+		} else {
+			masterName.InstanceName = tokens[0]
+		}
+
+		masterFQN := masterName.String()
+
+		master := &pb.DatabaseInstance{}
+		if err := s.storage.Get(ctx, masterFQN, master); err != nil {
+			return fmt.Errorf("getting old master instance: %w", err)
+		}
+
+		shouldUpdate := false
+
+		// Remove from replicaNames
+		{
+			var keep []string
+			replicaName := name.InstanceName
+			if name.Project.ID != masterName.Project.ID {
+				replicaName = name.Project.ID + ":" + name.InstanceName
+			}
+
+			for _, s := range master.ReplicaNames {
+				if s == replicaName {
+					continue
+				}
+				keep = append(keep, s)
+			}
+			if len(keep) != len(master.ReplicaNames) {
+				master.ReplicaNames = keep
+				shouldUpdate = true
+			}
+		}
+
+		if shouldUpdate {
+			if err := s.storage.Update(ctx, masterFQN, master); err != nil {
+				return fmt.Errorf("updating old master instance: %w", err)
+			}
+		}
+	}
+
+	return nil
 }
 
 func setDefaultInt64(pp **wrapperspb.Int64Value, defaultValue int64) {
@@ -541,7 +654,11 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	}
 
 	if obj.InstanceType == pb.SqlInstanceType_SQL_INSTANCE_TYPE_UNSPECIFIED {
-		obj.InstanceType = pb.SqlInstanceType_CLOUD_SQL_INSTANCE
+		if obj.MasterInstanceName != "" {
+			obj.InstanceType = pb.SqlInstanceType_READ_REPLICA_INSTANCE
+		} else {
+			obj.InstanceType = pb.SqlInstanceType_CLOUD_SQL_INSTANCE
+		}
 	}
 
 	if obj.GeminiConfig == nil {
@@ -940,6 +1057,95 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	})
 }
 
+func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstancesSwitchoverRequest) (*pb.Operation, error) {
+	name, err := s.buildInstanceName(req.GetProject(), req.GetInstance())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.DatabaseInstance{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	oldMasterInstanceName := obj.MasterInstanceName
+	if oldMasterInstanceName == "" {
+		return nil, status.Errorf(codes.FailedPrecondition, "Invalid request: instance is not a replica instance.")
+	}
+
+	// A switchover makes the old master a replica of the new master, so we need to update the old master instance accordingly.
+	{
+		oldMasterName := *name
+
+		tokens := strings.Split(oldMasterInstanceName, ":")
+		if len(tokens) >= 2 {
+			oldMasterName.Project = &projects.ProjectData{ID: tokens[0]}
+			oldMasterName.InstanceName = tokens[1]
+		} else {
+			oldMasterName.InstanceName = oldMasterInstanceName
+		}
+
+		oldMasterFQN := oldMasterName.String()
+
+		oldMaster := &pb.DatabaseInstance{}
+		if err := s.storage.Get(ctx, oldMasterFQN, oldMaster); err != nil {
+			return nil, fmt.Errorf("getting old master instance: %w", err)
+		}
+
+		// Swap FailoverReplica
+		obj.FailoverReplica = oldMaster.FailoverReplica
+		oldMaster.FailoverReplica = nil
+
+		// Swap InstanceType
+		obj.InstanceType = pb.SqlInstanceType_CLOUD_SQL_INSTANCE
+		oldMaster.InstanceType = pb.SqlInstanceType_READ_REPLICA_INSTANCE
+
+		// Swap MasterInstanceName
+		obj.MasterInstanceName = ""
+		oldMaster.MasterInstanceName = name.Project.ID + ":" + name.InstanceName
+
+		// Swap ReplicationCluster
+		obj.ReplicationCluster = oldMaster.ReplicationCluster
+		oldMaster.ReplicationCluster = nil
+
+		// Set replica names
+		replicaName := oldMasterName.InstanceName
+		if oldMasterName.Project.ID != name.Project.ID {
+			replicaName = oldMasterName.Project.ID + ":" + oldMasterName.InstanceName
+		}
+		obj.ReplicaNames = []string{replicaName}
+		oldMaster.ReplicaNames = nil
+
+		oldMaster.Etag = fields.ComputeWeakEtag(oldMaster)
+
+		// Update the old master
+		if err := s.storage.Update(ctx, oldMasterFQN, oldMaster); err != nil {
+			return nil, fmt.Errorf("updating old master instance: %w", err)
+		}
+	}
+
+	obj.Etag = fields.ComputeWeakEtag(obj)
+
+	if err := validateDatabaseInstance(obj); err != nil {
+		return nil, err
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetProject: name.Project.ID,
+		OperationType: pb.Operation_SWITCHOVER,
+	}
+
+	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
 func (s *sqlInstancesService) Delete(ctx context.Context, req *pb.SqlInstancesDeleteRequest) (*pb.Operation, error) {
 	name, err := s.buildInstanceName(req.GetProject(), req.GetInstance())
 	if err != nil {
@@ -951,6 +1157,10 @@ func (s *sqlInstancesService) Delete(ctx context.Context, req *pb.SqlInstancesDe
 	deleted := &pb.DatabaseInstance{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
+	}
+
+	if err := s.ensureMasterReflectsReplica(ctx, *name, deleted, nil); err != nil {
+		return nil, fmt.Errorf("ensuring master reflects replica: %w", err)
 	}
 
 	op := &pb.Operation{

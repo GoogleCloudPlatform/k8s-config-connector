@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/datastream/apiv1"
 	pb "cloud.google.com/go/datastream/apiv1/datastreampb"
@@ -167,21 +168,28 @@ func (a *RouteAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, resource.DisplayName)
 		paths = append(paths, "display_name")
 	}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, resource.Labels)
 		paths = append(paths, "labels")
 	}
 	if desired.Spec.DestinationAddress != nil && !reflect.DeepEqual(resource.DestinationAddress, a.actual.DestinationAddress) {
+		report.AddField("destination_address", a.actual.DestinationAddress, resource.DestinationAddress)
 		paths = append(paths, "destination_address")
 	}
 	if desired.Spec.DestinationPort != nil && !reflect.DeepEqual(resource.DestinationPort, a.actual.DestinationPort) {
+		report.AddField("destination_port", a.actual.DestinationPort, resource.DestinationPort)
 		paths = append(paths, "destination_port")
 	}
 
 	if len(paths) != 0 {
+		structuredreporting.ReportDiff(ctx, report)
 		return fmt.Errorf("updating Route %q is not supported, fields: %v", a.id, paths)
 	}
 
