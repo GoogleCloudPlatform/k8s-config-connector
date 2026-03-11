@@ -258,7 +258,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json&updateMask=displayName%2Crestrictions
+PATCH https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?alt=json&updateMask=displayName,restrictions
 Content-Type: application/json
 
 {

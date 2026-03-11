@@ -145,7 +145,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/iampartialpolicy-dep-project/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+GET https://serviceusage.googleapis.com/v1/projects/iampartialpolicy-dep-project/services?alt=json&fields=services%2Fname,nextPageToken&filter=state:ENABLED&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -222,7 +222,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/global/firewalls?alt=json&filter=network+eq+https%3A%2F%2Fwww.googleapis.com%2Fcompute%2Fv1%2Fprojects%2Fiampartialpolicy-dep-project%2Fglobal%2Fnetworks%2F${networkID}&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/global/firewalls?alt=json&filter=network+eq+https:%2F%2Fwww.googleapis.com%2Fcompute%2Fv1%2Fprojects%2Fiampartialpolicy-dep-project%2Fglobal%2Fnetworks%2F${networkID}&prettyPrint=false
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8

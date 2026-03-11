@@ -200,7 +200,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apgenvg-${uniqueId}/attachments/$%7BattachmentId%7D?alt=json&prettyPrint=false
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apgenvg-${uniqueId}/attachments/${attachmentId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -213,7 +213,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apgenvg-${uniqueId}/attachments/$%7BattachmentId%7D?alt=json&prettyPrint=false
+DELETE https://apigee.googleapis.com/v1/organizations/${projectId}/envgroups/apgenvg-${uniqueId}/attachments/${attachmentId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8

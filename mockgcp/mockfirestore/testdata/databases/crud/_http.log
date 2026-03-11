@@ -15,13 +15,6 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -57,13 +50,6 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "appEngineIntegrationMode": "DISABLED",
@@ -85,7 +71,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-${uniqueId}?alt=json&updateMask=deleteProtectionState%2Cname
+PATCH https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-${uniqueId}?alt=json&updateMask=deleteProtectionState,name
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -98,13 +84,6 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -141,13 +120,6 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "appEngineIntegrationMode": "DISABLED",
@@ -169,7 +141,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-${uniqueId}?alt=json&updateMask=deleteProtectionState%2Cname
+PATCH https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-${uniqueId}?alt=json&updateMask=deleteProtectionState,name
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -182,13 +154,6 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -225,13 +190,6 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "appEngineIntegrationMode": "DISABLED",
@@ -260,13 +218,6 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {

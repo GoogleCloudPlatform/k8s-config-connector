@@ -1,4 +1,4 @@
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secret-${uniqueId}:addVersion?%24alt=json%3Benum-encoding%3Dint
+POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secret-${uniqueId}:addVersion?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Fsecrets%2Fsecret-${uniqueId}
 

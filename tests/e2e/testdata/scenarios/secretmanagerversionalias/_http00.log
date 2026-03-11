@@ -1,4 +1,4 @@
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secret-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecret-${uniqueId}
 
@@ -15,7 +15,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?%24alt=json%3Benum-encoding%3Dint&secretId=secret-${uniqueId}
+POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?$alt=json%3Benum-encoding%3Dint&secretId=secret-${uniqueId}
 Content-Type: application/json
 X-Goog-Request-Params: parent=projects%2F${projectId}
 
