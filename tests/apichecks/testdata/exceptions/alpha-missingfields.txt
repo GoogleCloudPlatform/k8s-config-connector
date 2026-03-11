@@ -1868,24 +1868,8 @@
 [missing_field] crd=networkservicesedgecacheorigins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeout.maxAttemptsTimeout" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheorigins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeout.readTimeout" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheorigins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.timeout.responseTimeout" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.disableHttp2" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.disableQuic" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.edgeSecurityPolicy" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.edgeSslCertificates[]" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.logConfig.enable" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.logConfig.sampleRate" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.requireTls" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.hostRule[].description" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].description" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].description" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].headerAction.requestHeaderToAdd[].headerName" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].headerAction.requestHeaderToAdd[].headerValue" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].headerAction.requestHeaderToAdd[].replace" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].headerAction.requestHeaderToRemove[].headerName" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].headerAction.responseHeaderToAdd[].headerName" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].headerAction.responseHeaderToAdd[].headerValue" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].headerAction.responseHeaderToAdd[].replace" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].headerAction.responseHeaderToRemove[].headerName" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].matchRule[].fullPathMatch" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].matchRule[].headerMatch[].exactMatch" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].matchRule[].headerMatch[].headerName" is not set in unstructured objects
@@ -1893,7 +1877,6 @@
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].matchRule[].headerMatch[].prefixMatch" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].matchRule[].headerMatch[].presentMatch" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].matchRule[].headerMatch[].suffixMatch" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].matchRule[].ignoreCase" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].matchRule[].pathTemplateMatch" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].matchRule[].queryParameterMatch[].exactMatch" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].matchRule[].queryParameterMatch[].name" is not set in unstructured objects
@@ -1918,14 +1901,8 @@
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.cdnPolicy.signedTokenOptions.allowedSignatureAlgorithms[]" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.cdnPolicy.signedTokenOptions.tokenQueryParameter" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.corsPolicy.allowCredentials" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.corsPolicy.allowHeaders[]" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.corsPolicy.allowMethods[]" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.corsPolicy.allowOrigins[]" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.corsPolicy.disabled" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.corsPolicy.exposeHeaders[]" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.corsPolicy.maxAge" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.urlRewrite.hostRewrite" is not set in unstructured objects
-[missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.urlRewrite.pathPrefixRewrite" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].routeAction.urlRewrite.pathTemplateRewrite" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].urlRedirect.hostRedirect" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecacheservices.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.routing.pathMatcher[].routeRule[].urlRedirect.httpsRedirect" is not set in unstructured objects
@@ -1952,7 +1929,6 @@
 [missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata" is not set in unstructured objects
 [missing_field] crd=networkserviceslbrouteextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networkservicesservicebindings.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=networkservicesservicebindings.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerImage.tag" is not set in unstructured objects
 [missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects

@@ -4,25 +4,47 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
   labels:
     cnrm-test: "true"
   name: edgecacheservice-${uniqueId}
   namespace: ${uniqueId}
 spec:
   description: Full edge cache service
+  disableHttp2: false
+  disableQuic: false
+  logConfig:
+    enable: true
+    sampleRate: 1
   projectRef:
     external: ${projectId}
+  requireTls: false
   routing:
     hostRule:
-    - hosts:
+    - description: All hosts
+      hosts:
       - '*'
       pathMatcher: path-matcher
     pathMatcher:
-    - name: path-matcher
+    - description: Default path matcher
+      name: path-matcher
       routeRule:
-      - matchRule:
-        - prefixMatch: /
+      - description: Root route
+        headerAction:
+          requestHeaderToAdd:
+          - headerName: x-request-header
+            headerValue: value
+            replace: true
+          requestHeaderToRemove:
+          - headerName: x-remove-this
+          responseHeaderToAdd:
+          - headerName: x-response-header
+            headerValue: value
+            replace: true
+          responseHeaderToRemove:
+          - headerName: x-remove-this-too
+        matchRule:
+        - ignoreCase: true
+          prefixMatch: /
         origin: projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}
         priority: "1"
         routeAction:
@@ -32,6 +54,18 @@ spec:
             compressionMode: AUTOMATIC
             defaultTtl: 3600s
             maxTtl: 86400s
+          corsPolicy:
+            allowHeaders:
+            - Content-Type
+            allowMethods:
+            - GET
+            - POST
+            allowOrigins:
+            - '*'
+            disabled: false
+            maxAge: 3600s
+          urlRewrite:
+            pathPrefixRewrite: /
         routeMethods:
           allowedMethods:
           - GET
@@ -45,5 +79,5 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}
-  observedGeneration: 1
+  observedGeneration: 0
   observedState: {}
