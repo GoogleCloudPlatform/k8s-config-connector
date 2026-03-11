@@ -1,14 +1,18 @@
+Usage:
+  config-connector powertools change-state-into-spec [flags]
 
+Flags:
+      --as string            Username to impersonate for the operation. User could be a regular user or a service account in a namespace.
+      --as-group strings     Group to impersonate for the operation, this flag can be repeated to specify multiple groups.
+      --dry-run              dry-run mode will not make changes, but only print the changes it would make
+  -h, --help                 help for change-state-into-spec
+      --keep-field strings   Additional fields to preserve in the spec, even if they were set by state-into-spec=merge (example .spec.location)
+      --kind string          Kind of the object to change
+      --kubeconfig string    Path to the kubeconfig file to use for CLI requests.
+      --name string          Name of the object to change
+  -n, --namespace string     Namespace of the object
+      --set string           New value for the state-into-spec annotation (default "absent")
 
-    StorageBucket ${projectID}/storagebucket-merge-${uniqueId}:
-      metadata:
-        annotations:
-          cnrm.cloud.google.com/state-into-spec: merge -> absent
-      spec:
-        publicAccessPrevention: inherited -> <nil>
-        softDeletePolicy:
-          retentionDurationSeconds: 604800 -> <nil>
-        storageClass: STANDARD -> <nil>
+Global Flags:
+  -v, --verbose   enable verbose logging (disabled by default)
 
-
-applying changes
