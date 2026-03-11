@@ -509,6 +509,43 @@ func schemaNodeConfig() *schema.Schema {
 								Optional:    true,
 								Description: `Controls the maximum number of processes allowed to run in a pod.`,
 							},
+							"image_gc_low_threshold_percent": {
+								Type:         schema.TypeInt,
+								Optional:     true,
+								ValidateFunc: validation.IntBetween(0, 100),
+								Description:  `The percent of disk usage before which image garbage collection is never run. Lowest priority.`,
+							},
+							"image_gc_high_threshold_percent": {
+								Type:         schema.TypeInt,
+								Optional:     true,
+								ValidateFunc: validation.IntBetween(0, 100),
+								Description:  `The percent of disk usage after which image garbage collection is always run.`,
+							},
+							"container_log_max_size": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								Description: `The maximum size of the container log file before it is rotated.`,
+							},
+							"container_log_max_files": {
+								Type:        schema.TypeInt,
+								Optional:    true,
+								Description: `The maximum number of container log files that can be present for a container.`,
+							},
+							"max_parallel_image_pulls": {
+								Type:        schema.TypeInt,
+								Optional:    true,
+								Description: `The maximum number of parallel image pulls allowed.`,
+							},
+							"image_minimum_gc_age": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								Description: `The minimum age for an unused image before it is garbage collected.`,
+							},
+							"image_maximum_gc_age": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								Description: `The maximum age for an unused image before it is garbage collected.`,
+							},
 						},
 					},
 				},
@@ -997,6 +1034,27 @@ func expandKubeletConfig(v interface{}) *container.NodeKubeletConfig {
 	if podPidsLimit, ok := cfg["pod_pids_limit"]; ok {
 		kConfig.PodPidsLimit = int64(podPidsLimit.(int))
 	}
+	if imageGcLowThresholdPercent, ok := cfg["image_gc_low_threshold_percent"]; ok {
+		kConfig.ImageGcLowThresholdPercent = int64(imageGcLowThresholdPercent.(int))
+	}
+	if imageGcHighThresholdPercent, ok := cfg["image_gc_high_threshold_percent"]; ok {
+		kConfig.ImageGcHighThresholdPercent = int64(imageGcHighThresholdPercent.(int))
+	}
+	if imageMinimumGcAge, ok := cfg["image_minimum_gc_age"]; ok {
+		kConfig.ImageMinimumGcAge = imageMinimumGcAge.(string)
+	}
+	if imageMaximumGcAge, ok := cfg["image_maximum_gc_age"]; ok {
+		kConfig.ImageMaximumGcAge = imageMaximumGcAge.(string)
+	}
+	if containerLogMaxSize, ok := cfg["container_log_max_size"]; ok {
+		kConfig.ContainerLogMaxSize = containerLogMaxSize.(string)
+	}
+	if containerLogMaxFiles, ok := cfg["container_log_max_files"]; ok {
+		kConfig.ContainerLogMaxFiles = int64(containerLogMaxFiles.(int))
+	}
+	if maxParallelImagePulls, ok := cfg["max_parallel_image_pulls"]; ok {
+		kConfig.MaxParallelImagePulls = int64(maxParallelImagePulls.(int))
+	}
 	return kConfig
 }
 
@@ -1392,12 +1450,34 @@ func containerNodePoolLabelsSuppress(k, old, new string, d *schema.ResourceData)
 func flattenKubeletConfig(c *container.NodeKubeletConfig) []map[string]interface{} {
 	result := []map[string]interface{}{}
 	if c != nil {
-		result = append(result, map[string]interface{}{
+		conf := map[string]interface{}{
 			"cpu_cfs_quota":        c.CpuCfsQuota,
 			"cpu_cfs_quota_period": c.CpuCfsQuotaPeriod,
 			"cpu_manager_policy":   c.CpuManagerPolicy,
 			"pod_pids_limit":       c.PodPidsLimit,
-		})
+		}
+		if c.ImageGcLowThresholdPercent > 0 {
+			conf["image_gc_low_threshold_percent"] = c.ImageGcLowThresholdPercent
+		}
+		if c.ImageGcHighThresholdPercent > 0 {
+			conf["image_gc_high_threshold_percent"] = c.ImageGcHighThresholdPercent
+		}
+		if c.ImageMinimumGcAge != "" {
+			conf["image_minimum_gc_age"] = c.ImageMinimumGcAge
+		}
+		if c.ImageMaximumGcAge != "" {
+			conf["image_maximum_gc_age"] = c.ImageMaximumGcAge
+		}
+		if c.ContainerLogMaxSize != "" {
+			conf["container_log_max_size"] = c.ContainerLogMaxSize
+		}
+		if c.ContainerLogMaxFiles > 0 {
+			conf["container_log_max_files"] = c.ContainerLogMaxFiles
+		}
+		if c.MaxParallelImagePulls > 0 {
+			conf["max_parallel_image_pulls"] = c.MaxParallelImagePulls
+		}
+		result = append(result, conf)
 	}
 	return result
 }
