@@ -16,6 +16,7 @@ package migrate
 
 import (
 	"context"
+	"io"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/kubecli"
@@ -119,7 +120,7 @@ func TestPauseReconciliation(t *testing.T) {
 		Client: fakeClient,
 	}
 
-	if err := pauseReconciliation(ctx, kubeClient); err != nil {
+	if err := pauseReconciliation(ctx, kubeClient, io.Discard); err != nil {
 		t.Fatalf("pauseReconciliation failed: %v", err)
 	}
 
@@ -161,7 +162,7 @@ func TestResumeReconciliation(t *testing.T) {
 		Client: fakeClient,
 	}
 
-	if err := resumeReconciliation(ctx, kubeClient); err != nil {
+	if err := resumeReconciliation(ctx, kubeClient, io.Discard); err != nil {
 		t.Fatalf("resumeReconciliation failed: %v", err)
 	}
 
@@ -203,7 +204,7 @@ func TestRemoveFinalizers(t *testing.T) {
 
 	resources := []unstructured.Unstructured{*res}
 
-	if err := removeFinalizers(ctx, kubeClient, resources); err != nil {
+	if err := removeFinalizers(ctx, kubeClient, resources, io.Discard); err != nil {
 		t.Fatalf("removeFinalizers failed: %v", err)
 	}
 
