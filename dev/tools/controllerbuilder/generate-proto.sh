@@ -32,6 +32,24 @@ GOOGLEAPI_VERSION=${1:-$DEFAULT_GOOGLE_API_VERSION}
 # Take output path as parameter, default to .build/googleapis.pb
 OUTPUT_PATH=${2:-"${REPO_ROOT}/.build/googleapis.pb"}
 
+if [ "${GOOGLEAPI_VERSION}" == "HEAD" ]; then
+    echo "Fetching latest googleapis for HEAD version"
+    # Get latest version from https://github.com/googleapis/googleapis.git
+    GOOGLEAPI_VERSION=$(git ls-remote https://github.com/googleapis/googleapis.git refs/heads/master | awk '{print $1}')
+fi
+
+VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
+
+if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
+    echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
+    # Only copy if different to avoid race conditions in parallel execution
+    if [ ! -f "${OUTPUT_PATH}" ] || ! cmp -s "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"; then
+        # Atomic copy
+        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}.tmp"
+        mv "${OUTPUT_PATH}.tmp" "${OUTPUT_PATH}"
+    fi
+    exit 0
+fi
 
 THIRD_PARTY=${REPO_ROOT}/.build/third_party
 mkdir -p ${THIRD_PARTY}/
@@ -40,14 +58,6 @@ cd ${THIRD_PARTY}
 if [ ! -d "googleapis" ]; then
     git clone https://github.com/googleapis/googleapis.git
 fi
-
-if [ "${GOOGLEAPI_VERSION}" == "HEAD" ]; then
-    echo "Fetching latest googleapis for HEAD version"
-    # Get latest version from https://github.com/googleapis/googleapis.git
-    GOOGLEAPI_VERSION=$(git ls-remote https://github.com/googleapis/googleapis.git refs/heads/master | awk '{print $1}')
-fi
-
-VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
 
 cd googleapis
 
@@ -73,13 +83,6 @@ else
       echo "apt install..."
       sudo apt install -y protobuf-compiler
     fi
-fi
-
-
-if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
-    echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
-    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
-    exit 0
 fi
 
 protoc --include_imports --include_source_info \

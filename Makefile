@@ -31,7 +31,12 @@ GOLANGCI_LINT_VERSION := v2.7.1
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
 DOCKER_BUILD := DOCKER_BUILDKIT=1 docker build
 
-KUSTOMIZE=go run sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
+KUSTOMIZE=bin/kustomize
+ADDLICENSE=bin/addlicense
+
+.PHONY: build-tools
+build-tools:
+	dev/tasks/build-tools
 
 GKE_DISTROLESS_IMG := gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
 
@@ -75,11 +80,11 @@ generate-crds:
 
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
-manifests: generate
-	make -C operator manifests
+manifests: build-tools generate
+	$(MAKE) -C operator manifests
 	rm -rf config/crds/resources
 	rm -rf config/crds/tmp_resources
-	go build -o bin/generate-crds ./scripts/generate-crds && ./bin/generate-crds -output-dir=config/crds/tmp_resources
+	bin/generate-crds -output-dir=config/crds/tmp_resources
 	# add kustomize patches on all CRDs
 	mkdir config/crds/resources
 	cp config/crds/kustomization.yaml kustomization.yaml
@@ -106,7 +111,7 @@ fmt:
 	make -C operator fmt
 	dev/tasks/fix-gofmt
 	# 04bfe4ee9ca5764577b029acc6a1957fd1997153 includes fix to not log "Skipped" for each skipped file
-	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache \
+	GOFLAGS= $(ADDLICENSE) -c "Google LLC" -l apache \
 	-ignore ".build/**" -ignore "vendor/**" -ignore "third_party/**" \
 	-ignore "config/crds/**" -ignore "config/cloudcodesnippets/**" \
 	-ignore "**/*.html" -ignore "config/installbundle/components/clusterroles/cnrm_admin.yaml" \

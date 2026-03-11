@@ -20,4 +20,6 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w apis pkg cmd scripts tests config/tests
+DIRS="apis pkg cmd scripts tests config/tests"
+echo "Running goimports on ${DIRS} in parallel..."
+echo ${DIRS} | xargs -n 1 -P $(nproc) ${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w

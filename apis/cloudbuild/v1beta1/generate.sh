@@ -22,13 +22,13 @@ REPO_ROOT="${SCRIPT_DIR}/../../.."
 
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
   --service google.devtools.cloudbuild.v1 \
   --api-version cloudbuild.cnrm.cloud.google.com/v1beta1 \
   --resource CloudBuildTrigger:BuildTrigger \
   --include-skipped-output
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
   --service google.devtools.cloudbuild.v1 \
   --api-version cloudbuild.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output

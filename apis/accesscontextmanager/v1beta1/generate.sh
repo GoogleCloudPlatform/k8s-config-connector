@@ -23,10 +23,10 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
     --config ${REPO_ROOT}/apis/accesscontextmanager/v1beta1/generatetypes.yaml
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
     --service google.identity.accesscontextmanager.v1 \
     --api-version accesscontextmanager.cnrm.cloud.google.com/v1beta1
 
@@ -34,4 +34,4 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/accesscontextmanager/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/accesscontextmanager/

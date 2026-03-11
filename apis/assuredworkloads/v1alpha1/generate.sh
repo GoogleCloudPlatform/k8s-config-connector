@@ -23,16 +23,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
     --service google.cloud.assuredworkloads.v1 \
     --api-version "assuredworkloads.cnrm.cloud.google.com/v1alpha1" \
     --resource AssuredWorkloadsWorkload:Workload
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
     --service google.cloud.assuredworkloads.v1 \
     --api-version "assuredworkloads.cnrm.cloud.google.com/v1alpha1"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/assuredworkloads/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/assuredworkloads/

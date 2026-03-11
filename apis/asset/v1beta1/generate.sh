@@ -22,12 +22,12 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
     --service google.cloud.asset.v1 \
     --api-version asset.cnrm.cloud.google.com/v1beta1 \
     --resource AssetFeed:Feed \
     --resource AssetSavedQuery:SavedQuery
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
     --service google.cloud.asset.v1 \
     --api-version asset.cnrm.cloud.google.com/v1beta1 \

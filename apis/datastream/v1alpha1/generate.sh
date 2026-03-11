@@ -23,14 +23,14 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
     --service google.cloud.datastream.v1 \
     --api-version datastream.cnrm.cloud.google.com/v1alpha1 \
     --resource DatastreamPrivateConnection:PrivateConnection \
     --resource DatastreamConnectionProfile:ConnectionProfile \
     --resource DatastreamRoute:Route
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
     --service google.cloud.datastream.v1 \
     --api-version datastream.cnrm.cloud.google.com/v1alpha1
 
@@ -38,4 +38,4 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/datastream/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/datastream/

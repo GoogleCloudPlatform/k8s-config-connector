@@ -23,17 +23,17 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
     --service google.api.cloudquotas.v1beta \
     --api-version cloudquota.cnrm.cloud.google.com/v1beta1 \
     --resource APIQuotaPreference:QuotaPreference \
     --resource APIQuotaAdjusterSettings:QuotaAdjusterSettings
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
     --service google.api.cloudquotas.v1beta \
     --api-version cloudquota.cnrm.cloud.google.com/v1beta1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/cloudquota/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/cloudquota/

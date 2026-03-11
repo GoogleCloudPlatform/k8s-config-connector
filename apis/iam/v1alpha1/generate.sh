@@ -23,12 +23,12 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
   --service google.iam.v2 \
   --api-version iam.cnrm.cloud.google.com/v1alpha1 \
   --resource IAMDenyPolicy:Policy
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
   --service google.iam.v2 \
   --api-version iam.cnrm.cloud.google.com/v1alpha1
 
@@ -36,4 +36,4 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/iam/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/iam/

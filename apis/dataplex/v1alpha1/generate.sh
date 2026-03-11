@@ -23,7 +23,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER:-go run .} generate-types \
     --service google.cloud.dataplex.v1 \
     --api-version "dataplex.cnrm.cloud.google.com/v1alpha1" \
     --resource DataplexLake:Lake \
@@ -32,11 +32,11 @@ go run . generate-types \
     --resource DataplexEntryGroup:EntryGroup \
     --resource DataplexEntryType:EntryType
 
-go run . generate-mapper \
+${CONTROLLERBUILDER:-go run .} generate-mapper \
     --service google.cloud.dataplex.v1 \
     --api-version "dataplex.cnrm.cloud.google.com/v1alpha1"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/dataplex/
+${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/dataplex/

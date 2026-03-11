@@ -1,6 +1,6 @@
-#!/bin/bash
-# Copyright 2025 Google LLC
-#
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -17,15 +17,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
-./generate-proto.sh
-
-${CONTROLLERBUILDER:-go run .} generate-types --config ${REPO_ROOT}/apis/managedkafka/v1alpha1/generatetypes.yaml
-# ${CONTROLLERBUILDER:-go run .} generate-mapper --config ${REPO_ROOT}/apis/managedkafka/v1alpha1/generatetypes.yaml
-
-cd ${REPO_ROOT}
-dev/tasks/generate-crds
-
-${GOIMPORTS:-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest} -w  pkg/controller/direct/managedkafka/
+script=$1
+echo "running ${script}"
+./${script}
