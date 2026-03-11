@@ -211,8 +211,6 @@ spec:
                 description: Server-defined URL for the resource.
                 type: string
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
