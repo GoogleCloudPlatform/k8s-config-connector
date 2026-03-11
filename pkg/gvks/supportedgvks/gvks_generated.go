@@ -2205,15 +2205,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "networkservices.cnrm.cloud.google.com",
-		Version: "v1alpha1",
-		Kind:    "NetworkServicesEdgeCacheService",
-	}: {
-		Terraform:   true,
-		DCL:         false,
-		SupportsIAM: true,
-	},
-	{
-		Group:   "networkservices.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "NetworkServicesEndpointPolicy",
 	}: {
