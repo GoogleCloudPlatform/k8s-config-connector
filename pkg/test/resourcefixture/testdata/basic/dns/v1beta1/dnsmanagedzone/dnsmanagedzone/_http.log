@@ -518,6 +518,24 @@ X-Xss-Protection: 0
 
 ---
 
+DELETE https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -587,68 +605,3 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}"
   ]
 }
-
----
-
-GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "cloudLoggingConfig": {
-    "kind": "dns#managedZoneCloudLoggingConfig"
-  },
-  "creationTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Example updated DNS zone",
-  "dnsName": "cnrm-dns-example-${uniqueId}.com.",
-  "id": "000000000000000000000",
-  "kind": "dns#managedZone",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "name": "dnsmanagedzone-${uniqueId}",
-  "nameServers": [
-    "ns-cloud-a1.googledomains.com.",
-    "ns-cloud-a2.googledomains.com.",
-    "ns-cloud-a3.googledomains.com.",
-    "ns-cloud-a4.googledomains.com."
-  ],
-  "privateVisibilityConfig": {
-    "networks": [
-      {
-        "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
-      }
-    ]
-  },
-  "visibility": "private"
-}
-
----
-
-DELETE https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/managedZones/dnsmanagedzone-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
