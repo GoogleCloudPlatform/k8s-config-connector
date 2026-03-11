@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -10,11 +10,11 @@ Content-Type: application/json; charset=UTF-8
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/zones/us-central1-a/reservations/${reservationID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/zones/us-central1-a/reservations/${reservationID}' was not found"
   }
 }
 
@@ -25,7 +25,7 @@ Content-Type: application/json
 
 {
   "description": "Shared Reservation for 1 machines which will be shared with other projects.",
-  "name": "computereservation-${uniqueId}",
+  "name": "${reservationID}",
   "shareSettings": {
     "projectMap": {
       "project-id-${uniqueId}": {
@@ -59,7 +59,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -70,8 +70,8 @@ Content-Type: application/json; charset=UTF-8
   "description": "Shared Reservation for 1 machines which will be shared with other projects.",
   "id": "000000000000000000000",
   "kind": "compute#reservation",
-  "name": "computereservation-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}",
+  "name": "${reservationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}",
   "shareSettings": {
     "projectMap": {
       "project-id-${uniqueId}": {
@@ -93,11 +93,11 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json&paths=shareSettings.projectMap.project-id-${uniqueId}
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}?alt=json&paths=shareSettings.projectMap.project-id-${uniqueId}
 Content-Type: application/json
 
 {
-  "name": "computereservation-${uniqueId}",
+  "name": "${reservationID}",
   "shareSettings": {
     "projectMap": {
       "project-id-${uniqueId}": {
@@ -125,7 +125,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -136,8 +136,8 @@ Content-Type: application/json; charset=UTF-8
   "description": "Shared Reservation for 1 machines which will be shared with other projects.",
   "id": "000000000000000000000",
   "kind": "compute#reservation",
-  "name": "computereservation-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}",
+  "name": "${reservationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}",
   "shareSettings": {
     "projectMap": {
       "project-id-${uniqueId}": {
@@ -159,11 +159,11 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json&paths=shareSettings.projectMap.another-project-id-${uniqueId}&paths=shareSettings.projectMap.project-id-${uniqueId}
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}?alt=json&paths=shareSettings.projectMap.another-project-id-${uniqueId}&paths=shareSettings.projectMap.project-id-${uniqueId}
 Content-Type: application/json
 
 {
-  "name": "computereservation-${uniqueId}",
+  "name": "${reservationID}",
   "shareSettings": {
     "projectMap": {
       "another-project-id-${uniqueId}": {
@@ -194,7 +194,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -205,8 +205,8 @@ Content-Type: application/json; charset=UTF-8
   "description": "Shared Reservation for 1 machines which will be shared with other projects.",
   "id": "000000000000000000000",
   "kind": "compute#reservation",
-  "name": "computereservation-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}",
+  "name": "${reservationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}",
   "shareSettings": {
     "projectMap": {
       "another-project-id-${uniqueId}": {
@@ -231,7 +231,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/computereservation-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/reservations/${reservationID}?alt=json
 Content-Type: application/json
 
 200 OK

@@ -114,9 +114,13 @@ func init() {
 		SkipUpdate:   true, // No input fields in this resource support update.
 	}
 
-	resourceContextMap["computereservation"] = ResourceContext{
+	resourceContextMap["basicreservation"] = ResourceContext{
 		ResourceKind: "ComputeReservation",
 		SkipUpdate:   true, // No input fields in this resource support update.
+	}
+
+	resourceContextMap["sharedreservation"] = ResourceContext{
+		ResourceKind: "ComputeReservation",
 	}
 
 	resourceContextMap["computeresourcepolicy"] = ResourceContext{

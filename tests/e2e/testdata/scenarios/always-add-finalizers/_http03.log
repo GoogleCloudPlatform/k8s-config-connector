@@ -27,7 +27,7 @@ Content-Type: application/json
   "IPAddress": "10.0.1.2",
   "IPProtocol": "TCP",
   "allowGlobalAccess": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "labels": {
     "managed-by-cnrm": "true"
   },
@@ -97,7 +97,7 @@ Content-Type: application/json; charset=UTF-8
   "IPAddress": "10.0.1.2",
   "IPProtocol": "TCP",
   "allowGlobalAccess": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
@@ -159,7 +159,7 @@ Content-Type: application/json; charset=UTF-8
   "IPAddress": "10.0.1.2",
   "IPProtocol": "TCP",
   "allowGlobalAccess": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",

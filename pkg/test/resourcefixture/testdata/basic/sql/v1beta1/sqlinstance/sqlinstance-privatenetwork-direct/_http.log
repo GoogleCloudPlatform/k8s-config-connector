@@ -201,7 +201,8 @@ Content-Type: application/json; charset=UTF-8
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -680,7 +681,8 @@ Content-Type: application/json; charset=UTF-8
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -1687,7 +1689,8 @@ Content-Type: application/json; charset=UTF-8
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -1994,7 +1997,8 @@ Content-Type: application/json; charset=UTF-8
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---

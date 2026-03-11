@@ -392,7 +392,8 @@ Content-Type: application/json; charset=UTF-8
   "purpose": "PRIVATE_SERVICE_CONNECT",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
@@ -417,12 +418,13 @@ Content-Type: application/json; charset=UTF-8
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -434,11 +436,11 @@ Content-Type: application/json; charset=UTF-8
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/example-project-01/regions/us-west3/backendServices/computebackendservice-${uniqueId}' was not found",
+        "message": "The resource 'projects/example-project-01/regions/us-west3/backendServices/${backendServiceID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/example-project-01/regions/us-west3/backendServices/computebackendservice-${uniqueId}' was not found"
+    "message": "The resource 'projects/example-project-01/regions/us-west3/backendServices/${backendServiceID}' was not found"
   }
 }
 
@@ -458,7 +460,7 @@ Content-Type: application/json
     "oauth2ClientSecret": ""
   },
   "loadBalancingScheme": "INTERNAL",
-  "name": "computebackendservice-${uniqueId}",
+  "name": "${backendServiceID}",
   "network": "projects/example-project-01/global/networks/${subnetworkID}",
   "region": "projects/example-project-01/global/regions/us-west3",
   "subsetting": {
@@ -482,7 +484,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -501,10 +503,10 @@ Content-Type: application/json; charset=UTF-8
   "id": "000000000000000000000",
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL",
-  "name": "computebackendservice-${uniqueId}",
+  "name": "${backendServiceID}",
   "network": "projects/example-project-01/global/networks/${subnetworkID}",
   "region": "projects/example-project-01/global/regions/us-west3",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/computebackendservice-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/${backendServiceID}",
   "subsetting": {
     "policy": "NONE"
   }
@@ -539,7 +541,7 @@ Content-Type: application/json
 
 {
   "allPorts": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/${backendServiceID}",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -606,7 +608,7 @@ Content-Type: application/json; charset=UTF-8
 {
   "IPProtocol": "TCP",
   "allPorts": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/${backendServiceID}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
@@ -665,7 +667,7 @@ Content-Type: application/json; charset=UTF-8
 {
   "IPProtocol": "TCP",
   "allPorts": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/${backendServiceID}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
@@ -1046,7 +1048,7 @@ Content-Type: application/json; charset=UTF-8
 {
   "IPProtocol": "TCP",
   "allPorts": true,
-  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/computebackendservice-${uniqueId}",
+  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/${backendServiceID}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
@@ -1115,7 +1117,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1134,10 +1136,10 @@ Content-Type: application/json; charset=UTF-8
   "id": "000000000000000000000",
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL",
-  "name": "computebackendservice-${uniqueId}",
+  "name": "${backendServiceID}",
   "network": "projects/example-project-01/global/networks/${subnetworkID}",
   "region": "projects/example-project-01/global/regions/us-west3",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/computebackendservice-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/${backendServiceID}",
   "subsetting": {
     "policy": "NONE"
   }
@@ -1145,7 +1147,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/computebackendservice-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1187,7 +1189,8 @@ Content-Type: application/json; charset=UTF-8
   "purpose": "PRIVATE_SERVICE_CONNECT",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY"
+  "stackType": "IPV4_ONLY",
+  "state": "READY"
 }
 
 ---
