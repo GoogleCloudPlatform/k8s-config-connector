@@ -19,7 +19,7 @@ spec:
   interceptionPort: 81
   location: global
   projectRef:
-    external: projects/${projectId}
+    external: ${projectId}
   resourceID: networkservicesmesh-${uniqueId}
 status:
   conditions:
