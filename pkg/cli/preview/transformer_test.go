@@ -90,7 +90,7 @@ func TestObjectTransformer(t *testing.T) {
 		t.Errorf("Expected annotation 'transformed' to be 'true', got %v", storedClientObj.GetAnnotations())
 	}
 
-	// 6. Verify the object passed to the handler is transformed
+	// 7. Verify the object passed to the handler is transformed
 	select {
 	case received := <-receivedObj:
 		receivedClientObj, ok := received.(client.Object)

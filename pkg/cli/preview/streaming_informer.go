@@ -196,11 +196,11 @@ func (i *streamingInformer) doList(ctx context.Context) (*ListMetadata, error) {
 
 	isInInitialList := !i.hasSynced.Load()
 	listListener := &listListener{
+		ctx:                       ctx,
 		objects:                   &i.objects,
 		isInInitialList:           isInInitialList,
 		eventHandlerRegistrations: i.eventHandlerRegistrations,
 		objectTransformers:        i.objectTransformers,
-		ctx:                       ctx,
 	}
 	namespace := ""
 	if i.typeInfo.Scope == meta.RESTScopeNamespace {
@@ -214,12 +214,12 @@ func (i *streamingInformer) doList(ctx context.Context) (*ListMetadata, error) {
 
 // listListener is a listener for list operations.
 type listListener struct {
+	ctx                       context.Context
 	isInInitialList           bool
 	eventHandlerRegistrations []*eventHandlerRegistration
 	objectTransformers        []ObjectTransformer
 	objects                   *objects
 	metadata                  ListMetadata
-	ctx                       context.Context
 }
 
 // OnListBegin is called when the list operation begins.
