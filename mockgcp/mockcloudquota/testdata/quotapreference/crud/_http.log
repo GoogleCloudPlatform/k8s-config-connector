@@ -54,7 +54,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}?alt=json&allowMissing=False&validateOnly=False
+PATCH https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaPreferences/testp-${uniqueId}?allowMissing=False&alt=json&validateOnly=False
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive

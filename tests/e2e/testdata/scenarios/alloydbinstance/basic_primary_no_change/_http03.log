@@ -12,7 +12,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2Fcomputenetwork-${uniqueId}&prettyPrint=false
+GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2F${networkID}&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -39,7 +39,7 @@ PATCH https://servicenetworking.googleapis.com/v1/services/servicenetworking.goo
 Content-Type: application/json
 
 {
-  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "reservedPeeringRanges": [
     "computeaddress-${uniqueId}"
   ]
@@ -64,7 +64,7 @@ Content-Type: application/json; charset=UTF-8
   "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.servicenetworking.v1.Connection",
-    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/${networkID}",
     "peering": "servicenetworking-googleapis-com",
     "reservedPeeringRanges": [
       "computeaddress-${uniqueId}"
@@ -89,7 +89,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2Fcomputenetwork-${uniqueId}&prettyPrint=false
+GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2F${networkID}&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -97,7 +97,7 @@ Content-Type: application/json; charset=UTF-8
 {
   "connections": [
     {
-      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+      "network": "projects/${projectNumber}/global/networks/${networkID}",
       "peering": "servicenetworking-googleapis-com",
       "reservedPeeringRanges": [
         "computeaddress-${uniqueId}"

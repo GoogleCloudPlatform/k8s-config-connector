@@ -81,7 +81,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -93,11 +93,11 @@ Content-Type: application/json; charset=UTF-8
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}' was not found"
   }
 }
 
@@ -119,7 +119,7 @@ Content-Type: application/json
     "oauth2ClientSecret": ""
   },
   "loadBalancingScheme": "INTERNAL_MANAGED",
-  "name": "computebackendservice-${uniqueId}",
+  "name": "${backendServiceID}",
   "protocol": "HTTP",
   "region": "projects/${projectId}/global/regions/us-central1",
   "timeoutSec": 10
@@ -141,7 +141,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -163,10 +163,10 @@ Content-Type: application/json; charset=UTF-8
   "id": "000000000000000000000",
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL_MANAGED",
-  "name": "computebackendservice-${uniqueId}",
+  "name": "${backendServiceID}",
   "protocol": "HTTP",
   "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "timeoutSec": 10
 }
 
@@ -198,7 +198,7 @@ POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-
 Content-Type: application/json
 
 {
-  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "description": "test regional URLMap",
   "hostRules": [
     {
@@ -211,7 +211,7 @@ Content-Type: application/json
   "name": "computeurlmap-${uniqueId}",
   "pathMatchers": [
     {
-      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -249,7 +249,7 @@ Content-Type: application/json
               }
             },
             "requestMirrorPolicy": {
-              "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+              "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
             },
             "retryPolicy": {
               "numRetries": 4,
@@ -271,7 +271,7 @@ Content-Type: application/json
             },
             "weightedBackendServices": [
               {
-                "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+                "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -306,7 +306,7 @@ Content-Type: application/json
     {
       "host": "hi.com",
       "path": "/home",
-      "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     }
   ]
 }
@@ -335,7 +335,7 @@ Content-Type: application/json; charset=UTF-8
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "description": "test regional URLMap",
   "hostRules": [
     {
@@ -350,7 +350,7 @@ Content-Type: application/json; charset=UTF-8
   "name": "computeurlmap-${uniqueId}",
   "pathMatchers": [
     {
-      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -388,7 +388,7 @@ Content-Type: application/json; charset=UTF-8
               }
             },
             "requestMirrorPolicy": {
-              "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+              "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
             },
             "retryPolicy": {
               "numRetries": 4,
@@ -410,7 +410,7 @@ Content-Type: application/json; charset=UTF-8
             },
             "weightedBackendServices": [
               {
-                "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+                "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -446,7 +446,7 @@ Content-Type: application/json; charset=UTF-8
     {
       "host": "hi.com",
       "path": "/home",
-      "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     }
   ]
 }
@@ -457,7 +457,7 @@ PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-c
 Content-Type: application/json
 
 {
-  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "description": "updated regional URLMap",
   "hostRules": [
     {
@@ -470,7 +470,7 @@ Content-Type: application/json
   "name": "computeurlmap-${uniqueId}",
   "pathMatchers": [
     {
-      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -508,7 +508,7 @@ Content-Type: application/json
               }
             },
             "requestMirrorPolicy": {
-              "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+              "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
             },
             "retryPolicy": {
               "numRetries": 4,
@@ -530,7 +530,7 @@ Content-Type: application/json
             },
             "weightedBackendServices": [
               {
-                "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+                "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -565,7 +565,7 @@ Content-Type: application/json
     {
       "host": "hi.com",
       "path": "/home",
-      "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     }
   ]
 }
@@ -594,7 +594,7 @@ Content-Type: application/json; charset=UTF-8
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "description": "updated regional URLMap",
   "hostRules": [
     {
@@ -615,7 +615,7 @@ Content-Type: application/json; charset=UTF-8
   "name": "computeurlmap-${uniqueId}",
   "pathMatchers": [
     {
-      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -653,7 +653,7 @@ Content-Type: application/json; charset=UTF-8
               }
             },
             "requestMirrorPolicy": {
-              "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+              "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
             },
             "retryPolicy": {
               "numRetries": 4,
@@ -675,7 +675,7 @@ Content-Type: application/json; charset=UTF-8
             },
             "weightedBackendServices": [
               {
-                "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+                "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -705,7 +705,7 @@ Content-Type: application/json; charset=UTF-8
       ]
     },
     {
-      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
       "name": "allpaths",
       "pathRules": [
         {
@@ -743,7 +743,7 @@ Content-Type: application/json; charset=UTF-8
               }
             },
             "requestMirrorPolicy": {
-              "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+              "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
             },
             "retryPolicy": {
               "numRetries": 4,
@@ -765,7 +765,7 @@ Content-Type: application/json; charset=UTF-8
             },
             "weightedBackendServices": [
               {
-                "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+                "backendService": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
                 "headerAction": {
                   "requestHeadersToAdd": [
                     {
@@ -801,12 +801,12 @@ Content-Type: application/json; charset=UTF-8
     {
       "host": "hi.com",
       "path": "/home",
-      "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     },
     {
       "host": "hi.com",
       "path": "/home",
-      "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+      "service": "projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}"
     }
   ]
 }
@@ -832,7 +832,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -854,16 +854,16 @@ Content-Type: application/json; charset=UTF-8
   "id": "000000000000000000000",
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL_MANAGED",
-  "name": "computebackendservice-${uniqueId}",
+  "name": "${backendServiceID}",
   "protocol": "HTTP",
   "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
   "timeoutSec": 10
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 
 200 OK

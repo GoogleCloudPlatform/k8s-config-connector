@@ -101,7 +101,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?alt=json&accessLevelFormat=AS_DEFINED
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?accessLevelFormat=AS_DEFINED&alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -230,7 +230,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?alt=json&accessLevelFormat=AS_DEFINED
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?accessLevelFormat=AS_DEFINED&alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive

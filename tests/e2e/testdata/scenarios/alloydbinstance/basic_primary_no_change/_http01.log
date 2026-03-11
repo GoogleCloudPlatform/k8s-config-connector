@@ -26,7 +26,7 @@ Content-Type: application/json
     "managed-by-cnrm": "true"
   },
   "networkConfig": {
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectId}/global/networks/${networkID}"
   }
 }
 
@@ -119,9 +119,9 @@ Content-Type: application/json; charset=UTF-8
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
-    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/${networkID}",
     "networkConfig": {
-      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+      "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "state": "READY",
     "subscriptionType": "STANDARD",
@@ -193,9 +193,9 @@ Content-Type: application/json; charset=UTF-8
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
-  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "state": "READY",
   "subscriptionType": "STANDARD",
