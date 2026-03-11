@@ -7,7 +7,7 @@
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerAccessPolicy                | False        | True        | False  | Terraform  | True        |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerGCPUserAccessBinding        | True         | False       | False  | Terraform  | False       |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerServicePerimeterResource    | True         | True        | False  | Terraform  | False       |
-| accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerServicePerimeter            | False        | True        | False  | Terraform  | False       |
+| accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerServicePerimeter            | False        | True        | False  | Terraform  | True        |
 | aiplatform.cnrm.cloud.google.com              | AIPlatformModel                                 | True         | False       | False  | Direct     | True        |
 | alloydb.cnrm.cloud.google.com                 | AlloyDBBackup                                   | True         | True        | False  | Terraform  | True        |
 | alloydb.cnrm.cloud.google.com                 | AlloyDBCluster                                  | True         | True        | False  | Terraform  | True        |
