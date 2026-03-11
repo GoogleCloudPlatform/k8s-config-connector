@@ -90,7 +90,7 @@ func (obj *NetworkServicesEdgeCacheService) GetIdentity(ctx context.Context, rea
 	if externalRef != "" {
 		statusIdentity := &EdgeCacheServiceIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, id.String())
+			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
 		}
 		if statusIdentity.String() != id.String() {
 			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, id.String())

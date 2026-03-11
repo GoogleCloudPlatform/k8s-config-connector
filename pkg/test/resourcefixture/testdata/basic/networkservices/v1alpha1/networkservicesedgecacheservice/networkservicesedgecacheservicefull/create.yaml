@@ -20,17 +20,27 @@ spec:
   projectRef:
     external: ${projectId}
   description: Full edge cache service
+  disableHttp2: false
+  disableQuic: false
+  requireTls: false
+  logConfig:
+    enable: true
+    sampleRate: 1.0
   routing:
     hostRule:
-    - hosts:
+    - description: All hosts
+      hosts:
       - "*"
       pathMatcher: path-matcher
     pathMatcher:
     - name: path-matcher
+      description: Default path matcher
       routeRule:
       - priority: "1"
+        description: Root route
         matchRule:
         - prefixMatch: "/"
+          ignoreCase: true
         origin: projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}
         routeAction:
           cdnPolicy:
@@ -39,6 +49,31 @@ spec:
             maxTtl: 86400s
             clientTtl: 3600s
             compressionMode: AUTOMATIC
+          corsPolicy:
+            allowOrigins:
+            - "*"
+            allowMethods:
+            - GET
+            - POST
+            allowHeaders:
+            - Content-Type
+            maxAge: 3600s
+            disabled: false
+          urlRewrite:
+            pathPrefixRewrite: "/"
+        headerAction:
+          requestHeaderToAdd:
+          - headerName: x-request-header
+            headerValue: value
+            replace: true
+          requestHeaderToRemove:
+          - headerName: x-remove-this
+          responseHeaderToAdd:
+          - headerName: x-response-header
+            headerValue: value
+            replace: true
+          responseHeaderToRemove:
+          - headerName: x-remove-this-too
         routeMethods:
           allowedMethods:
           - GET
