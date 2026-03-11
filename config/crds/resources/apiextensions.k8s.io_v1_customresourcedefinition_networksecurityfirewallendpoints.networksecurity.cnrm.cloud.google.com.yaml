@@ -83,6 +83,9 @@ spec:
               location:
                 description: Immutable. The location for the resource
                 type: string
+                x-kubernetes-validations:
+                - message: Field is immutable
+                  rule: self == oldSelf
               organizationRef:
                 description: The Organization that this resource belongs to.
                 properties:

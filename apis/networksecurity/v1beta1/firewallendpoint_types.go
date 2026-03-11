@@ -31,6 +31,7 @@ type NetworkSecurityFirewallEndpointSpec struct {
 
 	// Immutable. The location for the resource
 	// +required
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field is immutable"
 	Location string `json:"location"`
 
 	// The NetworkSecurityFirewallEndpoint name. If not given, the metadata.name will be used.
