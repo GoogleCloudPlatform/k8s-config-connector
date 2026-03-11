@@ -282,7 +282,7 @@ type PrivatePool struct {
 type MultiTarget struct {
 	// Required. The target_ids of this multiTarget.
 	// +kcc:proto:field=google.cloud.deploy.v1.MultiTarget.target_ids
-	TargetIDs []string `json:"targetIDs,omitempty"`
+	Targets []CloudDeployTargetRef `json:"targets,omitempty"`
 }
 
 // +kcc:proto=google.cloud.deploy.v1.AnthosCluster

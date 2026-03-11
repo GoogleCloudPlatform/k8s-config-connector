@@ -179,7 +179,9 @@ func MultiTarget_FromProto(mapCtx *direct.MapContext, in *pb.MultiTarget) *krm.M
 		return nil
 	}
 	out := &krm.MultiTarget{}
-	out.TargetIDs = in.TargetIds
+	for _, id := range in.TargetIds {
+		out.Targets = append(out.Targets, krm.CloudDeployTargetRef{External: id})
+	}
 	return out
 }
 func MultiTarget_ToProto(mapCtx *direct.MapContext, in *krm.MultiTarget) *pb.MultiTarget {
@@ -187,6 +189,8 @@ func MultiTarget_ToProto(mapCtx *direct.MapContext, in *krm.MultiTarget) *pb.Mul
 		return nil
 	}
 	out := &pb.MultiTarget{}
-	out.TargetIds = in.TargetIDs
+	for _, ref := range in.Targets {
+		out.TargetIds = append(out.TargetIds, ref.External)
+	}
 	return out
 }
