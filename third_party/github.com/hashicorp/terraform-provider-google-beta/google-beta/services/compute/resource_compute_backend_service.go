@@ -1090,6 +1090,13 @@ alt name matches one of the specified values.`,
 				Description: `Type of session affinity to use. The default is NONE. Session affinity is
 not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "CLIENT_IP_PORT_PROTO", "CLIENT_IP_PROTO", "GENERATED_COOKIE", "HEADER_FIELD", "HTTP_COOKIE"]`,
 			},
+			"service_lb_policy": {
+				Type:             schema.TypeString,
+				Optional:         true,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
+				Description: `The full or partial URL of the service lb policy that this backend service is associated with. Can only be set
+if load balancing scheme is EXTERNAL, EXTERNAL_MANAGED, INTERNAL_MANAGED or INTERNAL_SELF_MANAGED and the scope is global.`,
+			},
 			"timeout_sec": {
 				Type:     schema.TypeInt,
 				Computed: true,
@@ -1418,6 +1425,12 @@ func resourceComputeBackendServiceCreate(d *schema.ResourceData, meta interface{
 	} else if v, ok := d.GetOkExists("session_affinity"); !tpgresource.IsEmptyValue(reflect.ValueOf(sessionAffinityProp)) && (ok || !reflect.DeepEqual(v, sessionAffinityProp)) {
 		obj["sessionAffinity"] = sessionAffinityProp
 	}
+	serviceLbPolicyProp, err := expandComputeBackendServiceServiceLbPolicy(d.Get("service_lb_policy"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("service_lb_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(serviceLbPolicyProp)) && (ok || !reflect.DeepEqual(v, serviceLbPolicyProp)) {
+		obj["serviceLbPolicy"] = serviceLbPolicyProp
+	}
 	timeoutSecProp, err := expandComputeBackendServiceTimeoutSec(d.Get("timeout_sec"), d, config)
 	if err != nil {
 		return err
@@ -1674,6 +1687,9 @@ func resourceComputeBackendServiceRead(d *schema.ResourceData, meta interface{})
 	if err := d.Set("session_affinity", flattenComputeBackendServiceSessionAffinity(res["sessionAffinity"], d, config)); err != nil {
 		return fmt.Errorf("Error reading BackendService: %s", err)
 	}
+	if err := d.Set("service_lb_policy", flattenComputeBackendServiceServiceLbPolicy(res["serviceLbPolicy"], d, config)); err != nil {
+		return fmt.Errorf("Error reading BackendService: %s", err)
+	}
 	if err := d.Set("timeout_sec", flattenComputeBackendServiceTimeoutSec(res["timeoutSec"], d, config)); err != nil {
 		return fmt.Errorf("Error reading BackendService: %s", err)
 	}
@@ -1852,6 +1868,12 @@ func resourceComputeBackendServiceUpdate(d *schema.ResourceData, meta interface{
 		return err
 	} else if v, ok := d.GetOkExists("session_affinity"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sessionAffinityProp)) {
 		obj["sessionAffinity"] = sessionAffinityProp
+	}
+	serviceLbPolicyProp, err := expandComputeBackendServiceServiceLbPolicy(d.Get("service_lb_policy"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("service_lb_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, serviceLbPolicyProp)) {
+		obj["serviceLbPolicy"] = serviceLbPolicyProp
 	}
 	timeoutSecProp, err := expandComputeBackendServiceTimeoutSec(d.Get("timeout_sec"), d, config)
 	if err != nil {
@@ -3176,6 +3198,10 @@ func flattenComputeBackendServiceSecurityPolicy(v interface{}, d *schema.Resourc
 	return v
 }
 
+func flattenComputeBackendServiceServiceLbPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
 func flattenComputeBackendServiceEdgeSecurityPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
@@ -4271,6 +4297,10 @@ func expandComputeBackendServiceProtocol(v interface{}, d tpgresource.TerraformR
 }
 
 func expandComputeBackendServiceSecurityPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandComputeBackendServiceServiceLbPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
