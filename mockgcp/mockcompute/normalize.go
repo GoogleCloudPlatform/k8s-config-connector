@@ -36,6 +36,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".creationTimestamp", PlaceholderTimestamp)
 	replacements.ReplacePath(".items[].creationTimestamp", PlaceholderTimestamp)
 
+	replacements.ReplacePath(".fingerprint", PlaceholderFingerprint)
+	replacements.ReplacePath(".items[].fingerprint", PlaceholderFingerprint)
+
 	// Addresses
 	replacements.ReplacePath(".labelFingerprint", PlaceholderFingerprint)
 	replacements.ReplacePath(".items[].labelFingerprint", PlaceholderFingerprint)
