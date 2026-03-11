@@ -24,9 +24,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath(".error.details")
 
 	// Replace times with a placeholder
-	replacements.AddStringPersistentVar("2026-03-11T12:34:56.789Z", "CREATE_TIME")
-	replacements.ReplaceAnyStringField("createTime", "2026-03-11T12:34:56.789Z")
-	replacements.ReplaceAnyStringField("updateTime", "2026-03-11T12:34:56.789Z")
+	replacements.ReplacePath(".createTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".updateTime", "2024-04-01T12:34:56.123456Z")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
