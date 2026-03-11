@@ -41,7 +41,7 @@ func (s *InstanceGroupManagersV1) Get(ctx context.Context, req *pb.GetInstanceGr
 
 	obj := &pb.InstanceGroupManager{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "Not Found")
 	}
 
 	return obj, nil
@@ -63,7 +63,7 @@ func (s *RegionInstanceGroupManagersV1) Get(ctx context.Context, req *pb.GetRegi
 
 	obj := &pb.InstanceGroupManager{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "Not Found")
 	}
 
 	return obj, nil
