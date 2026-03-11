@@ -115,14 +115,22 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "Full edge cache service",
+  "disableHttp2": false,
+  "disableQuic": false,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "logConfig": {
+    "enable": true,
+    "sampleRate": 1
+  },
   "name": "projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}",
+  "requireTls": false,
   "routing": {
     "hostRules": [
       {
+        "description": "All hosts",
         "hosts": [
           "*"
         ],
@@ -131,11 +139,40 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     ],
     "pathMatchers": [
       {
+        "description": "Default path matcher",
         "name": "path-matcher",
         "routeRules": [
           {
+            "description": "Root route",
+            "headerAction": {
+              "requestHeaderToAdd": [
+                {
+                  "headerName": "x-request-header",
+                  "headerValue": "value",
+                  "replace": true
+                }
+              ],
+              "requestHeaderToRemove": [
+                {
+                  "headerName": "x-remove-this"
+                }
+              ],
+              "responseHeaderToAdd": [
+                {
+                  "headerName": "x-response-header",
+                  "headerValue": "value",
+                  "replace": true
+                }
+              ],
+              "responseHeaderToRemove": [
+                {
+                  "headerName": "x-remove-this-too"
+                }
+              ]
+            },
             "matchRules": [
               {
+                "ignoreCase": true,
                 "prefixMatch": "/"
               }
             ],
@@ -148,6 +185,23 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
                 "compressionMode": "AUTOMATIC",
                 "defaultTtl": "3600s",
                 "maxTtl": "86400s"
+              },
+              "corsPolicy": {
+                "allowHeaders": [
+                  "Content-Type"
+                ],
+                "allowMethods": [
+                  "GET",
+                  "POST"
+                ],
+                "allowOrigins": [
+                  "*"
+                ],
+                "disabled": false,
+                "maxAge": "3600s"
+              },
+              "urlRewrite": {
+                "pathPrefixRewrite": "/"
               }
             },
             "routeMethods": {
@@ -211,10 +265,15 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
+    "logConfig": {
+      "enable": true,
+      "sampleRate": 1
+    },
     "name": "projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}",
     "routing": {
       "hostRules": [
         {
+          "description": "All hosts",
           "hosts": [
             "*"
           ],
@@ -223,11 +282,40 @@ X-Xss-Protection: 0
       ],
       "pathMatchers": [
         {
+          "description": "Default path matcher",
           "name": "path-matcher",
           "routeRules": [
             {
+              "description": "Root route",
+              "headerAction": {
+                "requestHeaderToAdd": [
+                  {
+                    "headerName": "x-request-header",
+                    "headerValue": "value",
+                    "replace": true
+                  }
+                ],
+                "requestHeaderToRemove": [
+                  {
+                    "headerName": "x-remove-this"
+                  }
+                ],
+                "responseHeaderToAdd": [
+                  {
+                    "headerName": "x-response-header",
+                    "headerValue": "value",
+                    "replace": true
+                  }
+                ],
+                "responseHeaderToRemove": [
+                  {
+                    "headerName": "x-remove-this-too"
+                  }
+                ]
+              },
               "matchRules": [
                 {
+                  "ignoreCase": true,
                   "prefixMatch": "/"
                 }
               ],
@@ -240,6 +328,22 @@ X-Xss-Protection: 0
                   "compressionMode": "AUTOMATIC",
                   "defaultTtl": "3600s",
                   "maxTtl": "86400s"
+                },
+                "corsPolicy": {
+                  "allowHeaders": [
+                    "Content-Type"
+                  ],
+                  "allowMethods": [
+                    "GET",
+                    "POST"
+                  ],
+                  "allowOrigins": [
+                    "*"
+                  ],
+                  "maxAge": "3600s"
+                },
+                "urlRewrite": {
+                  "pathPrefixRewrite": "/"
                 }
               },
               "routeMethods": {
@@ -273,10 +377,15 @@ Content-Type: application/json
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "logConfig": {
+    "enable": true,
+    "sampleRate": 1
+  },
   "name": "projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}",
   "routing": {
     "hostRules": [
       {
+        "description": "All hosts",
         "hosts": [
           "*"
         ],
@@ -285,11 +394,40 @@ Content-Type: application/json
     ],
     "pathMatchers": [
       {
+        "description": "Default path matcher",
         "name": "path-matcher",
         "routeRules": [
           {
+            "description": "Root route",
+            "headerAction": {
+              "requestHeaderToAdd": [
+                {
+                  "headerName": "x-request-header",
+                  "headerValue": "value",
+                  "replace": true
+                }
+              ],
+              "requestHeaderToRemove": [
+                {
+                  "headerName": "x-remove-this"
+                }
+              ],
+              "responseHeaderToAdd": [
+                {
+                  "headerName": "x-response-header",
+                  "headerValue": "value",
+                  "replace": true
+                }
+              ],
+              "responseHeaderToRemove": [
+                {
+                  "headerName": "x-remove-this-too"
+                }
+              ]
+            },
             "matchRules": [
               {
+                "ignoreCase": true,
                 "prefixMatch": "/"
               }
             ],
@@ -302,6 +440,22 @@ Content-Type: application/json
                 "compressionMode": "AUTOMATIC",
                 "defaultTtl": "3600s",
                 "maxTtl": "86400s"
+              },
+              "corsPolicy": {
+                "allowHeaders": [
+                  "Content-Type"
+                ],
+                "allowMethods": [
+                  "GET",
+                  "POST"
+                ],
+                "allowOrigins": [
+                  "*"
+                ],
+                "maxAge": "3600s"
+              },
+              "urlRewrite": {
+                "pathPrefixRewrite": "/"
               }
             },
             "routeMethods": {
