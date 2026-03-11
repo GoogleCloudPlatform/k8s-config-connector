@@ -1,4 +1,4 @@
-GET https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fapis%2Fapigatewayapi-minimal-${uniqueId}
 
@@ -20,7 +20,7 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+PATCH https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=labels
 Content-Type: application/json
 X-Goog-Request-Params: api.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fapis%2Fapigatewayapi-minimal-${uniqueId}
 
