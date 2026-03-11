@@ -133,6 +133,266 @@ func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: Etag
 	return out
 }
+func AccessContextManagerServicePerimeterApiOperation_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig_ApiOperation) *krm.AccessContextManagerServicePerimeterApiOperation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterApiOperation{}
+	out.ServiceName = direct.LazyPtr(in.GetServiceName())
+	out.MethodSelectors = direct.Slice_FromProto(mapCtx, in.MethodSelectors, AccessContextManagerServicePerimeterMethodSelector_FromProto)
+	return out
+}
+func AccessContextManagerServicePerimeterApiOperation_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterApiOperation) *pb.ServicePerimeterConfig_ApiOperation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeterConfig_ApiOperation{}
+	out.ServiceName = direct.ValueOf(in.ServiceName)
+	out.MethodSelectors = direct.Slice_ToProto(mapCtx, in.MethodSelectors, AccessContextManagerServicePerimeterMethodSelector_ToProto)
+	return out
+}
+func AccessContextManagerServicePerimeterConfig_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig) *krm.AccessContextManagerServicePerimeterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterConfig{}
+	out.Resources = AccessContextManagerServicePerimeterConfig_Resources_FromProto(mapCtx, in.Resources)
+	out.AccessLevels = AccessContextManagerServicePerimeterConfig_AccessLevels_FromProto(mapCtx, in.AccessLevels)
+	out.RestrictedServices = in.RestrictedServices
+	out.VPCAccessibleServices = AccessContextManagerServicePerimeterVPCAccessibleServices_FromProto(mapCtx, in.GetVpcAccessibleServices())
+	out.IngressPolicies = direct.Slice_FromProto(mapCtx, in.IngressPolicies, AccessContextManagerServicePerimeterIngressPolicy_FromProto)
+	out.EgressPolicies = direct.Slice_FromProto(mapCtx, in.EgressPolicies, AccessContextManagerServicePerimeterEgressPolicy_FromProto)
+	return out
+}
+func AccessContextManagerServicePerimeterConfig_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterConfig) *pb.ServicePerimeterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeterConfig{}
+	out.Resources = AccessContextManagerServicePerimeterConfig_Resources_ToProto(mapCtx, in.Resources)
+	out.AccessLevels = AccessContextManagerServicePerimeterConfig_AccessLevels_ToProto(mapCtx, in.AccessLevels)
+	out.RestrictedServices = in.RestrictedServices
+	out.VpcAccessibleServices = AccessContextManagerServicePerimeterVPCAccessibleServices_ToProto(mapCtx, in.VPCAccessibleServices)
+	out.IngressPolicies = direct.Slice_ToProto(mapCtx, in.IngressPolicies, AccessContextManagerServicePerimeterIngressPolicy_ToProto)
+	out.EgressPolicies = direct.Slice_ToProto(mapCtx, in.EgressPolicies, AccessContextManagerServicePerimeterEgressPolicy_ToProto)
+	return out
+}
+func AccessContextManagerServicePerimeterEgressFrom_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig_EgressFrom) *krm.AccessContextManagerServicePerimeterEgressFrom {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterEgressFrom{}
+	out.Identities = AccessContextManagerServicePerimeterEgressFrom_Identities_FromProto(mapCtx, in.Identities)
+	out.IdentityType = direct.Enum_FromProto(mapCtx, in.GetIdentityType())
+	return out
+}
+func AccessContextManagerServicePerimeterEgressFrom_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterEgressFrom) *pb.ServicePerimeterConfig_EgressFrom {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeterConfig_EgressFrom{}
+	out.Identities = AccessContextManagerServicePerimeterEgressFrom_Identities_ToProto(mapCtx, in.Identities)
+	out.IdentityType = direct.Enum_ToProto[pb.ServicePerimeterConfig_IdentityType](mapCtx, in.IdentityType)
+	return out
+}
+func AccessContextManagerServicePerimeterEgressPolicy_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig_EgressPolicy) *krm.AccessContextManagerServicePerimeterEgressPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterEgressPolicy{}
+	out.EgressFrom = AccessContextManagerServicePerimeterEgressFrom_FromProto(mapCtx, in.GetEgressFrom())
+	out.EgressTo = AccessContextManagerServicePerimeterEgressTo_FromProto(mapCtx, in.GetEgressTo())
+	return out
+}
+func AccessContextManagerServicePerimeterEgressPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterEgressPolicy) *pb.ServicePerimeterConfig_EgressPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeterConfig_EgressPolicy{}
+	out.EgressFrom = AccessContextManagerServicePerimeterEgressFrom_ToProto(mapCtx, in.EgressFrom)
+	out.EgressTo = AccessContextManagerServicePerimeterEgressTo_ToProto(mapCtx, in.EgressTo)
+	return out
+}
+func AccessContextManagerServicePerimeterEgressTo_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig_EgressTo) *krm.AccessContextManagerServicePerimeterEgressTo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterEgressTo{}
+	out.Resources = AccessContextManagerServicePerimeterEgressTo_Resources_FromProto(mapCtx, in.Resources)
+	out.Operations = direct.Slice_FromProto(mapCtx, in.Operations, AccessContextManagerServicePerimeterApiOperation_FromProto)
+	out.ExternalResources = in.ExternalResources
+	return out
+}
+func AccessContextManagerServicePerimeterEgressTo_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterEgressTo) *pb.ServicePerimeterConfig_EgressTo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeterConfig_EgressTo{}
+	out.Resources = AccessContextManagerServicePerimeterEgressTo_Resources_ToProto(mapCtx, in.Resources)
+	out.Operations = direct.Slice_ToProto(mapCtx, in.Operations, AccessContextManagerServicePerimeterApiOperation_ToProto)
+	out.ExternalResources = in.ExternalResources
+	return out
+}
+func AccessContextManagerServicePerimeterIngressFrom_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig_IngressFrom) *krm.AccessContextManagerServicePerimeterIngressFrom {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterIngressFrom{}
+	out.Sources = direct.Slice_FromProto(mapCtx, in.Sources, AccessContextManagerServicePerimeterIngressSource_FromProto)
+	out.Identities = AccessContextManagerServicePerimeterIngressFrom_Identities_FromProto(mapCtx, in.Identities)
+	out.IdentityType = direct.Enum_FromProto(mapCtx, in.GetIdentityType())
+	return out
+}
+func AccessContextManagerServicePerimeterIngressFrom_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterIngressFrom) *pb.ServicePerimeterConfig_IngressFrom {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeterConfig_IngressFrom{}
+	out.Sources = direct.Slice_ToProto(mapCtx, in.Sources, AccessContextManagerServicePerimeterIngressSource_ToProto)
+	out.Identities = AccessContextManagerServicePerimeterIngressFrom_Identities_ToProto(mapCtx, in.Identities)
+	out.IdentityType = direct.Enum_ToProto[pb.ServicePerimeterConfig_IdentityType](mapCtx, in.IdentityType)
+	return out
+}
+func AccessContextManagerServicePerimeterIngressPolicy_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig_IngressPolicy) *krm.AccessContextManagerServicePerimeterIngressPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterIngressPolicy{}
+	out.IngressFrom = AccessContextManagerServicePerimeterIngressFrom_FromProto(mapCtx, in.GetIngressFrom())
+	out.IngressTo = AccessContextManagerServicePerimeterIngressTo_FromProto(mapCtx, in.GetIngressTo())
+	return out
+}
+func AccessContextManagerServicePerimeterIngressPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterIngressPolicy) *pb.ServicePerimeterConfig_IngressPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeterConfig_IngressPolicy{}
+	out.IngressFrom = AccessContextManagerServicePerimeterIngressFrom_ToProto(mapCtx, in.IngressFrom)
+	out.IngressTo = AccessContextManagerServicePerimeterIngressTo_ToProto(mapCtx, in.IngressTo)
+	return out
+}
+func AccessContextManagerServicePerimeterIngressTo_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig_IngressTo) *krm.AccessContextManagerServicePerimeterIngressTo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterIngressTo{}
+	out.Operations = direct.Slice_FromProto(mapCtx, in.Operations, AccessContextManagerServicePerimeterApiOperation_FromProto)
+	out.Resources = AccessContextManagerServicePerimeterIngressTo_Resources_FromProto(mapCtx, in.Resources)
+	return out
+}
+func AccessContextManagerServicePerimeterIngressTo_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterIngressTo) *pb.ServicePerimeterConfig_IngressTo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeterConfig_IngressTo{}
+	out.Operations = direct.Slice_ToProto(mapCtx, in.Operations, AccessContextManagerServicePerimeterApiOperation_ToProto)
+	out.Resources = AccessContextManagerServicePerimeterIngressTo_Resources_ToProto(mapCtx, in.Resources)
+	return out
+}
+func AccessContextManagerServicePerimeterMethodSelector_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig_MethodSelector) *krm.AccessContextManagerServicePerimeterMethodSelector {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterMethodSelector{}
+	out.Method = direct.LazyPtr(in.GetMethod())
+	out.Permission = direct.LazyPtr(in.GetPermission())
+	return out
+}
+func AccessContextManagerServicePerimeterMethodSelector_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterMethodSelector) *pb.ServicePerimeterConfig_MethodSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeterConfig_MethodSelector{}
+	if oneof := AccessContextManagerServicePerimeterMethodSelector_Method_ToProto(mapCtx, in.Method); oneof != nil {
+		out.Kind = oneof
+	}
+	if oneof := AccessContextManagerServicePerimeterMethodSelector_Permission_ToProto(mapCtx, in.Permission); oneof != nil {
+		out.Kind = oneof
+	}
+	return out
+}
+func AccessContextManagerServicePerimeterMethodSelector_Method_ToProto(mapCtx *direct.MapContext, in *string) *pb.ServicePerimeterConfig_MethodSelector_Method {
+	if in == nil {
+		return nil
+	}
+	return &pb.ServicePerimeterConfig_MethodSelector_Method{Method: *in}
+}
+func AccessContextManagerServicePerimeterMethodSelector_Permission_ToProto(mapCtx *direct.MapContext, in *string) *pb.ServicePerimeterConfig_MethodSelector_Permission {
+	if in == nil {
+		return nil
+	}
+	return &pb.ServicePerimeterConfig_MethodSelector_Permission{Permission: *in}
+}
+func AccessContextManagerServicePerimeterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeter) *krm.AccessContextManagerServicePerimeterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterObservedState{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func AccessContextManagerServicePerimeterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterObservedState) *pb.ServicePerimeter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeter{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func AccessContextManagerServicePerimeterSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeter) *krm.AccessContextManagerServicePerimeterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterSpec{}
+	// MISSING: Name
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.PerimeterType = direct.Enum_FromProto(mapCtx, in.GetPerimeterType())
+	out.Status = AccessContextManagerServicePerimeterConfig_FromProto(mapCtx, in.GetStatus())
+	out.Spec = AccessContextManagerServicePerimeterConfig_FromProto(mapCtx, in.GetSpec())
+	out.UseExplicitDryRunSpec = direct.LazyPtr(in.GetUseExplicitDryRunSpec())
+	return out
+}
+func AccessContextManagerServicePerimeterSpec_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterSpec) *pb.ServicePerimeter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeter{}
+	// MISSING: Name
+	out.Title = direct.ValueOf(in.Title)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.PerimeterType = direct.Enum_ToProto[pb.ServicePerimeter_PerimeterType](mapCtx, in.PerimeterType)
+	out.Status = AccessContextManagerServicePerimeterConfig_ToProto(mapCtx, in.Status)
+	out.Spec = AccessContextManagerServicePerimeterConfig_ToProto(mapCtx, in.Spec)
+	out.UseExplicitDryRunSpec = direct.ValueOf(in.UseExplicitDryRunSpec)
+	return out
+}
+func AccessContextManagerServicePerimeterVPCAccessibleServices_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig_VpcAccessibleServices) *krm.AccessContextManagerServicePerimeterVPCAccessibleServices {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterVPCAccessibleServices{}
+	out.EnableRestriction = direct.LazyPtr(in.GetEnableRestriction())
+	out.AllowedServices = in.AllowedServices
+	return out
+}
+func AccessContextManagerServicePerimeterVPCAccessibleServices_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterVPCAccessibleServices) *pb.ServicePerimeterConfig_VpcAccessibleServices {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeterConfig_VpcAccessibleServices{}
+	out.EnableRestriction = direct.ValueOf(in.EnableRestriction)
+	out.AllowedServices = in.AllowedServices
+	return out
+}
 func AccessLevelCustom_FromProto(mapCtx *direct.MapContext, in *pb.CustomLevel) *krm.AccessLevelCustom {
 	if in == nil {
 		return nil
