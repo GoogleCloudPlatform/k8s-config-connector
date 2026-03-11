@@ -648,6 +648,12 @@ func schemaNodeConfig() *schema.Schema {
 								ForceNew:    true,
 								Description: `Whether Confidential Nodes feature is enabled for all nodes in this pool.`,
 							},
+							"confidential_instance_type": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								ForceNew:    true,
+								Description: `Confidential instance type for the cluster nodes. Valid values are SEV and SEV_SNP.`,
+							},
 						},
 					},
 				},
@@ -1109,9 +1115,13 @@ func expandConfidentialNodes(configured interface{}) *container.ConfidentialNode
 		return nil
 	}
 	config := l[0].(map[string]interface{})
-	return &container.ConfidentialNodes{
+	res := &container.ConfidentialNodes{
 		Enabled: config["enabled"].(bool),
 	}
+	if v, ok := config["confidential_instance_type"]; ok && v.(string) != "" {
+		res.ConfidentialInstanceType = v.(string)
+	}
+	return res
 }
 
 func flattenNodeConfigDefaults(c *container.NodeConfigDefaults) []map[string]interface{} {
@@ -1429,7 +1439,8 @@ func flattenConfidentialNodes(c *container.ConfidentialNodes) []map[string]inter
 	result := []map[string]interface{}{}
 	if c != nil {
 		result = append(result, map[string]interface{}{
-			"enabled": c.Enabled,
+			"enabled":                    c.Enabled,
+			"confidential_instance_type": c.ConfidentialInstanceType,
 		})
 	}
 	return result
