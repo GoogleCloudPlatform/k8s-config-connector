@@ -94,9 +94,9 @@ func TestSyncerIntegration_OnStartedLeading_CacheSafety(t *testing.T) {
 	_ = unstructured.SetNestedField(syncer.Object, "dummy-secret", "spec", "remote", "clusterConfig", "kubeConfigSecretRef", "name")
 	_ = unstructured.SetNestedSlice(syncer.Object, []interface{}{
 		map[string]interface{}{
-			"group":   "*",
-			"version": "*",
-			"kind":    "*",
+			"group":   "example.com",
+			"version": "v1",
+			"kind":    "Foo",
 		},
 	}, "spec", "rules")
 

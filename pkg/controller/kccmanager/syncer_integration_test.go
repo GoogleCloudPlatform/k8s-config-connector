@@ -23,6 +23,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
@@ -98,7 +99,7 @@ func TestEnsurePullingFromLeader(t *testing.T) {
 			name:      "no lease found",
 			syncer:    newKRMSyncer(name, "pull", "", true),
 			lease:     nil,
-			expectErr: true,
+			expectErr: false,
 		},
 		{
 			name:      "no global holder identity",
@@ -156,16 +157,52 @@ func TestEnsurePullingFromLeader(t *testing.T) {
 				}
 
 				rules, found, _ := unstructured.NestedSlice(s.Object, "spec", "rules")
-				if !found || len(rules) != 1 {
-					t.Fatalf("expected 1 rule, got %v", rules)
+				if !found {
+					t.Fatalf("expected rules to be found")
 				}
-				rule := rules[0].(map[string]interface{})
-				if rule["group"] != "*" || rule["version"] != "*" || rule["kind"] != "*" {
-					t.Errorf("expected wildcard rule, got %v", rule)
+
+				// Expected length: 1 (glob) + number of exceptions
+				expectedLen := 1 + len(syncerGVKsWithServiceGeneratedIDs)
+				if len(rules) != expectedLen {
+					t.Fatalf("expected %d rules, got %v", expectedLen, len(rules))
 				}
-				syncFields := rule["syncFields"].([]interface{})
-				if len(syncFields) != 2 || syncFields[0] != "status" || syncFields[1] != "spec.resourceID" {
-					t.Errorf("expected syncFields [status, spec.resourceID], got %v", syncFields)
+
+				// Check for the glob rule
+				hasGlob := false
+				for _, r := range rules {
+					rule := r.(map[string]interface{})
+					if rule["group"] == "*.cnrm.cloud.google.com" {
+						hasGlob = true
+						if rule["version"] != "*" || rule["kind"] != "*" {
+							t.Errorf("expected wildcard version and kind for glob rule")
+						}
+						syncFields := rule["syncFields"].([]interface{})
+						if len(syncFields) != 1 || syncFields[0] != "status" {
+							t.Errorf("expected syncFields [status] for glob rule, got %v", syncFields)
+						}
+						break
+					}
+				}
+				if !hasGlob {
+					t.Errorf("glob rule not found")
+				}
+
+				// Spot check one exception
+				hasFolder := false
+				folderGVK := schema.GroupVersionKind{Group: "resourcemanager.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Folder"}
+				for _, r := range rules {
+					rule := r.(map[string]interface{})
+					if rule["group"] == folderGVK.Group && rule["version"] == folderGVK.Version && rule["kind"] == folderGVK.Kind {
+						hasFolder = true
+						syncFields := rule["syncFields"].([]interface{})
+						if len(syncFields) != 2 || syncFields[0] != "status" || syncFields[1] != "spec.resourceID" {
+							t.Errorf("expected syncFields [status, spec.resourceID] for Folder rule, got %v", syncFields)
+						}
+						break
+					}
+				}
+				if !hasFolder {
+					t.Errorf("Folder exception rule not found")
 				}
 			},
 		},
@@ -238,7 +275,7 @@ func TestEnsureSuspended(t *testing.T) {
 		{
 			name:      "syncer not found",
 			syncer:    nil,
-			expectErr: true,
+			expectErr: false,
 		},
 	}
 

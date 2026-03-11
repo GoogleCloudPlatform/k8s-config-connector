@@ -17,11 +17,10 @@ package kccmanager
 import (
 	"context"
 	"fmt"
-
-	"reflect"
 	"strings"
 
 	mclv1alpha1 "github.com/gke-labs/multicluster-leader-election/api/v1alpha1"
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -50,6 +49,101 @@ type SyncerIntegration struct {
 	replicationMode string
 }
 
+func (si *SyncerIntegration) getDesiredRules() []interface{} {
+	if strings.EqualFold(si.replicationMode, "Full") {
+		return []interface{}{
+			map[string]interface{}{
+				"group":      "*.cnrm.cloud.google.com",
+				"version":    "*",
+				"kind":       "*",
+				"syncFields": []interface{}{"spec", "status"},
+			},
+		}
+	}
+
+	// Status Only mode:
+	// 1. One glob rule for the majority of resources (status only)
+	// 2. Explicit rules for resources with service-generated IDs (status + spec.resourceID)
+	rules := []interface{}{
+		map[string]interface{}{
+			"group":      "*.cnrm.cloud.google.com",
+			"version":    "*",
+			"kind":       "*",
+			"syncFields": []interface{}{"status"},
+		},
+	}
+
+	// Add exceptions (GVKs we know have service-generated IDs)
+	for gvk := range syncerGVKsWithServiceGeneratedIDs {
+		rules = append(rules, map[string]interface{}{
+			"group":      gvk.Group,
+			"version":    gvk.Version,
+			"kind":       gvk.Kind,
+			"syncFields": []interface{}{"status", "spec.resourceID"},
+		})
+	}
+	return rules
+}
+
+func rulesMatch(existing []interface{}, desired []interface{}) bool {
+	if len(existing) != len(desired) {
+		return false
+	}
+
+	// Create a map-based lookup for existing rules to handle potential reordering
+	// by the API server or during generation.
+	type ruleKey struct {
+		group, version, kind string
+	}
+	existingMap := make(map[ruleKey][]string)
+	for _, e := range existing {
+		r, ok := e.(map[string]interface{})
+		if !ok {
+			return false
+		}
+		group, _ := r["group"].(string)
+		version, _ := r["version"].(string)
+		kind, _ := r["kind"].(string)
+		fields, _ := r["syncFields"].([]interface{})
+
+		var fieldStrs []string
+		for _, f := range fields {
+			if s, ok := f.(string); ok {
+				fieldStrs = append(fieldStrs, s)
+			}
+		}
+		existingMap[ruleKey{group, version, kind}] = fieldStrs
+	}
+
+	for _, d := range desired {
+		r, ok := d.(map[string]interface{})
+		if !ok {
+			return false
+		}
+		group, _ := r["group"].(string)
+		version, _ := r["version"].(string)
+		kind, _ := r["kind"].(string)
+		desiredFields, _ := r["syncFields"].([]interface{})
+
+		existingFields, found := existingMap[ruleKey{group, version, kind}]
+		if !found || len(existingFields) != len(desiredFields) {
+			return false
+		}
+
+		fieldSet := make(map[string]bool)
+		for _, f := range existingFields {
+			fieldSet[f] = true
+		}
+		for _, f := range desiredFields {
+			s, _ := f.(string)
+			if !fieldSet[s] {
+				return false
+			}
+		}
+	}
+	return true
+}
+
 func (si *SyncerIntegration) EnsurePullingFromLeader(ctx context.Context, myIdentity string) error {
 	if si == nil || si.client == nil || si.apiReader == nil {
 		return fmt.Errorf("syncer integration or client not initialized")
@@ -57,6 +151,10 @@ func (si *SyncerIntegration) EnsurePullingFromLeader(ctx context.Context, myIden
 
 	lease := &mclv1alpha1.MultiClusterLease{}
 	if err := si.apiReader.Get(ctx, si.name, lease); err != nil {
+		if errors.IsNotFound(err) {
+			klog.Warningf("MultiClusterLease %s not found. Skipping syncer reconfiguration.", si.name)
+			return nil
+		}
 		return fmt.Errorf("error fetching MultiClusterLease %s: %w", si.name, err)
 	}
 
@@ -78,9 +176,35 @@ func (si *SyncerIntegration) EnsurePullingFromLeader(ctx context.Context, myIden
 	syncer := &unstructured.Unstructured{}
 	syncer.SetGroupVersionKind(KRMSyncerGVK)
 
+	var isCreate bool
 	if err := si.apiReader.Get(ctx, si.name, syncer); err != nil {
-		klog.Errorf("error getting KRMSyncer %s: %v", si.name, err)
-		return fmt.Errorf("error getting KRMSyncer %s: %w", si.name, err)
+		if errors.IsNotFound(err) {
+			klog.Infof("KRMSyncer %s not found. Will create it to pull from leader.", si.name)
+			isCreate = true
+		} else {
+			klog.Errorf("error getting KRMSyncer %s: %v", si.name, err)
+			return fmt.Errorf("error getting KRMSyncer %s: %w", si.name, err)
+		}
+	}
+
+	rules := si.getDesiredRules()
+
+	if isCreate {
+		syncerToCreate := &unstructured.Unstructured{}
+		syncerToCreate.SetGroupVersionKind(KRMSyncerGVK)
+		syncerToCreate.SetName(si.name.Name)
+		syncerToCreate.SetNamespace(si.name.Namespace)
+
+		_ = unstructured.SetNestedField(syncerToCreate.Object, leaderIdentity, "spec", "remote", "clusterConfig", "kubeConfigSecretRef", "name")
+		_ = unstructured.SetNestedField(syncerToCreate.Object, "pull", "spec", "mode")
+		_ = unstructured.SetNestedField(syncerToCreate.Object, false, "spec", "suspend")
+		_ = unstructured.SetNestedSlice(syncerToCreate.Object, rules, "spec", "rules")
+
+		if err := si.client.Create(ctx, syncerToCreate); err != nil {
+			return fmt.Errorf("error creating KRMSyncer %s: %w", si.name, err)
+		}
+		klog.Infof("successfully created KRMSyncer %s to pull from leader %s", si.name, leaderIdentity)
+		return nil
 	}
 
 	changed := false
@@ -102,25 +226,8 @@ func (si *SyncerIntegration) EnsurePullingFromLeader(ctx context.Context, myIden
 		changed = true
 	}
 
-	// Always ensure rules cover everything with the desired sync fields
-	var targetFields []interface{}
-	if strings.EqualFold(si.replicationMode, "Full") {
-		targetFields = []interface{}{"spec", "status"}
-	} else {
-		targetFields = []interface{}{"status", "spec.resourceID"}
-	}
-
-	rules := []interface{}{
-		map[string]interface{}{
-			"group":      "*",
-			"version":    "*",
-			"kind":       "*",
-			"syncFields": targetFields,
-		},
-	}
-
 	existingRules, found, _ := unstructured.NestedSlice(syncer.Object, "spec", "rules")
-	if !found || !reflect.DeepEqual(existingRules, rules) {
+	if !found || !rulesMatch(existingRules, rules) {
 		if err := unstructured.SetNestedSlice(syncer.Object, rules, "spec", "rules"); err != nil {
 			return fmt.Errorf("error setting rules: %w", err)
 		}
@@ -173,6 +280,22 @@ func (si *SyncerIntegration) EnsureSuspended(ctx context.Context) error {
 	syncer.SetGroupVersionKind(KRMSyncerGVK)
 
 	if err := si.apiReader.Get(ctx, si.name, syncer); err != nil {
+		if errors.IsNotFound(err) {
+			klog.Infof("KRMSyncer %s not found. Creating it in suspended state.", si.name)
+			syncerToCreate := &unstructured.Unstructured{}
+			syncerToCreate.SetGroupVersionKind(KRMSyncerGVK)
+			syncerToCreate.SetName(si.name.Name)
+			syncerToCreate.SetNamespace(si.name.Namespace)
+
+			_ = unstructured.SetNestedField(syncerToCreate.Object, true, "spec", "suspend")
+			_ = unstructured.SetNestedField(syncerToCreate.Object, "pull", "spec", "mode")
+			_ = unstructured.SetNestedSlice(syncerToCreate.Object, si.getDesiredRules(), "spec", "rules")
+
+			if err := si.client.Create(ctx, syncerToCreate); err != nil {
+				return fmt.Errorf("error creating KRMSyncer %s: %w", si.name, err)
+			}
+			return nil
+		}
 		klog.Errorf("error getting KRMSyncer %s: %v", si.name, err)
 		return fmt.Errorf("error getting KRMSyncer %s: %w", si.name, err)
 	}
