@@ -4,6 +4,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
+  generation: 1
   labels:
     cnrm-test: "true"
   name: edgecacheservice-${uniqueId}
@@ -31,5 +32,5 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}
-  observedGeneration: 0
+  observedGeneration: 1
   observedState: {}
