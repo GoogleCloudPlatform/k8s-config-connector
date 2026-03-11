@@ -271,6 +271,28 @@ func AccessContextManagerServicePerimeterIngressPolicy_ToProto(mapCtx *direct.Ma
 	out.IngressTo = AccessContextManagerServicePerimeterIngressTo_ToProto(mapCtx, in.IngressTo)
 	return out
 }
+func AccessContextManagerServicePerimeterIngressSource_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig_IngressSource) *krm.AccessContextManagerServicePerimeterIngressSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerServicePerimeterIngressSource{}
+	if in.GetAccessLevel() != "" {
+		out.AccessLevelRef = &krm.AccessLevelRef{External: in.GetAccessLevel()}
+	}
+	// MISSING: Resource
+	return out
+}
+func AccessContextManagerServicePerimeterIngressSource_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterIngressSource) *pb.ServicePerimeterConfig_IngressSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServicePerimeterConfig_IngressSource{}
+	if in.AccessLevelRef != nil {
+		out.AccessLevel = in.AccessLevelRef.External
+	}
+	// MISSING: Resource
+	return out
+}
 func AccessContextManagerServicePerimeterIngressTo_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeterConfig_IngressTo) *krm.AccessContextManagerServicePerimeterIngressTo {
 	if in == nil {
 		return nil
@@ -322,26 +344,6 @@ func AccessContextManagerServicePerimeterMethodSelector_Permission_ToProto(mapCt
 		return nil
 	}
 	return &pb.ServicePerimeterConfig_MethodSelector_Permission{Permission: *in}
-}
-func AccessContextManagerServicePerimeterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeter) *krm.AccessContextManagerServicePerimeterObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AccessContextManagerServicePerimeterObservedState{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
-}
-func AccessContextManagerServicePerimeterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerServicePerimeterObservedState) *pb.ServicePerimeter {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServicePerimeter{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	return out
 }
 func AccessContextManagerServicePerimeterSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServicePerimeter) *krm.AccessContextManagerServicePerimeterSpec {
 	if in == nil {

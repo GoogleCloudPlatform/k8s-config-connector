@@ -27,7 +27,7 @@ import (
 
 var _ refsv1beta1.Ref = &AccessLevelRef{}
 
-// AccessLevelRef is a reference to a AccessLevel resource.
+// A reference to an AccessLevel resource.
 type AccessLevelRef struct {
 	// A reference to an externally managed AccessLevel resource.
 	// Should be in the format "accessPolicies/{{accessPolicyID}}/accessLevels/{{accessLevel}}".

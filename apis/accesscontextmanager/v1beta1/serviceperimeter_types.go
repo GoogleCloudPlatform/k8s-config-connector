@@ -162,6 +162,8 @@ type AccessContextManagerServicePerimeterEgressFrom struct {
 	IdentityType *string `json:"identityType,omitempty"`
 }
 
+// +kubebuilder:validation:MinProperties=1
+// +kubebuilder:validation:MaxProperties=1
 type AccessContextManagerServicePerimeterIdentity struct {
 	// +optional
 	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
@@ -183,11 +185,17 @@ type AccessContextManagerServicePerimeterEgressTo struct {
 	// +optional
 	Operations []AccessContextManagerServicePerimeterApiOperation `json:"operations,omitempty"`
 
+	/* (Optional) A list of resources, currently only projects in the form
+	"projects/{project_number}". A request
+	matches if it contains a resource in this list. */
 	// +optional
 	Resources []AccessContextManagerServicePerimeterEgressResource `json:"resources,omitempty"`
 }
 
 type AccessContextManagerServicePerimeterEgressResource struct {
+	/* (Optional) A list of resources, currently only projects in the form
+	"projects/{project_number}". A request
+	matches if it contains a resource in this list. */
 	// +optional
 	ProjectRef *ServicePerimeterProjectRef `json:"projectRef,omitempty"`
 }
@@ -259,6 +267,11 @@ type AccessContextManagerServicePerimeterIngressSource struct {
 	// +optional
 	AccessLevelRef *AccessLevelRef `json:"accessLevelRef,omitempty"`
 
+	/* (Optional) A Google Cloud resource that is allowed to ingress the
+	perimeter. Requests from these resources will be allowed to access
+	perimeter data. Currently only projects are allowed. Format
+	"projects/{project_number}" The project may be in any Google Cloud
+	organization, not just the organization that the perimeter is defined in. */
 	// +optional
 	ProjectRef *ServicePerimeterProjectRef `json:"projectRef,omitempty"`
 }
@@ -270,16 +283,28 @@ type AccessContextManagerServicePerimeterIngressTo struct {
 	// +optional
 	Operations []AccessContextManagerServicePerimeterApiOperation `json:"operations,omitempty"`
 
+	/* A list of resources, currently only projects in the form
+	"projects/{project_number}", protected by this ServicePerimeter
+	that are allowed to be accessed by sources defined in the
+	corresponding IngressFrom. A request matches if it contains a
+	resource in this list. */
 	// +optional
 	Resources []AccessContextManagerServicePerimeterIngressResource `json:"resources,omitempty"`
 }
 
 type AccessContextManagerServicePerimeterIngressResource struct {
+	/* A list of resources, currently only projects in the form
+	"projects/{project_number}", protected by this ServicePerimeter
+	that are allowed to be accessed by sources defined in the
+	corresponding IngressFrom. A request matches if it contains a
+	resource in this list. */
 	// +optional
 	ProjectRef *ServicePerimeterProjectRef `json:"projectRef,omitempty"`
 }
 
 type AccessContextManagerServicePerimeterResource struct {
+	/* (Optional) A list of GCP resources that are inside of the service perimeter.
+	Currently only projects are allowed. */
 	// +optional
 	ProjectRef *ServicePerimeterProjectRef `json:"projectRef,omitempty"`
 }
@@ -323,9 +348,6 @@ type AccessContextManagerServicePerimeterStatus struct {
 	// A unique specifier for the AccessContextManagerServicePerimeter resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *AccessContextManagerServicePerimeterObservedState `json:"observedState,omitempty"`
-
 	/* Time the AccessPolicy was created in UTC. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -333,11 +355,6 @@ type AccessContextManagerServicePerimeterStatus struct {
 	/* Time the AccessPolicy was updated in UTC. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
-}
-
-// AccessContextManagerServicePerimeterObservedState is the state of the AccessContextManagerServicePerimeter resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.identity.accesscontextmanager.v1.ServicePerimeter
-type AccessContextManagerServicePerimeterObservedState struct {
 }
 
 // +genclient
