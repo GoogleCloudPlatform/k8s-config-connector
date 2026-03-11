@@ -1,138 +1,3 @@
-GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json
-
-{}
-
----
-
-POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheServices?edgeCacheServiceId=edgecacheservice-${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "description": "Full edge cache service",
-  "disableHttp2": false,
-  "disableQuic": false,
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "logConfig": {
-    "enable": true,
-    "sampleRate": 1
-  },
-  "name": "projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}",
-  "requireTls": false,
-  "routing": {
-    "hostRules": [
-      {
-        "description": "All hosts",
-        "hosts": [
-          "*"
-        ],
-        "pathMatcher": "path-matcher"
-      }
-    ],
-    "pathMatchers": [
-      {
-        "description": "Default path matcher",
-        "name": "path-matcher",
-        "routeRules": [
-          {
-            "description": "Root route",
-            "headerAction": {
-              "requestHeaderToAdd": [
-                {
-                  "headerName": "x-request-header",
-                  "headerValue": "value",
-                  "replace": true
-                }
-              ],
-              "requestHeaderToRemove": [
-                {
-                  "headerName": "x-remove-this"
-                }
-              ],
-              "responseHeaderToAdd": [
-                {
-                  "headerName": "x-response-header",
-                  "headerValue": "value",
-                  "replace": true
-                }
-              ],
-              "responseHeaderToRemove": [
-                {
-                  "headerName": "x-remove-this-too"
-                }
-              ]
-            },
-            "matchRules": [
-              {
-                "ignoreCase": true,
-                "prefixMatch": "/"
-              }
-            ],
-            "origin": "projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}",
-            "priority": "1",
-            "routeAction": {
-              "cdnPolicy": {
-                "cacheMode": "CACHE_ALL_STATIC",
-                "clientTtl": "3600s",
-                "compressionMode": "AUTOMATIC",
-                "defaultTtl": "3600s",
-                "maxTtl": "86400s"
-              },
-              "corsPolicy": {
-                "allowHeaders": [
-                  "Content-Type"
-                ],
-                "allowMethods": [
-                  "GET",
-                  "POST"
-                ],
-                "allowOrigins": [
-                  "*"
-                ],
-                "disabled": false,
-                "maxAge": "3600s"
-              },
-              "urlRewrite": {
-                "pathPrefixRewrite": "/"
-              }
-            },
-            "routeMethods": {
-              "allowedMethods": [
-                "GET",
-                "HEAD",
-                "POST"
-              ]
-            }
-          }
-        ]
-      }
-    ]
-  }
-}
-
-200 OK
-Content-Type: application/json
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
-}
-
----
-
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -234,6 +99,87 @@ Content-Type: application/json
 
 ---
 
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json
+
+{}
+
+---
+
+POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheServices?edgeCacheServiceId=edgecacheservice-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "Full edge cache service",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}",
+  "routing": {
+    "hostRules": [
+      {
+        "hosts": [
+          "*"
+        ],
+        "pathMatcher": "path-matcher"
+      }
+    ],
+    "pathMatchers": [
+      {
+        "name": "path-matcher",
+        "routeRules": [
+          {
+            "matchRules": [
+              {
+                "prefixMatch": "/"
+              }
+            ],
+            "origin": "projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}",
+            "priority": "1",
+            "routeAction": {
+              "cdnPolicy": {
+                "cacheMode": "CACHE_ALL_STATIC",
+                "clientTtl": "3600s",
+                "compressionMode": "AUTOMATIC",
+                "defaultTtl": "3600s",
+                "maxTtl": "86400s"
+              }
+            },
+            "routeMethods": {
+              "allowedMethods": [
+                "GET",
+                "HEAD",
+                "POST"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -265,15 +211,10 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "logConfig": {
-      "enable": true,
-      "sampleRate": 1
-    },
     "name": "projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}",
     "routing": {
       "hostRules": [
         {
-          "description": "All hosts",
           "hosts": [
             "*"
           ],
@@ -282,40 +223,11 @@ X-Xss-Protection: 0
       ],
       "pathMatchers": [
         {
-          "description": "Default path matcher",
           "name": "path-matcher",
           "routeRules": [
             {
-              "description": "Root route",
-              "headerAction": {
-                "requestHeaderToAdd": [
-                  {
-                    "headerName": "x-request-header",
-                    "headerValue": "value",
-                    "replace": true
-                  }
-                ],
-                "requestHeaderToRemove": [
-                  {
-                    "headerName": "x-remove-this"
-                  }
-                ],
-                "responseHeaderToAdd": [
-                  {
-                    "headerName": "x-response-header",
-                    "headerValue": "value",
-                    "replace": true
-                  }
-                ],
-                "responseHeaderToRemove": [
-                  {
-                    "headerName": "x-remove-this-too"
-                  }
-                ]
-              },
               "matchRules": [
                 {
-                  "ignoreCase": true,
                   "prefixMatch": "/"
                 }
               ],
@@ -328,22 +240,6 @@ X-Xss-Protection: 0
                   "compressionMode": "AUTOMATIC",
                   "defaultTtl": "3600s",
                   "maxTtl": "86400s"
-                },
-                "corsPolicy": {
-                  "allowHeaders": [
-                    "Content-Type"
-                  ],
-                  "allowMethods": [
-                    "GET",
-                    "POST"
-                  ],
-                  "allowOrigins": [
-                    "*"
-                  ],
-                  "maxAge": "3600s"
-                },
-                "urlRewrite": {
-                  "pathPrefixRewrite": "/"
                 }
               },
               "routeMethods": {
@@ -359,5 +255,187 @@ X-Xss-Protection: 0
       ]
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Full edge cache service",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}",
+  "routing": {
+    "hostRules": [
+      {
+        "hosts": [
+          "*"
+        ],
+        "pathMatcher": "path-matcher"
+      }
+    ],
+    "pathMatchers": [
+      {
+        "name": "path-matcher",
+        "routeRules": [
+          {
+            "matchRules": [
+              {
+                "prefixMatch": "/"
+              }
+            ],
+            "origin": "projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}",
+            "priority": "1",
+            "routeAction": {
+              "cdnPolicy": {
+                "cacheMode": "CACHE_ALL_STATIC",
+                "clientTtl": "3600s",
+                "compressionMode": "AUTOMATIC",
+                "defaultTtl": "3600s",
+                "maxTtl": "86400s"
+              }
+            },
+            "routeMethods": {
+              "allowedMethods": [
+                "GET",
+                "HEAD",
+                "POST"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/edgeCacheServices/edgecacheservice-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.EdgeCacheService"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "The default bucket for media edge test",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}",
+  "originAddress": "gs://media-edge-default",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.EdgeCacheOrigin"
   }
 }
