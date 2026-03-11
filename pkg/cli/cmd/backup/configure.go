@@ -16,7 +16,6 @@ package backup
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"text/template"
 
@@ -29,6 +28,7 @@ import (
 )
 
 type configureOptions struct {
+	kubecli.ClusterOptions
 	cluster        string
 	location       string
 	bucket         string
@@ -46,10 +46,11 @@ func NewConfigureCmd() *cobra.Command {
 		Use:   "configure",
 		Short: "Configure scheduled backups for Config Connector",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runConfigure(cmd.Context(), options)
+			return runConfigure(cmd, options)
 		},
 	}
 
+	options.ClusterOptions.AddFlags(cmd)
 	cmd.Flags().StringVar(&options.cluster, "cluster", "", "Name of the cluster")
 	cmd.Flags().StringVar(&options.location, "location", "", "Region of the cluster")
 	cmd.Flags().StringVar(&options.bucket, "bucket", "", "GCS bucket name for backups")
@@ -62,7 +63,8 @@ func NewConfigureCmd() *cobra.Command {
 	return cmd
 }
 
-func runConfigure(ctx context.Context, options *configureOptions) error {
+func runConfigure(cmd *cobra.Command, options *configureOptions) error {
+	ctx := cmd.Context()
 	if options.project == "" {
 		return fmt.Errorf("--project is required")
 	}
@@ -91,6 +93,7 @@ func runConfigure(ctx context.Context, options *configureOptions) error {
 	data := struct {
 		ProjectID        string
 		ClusterProjectID string
+		Cluster          string
 		Bucket           string
 		BucketLocation   string
 		Schedule         string
@@ -99,6 +102,7 @@ func runConfigure(ctx context.Context, options *configureOptions) error {
 	}{
 		ProjectID:        options.project,
 		ClusterProjectID: clusterProject,
+		Cluster:          options.cluster,
 		Bucket:           options.bucket,
 		BucketLocation:   options.bucketLocation,
 		Schedule:         schedule,
@@ -116,12 +120,12 @@ func runConfigure(ctx context.Context, options *configureOptions) error {
 		return fmt.Errorf("executing template: %w", err)
 	}
 
-	kubeClient, err := kubecli.NewClient(ctx, kubecli.ClusterOptions{})
+	kubeClient, err := kubecli.NewClient(ctx, options.ClusterOptions)
 	if err != nil {
 		return fmt.Errorf("creating kubernetes client: %w", err)
 	}
 
-	fmt.Println("Applying backup configuration resources...")
+	fmt.Fprintln(cmd.OutOrStdout(), "Applying backup configuration resources...")
 
 	parts := bytes.Split(buf.Bytes(), []byte("\n---\n"))
 	for _, part := range parts {
@@ -137,10 +141,10 @@ func runConfigure(ctx context.Context, options *configureOptions) error {
 		if err := kubeClient.Patch(ctx, obj, client.Apply, client.FieldOwner("config-connector-backup"), client.ForceOwnership); err != nil {
 			return fmt.Errorf("applying resource %s/%s (%s): %w", obj.GetNamespace(), obj.GetName(), obj.GetKind(), err)
 		}
-		fmt.Printf("- Applied %s/%s (%s)\n", obj.GetNamespace(), obj.GetName(), obj.GetKind())
+		fmt.Fprintf(cmd.OutOrStdout(), "- Applied %s/%s (%s)\n", obj.GetNamespace(), obj.GetName(), obj.GetKind())
 	}
 
-	fmt.Println("\nBackup configuration successful.")
+	fmt.Fprintln(cmd.OutOrStdout(), "\nBackup configuration successful.")
 	return nil
 }
 
@@ -238,6 +242,6 @@ spec:
           containers:
           - name: backup
             image: gcr.io/gke-release/cnrm/config-connector-cli:{{.Version}}
-            command: ["config-connector", "backup", "create", "--bucket", "{{.Bucket}}", "--project", "{{.ProjectID}}", "--namespace", "{{.Namespace}}"]
+            command: ["config-connector", "backup", "create", "--bucket", "{{.Bucket}}", "--project", "{{.ProjectID}}", "--namespace", "{{.Namespace}}"{{if .Cluster}}, "--cluster", "{{.Cluster}}"{{end}}]
           restartPolicy: OnFailure
 `

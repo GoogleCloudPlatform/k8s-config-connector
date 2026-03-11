@@ -39,6 +39,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -171,20 +172,27 @@ func (a *networkPolicyAdapter) Update(ctx context.Context, updateOp *directbase.
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, resource.Description)
 		paths = append(paths, "description")
 	}
 	if desired.Spec.EdgeServicesCIDR != nil && !reflect.DeepEqual(resource.EdgeServicesCidr, a.actual.EdgeServicesCidr) {
+		report.AddField("edge_services_cidr", a.actual.EdgeServicesCidr, resource.EdgeServicesCidr)
 		paths = append(paths, "edge_services_cidr")
 	}
 	if desired.Spec.InternetAccess != nil && resource.GetInternetAccess().GetEnabled() != a.actual.GetInternetAccess().GetEnabled() {
+		report.AddField("internet_access.enabled", a.actual.GetInternetAccess().GetEnabled(), resource.GetInternetAccess().GetEnabled())
 		paths = append(paths, "internet_access.enabled")
 	}
 	if desired.Spec.ExternalIP != nil && resource.GetExternalIp().GetEnabled() != a.actual.GetExternalIp().GetEnabled() {
+		report.AddField("external_ip.enabled", a.actual.GetExternalIp().GetEnabled(), resource.GetExternalIp().GetEnabled())
 		paths = append(paths, "external_ip.enabled")
 	}
 	if desired.Spec.VMwareEngineNetworkRef != nil && !reflect.DeepEqual(resource.VmwareEngineNetwork, a.actual.VmwareEngineNetwork) {
+		report.AddField("vmware_engine_network", a.actual.VmwareEngineNetwork, resource.VmwareEngineNetwork)
 		paths = append(paths, "vmware_engine_network")
 	}
 
@@ -194,6 +202,7 @@ func (a *networkPolicyAdapter) Update(ctx context.Context, updateOp *directbase.
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateNetworkPolicyRequest{
 			NetworkPolicy: resource,

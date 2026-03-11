@@ -41,6 +41,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -173,25 +174,33 @@ func (a *backupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.GetDescription(), a.actual.GetDescription()) {
+		report.AddField("description", a.actual.GetDescription(), resource.GetDescription())
 		paths = append(paths, "description")
 	}
 	if desired.Spec.RetentionPolicy != nil && !reflect.DeepEqual(resource.GetRetentionPolicy(), a.actual.GetRetentionPolicy()) {
+		report.AddField("retention_policy", a.actual.GetRetentionPolicy(), resource.GetRetentionPolicy())
 		paths = append(paths, "retention_policy")
 	}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.GetLabels(), a.actual.GetLabels()) {
+		report.AddField("labels", a.actual.GetLabels(), resource.GetLabels())
 		paths = append(paths, "labels")
 	}
 	if desired.Spec.BackupSchedule != nil && !reflect.DeepEqual(resource.GetBackupSchedule(), a.actual.GetBackupSchedule()) {
+		report.AddField("backup_schedule", a.actual.GetBackupSchedule(), resource.GetBackupSchedule())
 		paths = append(paths, "backup_schedule")
 	}
 	if desired.Spec.Deactivated != nil && !reflect.DeepEqual(resource.GetDeactivated(), a.actual.GetDeactivated()) {
+		report.AddField("deactivated", a.actual.GetDeactivated(), resource.GetDeactivated())
 		paths = append(paths, "deactivated")
 	}
 
 	// cannot use reflect.DeepEqual here because BackupScope is a oneof field which results in unexpected diffs
 	if desired.Spec.BackupConfig != nil && !backupConfigsEqual(resource.GetBackupConfig(), a.actual.GetBackupConfig()) {
+		report.AddField("backup_config", a.actual.GetBackupConfig(), resource.GetBackupConfig())
 		paths = append(paths, "backup_config")
 	}
 
@@ -201,6 +210,7 @@ func (a *backupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateBackupPlanRequest{
 			BackupPlan: resource,

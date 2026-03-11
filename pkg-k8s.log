@@ -1,0 +1,8 @@
+{"severity":"error","timestamp":"2026-03-07T17:42:02.718Z","logger":"controller-runtime.test-env","msg":"unable to start the controlplane","tries":0,"error":"fork/exec /usr/local/kubebuilder/bin/etcd: no such file or directory"}
+{"severity":"error","timestamp":"2026-03-07T17:42:02.721Z","logger":"controller-runtime.test-env","msg":"unable to start the controlplane","tries":1,"error":"fork/exec /usr/local/kubebuilder/bin/etcd: no such file or directory"}
+{"severity":"error","timestamp":"2026-03-07T17:42:02.724Z","logger":"controller-runtime.test-env","msg":"unable to start the controlplane","tries":2,"error":"fork/exec /usr/local/kubebuilder/bin/etcd: no such file or directory"}
+{"severity":"error","timestamp":"2026-03-07T17:42:02.727Z","logger":"controller-runtime.test-env","msg":"unable to start the controlplane","tries":3,"error":"fork/exec /usr/local/kubebuilder/bin/etcd: no such file or directory"}
+{"severity":"error","timestamp":"2026-03-07T17:42:02.730Z","logger":"controller-runtime.test-env","msg":"unable to start the controlplane","tries":4,"error":"fork/exec /usr/local/kubebuilder/bin/etcd: no such file or directory"}
+2026/03/07 17:42:02 error starting test environment: unable to start control plane itself: failed to start the controlplane. retried 5 times: fork/exec /usr/local/kubebuilder/bin/etcd: no such file or directory
+FAIL	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s	0.070s
+FAIL

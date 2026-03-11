@@ -1,0 +1,54 @@
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s	6.197s
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/asset	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/asset/export	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/apply	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/apply/parameters	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/apply/yamlresource	(cached)
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/backup	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/errorhandler	(cached)
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/filteredinputstream	(cached)
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/iamresource	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/inputstream	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/outputstream	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/parameters	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/singleresourceiamclient	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/commonparams	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/outputstream	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/preview	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/preview/options	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/printresources	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/printresources/parameters	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/printresources/printer	(cached)
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/printresources/resourcedescription	(cached)
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/gcpclient	(cached) [no tests to run]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/krmtohcl	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/log	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/outputsink	(cached)
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/outputsink/filename	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/changestateintospec	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/diffs	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/forcesetfield	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/kubecli	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/preview	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/serviceclient	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/storage	(cached)
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/stream	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/test/export	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/test/os	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/tf	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/crdutil	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/identity	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/mapslice	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/pathslice	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo	(cached)
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice	(cached)
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/stack	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/typeutil	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/valutil	(cached)

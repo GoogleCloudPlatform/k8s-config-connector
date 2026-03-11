@@ -16,12 +16,16 @@ package backup
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/kubecli"
 	"github.com/spf13/cobra"
+	"golang.org/x/oauth2"
+	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -31,6 +35,7 @@ import (
 )
 
 type createOptions struct {
+	kubecli.ClusterOptions
 	cluster   string
 	location  string
 	project   string
@@ -45,10 +50,11 @@ func NewCreateCmd() *cobra.Command {
 		Use:   "create",
 		Short: "Trigger an immediate backup",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runCreate(cmd.Context(), options)
+			return runCreate(cmd, options)
 		},
 	}
 
+	options.ClusterOptions.AddFlags(cmd)
 	cmd.Flags().StringVar(&options.cluster, "cluster", "", "Name of the cluster")
 	cmd.Flags().StringVar(&options.location, "location", "", "Region of the cluster")
 	cmd.Flags().StringVar(&options.project, "project", "", "GCP project ID")
@@ -58,27 +64,34 @@ func NewCreateCmd() *cobra.Command {
 	return cmd
 }
 
-func runCreate(ctx context.Context, options *createOptions) error {
+func runCreate(cmd *cobra.Command, options *createOptions) error {
+	ctx := cmd.Context()
 	if options.bucket == "" {
 		return fmt.Errorf("--bucket is required")
 	}
 
-	kubeClient, err := kubecli.NewClient(ctx, kubecli.ClusterOptions{})
+	kubeClient, err := kubecli.NewClient(ctx, options.ClusterOptions)
 	if err != nil {
 		return fmt.Errorf("creating kubernetes client: %w", err)
 	}
 
-	gcsClient, err := storage.NewClient(ctx)
+	var gcsOptions []option.ClientOption
+	if httpClient := ctx.Value(oauth2.HTTPClient); httpClient != nil {
+		gcsOptions = append(gcsOptions, option.WithHTTPClient(httpClient.(*http.Client)))
+	}
+	gcsClient, err := storage.NewClient(ctx, gcsOptions...)
 	if err != nil {
 		return fmt.Errorf("creating GCS client: %w", err)
 	}
 	defer gcsClient.Close()
 
-	timestamp := time.Now().Format("2006-01-02-15-04-05")
+	timestamp := time.Now().UTC().Format("2006_01_02_15_04_05")
 	clusterName := options.cluster
 	if clusterName == "" {
 		clusterName = "default-cluster"
 	}
+
+	fmt.Fprintf(cmd.OutOrStdout(), "Starting backup for cluster %q to bucket %q (timestamp: %s)...\n", clusterName, options.bucket, timestamp)
 
 	// Discover KCC resources
 	_, resourceLists, err := kubeClient.DiscoveryClient.ServerGroupsAndResources()
@@ -86,6 +99,7 @@ func runCreate(ctx context.Context, options *createOptions) error {
 		return fmt.Errorf("discovering server resources: %w", err)
 	}
 
+	stats := make(map[string]int)
 	backedUpGKs := make(map[string]bool)
 
 	for _, resourceList := range resourceLists {
@@ -99,8 +113,7 @@ func runCreate(ctx context.Context, options *createOptions) error {
 		}
 
 		for _, resource := range resourceList.APIResources {
-			// Skip subresources
-			if strings.Contains(resource.Name, "/") {
+			if strings.Contains(resource.Name, "/status") || strings.Contains(resource.Name, "/finalizers") {
 				continue
 			}
 
@@ -109,32 +122,50 @@ func runCreate(ctx context.Context, options *createOptions) error {
 				continue
 			}
 
-			// Skip resources that don't support list
-			supportsList := false
-			for _, verb := range resource.Verbs {
-				if verb == "list" {
-					supportsList = true
-					break
-				}
-			}
-			if !supportsList {
-				continue
-			}
-
 			gvk := gv.WithKind(resource.Kind)
-			if err := backupResource(ctx, kubeClient, gcsClient, options.bucket, clusterName, timestamp, gvk); err != nil {
-				fmt.Printf("Warning: failed to backup %v: %v\n", gvk, err)
+			count, err := backupResource(ctx, kubeClient, gcsClient, options.bucket, clusterName, timestamp, gvk)
+			if err != nil {
+				fmt.Fprintf(cmd.ErrOrStderr(), "Warning: failed to backup %v: %v\n", gvk, err)
+			}
+			if count > 0 {
+				stats[gk] = count
 			}
 			backedUpGKs[gk] = true
 		}
 	}
 
+	if err := writeSummary(ctx, gcsClient, options.bucket, clusterName, timestamp, stats); err != nil {
+		fmt.Fprintf(cmd.ErrOrStderr(), "Warning: failed to write summary.json: %v\n", err)
+	}
+
+	total := 0
+	for _, count := range stats {
+		total += count
+	}
+	fmt.Fprintf(cmd.OutOrStdout(), "\nBackup completed successfully. Total resources backed up: %d\n", total)
+
 	return nil
 }
 
-func backupResource(ctx context.Context, kubeClient *kubecli.Client, gcsClient *storage.Client, bucket, cluster, timestamp string, gvk schema.GroupVersionKind) error {
+func writeSummary(ctx context.Context, gcsClient *storage.Client, bucket, cluster, timestamp string, stats map[string]int) error {
+	data, err := json.MarshalIndent(stats, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	objectName := fmt.Sprintf("%s/%s/summary.json", cluster, timestamp)
+	wc := gcsClient.Bucket(bucket).Object(objectName).NewWriter(ctx)
+	if _, err := wc.Write(data); err != nil {
+		_ = wc.Close()
+		return err
+	}
+	return wc.Close()
+}
+
+func backupResource(ctx context.Context, kubeClient *kubecli.Client, gcsClient *storage.Client, bucket, cluster, timestamp string, gvk schema.GroupVersionKind) (int, error) {
 	limit := int64(500)
 	continueToken := ""
+	count := 0
 
 	for {
 		list := &unstructured.UnstructuredList{}
@@ -148,14 +179,17 @@ func backupResource(ctx context.Context, kubeClient *kubecli.Client, gcsClient *
 		}
 
 		if err := kubeClient.List(ctx, list, listOptions...); err != nil {
-			return err
+			return count, err
 		}
 
 		for _, item := range list.Items {
 			if err := backupObject(ctx, gcsClient, bucket, cluster, timestamp, item); err != nil {
+				// We don't have the cmd here, so we'll just use fmt.Printf for now or pass cmd around.
+				// For now, let's keep it simple.
 				fmt.Printf("Warning: failed to backup object %s/%s (%s): %v\n", item.GetNamespace(), item.GetName(), item.GetKind(), err)
 				continue
 			}
+			count++
 		}
 
 		continueToken = list.GetContinue()
@@ -164,45 +198,20 @@ func backupResource(ctx context.Context, kubeClient *kubecli.Client, gcsClient *
 		}
 	}
 
-	return nil
+	return count, nil
 }
 
 func backupObject(ctx context.Context, gcsClient *storage.Client, bucket, cluster, timestamp string, obj unstructured.Unstructured) error {
-	// Sanitization - Remove live fields
-	unstructured.RemoveNestedField(obj.Object, "metadata", "uid")
-	unstructured.RemoveNestedField(obj.Object, "metadata", "resourceVersion")
-	unstructured.RemoveNestedField(obj.Object, "metadata", "generation")
-	unstructured.RemoveNestedField(obj.Object, "metadata", "managedFields")
-	unstructured.RemoveNestedField(obj.Object, "metadata", "creationTimestamp")
-	unstructured.RemoveNestedField(obj.Object, "metadata", "ownerReferences")
-
-	// Remove status
-	unstructured.RemoveNestedField(obj.Object, "status")
-
-	// Remove common system annotations
-	annotations := obj.GetAnnotations()
-	if annotations != nil {
-		delete(annotations, "kubectl.kubernetes.io/last-applied-configuration")
-		delete(annotations, "deployment.kubernetes.io/revision")
-		// Preservation: cnrm.cloud.google.com/state-into-spec is intentionally PRESERVED
-		if len(annotations) == 0 {
-			unstructured.RemoveNestedField(obj.Object, "metadata", "annotations")
-		} else {
-			obj.SetAnnotations(annotations)
-		}
-	}
+	sanitizeObject(&obj)
 
 	data, err := yaml.Marshal(obj.Object)
 	if err != nil {
 		return err
 	}
 
-	namespace := obj.GetNamespace()
-	if namespace == "" {
-		namespace = "_cluster_scoped"
-	}
-	kind := strings.ToLower(obj.GetKind())
 	name := obj.GetName()
+	namespace := obj.GetNamespace()
+	kind := strings.ToLower(obj.GetKind())
 
 	objectName := fmt.Sprintf("%s/%s/%s/%s/%s.yaml", cluster, timestamp, namespace, kind, name)
 
@@ -212,4 +221,13 @@ func backupObject(ctx context.Context, gcsClient *storage.Client, bucket, cluste
 		return err
 	}
 	return wc.Close()
+}
+
+func sanitizeObject(obj *unstructured.Unstructured) {
+	unstructured.RemoveNestedField(obj.Object, "metadata", "uid")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "resourceVersion")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "generation")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "managedFields")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "creationTimestamp")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "ownerReferences")
 }

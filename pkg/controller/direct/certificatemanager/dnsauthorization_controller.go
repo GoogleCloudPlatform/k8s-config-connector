@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	certificatemanagerpb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 	"google.golang.org/api/option"
@@ -132,10 +133,19 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	desiredProto := CertificateManagerDNSAuthorizationSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	desiredProto.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+
 	return &Adapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desiredProto,
 	}, nil
 }
 
@@ -147,7 +157,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 type Adapter struct {
 	id        *CertificateManagerDNSAuthorizationIdentity
 	gcpClient *gcp.Client
-	desired   *krm.CertificateManagerDNSAuthorization
+	desired   *certificatemanagerpb.DnsAuthorization
 	actual    *certificatemanagerpb.DnsAuthorization
 }
 
@@ -177,21 +187,10 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("creating DnsAuthorization", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := CertificateManagerDNSAuthorizationSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		resource.Labels[k] = v
-	}
-	resource.Labels["managed-by-cnrm"] = "true"
-
 	req := &certificatemanagerpb.CreateDnsAuthorizationRequest{
 		Parent:             a.id.Parent.String(),
 		DnsAuthorizationId: a.id.DnsAuthorization,
-		DnsAuthorization:   resource,
+		DnsAuthorization:   a.desired,
 	}
 	op, err := a.gcpClient.CreateDnsAuthorization(ctx, req)
 	if err != nil {
@@ -218,7 +217,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	mapCtx := &direct.MapContext{}
 	updateMask := &fieldmaskpb.FieldMask{}
 
-	if !reflect.DeepEqual(a.desired.Spec.Description, a.actual.Description) {
+	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
 
@@ -230,21 +229,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return nil
 	}
 
-	desired := a.desired.DeepCopy()
-	resource := CertificateManagerDNSAuthorizationSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	resource.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		resource.Labels[k] = v
-	}
-	resource.Labels["managed-by-cnrm"] = "true"
-
 	req := &certificatemanagerpb.UpdateDnsAuthorizationRequest{
 		UpdateMask:       updateMask,
-		DnsAuthorization: &certificatemanagerpb.DnsAuthorization{Description: resource.Description, Labels: resource.Labels, Name: a.id.FullyQualifiedName()},
+		DnsAuthorization: &certificatemanagerpb.DnsAuthorization{Description: a.desired.Description, Labels: a.desired.Labels, Name: a.id.FullyQualifiedName()},
 	}
 	op, err := a.gcpClient.UpdateDnsAuthorization(ctx, req)
 	if err != nil {

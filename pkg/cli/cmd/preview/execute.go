@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/preview/options"
 	corepreview "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/preview"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -36,7 +35,7 @@ const (
 	defaultTimeout = 15
 )
 
-func Execute(ctx context.Context, opts *options.Options) error {
+func Execute(ctx context.Context, opts *Options) error {
 	// Use a custom FlagSet for klog to avoid conflicts with global flag.CommandLine
 	klogFlags := flag.NewFlagSet("klog", flag.ExitOnError)
 	klog.InitFlags(klogFlags)
@@ -57,6 +56,11 @@ func Execute(ctx context.Context, opts *options.Options) error {
 	recorder := corepreview.NewRecorder()
 	if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig, opts.Namespace); err != nil {
 		return fmt.Errorf("error preloading the list of resources to reconcile: %w", err)
+	}
+
+	if recorder.RemainResourcesCount == 0 {
+		klog.V(0).Info("No resources found to reconcile")
+		return nil
 	}
 
 	authorization, err := getGCPAuthorization(ctx, opts)
@@ -103,7 +107,7 @@ func Execute(ctx context.Context, opts *options.Options) error {
 	return nil
 }
 
-func getRESTConfig(ctx context.Context, opts *options.Options) (*rest.Config, error) {
+func getRESTConfig(ctx context.Context, opts *Options) (*rest.Config, error) {
 	// TODO: Add rate limiting to Kube client.
 	if opts.InCluster {
 		return rest.InClusterConfig()
@@ -119,7 +123,7 @@ func getRESTConfig(ctx context.Context, opts *options.Options) (*rest.Config, er
 		&clientcmd.ConfigOverrides{}).ClientConfig()
 }
 
-func getGCPAuthorization(ctx context.Context, opts *options.Options) (oauth2.TokenSource, error) {
+func getGCPAuthorization(ctx context.Context, opts *Options) (oauth2.TokenSource, error) {
 	// TODO: Add scope
 	scopes := []string{defaultScope}
 	ts, err := google.DefaultTokenSource(ctx, scopes...)
@@ -129,7 +133,7 @@ func getGCPAuthorization(ctx context.Context, opts *options.Options) (oauth2.Tok
 	return ts, nil
 }
 
-func printCapturedObjects(recorder *corepreview.Recorder, opts *options.Options) error {
+func printCapturedObjects(recorder *corepreview.Recorder, opts *Options) error {
 	now := time.Now()
 	timestamp := now.Format("20060102-150405.000")
 	summaryFile := fmt.Sprintf("%s-%s", opts.ReportNamePrefix, timestamp)

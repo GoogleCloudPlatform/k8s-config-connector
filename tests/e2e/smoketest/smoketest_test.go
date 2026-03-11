@@ -157,6 +157,9 @@ spec:
 	if err := runCommand(ctx, t, root, "kubectl", "wait", "--for=create", "crd/storagebuckets.storage.cnrm.cloud.google.com", "--timeout=5m"); err != nil {
 		t.Fatalf("StorageBucket CRD not created: %v", err)
 	}
+	if err := runCommand(ctx, t, root, "kubectl", "wait", "--for=condition=Established", "crd/storagebuckets.storage.cnrm.cloud.google.com", "--timeout=5m"); err != nil {
+		t.Fatalf("StorageBucket CRD not established: %v", err)
+	}
 
 	t.Logf("Creating namespace and StorageBucket")
 	ns := "config-control"

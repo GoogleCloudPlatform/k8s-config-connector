@@ -59,12 +59,21 @@ func (s *RegionalHealthCheckV1) Insert(ctx context.Context, req *pb.InsertRegion
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#healthCheck")
+	obj.Region = PtrTo(buildComputeSelfLink(ctx, "projects/"+name.Project.ID+"/regions/"+name.Region))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a HealthCheck resource in the specified project using the data included in the request.
@@ -88,7 +97,15 @@ func (s *RegionalHealthCheckV1) Patch(ctx context.Context, req *pb.PatchRegionHe
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a HealthCheck resource in the specified project using the data included in the request.
@@ -111,7 +128,15 @@ func (s *RegionalHealthCheckV1) Update(ctx context.Context, req *pb.UpdateRegion
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalHealthCheckV1) Delete(ctx context.Context, req *pb.DeleteRegionHealthCheckRequest) (*pb.Operation, error) {
@@ -127,7 +152,15 @@ func (s *RegionalHealthCheckV1) Delete(ctx context.Context, req *pb.DeleteRegion
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type regionalHealthCheckName struct {

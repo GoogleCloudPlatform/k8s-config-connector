@@ -1,0 +1,222 @@
+POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateIssuanceConfigs?alt=json&certificateIssuanceConfigId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "certificateAuthorityConfig": {
+    "certificateAuthorityServiceConfig": {
+      "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
+    }
+  },
+  "description": "Test Certificate Issuance Config",
+  "keyAlgorithm": "RSA_2048",
+  "labels": {
+    "foo": "bar"
+  },
+  "lifetime": "2592000s",
+  "rotationWindowPercentage": 66
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateIssuanceConfig",
+    "certificateAuthorityConfig": {
+      "certificateAuthorityServiceConfig": {
+        "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Test Certificate Issuance Config",
+    "keyAlgorithm": "RSA_2048",
+    "labels": {
+      "foo": "bar"
+    },
+    "lifetime": "2592000s",
+    "name": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/test-${uniqueId}",
+    "rotationWindowPercentage": 66,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "certificateAuthorityConfig": {
+    "certificateAuthorityServiceConfig": {
+      "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Certificate Issuance Config",
+  "keyAlgorithm": "RSA_2048",
+  "labels": {
+    "foo": "bar"
+  },
+  "lifetime": "2592000s",
+  "name": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/test-${uniqueId}",
+  "rotationWindowPercentage": 66,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateIssuanceConfigs?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "certificateIssuanceConfigs": [
+    {
+      "certificateAuthorityConfig": {
+        "certificateAuthorityServiceConfig": {
+          "caPool": "projects/${projectId}/locations/us-central1/caPools/test-pool-${uniqueId}"
+        }
+      },
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "description": "Test Certificate Issuance Config",
+      "keyAlgorithm": "RSA_2048",
+      "labels": {
+        "foo": "bar"
+      },
+      "lifetime": "2592000s",
+      "name": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/test-${uniqueId}",
+      "rotationWindowPercentage": 66,
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

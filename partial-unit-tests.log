@@ -1,0 +1,65 @@
+go: downloading github.com/appscode/jsonpatch v0.0.0-20190108182946-7c0e3b262f30
+# ./pkg/resourcecontext/...
+pattern ./pkg/resourcecontext/...: lstat ./pkg/resourcecontext/: no such file or directory
+FAIL	./pkg/resourcecontext/... [setup failed]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/asset	0.113s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/asset/export	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd	0.131s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/apply	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/apply/parameters	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/apply/yamlresource	0.034s
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/backup	0.033s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/errorhandler	0.052s
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/filteredinputstream	0.565s
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/iamresource	0.036s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/inputstream	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/outputstream	0.703s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/parameters	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/singleresourceiamclient	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/commonparams	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/outputstream	0.411s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/preview	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/preview/options	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/printresources	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/printresources/parameters	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/printresources/printer	0.051s
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/printresources/resourcedescription	0.395s
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/gcpclient	0.028s [no tests to run]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/krmtohcl	0.232s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/log	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/outputsink	1.116s
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/outputsink/filename	0.758s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/changestateintospec	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/diffs	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/forcesetfield	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/kubecli	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/preview	0.153s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/serviceclient	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/storage	0.006s
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/stream	1.609s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/test/export	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/test/os	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/tf	[no test files]
+{"severity":"error","timestamp":"2026-03-07T17:41:37.252Z","logger":"controller-runtime.test-env","msg":"unable to start the controlplane","tries":0,"error":"fork/exec /usr/local/kubebuilder/bin/etcd: no such file or directory"}
+{"severity":"error","timestamp":"2026-03-07T17:41:37.255Z","logger":"controller-runtime.test-env","msg":"unable to start the controlplane","tries":1,"error":"fork/exec /usr/local/kubebuilder/bin/etcd: no such file or directory"}
+{"severity":"error","timestamp":"2026-03-07T17:41:37.259Z","logger":"controller-runtime.test-env","msg":"unable to start the controlplane","tries":2,"error":"fork/exec /usr/local/kubebuilder/bin/etcd: no such file or directory"}
+{"severity":"error","timestamp":"2026-03-07T17:41:37.263Z","logger":"controller-runtime.test-env","msg":"unable to start the controlplane","tries":3,"error":"fork/exec /usr/local/kubebuilder/bin/etcd: no such file or directory"}
+{"severity":"error","timestamp":"2026-03-07T17:41:37.266Z","logger":"controller-runtime.test-env","msg":"unable to start the controlplane","tries":4,"error":"fork/exec /usr/local/kubebuilder/bin/etcd: no such file or directory"}
+2026/03/07 17:41:37 error starting test environment: unable to start control plane itself: failed to start the controlplane. retried 5 times: fork/exec /usr/local/kubebuilder/bin/etcd: no such file or directory
+FAIL	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s	0.078s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/crdutil	0.010s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/identity	0.005s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/mapslice	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/pathslice	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo	0.007s
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice	0.016s
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/stack	[no test files]
+?   	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/typeutil	[no test files]
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/valutil	0.004s
+FAIL

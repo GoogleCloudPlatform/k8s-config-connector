@@ -21,28 +21,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/mark3labs/mcp-go/mcp"
-	"github.com/mark3labs/mcp-go/server"
+	"github.com/metoro-io/mcp-golang"
+	"github.com/metoro-io/mcp-golang/transport/stdio"
+	"github.com/spf13/cobra"
 )
 
-func main() {
-	s := server.NewMCPServer(
-		"crd-compatibility-checker",
-		"1.0.0",
-	)
-
-	s.AddTool(equivalenceTool(), handleCheckEquivalence)
-	s.AddTool(backwardCompatTool(), handleCheckBackwardCompat)
-
-	if err := server.ServeStdio(s); err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		os.Exit(1)
-	}
-}
-
-func equivalenceTool() mcp.Tool {
-	return mcp.NewTool("check_crd_equivalence",
-		mcp.WithDescription(`Check whether a CRD file change is equivalent to its previous git-committed version.
+const (
+	EQUIVALENCE_DESCRIPTION = `Check whether a CRD file change is equivalent to its previous git-committed version.
 
 Equivalent means:
   - No fields are added or deleted (new fields MAY be added under 'status')
@@ -50,20 +35,8 @@ Equivalent means:
   - Adding spec.names.listKind is fine
   - Descriptions may change freely
 
-The file is compared against the version stored at the given git ref (default: HEAD).`),
-		mcp.WithString("file",
-			mcp.Required(),
-			mcp.Description("Path to the CRD YAML file to check."),
-		),
-		mcp.WithString("ref",
-			mcp.Description("Git ref for the old version (default: HEAD)."),
-		),
-	)
-}
-
-func backwardCompatTool() mcp.Tool {
-	return mcp.NewTool("check_crd_backward_compatibility",
-		mcp.WithDescription(`Check whether a CRD file change is backward compatible with its previous git-committed version.
+The file is compared against the version stored at the given git ref (default: HEAD).`
+    BACKWARD_COMPAT_DESCRIPTION = `Check whether a CRD file change is backward compatible with its previous git-committed version.
 
 Backward compatible means:
   - No fields are removed or renamed
@@ -71,50 +44,154 @@ Backward compatible means:
   - New fields may be added anywhere
   - Descriptions may change freely
 
-The file is compared against the version stored at the given git ref (default: HEAD).`),
-		mcp.WithString("file",
-			mcp.Required(),
-			mcp.Description("Path to the CRD YAML file to check."),
-		),
-		mcp.WithString("ref",
-			mcp.Description("Git ref for the old version (default: HEAD)."),
-		),
-	)
+The file is compared against the version stored at the given git ref (default: HEAD).`
+)
+
+type EquivalenceArguments struct {
+	File string `json:"file" jsonschema:"required,description=Path to the CRD YAML file to check."`
+	Ref  string `json:"ref" jsonschema:"description=Git ref for the old version (default: HEAD)."`
 }
 
-func handleCheckEquivalence(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	file, ref, err := parseArgs(req)
-	if err != nil {
-		return mcp.NewToolResultText(fmt.Sprintf("Error: %v", err)), nil
-	}
-
-	result, err := runEquivalenceCheck(file, ref)
-	if err != nil {
-		return mcp.NewToolResultText(fmt.Sprintf("Error: %v", err)), nil
-	}
-	return mcp.NewToolResultText(result), nil
+type BackwardCompatArguments struct {
+	File string `json:"file" jsonschema:"required,description=Path to the CRD YAML file to check."`
+	Ref  string `json:"ref" jsonschema:"description=Git ref for the old version (default: HEAD)."`
 }
 
-func handleCheckBackwardCompat(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	file, ref, err := parseArgs(req)
-	if err != nil {
-		return mcp.NewToolResultText(fmt.Sprintf("Error: %v", err)), nil
-	}
-
-	result, err := runBackwardCompatCheck(file, ref)
-	if err != nil {
-		return mcp.NewToolResultText(fmt.Sprintf("Error: %v", err)), nil
-	}
-	return mcp.NewToolResultText(result), nil
+type StdioOptions struct {
 }
 
-func parseArgs(req mcp.CallToolRequest) (file, ref string, err error) {
-	f, err := req.RequireString("file")
-	if err != nil {
-		return "", "", fmt.Errorf("'file' parameter is required: %w", err)
+type EquivalentOptions struct {
+	File string
+	Ref  string
+}
+
+type CompatibleOptions struct {
+	File string
+	Ref  string
+}
+
+
+func main() {
+	rootCmd := &cobra.Command{
+		Use:   "crd-mcp-server subcommand",
+		Short: "crd-mcp-server is a MCP server for KCC handling of CRDs.",
 	}
-	ref = req.GetString("ref", "HEAD")
-	return f, ref, nil
+
+	rootCmd.AddCommand(BuildStdioCmd())
+	rootCmd.AddCommand(BuildEquivalentCmd())
+	rootCmd.AddCommand(BuildCompatibleCmd())
+
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+}
+
+func BuildStdioCmd() *cobra.Command {
+	var opts StdioOptions
+	cmd := &cobra.Command{
+		Use:     "stdio",
+		Short:   "stdio",
+		Example: `crd-mcp-server stdio`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return RunStdio(cmd.Context(), &opts)
+		},
+		Args: cobra.ExactArgs(0),
+	}
+
+	return cmd
+}
+
+func BuildEquivalentCmd() *cobra.Command {
+	var opts EquivalentOptions
+	cmd := &cobra.Command{
+		Use:     "equivalent",
+		Short:   "CLI version of the equivalent MCP. Is the CRD equivalent to the older form?",
+		Example: `crd-mcp-server equivalent`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return RunEquivalent(cmd.Context(), &opts)
+		},
+		Args: cobra.ExactArgs(0),
+	}
+	cmd.Flags().StringVarP(&opts.File, "file", "", opts.File, "Path to the CRD YAML file to check.")
+	cmd.MarkFlagRequired("file") 
+	cmd.Flags().StringVarP(&opts.Ref, "ref", "", "HEAD", "Git ref for the old version (default: HEAD).")
+
+	return cmd
+}
+
+func BuildCompatibleCmd() *cobra.Command {
+	var opts CompatibleOptions
+	cmd := &cobra.Command{
+		Use:     "compatible",
+		Short:   "CLI version of the compatible MCP. Is the CRD backward compatible with the older form?",
+		Example: `crd-mcp-server compatible`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return RunCompatible(cmd.Context(), &opts)
+		},
+		Args: cobra.ExactArgs(0),
+	}
+	cmd.Flags().StringVarP(&opts.File, "file", "", opts.File, "Path to the CRD YAML file to check.")
+	cmd.MarkFlagRequired("file") 
+	cmd.Flags().StringVarP(&opts.Ref, "ref", "", "HEAD", "Git ref for the old version (default: HEAD).")
+
+	return cmd
+}
+
+func RunStdio(ctx context.Context, opts *StdioOptions) error {
+	done := make(chan struct{})
+	server := mcp_golang.NewServer(stdio.NewStdioServerTransport())
+
+	if err := server.RegisterTool("check_crd_equivalence", EQUIVALENCE_DESCRIPTION, handleCheckEquivalence); err != nil {
+		panic(err)
+	}
+	if err := server.RegisterTool("check_crd_backward_compatibility", BACKWARD_COMPAT_DESCRIPTION, handleCheckBackwardCompat); err != nil {
+		panic(err)
+	}
+
+	if err := server.Serve(); err != nil {
+		panic(err)
+	}
+
+	<-done
+
+	return nil
+}
+
+func RunEquivalent(ctx context.Context, opts *EquivalentOptions) error {
+	result, err := runEquivalenceCheck(opts.File, opts.Ref)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v", err)
+		return err
+	}
+	fmt.Fprint(os.Stdout, result)
+	return nil
+}
+
+func RunCompatible(ctx context.Context, opts *CompatibleOptions) error {
+	result, err := runBackwardCompatCheck(opts.File, opts.Ref)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v", err)
+		return err
+	}
+	fmt.Fprint(os.Stdout, result)
+	return nil
+}
+
+func handleCheckEquivalence(arguments EquivalenceArguments) (*mcp_golang.ToolResponse, error) {
+	result, err := runEquivalenceCheck(arguments.File, arguments.Ref)
+	if err != nil {
+		return mcp_golang.NewToolResponse(mcp_golang.NewTextContent(fmt.Sprintf("Error: %v", err))), nil
+	}
+	return mcp_golang.NewToolResponse(mcp_golang.NewTextContent(result)), nil
+}
+
+func handleCheckBackwardCompat(arguments BackwardCompatArguments) (*mcp_golang.ToolResponse, error) {
+	result, err := runBackwardCompatCheck(arguments.File, arguments.Ref)
+	if err != nil {
+		return mcp_golang.NewToolResponse(mcp_golang.NewTextContent(fmt.Sprintf("Error: %v", err))), nil
+	}
+	return mcp_golang.NewToolResponse(mcp_golang.NewTextContent(result)), nil
 }
 
 func runEquivalenceCheck(file, ref string) (string, error) {

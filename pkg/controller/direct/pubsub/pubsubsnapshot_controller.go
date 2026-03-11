@@ -42,6 +42,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -181,10 +182,13 @@ func (a *snapshotAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating pubsub snapshot", "name", a.id)
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	updateMask := &fieldmaskpb.FieldMask{}
 	updated := proto.Clone(a.actual).(*pb.Snapshot)
 
 	if !reflect.DeepEqual(a.actual.Labels, a.desired.Spec.Labels) {
+		report.AddField("labels", a.actual.Labels, a.desired.Spec.Labels)
 		updated.Labels = a.desired.Spec.Labels
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
@@ -195,6 +199,8 @@ func (a *snapshotAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		status.ExternalRef = direct.LazyPtr(a.actual.Name)
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	req := &pb.UpdateSnapshotRequest{
 		Snapshot:   updated,

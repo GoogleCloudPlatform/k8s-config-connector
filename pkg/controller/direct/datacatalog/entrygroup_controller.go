@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -182,6 +183,8 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 	desired.Name = a.id.String()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	_, err := common.CompareProtoMessage(desired, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -191,9 +194,11 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	// Only description and display_name are updatable.
 	// transferred_to_dataplex is immutable after being set to true.
 	if !reflect.DeepEqual(desired.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, desired.Description)
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
 	if !reflect.DeepEqual(desired.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, desired.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 
@@ -203,6 +208,7 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		req := &pb.UpdateEntryGroupRequest{
 			EntryGroup: desired,
 			UpdateMask: updateMask,

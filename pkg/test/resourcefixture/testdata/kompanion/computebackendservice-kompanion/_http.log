@@ -158,7 +158,6 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "Backend Service for ${backendServiceID}",
-  "enableCDN": false,
   "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,

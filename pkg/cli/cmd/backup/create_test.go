@@ -56,7 +56,6 @@ func TestSanitizeObject(t *testing.T) {
 		unstructured.RemoveNestedField(obj.Object, "metadata", "managedFields")
 		unstructured.RemoveNestedField(obj.Object, "metadata", "creationTimestamp")
 		unstructured.RemoveNestedField(obj.Object, "metadata", "ownerReferences")
-		unstructured.RemoveNestedField(obj.Object, "status")
 
 		annotations := obj.GetAnnotations()
 		if annotations != nil {
@@ -80,8 +79,8 @@ func TestSanitizeObject(t *testing.T) {
 		}
 	}
 
-	if _, ok := obj.Object["status"]; ok {
-		t.Errorf("Status should have been removed")
+	if _, ok := obj.Object["status"]; !ok {
+		t.Errorf("Status should have been preserved")
 	}
 
 	annotations := obj.GetAnnotations()

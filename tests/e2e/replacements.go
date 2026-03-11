@@ -22,6 +22,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/version"
 )
 
 // Replacements manages replacements of dynamic values, like resource IDs
@@ -88,6 +89,9 @@ func (r *Replacements) ApplyReplacements(s string) string {
 	if testgcp.IsolatedTestOrgName.Get() != "" {
 		normalizers = append(normalizers, ReplaceString(testgcp.IsolatedTestOrgName.Get(), "${ISOLATED_TEST_ORG_NAME}"))
 	}
+
+	currentVersion := version.GetVersion()
+	normalizers = append(normalizers, ReplaceString(currentVersion, "${kccVersion}"))
 
 	for _, normalizer := range normalizers {
 		s = normalizer(s)

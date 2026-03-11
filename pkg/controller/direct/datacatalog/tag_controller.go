@@ -43,6 +43,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -247,6 +248,9 @@ func (a *tagAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	// Set required fields for the update request payload
 	desiredProto.Name = tagName
 	desiredProto.Template = a.actual.Template // Template is immutable, use actual value
@@ -254,6 +258,7 @@ func (a *tagAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	// Check if only mutable fields ('fields') have changed.
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(desiredProto.Fields, a.actual.Fields) {
+		report.AddField("fields", a.actual.Fields, desiredProto.Fields)
 		updateMask.Paths = append(updateMask.Paths, "fields")
 	}
 
@@ -268,6 +273,7 @@ func (a *tagAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 		log.V(2).Info("no mutable field needs update", "name", tagName)
 		updated = a.actual // Use current actual state for status update
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		log.V(2).Info("updating fields", "name", tagName, "fields", updateMask.Paths)
 		req := &pb.UpdateTagRequest{
 			Tag:        desiredProto,
