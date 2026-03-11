@@ -911,11 +911,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instanceGroupManager \"projects/${projectId}/zones/us-west1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp\" not found",
+        "message": "Not Found",
         "reason": "notFound"
       }
     ],
-    "message": "instanceGroupManager \"projects/${projectId}/zones/us-west1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp\" not found"
+    "message": "Not Found"
   }
 }
 
@@ -1279,11 +1279,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instanceGroupManager \"projects/${projectId}/zones/us-west1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp\" not found",
+        "message": "Not Found",
         "reason": "notFound"
       }
     ],
-    "message": "instanceGroupManager \"projects/${projectId}/zones/us-west1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp\" not found"
+    "message": "Not Found"
   }
 }
 
@@ -1647,11 +1647,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instanceGroupManager \"projects/${projectId}/zones/us-west1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp\" not found",
+        "message": "Not Found",
         "reason": "notFound"
       }
     ],
-    "message": "instanceGroupManager \"projects/${projectId}/zones/us-west1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp\" not found"
+    "message": "Not Found"
   }
 }
 
@@ -2460,11 +2460,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instanceGroupManager \"projects/${projectId}/zones/us-west1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp\" not found",
+        "message": "Not Found",
         "reason": "notFound"
       }
     ],
-    "message": "instanceGroupManager \"projects/${projectId}/zones/us-west1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp\" not found"
+    "message": "Not Found"
   }
 }
 
@@ -2831,11 +2831,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "instanceGroupManager \"projects/${projectId}/zones/us-west1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp\" not found",
+        "message": "Not Found",
         "reason": "notFound"
       }
     ],
-    "message": "instanceGroupManager \"projects/${projectId}/zones/us-west1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp\" not found"
+    "message": "Not Found"
   }
 }
 
