@@ -26,6 +26,7 @@ import (
 
 // CloudDeployTargetIdentity defines the resource reference to CloudDeployTarget, which "External" field
 // holds the GCP identifier for the KRM object.
+// +k8s:deepcopy-gen=false
 type CloudDeployTargetIdentity struct {
 	parent *CloudDeployTargetParent
 	id     string
