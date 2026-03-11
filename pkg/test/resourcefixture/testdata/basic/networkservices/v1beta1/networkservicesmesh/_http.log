@@ -94,7 +94,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "foo1": "bar1",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
 }
 
 200 OK

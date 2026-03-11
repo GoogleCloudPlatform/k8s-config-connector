@@ -23,4 +23,4 @@ spec:
   description: "Original description"
   interceptionPort: 80
   projectRef:
-    external: "projects/${projectId}"
+    external: "${projectId}"
