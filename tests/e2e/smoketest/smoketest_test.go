@@ -256,6 +256,12 @@ spec:
 		t.Fatalf("validating webhook not ready: %v", err)
 	}
 
+	// Wait for endpoints to be ready
+	t.Logf("Waiting for validating webhook endpoints to be ready")
+	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=jsonpath={.subsets[0].addresses[0].ip}", "endpoints/cnrm-validating-webhook", "--timeout=5m"); err != nil {
+		t.Fatalf("validating webhook endpoints not ready: %v", err)
+	}
+
 	t.Logf("Creating namespace and StorageBucket")
 	ns := "config-control"
 	if err := runCommand(ctx, t, root, "kubectl", "create", "ns", ns); err != nil && !strings.Contains(err.Error(), "already exists") {
