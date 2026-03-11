@@ -15,7 +15,7 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: network-${unique_id}
+  name: network-${uniqueId}
 spec:
   routingMode: REGIONAL
   autoCreateSubnetworks: false
@@ -23,10 +23,10 @@ spec:
 apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
 kind: NetworkSecurityFirewallEndpoint
 metadata:
-  name: nsfirewallendpoint-${unique_id}
+  name: nsfirewallendpoint-${uniqueId}
 spec:
   organizationRef:
-    external: organizations/${org_id}
+    external: organizations/${TEST_ORG_ID}
   location: us-central1
-  billingProjectID: ${project_id}
+  billingProjectID: ${projectId}
   description: "Firewall endpoint for association"

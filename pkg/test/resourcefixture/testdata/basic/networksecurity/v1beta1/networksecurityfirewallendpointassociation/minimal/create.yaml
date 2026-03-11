@@ -15,11 +15,15 @@
 apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
 kind: NetworkSecurityFirewallEndpointAssociation
 metadata:
-  name: nsfirewallendpointassoc-${unique_id}
+  name: nsfirewallendpointassoc-${uniqueId}
 spec:
   location: us-central1
   firewallEndpointRef:
-    name: nsfirewallendpoint-${unique_id}
+    name: nsfirewallendpoint-${uniqueId}
   networkRef:
-    name: network-${unique_id}
+    name: network-${uniqueId}
+  projectRef:
+    external: ${projectId}
   disabled: false
+  labels:
+    key: value
