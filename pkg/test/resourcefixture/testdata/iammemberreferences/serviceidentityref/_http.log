@@ -1,16 +1,8 @@
 POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/pubsub.googleapis.com:generateServiceIdentity?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -26,17 +18,9 @@ X-Xss-Protection: 0
 
 GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -50,7 +34,6 @@ X-Xss-Protection: 0
 
 POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?alt=json&repository_id=artifactregistryrepository-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "format": "DOCKER",
@@ -63,13 +46,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -82,17 +58,9 @@ X-Xss-Protection: 0
 
 GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -122,17 +90,9 @@ X-Xss-Protection: 0
 
 GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -157,17 +117,9 @@ X-Xss-Protection: 0
 
 GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}:getIamPolicy?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A="
@@ -177,7 +129,6 @@ X-Xss-Protection: 0
 
 POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}:setIamPolicy?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -196,13 +147,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -221,17 +165,9 @@ X-Xss-Protection: 0
 
 GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}:getIamPolicy?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -250,7 +186,6 @@ X-Xss-Protection: 0
 
 POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}:setIamPolicy?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -261,13 +196,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
@@ -278,17 +206,9 @@ X-Xss-Protection: 0
 
 GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}:getIamPolicy?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
@@ -299,17 +219,9 @@ X-Xss-Protection: 0
 
 GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -334,17 +246,9 @@ X-Xss-Protection: 0
 
 DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -357,17 +261,9 @@ X-Xss-Protection: 0
 
 GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,

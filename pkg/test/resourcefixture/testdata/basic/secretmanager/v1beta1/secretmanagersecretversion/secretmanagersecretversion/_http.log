@@ -1,17 +1,9 @@
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -23,9 +15,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?%24alt=json%3Benum-encoding%3Dint&secretId=secretmanagersecretversion-dep-${uniqueId}
+POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?$alt=json%3Benum-encoding%3Dint&secretId=secretmanagersecretversion-dep-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
@@ -40,13 +31,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -63,9 +47,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}:addVersion?%24alt=json%3Benum-encoding%3Dint
+POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}:addVersion?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
 
 {
@@ -77,13 +60,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Fsecrets%2Fsecretmanagers
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -97,20 +73,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -124,9 +92,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:disable?%24alt=json%3Benum-encoding%3Dint
+POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:disable?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
 
 {
@@ -136,13 +103,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersec
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -156,20 +116,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -183,9 +135,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:destroy?%24alt=json%3Benum-encoding%3Dint
+POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:destroy?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}%2Fversions%2F1
 
 {
@@ -195,13 +146,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersec
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -216,20 +160,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -246,19 +182,11 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecretmanagersecretversion-dep-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}

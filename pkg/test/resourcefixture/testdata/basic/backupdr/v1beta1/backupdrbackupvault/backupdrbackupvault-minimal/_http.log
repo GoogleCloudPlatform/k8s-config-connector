@@ -1,17 +1,9 @@
-GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults/backupdrbackupvault-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults/backupdrbackupvault-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupVaults%2Fbackupdrbackupvault-minimal-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -23,9 +15,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults?%24alt=json%3Benum-encoding%3Dint&backupVaultId=backupdrbackupvault-minimal-${uniqueId}
+POST https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults?$alt=json%3Benum-encoding%3Dint&backupVaultId=backupdrbackupvault-minimal-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
 
 {
@@ -40,13 +31,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -63,18 +47,10 @@ X-Xss-Protection: 0
 
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -110,20 +86,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults/backupdrbackupvault-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults/backupdrbackupvault-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupVaults%2Fbackupdrbackupvault-minimal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "accessRestriction": 2,
@@ -146,9 +114,8 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults/backupdrbackupvault-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CbackupMinimumEnforcedRetentionDuration%2CaccessRestriction
+PATCH https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults/backupdrbackupvault-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=description,backupMinimumEnforcedRetentionDuration,accessRestriction
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: backup_vault.name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupVaults%2Fbackupdrbackupvault-minimal-${uniqueId}
 
 {
@@ -165,13 +132,6 @@ X-Goog-Request-Params: backup_vault.name=projects%2F${projectId}%2Flocations%2Fu
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -188,18 +148,10 @@ X-Xss-Protection: 0
 
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -234,20 +186,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults/backupdrbackupvault-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults/backupdrbackupvault-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupVaults%2Fbackupdrbackupvault-minimal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "backupMinimumEnforcedRetentionDuration": "200000s",
@@ -269,20 +213,12 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults/backupdrbackupvault-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults/backupdrbackupvault-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupVaults%2Fbackupdrbackupvault-minimal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -299,18 +235,10 @@ X-Xss-Protection: 0
 
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-west2/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,

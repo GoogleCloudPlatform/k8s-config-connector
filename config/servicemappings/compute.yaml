@@ -1950,10 +1950,24 @@ spec:
         name: name
       resourceID:
         targetField: name
-      # TODO(b/217273773): Ignore shared_settings field for now until follow up
-      # with service team is completed.
-      ignoredFields:
-      - share_settings
+      resourceReferences:
+        - tfField: share_settings.project_map.id
+          key: idRef
+          description: |-
+            The key of this project config in the parent map.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: share_settings.project_map.project_id
+          key: projectIDRef
+          description: |-
+            The project id/number should be the same as the key of this project
+            config in the project map.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
       containers:
       - type: project
         tfField: project

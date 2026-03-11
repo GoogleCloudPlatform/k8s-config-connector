@@ -1,16 +1,9 @@
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -22,9 +15,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?%24alt=json%3Benum-encoding%3Dint
+POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
@@ -54,12 +46,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -106,17 +92,10 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -202,19 +181,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "autoscalingConfig": {
@@ -254,9 +226,8 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}
 
 {
@@ -285,12 +256,6 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspann
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -339,17 +304,10 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -435,19 +393,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "autoscalingConfig": {
@@ -487,18 +438,11 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}

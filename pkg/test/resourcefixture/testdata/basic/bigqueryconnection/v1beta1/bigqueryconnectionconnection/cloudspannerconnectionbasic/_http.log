@@ -1,15 +1,8 @@
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -23,7 +16,6 @@ X-Xss-Protection: 0
 
 POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "instance": {
@@ -40,12 +32,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -82,16 +68,9 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -159,16 +138,9 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
@@ -200,16 +172,9 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -223,7 +188,6 @@ X-Xss-Protection: 0
 
 POST https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "createStatement": "CREATE DATABASE `spannerdb-${uniqueId}`"
@@ -231,12 +195,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -250,16 +208,9 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -282,7 +233,6 @@ X-Xss-Protection: 0
 
 PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/ddl?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "statements": [
@@ -292,12 +242,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -314,16 +258,9 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "done": true,
@@ -349,16 +286,9 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -370,9 +300,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?%24alt=json%3Benum-encoding%3Dint
+POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -387,13 +316,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "cloudSpanner": {
@@ -410,20 +332,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "cloudSpanner": {
@@ -440,9 +354,8 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint&updateMask=cloudSpanner.databaseRole%2CcloudSpanner.maxParallelism
+PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?$alt=json%3Benum-encoding%3Dint&updateMask=cloudSpanner.databaseRole,cloudSpanner.maxParallelism
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 {
@@ -458,43 +371,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "cloudSpanner": {
-    "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
-    "databaseRole": "user",
-    "maxParallelism": 150,
-    "useDataBoost": true,
-    "useParallelism": true
-  },
-  "creationTime": "123456789",
-  "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
-}
-
----
-
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "cloudSpanner": {
@@ -511,20 +387,34 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+
+{
+  "cloudSpanner": {
+    "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
+    "databaseRole": "user",
+    "maxParallelism": 150,
+    "useDataBoost": true,
+    "useParallelism": true
+  },
+  "creationTime": "123456789",
+  "lastModifiedTime": "123456789",
+  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+}
+
+---
+
+DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?$alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
+
+200 OK
+Content-Type: application/json; charset=UTF-8
 
 {}
 
@@ -532,16 +422,9 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -555,16 +438,9 @@ X-Xss-Protection: 0
 
 DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}
 
@@ -572,16 +448,9 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
@@ -613,15 +482,8 @@ X-Xss-Protection: 0
 
 DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}
