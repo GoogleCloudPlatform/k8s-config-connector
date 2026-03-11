@@ -1,11 +1,7 @@
 GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -59,7 +55,6 @@ Vary: X-Origin
 
 PATCH https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "versioning": {
@@ -70,9 +65,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 200 OK
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "acl": [
@@ -201,13 +193,9 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",

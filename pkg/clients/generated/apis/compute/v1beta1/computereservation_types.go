@@ -81,6 +81,26 @@ type ReservationLocalSsds struct {
 	Interface *string `json:"interface,omitempty"`
 }
 
+type ReservationProjectMap struct {
+	/* The key of this project config in the parent map. */
+	IdRef v1alpha1.ResourceRef `json:"idRef"`
+
+	/* The project id/number should be the same as the key of this project
+	config in the project map. */
+	// +optional
+	ProjectIDRef *v1alpha1.ResourceRef `json:"projectIDRef,omitempty"`
+}
+
+type ReservationShareSettings struct {
+	/* A map of project number and project config. This is only valid when shareType's value is SPECIFIC_PROJECTS. */
+	// +optional
+	ProjectMap []ReservationProjectMap `json:"projectMap,omitempty"`
+
+	/* Type of sharing for this shared-reservation Possible values: ["LOCAL", "SPECIFIC_PROJECTS"]. */
+	// +optional
+	ShareType *string `json:"shareType,omitempty"`
+}
+
 type ReservationSpecificReservation struct {
 	/* The number of resources that are allocated. */
 	Count int64 `json:"count"`
@@ -101,6 +121,10 @@ type ComputeReservationSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* The share setting for reservations. */
+	// +optional
+	ShareSettings *ReservationShareSettings `json:"shareSettings,omitempty"`
 
 	/* Reservation for instances with specific machine shapes. */
 	SpecificReservation ReservationSpecificReservation `json:"specificReservation"`

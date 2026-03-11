@@ -1,15 +1,7 @@
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -30,7 +22,6 @@ X-Xss-Protection: 0
 
 POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "accountId": "gsa-${uniqueId}",
@@ -41,13 +32,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "displayName": "Test GSA for big query data transfer config",
@@ -62,17 +46,9 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "displayName": "Test GSA for big query data transfer config",
@@ -86,9 +62,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs?%24alt=json%3Benum-encoding%3Dint&serviceAccountName=gsa-${uniqueId}%40${projectId}.iam.gserviceaccount.com
+POST https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs?$alt=json%3Benum-encoding%3Dint&serviceAccountName=gsa-${uniqueId}%40${projectId}.iam.gserviceaccount.com
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -104,13 +79,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "dataSourceId": "scheduled_query",
@@ -139,20 +107,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint
+GET https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "dataSourceId": "scheduled_query",
@@ -183,9 +143,8 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint&serviceAccountName=gsa-${uniqueId}%40${projectId}.iam.gserviceaccount.com&updateMask=displayName%2Cparams%2Cschedule
+PATCH https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?$alt=json%3Benum-encoding%3Dint&serviceAccountName=gsa-${uniqueId}%40${projectId}.iam.gserviceaccount.com&updateMask=displayName,params,schedule
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: transfer_config.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
 
 {
@@ -217,13 +176,6 @@ X-Goog-Request-Params: transfer_config.name=projects%2F${projectId}%2Flocations%
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "dataSourceId": "scheduled_query",
@@ -254,20 +206,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint
+GET https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "dataSourceId": "scheduled_query",
@@ -298,37 +242,21 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}
 
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "displayName": "Test GSA for big query data transfer config",
@@ -343,16 +271,8 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}

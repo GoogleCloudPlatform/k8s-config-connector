@@ -1,17 +1,9 @@
-GET https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicypolicy${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2FcustomConstraints%2Fcustom.orgpolicypolicy${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -23,9 +15,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints?%24alt=json%3Benum-encoding%3Dint
+POST https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=organizations%2F${organizationID}
 
 {
@@ -44,13 +35,6 @@ X-Goog-Request-Params: parent=organizations%2F${organizationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "actionType": 1,
@@ -69,20 +53,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F1070934155037%2Fpolicies%2Fcustom.orgpolicypolicy${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "error": {
@@ -94,9 +70,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies?%24alt=json%3Benum-encoding%3Dint
+POST https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F1070934155037
 
 {
@@ -119,13 +94,6 @@ X-Goog-Request-Params: parent=projects%2F1070934155037
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "dryRunSpec": {
@@ -152,20 +120,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F1070934155037%2Fpolicies%2Fcustom.orgpolicypolicy${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "dryRunSpec": {
@@ -192,9 +152,8 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=policy.spec%2Cpolicy.dryRunSpec
+PATCH https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=policy.spec,policy.dryRunSpec
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: policy.name=projects%2F1070934155037%2Fpolicies%2Fcustom.orgpolicypolicy${uniqueId}
 
 {
@@ -210,13 +169,6 @@ X-Goog-Request-Params: policy.name=projects%2F1070934155037%2Fpolicies%2Fcustom.
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
@@ -234,20 +186,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F1070934155037%2Fpolicies%2Fcustom.orgpolicypolicy${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
@@ -265,39 +209,23 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F1070934155037%2Fpolicies%2Fcustom.orgpolicypolicy${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}
 
 ---
 
-GET https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicypolicy${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2FcustomConstraints%2Fcustom.orgpolicypolicy${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
   "actionType": 1,
@@ -316,19 +244,11 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicypolicy${uniqueId}?$alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2FcustomConstraints%2Fcustom.orgpolicypolicy${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {}
