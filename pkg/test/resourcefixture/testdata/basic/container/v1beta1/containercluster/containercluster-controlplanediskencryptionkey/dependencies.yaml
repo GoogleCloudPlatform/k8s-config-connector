@@ -16,6 +16,9 @@ apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
   name: kmskeyring-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
 spec:
   location: us-west2
 ---
@@ -23,6 +26,9 @@ apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
   name: kmscryptokey-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
 spec:
   keyRingRef:
     name: kmskeyring-${uniqueId}

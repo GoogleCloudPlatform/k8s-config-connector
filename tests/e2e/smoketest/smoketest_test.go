@@ -251,6 +251,11 @@ spec:
 		t.Fatalf("StorageBucket CRD not established: %v", err)
 	}
 
+	t.Logf("Waiting for validating webhook to be ready")
+	if err := runCommand(ctx, t, root, "kubectl", "wait", "-n", "cnrm-system", "--for=condition=Available", "deployment/cnrm-validating-webhook", "--timeout=5m"); err != nil {
+		t.Fatalf("validating webhook not ready: %v", err)
+	}
+
 	t.Logf("Creating namespace and StorageBucket")
 	ns := "config-control"
 	if err := runCommand(ctx, t, root, "kubectl", "create", "ns", ns); err != nil && !strings.Contains(err.Error(), "already exists") {
