@@ -158,8 +158,6 @@ type AccessContextManagerServicePerimeterEgressFrom struct {
 	IdentityType *string `json:"identityType,omitempty"`
 }
 
-// +kubebuilder:validation:MinProperties=1
-// +kubebuilder:validation:MaxProperties=1
 type AccessContextManagerServicePerimeterIdentity struct {
 	/* A reference to an IAMServiceAccount resource. */
 	// +optional
@@ -212,8 +210,6 @@ type AccessContextManagerServicePerimeterApiOperation struct {
 	ServiceName *string `json:"serviceName,omitempty"`
 }
 
-// +kubebuilder:validation:MinProperties=1
-// +kubebuilder:validation:MaxProperties=1
 type AccessContextManagerServicePerimeterMethodSelector struct {
 	/* Value for 'method' should be a valid method name for the corresponding
 	'serviceName' in 'ApiOperation'. If '*' used as value for method,
@@ -257,8 +253,6 @@ type AccessContextManagerServicePerimeterIngressFrom struct {
 	Sources []AccessContextManagerServicePerimeterIngressSource `json:"sources,omitempty"`
 }
 
-// +kubebuilder:validation:MinProperties=1
-// +kubebuilder:validation:MaxProperties=1
 type AccessContextManagerServicePerimeterIngressSource struct {
 	/* (Optional) A reference to an AccessLevel resource that is allowed to ingress the perimeter. */
 	// +optional
@@ -317,8 +311,6 @@ type AccessContextManagerServicePerimeterVPCAccessibleServices struct {
 	EnableRestriction *bool `json:"enableRestriction,omitempty"`
 }
 
-// +kubebuilder:validation:MinProperties=1
-// +kubebuilder:validation:MaxProperties=1
 type ServicePerimeterProjectRef struct {
 	/* Allowed value: string of the format `projects/{{value}}`, where {{value}} is the `number` field of a `Project` resource. */
 	// +optional
