@@ -338,10 +338,67 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	update := proto.Clone(req).(*pb.UpdateNodePoolRequest)
 	update.Name = ""
+	update.ProjectId = ""
+	update.Zone = ""
+	update.ClusterId = ""
+	update.NodePoolId = ""
 
 	if update.Taints != nil {
 		obj.Config.Taints = update.GetTaints().Taints
 		update.Taints = nil
+	}
+
+	if update.KubeletConfig != nil {
+		if obj.Config.KubeletConfig == nil {
+			obj.Config.KubeletConfig = &pb.NodeKubeletConfig{}
+		}
+		src := update.KubeletConfig
+		dst := obj.Config.KubeletConfig
+		if src.CpuCfsQuota != nil {
+			dst.CpuCfsQuota = src.CpuCfsQuota
+		}
+		if src.CpuCfsQuotaPeriod != "" {
+			dst.CpuCfsQuotaPeriod = src.CpuCfsQuotaPeriod
+		}
+		if src.CpuManagerPolicy != "" {
+			dst.CpuManagerPolicy = src.CpuManagerPolicy
+		}
+		if src.PodPidsLimit != 0 {
+			dst.PodPidsLimit = src.PodPidsLimit
+		}
+		if src.ImageGcHighThresholdPercent != 0 {
+			dst.ImageGcHighThresholdPercent = src.ImageGcHighThresholdPercent
+		}
+		if src.ImageGcLowThresholdPercent != 0 {
+			dst.ImageGcLowThresholdPercent = src.ImageGcLowThresholdPercent
+		}
+		if src.ImageMinimumGcAge != "" {
+			dst.ImageMinimumGcAge = src.ImageMinimumGcAge
+		}
+		if src.ImageMaximumGcAge != "" {
+			dst.ImageMaximumGcAge = src.ImageMaximumGcAge
+		}
+		if src.ContainerLogMaxFiles != 0 {
+			dst.ContainerLogMaxFiles = src.ContainerLogMaxFiles
+		}
+		if src.ContainerLogMaxSize != "" {
+			dst.ContainerLogMaxSize = src.ContainerLogMaxSize
+		}
+		if src.MaxParallelImagePulls != 0 {
+			dst.MaxParallelImagePulls = src.MaxParallelImagePulls
+		}
+		if src.InsecureKubeletReadonlyPortEnabled != nil {
+			dst.InsecureKubeletReadonlyPortEnabled = src.InsecureKubeletReadonlyPortEnabled
+		}
+		update.KubeletConfig = nil
+	}
+
+	if update.LinuxNodeConfig != nil {
+		if obj.Config.LinuxNodeConfig == nil {
+			obj.Config.LinuxNodeConfig = &pb.LinuxNodeConfig{}
+		}
+		proto.Merge(obj.Config.LinuxNodeConfig, update.LinuxNodeConfig)
+		update.LinuxNodeConfig = nil
 	}
 
 	// TODO: Support more updates!
