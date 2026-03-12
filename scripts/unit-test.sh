@@ -22,7 +22,7 @@ make -C operator test
 unset VALIDATE_URLS
 UNIT_TEST_PACKAGES=$(go list ./pkg/... ./cmd/... ./config/tests/...  ./scripts/resource-autogen/... ./scripts/generate-google3-docs/... ./tests/... ./experiments/conductor/cmd/runner/... | grep -v tests/e2e)
 if [ -z ${GITHUB_ACTION+x} ]; then
-    go run gotest.tools/gotestsum@latest --format testname -- ${UNIT_TEST_PACKAGES} -coverprofile cover.out -count=1
+    go run gotest.tools/gotestsum@v1.12.0 --format testname -- ${UNIT_TEST_PACKAGES} -coverprofile cover.out -count=1
 else
-    go run gotest.tools/gotestsum@latest --jsonfile unittest_result.json --format pkgname --format-hide-empty-pkg --format-hivis -- ${UNIT_TEST_PACKAGES} -coverprofile cover.out -count=1
+    go run gotest.tools/gotestsum@v1.12.0 --jsonfile unittest_result.json --format pkgname --format-hide-empty-pkg --format-hivis -- ${UNIT_TEST_PACKAGES} -coverprofile cover.out -count=1
 fi

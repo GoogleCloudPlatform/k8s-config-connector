@@ -167,7 +167,7 @@ func isComputeAPI(event mockgcpregistry.Event) bool {
 		klog.Fatalf("cannot parse URL %q", event.URL())
 	}
 	switch u.Host {
-	case "compute.googleapis.com":
+	case "compute.googleapis.com", "servicenetworking.googleapis.com", "networkservices.googleapis.com", "networkconnectivity.googleapis.com":
 		return true
 	}
 	return false
