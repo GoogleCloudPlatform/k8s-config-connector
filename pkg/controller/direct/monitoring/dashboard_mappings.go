@@ -15,7 +15,6 @@
 package monitoring
 
 import (
-	"fmt"
 	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -553,9 +552,6 @@ func Widget_FromProto(mapCtx *direct.MapContext, in *pb.Widget) *krm.Widget {
 func Widget_ToProto(mapCtx *direct.MapContext, in *krm.Widget) *pb.Widget {
 	if in == nil {
 		return nil
-	}
-	if in.Id != nil {
-		fmt.Printf("DEBUG: Widget_ToProto with Id: %s\n", *in.Id)
 	}
 	out := &pb.Widget{}
 	out.Title = direct.ValueOf(in.Title)
