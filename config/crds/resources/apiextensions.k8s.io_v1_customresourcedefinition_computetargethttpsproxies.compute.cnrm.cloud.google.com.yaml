@@ -69,8 +69,7 @@ spec:
                   is set to INTERNAL_SELF_MANAGED. sslCertificates and certificateManagerCertificates
                   fields cannot be defined together.
                 items:
-                  description: CertificateManagerCertificateRef defines the resource
-                    reference to CertificateManagerCertificate.
+                  description: A reference to a CertificateManagerCertificate resource.
                   oneOf:
                   - not:
                       required:
@@ -87,15 +86,14 @@ spec:
                     - external
                   properties:
                     external:
-                      description: The value of an externally managed CertificateManagerCertificate
-                        resource.
+                      description: 'Allowed value: The `externalRef` field of a `CertificateManagerCertificate`
+                        resource.'
                       type: string
                     name:
-                      description: The name of a CertificateManagerCertificate resource.
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                       type: string
                     namespace:
-                      description: The namespace of a CertificateManagerCertificate
-                        resource.
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                       type: string
                   type: object
                 type: array
@@ -122,15 +120,15 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The value of an externally managed CertificateManagerCertificateMap
-                      resource.
+                    description: 'Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}`,
+                      where {{value}} is the `name` field of a `CertificateManagerCertificateMap`
+                      resource.'
                     type: string
                   name:
-                    description: The name of a CertificateManagerCertificateMap resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The namespace of a CertificateManagerCertificateMap
-                      resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               description:
@@ -144,45 +142,12 @@ spec:
                   the minimum allowed value is 5 seconds and the maximum allowed value
                   is 1200 seconds. For Global external HTTP(S) load balancer (classic),
                   this option is not available publicly.
-                format: int32
                 type: integer
               location:
                 description: 'Location represents the geographical location of the
                   ComputeTargetHTTPSProxy. Specify a region name or "global" for global
                   resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
                 type: string
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               proxyBind:
                 description: Immutable. This field only applies when the forwarding
                   rule that references this target proxy has a loadBalancingScheme
@@ -226,15 +191,15 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The value of an externally managed NetworkSecurityServerTLSPolicy
-                      resource.
+                    description: 'Allowed value: string of the format `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}`,
+                      where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy`
+                      resource.'
                     type: string
                   name:
-                    description: The name of a NetworkSecurityServerTLSPolicy resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The namespace of a NetworkSecurityServerTLSPolicy
-                      resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               sslCertificates:
@@ -242,8 +207,7 @@ spec:
                   to authenticate connections between users and the load balancer.
                   At least one SSL certificate must be specified.
                 items:
-                  description: ComputeSSLCertificateRef defines the resource reference
-                    to ComputeSSLCertificate.
+                  description: A reference to a ComputeSSLCertificate resource.
                   oneOf:
                   - not:
                       required:
@@ -260,14 +224,16 @@ spec:
                     - external
                   properties:
                     external:
-                      description: The value of an externally managed ComputeSSLCertificate
-                        resource.
+                      description: 'Allowed value: string of the format `projects/{{project}}/global/sslCertificates/{{value}}`
+                        or `projects/{{project}}/regions/{{region}}/sslCertificates/{{value}}`,
+                        where {{value}} is the `name` field of a `ComputeSSLCertificate`
+                        resource.'
                       type: string
                     name:
-                      description: The name of a ComputeSSLCertificate resource.
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                       type: string
                     namespace:
-                      description: The namespace of a ComputeSSLCertificate resource.
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                       type: string
                   type: object
                 type: array
@@ -292,14 +258,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The value of an externally managed ComputeSSLPolicy
-                      resource.
+                    description: 'Allowed value: The `selfLink` field of a `ComputeSSLPolicy`
+                      resource.'
                     type: string
                   name:
-                    description: The name of a ComputeSSLPolicy resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The namespace of a ComputeSSLPolicy resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               urlMapRef:
@@ -321,24 +287,20 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The value of an externally managed ComputeURLMap
-                      resource.
+                    description: 'Allowed value: The `selfLink` field of a `ComputeURLMap`
+                      resource.'
                     type: string
                   name:
-                    description: The name of a ComputeURLMap resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The namespace of a ComputeURLMap resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
             required:
             - location
             - urlMapRef
             type: object
-            x-kubernetes-validations:
-            - message: sslCertificates and certificateManagerCertificates fields cannot
-                be defined together
-              rule: '!(has(self.sslCertificates) && has(self.certificateManagerCertificates))'
           status:
             description: ComputeTargetHTTPSProxyStatus defines the config connector
               machine state of ComputeTargetHTTPSProxy
@@ -382,7 +344,6 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
@@ -395,7 +356,6 @@ spec:
                 type: object
               proxyId:
                 description: The unique identifier for the resource.
-                format: int64
                 type: integer
               selfLink:
                 description: The SelfLink for the resource.

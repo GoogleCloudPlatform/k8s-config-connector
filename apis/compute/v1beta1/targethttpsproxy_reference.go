@@ -30,15 +30,13 @@ import (
 var _ refsv1beta1.Ref = &ComputeTargetHTTPSProxyRef{}
 
 type ComputeTargetHTTPSProxyRef struct {
-	// A reference to an externally managed ComputeTargetHTTPSProxy resource.
-	// Should be in the format "projects/{{projectID}}/global/targetHttpsProxies/{{targetHttpsProxyID}}"
-	// or "projects/{{projectID}}/regions/{{region}}/targetHttpsProxies/{{targetHttpsProxyID}}".
+	// Allowed value: string of the format `projects/{{project}}/global/targetHttpsProxies/{{value}}` or `projects/{{project}}/regions/{{region}}/targetHttpsProxies/{{value}}`, where {{value}} is the `name` field of a `ComputeTargetHTTPSProxy` resource.
 	External string `json:"external,omitempty"`
 
-	// The name of a ComputeTargetHTTPSProxy resource.
+	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ComputeTargetHTTPSProxy resource.
+	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -73,15 +71,15 @@ func (r *ComputeTargetHTTPSProxyRef) Normalize(ctx context.Context, reader clien
 	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
 
-// ComputeURLMapRef defines the resource reference to ComputeURLMap.
+// A reference to a ComputeURLMap resource.
 type ComputeURLMapRef struct {
-	// The value of an externally managed ComputeURLMap resource.
+	// Allowed value: The `selfLink` field of a `ComputeURLMap` resource.
 	External string `json:"external,omitempty"`
 
-	// The name of a ComputeURLMap resource.
+	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ComputeURLMap resource.
+	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -119,15 +117,15 @@ func (r *ComputeURLMapRef) NormalizedExternal(ctx context.Context, reader client
 	return selfLink, nil
 }
 
-// ComputeSSLCertificateRef defines the resource reference to ComputeSSLCertificate.
+// A reference to a ComputeSSLCertificate resource.
 type ComputeSSLCertificateRef struct {
-	// The value of an externally managed ComputeSSLCertificate resource.
+	// Allowed value: string of the format `projects/{{project}}/global/sslCertificates/{{value}}` or `projects/{{project}}/regions/{{region}}/sslCertificates/{{value}}`, where {{value}} is the `name` field of a `ComputeSSLCertificate` resource.
 	External string `json:"external,omitempty"`
 
-	// The name of a ComputeSSLCertificate resource.
+	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ComputeSSLCertificate resource.
+	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -165,15 +163,15 @@ func (r *ComputeSSLCertificateRef) NormalizedExternal(ctx context.Context, reade
 	return selfLink, nil
 }
 
-// ComputeSSLPolicyRef defines the resource reference to ComputeSSLPolicy.
+// A reference to a ComputeSSLPolicy resource.
 type ComputeSSLPolicyRef struct {
-	// The value of an externally managed ComputeSSLPolicy resource.
+	// Allowed value: The `selfLink` field of a `ComputeSSLPolicy` resource.
 	External string `json:"external,omitempty"`
 
-	// The name of a ComputeSSLPolicy resource.
+	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ComputeSSLPolicy resource.
+	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -211,15 +209,15 @@ func (r *ComputeSSLPolicyRef) NormalizedExternal(ctx context.Context, reader cli
 	return selfLink, nil
 }
 
-// CertificateManagerCertificateRef defines the resource reference to CertificateManagerCertificate.
+// A reference to a CertificateManagerCertificate resource.
 type CertificateManagerCertificateRef struct {
-	// The value of an externally managed CertificateManagerCertificate resource.
+	// Allowed value: The `externalRef` field of a `CertificateManagerCertificate` resource.
 	External string `json:"external,omitempty"`
 
-	// The name of a CertificateManagerCertificate resource.
+	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a CertificateManagerCertificate resource.
+	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -257,15 +255,15 @@ func (r *CertificateManagerCertificateRef) NormalizedExternal(ctx context.Contex
 	return externalRef, nil
 }
 
-// CertificateManagerCertificateMapRef defines the resource reference to CertificateManagerCertificateMap.
+// A reference to a CertificateManagerCertificateMap resource.
 type CertificateManagerCertificateMapRef struct {
-	// The value of an externally managed CertificateManagerCertificateMap resource.
+	// Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificateMap` resource.
 	External string `json:"external,omitempty"`
 
-	// The name of a CertificateManagerCertificateMap resource.
+	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a CertificateManagerCertificateMap resource.
+	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
 	Namespace string `json:"namespace,omitempty"`
 }
 
@@ -303,15 +301,15 @@ func (r *CertificateManagerCertificateMapRef) NormalizedExternal(ctx context.Con
 	return externalRef, nil
 }
 
-// NetworkSecurityServerTLSPolicyRef defines the resource reference to NetworkSecurityServerTLSPolicy.
+// A reference to a NetworkSecurityServerTLSPolicy resource.
 type NetworkSecurityServerTLSPolicyRef struct {
-	// The value of an externally managed NetworkSecurityServerTLSPolicy resource.
+	// Allowed value: string of the format `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}`, where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy` resource.
 	External string `json:"external,omitempty"`
 
-	// The name of a NetworkSecurityServerTLSPolicy resource.
+	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a NetworkSecurityServerTLSPolicy resource.
+	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
 	Namespace string `json:"namespace,omitempty"`
 }
 

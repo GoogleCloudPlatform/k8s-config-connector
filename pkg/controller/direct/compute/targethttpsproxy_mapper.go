@@ -25,8 +25,10 @@ func ComputeTargetHTTPSProxySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &pb.TargetHttpsProxy{}
-	out.Description = in.Description
-	out.HttpKeepAliveTimeoutSec = in.HttpKeepAliveTimeoutSec
+	if in.HttpKeepAliveTimeoutSec != nil {
+		timeout := int32(*in.HttpKeepAliveTimeoutSec)
+		out.HttpKeepAliveTimeoutSec = &timeout
+	}
 	out.ProxyBind = in.ProxyBind
 	out.QuicOverride = in.QuicOverride
 
@@ -61,8 +63,10 @@ func ComputeTargetHTTPSProxySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &krm.ComputeTargetHTTPSProxySpec{}
-	out.Description = in.Description
-	out.HttpKeepAliveTimeoutSec = in.HttpKeepAliveTimeoutSec
+	if in.HttpKeepAliveTimeoutSec != nil {
+		timeout := int(*in.HttpKeepAliveTimeoutSec)
+		out.HttpKeepAliveTimeoutSec = &timeout
+	}
 	out.ProxyBind = in.ProxyBind
 	out.QuicOverride = in.QuicOverride
 
@@ -101,7 +105,7 @@ func ComputeTargetHTTPSProxyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	out := &krm.ComputeTargetHTTPSProxyStatus{}
 	out.CreationTimestamp = in.CreationTimestamp
 	if in.Id != nil {
-		id := int64(*in.Id)
+		id := int(*in.Id)
 		out.ProxyId = &id
 	}
 	out.SelfLink = in.SelfLink

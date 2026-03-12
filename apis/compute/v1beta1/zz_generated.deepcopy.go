@@ -1082,7 +1082,7 @@ func (in *ComputeTargetHTTPSProxySpec) DeepCopyInto(out *ComputeTargetHTTPSProxy
 	}
 	if in.HttpKeepAliveTimeoutSec != nil {
 		in, out := &in.HttpKeepAliveTimeoutSec, &out.HttpKeepAliveTimeoutSec
-		*out = new(int32)
+		*out = new(int)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -1098,11 +1098,6 @@ func (in *ComputeTargetHTTPSProxySpec) DeepCopyInto(out *ComputeTargetHTTPSProxy
 	if in.QuicOverride != nil {
 		in, out := &in.QuicOverride, &out.QuicOverride
 		*out = new(string)
-		**out = **in
-	}
-	if in.ProjectRef != nil {
-		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(refsv1beta1.ProjectRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1152,7 +1147,7 @@ func (in *ComputeTargetHTTPSProxyStatus) DeepCopyInto(out *ComputeTargetHTTPSPro
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.ExternalRef != nil {
@@ -1167,7 +1162,7 @@ func (in *ComputeTargetHTTPSProxyStatus) DeepCopyInto(out *ComputeTargetHTTPSPro
 	}
 	if in.ProxyId != nil {
 		in, out := &in.ProxyId, &out.ProxyId
-		*out = new(int64)
+		*out = new(int)
 		**out = **in
 	}
 	if in.SelfLink != nil {

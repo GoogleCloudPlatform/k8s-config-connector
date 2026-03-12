@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -53,7 +52,6 @@ type ComputeTargetHTTPSProxy struct {
 }
 
 // +kcc:spec:proto=google.cloud.compute.v1.TargetHttpsProxy
-// +kubebuilder:validation:XValidation:rule="!(has(self.sslCertificates) && has(self.certificateManagerCertificates))",message="sslCertificates and certificateManagerCertificates fields cannot be defined together"
 type ComputeTargetHTTPSProxySpec struct {
 	// URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer.
 	// Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
@@ -81,7 +79,7 @@ type ComputeTargetHTTPSProxySpec struct {
 	// the maximum allowed value is 1200 seconds. For Global external HTTP(S)
 	// load balancer (classic), this option is not available publicly.
 	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.http_keep_alive_timeout_sec
-	HttpKeepAliveTimeoutSec *int32 `json:"httpKeepAliveTimeoutSec,omitempty"`
+	HttpKeepAliveTimeoutSec *int `json:"httpKeepAliveTimeoutSec,omitempty"`
 
 	// Location represents the geographical location of the
 	// ComputeTargetHTTPSProxy. Specify a region name or "global" for global
@@ -102,7 +100,7 @@ type ComputeTargetHTTPSProxySpec struct {
 	QuicOverride *string `json:"quicOverride,omitempty"`
 
 	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+	// ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// Immutable. Optional. The name of the resource. Used for
 	// creation and acquisition. When unset, the value of `metadata.name`
@@ -147,7 +145,7 @@ type ComputeTargetHTTPSProxyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
 	// A unique specifier for the ComputeTargetHTTPSProxy resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
@@ -158,7 +156,7 @@ type ComputeTargetHTTPSProxyStatus struct {
 
 	// The unique identifier for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.id
-	ProxyId *int64 `json:"proxyId,omitempty"`
+	ProxyId *int `json:"proxyId,omitempty"`
 
 	// The SelfLink for the resource.
 	// +kcc:proto:field=google.cloud.compute.v1.TargetHttpsProxy.self_link
