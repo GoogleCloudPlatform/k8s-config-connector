@@ -25,6 +25,7 @@ import (
 	"google.golang.org/api/option"
 
 	compute "cloud.google.com/go/compute/apiv1"
+	computev1beta "cloud.google.com/go/compute/apiv1beta"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 )
 
@@ -86,6 +87,18 @@ func (m *gcpClient) newNetworkAttachmentsClient(ctx context.Context) (*compute.N
 	if err != nil {
 		return nil, fmt.Errorf("building compute networkEdgeSecurityServices client: %w", err)
 
+	}
+	return client, err
+}
+
+func (m *gcpClient) newFutureReservationsClient(ctx context.Context) (*computev1beta.FutureReservationsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := computev1beta.NewFutureReservationsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute futureReservations client: %w", err)
 	}
 	return client, err
 }
