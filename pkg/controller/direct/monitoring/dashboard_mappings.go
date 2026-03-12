@@ -138,6 +138,30 @@ func AlertChart_ToProto(mapCtx *direct.MapContext, in *krm.AlertChart) *pb.Alert
 	return out
 }
 
+func Aggregation_FromProto(mapCtx *direct.MapContext, in *pb.Aggregation) *krm.Aggregation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Aggregation{}
+	out.AlignmentPeriod = direct.SecondsString_FromProto(mapCtx, in.GetAlignmentPeriod())
+	out.PerSeriesAligner = direct.Enum_FromProto(mapCtx, in.GetPerSeriesAligner())
+	out.CrossSeriesReducer = direct.Enum_FromProto(mapCtx, in.GetCrossSeriesReducer())
+	out.GroupByFields = in.GroupByFields
+	return out
+}
+
+func Aggregation_ToProto(mapCtx *direct.MapContext, in *krm.Aggregation) *pb.Aggregation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Aggregation{}
+	out.AlignmentPeriod = direct.SecondsString_ToProto(mapCtx, in.AlignmentPeriod, "alignmentPeriod")
+	out.PerSeriesAligner = direct.Enum_ToProto[pb.Aggregation_Aligner](mapCtx, in.PerSeriesAligner)
+	out.CrossSeriesReducer = direct.Enum_ToProto[pb.Aggregation_Reducer](mapCtx, in.CrossSeriesReducer)
+	out.GroupByFields = in.GroupByFields
+	return out
+}
+
 func Aggregation_AlignmentPeriod_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {
 	return direct.SecondsString_FromProto(mapCtx, in)
 }
@@ -147,6 +171,32 @@ func Aggregation_AlignmentPeriod_ToProto(mapCtx *direct.MapContext, in *string) 
 }
 
 // TODO: The format is not documented, we need to validate
+func XyChart_DataSet_FromProto(mapCtx *direct.MapContext, in *pb.XyChart_DataSet) *krm.XyChart_DataSet {
+	if in == nil {
+		return nil
+	}
+	out := &krm.XyChart_DataSet{}
+	out.TimeSeriesQuery = TimeSeriesQuery_FromProto(mapCtx, in.GetTimeSeriesQuery())
+	out.PlotType = direct.Enum_FromProto(mapCtx, in.GetPlotType())
+	out.LegendTemplate = direct.LazyPtr(in.GetLegendTemplate())
+	out.MinAlignmentPeriod = direct.SecondsString_FromProto(mapCtx, in.GetMinAlignmentPeriod())
+	out.TargetAxis = direct.Enum_FromProto(mapCtx, in.GetTargetAxis())
+	return out
+}
+
+func XyChart_DataSet_ToProto(mapCtx *direct.MapContext, in *krm.XyChart_DataSet) *pb.XyChart_DataSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.XyChart_DataSet{}
+	out.TimeSeriesQuery = TimeSeriesQuery_ToProto(mapCtx, in.TimeSeriesQuery)
+	out.PlotType = direct.Enum_ToProto[pb.XyChart_DataSet_PlotType](mapCtx, in.PlotType)
+	out.LegendTemplate = direct.ValueOf(in.LegendTemplate)
+	out.MinAlignmentPeriod = direct.SecondsString_ToProto(mapCtx, in.MinAlignmentPeriod, "minAlignmentPeriod")
+	out.TargetAxis = direct.Enum_ToProto[pb.XyChart_DataSet_TargetAxis](mapCtx, in.TargetAxis)
+	return out
+}
+
 func DataSet_MinAlignmentPeriod_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {
 	return direct.SecondsString_FromProto(mapCtx, in)
 }
@@ -157,6 +207,26 @@ func DataSet_MinAlignmentPeriod_ToProto(mapCtx *direct.MapContext, in *string) *
 }
 
 // TODO: The format is not documented, we need to validate
+func Scorecard_SparkChartView_FromProto(mapCtx *direct.MapContext, in *pb.Scorecard_SparkChartView) *krm.Scorecard_SparkChartView {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Scorecard_SparkChartView{}
+	out.SparkChartType = direct.Enum_FromProto(mapCtx, in.GetSparkChartType())
+	out.MinAlignmentPeriod = direct.SecondsString_FromProto(mapCtx, in.GetMinAlignmentPeriod())
+	return out
+}
+
+func Scorecard_SparkChartView_ToProto(mapCtx *direct.MapContext, in *krm.Scorecard_SparkChartView) *pb.Scorecard_SparkChartView {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Scorecard_SparkChartView{}
+	out.SparkChartType = direct.Enum_ToProto[pb.SparkChartType](mapCtx, in.SparkChartType)
+	out.MinAlignmentPeriod = direct.SecondsString_ToProto(mapCtx, in.MinAlignmentPeriod, "minAlignmentPeriod")
+	return out
+}
+
 func SparkChartView_MinAlignmentPeriod_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {
 	return direct.SecondsString_FromProto(mapCtx, in)
 }
@@ -167,6 +237,36 @@ func SparkChartView_MinAlignmentPeriod_ToProto(mapCtx *direct.MapContext, in *st
 }
 
 // TODO: The format is not documented, we need to validate
+func XyChart_FromProto(mapCtx *direct.MapContext, in *pb.XyChart) *krm.XyChart {
+	if in == nil {
+		return nil
+	}
+	out := &krm.XyChart{}
+	out.DataSets = direct.Slice_FromProto(mapCtx, in.DataSets, XyChart_DataSet_FromProto)
+	out.TimeshiftDuration = direct.Duration_FromProto(mapCtx, in.GetTimeshiftDuration())
+	out.Thresholds = direct.Slice_FromProto(mapCtx, in.Thresholds, Threshold_FromProto)
+	out.XAxis = XyChart_Axis_FromProto(mapCtx, in.GetXAxis())
+	out.YAxis = XyChart_Axis_FromProto(mapCtx, in.GetYAxis())
+	out.Y2Axis = XyChart_Axis_FromProto(mapCtx, in.GetY2Axis())
+	out.ChartOptions = ChartOptions_FromProto(mapCtx, in.GetChartOptions())
+	return out
+}
+
+func XyChart_ToProto(mapCtx *direct.MapContext, in *krm.XyChart) *pb.XyChart {
+	if in == nil {
+		return nil
+	}
+	out := &pb.XyChart{}
+	out.DataSets = direct.Slice_ToProto(mapCtx, in.DataSets, XyChart_DataSet_ToProto)
+	out.TimeshiftDuration = direct.Duration_ToProto(mapCtx, in.TimeshiftDuration)
+	out.Thresholds = direct.Slice_ToProto(mapCtx, in.Thresholds, Threshold_ToProto)
+	out.XAxis = XyChart_Axis_ToProto(mapCtx, in.XAxis)
+	out.YAxis = XyChart_Axis_ToProto(mapCtx, in.YAxis)
+	out.Y2Axis = XyChart_Axis_ToProto(mapCtx, in.Y2Axis)
+	out.ChartOptions = ChartOptions_ToProto(mapCtx, in.ChartOptions)
+	return out
+}
+
 func XyChart_TimeshiftDuration_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {
 	return direct.Duration_FromProto(mapCtx, in)
 }
@@ -176,12 +276,58 @@ func XyChart_TimeshiftDuration_ToProto(mapCtx *direct.MapContext, in *string) *d
 	return direct.Duration_ToProto(mapCtx, in)
 }
 
+func PieChart_PieChartDataSet_FromProto(mapCtx *direct.MapContext, in *pb.PieChart_PieChartDataSet) *krm.PieChart_PieChartDataSet {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PieChart_PieChartDataSet{}
+	out.TimeSeriesQuery = TimeSeriesQuery_FromProto(mapCtx, in.GetTimeSeriesQuery())
+	out.SliceNameTemplate = direct.LazyPtr(in.GetSliceNameTemplate())
+	out.MinAlignmentPeriod = direct.Duration_FromProto(mapCtx, in.GetMinAlignmentPeriod())
+	return out
+}
+
+func PieChart_PieChartDataSet_ToProto(mapCtx *direct.MapContext, in *krm.PieChart_PieChartDataSet) *pb.PieChart_PieChartDataSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PieChart_PieChartDataSet{}
+	out.TimeSeriesQuery = TimeSeriesQuery_ToProto(mapCtx, in.TimeSeriesQuery)
+	out.SliceNameTemplate = direct.ValueOf(in.SliceNameTemplate)
+	out.MinAlignmentPeriod = direct.Duration_ToProto(mapCtx, in.MinAlignmentPeriod)
+	return out
+}
+
 func PieChartDataSet_MinAlignmentPeriod_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {
 	return direct.Duration_FromProto(mapCtx, in)
 }
 
 func PieChartDataSet_MinAlignmentPeriod_ToProto(mapCtx *direct.MapContext, in *string) *durationpb.Duration {
 	return direct.Duration_ToProto(mapCtx, in)
+}
+
+func TimeSeriesTable_TableDataSet_FromProto(mapCtx *direct.MapContext, in *pb.TimeSeriesTable_TableDataSet) *krm.TimeSeriesTable_TableDataSet {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimeSeriesTable_TableDataSet{}
+	out.TimeSeriesQuery = TimeSeriesQuery_FromProto(mapCtx, in.GetTimeSeriesQuery())
+	out.TableTemplate = direct.LazyPtr(in.GetTableTemplate())
+	out.MinAlignmentPeriod = direct.Duration_FromProto(mapCtx, in.GetMinAlignmentPeriod())
+	out.TableDisplayOptions = TableDisplayOptions_FromProto(mapCtx, in.GetTableDisplayOptions())
+	return out
+}
+
+func TimeSeriesTable_TableDataSet_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesTable_TableDataSet) *pb.TimeSeriesTable_TableDataSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TimeSeriesTable_TableDataSet{}
+	out.TimeSeriesQuery = TimeSeriesQuery_ToProto(mapCtx, in.TimeSeriesQuery)
+	out.TableTemplate = direct.ValueOf(in.TableTemplate)
+	out.MinAlignmentPeriod = direct.Duration_ToProto(mapCtx, in.MinAlignmentPeriod)
+	out.TableDisplayOptions = TableDisplayOptions_ToProto(mapCtx, in.TableDisplayOptions)
+	return out
 }
 
 func TableDataSet_MinAlignmentPeriod_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {

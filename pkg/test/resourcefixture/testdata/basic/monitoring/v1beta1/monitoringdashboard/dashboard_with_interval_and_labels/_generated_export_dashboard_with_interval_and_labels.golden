@@ -13,7 +13,7 @@ spec:
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
-                alignmentPeriod: 1m0s
+                alignmentPeriod: "60"
                 perSeriesAligner: ALIGN_MEAN
               filter: metric.type="compute.googleapis.com/instance/cpu/utilization"
                 resource.type="gce_instance"
