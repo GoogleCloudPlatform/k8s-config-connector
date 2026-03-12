@@ -182,8 +182,6 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("etag", "abcdef0123A=")
 	addReplacement("serviceAccount.etag", "abcdef0123A=")
 	addReplacement("response.etag", "abcdef0123A=")
-	addReplacement("fingerprint", "abcdef0123A=")
-	addReplacement("labelFingerprint", "abcdef0123A=")
 
 	addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
