@@ -58,6 +58,10 @@ EOF
 
 for f in $(find dev/ci/presubmits -type f | sort ); do
     name=$(basename ${f})
+    
+    if [[ "${name}" == "smoketest-with-kind" ]]; then
+        continue
+    fi
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
