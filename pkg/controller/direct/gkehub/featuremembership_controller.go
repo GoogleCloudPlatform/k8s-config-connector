@@ -158,7 +158,7 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 	a.actual = feature
 	canonicalizedMID, found, err := matchWithCanonicalMemebrshipID(a.membershipID, feature)
 	if err != nil {
-		return false, nil
+		return false, err
 	}
 	if canonicalizedMID != "" {
 		a.membershipID = canonicalizedMID
@@ -191,7 +191,7 @@ func (a *gkeHubAdapter) patchMembershipSpec(ctx context.Context) ([]byte, error)
 	} else {
 		// if the feature does not exist, create a new one.
 		feature = &featureapi.Feature{
-			Name: fmt.Sprintf("projects/%s/locations/%s/features/%s", a.projectID, a.location, a.featureID),
+			Name: a.featureID,
 		}
 	}
 	mSpecs := make(map[string]featureapi.MembershipFeatureSpec)
