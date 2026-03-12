@@ -158,6 +158,22 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 		return "${processorID}"
 	case "processorVersions":
 		return "${processorVersionID}"
+	case "reservations":
+		return "${reservationID}"
+	case "clusters":
+		return "${clusterID}"
+	case "instances":
+		return "${instanceID}"
+	case "backendServices":
+		return "${backendServiceID}"
+	case "healthChecks":
+		return "${healthCheckID}"
+	case "urlMaps":
+		return "${urlMapID}"
+	case "targetPools":
+		return "${targetPoolID}"
+	case "backendBuckets":
+		return "${backendBucketID}"
 	case "keyHandles":
 		return "1a1a1a-222b-3cc3-d444-e555ee555555"
 	default:
