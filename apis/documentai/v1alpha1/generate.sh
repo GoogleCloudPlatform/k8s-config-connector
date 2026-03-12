@@ -37,4 +37,4 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg/controller/direct/documentai/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@v0.42.0 -w pkg/controller/direct/documentai/
