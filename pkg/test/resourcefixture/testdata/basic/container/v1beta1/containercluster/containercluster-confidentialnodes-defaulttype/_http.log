@@ -44,7 +44,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       "enabled": false
     },
     "confidentialNodes": {
-      "confidentialInstanceType": "SEV",
       "enabled": true
     },
     "controlPlaneEndpointsConfig": {
@@ -77,7 +76,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "networkPolicy": {},
     "nodeConfig": {
       "confidentialNodes": {
-        "confidentialInstanceType": "SEV",
         "enabled": true
       },
       "loggingConfig": {

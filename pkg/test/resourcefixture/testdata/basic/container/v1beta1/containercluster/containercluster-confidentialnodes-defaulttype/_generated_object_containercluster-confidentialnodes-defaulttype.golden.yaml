@@ -17,13 +17,11 @@ metadata:
   namespace: ${uniqueId}
 spec:
   confidentialNodes:
-    confidentialInstanceType: SEV
     enabled: true
   initialNodeCount: 1
   location: us-west2
   nodeConfig:
     confidentialNodes:
-      confidentialInstanceType: SEV
       enabled: true
     machineType: n2d-standard-2
   resourceID: containercluster-${uniqueId}
