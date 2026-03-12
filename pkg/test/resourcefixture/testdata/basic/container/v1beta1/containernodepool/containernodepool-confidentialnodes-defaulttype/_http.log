@@ -910,6 +910,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     },
     "config": {
       "confidentialNodes": {
+        "confidentialInstanceType": "SEV",
         "enabled": true
       },
       "loggingConfig": {
@@ -1004,6 +1005,7 @@ X-Xss-Protection: 0
       "sizeGb": "100"
     },
     "confidentialNodes": {
+      "confidentialInstanceType": "SEV",
       "enabled": true
     },
     "diskSizeGb": 100,
@@ -1131,6 +1133,7 @@ X-Xss-Protection: 0
       "sizeGb": "100"
     },
     "confidentialNodes": {
+      "confidentialInstanceType": "SEV",
       "enabled": true
     },
     "diskSizeGb": 100,
@@ -1258,6 +1261,7 @@ X-Xss-Protection: 0
       "sizeGb": "100"
     },
     "confidentialNodes": {
+      "confidentialInstanceType": "SEV",
       "enabled": true
     },
     "diskSizeGb": 100,
@@ -1385,6 +1389,7 @@ X-Xss-Protection: 0
       "sizeGb": "100"
     },
     "confidentialNodes": {
+      "confidentialInstanceType": "SEV",
       "enabled": true
     },
     "diskSizeGb": 100,
@@ -1927,6 +1932,7 @@ X-Xss-Protection: 0
       "sizeGb": "100"
     },
     "confidentialNodes": {
+      "confidentialInstanceType": "SEV",
       "enabled": true
     },
     "diskSizeGb": 100,
@@ -2054,6 +2060,7 @@ X-Xss-Protection: 0
       "sizeGb": "100"
     },
     "confidentialNodes": {
+      "confidentialInstanceType": "SEV",
       "enabled": true
     },
     "diskSizeGb": 100,
@@ -2181,6 +2188,7 @@ X-Xss-Protection: 0
       "sizeGb": "100"
     },
     "confidentialNodes": {
+      "confidentialInstanceType": "SEV",
       "enabled": true
     },
     "diskSizeGb": 100,
