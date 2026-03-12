@@ -197,10 +197,6 @@ func (a *AssignmentAdapter) moveAssignment(ctx context.Context, updateOp *direct
 	log := klog.FromContext(ctx)
 	log.V(2).Info("moving assignment to another reservation", "name", a.id.String())
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	report.AddField("reservationRef", currentReservation, a.destinationId)
-	structuredreporting.ReportDiff(ctx, report)
-
 	req := &pb.MoveAssignmentRequest{
 		Name:          a.actual.GetName(),
 		DestinationId: a.destinationId,
@@ -295,6 +291,9 @@ func (a *AssignmentAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 
 	// Case1: Move the assignment to another reservation
 	if currentReservation.String() != a.destinationId {
+		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+		report.AddField("reservation_id", currentReservation, a.destinationId)
+		structuredreporting.ReportDiff(ctx, report)
 		return a.moveAssignment(ctx, updateOp, desiredSpec, currentReservation.String())
 	}
 
