@@ -35,6 +35,13 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 
 	// Spec fields
 	f.SpecFields.Insert(".aggregate_reservation")
+	f.SpecFields.Insert(".aggregate_reservation.host_count")
+	f.SpecFields.Insert(".aggregate_reservation.in_use_host_count")
+	f.SpecFields.Insert(".aggregate_reservation.in_use_instance_count")
+	f.SpecFields.Insert(".aggregate_reservation.in_use_resources")
+	f.SpecFields.Insert(".aggregate_reservation.reserved_resources")
+	f.SpecFields.Insert(".aggregate_reservation.vm_family")
+	f.SpecFields.Insert(".aggregate_reservation.workload_type")
 	f.SpecFields.Insert(".auto_created_reservations_delete_time")
 	f.SpecFields.Insert(".auto_created_reservations_duration")
 	f.SpecFields.Insert(".auto_delete_auto_created_reservations")
@@ -45,6 +52,7 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".name")
 	f.SpecFields.Insert(".name_prefix")
 	f.SpecFields.Insert(".planning_status")
+	f.SpecFields.Insert(".protection_tier")
 	f.SpecFields.Insert(".reservation_mode")
 	f.SpecFields.Insert(".reservation_name")
 	f.SpecFields.Insert(".scheduling_type")
@@ -59,6 +67,7 @@ func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".kind")
 	f.StatusFields.Insert(".self_link")
 	f.StatusFields.Insert(".self_link_with_id")
+	f.StatusFields.Insert(".status")
 	f.StatusFields.Insert(".specific_sku_properties")
 	f.StatusFields.Insert(".zone")
 
