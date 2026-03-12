@@ -345,6 +345,11 @@ type CloudBuildTriggerStatus struct {
 // CloudBuildTriggerObservedState is the state of the CloudBuildTrigger resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.BuildTrigger
 type CloudBuildTriggerObservedState struct {
+	// Output only. Unique identifier of the trigger.
+	Id *string `json:"id,omitempty"`
+
+	// Output only. Time when the trigger was created.
+	CreateTime *string `json:"createTime,omitempty"`
 }
 
 // +genclient
