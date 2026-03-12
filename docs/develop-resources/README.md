@@ -1,8 +1,33 @@
-# Guide for Developing Config Connector Direct Resources 
+# Guide for Developing Config Connector Direct Resources
 
-We are thrilled to introduce the guide for adding Config Connector resources and fields! Resources built using this guide are called "Config Connector Direct Controllers" or "direct reconciliation", because they are built directly against the service API. Developing a new resource (or a new field) is much faster and more manageable using this new Direct Controller approach than previous approaches. We have changed some key resource reconciliation processes to be more reliable and Kubernetes-native. We have also made a revolutionary change to the test driven development and PR review process to improve test coverage for every field in a resource. 
+We are thrilled to introduce a new, Gemini-powered approach for adding Config Connector resources and fields. This workflow automates the most complex parts of the development process, making it significantly faster and more reliable.
 
-While there is more work to be done to further improve the process of adding Config Connector resources, we believe the guide is now ready to be shared broadly, such that Google developers, partners, and customers can add Config Connector resources. We will continue improving this guide to make it simpler and easier to develop new Config Connector resources. Please stay tuned for the upcoming changes.
+We now support two development workflows:
+
+---
+
+### 1. AI-Assisted Workflow (Recommended)
+
+This is the recommended and most efficient way to develop KCC resources. In this workflow, you will use the Gemini CLI to perform the implementation steps, while your role is to provide high-level prompts and verify the results.
+
+**[Get started with the AI-Assisted Workflow](./ai/README.md)**
+
+---
+
+### 2. Manual Workflow
+
+This is the original, manual process for developing direct resources. This approach is more time-consuming and requires a deeper understanding of the KCC codebase, but it gives you full control over every step of the implementation.
+
+**[Get started with the Manual Workflow](./scenarios/new-resource.md)**
+
+---
+
+## Reference Documents
+
+The following documents provide the technical foundation for the direct reconciliation framework. They are essential for verifying the work of the AI in the assisted workflow, and for guiding the implementation in the manual workflow.
+
+*   [API Conventions](./api-conventions)
+*   [Deep Dives](./deep-dives)
 
 # Introduction
 

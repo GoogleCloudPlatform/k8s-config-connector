@@ -16,6 +16,7 @@ apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: pubsubtopic-${uniqueId}
 ---
@@ -23,6 +24,7 @@ apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     # Abandoning the IAMPolicyMember as the underlying IAM binding is shared by
     # TestAcquire and TestCreateNoChangeUpdateDelete, and shouldn't be deleted
     # when only one of the test finishes.
@@ -40,6 +42,7 @@ apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     # Abandoning the IAMPolicyMember as the underlying IAM binding is shared by
     # TestAcquire and TestCreateNoChangeUpdateDelete, and shouldn't be deleted
     # when only one of the test finishes.
@@ -57,6 +60,7 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: bigquerydataset-${uniqueId}
 spec:
@@ -67,6 +71,7 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: bigquerytable-1-${uniqueId}
 spec:
@@ -88,6 +93,7 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
   name: bigquerytable-2-${uniqueId}
 spec:

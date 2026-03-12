@@ -26,13 +26,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -62,7 +62,9 @@ func (m *modelIAPSettings) client(ctx context.Context) (*gcp.IdentityAwareProxyA
 	return gcpClient, err
 }
 
-func (m *modelIAPSettings) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelIAPSettings) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.IAPSettings{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -144,7 +146,11 @@ func (a *IAPSettingsAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	desiredPb.Name = a.id.String() // explicitly set Name field for the underlying GCP API
-
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for _, path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 	req := &pb.UpdateIapSettingsRequest{
 		IapSettings: desiredPb,
 		UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},

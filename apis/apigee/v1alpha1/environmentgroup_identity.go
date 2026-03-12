@@ -27,7 +27,7 @@ import (
 
 const (
 	ApigeeEnvgroupIDToken  = "envgroups"
-	ApigeeEnvgroupIDFormat = apigeev1beta1.ApigeeOrganizationIDFormat + "/" + ApigeeEnvgroupIDToken + "/{{envgroupID}}"
+	ApigeeEnvgroupIDFormat = apigeev1beta1.ApigeeOrganizationURLFormat + "/" + ApigeeEnvgroupIDToken + "/{{envgroupID}}"
 )
 
 var _ identity.Identity = &ApigeeEnvgroupIdentity{}

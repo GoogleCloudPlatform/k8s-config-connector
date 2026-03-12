@@ -17,6 +17,7 @@ kind: Project
 metadata:
   name: project-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: abandon
 spec:
   resourceID: ${KCC_ATTACHED_CLUSTER_TEST_PROJECT}

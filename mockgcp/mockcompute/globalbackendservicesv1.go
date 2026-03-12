@@ -23,6 +23,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type GlobalBackendServicesV1 struct {
@@ -64,11 +65,23 @@ func (s *GlobalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertBack
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#backendService")
 
+	s.populateBackendServiceDefaults(obj)
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *GlobalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateBackendServiceRequest) (*pb.Operation, error) {
@@ -87,11 +100,54 @@ func (s *GlobalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateBack
 	// TODO: Implement helper to implement the full rules here
 	proto.Merge(obj, req.GetBackendServiceResource())
 
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) Patch(ctx context.Context, req *pb.PatchBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendServiceResource().GetName()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// TODO: Implement helper to implement the full rules here
+	proto.Merge(obj, req.GetBackendServiceResource())
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *GlobalBackendServicesV1) Delete(ctx context.Context, req *pb.DeleteBackendServiceRequest) (*pb.Operation, error) {
@@ -108,7 +164,15 @@ func (s *GlobalBackendServicesV1) Delete(ctx context.Context, req *pb.DeleteBack
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return &emptypb.Empty{}, nil
+	})
 }
 
 type globalBackendServiceName struct {

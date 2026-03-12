@@ -15,6 +15,8 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: iamserviceaccount-${uniqueId}
 spec:
   resourceID: iamserviceaccount${uniqueId}
@@ -22,6 +24,8 @@ spec:
 apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
 kind: AccessContextManagerAccessLevel
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: accesscontextmanageraccesslevel-${uniqueId}
 spec:
   accessPolicyRef:

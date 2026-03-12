@@ -25,10 +25,13 @@ import (
 	cctemplate "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/controller"
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/klog/v2"
 )
 
 type GenerateControllerOptions struct {
 	*options.GenerateOptions
+
+	ServiceName string
 
 	Resource options.Resource
 }
@@ -58,7 +61,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 				return fmt.Errorf("unable to parse --api-version: %w", err)
 			}
 
-			if baseOptions.ServiceName == "" {
+			if opt.ServiceName == "" {
 				return fmt.Errorf("--service is required")
 			}
 			return nil
@@ -79,7 +82,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 
 func RunController(ctx context.Context, o *GenerateControllerOptions) error {
 	gv, _ := schema.ParseGroupVersion(o.GenerateOptions.APIVersion)
-	gcpTokens := strings.Split(o.GenerateOptions.ServiceName, ".")
+	gcpTokens := strings.Split(o.ServiceName, ".")
 	version := gcpTokens[len(gcpTokens)-1]
 	if version[0] != 'v' {
 		return fmt.Errorf("--service does not contain GCP version")
@@ -95,6 +98,31 @@ func RunController(ctx context.Context, o *GenerateControllerOptions) error {
 	root, err := options.RepoRoot()
 	if err != nil {
 		return err
+	}
+
+	goPackage := serviceName + "/" + gv.Version
+	scaffolder := &scaffold.APIScaffolder{
+		BaseDir:         root + "/apis/",
+		GoPackage:       goPackage,
+		Group:           gv.Group,
+		Version:         gv.Version,
+		PackageProtoTag: o.ServiceName,
+	}
+	if scaffolder.RefsFileExist(o.Resource) {
+		klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToRefsFile(o.Resource))
+	} else {
+		err := scaffolder.AddRefsFile(o.Resource)
+		if err != nil {
+			return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(o.Resource), err)
+		}
+	}
+	if scaffolder.IdentityFileExist(o.Resource) {
+		klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToIdentityFile(o.Resource))
+	} else {
+		err := scaffolder.AddIdentityFile(o.Resource)
+		if err != nil {
+			return fmt.Errorf("add identity file %s: %w", scaffolder.PathToIdentityFile(o.Resource), err)
+		}
 	}
 
 	c := scaffold.NewControllerBuilder(root, serviceName, o.Resource.ProtoName)

@@ -42,10 +42,14 @@ func main() {
 func run(ctx context.Context) error {
 	klog.InitFlags(nil)
 
+	var opt protogen.ConvertOptions
+	opt.NormalizeLRO = true
+
 	protoVersion := 3
 	flag.IntVar(&protoVersion, "proto-version", protoVersion, "use proto version (2 or 3)")
 	protoPackage := ""
 	flag.StringVar(&protoPackage, "proto-package", protoPackage, "protobuf package to generate")
+	flag.BoolVar(&opt.NormalizeLRO, "normalize-lro", opt.NormalizeLRO, "normalize long-running operations to our standard LRO")
 	flag.Parse()
 
 	if protoPackage == "" {
@@ -64,7 +68,7 @@ func run(ctx context.Context) error {
 		return fmt.Errorf("parsing json %q (with DisallowUnknownFields): %w", p, err)
 	}
 
-	c := protogen.NewOpenAPIConverter(protoPackage, doc)
+	c := protogen.NewOpenAPIConverter(protoPackage, doc, opt)
 	fileDescriptor, err := c.Convert(ctx)
 	if err != nil {
 		return fmt.Errorf("convert failed: %w", err)

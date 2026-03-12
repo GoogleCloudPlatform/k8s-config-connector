@@ -200,7 +200,6 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
     "createTime": "2024-04-01T12:34:56.123456Z",

@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 const (
@@ -70,7 +71,9 @@ type gkeHubAdapter struct {
 var _ directbase.Adapter = &gkeHubAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *gkeHubModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	gcpClient, err := newGCPClient(m.config)
 	if err != nil {
 		return nil, err
@@ -236,7 +239,7 @@ func (a *gkeHubAdapter) waitForOp(ctx context.Context, op *featureapi.Operation)
 
 func (a *gkeHubAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating gkehubfeaturemembership", "obj", u)
 
 	_, err := a.patchMembershipSpec(ctx)
@@ -251,11 +254,18 @@ func (a *gkeHubAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 func (a *gkeHubAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating object", "u", u)
 	actual := a.actual.MembershipSpecs[a.membershipID]
 	//  There are no output fields in the api Object, so we can compare the desired and the actaul directly.
-	if len(diffFeatureMembership(&a.desired.Spec, &actual)) != 0 {
+	diffPaths := diffFeatureMembership(&a.desired.Spec, &actual)
+	if len(diffPaths) != 0 {
+		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+		for _, path := range diffPaths {
+			report.AddField(path, nil, nil)
+		}
+		structuredreporting.ReportDiff(ctx, report)
+
 		log.V(2).Info("diff detected, patching gkehubfeaturemembership")
 		if _, err := a.patchMembershipSpec(ctx); err != nil {
 			return fmt.Errorf("patching gkehubfeaturemembership failed: %w", err)

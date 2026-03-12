@@ -17,8 +17,9 @@ limitations under the License.
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -51,7 +52,7 @@ type WorkerConfig struct {
 
 type NetworkConfig struct {
 	// +required
-	PeeredNetworkRef refv1beta1.ComputeNetworkRef `json:"peeredNetworkRef,omitempty"`
+	PeeredNetworkRef computev1beta1.ComputeNetworkRef `json:"peeredNetworkRef,omitempty"`
 	// +optional
 	EgressOption string `json:"egressOption,omitempty"`
 	// +optional
@@ -97,7 +98,8 @@ type NetworkConfigState struct {
 	PeeredNetworkIPRange string `json:"peeredNetworkIPRange,omitempty"`
 }
 
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=beta"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=beta"
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // CloudBuildWorkerPool is the Schema for the CloudBuild WorkerPool API
 // +kubebuilder:subresource:status

@@ -11,14 +11,14 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: computetargetsslproxy-${uniqueId}
+  name: ${targetSslProxyID}
   namespace: ${uniqueId}
 spec:
   backendServiceRef:
-    name: computebackendservice-${uniqueId}
-  resourceID: computetargetsslproxy-${uniqueId}
+    name: ${backendServiceID}
+  resourceID: ${targetSslProxyID}
   sslCertificates:
-  - name: computesslcertificate-${uniqueId}
+  - name: ${sslCertificateID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -29,4 +29,4 @@ status:
   creationTimestamp: "1970-01-01T00:00:00Z"
   observedGeneration: 2
   proxyId: 1111111111111111
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}

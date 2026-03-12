@@ -62,12 +62,15 @@ func (s *ArtifactRegistryV1) CreateRepository(ctx context.Context, req *pb.Creat
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Repository).(*pb.Repository)
+	obj := ProtoClone(req.Repository)
 	obj.Name = fqn
 
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
+
+	obj.RegistryUri = fmt.Sprintf("%s-docker.pkg.dev/%s/%s", name.Location, name.Project.ID, name.Repository)
+
 	if err := s.populateDefaults(ctx, obj); err != nil {
 		return nil, err
 	}
@@ -78,9 +81,10 @@ func (s *ArtifactRegistryV1) CreateRepository(ctx context.Context, req *pb.Creat
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		retObj := proto.Clone(obj).(*pb.Repository)
+		retObj := ProtoClone(obj)
 		retObj.CreateTime = nil
 		retObj.UpdateTime = nil
+		retObj.RegistryUri = ""
 		return retObj, nil
 	})
 }
@@ -93,10 +97,18 @@ func (s *ArtifactRegistryV1) populateDefaults(ctx context.Context, obj *pb.Repos
 	}
 
 	if obj.VulnerabilityScanningConfig == nil {
-		obj.VulnerabilityScanningConfig = &pb.Repository_VulnerabilityScanningConfig{
-			EnablementState:       pb.Repository_VulnerabilityScanningConfig_SCANNING_DISABLED,
-			EnablementStateReason: "API containerscanning.googleapis.com is not enabled.",
-			LastEnableTime:        timestamppb.New(now),
+		if obj.Mode == pb.Repository_VIRTUAL_REPOSITORY {
+			obj.VulnerabilityScanningConfig = &pb.Repository_VulnerabilityScanningConfig{
+				EnablementState:       pb.Repository_VulnerabilityScanningConfig_SCANNING_UNSUPPORTED,
+				EnablementStateReason: "Repository mode VIRTUAL_REPOSITORY is not supported.",
+				LastEnableTime:        timestamppb.New(now),
+			}
+		} else {
+			obj.VulnerabilityScanningConfig = &pb.Repository_VulnerabilityScanningConfig{
+				EnablementState:       pb.Repository_VulnerabilityScanningConfig_SCANNING_DISABLED,
+				EnablementStateReason: "API containerscanning.googleapis.com is not enabled.",
+				LastEnableTime:        timestamppb.New(now),
+			}
 		}
 	}
 
@@ -138,7 +150,9 @@ func (s *ArtifactRegistryV1) UpdateRepository(ctx context.Context, req *pb.Updat
 		return nil, err
 	}
 
-	return obj, nil
+	retObj := ProtoClone(obj)
+	retObj.RegistryUri = ""
+	return retObj, nil
 }
 
 func (s *ArtifactRegistryV1) DeleteRepository(ctx context.Context, req *pb.DeleteRepositoryRequest) (*longrunning.Operation, error) {

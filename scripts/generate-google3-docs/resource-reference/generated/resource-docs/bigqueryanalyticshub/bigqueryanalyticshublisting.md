@@ -149,7 +149,7 @@ source:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed BigQueryAnalyticsHubDataExchange resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dataexchanges/{{dataexchangeID}}".{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed BigQueryAnalyticsHubDataExchange resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/dataExchanges/{{dataExchangeID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -399,7 +399,7 @@ source:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed BigQueryDataset resource. Should be in the format "projects/<projectID>/datasets/<datasetID>".{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally-managed BigQueryDataset resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -499,7 +499,7 @@ source:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}If provided must be in the format `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally-managed BigQueryTable resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -509,7 +509,7 @@ source:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.name` field of a `BigQueryTable` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a BigQueryTable resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -519,7 +519,7 @@ source:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.namespace` field of a `BigQueryTable` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a BigQueryTable resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

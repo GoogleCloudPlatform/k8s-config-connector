@@ -1,0 +1,50 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1beta1
+kind: CloudDeployDeliveryPipeline
+metadata:
+  annotations:
+    key1: value1
+    key2: value2
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: clouddeploydeliverypipeline-full-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated full delivery pipeline
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  serialPipeline:
+    stages:
+    - profiles:
+      - profile1
+      - profile2
+      strategy:
+        canary:
+          canaryDeployment:
+            percentages:
+            - 50
+            verify: false
+          runtimeConfig:
+            kubernetes:
+              serviceNetworking:
+                deployment: my-deployment
+                service: my-service
+      targetID: my-fake-target
+  suspended: true
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

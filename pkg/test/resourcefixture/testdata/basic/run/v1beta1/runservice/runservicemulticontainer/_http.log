@@ -1,0 +1,1038 @@
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "service \"projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services?alt=json&serviceId=runservice-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "ingress": "INGRESS_TRAFFIC_ALL",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "launchStage": "GA",
+  "template": {
+    "containers": [
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "name": "hello-1",
+        "ports": [
+          {
+            "containerPort": 8080
+          }
+        ],
+        "volumeMounts": [
+          {
+            "mountPath": "/mnt",
+            "name": "empty-dir-volume"
+          }
+        ]
+      },
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "name": "hello-2"
+      }
+    ],
+    "volumes": [
+      {
+        "emptyDir": {
+          "medium": "MEMORY",
+          "sizeLimit": "256Mi"
+        },
+        "name": "empty-dir-volume"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-1",
+          "ports": [
+            {
+              "containerPort": 8080
+            }
+          ],
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/mnt",
+              "name": "empty-dir-volume"
+            }
+          ]
+        },
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-2",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "emptyDir": {
+            "medium": "MEMORY",
+            "sizeLimit": "256Mi"
+          },
+          "name": "empty-dir-volume"
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-1",
+          "ports": [
+            {
+              "containerPort": 8080
+            }
+          ],
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/mnt",
+              "name": "empty-dir-volume"
+            }
+          ]
+        },
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-2",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "emptyDir": {
+            "medium": "MEMORY",
+            "sizeLimit": "256Mi"
+          },
+          "name": "empty-dir-volume"
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-1",
+          "ports": [
+            {
+              "containerPort": 8080
+            }
+          ],
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/mnt",
+              "name": "empty-dir-volume"
+            }
+          ]
+        },
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-2",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "emptyDir": {
+            "medium": "MEMORY",
+            "sizeLimit": "256Mi"
+          },
+          "name": "empty-dir-volume"
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "ingress": "INGRESS_TRAFFIC_ALL",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifier": "test@google.com",
+  "launchStage": "GA",
+  "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+  "template": {
+    "containers": [
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "name": "hello-1",
+        "ports": [
+          {
+            "containerPort": 8080
+          }
+        ],
+        "resources": {
+          "limits": {
+            "cpu": "1000m",
+            "memory": "512Mi"
+          }
+        },
+        "volumeMounts": [
+          {
+            "mountPath": "/mnt",
+            "name": "empty-dir-volume"
+          }
+        ]
+      },
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "name": "hello-2",
+        "resources": {
+          "limits": {
+            "cpu": "1000m",
+            "memory": "512Mi"
+          }
+        }
+      }
+    ],
+    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+    "maxInstanceRequestConcurrency": 80,
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "timeout": "300s",
+    "volumes": [
+      {
+        "emptyDir": {
+          "medium": "MEMORY",
+          "sizeLimit": "256Mi"
+        },
+        "name": "empty-dir-volume"
+      }
+    ]
+  },
+  "terminalCondition": {
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
+    "state": "CONDITION_SUCCEEDED",
+    "type": "Ready"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "ingress": "INGRESS_TRAFFIC_ALL",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "launchStage": "GA",
+  "template": {
+    "containers": [
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "name": "hello-1",
+        "ports": [
+          {
+            "containerPort": 8080
+          }
+        ],
+        "resources": {
+          "limits": {
+            "cpu": "1000m",
+            "memory": "512Mi"
+          }
+        },
+        "volumeMounts": [
+          {
+            "mountPath": "/mnt2",
+            "name": "empty-dir-volume"
+          }
+        ]
+      },
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "name": "hello-2",
+        "resources": {
+          "limits": {
+            "cpu": "1000m",
+            "memory": "512Mi"
+          }
+        }
+      }
+    ],
+    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+    "maxInstanceRequestConcurrency": 80,
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "timeout": "300s",
+    "volumes": [
+      {
+        "emptyDir": {
+          "medium": "MEMORY",
+          "sizeLimit": "512Mi"
+        },
+        "name": "empty-dir-volume"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-1",
+          "ports": [
+            {
+              "containerPort": 8080
+            }
+          ],
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/mnt2",
+              "name": "empty-dir-volume"
+            }
+          ]
+        },
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-2",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "emptyDir": {
+            "medium": "MEMORY",
+            "sizeLimit": "512Mi"
+          },
+          "name": "empty-dir-volume"
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-1",
+          "ports": [
+            {
+              "containerPort": 8080
+            }
+          ],
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/mnt2",
+              "name": "empty-dir-volume"
+            }
+          ]
+        },
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-2",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "emptyDir": {
+            "medium": "MEMORY",
+            "sizeLimit": "512Mi"
+          },
+          "name": "empty-dir-volume"
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-1",
+          "ports": [
+            {
+              "containerPort": 8080
+            }
+          ],
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/mnt2",
+              "name": "empty-dir-volume"
+            }
+          ]
+        },
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-2",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "emptyDir": {
+            "medium": "MEMORY",
+            "sizeLimit": "512Mi"
+          },
+          "name": "empty-dir-volume"
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "ingress": "INGRESS_TRAFFIC_ALL",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifier": "test@google.com",
+  "launchStage": "GA",
+  "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+  "template": {
+    "containers": [
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "name": "hello-1",
+        "ports": [
+          {
+            "containerPort": 8080
+          }
+        ],
+        "resources": {
+          "limits": {
+            "cpu": "1000m",
+            "memory": "512Mi"
+          }
+        },
+        "volumeMounts": [
+          {
+            "mountPath": "/mnt2",
+            "name": "empty-dir-volume"
+          }
+        ]
+      },
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "name": "hello-2",
+        "resources": {
+          "limits": {
+            "cpu": "1000m",
+            "memory": "512Mi"
+          }
+        }
+      }
+    ],
+    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+    "maxInstanceRequestConcurrency": 80,
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "timeout": "300s",
+    "volumes": [
+      {
+        "emptyDir": {
+          "medium": "MEMORY",
+          "sizeLimit": "512Mi"
+        },
+        "name": "empty-dir-volume"
+      }
+    ]
+  },
+  "terminalCondition": {
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
+    "state": "CONDITION_SUCCEEDED",
+    "type": "Ready"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-1",
+          "ports": [
+            {
+              "containerPort": 8080
+            }
+          ],
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/mnt2",
+              "name": "empty-dir-volume"
+            }
+          ]
+        },
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-2",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "emptyDir": {
+            "medium": "MEMORY",
+            "sizeLimit": "512Mi"
+          },
+          "name": "empty-dir-volume"
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-1",
+          "ports": [
+            {
+              "containerPort": 8080
+            }
+          ],
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/mnt2",
+              "name": "empty-dir-volume"
+            }
+          ]
+        },
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-2",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "emptyDir": {
+            "medium": "MEMORY",
+            "sizeLimit": "512Mi"
+          },
+          "name": "empty-dir-volume"
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-1",
+          "ports": [
+            {
+              "containerPort": 8080
+            }
+          ],
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/mnt2",
+              "name": "empty-dir-volume"
+            }
+          ]
+        },
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "name": "hello-2",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "emptyDir": {
+            "medium": "MEMORY",
+            "sizeLimit": "512Mi"
+          },
+          "name": "empty-dir-volume"
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

@@ -30,7 +30,7 @@ GOOGLEAPIS_SHA=$(git ls-remote --exit-code https://github.com/googleapis/googlea
 cat > git.versions <<EOF
 # This file is generated - DO NOT EDIT
 #
-# This file holds the pinned SHAs for our repos
+# This file holds the pinned SHAs for mockgcp
 # It is generated using dev/tasks/update-mockgcp
 #
 https://github.com/googleapis/googleapis ${GOOGLEAPIS_SHA}

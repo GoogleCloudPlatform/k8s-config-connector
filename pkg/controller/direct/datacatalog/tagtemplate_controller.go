@@ -32,7 +32,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 
-	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
@@ -41,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -81,7 +81,9 @@ func (m *tagTemplateModel) client(ctx context.Context, projectID string) (*api.C
 	return gcpClient, nil
 }
 
-func (m *tagTemplateModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *tagTemplateModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.DataCatalogTagTemplate{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -180,14 +182,18 @@ func (a *tagTemplateAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 	desired.Name = a.id.String()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	// The UpdateTagTemplate RPC can only update certain top-level fields.
 	// Template fields (the 'fields' map) are managed via separate RPCs (Create/Update/DeleteTagTemplateField).
 	// Therefore, we only compare and update the mutable top-level fields.
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(desired.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, desired.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	if !reflect.DeepEqual(desired.IsPubliclyReadable, a.actual.IsPubliclyReadable) {
+		report.AddField("is_publicly_readable", a.actual.IsPubliclyReadable, desired.IsPubliclyReadable)
 		updateMask.Paths = append(updateMask.Paths, "is_publicly_readable")
 	}
 	// Note: 'fields' map is intentionally not included in the updateMask as it's managed separately.
@@ -203,6 +209,7 @@ func (a *tagTemplateAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		// For now, just return the current actual state.
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		req := &pb.UpdateTagTemplateRequest{
 			TagTemplate: desired,
 			UpdateMask:  updateMask,

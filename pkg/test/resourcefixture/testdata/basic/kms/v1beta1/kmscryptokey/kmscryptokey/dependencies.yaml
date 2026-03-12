@@ -15,6 +15,8 @@
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: kmscryptokey-${uniqueId}
 spec:
   location: us-central1

@@ -23,7 +23,7 @@ package clouddms
 import (
 	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddms/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	status "google.golang.org/genproto/googleapis/rpc/status"
 )
@@ -82,7 +82,7 @@ func VpcPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeringConf
 	}
 	out := &krm.VpcPeeringConfig{}
 	if in.GetVpcName() != "" {
-		out.VpcNameRef = &refsv1beta1.ComputeNetworkRef{External: in.GetVpcName()}
+		out.VpcNameRef = &computev1beta1.ComputeNetworkRef{External: in.GetVpcName()}
 	}
 	out.Subnet = direct.LazyPtr(in.GetSubnet())
 	return out

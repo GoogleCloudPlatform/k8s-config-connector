@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -42,7 +44,7 @@ type refNormalizer struct {
 	ctx     context.Context
 	kube    client.Reader
 	src     client.Object
-	project refs.Project
+	project refs.ProjectIdentity
 }
 
 func (r *refNormalizer) VisitField(path string, v any) error {
@@ -54,8 +56,8 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		}
 	}
 
-	if networkRef, ok := v.(*refs.ComputeNetworkRef); ok {
-		if err := networkRef.Normalize(r.ctx, r.kube, r.src); err != nil {
+	if networkRef, ok := v.(*computev1beta1.ComputeNetworkRef); ok {
+		if err := networkRef.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
 			return err
 		}
 	}
@@ -109,9 +111,10 @@ func RefineComputeSubnetworkRef(ctx context.Context, reader client.Reader, src c
 		}, nil
 	}
 
-	// Validate and refine the shared-VPC network format to full URL. This is required by GCP service.
+	// Validate and refine the shared-VPC network format to full URL. This is required by GCP service.
 	fullURLPrefix := "https://www.googleapis.com/compute/v1/"
 	ref.External = strings.TrimPrefix(ref.External, fullURLPrefix)
+	tokens = strings.Split(ref.External, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "subnetworks" {
 		return &refs.ComputeSubnetworkRef{
 			External: fullURLPrefix + "projects/" + tokens[1] + "/regions/" + tokens[3] + "/subnetworks/" + tokens[5],

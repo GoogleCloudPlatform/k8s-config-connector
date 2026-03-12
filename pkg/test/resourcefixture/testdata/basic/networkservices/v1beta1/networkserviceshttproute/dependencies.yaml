@@ -15,6 +15,8 @@
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesMesh
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: networkservicesmesh-1-${uniqueId}
 spec:
   location: "global"
@@ -24,6 +26,8 @@ spec:
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGateway
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: networkservicesgateway-1-${uniqueId}
 spec:
   location: "global"
@@ -38,6 +42,8 @@ spec:
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesMesh
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: networkservicesmesh-2-${uniqueId}
 spec:
   location: "global"
@@ -47,6 +53,8 @@ spec:
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGateway
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: networkservicesgateway-2-${uniqueId}
 spec:
   location: "global"
@@ -61,6 +69,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computebackendservice-1-${uniqueId}
 spec:
   loadBalancingScheme: "INTERNAL_SELF_MANAGED"
@@ -69,6 +79,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computebackendservice-2-${uniqueId}
 spec:
   loadBalancingScheme: "INTERNAL_SELF_MANAGED"

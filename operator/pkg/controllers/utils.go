@@ -676,3 +676,73 @@ func applyPprofConfigToContainerArg(container map[string]interface{}, pprofConfi
 	}
 	return nil
 }
+
+// ApplyMetadataHost injects the GCE_METADATA_HOST environment variable into controller containers.
+// This enables Config Connector to work in IPv6-only GKE clusters where the default
+// metadata IP (169.254.169.254) is not reachable.
+func ApplyMetadataHost(m *manifest.Objects, targetControllerName string, controllerGVK schema.GroupVersionKind, metadataHost string) error {
+	if metadataHost == "" {
+		return nil
+	}
+
+	count := 0
+	for _, item := range m.Items {
+		if item.GroupVersionKind() != controllerGVK {
+			continue
+		}
+		if !strings.HasPrefix(item.GetName(), targetControllerName) {
+			continue
+		}
+		if err := item.MutateContainers(addMetadataHostEnvVarFn(metadataHost)); err != nil {
+			return fmt.Errorf("failed to apply metadata host to %s/%s: %w", item.Kind, item.GetName(), err)
+		}
+		count++
+	}
+	if count == 0 {
+		return fmt.Errorf("metadata host customization for %s: controller not found in manifest", targetControllerName)
+	}
+	return nil
+}
+
+// addMetadataHostEnvVarFn returns a function that adds the GCE_METADATA_HOST environment variable to a container.
+func addMetadataHostEnvVarFn(metadataHost string) func(container map[string]interface{}) error {
+	return func(container map[string]interface{}) error {
+		// Get existing env vars or create empty slice
+		existingEnv, found, err := unstructured.NestedSlice(container, "env")
+		if err != nil {
+			return fmt.Errorf("error getting container env list: %w", err)
+		}
+		if !found {
+			existingEnv = []interface{}{}
+		}
+
+		// Check if GCE_METADATA_HOST is already set - if so, don't override it
+		for _, e := range existingEnv {
+			envMap, ok := e.(map[string]interface{})
+			if !ok {
+				continue
+			}
+			name, _, err := unstructured.NestedString(envMap, "name")
+			if err != nil {
+				return fmt.Errorf("error getting env var name: %w", err)
+			}
+			if name == "GCE_METADATA_HOST" {
+				// Already set, preserve existing value
+				return nil
+			}
+		}
+
+		// Add new env var
+		newEnvVar := map[string]interface{}{
+			"name":  "GCE_METADATA_HOST",
+			"value": metadataHost,
+		}
+		existingEnv = append(existingEnv, newEnvVar)
+
+		if err := unstructured.SetNestedSlice(container, existingEnv, "env"); err != nil {
+			return fmt.Errorf("failed to set env vars: %w", err)
+		}
+
+		return nil
+	}
+}

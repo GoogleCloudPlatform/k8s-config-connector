@@ -3,7 +3,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -16,6 +15,7 @@ Vary: X-Origin
     ]
   },
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -72,7 +72,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
@@ -159,6 +158,7 @@ Vary: X-Origin
     }
   ],
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -215,7 +215,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -228,6 +227,7 @@ Vary: X-Origin
     ]
   },
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false

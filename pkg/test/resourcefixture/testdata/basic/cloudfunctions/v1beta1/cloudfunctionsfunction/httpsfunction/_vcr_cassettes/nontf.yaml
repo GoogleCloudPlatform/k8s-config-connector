@@ -125,7 +125,7 @@ interactions:
       host: cloudfunctions.googleapis.com
       remote_addr: ""
       request_uri: ""
-      body: '{"entryPoint":"helloGET","httpsTrigger":{"securityLevel":"SECURE_OPTIONAL"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"name":"projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f","runtime":"nodejs10","sourceArchiveUrl":"gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"}'
+      body: '{"entryPoint":"helloGET","httpsTrigger":{"securityLevel":"SECURE_OPTIONAL"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"name":"projects/example-project/locations/us-west2/functions/cloudfunctionsfunction-1xnjudyudz13f","runtime":"nodejs20","sourceArchiveUrl":"gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"}'
       form: {}
       headers:
         Content-Type:
@@ -159,7 +159,7 @@ interactions:
                 "cnrm-test": "true",
                 "managed-by-cnrm": "true"
               },
-              "runtime": "nodejs10"
+              "runtime": "nodejs20"
             },
             "versionId": "1",
             "updateTime": "2024-04-25T01:20:32Z"
@@ -216,7 +216,7 @@ interactions:
                 "cnrm-test": "true",
                 "managed-by-cnrm": "true"
               },
-              "runtime": "nodejs10"
+              "runtime": "nodejs20"
             },
             "versionId": "1",
             "updateTime": "2024-04-25T01:21:42Z",
@@ -244,7 +244,7 @@ interactions:
               "cnrm-test": "true",
               "managed-by-cnrm": "true"
             },
-            "runtime": "nodejs10",
+            "runtime": "nodejs20",
             "ingressSettings": "ALLOW_ALL",
             "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
             "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
@@ -303,7 +303,7 @@ interactions:
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
-          "runtime": "nodejs10",
+          "runtime": "nodejs20",
           "ingressSettings": "ALLOW_ALL",
           "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
           "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
@@ -361,7 +361,7 @@ interactions:
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
-          "runtime": "nodejs10",
+          "runtime": "nodejs20",
           "ingressSettings": "ALLOW_ALL",
           "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
           "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
@@ -419,7 +419,7 @@ interactions:
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
-          "runtime": "nodejs10",
+          "runtime": "nodejs20",
           "ingressSettings": "ALLOW_ALL",
           "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
           "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
@@ -477,7 +477,7 @@ interactions:
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
-          "runtime": "nodejs10",
+          "runtime": "nodejs20",
           "ingressSettings": "ALLOW_ALL",
           "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
           "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
@@ -535,7 +535,7 @@ interactions:
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
-          "runtime": "nodejs10",
+          "runtime": "nodejs20",
           "ingressSettings": "ALLOW_ALL",
           "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
           "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
@@ -593,7 +593,7 @@ interactions:
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
-          "runtime": "nodejs10",
+          "runtime": "nodejs20",
           "ingressSettings": "ALLOW_ALL",
           "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
           "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
@@ -651,7 +651,7 @@ interactions:
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
-          "runtime": "nodejs10",
+          "runtime": "nodejs20",
           "ingressSettings": "ALLOW_ALL",
           "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
           "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
@@ -709,7 +709,7 @@ interactions:
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
-          "runtime": "nodejs10",
+          "runtime": "nodejs20",
           "ingressSettings": "ALLOW_ALL",
           "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
           "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
@@ -767,7 +767,7 @@ interactions:
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
-          "runtime": "nodejs10",
+          "runtime": "nodejs20",
           "ingressSettings": "ALLOW_ALL",
           "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
           "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
@@ -791,7 +791,7 @@ interactions:
       host: cloudfunctions.googleapis.com
       remote_addr: ""
       request_uri: ""
-      body: '{"availableMemoryMb":256,"ingressSettings":"ALLOW_ALL","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"runtime":"nodejs10","timeout":"120s"}'
+      body: '{"availableMemoryMb":256,"ingressSettings":"ALLOW_ALL","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"runtime":"nodejs20","timeout":"120s"}'
       form: {}
       headers:
         Content-Type:
@@ -832,7 +832,7 @@ interactions:
                 "cnrm-test": "true",
                 "managed-by-cnrm": "true"
               },
-              "runtime": "nodejs10",
+              "runtime": "nodejs20",
               "ingressSettings": "ALLOW_ALL",
               "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
               "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
@@ -901,7 +901,7 @@ interactions:
                 "cnrm-test": "true",
                 "managed-by-cnrm": "true"
               },
-              "runtime": "nodejs10",
+              "runtime": "nodejs20",
               "ingressSettings": "ALLOW_ALL",
               "buildId": "5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
               "buildName": "projects/123456789/locations/us-west2/builds/5aeba6a2-b6fa-4219-a634-e24cd84f86d9",
@@ -934,7 +934,7 @@ interactions:
               "cnrm-test": "true",
               "managed-by-cnrm": "true"
             },
-            "runtime": "nodejs10",
+            "runtime": "nodejs20",
             "ingressSettings": "ALLOW_ALL",
             "buildId": "68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
             "buildName": "projects/123456789/locations/us-west2/builds/68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
@@ -993,7 +993,7 @@ interactions:
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
-          "runtime": "nodejs10",
+          "runtime": "nodejs20",
           "ingressSettings": "ALLOW_ALL",
           "buildId": "68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
           "buildName": "projects/123456789/locations/us-west2/builds/68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
@@ -1051,7 +1051,7 @@ interactions:
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
-          "runtime": "nodejs10",
+          "runtime": "nodejs20",
           "ingressSettings": "ALLOW_ALL",
           "buildId": "68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
           "buildName": "projects/123456789/locations/us-west2/builds/68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
@@ -1109,7 +1109,7 @@ interactions:
             "cnrm-test": "true",
             "managed-by-cnrm": "true"
           },
-          "runtime": "nodejs10",
+          "runtime": "nodejs20",
           "ingressSettings": "ALLOW_ALL",
           "buildId": "68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",
           "buildName": "projects/123456789/locations/us-west2/builds/68a7d30b-fc3f-404d-a4a5-1e4b63ec71c1",

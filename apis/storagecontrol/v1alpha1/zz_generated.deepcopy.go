@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -263,7 +264,7 @@ func (in *StorageFolderParent) DeepCopyInto(out *StorageFolderParent) {
 	}
 	if in.StorageBucketRef != nil {
 		in, out := &in.StorageBucketRef, &out.StorageBucketRef
-		*out = new(v1beta1.StorageBucketRef)
+		*out = new(storagev1beta1.StorageBucketRef)
 		**out = **in
 	}
 }

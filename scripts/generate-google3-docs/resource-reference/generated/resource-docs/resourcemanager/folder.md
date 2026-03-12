@@ -35,7 +35,7 @@ children and wait for them to be gone from the Kubernetes API Server first.
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/resource-manager/reference/rest/v2/folders">/resource-manager/reference/rest/v2/folders</a></td>
+<td><a href="/resource-manager/reference/rest/v1/folders">/resource-manager/reference/rest/v1/folders</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>

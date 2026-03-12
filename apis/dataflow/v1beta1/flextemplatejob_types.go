@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -82,7 +83,7 @@ type DataflowFlexTemplateJobSpec struct {
 
 	// Network to which VMs will be assigned.  If empty or unspecified,
 	//  the service will use the network "default".
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Subnetwork to which VMs will be assigned, if desired. You can specify a
 	//  subnetwork using either a complete URL or an abbreviated path. Expected to
@@ -103,7 +104,7 @@ type DataflowFlexTemplateJobSpec struct {
 	*/
 
 	// The Cloud KMS key for the job.
-	KmsKeyNameRef *refs.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
+	KMSKeyNameRef *refs.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
 
 	// Configuration for VM IPs.
 	IPConfiguration *string `json:"ipConfiguration,omitempty"`
@@ -143,7 +144,7 @@ type DataflowFlexTemplateJobSpec struct {
 	// Docker registry location of container image to use for the 'worker harness.
 	//  Default is the container for the version of the SDK. Note this field is
 	//  only valid for portable pipelines.
-	SDKContainerImage *string `json:"sdkContainerImage,omitempty"`
+	SdkContainerImage *string `json:"sdkContainerImage,omitempty"`
 
 	/* NOTYET
 	// Worker disk size, in gigabytes.
@@ -270,7 +271,10 @@ type DataflowFlexTemplateJobObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataflowflextemplatejob;gcpdataflowflextemplatejobs
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

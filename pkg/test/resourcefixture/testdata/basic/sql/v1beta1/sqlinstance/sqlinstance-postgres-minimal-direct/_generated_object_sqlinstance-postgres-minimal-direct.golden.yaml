@@ -3,6 +3,7 @@ kind: SQLInstance
 metadata:
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/last-changed-cookie: normalized-cookie
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -14,7 +15,6 @@ metadata:
   namespace: ${uniqueId}
 spec:
   databaseVersion: POSTGRES_16
-  maintenanceVersion: POSTGRES_16_9.R20250302.00_31
   region: us-central1
   settings:
     locationPreference:

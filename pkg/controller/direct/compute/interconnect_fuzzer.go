@@ -29,8 +29,8 @@ func init() {
 
 func computeInterconnectFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Interconnect{},
-		ComputeInterconnectSpec_FromProto, ComputeInterconnectSpec_ToProto,
-		ComputeInterconnectObservedState_FromProto, ComputeInterconnectObservedState_ToProto,
+		ComputeInterconnectSpec_v1alpha1_FromProto, ComputeInterconnectSpec_v1alpha1_ToProto,
+		ComputeInterconnectObservedState_v1alpha1_FromProto, ComputeInterconnectObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".customer_name")
@@ -69,6 +69,10 @@ func computeInterconnectFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".interconnect_groups")
 	f.Unimplemented_NotYetTriaged(".aai_enabled")
 	f.Unimplemented_NotYetTriaged(".application_aware_interconnect")
+
+	f.Unimplemented_NotYetTriaged(".params")
+	f.Unimplemented_NotYetTriaged(".wire_groups")
+	f.Unimplemented_NotYetTriaged(".subzone")
 
 	return f
 }

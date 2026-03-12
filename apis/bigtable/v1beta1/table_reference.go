@@ -27,9 +27,6 @@ import (
 )
 
 var _ refsv1beta1.ExternalNormalizer = &TableRef{}
-var (
-	BigtableTableGVK = GroupVersion.WithKind("BigtableTable")
-)
 
 // TableRef defines the resource reference to BigtableTable, which "External" field
 // holds the GCP identifier for the KRM object.

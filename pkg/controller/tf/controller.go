@@ -86,7 +86,7 @@ type Reconciler struct {
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 }
 
-func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator, additionalPredicate predicate.Predicate) (k8s.SchemaReferenceUpdater, error) {
+func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator) (k8s.SchemaReferenceUpdater, error) {
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
@@ -103,9 +103,6 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 		},
 	}
 	predicateList := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
-	if additionalPredicate != nil {
-		predicateList = append(predicateList, additionalPredicate)
-	}
 	_, err = builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
@@ -169,11 +166,15 @@ func NewReconciler(mgr manager.Manager,
 	}, nil
 }
 
-func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
+func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
+	return r.DoReconcile(ctx, req)
+}
+
+func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
 
 	r.schemaRefMu.RLock()
 	defer r.schemaRefMu.RUnlock()
-	r.logger.Info("starting reconcile", "resource", req.NamespacedName)
+	r.logger.V(1).Info("starting reconcile", "resource", req.NamespacedName)
 	startTime := time.Now()
 	r.RecordReconcileWorkers(ctx, r.schemaRef.GVK)
 	defer r.AfterReconcile()
@@ -184,21 +185,21 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 
 	if err := r.Get(ctx, req.NamespacedName, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			r.logger.Info("resource not found in API server; finishing reconcile", "resource", req.NamespacedName)
+			r.logger.V(2).Info("resource not found in API server; finishing reconcile", "resource", req.NamespacedName)
 			return reconcile.Result{}, nil
 		}
 		return reconcile.Result{}, err
 	}
 
-	structuredreporting.ReportReconcileStart(ctx, u)
-	defer structuredreporting.ReportReconcileEnd(ctx, u, res, err)
+	structuredreporting.ReportReconcileStart(ctx, u, k8s.ReconcilerTypeTerraform)
+	defer structuredreporting.ReportReconcileEnd(ctx, u, res, err, k8s.ReconcilerTypeTerraform)
 
 	skip, err := resourceactuation.ShouldSkip(u)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
 	if skip {
-		r.logger.Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", req.NamespacedName)
+		r.logger.V(2).Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", req.NamespacedName)
 		return reconcile.Result{}, nil
 	}
 
@@ -245,7 +246,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 			}
 		}
 
-		r.logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", req.NamespacedName, "time to next reconciliation", jitteredPeriod)
+		r.logger.V(2).Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", req.NamespacedName, "time to next reconciliation", jitteredPeriod)
 		return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 	default:
 		return reconcile.Result{}, fmt.Errorf("unknown actuation mode %v", am)
@@ -273,7 +274,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err != nil {
 		return reconcile.Result{}, err
 	}
-	r.logger.Info("successfully finished reconcile", "resource", k8s.GetNamespacedName(resource), "time to next reconciliation", jitteredPeriod)
+	r.logger.V(2).Info("successfully finished reconcile", "resource", k8s.GetNamespacedName(resource), "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
@@ -386,7 +387,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 		return false, err
 	}
 	if diff.Empty() {
-		r.logger.Info("underlying resource already up to date", "resource", k8s.GetNamespacedName(krmResource))
+		r.logger.V(2).Info("underlying resource already up to date", "resource", k8s.GetNamespacedName(krmResource))
 		return false, r.handleUpToDate(ctx, krmResource, liveState, secretVersions)
 	}
 
@@ -412,7 +413,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 		structuredreporting.ReportDiff(ctx, report)
 	}
 
-	r.logger.Info("creating/updating underlying resource", "resource", k8s.GetNamespacedName(krmResource))
+	r.logger.V(2).Info("creating/updating underlying resource", "resource", k8s.GetNamespacedName(krmResource))
 	if err := r.HandleUpdating(ctx, &krmResource.Resource); err != nil {
 		return false, err
 	}
@@ -506,7 +507,7 @@ func (r *Reconciler) handleDefaults(ctx context.Context, u *unstructured.Unstruc
 	for _, defaulter := range r.defaulters {
 		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeTerraform, u)
 		if err != nil {
-			return err
+			return fmt.Errorf("applying defaults in the tf controller: %w", err)
 		}
 		if changed {
 			changeCount++

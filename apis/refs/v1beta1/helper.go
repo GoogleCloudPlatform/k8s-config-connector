@@ -16,11 +16,22 @@ package v1beta1
 
 import (
 	"fmt"
+	"reflect"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 )
 
-func GetResourceID(u *unstructured.Unstructured) (string, error) {
+func GetResourceID(obj runtime.Object) (string, error) {
+	u, ok := obj.(*unstructured.Unstructured)
+	if !ok {
+		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+		if err != nil {
+			return "", fmt.Errorf("expected an Unstructured object but got %T; additionally, failed to convert to unstructured: %w", obj, err)
+		}
+		u = &unstructured.Unstructured{Object: m}
+	}
+
 	resourceID, _, err := unstructured.NestedString(u.Object, "spec", "resourceID")
 	if err != nil {
 		return "", fmt.Errorf("reading spec.resourceID from %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
@@ -31,7 +42,16 @@ func GetResourceID(u *unstructured.Unstructured) (string, error) {
 	return resourceID, nil
 }
 
-func GetLocation(u *unstructured.Unstructured) (string, error) {
+func GetLocation(obj runtime.Object) (string, error) {
+	u, ok := obj.(*unstructured.Unstructured)
+	if !ok {
+		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+		if err != nil {
+			return "", fmt.Errorf("expected an Unstructured object but got %T; additionally, failed to convert to unstructured: %w", obj, err)
+		}
+		u = &unstructured.Unstructured{Object: m}
+	}
+
 	location, _, err := unstructured.NestedString(u.Object, "spec", "location")
 	if err != nil {
 		return "", fmt.Errorf("reading spec.location from %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
@@ -40,4 +60,38 @@ func GetLocation(u *unstructured.Unstructured) (string, error) {
 		return "", fmt.Errorf("spec.location not set in %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
 	}
 	return location, nil
+}
+
+// SetRefFields sets the Name, Namespace and External fields on a Ref using reflection.
+// It returns an error if a field exists but cannot be set, or if the field is missing and a non-empty value is provided.
+func SetRefFields(ref Ref, name, namespace, external string) error {
+	val := reflect.ValueOf(ref).Elem()
+
+	if f := val.FieldByName("Name"); f.IsValid() {
+		if !f.CanSet() {
+			return fmt.Errorf("cannot set Name field")
+		}
+		f.SetString(name)
+	} else if name != "" {
+		return fmt.Errorf("field Name not found in type %T", ref)
+	}
+
+	if f := val.FieldByName("Namespace"); f.IsValid() {
+		if !f.CanSet() {
+			return fmt.Errorf("cannot set Namespace field")
+		}
+		f.SetString(namespace)
+	} else if namespace != "" {
+		return fmt.Errorf("field Namespace not found in type %T", ref)
+	}
+
+	if f := val.FieldByName("External"); f.IsValid() {
+		if !f.CanSet() {
+			return fmt.Errorf("cannot set External field")
+		}
+		f.SetString(external)
+	} else if external != "" {
+		return fmt.Errorf("field External not found in type %T", ref)
+	}
+	return nil
 }

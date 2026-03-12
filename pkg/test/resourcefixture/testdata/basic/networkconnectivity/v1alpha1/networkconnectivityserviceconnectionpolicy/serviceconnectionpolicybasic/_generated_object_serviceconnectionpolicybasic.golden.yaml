@@ -14,13 +14,13 @@ spec:
   description: Service Connection Policy for redis - updated
   location: us-central1
   networkRef:
-    name: network-${uniqueId}
+    name: ${networkID}
   projectRef:
     external: projects/${projectId}
   pscConfig:
     limit: 4
     subnetworkRefs:
-    - name: subnet-${uniqueId}
+    - name: ${subnetworkID}
   resourceID: serviceconnectionpolicy-${uniqueId}
   serviceClass: gcp-memorystore-redis
 status:

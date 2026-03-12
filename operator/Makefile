@@ -16,7 +16,9 @@ REPO_ROOT := $(shell git rev-parse --show-toplevel)
 PROJECT_ID ?= $(shell gcloud config get-value project)
 SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
 OPERATOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/operator:${SHORT_SHA}
+GKE_DISTROLESS_IMG ?= gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
 
+KUSTOMIZE=go run sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
 
 # enable multi-versions feature for CRDs
 CRD_OPTIONS ?= "crd"
@@ -65,17 +67,17 @@ generate:
 # Install CRDs into a cluster
 .PHONY: install
 install: manifests
-	kustomize build config/crd | kubectl apply -f -
+	$(KUSTOMIZE) build config/crd | kubectl apply -f -
 
 # Uninstall CRDs from a cluster
 .PHONY: uninstall
 uninstall: manifests
-	kustomize build config/crd | kubectl delete -f -
+	$(KUSTOMIZE) build config/crd | kubectl delete -f -
 
 # Build the docker image
 .PHONY: docker-build
 docker-build:
-	docker build .. -f Dockerfile -t ${OPERATOR_IMG}
+	docker build .. -f Dockerfile -t ${OPERATOR_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 	@echo "updating kustomize image patch file for manager"
 	cp config/manager/manager_image_patch_template.yaml config/manager/manager_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' config/manager/manager_image_patch.yaml
@@ -91,12 +93,12 @@ docker-push:
 # Note: run docker-build first to generate config/manager/manager_image_patch.yaml
 .PHONY: deploy
 deploy: manifests  # docker-build, docker-push also required, but not explicit to speed up deploy
-	kustomize build config/default | kubectl apply -f -
+	$(KUSTOMIZE) build config/default | kubectl apply -f -
 
 # Destroy controller in the configured Kubernetes cluster in ~/.kube/config
 .PHONY: destroy
 destroy: manifests
-	kustomize build config/default | kubectl delete -f -
+	$(KUSTOMIZE) build config/default | kubectl delete -f -
 
 # Upgrade KCC core manifest
 .PHONY: upgrade-kcc
@@ -111,4 +113,3 @@ upgrade-kcc-local:
 	cd ${REPO_ROOT}/operator; go run scripts/update-kcc-manifest/main.go --version=local
 	cd ${REPO_ROOT}/operator; go run scripts/copy-dependency-manifests/main.go
 	make -C ${REPO_ROOT}/operator manifests
-

@@ -145,6 +145,9 @@ func ResolveSecretManagerSecretVersionRef(ctx context.Context, reader client.Rea
 
 	// External should be in the "projects/*/secrets/*/versions/*" format
 	if ref.External != "" {
+		if ref.External == "latest" {
+			return ref, nil
+		}
 		tokens := strings.Split(ref.External, "/")
 		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "secrets" && tokens[4] == "versions" {
 			ref = &SecretManagerSecretVersionRef{

@@ -25,7 +25,7 @@ var BigLakeDatabaseGVK = GroupVersion.WithKind("BigLakeDatabase")
 // +kcc:spec:proto=google.cloud.bigquery.biglake.v1.Database
 type BigLakeDatabaseSpec struct {
 	// Required. Defines the parent path of the resource.
-	*Parent `json:",inline"`
+	ParentRef *BigQueryBigLakeCatalogRef `json:"parentCatalogRef,omitempty"`
 
 	// The BigLakeDatabase name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -81,7 +81,8 @@ type BigLakeDatabaseObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbiglakedatabase;gcpbiglakedatabases
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

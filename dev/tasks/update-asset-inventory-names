@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+import sys
+import json
+import urllib.request
+from html.parser import HTMLParser
+
+class AssetNameParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.in_table = False
+        self.in_tbody = False
+        self.in_row = False
+        self.in_cell = False
+        self.cell_index = -1
+        self.current_row_data = []
+        self.current_cell_data = []
+        self.rows = []
+        self.in_var = False
+
+    def handle_starttag(self, tag, attrs):
+        if tag == 'table':
+            self.in_table = True
+        elif tag == 'tbody':
+            self.in_tbody = True
+        elif tag == 'tr':
+            if self.in_table: # strict check on tbody might be risky if table doesn't use it, but usually docs do. Let's stick to in_table.
+                self.in_row = True
+                self.cell_index = -1
+                self.current_row_data = []
+        elif tag == 'td':
+            if self.in_row:
+                self.in_cell = True
+                self.cell_index += 1
+                self.current_cell_data = []
+        elif tag == 'var':
+            self.in_var = True
+            self.current_cell_data.append("{{")
+        elif tag == 'br':
+             if self.in_cell and self.cell_index == 1:
+                 self.current_cell_data.append("\n")
+
+    def handle_endtag(self, tag):
+        if tag == 'table':
+            self.in_table = False
+        elif tag == 'tbody':
+            self.in_tbody = False
+        elif tag == 'tr':
+            if self.in_row:
+                self.in_row = False
+                if len(self.current_row_data) >= 2:
+                    self.rows.append(self.current_row_data)
+        elif tag == 'td':
+            if self.in_cell:
+                self.in_cell = False
+                text = "".join(self.current_cell_data).strip()
+                self.current_row_data.append(text)
+        elif tag == 'var':
+            self.in_var = False
+            self.current_cell_data.append("}}")
+
+    def handle_data(self, data):
+        if self.in_cell:
+            self.current_cell_data.append(data)
+
+def main():
+    url = "https://docs.cloud.google.com/asset-inventory/docs/asset-names"
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    
+    try:
+        with urllib.request.urlopen(req) as response:
+            html_content = response.read().decode('utf-8')
+    except Exception as e:
+        print(f"Error fetching URL: {e}")
+        sys.exit(1)
+
+    parser = AssetNameParser()
+    parser.feed(html_content)
+
+    output_path = "docs/ai/metadata/cloudassetinventory_names.jsonl"
+    
+    count = 0
+    with open(output_path, 'w') as f:
+        for row in parser.rows:
+            # Row 0: Resource Type
+            # Row 1: Name format(s)
+            
+            if len(row) < 2:
+                continue
+
+            resource_type = row[0].strip()
+            # Clean up resource type if it has extra whitespace or newlines
+            resource_type = "".join(resource_type.split())
+            
+            formats_raw = row[1]
+            
+            formats = []
+            # Split by newline (inserted by <br>)
+            for line in formats_raw.split('\n'):
+                line = line.strip()
+                # Remove possible duplicate slashes or weird spaces if any, though "strip" handles spaces.
+                # Also, sometimes the text might contain comments or other things.
+                # In the example: "//accessapproval.googleapis.com/folders/{{FOLDER_NUMBER}}/accessApprovalSettings"
+                if line:
+                    formats.append(line)
+            
+            if resource_type and formats:
+                 # Check if it looks like a resource type (contains .)
+                if '.' in resource_type and '/' in resource_type:
+                    entry = {
+                        "resourceType": resource_type,
+                        "nameFormats": formats
+                    }
+                    f.write(json.dumps(entry) + "\n")
+                    count += 1
+    
+    print(f"Generated {count} entries to {output_path}")
+
+if __name__ == "__main__":
+    main()

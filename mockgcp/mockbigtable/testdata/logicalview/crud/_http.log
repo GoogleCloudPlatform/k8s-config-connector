@@ -226,7 +226,7 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "query": "SELECT 10 AS new_value"
+  "query": "SELECT 2 AS new_value"
 }
 
 200 OK
@@ -248,7 +248,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
     "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-    "query": "SELECT 10 AS new_value"
+    "query": "SELECT 2 AS new_value"
   }
 }
 
@@ -278,7 +278,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
     "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-    "query": "SELECT 10 AS new_value"
+    "query": "SELECT 2 AS new_value"
   }
 }
 
@@ -301,12 +301,49 @@ X-Xss-Protection: 0
 
 {
   "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-  "query": "SELECT 10 AS new_value"
+  "query": "SELECT 2 AS new_value"
 }
 
 ---
 
-GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews?alt=json
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}?alt=json&updateMask=query%2Cdeletion_protection
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "deletionProtection": true,
+  "query": "SELECT 3 AS new_value"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "deletionProtection": true,
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+    "query": "SELECT 3 AS new_value"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -322,12 +359,128 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "logicalViews": [
-    {
-      "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-      "query": "SELECT 10 AS new_value"
-    }
-  ]
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "deletionProtection": true,
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+    "query": "SELECT 3 AS new_value"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deletionProtection": true,
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+  "query": "SELECT 3 AS new_value"
+}
+
+---
+
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}?alt=json&updateMask=query%2Cdeletion_protection
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "deletionProtection": false,
+  "query": "SELECT 4 AS new_value"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+    "query": "SELECT 4 AS new_value"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+    "query": "SELECT 4 AS new_value"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+  "query": "SELECT 4 AS new_value"
 }
 
 ---

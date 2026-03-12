@@ -45,3 +45,7 @@ spec:
     - "APISERVER"
     managedPrometheus:
       enabled: true
+  nodeConfig:
+    machineType: n4-standard-2
+    advancedMachineFeatures:
+      enableNestedVirtualization: true

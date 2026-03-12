@@ -16,7 +16,7 @@ package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -84,7 +84,7 @@ type Taxonomy_Service struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.SystemTimestamps
-type SystemTimestamps struct {
+type TaxonomySystemTimestamps struct {
 	// Creation timestamp of the resource within the given system.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.create_time
 	CreateTime *string `json:"createTime,omitempty"`
@@ -114,7 +114,7 @@ type DataCatalogTaxonomyObservedState struct {
 
 	// Output only. Creation and modification timestamps of this taxonomy.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.taxonomy_timestamps
-	TaxonomyTimestamps *SystemTimestamps `json:"taxonomyTimestamps,omitempty"`
+	TaxonomyTimestamps *TaxonomySystemTimestamps `json:"taxonomyTimestamps,omitempty"`
 
 	// Output only. Identity of the service which owns the Taxonomy. This field is
 	//  only populated when the taxonomy is created by a Google Cloud service.
@@ -127,7 +127,10 @@ type DataCatalogTaxonomyObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatacatalogtaxonomy;gcpdatacatalogtaxonomies
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

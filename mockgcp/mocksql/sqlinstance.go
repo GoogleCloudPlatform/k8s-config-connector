@@ -252,6 +252,10 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 				return nil, fmt.Errorf("creating postgres user: %w", err)
 			}
 		}
+
+		if err := s.ensureMasterReflectsReplica(ctx, *name, nil, obj); err != nil {
+			return nil, fmt.Errorf("ensuring master reflects replica: %w", err)
+		}
 	}
 
 	op := &pb.Operation{
@@ -265,6 +269,115 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
 		return obj, nil
 	})
+}
+
+func (s *sqlInstancesService) ensureMasterReflectsReplica(ctx context.Context, name InstanceName, oldInstance *pb.DatabaseInstance, newInstance *pb.DatabaseInstance) error {
+	// If this is a replica instance, we also need to update the master instance to add the replica name.
+
+	newMasterInstanceName := ""
+	if newInstance != nil {
+		newMasterInstanceName = newInstance.MasterInstanceName
+	}
+
+	oldMasterInstanceName := ""
+	if oldInstance != nil {
+		oldMasterInstanceName = oldInstance.MasterInstanceName
+	}
+
+	if newMasterInstanceName != "" && newMasterInstanceName != oldMasterInstanceName {
+		masterName := name
+
+		tokens := strings.Split(newMasterInstanceName, ":")
+		if len(tokens) >= 2 {
+			masterName.Project = &projects.ProjectData{ID: tokens[0]}
+			masterName.InstanceName = tokens[1]
+		} else {
+			masterName.InstanceName = tokens[0]
+		}
+
+		masterFQN := masterName.String()
+
+		master := &pb.DatabaseInstance{}
+		if err := s.storage.Get(ctx, masterFQN, master); err != nil {
+			return fmt.Errorf("getting old master instance: %w", err)
+		}
+
+		shouldUpdate := false
+
+		// Add to replicaNames
+		{
+			found := false
+			replicaName := name.InstanceName
+			if name.Project.ID != masterName.Project.ID {
+				replicaName = name.Project.ID + ":" + name.InstanceName
+			}
+
+			for _, s := range master.ReplicaNames {
+				if s == replicaName {
+					found = true
+				}
+			}
+			if !found {
+				master.ReplicaNames = append(master.ReplicaNames, replicaName)
+				shouldUpdate = true
+			}
+		}
+
+		if shouldUpdate {
+			if err := s.storage.Update(ctx, masterFQN, master); err != nil {
+				return fmt.Errorf("updating old master instance: %w", err)
+			}
+		}
+	}
+
+	if oldMasterInstanceName != "" && newMasterInstanceName != oldMasterInstanceName {
+		masterName := name
+
+		tokens := strings.Split(oldMasterInstanceName, ":")
+		if len(tokens) >= 2 {
+			masterName.Project = &projects.ProjectData{ID: tokens[0]}
+			masterName.InstanceName = tokens[1]
+		} else {
+			masterName.InstanceName = tokens[0]
+		}
+
+		masterFQN := masterName.String()
+
+		master := &pb.DatabaseInstance{}
+		if err := s.storage.Get(ctx, masterFQN, master); err != nil {
+			return fmt.Errorf("getting old master instance: %w", err)
+		}
+
+		shouldUpdate := false
+
+		// Remove from replicaNames
+		{
+			var keep []string
+			replicaName := name.InstanceName
+			if name.Project.ID != masterName.Project.ID {
+				replicaName = name.Project.ID + ":" + name.InstanceName
+			}
+
+			for _, s := range master.ReplicaNames {
+				if s == replicaName {
+					continue
+				}
+				keep = append(keep, s)
+			}
+			if len(keep) != len(master.ReplicaNames) {
+				master.ReplicaNames = keep
+				shouldUpdate = true
+			}
+		}
+
+		if shouldUpdate {
+			if err := s.storage.Update(ctx, masterFQN, master); err != nil {
+				return fmt.Errorf("updating old master instance: %w", err)
+			}
+		}
+	}
+
+	return nil
 }
 
 func setDefaultInt64(pp **wrapperspb.Int64Value, defaultValue int64) {
@@ -297,10 +410,10 @@ func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, e
 		return "MYSQL_5_7_44.R20231105.01_03", nil
 
 	case pb.SqlDatabaseVersion_MYSQL_8_0:
-		return "MYSQL_8_0_40.R20250304.00_03", nil
+		return "MYSQL_8_0_41.R20251004.01_07", nil
 
 	case pb.SqlDatabaseVersion_MYSQL_8_4:
-		return "MYSQL_8_4_4.R20250304.00_03", nil
+		return "MYSQL_8_4_7.R20251004.01_24", nil
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
 		return "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02", nil
@@ -309,7 +422,7 @@ func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, e
 		return "SQLSERVER_2019_EXPRESS_CU26.R20240501.00_05", nil
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2022_EXPRESS:
-		return "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05", nil
+		return "SQLSERVER_2022_EXPRESS_CU19_GDR.R20251019.02_03", nil
 
 	case pb.SqlDatabaseVersion_POSTGRES_9_6:
 		return "POSTGRES_9_6_24.R20250302.00_31", nil
@@ -403,48 +516,42 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		}
 
 	case pb.SqlDatabaseVersion_MYSQL_8_0:
-		obj.DatabaseInstalledVersion = "MYSQL_8_0_40"
-		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
-			{
-				DisplayName:  asRef("MySQL 8.0.35"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_35"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.36"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_36"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.37"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_37"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.39"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_39"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.41"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_41"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.42"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_42"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.4"),
-				MajorVersion: asRef("MYSQL_8_4"),
-				Name:         asRef("MYSQL_8_4"),
-			},
+		obj.DatabaseInstalledVersion = "MYSQL_8_0_41"
+		for _, version := range availableDatabaseVersions {
+			if !strings.HasPrefix(version.Version, "8.0.") {
+				continue
+			}
+			displayName := "MySQL " + version.Version
+			name := "MYSQL_" + strings.ReplaceAll(version.Version, ".", "_")
+			majorVersion := "MYSQL_8_0"
+			availableDatabaseVersion := &pb.AvailableDatabaseVersion{
+				DisplayName:  &displayName,
+				MajorVersion: &majorVersion,
+				Name:         &name,
+			}
+			if name == obj.DatabaseInstalledVersion {
+				continue
+			}
+			obj.UpgradableDatabaseVersions = append(obj.UpgradableDatabaseVersions, availableDatabaseVersion)
 		}
 
+		// We also advertise upgrade to MySQL 8.4
+		obj.UpgradableDatabaseVersions = append(obj.UpgradableDatabaseVersions, &pb.AvailableDatabaseVersion{
+			DisplayName:  asRef("MySQL 8.4"),
+			MajorVersion: asRef("MYSQL_8_4"),
+			Name:         asRef("MYSQL_8_4"),
+		})
+
 	case pb.SqlDatabaseVersion_MYSQL_8_4:
-		obj.DatabaseInstalledVersion = "MYSQL_8_4_4"
+		obj.DatabaseInstalledVersion = "MYSQL_8_4_7"
 		obj.UpgradableDatabaseVersions = nil
+		if obj.Settings == nil {
+			obj.Settings = &pb.Settings{}
+		}
+		// 8.4 defaults to ENTERPRISE_PLUS edition
+		if obj.Settings.Edition == pb.Settings_EDITION_UNSPECIFIED {
+			obj.Settings.Edition = pb.Settings_ENTERPRISE_PLUS
+		}
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
 		obj.DatabaseInstalledVersion = "SQLSERVER_2017_EXPRESS_CU31_GDR"
@@ -490,7 +597,7 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		}
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2022_EXPRESS:
-		obj.DatabaseInstalledVersion = "SQLSERVER_2022_EXPRESS_CU12_GDR"
+		obj.DatabaseInstalledVersion = "SQLSERVER_2022_EXPRESS_CU19_GDR"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				MajorVersion: asRef("SQLSERVER_2022_STANDARD"),
@@ -541,8 +648,17 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 }
 
 func populateDefaults(obj *pb.DatabaseInstance) {
+	isEnterprisePlus := false
+	if obj.GetSettings().GetEdition() == pb.Settings_ENTERPRISE_PLUS {
+		isEnterprisePlus = true
+	}
+
 	if obj.InstanceType == pb.SqlInstanceType_SQL_INSTANCE_TYPE_UNSPECIFIED {
-		obj.InstanceType = pb.SqlInstanceType_CLOUD_SQL_INSTANCE
+		if obj.MasterInstanceName != "" {
+			obj.InstanceType = pb.SqlInstanceType_READ_REPLICA_INSTANCE
+		} else {
+			obj.InstanceType = pb.SqlInstanceType_CLOUD_SQL_INSTANCE
+		}
 	}
 
 	if obj.GeminiConfig == nil {
@@ -550,7 +666,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 			obj.GeminiConfig = &pb.GeminiInstanceConfig{
 				ActiveQueryEnabled:     asRef(false),
 				Entitled:               asRef(false),
-				FlagRecommenderEnabled: asRef(false),
+				FlagRecommenderEnabled: asRef(true),
 				IndexAdvisorEnabled:    asRef(false),
 			}
 		} else if isPostgres(obj) {
@@ -572,13 +688,25 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	if settings.AuthorizedGaeApplications == nil {
 		settings.AuthorizedGaeApplications = []string{}
 	}
-	setDefaultInt64(&settings.DataDiskSizeGb, 10)
+	if settings.DataDiskSizeGb == nil {
+		if isEnterprisePlus {
+			settings.DataDiskSizeGb = wrapperspb.Int64(20)
+		} else {
+			settings.DataDiskSizeGb = wrapperspb.Int64(10)
+		}
+	}
+
 	setDefaultBool(&settings.DeletionProtectionEnabled, false)
 	if settings.ConnectorEnforcement == 0 {
 		settings.ConnectorEnforcement = pb.Settings_NOT_REQUIRED
 	}
 	if settings.DataDiskType == 0 {
-		settings.DataDiskType = pb.SqlDataDiskType_PD_SSD
+		if isEnterprisePlus {
+			// Should be HYPERDISK_BALANCED, but not exported yet
+			settings.DataDiskType = pb.SqlDataDiskType_PD_SSD
+		} else {
+			settings.DataDiskType = pb.SqlDataDiskType_PD_SSD
+		}
 	}
 	if settings.PricingPlan == 0 {
 		settings.PricingPlan = pb.SqlPricingPlan_PER_USE
@@ -587,7 +715,14 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		settings.ReplicationType = pb.SqlReplicationType_SYNCHRONOUS
 	}
 	setDefaultInt64(&settings.StorageAutoResizeLimit, 0)
-	setDefaultBool(&settings.StorageAutoResize, false)
+
+	if settings.StorageAutoResize == nil {
+		if isEnterprisePlus {
+			settings.StorageAutoResize = wrapperspb.Bool(true)
+		} else {
+			settings.StorageAutoResize = wrapperspb.Bool(false)
+		}
+	}
 
 	if settings.IpConfiguration == nil {
 		settings.IpConfiguration = &pb.IpConfiguration{}
@@ -619,6 +754,9 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	backupConfiguration := settings.BackupConfiguration
 	if backupConfiguration == nil {
 		backupConfiguration = &pb.BackupConfiguration{}
+		if isEnterprisePlus {
+			backupConfiguration.Enabled = wrapperspb.Bool(true)
+		}
 		settings.BackupConfiguration = backupConfiguration
 	} else {
 		if isPostgres(obj) {
@@ -633,12 +771,24 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	}
 	backupConfiguration.Kind = "sql#backupConfiguration"
 
+	if backupConfiguration.BinaryLogEnabled == nil {
+		if isEnterprisePlus && backupConfiguration.GetEnabled().GetValue() {
+			backupConfiguration.BinaryLogEnabled = wrapperspb.Bool(true)
+		}
+	}
+
 	backupRetentionSettings := backupConfiguration.BackupRetentionSettings
 	if backupRetentionSettings == nil {
 		backupRetentionSettings = &pb.BackupRetentionSettings{}
 		backupConfiguration.BackupRetentionSettings = backupRetentionSettings
 	}
-	setDefaultInt32(&backupRetentionSettings.RetainedBackups, 7)
+	if backupRetentionSettings.RetainedBackups == nil {
+		if isEnterprisePlus {
+			backupRetentionSettings.RetainedBackups = wrapperspb.Int32(15)
+		} else {
+			backupRetentionSettings.RetainedBackups = wrapperspb.Int32(7)
+		}
+	}
 	if backupRetentionSettings.RetentionUnit == 0 {
 		backupRetentionSettings.RetentionUnit = pb.BackupRetentionSettings_COUNT
 	}
@@ -653,15 +803,65 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		backupConfiguration.PointInTimeRecoveryEnabled = nil
 	}
 
-	setDefaultBool(&backupConfiguration.Enabled, false)
-	setDefaultInt32(&backupConfiguration.TransactionLogRetentionDays, 7)
+	if backupConfiguration.Enabled == nil {
+		backupConfiguration.Enabled = wrapperspb.Bool(false)
+	}
+
+	if settings.BackupConfiguration.TransactionLogRetentionDays == nil {
+		if isEnterprisePlus {
+			settings.BackupConfiguration.TransactionLogRetentionDays = wrapperspb.Int32(14)
+		} else {
+			settings.BackupConfiguration.TransactionLogRetentionDays = wrapperspb.Int32(7)
+		}
+	}
 	if backupConfiguration.StartTime == "" {
 		backupConfiguration.StartTime = "12:00"
 	}
 	if backupConfiguration.TransactionalLogStorageState == nil {
-		backupConfiguration.TransactionalLogStorageState = asRef(pb.BackupConfiguration_TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED)
+		if isEnterprisePlus {
+			backupConfiguration.TransactionalLogStorageState = PtrTo(pb.BackupConfiguration_CLOUD_STORAGE)
+		} else {
+			backupConfiguration.TransactionalLogStorageState = PtrTo(pb.BackupConfiguration_TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED)
+		}
 	}
 
+	if isEnterprisePlus {
+		if settings.ActivationPolicy == pb.Settings_SQL_ACTIVATION_POLICY_UNSPECIFIED {
+			settings.ActivationPolicy = pb.Settings_ALWAYS
+		}
+		if settings.AuthorizedGaeApplications == nil {
+			settings.AuthorizedGaeApplications = []string{}
+		}
+		if settings.AvailabilityType == pb.SqlAvailabilityType_SQL_AVAILABILITY_TYPE_UNSPECIFIED {
+			settings.AvailabilityType = pb.SqlAvailabilityType_ZONAL
+		}
+
+		if settings.BackupConfiguration.BackupTier == nil {
+			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
+		}
+		// 	if settings.BackupConfiguration.BackupLogEnabled == nil {
+		// 		settings.BackupConfiguration.BackupLogEnabled = asRef(true)
+		// 	}
+	}
+
+	if isSqlServer(obj) {
+		if settings.BackupConfiguration.BackupTier == nil {
+			settings.BackupConfiguration.BackupTier = PtrTo("STANDARD")
+		}
+		if settings.IpConfiguration.ServerCertificateRotationMode == nil {
+			settings.IpConfiguration.ServerCertificateRotationMode = PtrTo("SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED")
+		}
+		if settings.ReplicationLagMaxSeconds == nil {
+			settings.ReplicationLagMaxSeconds = PtrTo(int32(31536000))
+		}
+		if obj.IncludeReplicasForMajorVersionUpgrade == nil {
+			obj.IncludeReplicasForMajorVersionUpgrade = PtrTo(false)
+		}
+	}
+
+	if obj.SatisfiesPzi == nil {
+		obj.SatisfiesPzi = PtrTo(true)
+	}
 }
 
 func isMysql(obj *pb.DatabaseInstance) bool {
@@ -691,6 +891,13 @@ func validateDatabaseInstance(obj *pb.DatabaseInstance) error {
 			}
 		}
 	}
+
+	if obj.GetSettings().GetEdition() == pb.Settings_ENTERPRISE {
+		if strings.HasPrefix(obj.GetSettings().GetTier(), "db-c4a-") {
+			return status.Errorf(codes.InvalidArgument, "Invalid request: Invalid Tier (%s) for (ENTERPRISE) Edition.", obj.GetSettings().GetTier())
+		}
+	}
+
 	return nil
 }
 
@@ -698,6 +905,12 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	name, err := s.buildInstanceName(req.GetProject(), req.GetInstance())
 	if err != nil {
 		return nil, err
+	}
+
+	if req.GetBody() == nil || proto.Equal(req.GetBody(), &pb.DatabaseInstance{}) {
+		// real GCP seems to return an invalid precondition error if no body is provided.
+		// In any case, we shouldn't be making pointless calls from KCC
+		return nil, status.Errorf(codes.FailedPrecondition, "Invalid request: body must not be empty for patch requests.")
 	}
 
 	fqn := name.String()
@@ -708,7 +921,21 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	}
 
 	if settings := req.GetBody().GetSettings(); settings != nil {
-		if settings.Edition != pb.Settings_EDITION_UNSPECIFIED {
+		if newEdition := settings.Edition; newEdition != pb.Settings_EDITION_UNSPECIFIED && obj.Settings.Edition != newEdition {
+			// Changing edition may impact defaults, so we reset some fields to allow
+			// them to be re-populated later.
+			if backupConfiguration := obj.Settings.BackupConfiguration; backupConfiguration != nil {
+				backupConfiguration.BackupRetentionSettings = nil
+				backupConfiguration.TransactionLogRetentionDays = nil
+				backupConfiguration.ReplicationLogArchivingEnabled = nil
+			}
+			if newEdition == pb.Settings_ENTERPRISE_PLUS {
+				if obj.Settings.DataCacheConfig == nil {
+					obj.Settings.DataCacheConfig = &pb.DataCacheConfig{}
+				}
+				obj.Settings.DataCacheConfig.DataCacheEnabled = true
+			}
+
 			obj.Settings.Edition = settings.Edition
 		}
 		if settings.Tier != "" {
@@ -736,6 +963,8 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	}
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(obj.GetSettings().GetSettingsVersion().GetValue() + 1)
+
+	populateDefaults(obj)
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -768,6 +997,10 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	existing := &pb.DatabaseInstance{}
 	if err := s.storage.Get(ctx, fqn, existing); err != nil {
 		return nil, err
+	}
+
+	if req.GetBody().GetInstanceType() != existing.GetInstanceType() {
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid request: instanceType cannot be updated.")
 	}
 
 	if req.GetBody().GetMaintenanceVersion() != "" && req.GetBody().GetMaintenanceVersion() != existing.GetMaintenanceVersion() {
@@ -824,6 +1057,95 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	})
 }
 
+func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstancesSwitchoverRequest) (*pb.Operation, error) {
+	name, err := s.buildInstanceName(req.GetProject(), req.GetInstance())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.DatabaseInstance{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	oldMasterInstanceName := obj.MasterInstanceName
+	if oldMasterInstanceName == "" {
+		return nil, status.Errorf(codes.FailedPrecondition, "Invalid request: instance is not a replica instance.")
+	}
+
+	// A switchover makes the old master a replica of the new master, so we need to update the old master instance accordingly.
+	{
+		oldMasterName := *name
+
+		tokens := strings.Split(oldMasterInstanceName, ":")
+		if len(tokens) >= 2 {
+			oldMasterName.Project = &projects.ProjectData{ID: tokens[0]}
+			oldMasterName.InstanceName = tokens[1]
+		} else {
+			oldMasterName.InstanceName = oldMasterInstanceName
+		}
+
+		oldMasterFQN := oldMasterName.String()
+
+		oldMaster := &pb.DatabaseInstance{}
+		if err := s.storage.Get(ctx, oldMasterFQN, oldMaster); err != nil {
+			return nil, fmt.Errorf("getting old master instance: %w", err)
+		}
+
+		// Swap FailoverReplica
+		obj.FailoverReplica = oldMaster.FailoverReplica
+		oldMaster.FailoverReplica = nil
+
+		// Swap InstanceType
+		obj.InstanceType = pb.SqlInstanceType_CLOUD_SQL_INSTANCE
+		oldMaster.InstanceType = pb.SqlInstanceType_READ_REPLICA_INSTANCE
+
+		// Swap MasterInstanceName
+		obj.MasterInstanceName = ""
+		oldMaster.MasterInstanceName = name.Project.ID + ":" + name.InstanceName
+
+		// Swap ReplicationCluster
+		obj.ReplicationCluster = oldMaster.ReplicationCluster
+		oldMaster.ReplicationCluster = nil
+
+		// Set replica names
+		replicaName := oldMasterName.InstanceName
+		if oldMasterName.Project.ID != name.Project.ID {
+			replicaName = oldMasterName.Project.ID + ":" + oldMasterName.InstanceName
+		}
+		obj.ReplicaNames = []string{replicaName}
+		oldMaster.ReplicaNames = nil
+
+		oldMaster.Etag = fields.ComputeWeakEtag(oldMaster)
+
+		// Update the old master
+		if err := s.storage.Update(ctx, oldMasterFQN, oldMaster); err != nil {
+			return nil, fmt.Errorf("updating old master instance: %w", err)
+		}
+	}
+
+	obj.Etag = fields.ComputeWeakEtag(obj)
+
+	if err := validateDatabaseInstance(obj); err != nil {
+		return nil, err
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetProject: name.Project.ID,
+		OperationType: pb.Operation_SWITCHOVER,
+	}
+
+	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
 func (s *sqlInstancesService) Delete(ctx context.Context, req *pb.SqlInstancesDeleteRequest) (*pb.Operation, error) {
 	name, err := s.buildInstanceName(req.GetProject(), req.GetInstance())
 	if err != nil {
@@ -835,6 +1157,10 @@ func (s *sqlInstancesService) Delete(ctx context.Context, req *pb.SqlInstancesDe
 	deleted := &pb.DatabaseInstance{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
+	}
+
+	if err := s.ensureMasterReflectsReplica(ctx, *name, deleted, nil); err != nil {
+		return nil, fmt.Errorf("ensuring master reflects replica: %w", err)
 	}
 
 	op := &pb.Operation{
@@ -880,6 +1206,38 @@ func (s *MockService) buildInstanceName(projectID, instanceName string) (*Instan
 	}, nil
 }
 
+// asRef returns a pointer to the given value.
+// deprecated: prefer PtrTo
 func asRef[T any](v T) *T {
 	return &v
+}
+
+// PtrTo returns a pointer to the given value.
+func PtrTo[T any](v T) *T {
+	return &v
+}
+
+type availableDatabaseVersion struct {
+	Version string
+}
+
+var availableDatabaseVersions = []availableDatabaseVersion{
+	{Version: "8.0.18"},
+	{Version: "8.0.26"},
+	{Version: "8.0.27"},
+	{Version: "8.0.28"},
+	{Version: "8.0.29"},
+	{Version: "8.0.30"},
+	{Version: "8.0.31"},
+	{Version: "8.0.32"},
+	{Version: "8.0.33"},
+	{Version: "8.0.34"},
+	{Version: "8.0.35"},
+	{Version: "8.0.36"},
+	{Version: "8.0.37"},
+	{Version: "8.0.39"},
+	{Version: "8.0.40"},
+	{Version: "8.0.41"},
+	{Version: "8.0.42"},
+	{Version: "8.0.43"},
 }

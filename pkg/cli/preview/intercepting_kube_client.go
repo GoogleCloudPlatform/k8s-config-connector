@@ -112,7 +112,13 @@ func (c *interceptingKubeClient) NewCache(restConfig *rest.Config, opts cache.Op
 		scheme:     opts.Scheme,
 	}
 
-	return newInterceptingControllerRuntimeCache(c.upstreamClient, typeStore)
+	var namespace string
+	for ns := range opts.DefaultNamespaces {
+		namespace = ns
+		break
+	}
+
+	return newInterceptingControllerRuntimeCache(c.upstreamClient, typeStore, namespace)
 }
 
 // interceptingControllerRuntimeClient is a controller-runtime client that intercepts Kubernetes API calls.
@@ -282,6 +288,7 @@ func (c *interceptingControllerRuntimeClientSubResourceWriter) Patch(ctx context
 type interceptingControllerRuntimeCache struct {
 	streamingClient *StreamingClient
 	typeStore       *typeStore
+	namespace       string
 
 	mutex sync.Mutex
 
@@ -291,11 +298,12 @@ type interceptingControllerRuntimeCache struct {
 }
 
 // newInterceptingControllerRuntimeCache creates a new interceptingControllerRuntimeCache.
-func newInterceptingControllerRuntimeCache(streamingClient *StreamingClient, typeStore *typeStore) (*interceptingControllerRuntimeCache, error) {
+func newInterceptingControllerRuntimeCache(streamingClient *StreamingClient, typeStore *typeStore, namespace string) (*interceptingControllerRuntimeCache, error) {
 	return &interceptingControllerRuntimeCache{
 		streamingClient: streamingClient,
 		informers:       make(map[schema.GroupVersionKind]*streamingInformer),
 		typeStore:       typeStore,
+		namespace:       namespace,
 	}, nil
 }
 
@@ -355,7 +363,7 @@ func (c *interceptingControllerRuntimeCache) getOrCreateInformer(ctx context.Con
 		return existing, nil
 	}
 
-	informer, err := newStreamingInformer(c.streamingClient, typeInfo)
+	informer, err := newStreamingInformer(c.streamingClient, typeInfo, c.namespace)
 	if err != nil {
 		return nil, err
 	}

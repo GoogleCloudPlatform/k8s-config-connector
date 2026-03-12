@@ -12,7 +12,7 @@ metadata:
   labels:
     cnrm-test: "true"
     label-one: value-two
-  name: computeregionalforwardingrule-${uniqueId}
+  name: ${forwardingRuleID}
   namespace: ${uniqueId}
 spec:
   description: A regional forwarding rule
@@ -22,14 +22,14 @@ spec:
   loadBalancingScheme: INTERNAL_MANAGED
   location: us-central1
   networkRef:
-    name: network-${uniqueId}
+    name: ${networkID}
   portRange: "90"
-  resourceID: computeregionalforwardingrule-${uniqueId}
+  resourceID: ${forwardingRuleID}
   subnetworkRef:
-    name: subnetwork-${uniqueId}
+    name: ${subnetworkID}
   target:
     targetTCPProxyRef:
-      name: computetargettcpproxy2-${uniqueId}
+      name: ${targetTcpProxyID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -40,4 +40,4 @@ status:
   creationTimestamp: "1970-01-01T00:00:00Z"
   labelFingerprint: abcdef0123A=
   observedGeneration: 3
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}

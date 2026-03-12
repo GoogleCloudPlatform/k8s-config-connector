@@ -161,6 +161,8 @@ clusterAutoscaling:
       maxUnavailable: integer
       strategy: string
   autoscalingProfile: string
+  defaultComputeClassConfig:
+    enabled: boolean
   enabled: boolean
   resourceLimits:
   - maximum: integer
@@ -174,6 +176,7 @@ confidentialNodes:
 controlPlaneEndpointsConfig:
   dnsEndpointConfig:
     allowExternalTraffic: boolean
+    enableK8sTokensViaDns: boolean
   ipEndpointsConfig:
     enabled: boolean
 costManagementConfig:
@@ -192,6 +195,7 @@ dnsConfig:
   clusterDnsScope: string
 enableAutopilot: boolean
 enableBinaryAuthorization: boolean
+enableCiliumClusterwideNetworkPolicy: boolean
 enableFqdnNetworkPolicy: boolean
 enableIntranodeVisibility: boolean
 enableK8sBetaApis:
@@ -278,6 +282,7 @@ networkRef:
 networkingMode: string
 nodeConfig:
   advancedMachineFeatures:
+    enableNestedVirtualization: boolean
     threadsPerCore: integer
   bootDiskKMSCryptoKeyRef:
     external: string
@@ -797,7 +802,7 @@ workloadIdentityConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The Customer Managed Encryption Key used to encrypt the
+            <p>{% verbatim %}The Customer Managed Encryption Key used to encrypt the
 boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1137,6 +1142,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>clusterAutoscaling.defaultComputeClassConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Default compute class is a configuration for default compute class.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.defaultComputeClassConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enables default compute class.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>clusterAutoscaling.enabled</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1273,6 +1298,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>controlPlaneEndpointsConfig.dnsEndpointConfig.enableK8sTokensViaDns</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Controls whether the k8s token auth is allowed via DNS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1453,6 +1488,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}DEPRECATED. Deprecated in favor of binary_authorization. Enable Binary Authorization for this cluster. If enabled, all container images will be validated by Google Binary Authorization.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>enableCiliumClusterwideNetworkPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether Cilium cluster-wide network policy is enabled on this cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2347,8 +2392,18 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.advancedMachineFeatures.enableNestedVirtualization</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Whether or not to enable nested virtualization (defaults to false).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.advancedMachineFeatures.threadsPerCore</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>

@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -36,7 +37,7 @@ type StorageFolderParent struct {
 	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// Required. The storage bucket where the folder will be created in.
-	StorageBucketRef *v1beta1.StorageBucketRef `json:"storagebucketRef,omitempty"`
+	StorageBucketRef *storagev1beta1.StorageBucketRef `json:"storagebucketRef,omitempty"`
 }
 
 // StorageFolderStatus defines the config connector machine state of StorageFolder
@@ -96,7 +97,8 @@ type PendingRenameInfoObservedState struct {
 // TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpstoragefolder;gcpstoragefolders
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

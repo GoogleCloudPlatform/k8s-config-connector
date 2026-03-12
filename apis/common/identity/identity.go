@@ -28,10 +28,13 @@ type Identity interface {
 	FromExternal(ref string) error
 }
 
+type IdentityV2 interface {
+	Identity
+	// Host returns the Host portion of the Cloud-Asset Inventory fully-qualified format (e.g. compute.googleapis.com)
+	Host() string
+}
+
 type Resource interface {
 	// GetIdentity gets the identity of a resource.
 	GetIdentity(ctx context.Context, reader client.Reader) (Identity, error)
-
-	// GetParentIdentity gets the parent identity of a resource.
-	GetParentIdentity(ctx context.Context, reader client.Reader) (Identity, error)
 }

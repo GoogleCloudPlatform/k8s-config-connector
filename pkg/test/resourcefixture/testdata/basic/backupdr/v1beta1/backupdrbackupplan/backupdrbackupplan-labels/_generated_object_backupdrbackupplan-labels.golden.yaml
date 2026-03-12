@@ -1,0 +1,53 @@
+apiVersion: backupdr.cnrm.cloud.google.com/v1beta1
+kind: BackupDRBackupPlan
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    app.kubernetes.io/component: mock-component
+    app.kubernetes.io/instance: mock-instance
+    app.kubernetes.io/managed-by: configmanagement.gke.io
+    app.kubernetes.io/name: mock-app
+    app.kubernetes.io/part-of: mock-part-of
+    app.kubernetes.io/version: v1.0.0
+    applyset.kubernetes.io/id: mock-applyset-id
+    cnrm-test: "true"
+    configmanagement.gke.io/sync-name: mock-sync-name
+    configmanagement.gke.io/sync-namespace: mock-sync-namespace
+    custom-label: foo
+  name: backupdrbackupplan-labels-${uniqueId}description
+  namespace: ${uniqueId}
+spec:
+  backupRules:
+  - backupRetentionDays: 5
+    ruleID: rule-1
+    standardSchedule:
+      backupWindow:
+        endHourOfDay: 23
+        startHourOfDay: 1
+      hourlyFrequency: 6
+      recurrenceType: HOURLY
+      timeZone: UTC
+  backupVaultRef:
+    name: backupdrbackupvault-labels-${uniqueId}
+  description: Initial description
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceType: compute.googleapis.com/Instance
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-labels-${uniqueId}description
+  observedGeneration: 1
+  observedState:
+    backupVaultServiceAccount: vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com
+    createTime: "1970-01-01T00:00:00Z"
+    state: ACTIVE
+    updateTime: "1970-01-01T00:00:00Z"

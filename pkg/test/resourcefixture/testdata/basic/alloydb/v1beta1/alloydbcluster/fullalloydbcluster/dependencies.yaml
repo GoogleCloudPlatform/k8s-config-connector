@@ -15,6 +15,8 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computenetwork-${uniqueId}
 spec:
   autoCreateSubnetworks: false
@@ -23,6 +25,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computesubnetwork-${uniqueId}
 spec:
   ipCidrRange: 10.2.0.0/16
@@ -38,6 +41,7 @@ kind: ServiceIdentity
 metadata:
   name: serviceidentity-${uniqueId}
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
@@ -47,6 +51,8 @@ spec:
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: kmskeyring-${uniqueId}
 spec:
   location: us-central1
@@ -54,6 +60,8 @@ spec:
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   labels:
     key-one: value-one
   name: kmscryptokey-1-${uniqueId}
@@ -64,6 +72,8 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: iampartialpolicy-1-${uniqueId}
 spec:
   resourceRef:
@@ -80,6 +90,8 @@ spec:
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: kmscryptokey-2-${uniqueId}
 spec:
   keyRingRef:
@@ -88,6 +100,8 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: iampartialpolicy-2-${uniqueId}
 spec:
   resourceRef:
@@ -104,6 +118,8 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: secret-1-${uniqueId}
 data:
   password: a2NjLXRlc3Q=
@@ -111,6 +127,8 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: secret-2-${uniqueId}
 data:
   newValue: a2NjLXRlc3QtdXBkYXRlZA==

@@ -29,13 +29,12 @@ func init() {
 
 func bigtableLogicalViewFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.LogicalView{},
-		BigtableLogicalViewSpec_FromProto, BigtableLogicalViewSpec_ToProto,
-		BigtableLogicalViewObservedState_FromProto, BigtableLogicalViewObservedState_ToProto,
+		BigtableLogicalViewSpec_v1alpha1_FromProto, BigtableLogicalViewSpec_v1alpha1_ToProto,
+		BigtableLogicalViewObservedState_v1alpha1_FromProto, BigtableLogicalViewObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".query")
-	// TODO: enable this once deletion protection feature is live.
-	// f.SpecFields.Insert(".deletion_protection")
+	f.SpecFields.Insert(".deletion_protection")
 
 	f.UnimplementedFields.Insert(".name") // special field
 	f.UnimplementedFields.Insert(".etag")

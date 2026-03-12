@@ -19,6 +19,7 @@ package writer
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -125,8 +126,13 @@ func (s *secretCertWriter) read() (*generator.Artifacts, error) {
 		},
 	}
 	err := s.Client.Get(context.Background(), *s.Secret, secret)
-	if apierrors.IsNotFound(err) {
-		return nil, notFoundError{err}
+	if err != nil {
+		if apierrors.IsNotFound(err) {
+			log.Info("secret not found", "secret", *s.Secret)
+			return nil, notFoundError{err}
+		}
+		log.Error(err, "error reading secret", "secret", *s.Secret)
+		return nil, fmt.Errorf("error reading secret %v: %w", *s.Secret, err)
 	}
 	certs := secretToCerts(secret)
 	if certs != nil {

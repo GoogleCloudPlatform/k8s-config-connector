@@ -29,8 +29,8 @@ func init() {
 
 func computeNetworkEdgeSecurityServiceFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.NetworkEdgeSecurityService{},
-		ComputeNetworkEdgeSecurityServiceSpec_FromProto, ComputeNetworkEdgeSecurityServiceSpec_ToProto,
-		ComputeNetworkEdgeSecurityServiceObservedState_FromProto, ComputeNetworkEdgeSecurityServiceObservedState_ToProto,
+		ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_FromProto, ComputeNetworkEdgeSecurityServiceSpec_v1alpha1_ToProto,
+		ComputeNetworkEdgeSecurityServiceObservedState_v1alpha1_FromProto, ComputeNetworkEdgeSecurityServiceObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".description")

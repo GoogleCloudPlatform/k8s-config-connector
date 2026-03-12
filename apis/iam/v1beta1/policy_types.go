@@ -90,6 +90,7 @@ type IAMPolicyAuditConfig struct {
 type IAMPolicySpec struct {
 	// Immutable. Required. The GCP resource to set the IAM policy on (e.g.
 	// organization, project...)
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="resourceRef is immutable"
 	ResourceReference ResourceReference `json:"resourceRef"`
 	// Optional. The list of IAM bindings.
 	Bindings []IAMPolicyBinding `json:"bindings,omitempty"`
@@ -120,7 +121,8 @@ type IAMPolicyStatus struct {
 // +kubebuilder:printcolumn:name="Status",type=string,JSONPath=".status.conditions[?(@.type=='Ready')].reason",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",type="date",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime"
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:resource:categories=gcp,shortName=gcpiampolicy;gcpiampolicies
 // +k8s:openapi-gen=true
 type IAMPolicy struct {

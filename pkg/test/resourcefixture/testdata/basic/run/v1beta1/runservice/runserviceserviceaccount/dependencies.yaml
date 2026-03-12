@@ -15,6 +15,8 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: gsa-1-${uniqueId}
 spec:
   displayName: TestGSA-1-${uniqueId}
@@ -22,6 +24,8 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: gsa-2-${uniqueId}
 spec:
   displayName: TestGSA-2-${uniqueId}

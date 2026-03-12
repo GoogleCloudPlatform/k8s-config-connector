@@ -572,7 +572,6 @@ func ResourceContainerCluster() *schema.Resource {
 									"boot_disk_kms_key": {
 										Type:        schema.TypeString,
 										Optional:    true,
-										ForceNew:    true,
 										Description: `The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool.`,
 									},
 									"shielded_instance_config": {
@@ -744,6 +743,22 @@ func ResourceContainerCluster() *schema.Resource {
 							DiffSuppressFunc: suppressDiffForAutopilot,
 							ValidateFunc:     validation.StringInSlice([]string{"BALANCED", "OPTIMIZE_UTILIZATION"}, false),
 							Description:      `Configuration options for the Autoscaling profile feature, which lets you choose whether the cluster autoscaler should optimize for resource utilization or resource availability when deciding to remove nodes from a cluster. Can be BALANCED or OPTIMIZE_UTILIZATION. Defaults to BALANCED.`,
+						},
+						"default_compute_class_config": {
+							Type:             schema.TypeList,
+							Optional:         true,
+							DiffSuppressFunc: defaultComputeClassConfigDiffSuppress,
+							MaxItems:         1,
+							Description:      "Default compute class is a configuration for default compute class.",
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"enabled": {
+										Type:        schema.TypeBool,
+										Required:    true,
+										Description: "Enables default compute class.",
+									},
+								},
+							},
 						},
 					},
 				},
@@ -1593,6 +1608,11 @@ func ResourceContainerCluster() *schema.Resource {
 										Optional:    true,
 										Description: `Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false.`,
 									},
+									"enable_k8s_tokens_via_dns": {
+										Type:        schema.TypeBool,
+										Optional:    true,
+										Description: `Controls whether the k8s token auth is allowed via DNS.`,
+									},
 								},
 							},
 						},
@@ -1923,6 +1943,12 @@ func ResourceContainerCluster() *schema.Resource {
 				Description: `Whether multi-networking is enabled for this cluster.`,
 				Default:     false,
 			},
+			"enable_cilium_clusterwide_network_policy": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: `Whether Cilium cluster-wide network policy is enabled on this cluster.`,
+				Default:     false,
+			},
 			"enable_fqdn_network_policy": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -2160,16 +2186,17 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		ClusterTelemetry: expandClusterTelemetry(d.Get("cluster_telemetry")),
 		EnableTpu:        d.Get("enable_tpu").(bool),
 		NetworkConfig: &container.NetworkConfig{
-			EnableIntraNodeVisibility: d.Get("enable_intranode_visibility").(bool),
-			DefaultSnatStatus:         expandDefaultSnatStatus(d.Get("default_snat_status")),
-			DatapathProvider:          d.Get("datapath_provider").(string),
-			PrivateIpv6GoogleAccess:   d.Get("private_ipv6_google_access").(string),
-			EnableL4ilbSubsetting:     d.Get("enable_l4_ilb_subsetting").(bool),
-			DnsConfig:                 expandDnsConfig(d.Get("dns_config")),
-			GatewayApiConfig:          expandGatewayApiConfig(d.Get("gateway_api_config")),
-			EnableMultiNetworking:     d.Get("enable_multi_networking").(bool),
-			EnableFqdnNetworkPolicy:   d.Get("enable_fqdn_network_policy").(bool),
-			DefaultEnablePrivateNodes: expandDefaultEnablePrivateNodes(d),
+			EnableIntraNodeVisibility:            d.Get("enable_intranode_visibility").(bool),
+			DefaultSnatStatus:                    expandDefaultSnatStatus(d.Get("default_snat_status")),
+			DatapathProvider:                     d.Get("datapath_provider").(string),
+			PrivateIpv6GoogleAccess:              d.Get("private_ipv6_google_access").(string),
+			EnableL4ilbSubsetting:                d.Get("enable_l4_ilb_subsetting").(bool),
+			DnsConfig:                            expandDnsConfig(d.Get("dns_config")),
+			GatewayApiConfig:                     expandGatewayApiConfig(d.Get("gateway_api_config")),
+			EnableMultiNetworking:                d.Get("enable_multi_networking").(bool),
+			EnableCiliumClusterwideNetworkPolicy: d.Get("enable_cilium_clusterwide_network_policy").(bool),
+			EnableFqdnNetworkPolicy:              d.Get("enable_fqdn_network_policy").(bool),
+			DefaultEnablePrivateNodes:            expandDefaultEnablePrivateNodes(d),
 		},
 		MasterAuth:           expandMasterAuth(d.Get("master_auth")),
 		NotificationConfig:   expandNotificationConfig(d.Get("notification_config")),
@@ -2680,6 +2707,9 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	if err := d.Set("enable_multi_networking", cluster.NetworkConfig.EnableMultiNetworking); err != nil {
 		return fmt.Errorf("Error setting enable_multi_networking: %s", err)
 	}
+	if err := d.Set("enable_cilium_clusterwide_network_policy", cluster.NetworkConfig.EnableCiliumClusterwideNetworkPolicy); err != nil {
+		return fmt.Errorf("Error setting enable_cilium_clusterwide_network_policy: %s", err)
+	}
 	if err := d.Set("enable_fqdn_network_policy", cluster.NetworkConfig.EnableFqdnNetworkPolicy); err != nil {
 		return fmt.Errorf("Error setting enable_fqdn_network_policy: %s", err)
 	}
@@ -3129,6 +3159,23 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s L4 ILB Subsetting has been updated to %v", d.Id(), enabled)
+	}
+
+	if d.HasChange("enable_cilium_clusterwide_network_policy") {
+		enabled := d.Get("enable_cilium_clusterwide_network_policy").(bool)
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredEnableCiliumClusterwideNetworkPolicy: enabled,
+				ForceSendFields: []string{"DesiredEnableCiliumClusterwideNetworkPolicy"},
+			},
+		}
+		updateF := updateFunc(req, "updating cilium clusterwide network policy")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s Cilium Clusterwide Network Policy has been updated to %v", d.Id(), enabled)
 	}
 
 	if d.HasChange("enable_fqdn_network_policy") {
@@ -4533,7 +4580,19 @@ func expandClusterAutoscaling(configured interface{}, d *schema.ResourceData) *c
 		EnableNodeAutoprovisioning:       config["enabled"].(bool),
 		ResourceLimits:                   resourceLimits,
 		AutoscalingProfile:               config["autoscaling_profile"].(string),
+		DefaultComputeClassConfig:        expandDefaultComputeClassConfig(config["default_compute_class_config"], d),
 		AutoprovisioningNodePoolDefaults: expandAutoProvisioningDefaults(config["auto_provisioning_defaults"], d),
+	}
+}
+
+func expandDefaultComputeClassConfig(configured interface{}, d *schema.ResourceData) *container.DefaultComputeClassConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+	config := l[0].(map[string]interface{})
+	return &container.DefaultComputeClassConfig{
+		Enabled: config["enabled"].(bool),
 	}
 }
 
@@ -4954,6 +5013,10 @@ func expandControlPlaneEndpointsConfig(d *schema.ResourceData) *container.Contro
 	if v := d.Get("control_plane_endpoints_config.0.dns_endpoint_config.0.allow_external_traffic"); v != nil {
 		dns.AllowExternalTraffic = v.(bool)
 		dns.ForceSendFields = []string{"AllowExternalTraffic"}
+	}
+	if v := d.Get("control_plane_endpoints_config.0.dns_endpoint_config.0.enable_k8s_tokens_via_dns"); v != nil {
+		dns.EnableK8sTokensViaDns = v.(bool)
+		dns.ForceSendFields = append(dns.ForceSendFields, "EnableK8sTokensViaDns")
 	}
 
 	ip := &container.IPEndpointsConfig{
@@ -5551,8 +5614,9 @@ func flattenDnsEndpointConfig(dns *container.DNSEndpointConfig) []map[string]int
 	}
 	return []map[string]interface{}{
 		{
-			"endpoint":               dns.Endpoint,
-			"allow_external_traffic": dns.AllowExternalTraffic,
+			"endpoint":                  dns.Endpoint,
+			"allow_external_traffic":    dns.AllowExternalTraffic,
+			"enable_k8s_tokens_via_dns": dns.EnableK8sTokensViaDns,
 		},
 	}
 }
@@ -5827,8 +5891,21 @@ func flattenClusterAutoscaling(a *container.ClusterAutoscaling) []map[string]int
 		r["enabled"] = false
 	}
 	r["autoscaling_profile"] = a.AutoscalingProfile
+	if a.DefaultComputeClassConfig != nil {
+		r["default_compute_class_config"] = flattenDefaultComputeClassConfig(a.DefaultComputeClassConfig)
+	}
 
 	return []map[string]interface{}{r}
+}
+
+func flattenDefaultComputeClassConfig(c *container.DefaultComputeClassConfig) []map[string]interface{} {
+	result := []map[string]interface{}{}
+	if c != nil {
+		result = append(result, map[string]interface{}{
+			"enabled": c.Enabled,
+		})
+	}
+	return result
 }
 
 func flattenAutoProvisioningDefaults(a *container.AutoprovisioningNodePoolDefaults) []map[string]interface{} {
@@ -6316,6 +6393,18 @@ func BinaryAuthorizationDiffSuppress(k, old, new string, r *schema.ResourceData)
 	if k == "binary_authorization.#" && old == "1" && new == "0" {
 		o, _ := r.GetChange("binary_authorization.0.enabled")
 		if !o.(bool) && !r.HasChange("binary_authorization.0.evaluation_mode") {
+			return true
+		}
+	}
+
+	return false
+}
+
+func defaultComputeClassConfigDiffSuppress(k, old, new string, r *schema.ResourceData) bool {
+	// An empty config is equivalent to a config with enabled set to false.
+	if k == "cluster_autoscaling.0.default_compute_class_config.#" && old == "1" && new == "0" {
+		o, _ := r.GetChange("cluster_autoscaling.0.default_compute_class_config.0.enabled")
+		if !o.(bool) {
 			return true
 		}
 	}

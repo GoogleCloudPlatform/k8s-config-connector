@@ -34,11 +34,12 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/essentialcontacts/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/essentialcontacts/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -55,7 +56,9 @@ type contactModel struct {
 	config config.ControllerConfig
 }
 
-func (m *contactModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *contactModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.EssentialContactsContact{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -184,11 +187,15 @@ func (a *contactAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 	resource.Name = a.id.String() // Set name for update request
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if !reflect.DeepEqual(resource.NotificationCategorySubscriptions, a.actual.NotificationCategorySubscriptions) {
+		report.AddField("notification_category_subscriptions", a.actual.NotificationCategorySubscriptions, resource.NotificationCategorySubscriptions)
 		paths = append(paths, "notification_category_subscriptions")
 	}
 	if !reflect.DeepEqual(resource.LanguageTag, a.actual.LanguageTag) {
+		report.AddField("language_tag", a.actual.LanguageTag, resource.LanguageTag)
 		paths = append(paths, "language_tag")
 	}
 
@@ -197,6 +204,7 @@ func (a *contactAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		req := &pb.UpdateContactRequest{
 			Contact:    resource,
 			UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},

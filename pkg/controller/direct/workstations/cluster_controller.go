@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/workstations/apiv1"
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
@@ -35,7 +36,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -101,7 +101,9 @@ func (m *modelWorkstationCluster) client(ctx context.Context) (*gcp.Client, erro
 	return gcpClient, err
 }
 
-func (m *modelWorkstationCluster) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelWorkstationCluster) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.WorkstationCluster{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -183,7 +185,7 @@ type Adapter struct {
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting WorkstationCluster", "name", a.id.FullyQualifiedName())
 
 	req := &pb.GetWorkstationClusterRequest{Name: a.id.FullyQualifiedName()}
@@ -202,7 +204,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating WorkstationCluster", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 
@@ -239,7 +241,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating WorkstationCluster", "name", a.id.FullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 
@@ -250,17 +252,23 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	resource.Name = a.id.FullyQualifiedName()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(resource.Annotations, a.actual.Annotations) {
+		report.AddField("annotations", a.actual.Annotations, resource.Annotations)
 		updateMask.Paths = append(updateMask.Paths, "annotations")
 	}
 	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, resource.Labels)
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
 	if len(updateMask.Paths) == 0 {
 		return nil
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	req := &pb.UpdateWorkstationClusterRequest{
 		UpdateMask:         updateMask,
@@ -307,7 +315,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 }
 
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting WorkstationCluster", "name", a.id.FullyQualifiedName())
 
 	req := &pb.DeleteWorkstationClusterRequest{Name: a.id.FullyQualifiedName()}

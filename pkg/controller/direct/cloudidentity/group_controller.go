@@ -27,11 +27,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	api "google.golang.org/api/cloudidentity/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -48,7 +48,9 @@ type modelGroup struct {
 	config config.ControllerConfig
 }
 
-func (m *modelGroup) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelGroup) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.CloudIdentityGroup{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -182,14 +184,19 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	var paths []string
 	if !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, resource.DisplayName)
 		paths = append(paths, "display_name")
 	}
 	if !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, resource.Description)
 		paths = append(paths, "description")
 	}
 	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, resource.Labels)
 		paths = append(paths, "labels")
 	}
 
@@ -202,6 +209,8 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	// updateMask is a comma-separated list of fully qualified names of fields.
 	sort.Strings(paths)

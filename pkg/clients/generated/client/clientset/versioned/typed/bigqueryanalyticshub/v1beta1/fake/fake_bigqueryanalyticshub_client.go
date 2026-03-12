@@ -35,6 +35,10 @@ func (c *FakeBigqueryanalyticshubV1beta1) BigQueryAnalyticsHubDataExchanges(name
 	return &FakeBigQueryAnalyticsHubDataExchanges{c, namespace}
 }
 
+func (c *FakeBigqueryanalyticshubV1beta1) BigQueryAnalyticsHubListings(namespace string) v1beta1.BigQueryAnalyticsHubListingInterface {
+	return &FakeBigQueryAnalyticsHubListings{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeBigqueryanalyticshubV1beta1) RESTClient() rest.Interface {

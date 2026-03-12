@@ -39,13 +39,16 @@ func cloudDeployDeliveryPipelineFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".annotations")
 	f.SpecFields.Insert(".serial_pipeline")
-	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".suspended")
 
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".condition")
+
+	f.Unimplemented_Etag()
+
+	f.Unimplemented_NotYetTriaged(".serial_pipeline.stages[].strategy.canary.runtime_config.kubernetes.gateway_service_mesh.route_destinations.destination_ids")
 
 	return f
 }

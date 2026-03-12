@@ -18,15 +18,16 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 
+	pb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/analyticshub/v1"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 type analyticsHubServer struct {
@@ -43,6 +44,9 @@ func (a *analyticsHubServer) GetDataExchange(ctx context.Context, request *pb.Ge
 	fqn := name.String()
 	obj := &pb.DataExchange{}
 	if err := a.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Failed to find data exchange in projects/%v: dataExchanges/%v", name.Project.Number, name.DataExchangeID)
+		}
 		return nil, err
 	}
 
@@ -57,14 +61,32 @@ func (a *analyticsHubServer) CreateDataExchange(ctx context.Context, request *pb
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(request.DataExchange).(*pb.DataExchange)
+	obj := ProtoClone(request.DataExchange)
 	obj.Name = fqn
+
+	a.populateDataExchangeDefaults(obj, name)
 
 	if err := a.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
+}
+
+func (a *analyticsHubServer) populateDataExchangeDefaults(obj *pb.DataExchange, name *dataExchangeName) {
+	if obj.GetDiscoveryType() == pb.DiscoveryType_DISCOVERY_TYPE_UNSPECIFIED {
+		obj.DiscoveryType = PtrTo(pb.DiscoveryType_DISCOVERY_TYPE_PRIVATE)
+	}
+
+	if obj.SharingEnvironmentConfig == nil {
+		obj.SharingEnvironmentConfig = &pb.SharingEnvironmentConfig{
+			Environment: &pb.SharingEnvironmentConfig_DefaultExchangeConfig_{},
+		}
+	}
+
+	if obj.LogLinkedDatasetQueryUserEmail == nil {
+		obj.LogLinkedDatasetQueryUserEmail = PtrTo(false)
+	}
 }
 
 func (a *analyticsHubServer) UpdateDataExchange(ctx context.Context, request *pb.UpdateDataExchangeRequest) (*pb.DataExchange, error) {
@@ -129,6 +151,9 @@ func (a *analyticsHubServer) GetListing(ctx context.Context, request *pb.GetList
 	fqn := name.String()
 	obj := &pb.Listing{}
 	if err := a.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Failed to find listing: %v", fqn)
+		}
 		return nil, err
 	}
 
@@ -143,14 +168,94 @@ func (a *analyticsHubServer) CreateListing(ctx context.Context, request *pb.Crea
 	}
 
 	fqn := name.String()
-	obj := proto.Clone(request.Listing).(*pb.Listing)
+	obj := ProtoClone(request.Listing)
 	obj.Name = fqn
+
+	if bigqueryDataSet := obj.GetBigqueryDataset(); bigqueryDataSet != nil {
+		if bigqueryDataSet.Dataset != "" {
+			// Remap to use the project number
+			// Technically we should validate that the dataset exists, but for now just do the remapping
+			tokens := strings.Split(bigqueryDataSet.Dataset, "/")
+			if len(tokens) >= 2 && tokens[0] == "projects" {
+				projectID := tokens[1]
+				project, err := a.Projects.GetProjectByIDOrNumber(projectID)
+				if err != nil {
+					return nil, status.Errorf(codes.InvalidArgument, "invalid dataset name %q", bigqueryDataSet.Dataset)
+				}
+				tokens[1] = strconv.FormatInt(project.Number, 10)
+				bigqueryDataSet.Dataset = strings.Join(tokens, "/")
+			}
+		}
+
+		if restrictedExportPolicy := bigqueryDataSet.RestrictedExportPolicy; restrictedExportPolicy != nil {
+			if obj.RestrictedExportConfig == nil {
+				obj.RestrictedExportConfig = &pb.Listing_RestrictedExportConfig{
+					Enabled:                   restrictedExportPolicy.GetEnabled().GetValue(),
+					RestrictDirectTableAccess: restrictedExportPolicy.GetRestrictDirectTableAccess().GetValue(),
+				}
+			}
+		}
+	}
+
+	a.populateListingDefaults(obj, name)
 
 	if err := a.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
+}
+
+func (a *analyticsHubServer) populateListingDefaults(obj *pb.Listing, name *listingName) {
+	if obj.AllowOnlyMetadataSharing == nil {
+		obj.AllowOnlyMetadataSharing = PtrTo(false)
+	}
+
+	if bigQueryDataset := obj.GetBigqueryDataset(); bigQueryDataset != nil {
+		if bigQueryDataset.EffectiveReplicas == nil {
+			bigQueryDataset.EffectiveReplicas = []*pb.Listing_BigQueryDatasetSource_Replica{
+				{
+					Location:     "us",
+					PrimaryState: PtrTo(pb.Listing_BigQueryDatasetSource_Replica_PRIMARY_REPLICA),
+					ReplicaState: pb.Listing_BigQueryDatasetSource_Replica_READY_TO_USE,
+				},
+			}
+		}
+		if bigQueryDataset.RestrictedExportPolicy == nil {
+			bigQueryDataset.RestrictedExportPolicy = &pb.Listing_BigQueryDatasetSource_RestrictedExportPolicy{
+				Enabled:                   wrapperspb.Bool(false),
+				RestrictDirectTableAccess: wrapperspb.Bool(false),
+				RestrictQueryResult:       wrapperspb.Bool(false),
+			}
+		}
+	}
+	if obj.DataProvider == nil {
+		obj.DataProvider = &pb.DataProvider{}
+	}
+
+	if obj.GetDiscoveryType() == pb.DiscoveryType_DISCOVERY_TYPE_UNSPECIFIED {
+		obj.DiscoveryType = PtrTo(pb.DiscoveryType_DISCOVERY_TYPE_PRIVATE)
+	}
+
+	if obj.LogLinkedDatasetQueryUserEmail == nil {
+		obj.LogLinkedDatasetQueryUserEmail = PtrTo(false)
+	}
+
+	if obj.Publisher == nil {
+		obj.Publisher = &pb.Publisher{}
+	}
+
+	if obj.GetResourceType() == pb.SharedResourceType_SHARED_RESOURCE_TYPE_UNSPECIFIED {
+		obj.ResourceType = pb.SharedResourceType_BIGQUERY_DATASET
+	}
+
+	if obj.RestrictedExportConfig == nil {
+		obj.RestrictedExportConfig = &pb.Listing_RestrictedExportConfig{}
+	}
+
+	if obj.State == pb.Listing_STATE_UNSPECIFIED {
+		obj.State = pb.Listing_ACTIVE
+	}
 }
 
 func (a *analyticsHubServer) UpdateListing(ctx context.Context, request *pb.UpdateListingRequest) (*pb.Listing, error) {
@@ -223,7 +328,8 @@ type dataExchangeName struct {
 }
 
 func (n *dataExchangeName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/dataExchanges/" + n.DataExchangeID
+	location := strings.ToLower(n.Location)
+	return fmt.Sprintf("projects/%v/locations/%v/dataExchanges/%v", n.Project.Number, location, n.DataExchangeID)
 }
 
 // parseDataExchangeID parses a string into a dataExchangeName.
@@ -232,7 +338,7 @@ func (s *MockService) parseDataExchangeID(name string) (*dataExchangeName, error
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dataExchanges" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}
@@ -257,7 +363,8 @@ type listingName struct {
 }
 
 func (n *listingName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/dataExchanges/" + n.DataExchangeID + "/listings/" + n.ListingID
+	location := strings.ToLower(n.Location)
+	return fmt.Sprintf("projects/%v/locations/%v/dataExchanges/%v/listings/%v", n.Project.Number, location, n.DataExchangeID, n.ListingID)
 }
 
 // parseDataExchangeID parses a string into a dataExchangeName.
@@ -266,7 +373,7 @@ func (s *MockService) parseListingID(name string) (*listingName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dataExchanges" && tokens[6] == "listings" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}

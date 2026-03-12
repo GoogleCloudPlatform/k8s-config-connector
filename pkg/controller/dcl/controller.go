@@ -47,6 +47,7 @@ import (
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -103,15 +104,11 @@ type Reconciler struct {
 }
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter,
-	dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator,
-	additionalPredicate predicate.Predicate) (k8s.SchemaReferenceUpdater, error) {
+	dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator) (k8s.SchemaReferenceUpdater, error) {
 	if jitterGenerator == nil {
 		return nil, fmt.Errorf("jitter generator not initialized")
 	}
 	predicates := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
-	if additionalPredicate != nil {
-		predicates = append(predicates, additionalPredicate)
-	}
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
@@ -186,7 +183,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 
 	r.schemaRefMu.RLock()
 	defer r.schemaRefMu.RUnlock()
-	r.logger.Info("starting reconcile", "resource", req.NamespacedName)
+	r.logger.V(1).Info("starting reconcile", "resource", req.NamespacedName)
 	startTime := time.Now()
 	r.RecordReconcileWorkers(ctx, r.schemaRef.GVK)
 	defer r.AfterReconcile()
@@ -197,17 +194,19 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 
 	if err := r.Get(ctx, req.NamespacedName, u); err != nil {
 		if apierrors.IsNotFound(err) {
-			r.logger.Info("resource not found in API server; finishing reconcile", "resource", req.NamespacedName)
+			r.logger.V(2).Info("resource not found in API server; finishing reconcile", "resource", req.NamespacedName)
 			return reconcile.Result{}, nil
 		}
 		return reconcile.Result{}, err
 	}
+	structuredreporting.ReportReconcileStart(ctx, u, k8s.ReconcilerTypeDCL)
+	defer structuredreporting.ReportReconcileEnd(ctx, u, res, err, k8s.ReconcilerTypeDCL)
 	skip, err := resourceactuation.ShouldSkip(u)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
 	if skip {
-		r.logger.Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", req.NamespacedName)
+		r.logger.V(2).Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", req.NamespacedName)
 		return reconcile.Result{}, nil
 	}
 	u, err = k8s.TriggerManagedFieldsMetadata(ctx, r.Client, u)
@@ -249,7 +248,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 			}
 		}
 
-		r.logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", req.NamespacedName, "time to next reconciliation", jitteredPeriod)
+		r.logger.V(2).Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", req.NamespacedName, "time to next reconciliation", jitteredPeriod)
 		return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 	default:
 		return reconcile.Result{}, fmt.Errorf("unknown actuation mode %v", am)
@@ -270,7 +269,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("error generating reconcile interval for resource %v", resource.GetNamespacedName())
 	}
-	r.logger.Info("successfully finished reconcile", "resource", resource.GetNamespacedName(), "time to next reconciliation", jitteredPeriod)
+	r.logger.V(2).Info("successfully finished reconcile", "resource", resource.GetNamespacedName(), "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
@@ -286,7 +285,7 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 	liveLite, err := livestate.FetchLiveState(ctx, resource, dclConfig, r.converter, r.serviceMappingLoader, r.Client)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-			r.logger.Info(unwrappedErr.Error(), "resource", resource.GetNamespacedName())
+			r.logger.V(2).Info(unwrappedErr.Error(), "resource", resource.GetNamespacedName())
 			return r.handleUnresolvableDeps(ctx, &resource.Resource, unwrappedErr)
 		}
 		return false, r.HandleUpdateFailed(ctx, &resource.Resource, fmt.Errorf("error fetching live state: %w", err))
@@ -324,7 +323,7 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 	lite, secretVersions, err := kcclite.ToKCCLiteAndSecretVersions(desired, r.converter.MetadataLoader, r.converter.SchemaLoader, r.serviceMappingLoader, r.Client)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-			r.logger.Info(unwrappedErr.Error(), "resource", resource.GetNamespacedName())
+			r.logger.V(2).Info(unwrappedErr.Error(), "resource", resource.GetNamespacedName())
 			return r.handleUnresolvableDeps(ctx, &resource.Resource, unwrappedErr)
 		}
 		return false, r.HandleUpdateFailed(ctx, &resource.Resource, fmt.Errorf("error converting the desired state to a KCC lite resource: %w", err))
@@ -353,11 +352,11 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 	}
 	// check if there are diffs between the desired state and the underlying resource
 	if !hasDiff {
-		r.logger.Info("resource is already up to date", "resource", resource.GetNamespacedName())
+		r.logger.V(2).Info("resource is already up to date", "resource", resource.GetNamespacedName())
 		return r.updateSpecAndStatusWithLiveState(ctx, liveLite, resource, secretVersions)
 	}
 	// create or update the underlying resource
-	r.logger.Info("creating/updating underlying resource", "resource", resource.GetNamespacedName())
+	r.logger.V(2).Info("creating/updating underlying resource", "resource", resource.GetNamespacedName())
 	if err := r.HandleUpdating(ctx, &resource.Resource); err != nil {
 		return false, err
 	}
@@ -473,7 +472,7 @@ func (r *Reconciler) handleDefaults(ctx context.Context, u *unstructured.Unstruc
 	for _, defaulter := range r.defaulters {
 		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeDCL, u)
 		if err != nil {
-			return fmt.Errorf("applying defaults: %w", err)
+			return fmt.Errorf("applying defaults in the dcl controller: %w", err)
 		}
 		if changed {
 			changeCount++
@@ -577,14 +576,14 @@ func (r *Reconciler) constructDesiredStateWithManagedFields(original *dcl.Resour
 // 3) checks if the resource is orphaned by its parent
 // 4) deletes the underlying resources if it owns the resource lease
 func (r *Reconciler) finalizeResourceDeletion(ctx context.Context, resource *dcl.Resource, dclConfig *mmdcl.Config) (requeue bool, err error) {
-	r.logger.Info("finalizing resource deletion", "resource", resource.GetNamespacedName())
+	r.logger.V(2).Info("finalizing resource deletion", "resource", resource.GetNamespacedName())
 	if !k8s.HasFinalizer(resource, k8s.ControllerFinalizerName) {
-		r.logger.Info("no controller finalizer is present; no finalization necessary",
+		r.logger.V(2).Info("no controller finalizer is present; no finalization necessary",
 			"resource", resource.GetNamespacedName())
 		return false, nil
 	}
 	if k8s.HasFinalizer(resource, k8s.DeletionDefenderFinalizerName) {
-		r.logger.Info("deletion defender has not yet been finalized; requeuing", "resource", resource.GetNamespacedName())
+		r.logger.V(2).Info("deletion defender has not yet been finalized; requeuing", "resource", resource.GetNamespacedName())
 		return true, nil
 	}
 	if err := r.HandleDeleting(ctx, &resource.Resource); err != nil {
@@ -592,7 +591,7 @@ func (r *Reconciler) finalizeResourceDeletion(ctx context.Context, resource *dcl
 	}
 	// abandon the resource if deletion policy is abandon
 	if k8s.HasAbandonAnnotation(resource) {
-		r.logger.Info("deletion policy set to abandon; abandoning underlying resource", "resource", resource.GetNamespacedName())
+		r.logger.V(2).Info("deletion policy set to abandon; abandoning underlying resource", "resource", resource.GetNamespacedName())
 		return false, r.handleDeleted(ctx, resource)
 	}
 	// check if the resource is orphaned by its parent
@@ -601,7 +600,7 @@ func (r *Reconciler) finalizeResourceDeletion(ctx context.Context, resource *dcl
 		return false, err
 	}
 	if orphaned {
-		r.logger.Info("resource has been orphaned; no API call necessary", "resource", resource.GetNamespacedName())
+		r.logger.V(2).Info("resource has been orphaned; no API call necessary", "resource", resource.GetNamespacedName())
 		return false, r.handleDeleted(ctx, resource)
 	}
 	if parent != nil && !k8s.IsResourceReady(parent) {
@@ -617,7 +616,7 @@ func (r *Reconciler) finalizeResourceDeletion(ctx context.Context, resource *dcl
 		return false, r.HandleDeleteFailed(ctx, &resource.Resource, fmt.Errorf("error fetching live state: %w", err))
 	}
 	if liveLite == nil {
-		r.logger.Info("underlying resource does not exist; no API call necessary", "resource", k8s.GetNamespacedName(resource))
+		r.logger.V(2).Info("underlying resource does not exist; no API call necessary", "resource", k8s.GetNamespacedName(resource))
 		return false, r.handleDeleted(ctx, resource)
 	}
 	// attempt to obtain the resource lease and delete the underlying resource
@@ -632,10 +631,10 @@ func (r *Reconciler) finalizeResourceDeletion(ctx context.Context, resource *dcl
 	if err != nil {
 		return false, fmt.Errorf("error converting KCC lite to dcl resource: %w", err)
 	}
-	r.logger.Info("deleting underlying resource", "resource", resource.GetNamespacedName())
+	r.logger.V(2).Info("deleting underlying resource", "resource", resource.GetNamespacedName())
 	if err := dclunstruct.Delete(ctx, dclConfig, dclResource); err != nil {
 		if dcl.IsNoSuchMethodError(err) {
-			r.logger.Info("underlying resource cannot be deleted since there is no delete API; only clean up the kubernetes resource object", "resource", k8s.GetNamespacedName(resource))
+			r.logger.V(2).Info("underlying resource cannot be deleted since there is no delete API; only clean up the kubernetes resource object", "resource", k8s.GetNamespacedName(resource))
 			return false, r.handleDeleted(ctx, resource)
 		}
 		return false, r.HandleDeleteFailed(ctx, &resource.Resource, fmt.Errorf("error deleting the resource %v: %w", resource.GetNamespacedName(), err))

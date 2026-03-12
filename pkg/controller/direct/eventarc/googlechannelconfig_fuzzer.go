@@ -37,7 +37,9 @@ func eventarcGoogleChannelConfigFuzzer() fuzztesting.KRMFuzzer {
 
 	f.StatusFields.Insert(".update_time")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.IdentityField(".name")
+
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

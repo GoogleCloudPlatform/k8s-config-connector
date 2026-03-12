@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/aiplatform/apiv1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
@@ -35,7 +36,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -67,7 +67,9 @@ func (m *modelFeaturestore) client(ctx context.Context, location string) (*gcp.F
 	return gcpClient, err
 }
 
-func (m *modelFeaturestore) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelFeaturestore) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.VertexAIFeaturestore{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -182,6 +184,13 @@ func (a *FeaturestoreAdapter) Update(ctx context.Context, updateOp *directbase.U
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
+
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
 	}

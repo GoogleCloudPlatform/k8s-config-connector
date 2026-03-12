@@ -32,7 +32,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -40,6 +39,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -56,20 +56,23 @@ type internalRangeModel struct {
 	config config.ControllerConfig
 }
 
-func (m *internalRangeModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *internalRangeModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.NetworkConnectivityInternalRange{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewInternalRangeIdentity(ctx, reader, obj)
+	idIdentity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := idIdentity.(*krm.InternalRangeIdentity)
 
 	// normalize reference fields
 	if obj.Spec.NetworkRef != nil {
-		if err := obj.Spec.NetworkRef.Normalize(ctx, reader, obj); err != nil {
+		if err := obj.Spec.NetworkRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 			return nil, err
 		}
 	}
@@ -143,7 +146,8 @@ func (a *internalRangeAdapter) Create(ctx context.Context, createOp *directbase.
 
 	fqn := a.id.String()
 
-	op, err := a.gcpClient.Projects.Locations.InternalRanges.Create(a.id.Parent().String(), req).InternalRangeId(a.id.ID()).Context(ctx).Do()
+	parent := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
+	op, err := a.gcpClient.Projects.Locations.InternalRanges.Create(parent, req).InternalRangeId(a.id.InternalRange).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating networkconnectivity internalrange %s: %w", fqn, err)
 	}
@@ -185,30 +189,40 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, resource.Description)
 		paths = append(paths, "description")
 	}
 	if desired.Spec.IPCIDRRange != nil && !reflect.DeepEqual(resource.IpCidrRange, a.actual.IpCidrRange) {
+		report.AddField("ip_cidr_range", a.actual.IpCidrRange, resource.IpCidrRange)
 		paths = append(paths, "ipCidrRange")
 	}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, resource.Labels)
 		paths = append(paths, "labels")
 	}
 	if desired.Spec.Peering != nil && !reflect.DeepEqual(resource.Peering, a.actual.Peering) {
+		report.AddField("peering", a.actual.Peering, resource.Peering)
 		paths = append(paths, "peering")
 	}
 	if desired.Spec.PrefixLength != nil && !reflect.DeepEqual(resource.PrefixLength, a.actual.PrefixLength) {
+		report.AddField("prefix_length", a.actual.PrefixLength, resource.PrefixLength)
 		paths = append(paths, "prefixLength")
 	}
 	if desired.Spec.TargetCIDRRange != nil && !reflect.DeepEqual(resource.TargetCidrRange, a.actual.TargetCidrRange) {
+		report.AddField("target_cidr_range", a.actual.TargetCidrRange, resource.TargetCidrRange)
 		paths = append(paths, "targetCidrRange")
 	}
 	if desired.Spec.Usage != nil && !reflect.DeepEqual(resource.Usage, a.actual.Usage) {
+		report.AddField("usage", a.actual.Usage, resource.Usage)
 		paths = append(paths, "usage")
 	}
 
 	if len(paths) > 0 {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &api.InternalRange{}
 		if err := convertProtoToAPI(resource, req); err != nil {
@@ -252,8 +266,8 @@ func (a *internalRangeAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = a.id.Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -270,7 +284,7 @@ func (a *internalRangeAdapter) Delete(ctx context.Context, deleteOp *directbase.
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting networkconnectivity internalrange", "name", a.id)
 	fqn := a.id.String()
-	op, err := a.gcpClient.Projects.Locations.ServiceConnectionPolicies.Delete(fqn).Context(ctx).Do()
+	op, err := a.gcpClient.Projects.Locations.InternalRanges.Delete(fqn).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			log.V(2).Info("skipping delete for non-existent networkconnectivity internalrange, assuming it was already deleted", "name", a.id)

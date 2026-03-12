@@ -10,7 +10,7 @@ cd ${REPO_ROOT}
 
 # Update go.mod files
 cd ${REPO_ROOT}
-for f in $(git ls-files 'go.mod' '**/go.mod' | grep -v third_party | grep -v experiments/composite); do
+for f in $(git ls-files 'go.mod' '**/go.mod' | grep -v third_party | grep -v experiments/composite | grep -v experiments/kompanion | grep -v dev/tools/controllerbuilder/cmd/ctf/testdata); do
   cd ${REPO_ROOT}
   cd $(dirname $f)
   for DEPENDENCY in "$@"; do
@@ -25,7 +25,7 @@ done
 
 # Run go mod tidy
 cd ${REPO_ROOT}
-for f in $(git ls-files 'go.mod' '**/go.mod' | grep -v third_party | grep -v experiments/composite); do
+for f in $(git ls-files 'go.mod' '**/go.mod' | grep -v third_party | grep -v experiments/composite | grep -v experiments/kompanion | grep -v dev/tools/controllerbuilder/cmd/ctf/testdata); do
   cd ${REPO_ROOT}
   cd $(dirname $f)
   echo "Running go mod tidy in $(dirname $f)"

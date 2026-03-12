@@ -16,7 +16,7 @@ package mockbigquerybiglake
 
 // +tool:mockgcp-service
 // http.host: biglake.googleapis.com
-// proto.service: google.cloud.bigquery.biglake.v1
+// proto.service: google.cloud.bigquery.biglake.v1.MetastoreService
 
 import (
 	"context"

@@ -29,7 +29,7 @@ func init() {
 
 func customTargetTypeFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.CustomTargetType{},
-		CustomTargetType_FromProto, CustomTargetType_ToProto,
+		CustomTargetTypeSpec_FromProto, CustomTargetTypeSpec_ToProto,
 		CustomTargetTypeObservedState_FromProto, CustomTargetTypeObservedState_ToProto,
 	)
 

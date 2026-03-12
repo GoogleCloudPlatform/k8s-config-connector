@@ -25,13 +25,13 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	. "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/mappings" //nolint:revive
 )
@@ -100,7 +100,9 @@ func (m *model) client(ctx context.Context) (*api.Client, error) {
 }
 
 // AdapterForObject implements the Model interface.
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	_ = op.Reader
 	gcp, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -254,6 +256,12 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		klog.Warningf("unexpected empty update mask, desired: %v, actual: %v", a.desired, a.actual)
 		return nil
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for _, path := range updateMask.Paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	key := &pb.Key{}
 	if err := keyMapping.Map(a.desired, key); err != nil {

@@ -88,7 +88,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Cache admission policy. Valid values includes: `admit-on-first-miss` and `admit-on-second-miss`. Defaults to `admit-on-first-miss`.{% endverbatim %}</p>
+            <p>{% verbatim %}Cache admission policy. Valid values include: `admit-on-first-miss` and `admit-on-second-miss`. Defaults to `admit-on-first-miss`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -108,7 +108,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The StorageBucket selfLink, when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally-managed StorageBucket resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -118,7 +118,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `StorageBucket` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a StorageBucket resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -128,7 +128,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `StorageBucket` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a StorageBucket resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -148,7 +148,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The AnywhereCacheID generated via backend, It can be used by users to manage an existing cache.{% endverbatim %}</p>
+            <p>{% verbatim %}The AnywhereCacheID generated via backend. It can be used by users to manage an existing cache.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -158,7 +158,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Cache entry TTL (ranges between 1h to 7d). This is a cache-level config that defines how long a cache entry can live. Defaults to "86400s" TTL must be in whole seconds.{% endverbatim %}</p>
+            <p>{% verbatim %}Cache entry TTL (ranges between 1h to 7d). This is a cache-level config that defines how long a cache entry can live. Defaults to "86400s". TTL must be in whole seconds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

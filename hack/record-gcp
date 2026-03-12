@@ -17,7 +17,10 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}/
+
+. ${REPO_ROOT}/dev/tasks/setup-envtest
 
 rm -rf $(pwd)/artifactz/realgcp
 
@@ -28,6 +31,10 @@ if [[ $1 =~ TestE2EScript.* ]]; then
 elif [[ $1 =~ TestAllInSeries.* ]]; then
   # Prefix looks good
   RUN_TESTS=$1
+elif [[ $1 =~ pkg.* ]]; then
+  # Prefix looks good, but we need to add TestAllInSeries/ and opt-in to full paths
+  export USE_FULL_TEST_NAMES=true
+  RUN_TESTS=TestAllInSeries/fixtures/${1}$
 else
   RUN_TESTS=TestAllInSeries/$1
 fi

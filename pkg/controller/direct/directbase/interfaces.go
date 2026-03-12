@@ -33,7 +33,7 @@ type IAMModel interface {
 type Model interface {
 	// AdapterForObject builds an operation object for reconciling the object u.
 	// If there are references, AdapterForObject should dereference them before returning (using reader)
-	AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (Adapter, error)
+	AdapterForObject(ctx context.Context, op *AdapterForObjectOperation) (Adapter, error)
 
 	// AdapterForURL builds an operation object for exporting the object u.
 	AdapterForURL(ctx context.Context, url string) (Adapter, error)
@@ -44,7 +44,7 @@ type Model interface {
 type SensitiveFieldModel interface {
 	// AdapterForObject builds an operation object for reconciling the object u.
 	// If there are references, AdapterForObject should dereference them before returning (using reader)
-	AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (Adapter, error)
+	AdapterForObject(ctx context.Context, op *AdapterForObjectOperation) (Adapter, error)
 
 	// AdapterForURL builds an operation object for exporting the object u.
 	AdapterForURL(ctx context.Context, url string) (Adapter, error)

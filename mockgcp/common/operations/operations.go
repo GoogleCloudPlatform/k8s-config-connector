@@ -49,14 +49,31 @@ func (s *Operations) RegisterGRPCServices(grpcServer *grpc.Server) {
 	pb.RegisterOperationsServer(grpcServer, s)
 }
 
-func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
+func buildOperationName(prefix string) string {
 	now := time.Now()
 	millis := now.UnixMilli()
 	id := string(uuid.NewUUID())
 
+	format := "operations/{{operationID}}"
+	if prefix != "" {
+		if strings.Contains(prefix, "{{operationID}}") {
+			format = prefix
+		} else {
+			format = prefix + "/" + format
+		}
+	}
+
+	operationID := fmt.Sprintf("operation-%d-%s", millis, id)
+	name := strings.ReplaceAll(format, "{{operationID}}", operationID)
+
+	return name
+}
+
+func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
+
 	op := &pb.Operation{}
 
-	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
+	op.Name = buildOperationName("")
 	op.Done = true
 
 	fqn := op.Name
@@ -68,16 +85,13 @@ func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
 }
 
 func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto.Message, callback func() (proto.Message, error)) (*pb.Operation, error) {
-	now := time.Now()
-	millis := now.UnixMilli()
-	id := uuid.NewUUID()
+	return s.StartLROWithOptions(ctx, prefix, metadata, callback, true)
+}
 
+func (s *Operations) StartLROWithOptions(ctx context.Context, prefix string, metadata proto.Message, callback func() (proto.Message, error), keepMetadata bool) (*pb.Operation, error) {
 	op := &pb.Operation{}
 
-	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
-	if prefix != "" {
-		op.Name = prefix + "/" + op.Name
-	}
+	op.Name = buildOperationName(prefix)
 	op.Done = false
 
 	if metadata != nil {
@@ -114,7 +128,7 @@ func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto
 			}
 		}
 
-		if err2 := markDone(finished, result, err); err2 != nil {
+		if err2 := markDone(finished, result, err, keepMetadata); err2 != nil {
 			klog.Warningf("error marking LRO as done: %v", err2)
 		}
 
@@ -127,7 +141,7 @@ func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto
 	return op, nil
 }
 
-func markDone(op *pb.Operation, result proto.Message, err error) error {
+func markDone(op *pb.Operation, result proto.Message, err error, keepMetadataOnDone bool) error {
 	op.Done = true
 	if err != nil {
 		op.Result = &pb.Operation_Error{
@@ -142,7 +156,9 @@ func markDone(op *pb.Operation, result proto.Message, err error) error {
 			op.Result = &pb.Operation_Response{}
 		} else {
 			rewriteTypes(resultAny)
-
+			if !keepMetadataOnDone {
+				op.Metadata = nil
+			}
 			op.Result = &pb.Operation_Response{
 				Response: resultAny,
 			}
@@ -152,19 +168,12 @@ func markDone(op *pb.Operation, result proto.Message, err error) error {
 }
 
 func (s *Operations) DoneLRO(ctx context.Context, prefix string, metadata proto.Message, result proto.Message) (*pb.Operation, error) {
-	now := time.Now()
-	millis := now.UnixMilli()
-	id := uuid.NewUUID()
-
 	op := &pb.Operation{}
 
-	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
-	if prefix != "" {
-		op.Name = prefix + "/" + op.Name
-	}
+	op.Name = buildOperationName(prefix)
 	op.Done = false
 
-	if err := markDone(op, result, nil); err != nil {
+	if err := markDone(op, result, nil, false); err != nil {
 		return nil, err
 	}
 

@@ -29,7 +29,7 @@ type APIGatewayAPISpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Optional. Resource labels to represent user-provided metadata.
-	//  Refer to cloud documentation on labels for more details.
+	//  For more information, see the {{compute_name_short}} documentation:
 	//  https://cloud.google.com/compute/docs/labeling-resources
 	// +kcc:proto:field=google.cloud.apigateway.v1.Api.labels
 	Labels map[string]string `json:"labels,omitempty"`
@@ -91,7 +91,8 @@ type APIGatewayAPIObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpapigatewayapi;gcpapigatewayapis
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

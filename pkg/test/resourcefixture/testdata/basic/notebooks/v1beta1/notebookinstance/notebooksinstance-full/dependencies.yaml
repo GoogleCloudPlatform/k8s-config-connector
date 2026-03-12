@@ -15,6 +15,8 @@
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: notebookinstance-dep
 spec:
   location: us-central1
@@ -22,6 +24,8 @@ spec:
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   labels:
     source: kcc-notebookinstance-sample
   name: notebookinstance-dep
@@ -32,11 +36,15 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: notebookinstance-dep
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: notebookinstance-dep
 spec:
   resourceRef:
@@ -51,6 +59,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: notebookinstance-dep
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -58,6 +68,7 @@ kind: ComputeSubnetwork
 metadata:
   name: notebookinstance-dep1
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/project-id: ${projectId}
 spec:
   ipCidrRange: 10.0.0.0/16

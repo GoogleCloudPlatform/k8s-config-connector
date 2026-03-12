@@ -46,7 +46,7 @@ func (s *tableAdminServer) GetTable(ctx context.Context, req *pb.GetTableRequest
 	obj := &pb.Table{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Table not found: %v", name.String())
+			return nil, status.Errorf(codes.NotFound, "Not found: %v", name.String())
 		}
 		return nil, err
 	}
@@ -157,6 +157,13 @@ func (s *tableAdminServer) ModifyColumnFamilies(ctx context.Context, req *pb.Mod
 				return nil, status.Errorf(codes.NotFound, "column family %q not found", id)
 			}
 			delete(obj.ColumnFamilies, id)
+		case *pb.ModifyColumnFamiliesRequest_Modification_Update:
+			// Fail if does not exist
+			_, exists := obj.ColumnFamilies[id]
+			if !exists {
+				return nil, status.Errorf(codes.NotFound, "column family %q not found", id)
+			}
+			obj.ColumnFamilies[id] = mod.Update
 		default:
 			return nil, fmt.Errorf("modified type %T not implemented by mock", mod)
 		}

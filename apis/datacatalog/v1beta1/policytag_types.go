@@ -15,26 +15,28 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var DataCatalogPolicyTagGVK = GroupVersion.WithKind("DataCatalogPolicyTag")
 
 // DataCatalogPolicyTagSpec defines the desired state of DataCatalogPolicyTag
-// +kcc:spec:proto=google.cloud.datacatalog.v1beta1.PolicyTag
+// +kcc:spec:proto=google.cloud.datacatalog.v1.PolicyTag
 type DataCatalogPolicyTagSpec struct {
-	/* Description of this policy tag. It must: contain only unicode characters, tabs,
-	newlines, carriage returns and page breaks; and be at most 2000 bytes long when
-	encoded in UTF-8. If not set, defaults to an empty description.
-	If not set, defaults to an empty description. */
-	// +optional
-	Description *string `json:"description,omitempty"`
-
 	/* User defined name of this policy tag. It must: be unique within the parent
 	taxonomy; contain only unicode letters, numbers, underscores, dashes and spaces;
 	not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8. */
-	DisplayName string `json:"displayName"`
+	// +required
+	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.display_name
+	DisplayName *string `json:"displayName"`
+
+	/* Description of this policy tag. It must: contain only unicode characters, tabs,
+	newlines, carriage returns and page breaks; and be at most 2000 bytes long when
+	encoded in UTF-8. If not set, defaults to an empty description. */
+	// +optional
+	// +kcc:proto:field=google.cloud.datacatalog.v1.PolicyTag.description
+	Description *string `json:"description,omitempty"`
 
 	// +optional
 	ParentPolicyTagRef *PolicyTagRef `json:"parentPolicyTagRef,omitempty"`
@@ -43,6 +45,7 @@ type DataCatalogPolicyTagSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// +required
 	TaxonomyRef TaxonomyRef `json:"taxonomyRef"`
 }
 
@@ -72,7 +75,7 @@ type DataCatalogPolicyTagStatus struct {
 }
 
 // DataCatalogPolicyTagObservedState is the state of the DataCatalogPolicyTag resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.datacatalog.v1beta1.PolicyTag
+// +kcc:observedstate:proto=google.cloud.datacatalog.v1.PolicyTag
 type DataCatalogPolicyTagObservedState struct {
 }
 
@@ -80,7 +83,9 @@ type DataCatalogPolicyTagObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatacatalogpolicytag;gcpdatacatalogpolicytags
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

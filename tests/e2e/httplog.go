@@ -216,7 +216,6 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 
 	// Specific to Sql
-	addSetStringReplacement(".ipAddresses[].ipAddress", "10.1.2.3")
 	addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
 	addReplacement("serverCaCert.commonName", "common-name")
 	addReplacement("serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")
@@ -256,11 +255,6 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 		}
 	})
 
-	// Add Essential Contacts specific normalizations
-	addReplacement("validateTime", "2024-04-01T12:34:56.123456Z")
-	addReplacement("response.validateTime", "2024-04-01T12:34:56.123456Z")
-	addSetStringReplacement(".contacts[].validateTime", "2024-04-01T12:34:56.123456Z")
-
 	events.PrettifyJSON(jsonMutators...)
 
 	// Remove headers that just aren't very relevant to testing
@@ -271,6 +265,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
 	events.RemoveHTTPResponseHeader("Server-Timing")
+	events.RemoveHTTPResponseHeader("Expires")
 
 	got := events.FormatHTTP()
 	normalizers := []func(string) string{}
@@ -305,6 +300,9 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 	for _, event := range events {
 		id := ""
 		body := event.Response.ParseBody()
+		if body == nil {
+			continue
+		}
 		val, ok := body["name"]
 		if ok {
 			s := val.(string)
@@ -329,7 +327,9 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			// Avoid marking some well-known values that are never operationIDs
 			switch id {
 			case "projects":
-			// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+				// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+			case "accessPolicies":
+				// Access Context Manager uses an unusual operation path: "operations/accessPolicies/${accessPolicyId}/delete/${operationID}"
 			default:
 				x.OperationIDs[id] = true
 			}
@@ -367,6 +367,9 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			continue
 		}
 		body := event.Response.ParseBody()
+		if body == nil {
+			continue
+		}
 		targetLink, _, _ := unstructured.NestedString(body, "targetLink")
 		targetId, _, _ := unstructured.NestedString(body, "targetId")
 		if targetLink != "" && targetId != "" {

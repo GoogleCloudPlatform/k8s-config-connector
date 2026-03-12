@@ -1040,6 +1040,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "recordClientAddress": true
     },
     "ipConfiguration": {
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,
@@ -1167,6 +1168,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-encryptionkey-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1216,6 +1218,7 @@ X-Xss-Protection: 0
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,
@@ -1275,6 +1278,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-encryptionkey-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
@@ -1333,6 +1337,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-encryptionkey-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1382,6 +1387,7 @@ X-Xss-Protection: 0
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,
@@ -1471,6 +1477,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "recordClientAddress": true
     },
     "ipConfiguration": {
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,
@@ -1599,6 +1606,7 @@ X-Xss-Protection: 0
   "name": "sqlinstance-encryptionkey-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1648,6 +1656,7 @@ X-Xss-Protection: 0
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
       "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
       "requireSsl": true,

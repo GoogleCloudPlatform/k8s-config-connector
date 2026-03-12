@@ -17,7 +17,7 @@ spec:
   description: example vertex AI endpoint with encryption key
   displayName: vertexai-endpoint-network-updated
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: ${networkID}
   projectRef:
     external: ${projectId}
   region: us-central1

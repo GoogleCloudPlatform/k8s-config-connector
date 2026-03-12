@@ -25,7 +25,7 @@ import (
 
 func NormalizeWorkstationCluster(ctx context.Context, kube client.Reader, obj *krm.WorkstationCluster) error {
 	// Resolve network.
-	if err := obj.Spec.NetworkRef.Normalize(ctx, kube, obj); err != nil {
+	if err := obj.Spec.NetworkRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
 		return err
 	}
 

@@ -28,13 +28,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -64,7 +64,9 @@ func (m *modelReservation) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *modelReservation) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelReservation) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.BigQueryReservationReservation{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -129,7 +131,7 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	desiredPb := BigqueryReservationReservationSpec_ToProto(mapCtx, &desired.Spec)
+	desiredPb := BigQueryReservationReservationSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -146,7 +148,7 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("successfully created Reservation", "name", created.Name)
 
 	status := &krm.BigQueryReservationReservationStatus{}
-	status.ObservedState = BigqueryReservationReservationObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BigQueryReservationReservationObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -161,21 +163,26 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	mapCtx := &direct.MapContext{}
 
 	desiredSpec := &a.desired.DeepCopy().Spec
-	desiredPb := BigqueryReservationReservationSpec_ToProto(mapCtx, desiredSpec)
+	desiredPb := BigQueryReservationReservationSpec_ToProto(mapCtx, desiredSpec)
 	desiredPb.Name = a.id.String()
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 
 	if !reflect.DeepEqual(desiredPb.SlotCapacity, a.actual.SlotCapacity) {
+		report.AddField("slot_capacity", a.actual.SlotCapacity, desiredPb.SlotCapacity)
 		paths = append(paths, "slot_capacity")
 	}
 	if !reflect.DeepEqual(desiredPb.IgnoreIdleSlots, a.actual.IgnoreIdleSlots) {
+		report.AddField("ignore_idle_slots", a.actual.IgnoreIdleSlots, desiredPb.IgnoreIdleSlots)
 		paths = append(paths, "ignore_idle_slots")
 	}
 	if !reflect.DeepEqual(desiredPb.Concurrency, a.actual.Concurrency) {
+		report.AddField("concurrency", a.actual.Concurrency, desiredPb.Concurrency)
 		paths = append(paths, "concurrency")
 	}
 
@@ -197,24 +204,32 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		if desiredPb.Edition != pb.Edition_ENTERPRISE_PLUS {
 			return fmt.Errorf("updating Reservation %s: %s", a.id.String(), "secondaryLocation is only available for ENTERPRISE_PLUS")
 		}
+		report.AddField("secondary_location", a.actual.SecondaryLocation, desiredPb.SecondaryLocation)
 		paths = append(paths, "secondary_location")
 	}
 
 	if desiredPb.Autoscale != nil && a.actual.Autoscale != nil && desiredPb.Autoscale.MaxSlots != a.actual.Autoscale.MaxSlots {
+		report.AddField("autoscale", a.actual.Autoscale, desiredPb.Autoscale)
 		paths = append(paths, "autoscale")
 	} else if desiredPb.Autoscale != nil && a.actual.Autoscale == nil {
+		report.AddField("autoscale", a.actual.Autoscale, desiredPb.Autoscale)
 		paths = append(paths, "autoscale")
 	}
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.BigQueryReservationReservationStatus{}
-		status.ObservedState = BigqueryReservationReservationObservedState_FromProto(mapCtx, a.actual)
+		// Update externalRef when acquiring/importing an existing reservation from gcp
+		status.ExternalRef = direct.LazyPtr(a.id.String())
+		status.ObservedState = BigQueryReservationReservationObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
+
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: paths,
 	}
@@ -230,7 +245,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("successfully updated Reservation", "name", updated.Name)
 
 	status := &krm.BigQueryReservationReservationStatus{}
-	status.ObservedState = BigqueryReservationReservationObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = BigQueryReservationReservationObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -246,7 +261,7 @@ func (a *ReservationAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	obj := &krm.BigQueryReservationReservation{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BigqueryReservationReservationSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BigQueryReservationReservationSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

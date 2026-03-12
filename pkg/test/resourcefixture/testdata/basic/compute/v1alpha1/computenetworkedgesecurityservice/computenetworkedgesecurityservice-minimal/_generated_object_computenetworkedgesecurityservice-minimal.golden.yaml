@@ -7,7 +7,7 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: computenetworkedgesecurityservice-minimal-${uniqueId}
+  name: ${networkEdgeSecurityServiceID}
   namespace: ${uniqueId}
 spec:
   description: Updated description
@@ -23,12 +23,12 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/computenetworkedgesecurityservice-minimal-${uniqueId}
+  externalRef: projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServiceID}
   observedGeneration: 2
   observedState:
     creationTimestamp: "1970-01-01T00:00:00Z"
     id: 1111111111111111
     kind: compute#networkEdgeSecurityService
     region: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1
-    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/computenetworkedgesecurityservice-minimal-${uniqueId}
+    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServiceID}
     selfLinkWithID: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServiceID}

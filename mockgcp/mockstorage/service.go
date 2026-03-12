@@ -31,6 +31,7 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )
 
 func init() {
@@ -68,7 +69,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{
+		UnescapingMode: runtime.UnescapingModeAllExceptReserved,
+	},
 		pb.RegisterBucketsServerHandler,
 		pb.RegisterObjectsServerHandler,
 		pb.RegisterNotificationsServerHandler,
@@ -82,7 +85,6 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	// GCS has a different set of headers from most other APIs
 	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
-
 		expires, found := httpmux.GetExpiresHeader(ctx)
 		if found {
 			response.Header().Set("Cache-Control", "private, max-age=0, must-revalidate, no-transform")

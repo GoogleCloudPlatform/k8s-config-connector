@@ -38,5 +38,5 @@ spec:
           items:
             - versionRef:
                 name: runservice-dep-secret
-                path: "my-secret"
-                mode: 256 # 0400
+              path: "my-secret"
+              mode: 256 # 0400

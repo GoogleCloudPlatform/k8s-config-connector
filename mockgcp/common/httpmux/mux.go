@@ -27,11 +27,19 @@ import (
 	"k8s.io/klog/v2"
 )
 
+const (
+	// MetadataKeyHttpRequestQuery is the gRPC metadata key for the HTTP request query string
+	MetadataKeyHttpRequestQuery = "http.request.query"
+)
+
 type Options struct {
 	// If EmitUnpopulated is true, we will send empty proto fields (false / "" / 0 etc)
 	// Some older APIs do this (e.g. cloudbilling)
 	// While it likely doesn't matter, it makes golden testing easier to match.
 	EmitUnpopulated bool
+
+	// UnescapingMode controls how URL path parameters are unescaped.
+	UnescapingMode runtime.UnescapingMode
 }
 
 type ServeMux struct {
@@ -93,6 +101,7 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 	m := &ServeMux{}
 
 	mux := runtime.NewServeMux(
+		runtime.WithUnescapingMode(opt.UnescapingMode),
 		runtime.WithErrorHandler(m.customErrorHandler),
 		runtime.WithMarshalerOption("application/json;enum-encoding=int", marshalerWithEnumNumbers),
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, marshaler),
@@ -132,6 +141,7 @@ func RewriteRequest(r *http.Request, newURL *url.URL) *http.Request {
 func (m *ServeMux) addMetadata(ctx context.Context, r *http.Request) metadata.MD {
 	md := make(map[string]string)
 	md["path"] = r.URL.Path
+	md[MetadataKeyHttpRequestQuery] = r.URL.RawQuery
 
 	v := r.Context().Value(originalPath)
 	if v != nil {
@@ -166,7 +176,6 @@ func (m *ServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if k == "$alt" {
 			for _, v := range values {
 				if v == "json;enum-encoding=int" {
-					klog.Infof("found %q=%q, will convert to Accept header", k, v)
 					r.Header.Set("Accept", "application/json;enum-encoding=int")
 				}
 			}

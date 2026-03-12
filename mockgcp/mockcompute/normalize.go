@@ -42,6 +42,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	replacements.ReplacePath(".address", "8.8.8.8")
 	replacements.ReplacePath(".items[].address", "8.8.8.8")
+	replacements.ReplacePath(".IPAddress", "8.8.8.8")
+	replacements.ReplacePath(".items[].IPAddress", "8.8.8.8")
 
 	replacements.SortSlice(".subnetworks")
 
@@ -56,6 +58,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	// Routes
 	// replacements.ReplacePath(".items[].id", PlaceholderID)
+
+	// BackendService
+	replacements.SortSlice(".backends")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

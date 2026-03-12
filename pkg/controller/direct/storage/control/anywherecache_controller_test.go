@@ -20,8 +20,8 @@ import (
 	"testing"
 
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/stretchr/testify/assert"
@@ -158,7 +158,7 @@ func TestAnywhereCacheAdapter_Update(t *testing.T) {
 	getDesiredKRM := func(desiredState string, admissionPolicy string, ttl string) *krm.StorageAnywhereCache {
 		return &krm.StorageAnywhereCache{
 			Spec: krm.StorageAnywhereCacheSpec{
-				BucketRef:       &refs.StorageBucketRef{External: fmt.Sprintf("projects/%s/buckets/%s", projectID, bucketID)},
+				BucketRef:       &storagev1beta1.StorageBucketRef{External: fmt.Sprintf("projects/%s/buckets/%s", projectID, bucketID)},
 				Zone:            &zone,
 				AdmissionPolicy: &admissionPolicy, // Desired value
 				Ttl:             &ttl,

@@ -48,10 +48,11 @@ type VertexAIFeaturestoreSpec struct {
 	// The VertexAIFeaturestore name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// NOTYET: not supported in Config Connector reconciliation
 	// Optional. Used to perform consistent read-modify-write updates. If not set,
 	//  a blind "overwrite" update happens.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Featurestore.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 
 	// Optional. The labels with user-defined metadata to organize your
 	//  Featurestore.
@@ -142,7 +143,8 @@ type VertexAIFeaturestoreObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvertexaifeaturestore;gcpvertexaifeaturestores
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

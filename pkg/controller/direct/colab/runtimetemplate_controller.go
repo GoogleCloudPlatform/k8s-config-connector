@@ -42,6 +42,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -76,7 +77,9 @@ func (m *runtimeTemplateModel) client(ctx context.Context, projectID, location s
 	return gcpClient, err
 }
 
-func (m *runtimeTemplateModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *runtimeTemplateModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.ColabRuntimeTemplate{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -152,7 +155,7 @@ func (a *runtimeTemplateAdapter) normalizeReferences(ctx context.Context) error 
 	obj := a.desired
 	if obj.Spec.NetworkSpec != nil {
 		if obj.Spec.NetworkSpec.NetworkRef != nil {
-			if err := obj.Spec.NetworkSpec.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+			if err := obj.Spec.NetworkSpec.NetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
 				return err
 			}
 		}
@@ -267,7 +270,14 @@ func (a *runtimeTemplateAdapter) Update(ctx context.Context, updateOp *directbas
 
 			return updateOp.UpdateStatus(ctx, a.desired.Status, nil)
 		}
+	} else {
+		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+		for path := range paths {
+			report.AddField(path, nil, nil)
+		}
+		structuredreporting.ReportDiff(ctx, report)
 	}
+
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
 	}

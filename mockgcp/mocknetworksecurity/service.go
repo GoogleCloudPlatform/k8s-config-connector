@@ -16,7 +16,6 @@ package mocknetworksecurity
 import (
 	"context"
 	"net/http"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
@@ -25,7 +24,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networksecurity/v1"
+	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
+	pbhttp "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networksecurity/v1beta1"
 )
 
 func init() {
@@ -61,8 +61,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterNetworkSecurityHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
+		pbhttp.RegisterNetworkSecurityHandler,
+		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"),
 	)
 	if err != nil {
 		return nil, err
@@ -73,15 +73,5 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		}
 	}
 
-	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
-		u := r.URL
-		if strings.HasPrefix(u.Path, "/v1beta1/") {
-			u2 := *u
-			u2.Path = "/v1/" + strings.TrimPrefix(u.Path, "/v1beta1/")
-			r = httpmux.RewriteRequest(r, &u2)
-		}
-
-		mux.ServeHTTP(w, r)
-	}
-	return http.HandlerFunc(rewriteBetaToV1), nil
+	return mux, nil
 }

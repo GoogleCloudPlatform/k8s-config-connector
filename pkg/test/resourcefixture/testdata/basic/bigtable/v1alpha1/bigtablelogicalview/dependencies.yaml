@@ -15,13 +15,12 @@
 apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableInstance
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: lvdep${uniqueId}
 spec:
   displayName: BigtableSampleLV
   cluster:
   - clusterId: cluster1-${uniqueId}
     zone: us-central1-a
-    numNodes: 3
-  - clusterId: cluster2-${uniqueId}
-    zone: us-west1-a
     numNodes: 3

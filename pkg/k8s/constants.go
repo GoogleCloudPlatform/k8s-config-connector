@@ -98,6 +98,8 @@ const (
 	ManagerNamespaceIsolationFlag      = "manager-namespace-isolation"
 	ManagerNamespaceIsolationShared    = "shared"
 	ManagerNamespaceIsolationDedicated = "dedicated"
+
+	ReconcilerTypeAnnotation = "cnrm.cloud.google.com/reconciler"
 )
 
 var (
@@ -124,6 +126,7 @@ var (
 	DCL2CRDLabel         = FormatAnnotation("dcl2crd")
 	TF2CRDLabel          = FormatAnnotation("tf2crd")
 	KCCStabilityLabel    = FormatAnnotation("stability-level")
+	UnmanagedFieldsList  = FormatAnnotation("unmanaged")
 
 	MutableButUnreadableFieldsAnnotation = FormatAnnotation("mutable-but-unreadable-fields")
 	ObservedSecretVersionsAnnotation     = FormatAnnotation("observed-secret-versions")
@@ -131,6 +134,8 @@ var (
 	SupportsSSAAnnotation = FormatAnnotation("supports-ssa")
 
 	BlueprintAttributionAnnotation = FormatAnnotation("blueprint")
+
+	LastChangedCookieAnnotation = FormatAnnotation("last-changed-cookie")
 
 	AlphaReconcilerAnnotation = "alpha.cnrm.cloud.google.com/reconciler"
 

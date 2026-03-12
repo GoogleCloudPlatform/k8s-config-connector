@@ -25,8 +25,6 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	v1 "k8s.io/api/apps/v1"
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -49,18 +47,13 @@ type Reconciler struct {
 	gvk schema.GroupVersionKind
 }
 
-func Add(ctx context.Context, mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error {
+func Add(ctx context.Context, mgr manager.Manager, gvk schema.GroupVersionKind) error {
 	logger := crlog.FromContext(ctx)
 
-	kind := crd.Spec.Names.Kind
-	apiVersion := k8s.GetAPIVersionFromCRD(crd)
+	kind := gvk.Kind
+	apiVersion := gvk.GroupVersion().String()
 	controllerName := fmt.Sprintf("%v-unmanaged-detector", strings.ToLower(kind))
 
-	gvk := schema.GroupVersionKind{
-		Group:   crd.Spec.Group,
-		Version: k8s.GetVersionFromCRD(crd),
-		Kind:    crd.Spec.Names.Kind,
-	}
 	r, err := NewReconciler(mgr, gvk)
 	if err != nil {
 		return err
@@ -71,13 +64,12 @@ func Add(ctx context.Context, mgr manager.Manager, crd *apiextensions.CustomReso
 			"apiVersion": apiVersion,
 		},
 	}
-	_, err = builder.
+	if _, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles}).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(Predicate{})).
-		Build(r)
-	if err != nil {
+		Build(r); err != nil {
 		return fmt.Errorf("error creating new controller: %w", err)
 	}
 	logger.Info("Registered unmanaged detector controller", "kind", kind, "apiVersion", apiVersion)
@@ -107,7 +99,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	u.SetGroupVersionKind(r.gvk)
 
 	if err := r.Get(ctx, req.NamespacedName, u); err != nil {
-		if errors.IsNotFound(err) {
+		if apierrors.IsNotFound(err) {
 			logger.Info("resource not found in API server; finishing reconcile", "resource", req.NamespacedName)
 			return reconcile.Result{}, nil
 		}

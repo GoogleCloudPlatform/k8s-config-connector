@@ -120,6 +120,7 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}-2",
   "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vulnerabilityScanningConfig": {
@@ -240,8 +241,8 @@ X-Xss-Protection: 0
       ]
     },
     "vulnerabilityScanningConfig": {
-      "enablementState": "SCANNING_DISABLED",
-      "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+      "enablementState": "SCANNING_UNSUPPORTED",
+      "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
       "lastEnableTime": "2024-04-01T12:34:56.123456Z"
     }
   }
@@ -274,6 +275,7 @@ X-Xss-Protection: 0
   },
   "mode": "VIRTUAL_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
   "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "virtualRepositoryConfig": {
@@ -286,8 +288,8 @@ X-Xss-Protection: 0
     ]
   },
   "vulnerabilityScanningConfig": {
-    "enablementState": "SCANNING_DISABLED",
-    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "enablementState": "SCANNING_UNSUPPORTED",
+    "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
     "lastEnableTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -350,8 +352,8 @@ X-Xss-Protection: 0
     ]
   },
   "vulnerabilityScanningConfig": {
-    "enablementState": "SCANNING_DISABLED",
-    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "enablementState": "SCANNING_UNSUPPORTED",
+    "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
     "lastEnableTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -383,6 +385,7 @@ X-Xss-Protection: 0
   },
   "mode": "VIRTUAL_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
   "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "virtualRepositoryConfig": {
@@ -395,8 +398,8 @@ X-Xss-Protection: 0
     ]
   },
   "vulnerabilityScanningConfig": {
-    "enablementState": "SCANNING_DISABLED",
-    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "enablementState": "SCANNING_UNSUPPORTED",
+    "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
     "lastEnableTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -477,6 +480,7 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}-2",
   "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vulnerabilityScanningConfig": {

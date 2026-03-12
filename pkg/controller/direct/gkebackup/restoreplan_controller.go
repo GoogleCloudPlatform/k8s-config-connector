@@ -32,7 +32,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkebackup/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -41,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -57,7 +57,9 @@ type restorePlanModel struct {
 	config config.ControllerConfig
 }
 
-func (m *restorePlanModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *restorePlanModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.GKEBackupRestorePlan{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -174,14 +176,19 @@ func (a *restorePlanAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.GetDescription(), a.actual.GetDescription()) {
+		report.AddField("description", a.actual.GetDescription(), resource.GetDescription())
 		paths = append(paths, "description")
 	}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.GetLabels(), a.actual.GetLabels()) {
+		report.AddField("labels", a.actual.GetLabels(), resource.GetLabels())
 		paths = append(paths, "labels")
 	}
 	if desired.Spec.RestoreConfig != nil && !restoreConfigsEqual(resource.GetRestoreConfig(), a.actual.GetRestoreConfig()) {
+		report.AddField("restore_config", a.actual.GetRestoreConfig(), resource.GetRestoreConfig())
 		paths = append(paths, "restore_config")
 	}
 
@@ -190,6 +197,7 @@ func (a *restorePlanAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateRestorePlanRequest{
 			RestorePlan: resource,

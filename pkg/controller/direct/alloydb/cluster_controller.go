@@ -20,12 +20,14 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
+	computev1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/alloydb/apiv1beta"
 	alloydbpb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
@@ -101,7 +103,9 @@ func (m *modelCluster) MapSecretToResources(ctx context.Context, reader client.R
 	return requests, nil
 }
 
-func (m *modelCluster) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelCluster) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.AlloyDBCluster{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -187,7 +191,7 @@ func (a *ClusterAdapter) resolveNetworkRef(ctx context.Context) error {
 			"'spec.networkConfig' is configured")
 	}
 
-	if err := obj.Spec.NetworkConfig.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+	if err := obj.Spec.NetworkConfig.NetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
 		return err
 	}
 	return nil
@@ -271,14 +275,14 @@ func (a *ClusterAdapter) resolveKRMDefaultsForUpdate() {
 	// This is needed for only update because the returned actual state has both
 	// fields set to the same value.
 	if obj.Spec.NetworkRef == nil && obj.Spec.NetworkConfig != nil && obj.Spec.NetworkConfig.NetworkRef != nil {
-		obj.Spec.NetworkRef = &refs.ComputeNetworkRef{
+		obj.Spec.NetworkRef = &computev1.ComputeNetworkRef{
 			External: obj.Spec.NetworkConfig.NetworkRef.External,
 		}
 	} else if (obj.Spec.NetworkConfig == nil || obj.Spec.NetworkConfig.NetworkRef == nil) && obj.Spec.NetworkRef != nil {
 		if obj.Spec.NetworkConfig == nil {
 			obj.Spec.NetworkConfig = &krm.Cluster_NetworkConfig{}
 		}
-		obj.Spec.NetworkConfig.NetworkRef = &refs.ComputeNetworkRef{
+		obj.Spec.NetworkConfig.NetworkRef = &computev1.ComputeNetworkRef{
 			External: obj.Spec.NetworkRef.External,
 		}
 	}
@@ -292,9 +296,10 @@ func (a *ClusterAdapter) resolveInitialUserPasswordField(ctx context.Context) er
 	}
 
 	// Resolve sensitive field 'spec.initialUser.password' when it is set.
-	if err := direct.ResolveSensitiveField(ctx, obj.Spec.InitialUser.Password, "spec.initialUser.password", obj.Namespace, a.reader); err != nil {
+	if err := obj.Spec.InitialUser.Password.NormalizeSecret(ctx, "spec.initialUser.password", obj.Namespace, a.reader); err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -496,6 +501,7 @@ func (a *ClusterAdapter) resolveGCPDefaults(desired *alloydbpb.Cluster, actual *
 		desired.ContinuousBackupConfig.RecoveryWindowDays = 14
 	}
 
+	// GeminiConfig deprecated in v1beta and removed in v1
 	if desired.GeminiConfig == nil {
 		desired.GeminiConfig = &alloydbpb.GeminiClusterConfig{}
 	}
@@ -545,6 +551,12 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	// 6. Set resource name. This step is not needed for other operations.
 	desiredPb.Name = a.id.String()
+
+	// TODO(b/443107538): Remove the immutability check after API handles it properly
+	// Also add the major version upgrade support
+	if a.desired.Spec.DatabaseVersion != nil && a.actual.DatabaseVersion != alloydbpb.DatabaseVersion_DATABASE_VERSION_UNSPECIFIED && *a.desired.Spec.DatabaseVersion != a.actual.DatabaseVersion.String() {
+		return fmt.Errorf("field 'spec.databaseVersion' is immutable and cannot be updated from %q to %q", a.actual.DatabaseVersion, *a.desired.Spec.DatabaseVersion)
+	}
 	// 7. Handle default values for fields not yet supported in KRM types.
 	a.resolveGCPDefaults(desiredPb, a.actual)
 
@@ -570,7 +582,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 
-		if *a.desired.Status.ExternalRef == "" {
+		if a.desired.Status.ExternalRef == nil {
 			// If it is the first reconciliation after switching to direct controller,
 			// or is an acquisition, then update Status to fill out the ExternalRef
 			// and ObservedState.
@@ -583,6 +595,12 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		}
 		return nil
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	// TODO: Decide if we want to clean up default fields set in desired state.
 
@@ -616,7 +634,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	if *a.desired.Status.ExternalRef == "" {
+	if a.desired.Status.ExternalRef == nil {
 		// If it is the first reconciliation after switching to direct controller,
 		// or is an acquisition with update, then fill out the ExternalRef.
 		status.ExternalRef = direct.LazyPtr(a.id.String())

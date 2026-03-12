@@ -463,7 +463,7 @@ observedState:
         <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A unique specifier for the AppHubApplication resource in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the AppHubApplication resource in Google Cloud .{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -477,7 +477,7 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in {{gcp_name_short}}.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

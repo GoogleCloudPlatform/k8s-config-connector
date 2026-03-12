@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
@@ -55,7 +56,9 @@ type modelManagementServer struct {
 	config config.ControllerConfig
 }
 
-func (m *modelManagementServer) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelManagementServer) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.BackupDRManagementServer{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -175,21 +178,28 @@ func (a *ManagementServerAdapter) Update(ctx context.Context, updateOp *directba
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, resource.Description)
 		paths = append(paths, "description")
 	}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, resource.Labels)
 		paths = append(paths, "labels")
 	}
 	if desired.Spec.Networks != nil && !reflect.DeepEqual(resource.Networks, a.actual.Networks) {
+		report.AddField("networks", a.actual.Networks, resource.Networks)
 		paths = append(paths, "networks")
 	}
 	if desired.Spec.Type != nil && !reflect.DeepEqual(resource.Type, a.actual.Type) {
+		report.AddField("type", a.actual.Type, resource.Type)
 		paths = append(paths, "type")
 	}
 
 	if len(paths) != 0 {
+		structuredreporting.ReportDiff(ctx, report)
 		return fmt.Errorf("update ManagementServer is not supported, fields: %v", paths)
 	}
 
@@ -257,7 +267,7 @@ func (a *ManagementServerAdapter) normalizeReferenceFields(ctx context.Context) 
 	obj := a.desired
 	for i := range obj.Spec.Networks {
 		if obj.Spec.Networks[i].NetworkRef != nil {
-			if err := obj.Spec.Networks[i].NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+			if err := obj.Spec.Networks[i].NetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
 				return err
 			}
 		}

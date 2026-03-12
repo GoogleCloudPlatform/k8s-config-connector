@@ -31,12 +31,14 @@ type GenerateBasicReconcilerOptions struct {
 	*options.GenerateOptions
 	Resource options.Resource
 
+	ServiceName           string
 	APIGoPackagePath      string
 	APIDirectory          string
 	OutputMapperDirectory string
 }
 
 func (o *GenerateBasicReconcilerOptions) BindFlags(cmd *cobra.Command) {
+	cmd.Flags().StringVarP(&o.ServiceName, "service", "s", o.ServiceName, "the GCP service name")
 	cmd.Flags().Var(&o.Resource, "resource", "the KRM Kind and the equivalent proto resource separated with a colon. e.g. for resource google.storage.v1.Bucket, the flag should be `StorageBucket:Bucket`")
 	cmd.Flags().StringVar(&o.APIGoPackagePath, "api-go-package-path", o.APIGoPackagePath, "package path")
 	cmd.Flags().StringVar(&o.APIDirectory, "api-dir", o.APIDirectory, "base directory for reading APIs")
@@ -81,7 +83,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 				return fmt.Errorf("unable to parse --api-version: %w", err)
 			}
 
-			if baseOptions.ServiceName == "" {
+			if opt.ServiceName == "" {
 				return fmt.Errorf("--service is required")
 			}
 			return nil

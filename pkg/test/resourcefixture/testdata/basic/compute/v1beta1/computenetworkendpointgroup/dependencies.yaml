@@ -17,6 +17,7 @@ kind: ComputeNetwork
 metadata:
   name: default
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
@@ -27,6 +28,7 @@ kind: ComputeSubnetwork
 metadata:
   name: default
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:

@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -248,7 +249,8 @@ type DataprocBatchObservedState struct {
 // TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataprocbatch;gcpdataprocbatches
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
@@ -360,7 +362,7 @@ type ExecutionConfig struct {
 	//  **This field requires a Cloud Storage bucket name, not a `gs://...` URI to
 	//  a Cloud Storage bucket.**
 	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.staging_bucket
-	StagingBucketRef *v1beta1.StorageBucketRef `json:"stagingBucketRef,omitempty"`
+	StagingBucketRef *storagev1beta1.StorageBucketRef `json:"stagingBucketRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.PeripheralsConfig

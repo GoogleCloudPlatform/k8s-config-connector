@@ -1,0 +1,443 @@
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "deliveryPipeline \"projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "deliveryPipeline \"projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines?%24alt=json%3Benum-encoding%3Dint&deliveryPipelineId=clouddeploydeliverypipeline-full-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "Full delivery pipeline",
+  "serialPipeline": {
+    "stages": [
+      {
+        "profiles": [
+          "profile1"
+        ],
+        "strategy": {
+          "standard": {
+            "postdeploy": {
+              "actions": [
+                "postdeploy-action"
+              ]
+            },
+            "predeploy": {
+              "actions": [
+                "predeploy-action"
+              ]
+            },
+            "verify": true
+          }
+        },
+        "targetId": "my-fake-target"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.DeliveryPipeline",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Full delivery pipeline",
+    "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}",
+    "serialPipeline": {
+      "stages": [
+        {
+          "profiles": [
+            "profile1"
+          ],
+          "strategy": {
+            "standard": {
+              "postdeploy": {
+                "actions": [
+                  "postdeploy-action"
+                ]
+              },
+              "predeploy": {
+                "actions": [
+                  "predeploy-action"
+                ]
+              },
+              "verify": true
+            }
+          },
+          "targetId": "my-fake-target"
+        }
+      ]
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Full delivery pipeline",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "profiles": [
+          "profile1"
+        ],
+        "strategy": {
+          "standard": {
+            "postdeploy": {
+              "actions": [
+                "postdeploy-action"
+              ]
+            },
+            "predeploy": {
+              "actions": [
+                "predeploy-action"
+              ]
+            },
+            "verify": true
+          }
+        },
+        "targetId": "my-fake-target"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Cname%2CserialPipeline.stages%2Csuspended
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: delivery_pipeline.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-${uniqueId}
+
+{
+  "description": "Updated full delivery pipeline",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "profiles": [
+          "profile1",
+          "profile2"
+        ],
+        "strategy": {
+          "canary": {
+            "canaryDeployment": {
+              "percentages": [
+                50
+              ]
+            },
+            "runtimeConfig": {
+              "kubernetes": {
+                "serviceNetworking": {
+                  "deployment": "my-deployment",
+                  "service": "my-service"
+                }
+              }
+            }
+          }
+        },
+        "targetId": "my-fake-target"
+      }
+    ]
+  },
+  "suspended": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.DeliveryPipeline",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated full delivery pipeline",
+    "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}",
+    "serialPipeline": {
+      "stages": [
+        {
+          "profiles": [
+            "profile1",
+            "profile2"
+          ],
+          "strategy": {
+            "canary": {
+              "canaryDeployment": {
+                "percentages": [
+                  50
+                ]
+              },
+              "runtimeConfig": {
+                "kubernetes": {
+                  "serviceNetworking": {
+                    "deployment": "my-deployment",
+                    "service": "my-service"
+                  }
+                }
+              }
+            }
+          },
+          "targetId": "my-fake-target"
+        }
+      ]
+    },
+    "suspended": true,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated full delivery pipeline",
+  "name": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "profiles": [
+          "profile1",
+          "profile2"
+        ],
+        "strategy": {
+          "canary": {
+            "canaryDeployment": {
+              "percentages": [
+                50
+              ]
+            },
+            "runtimeConfig": {
+              "kubernetes": {
+                "serviceNetworking": {
+                  "deployment": "my-deployment",
+                  "service": "my-service"
+                }
+              }
+            }
+          }
+        },
+        "targetId": "my-fake-target"
+      }
+    ]
+  },
+  "suspended": true,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/deliveryPipelines/clouddeploydeliverypipeline-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

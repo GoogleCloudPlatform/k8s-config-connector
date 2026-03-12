@@ -21,4 +21,8 @@
 
 package v1alpha1
 
+type StorageFolderExpansion interface{}
+
 type StorageHMACKeyExpansion interface{}
+
+type StorageManagedFolderExpansion interface{}

@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
@@ -38,7 +39,7 @@ type NetworkConfig struct {
 	// Optional. The resource name of the Google Compute Engine VPC network to
 	//  which the ManagementServer instance is connected.
 	// +kcc:proto:field=google.cloud.backupdr.v1.NetworkConfig.network
-	NetworkRef *refsv1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. The network connect mode of the ManagementServer instance. For
 	//  this version, only PRIVATE_SERVICE_ACCESS is supported.
@@ -98,10 +99,10 @@ type BackupDRManagementServerSpec struct {
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.networks
 	Networks []NetworkConfig `json:"networks,omitempty"`
 
-	// Optional. Server specified ETag for the ManagementServer resource to
-	//  prevent simultaneous updates from overwiting each other.
+	// NOTYET: not supported in Config Connector reconciliation
+	// Optional. Etag for a resource.
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 }
 
 // BackupDRManagementServerStatus defines the config connector machine state of BackupDRManagementServer
@@ -182,7 +183,8 @@ type BackupDRManagementServerObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbackupdrmanagementserver;gcpbackupdrmanagementservers
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

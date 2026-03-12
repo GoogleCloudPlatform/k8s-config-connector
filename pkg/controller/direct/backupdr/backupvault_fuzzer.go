@@ -29,12 +29,13 @@ func init() {
 
 func backupDRBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.BackupVault{},
-		BackupDRBackupVaultSpec_v1alpha1_FromProto, BackupDRBackupVaultSpec_v1alpha1_ToProto,
-		BackupDRBackupVaultObservedState_v1alpha1_FromProto, BackupDRBackupVaultObservedState_v1alpha1_ToProto,
+		BackupDRBackupVaultSpec_v1beta1_FromProto, BackupDRBackupVaultSpec_v1beta1_ToProto,
+		BackupDRBackupVaultObservedState_v1beta1_FromProto, BackupDRBackupVaultObservedState_v1beta1_ToProto,
 	)
 
+	f.IdentityField(".name")
+
 	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".backup_minimum_enforced_retention_duration")
 	f.SpecFields.Insert(".effective_time")
 	f.SpecFields.Insert(".annotations")
@@ -50,7 +51,10 @@ func backupDRBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".etag")
 
-	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
+
+	f.Unimplemented_NotYetTriaged(".backup_retention_inheritance")
+	f.Unimplemented_NotYetTriaged(".encryption_config")
 
 	return f
 }

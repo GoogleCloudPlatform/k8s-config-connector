@@ -1,4 +1,4 @@
-### Change description
+### BRIEF Change description
 
 <!--
 Describe what this pull request does.
@@ -11,6 +11,8 @@ issue and put the number here.
 For example: "Fixes #858"
 -->
 Fixes #
+
+#### WHY do we need this change?
 
 #### Special notes for your reviewer:
 

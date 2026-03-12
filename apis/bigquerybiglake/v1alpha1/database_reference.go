@@ -16,68 +16,55 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &DatabaseRef{}
+var _ refsv1beta1.Ref = &BigQueryBigLakeDatabaseRef{}
 
-// DatabaseRef defines the resource reference to BigLakeDatabase, which "External" field
-// holds the GCP identifier for the KRM object.
-type DatabaseRef struct {
-	// A reference to an externally managed BigLakeDatabase resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/databases/{{databaseID}}".
+// BigQueryBigLakeDatabaseRef is a reference to a BigQueryBigLakeDatabase resource.
+type BigQueryBigLakeDatabaseRef struct {
+	// A reference to an externally managed BigQueryBigLakeDatabase resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}}/databases/{{databaseID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a BigLakeDatabase resource.
+	// The name of a BigQueryBigLakeDatabase resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a BigLakeDatabase resource.
+	// The namespace of a BigQueryBigLakeDatabase resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on BigLakeDatabase.
-// If the "External" is given in the other resource's spec.BigLakeDatabaseRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual BigLakeDatabase object from the cluster.
-func (r *DatabaseRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", BigLakeDatabaseGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseDatabaseExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func (r *BigQueryBigLakeDatabaseRef) GetGVK() schema.GroupVersionKind {
+	return BigLakeDatabaseGVK
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *BigQueryBigLakeDatabaseRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(BigLakeDatabaseGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", BigLakeDatabaseGVK, key, err)
+}
+
+func (r *BigQueryBigLakeDatabaseRef) GetExternal() string {
+	return r.External
+}
+
+func (r *BigQueryBigLakeDatabaseRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *BigQueryBigLakeDatabaseRef) ValidateExternal(ref string) error {
+	id := &DatabaseIdentity{}
+	if err := id.FromExternal(r.GetExternal()); err != nil {
+		return err
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return nil
+}
+
+func (r *BigQueryBigLakeDatabaseRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }

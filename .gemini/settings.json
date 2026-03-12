@@ -1,12 +1,16 @@
+// ~/.gemini/settings.json
 {
     "mcpServers": {
-        "mcp-kcc": {
-            "command": "uv",
+        "github": {
+            "command": "dev/mcp/github-mcp-server",
             "args": [
-                "--directory",
-                "experiments/mcp/src",
-                "run",
-                "run.py"
+                "stdio"
+            ]
+        },
+        "crd": {
+            "command": "dev/mcp/crd-mcp-server",
+            "args": [
+                "stdio"
             ]
         }
     }

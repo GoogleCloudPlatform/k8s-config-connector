@@ -16,6 +16,7 @@ package k8s
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -25,6 +26,7 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 	"sigs.k8s.io/structured-merge-diff/v4/schema"
 	"sigs.k8s.io/structured-merge-diff/v4/typed"
@@ -161,6 +163,39 @@ func GetK8sManagedFields(u *unstructured.Unstructured) (*fieldpath.Set, error) {
 		return res, nil
 	}
 	return nil, nil
+}
+
+// SanitizeSpecManagedFields ensures that managed fields entries for spec fields do not have
+// Subresource field configured.
+// This function modifies the resource in-place.
+// This is needed to clean up the leaked `subresource: status` when unmarshalling the correct resource into existing
+// structs (b/465380187).
+func SanitizeSpecManagedFields(r *Resource) {
+	if r == nil || r.ObjectMeta.ManagedFields == nil {
+		return
+	}
+	for i := range r.ObjectMeta.ManagedFields {
+		if r.ObjectMeta.ManagedFields[i].FieldsV1 == nil {
+			continue
+		}
+		var fields map[string]interface{}
+		if len(r.ObjectMeta.ManagedFields[i].FieldsV1.Raw) == 0 {
+			continue
+		}
+		if !bytes.Contains(r.ObjectMeta.ManagedFields[i].FieldsV1.Raw, []byte("\"f:spec\"")) {
+			continue
+		}
+		// json.Unmarshal is called here to strictly check if "f:spec" is a top-level key.
+		// While unmarshalling adds some overhead, it is necessary for correctness (vs simple string matching),
+		// and the cost is acceptable given the low frequency of calls (per status update) and typical small size of managed fields.
+		if err := json.Unmarshal(r.ObjectMeta.ManagedFields[i].FieldsV1.Raw, &fields); err != nil {
+			klog.V(2).Infof("managedfields: error unmarshalling FieldsV1.Raw for manager %v: %v", r.ObjectMeta.ManagedFields[i].Manager, err)
+			continue
+		}
+		if _, ok := fields["f:spec"]; ok {
+			r.ObjectMeta.ManagedFields[i].Subresource = ""
+		}
+	}
 }
 
 // OverlayManagedFieldsOntoState overlays the fields managed by Kubernetes managers onto the

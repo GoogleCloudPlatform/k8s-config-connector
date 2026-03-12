@@ -22,12 +22,12 @@ import (
 
 	gcp "cloud.google.com/go/secretmanager/apiv1"
 	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
-	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -62,7 +62,9 @@ func (m *modelSecretVersion) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *modelSecretVersion) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelSecretVersion) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.SecretManagerSecretVersion{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -121,23 +123,22 @@ func (a *SecretVersionAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *SecretVersionAdapter) normalizeSecretData(ctx context.Context) ([]byte, error) {
+func (a *SecretVersionAdapter) readSecretValue(ctx context.Context) ([]byte, error) {
 	if a.desired.Spec.SecretData == nil {
 		return nil, fmt.Errorf("SecretManagerSecretVersion is service generated object."+
 			" Creating a new SecretVersion requires `spec.secretData` "+
 			"Acquiring an existing SecretVersion requires `spec.resourceID`: %s", a.desired.GetName())
 	}
-	plain := a.desired.Spec.SecretData.Value
-	secretRef := a.desired.Spec.SecretData.ValueFrom
-	if plain != nil && secretRef != nil {
-		return nil, fmt.Errorf("either spec.secretData.Value or spec.secretData.ValueFrom is required")
-	}
 
-	if plain != nil {
-		data := base64.StdEncoding.EncodeToString([]byte(*plain))
+	if value := a.desired.Spec.SecretData.Value; value != nil {
+		data := base64.StdEncoding.EncodeToString([]byte(*value))
 		return []byte(data), nil
 	}
-	return refsv1beta1secret.NormalizedLegacySecret(ctx, secretRef.SecretKeyRef, a.reader, a.desired.Namespace)
+	if valueFrom := a.desired.Spec.SecretData.ValueFrom; valueFrom != nil {
+		return valueFrom.SecretKeyRef.ReadSecretValue(ctx, a.reader, a.desired.Namespace)
+	}
+
+	return nil, fmt.Errorf("either spec.secretData.Value or spec.secretData.ValueFrom is required")
 }
 
 func (a *SecretVersionAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
@@ -145,7 +146,7 @@ func (a *SecretVersionAdapter) Create(ctx context.Context, createOp *directbase.
 	log.V(2).Info("creating SecretVersion", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	data, err := a.normalizeSecretData(ctx)
+	data, err := a.readSecretValue(ctx)
 	if err != nil {
 		return err
 	}
@@ -193,12 +194,17 @@ func (a *SecretVersionAdapter) Update(ctx context.Context, updateOp *directbase.
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating SecretVersion", "name", a.id)
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	var updated *pb.SecretVersion
 	var err error
 
 	switch a.actual.State {
 	case pb.SecretVersion_ENABLED:
 		if !*a.desired.Spec.Enabled {
+			report.AddField("enabled", true, false)
+			structuredreporting.ReportDiff(ctx, report)
+
 			log.V(2).Info("disabling the secret version", "name", a.id)
 			req := &pb.DisableSecretVersionRequest{
 				Name: a.id.String(),
@@ -213,6 +219,9 @@ func (a *SecretVersionAdapter) Update(ctx context.Context, updateOp *directbase.
 		}
 	case pb.SecretVersion_DISABLED:
 		if *a.desired.Spec.Enabled {
+			report.AddField("enabled", false, true)
+			structuredreporting.ReportDiff(ctx, report)
+
 			log.V(2).Info("enabling the secret version", "name", a.id)
 			req := &pb.EnableSecretVersionRequest{
 				Name: a.id.String(),

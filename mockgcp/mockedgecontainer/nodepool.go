@@ -20,7 +20,7 @@ import (
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/proto"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgecontainer/v1"
+	pb "cloud.google.com/go/edgecontainer/apiv1/edgecontainerpb"
 )
 
 func (s *EdgeContainerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolRequest) (*pb.NodePool, error) {

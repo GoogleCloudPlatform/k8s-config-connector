@@ -22,12 +22,11 @@ cd ${REPO_ROOT}
 
 dev/tasks/list-tests | xargs -I {} mkdir -p "testlogs/{}"
 
-echo "Downloading envtest assets..."
-export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+. ${REPO_ROOT}/dev/tasks/setup-envtest
 
 echo "Prebuilding e2e tests"
 export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
-go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e 
+go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
 
 echo "Running tests"
 EXIT_CODE=0

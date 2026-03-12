@@ -22,9 +22,6 @@ import (
 
 var FirestoreDatabaseGVK = GroupVersion.WithKind("FirestoreDatabase")
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // FirestoreDatabaseSpec defines the desired state of FirestoreDatabase
 // +kcc:spec:proto=google.firestore.admin.v1.Database
 type FirestoreDatabaseSpec struct {
@@ -45,6 +42,51 @@ type FirestoreDatabaseSpec struct {
 	// Whether to enable the PITR feature on this database.
 	// See https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases#pointintimerecoveryenablement for more info.
 	PointInTimeRecoveryEnablement *string `json:"pointInTimeRecoveryEnablement,omitempty"`
+
+	// State of delete protection for the database.
+	// +kcc:proto:field=google.firestore.admin.v1.Database.delete_protection_state
+	DeleteProtectionState *string `json:"deleteProtectionState,omitempty"`
+
+	// NOTYET(PENDING)
+	// // The type of the database.
+	// //  See https://cloud.google.com/datastore/docs/firestore-or-datastore for
+	// //  information about how to choose.
+	// // +kcc:proto:field=google.firestore.admin.v1.Database.type
+	// Type *string `json:"type,omitempty"`
+
+	// // The concurrency control mode to use for this database.
+	// // +kcc:proto:field=google.firestore.admin.v1.Database.concurrency_mode
+	// ConcurrencyMode *string `json:"concurrencyMode,omitempty"`
+
+	// // Whether to enable the PITR feature on this database.
+	// // +kcc:proto:field=google.firestore.admin.v1.Database.point_in_time_recovery_enablement
+	// PointInTimeRecoveryEnablement *string `json:"pointInTimeRecoveryEnablement,omitempty"`
+
+	// // The App Engine integration mode to use for this database.
+	// // +kcc:proto:field=google.firestore.admin.v1.Database.app_engine_integration_mode
+	// AppEngineIntegrationMode *string `json:"appEngineIntegrationMode,omitempty"`
+
+	// // Optional. Presence indicates CMEK is enabled for this database.
+	// // +kcc:proto:field=google.firestore.admin.v1.Database.cmek_config
+	// CmekConfig *Database_CmekConfig `json:"cmekConfig,omitempty"`
+
+	// // Optional. Input only. Immutable. Tag keys/values directly bound to this
+	// //  resource. For example:
+	// //    "123/environment": "production",
+	// //    "123/costCenter": "marketing"
+	// // +kcc:proto:field=google.firestore.admin.v1.Database.tags
+	// Tags map[string]string `json:"tags,omitempty"`
+
+	// // This checksum is computed by the server based on the value of other
+	// //  fields, and may be sent on update and delete requests to ensure the
+	// //  client has an up-to-date value before proceeding.
+	// // +kcc:proto:field=google.firestore.admin.v1.Database.etag
+	// Etag *string `json:"etag,omitempty"`
+
+	// // Immutable. The edition of the database.
+	// // +kcc:proto:field=google.firestore.admin.v1.Database.database_edition
+	// DatabaseEdition *string `json:"databaseEdition,omitempty"`
+
 }
 
 // FirestoreDatabaseStatus defines the config connector machine state of FirestoreDatabase
@@ -122,7 +164,9 @@ type FirestoreDatabaseObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpfirestoredatabase;gcpfirestoredatabases
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

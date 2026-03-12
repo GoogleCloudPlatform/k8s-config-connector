@@ -24,6 +24,9 @@ import (
 // ShouldTestRereconiliation determines if we "touch" the primary object after we have run the test.
 // This should not cause write operations to GCP (read operations are OK)
 // We would like eventually to turn this on for all objects, but we have to turn on the testing gradually.
+//
+// Note that we also use this "ratchet" list to determine whether to use SSA for creates in unified_test.go,
+// so new resources must pass the re-reconciliation test from the start.
 func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *unstructured.Unstructured) bool {
 	gvk := primaryResource.GroupVersionKind()
 
@@ -120,6 +123,7 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableGCPolicy"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableInstance"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableLogicalView"}:
+	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableMaterializedView"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableTable"}:
 	case schema.GroupKind{Group: "billingbudgets.cnrm.cloud.google.com", Kind: "BillingBudgetsBudget"}:
 	case schema.GroupKind{Group: "binaryauthorization.cnrm.cloud.google.com", Kind: "BinaryAuthorizationAttestor"}:
@@ -292,7 +296,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "documentai.cnrm.cloud.google.com", Kind: "DocumentAIProcessorDefaultVersion"}:
 	case schema.GroupKind{Group: "documentai.cnrm.cloud.google.com", Kind: "DocumentAIProcessor"}:
 	case schema.GroupKind{Group: "documentai.cnrm.cloud.google.com", Kind: "DocumentAIProcessorVersion"}:
-	case schema.GroupKind{Group: "edgecontainer.cnrm.cloud.google.com", Kind: "EdgeContainerCluster"}:
 	case schema.GroupKind{Group: "edgecontainer.cnrm.cloud.google.com", Kind: "EdgeContainerMachine"}:
 	case schema.GroupKind{Group: "edgecontainer.cnrm.cloud.google.com", Kind: "EdgeContainerNodePool"}:
 	case schema.GroupKind{Group: "edgecontainer.cnrm.cloud.google.com", Kind: "EdgeContainerVpnConnection"}:
@@ -312,8 +315,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "firebase.cnrm.cloud.google.com", Kind: "FirebaseProject"}:
 	case schema.GroupKind{Group: "firebasestorage.cnrm.cloud.google.com", Kind: "FirebaseStorageBucket"}:
 	case schema.GroupKind{Group: "firebase.cnrm.cloud.google.com", Kind: "FirebaseWebApp"}:
-	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDatabase"}:
-	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreIndex"}:
 	case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Folder"}:
 	case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupBackupPlan"}:
 	case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupBackup"}:
@@ -332,7 +333,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMCustomRole"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicy"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicyMember"}:
-	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccountKey"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccount"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMWorkforcePoolProvider"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMWorkforcePool"}:
@@ -428,7 +428,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "redis.cnrm.cloud.google.com", Kind: "RedisInstance"}:
 	case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "ResourceManagerLien"}:
 	case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "ResourceManagerPolicy"}:
-	case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
 	case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunService"}:
 	case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
 	case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecretVersion"}:
@@ -464,10 +463,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageNotification"}:
 	case schema.GroupKind{Group: "storagetransfer.cnrm.cloud.google.com", Kind: "StorageTransferAgentPool"}:
 	case schema.GroupKind{Group: "storagetransfer.cnrm.cloud.google.com", Kind: "StorageTransferJob"}:
-	case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsLocationTagBinding"}:
-	case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagBinding"}:
-	case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
-	case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagValue"}:
 	case schema.GroupKind{Group: "cloudtasks.cnrm.cloud.google.com", Kind: "TasksQueue"}:
 	case schema.GroupKind{Group: "tpu.cnrm.cloud.google.com", Kind: "TPUNode"}:
 	case schema.GroupKind{Group: "tpu.cnrm.cloud.google.com", Kind: "TPUVirtualMachine"}:

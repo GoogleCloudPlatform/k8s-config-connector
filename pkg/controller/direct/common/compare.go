@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -107,6 +108,43 @@ func CompareProtoMessage(a, b proto.Message, compareDiff CompareDiff) (sets.Set[
 		}
 	}
 	return diffPaths, nil
+}
+
+// CompareProtoMessageStructuredDiff computes the diff between two proto messages and returns both the set of changed field paths and a structured Diff object.
+func CompareProtoMessageStructuredDiff(a, b proto.Message, compareDiff CompareDiff) (sets.Set[string], *structuredreporting.Diff, error) {
+	diffPaths := sets.Set[string]{}
+	diff := &structuredreporting.Diff{}
+	aDescriptor := a.ProtoReflect().Descriptor()
+
+	for i := 0; i < aDescriptor.Fields().Len(); i++ {
+		field := aDescriptor.Fields().Get(i)
+		updatePath := updatePathFromField(a, field)
+
+		aVal := a.ProtoReflect().Get(field)
+		bVal := b.ProtoReflect().Get(field)
+		if shouldRecurse(field, a.ProtoReflect()) {
+			subPaths, subDiff, err := CompareProtoMessageStructuredDiff(aVal.Message().Interface(), bVal.Message().Interface(), compareDiff)
+			if err != nil {
+				return nil, nil, err
+			}
+			for path := range subPaths {
+				diffPaths.Insert(updatePath + "." + path)
+			}
+			if subDiff != nil {
+				for _, d := range subDiff.Fields {
+					diff.AddField(updatePath+"."+d.ID, d.Old, d.New)
+				}
+			}
+		} else {
+			if hasDiff, err := compareDiff(field.Name(), a, b); err != nil {
+				return nil, nil, err
+			} else if hasDiff {
+				diffPaths.Insert(updatePath)
+				diff.AddField(updatePath, bVal.Interface(), aVal.Interface())
+			}
+		}
+	}
+	return diffPaths, diff, nil
 }
 
 func shouldRecurse(field protoreflect.FieldDescriptor, message protoreflect.Message) bool {

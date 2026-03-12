@@ -138,13 +138,13 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -153,6 +153,7 @@ X-Xss-Protection: 0
   "name": "sqluser-dep-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -303,6 +304,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "root",
@@ -390,13 +392,13 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -405,6 +407,7 @@ X-Xss-Protection: 0
   "name": "sqluser-dep-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -593,6 +596,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
@@ -631,13 +635,13 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -646,6 +650,7 @@ X-Xss-Protection: 0
   "name": "sqluser-dep-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -796,6 +801,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
@@ -834,13 +840,13 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -849,6 +855,7 @@ X-Xss-Protection: 0
   "name": "sqluser-dep-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -999,6 +1006,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
@@ -1037,13 +1045,13 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -1052,6 +1060,7 @@ X-Xss-Protection: 0
   "name": "sqluser-dep-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1238,13 +1247,13 @@ X-Xss-Protection: 0
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": false,
+    "flagRecommenderEnabled": true,
     "indexAdvisorEnabled": false
   },
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
@@ -1253,6 +1262,7 @@ X-Xss-Protection: 0
   "name": "sqluser-dep-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",

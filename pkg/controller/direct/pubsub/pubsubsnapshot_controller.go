@@ -16,7 +16,7 @@
 // proto.service: google.pubsub.v1.Subscriber
 // proto.message: google.pubsub.v1.Snapshot
 // crd.type: PubSubSnapshot
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package pubsub
 
@@ -25,8 +25,9 @@ import (
 	"fmt"
 	"reflect"
 
-	api "cloud.google.com/go/pubsub/apiv1"
-	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
+	api "cloud.google.com/go/pubsub/v2/apiv1"
+	pb "cloud.google.com/go/pubsub/v2/apiv1/pubsubpb"
+
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -35,15 +36,13 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
-	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1alpha1"
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -60,7 +59,7 @@ type SnapshotModel struct {
 	config config.ControllerConfig
 }
 
-func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.SubscriberClient, error) {
+func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.SubscriptionAdminClient, error) {
 	var opts []option.ClientOption
 
 	config := m.config
@@ -76,7 +75,7 @@ func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.Subs
 		return nil, err
 	}
 
-	gcpClient, err := api.NewSubscriberRESTClient(ctx, opts...)
+	gcpClient, err := api.NewSubscriptionAdminRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building pubsub snapshot client: %w", err)
 	}
@@ -84,7 +83,9 @@ func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.Subs
 	return gcpClient, err
 }
 
-func (m *SnapshotModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *SnapshotModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.PubSubSnapshot{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -121,8 +122,8 @@ func (m *SnapshotModel) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type snapshotAdapter struct {
-	gcpClient *api.SubscriberClient
-	id        *v1alpha1.SnapshotIdentity
+	gcpClient *api.SubscriptionAdminClient
+	id        *krm.SnapshotIdentity
 	desired   *krm.PubSubSnapshot
 	actual    *pb.Snapshot
 }
@@ -168,6 +169,12 @@ func (a *snapshotAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 	status := &krm.PubSubSnapshotStatus{}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
+
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = PubSubSnapshotObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -175,10 +182,13 @@ func (a *snapshotAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating pubsub snapshot", "name", a.id)
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	updateMask := &fieldmaskpb.FieldMask{}
 	updated := proto.Clone(a.actual).(*pb.Snapshot)
 
 	if !reflect.DeepEqual(a.actual.Labels, a.desired.Spec.Labels) {
+		report.AddField("labels", a.actual.Labels, a.desired.Spec.Labels)
 		updated.Labels = a.desired.Spec.Labels
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
@@ -189,6 +199,8 @@ func (a *snapshotAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		status.ExternalRef = direct.LazyPtr(a.actual.Name)
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	req := &pb.UpdateSnapshotRequest{
 		Snapshot:   updated,
@@ -203,6 +215,11 @@ func (a *snapshotAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	status := &krm.PubSubSnapshotStatus{}
 	status.ExternalRef = direct.LazyPtr(updatedSnapshot.Name)
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = PubSubSnapshotObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -229,7 +246,7 @@ func (a *snapshotAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 
 	obj := &krm.PubSubSnapshot{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(PubSubSnapshotSpec_FromProto(mapCtx, a.actual))
+	obj.Status.ObservedState = PubSubSnapshotObservedState_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

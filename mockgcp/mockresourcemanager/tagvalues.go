@@ -114,7 +114,8 @@ func (s *TagValues) CreateTagValue(ctx context.Context, req *pb.CreateTagValueRe
 		}
 		namespacedName = project.ID + "/" + parentTagKey.GetShortName() + "/" + req.GetTagValue().GetShortName()
 	} else if strings.HasPrefix(tagKeyParent, "organizations/") {
-		// TODO: Set namespacedName: {organizationId}/{tag_key_short_name}/{tag_value_short_name}
+		orgID := strings.TrimPrefix(tagKeyParent, "organizations/")
+		namespacedName = orgID + "/" + parentTagKey.GetShortName() + "/" + req.GetTagValue().GetShortName()
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", tagKeyParent)
 	}

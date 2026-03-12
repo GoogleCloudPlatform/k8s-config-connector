@@ -2415,8 +2415,8 @@ spec:
           items:
             - versionRef:
                 name: runservice-dep-secret
-                path: "my-secret"
-                mode: 256 # 0400
+              path: "my-secret"
+              mode: 256 # 0400
 ---
 # Replace ${PROJECT_ID?} and ${PROJECT_NUMBER?} below with your desired project
 # ID and project number.

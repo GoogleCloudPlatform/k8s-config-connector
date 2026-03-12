@@ -147,6 +147,7 @@ func WaitForUnstructDeleteToFinish(t *testing.T, kubeClient client.Client, origU
 func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GCPProject) []byte {
 	s := string(b)
 	s = strings.Replace(s, "${uniqueId}", uniqueID, -1)
+	s = strings.Replace(s, "${futureTimestamp}", "2035-01-01T10:00:00Z", -1)
 	s = strings.Replace(s, "${projectId}", project.ProjectID, -1)
 	if strings.Contains(s, "${projectNumber}") {
 		projectNumber := strconv.FormatInt(project.ProjectNumber, 10)
@@ -172,7 +173,6 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IsolatedTestOrgName.Key), testgcp.IsolatedTestOrgName.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestBillingAccountID.Key), testgcp.TestBillingAccountID.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestBillingAccountIDForBillingResources.Key), testgcp.TestBillingAccountIDForBillingResources.Get(), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.FirestoreTestProject.Key), testgcp.FirestoreTestProject.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IAMIntegrationTestsBillingAccountID.Key), testgcp.IAMIntegrationTestsBillingAccountID.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.CloudFunctionsTestProject), testgcp.GetCloudFunctionsTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IdentityPlatformTestProject.Key), testgcp.IdentityPlatformTestProject.Get(), -1)
@@ -184,6 +184,8 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCVertexAIIndexBucket.Key), testgcp.TestKCCVertexAIIndexBucket.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCVertexAIIndexDataURI.Key), testgcp.TestKCCVertexAIIndexDataURI.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestInterconnectID.Key), testgcp.TestInterconnectID.Get(), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAlloyDBProject.Key), testgcp.TestKCCAlloyDBProject.Get(), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAlloyDBProjectNumber.Key), testgcp.TestKCCAlloyDBProjectNumber.Get(), -1)
 	return []byte(s)
 }
 

@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -25,7 +26,13 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+const (
+	ProjectURLTemplate = "projects/{{projectID}}"
+)
+
 var _ Parent = &ProjectParent{}
+
+var _ identity.Identity = &ProjectParent{}
 
 type ProjectParent struct {
 	ProjectID string
@@ -114,6 +121,15 @@ func ParseProjectParent(external string) (*ProjectParent, error) {
 	return &ProjectParent{
 		ProjectID: tokens[1],
 	}, nil
+}
+
+func (p *ProjectParent) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	if len(tokens) == 2 && tokens[0] == "projects" {
+		p.ProjectID = tokens[1]
+		return nil
+	}
+	return fmt.Errorf("format of project %q was not known (use projects/<projectId>)", ref)
 }
 
 func (p *ProjectParent) String() string {

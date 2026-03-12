@@ -263,7 +263,7 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_15",
+    "databaseVersion": "POSTGRES_16",
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -347,7 +347,7 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "POSTGRES_15",
+  "databaseVersion": "POSTGRES_16",
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
@@ -859,6 +859,7 @@ X-Xss-Protection: 0
     },
     "name": "projects/${projectId}/locations/europe-central2/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
     "observabilityConfig": {
+      "assistiveExperiencesEnabled": false,
       "enabled": false,
       "maxQueryStringLength": 10240,
       "preserveComments": false,
@@ -922,6 +923,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/europe-central2/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
     "enabled": false,
     "maxQueryStringLength": 10240,
     "preserveComments": false,
@@ -1299,7 +1301,7 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "POSTGRES_15",
+  "databaseVersion": "POSTGRES_16",
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },

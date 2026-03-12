@@ -58,7 +58,7 @@ var protoMessagesNotMappedToGoStruct = map[string]string{
 	"google.protobuf.Int64Value":  "int64",
 	"google.protobuf.StringValue": "string",
 	"google.protobuf.BoolValue":   "bool",
-	"google.protobuf.Struct":      "map[string]string",
+	"google.protobuf.Struct":      "apiextensionsv1.JSON",
 }
 
 // This acronym list contains both acronym (including initialism) and abbreviation.

@@ -21,11 +21,12 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
+
 go run . generate-types \
     --service google.cloud.orgpolicy.v2  \
     --api-version orgpolicy.cnrm.cloud.google.com/v1alpha1 \
-    --resource OrgPolicyPolicy:Policy \
-    --resource OrgPolicyCustomConstraint:CustomConstraint
+    --resource OrgPolicyPolicy:Policy
 
 go run . generate-mapper \
     --service google.cloud.orgpolicy.v2 \
@@ -36,4 +37,3 @@ cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/orgpolicy/
-

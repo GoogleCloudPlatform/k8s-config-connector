@@ -57,6 +57,9 @@ spec:
       bootDiskKMSKeyRef:
         name: kmscryptokey-${uniqueId}
   nodeConfig:
+    machineType: n4-standard-2
+    advancedMachineFeatures:
+      enableNestedVirtualization: true
     linuxNodeConfig:
       sysctls:
         net.core.somaxconn: "4096"

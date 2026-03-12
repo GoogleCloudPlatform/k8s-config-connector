@@ -17,6 +17,7 @@ package mockalloydb
 import (
 	"context"
 	"fmt"
+	"log"
 	"strings"
 
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -34,7 +35,6 @@ func (s *AlloyDBAdminV1) GetInstance(ctx context.Context, req *pb.GetInstanceReq
 	if err != nil {
 		return nil, err
 	}
-
 	fqn := name.String()
 
 	obj := &pb.Instance{}
@@ -61,33 +61,54 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 		obj.GeminiConfig = &pb.GeminiInstanceConfig{}
 	}
 	if obj.ObservabilityConfig == nil {
-		obj.ObservabilityConfig = &pb.Instance_ObservabilityInstanceConfig{
-			Enabled:               PtrTo(false),
-			MaxQueryStringLength:  PtrTo(int32(10240)),
-			PreserveComments:      PtrTo(false),
-			QueryPlansPerMinute:   PtrTo(int32(20)),
-			RecordApplicationTags: PtrTo(false),
-			TrackActiveQueries:    PtrTo(false),
-			TrackClientAddress:    PtrTo(false),
-			TrackWaitEventTypes:   PtrTo(true),
-			TrackWaitEvents:       PtrTo(true),
-		}
+		obj.ObservabilityConfig = &pb.Instance_ObservabilityInstanceConfig{}
+		obj.ObservabilityConfig.Enabled = PtrTo(false)
 	}
-	if obj.QueryInsightsConfig == nil {
-		obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{
-			QueryPlansPerMinute:   PtrTo(uint32(5)),
-			QueryStringLength:     uint32(1024),
-			RecordApplicationTags: PtrTo(false),
-			RecordClientAddress:   PtrTo(false),
-		}
-		if obj.InstanceType == pb.Instance_SECONDARY {
-			obj.QueryInsightsConfig.RecordApplicationTags = PtrTo(true)
-			obj.QueryInsightsConfig.RecordClientAddress = PtrTo(true)
-		}
+
+	obsEnabled := obj.ObservabilityConfig != nil &&
+		obj.ObservabilityConfig.Enabled != nil &&
+		*obj.ObservabilityConfig.Enabled
+	if !obsEnabled {
+		applyDefaultInsightsConfig(obj)
+	} else {
+		obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{}
+	}
+
+	// Set Observability Defaults (Enabled State)
+	if obj.ObservabilityConfig.MaxQueryStringLength == nil {
+		obj.ObservabilityConfig.MaxQueryStringLength = PtrTo(int32(10240))
+	}
+	if obj.ObservabilityConfig.PreserveComments == nil {
+		obj.ObservabilityConfig.PreserveComments = PtrTo(false)
+	}
+	// Note: QPM defaults to 5 when Obs is enabled!
+	if obj.ObservabilityConfig.QueryPlansPerMinute == nil {
+		obj.ObservabilityConfig.QueryPlansPerMinute = PtrTo(int32(20))
+	}
+	if obj.ObservabilityConfig.RecordApplicationTags == nil {
+		obj.ObservabilityConfig.RecordApplicationTags = PtrTo(false)
+	}
+	if obj.ObservabilityConfig.TrackActiveQueries == nil {
+		obj.ObservabilityConfig.TrackActiveQueries = PtrTo(false)
+	}
+	if obj.ObservabilityConfig.TrackClientAddress == nil {
+		obj.ObservabilityConfig.TrackClientAddress = PtrTo(false)
+	}
+	if obj.ObservabilityConfig.TrackWaitEventTypes == nil {
+		obj.ObservabilityConfig.TrackWaitEventTypes = PtrTo(true)
+	}
+	if obj.ObservabilityConfig.TrackWaitEvents == nil {
+		obj.ObservabilityConfig.TrackWaitEvents = PtrTo(true)
+	}
+	if obj.ObservabilityConfig.AssistiveExperiencesEnabled == nil {
+		obj.ObservabilityConfig.AssistiveExperiencesEnabled = PtrTo(false)
 	}
 	if obj.InstanceType != pb.Instance_READ_POOL &&
 		obj.AvailabilityType == pb.Instance_AVAILABILITY_TYPE_UNSPECIFIED {
 		obj.AvailabilityType = pb.Instance_REGIONAL
+	}
+	if obj.ConnectionPoolConfig != nil && obj.ConnectionPoolConfig.Enabled {
+		obj.ConnectionPoolConfig.PoolerCount = 1
 	}
 
 	// Set output-only fields.
@@ -131,6 +152,7 @@ func (s *AlloyDBAdminV1) CreateInstance(ctx context.Context, req *pb.CreateInsta
 
 	obj := proto.Clone(req.Instance).(*pb.Instance)
 	obj.Name = fqn
+	log.Printf("vkanishk: Creating instance with name: %s", fqn)
 	setInstanceFields(name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -203,6 +225,11 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.DatabaseFlags = req.Instance.GetDatabaseFlags()
 		case "availabilityType":
 			obj.AvailabilityType = req.Instance.GetAvailabilityType()
+		case "connectionPoolConfig":
+			obj.ConnectionPoolConfig = req.Instance.GetConnectionPoolConfig()
+			if obj.ConnectionPoolConfig != nil && obj.ConnectionPoolConfig.Enabled {
+				obj.ConnectionPoolConfig.PoolerCount = 1
+			}
 		case "readPoolConfig":
 			obj.ReadPoolConfig = req.Instance.GetReadPoolConfig()
 		case "machineConfig":
@@ -211,10 +238,17 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.PscInstanceConfig = req.Instance.GetPscInstanceConfig()
 		case "networkConfig":
 			obj.NetworkConfig = req.Instance.GetNetworkConfig()
+		case "observabilityConfig":
+			obj.ObservabilityConfig = req.Instance.GetObservabilityConfig()
+		case "queryInsightsConfig":
+			obj.QueryInsightsConfig = req.Instance.GetQueryInsightsConfig()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
 	}
+
+	// Re-apply defaults/output-only fields
+	setInstanceFields(name, obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -267,4 +301,15 @@ func (s *AlloyDBAdminV1) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 		result := &emptypb.Empty{}
 		return result, nil
 	})
+}
+
+func applyDefaultInsightsConfig(obj *pb.Instance) {
+	if obj.QueryInsightsConfig == nil {
+		obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{
+			QueryPlansPerMinute:   PtrTo(uint32(5)),
+			QueryStringLength:     uint32(1024),
+			RecordApplicationTags: PtrTo(false),
+			RecordClientAddress:   PtrTo(false),
+		}
+	}
 }

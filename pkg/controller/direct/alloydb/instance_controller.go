@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/alloydb/apiv1beta"
 	alloydbpb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
@@ -106,16 +107,26 @@ func resolveInstanceType(ctx context.Context, reader client.Reader, obj *krm.All
 	return nil
 }
 
-func (m *instanceModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func validateConfig(spec *krm.AlloyDBInstanceSpec) error {
+	if spec.ObservabilityInstanceConfig != nil && spec.QueryInsightsInstanceConfig != nil {
+		return fmt.Errorf("cannot specify both observabilityConfig and queryInsightsConfig; please use only one")
+	}
+	return nil
+}
+
+func (m *instanceModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.AlloyDBInstance{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewInstanceIdentity(ctx, reader, obj)
+	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := i.(*krm.AlloyDBInstanceIdentity)
 
 	// Get alloydb GCP client
 	gcpClient, err := m.client(ctx)
@@ -136,7 +147,7 @@ func (m *instanceModel) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type instanceAdapter struct {
-	id        *krm.InstanceIdentity
+	id        *krm.AlloyDBInstanceIdentity
 	gcpClient *gcp.AlloyDBAdminClient
 	reader    client.Reader
 	desired   *krm.AlloyDBInstance
@@ -151,7 +162,7 @@ var _ directbase.Adapter = &instanceAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *instanceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting instance", "name", a.id)
+	log.V(2).Info("getting instance", "name", a.id.String())
 
 	req := &alloydbpb.GetInstanceRequest{Name: a.id.String()}
 	instancepb, err := a.gcpClient.GetInstance(ctx, req)
@@ -178,6 +189,10 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 		return err
 	}
 
+	if err := validateConfig(&a.desired.Spec); err != nil {
+		return err
+	}
+
 	desired := a.desired.DeepCopy()
 	resource := AlloyDBInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -193,7 +208,7 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	instanceType := a.desired.Spec.InstanceTypeRef.External
 	if instanceType == "SECONDARY" {
 		req := &alloydbpb.CreateSecondaryInstanceRequest{
-			Parent:     a.id.Parent().String(),
+			Parent:     a.id.ParentString(),
 			InstanceId: a.id.ID(),
 			Instance:   resource,
 		}
@@ -210,7 +225,7 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 		log.V(2).Info("successfully created secondary instance", "name", a.id)
 	} else {
 		req := &alloydbpb.CreateInstanceRequest{
-			Parent:     a.id.Parent().String(),
+			Parent:     a.id.ParentString(),
 			InstanceId: a.id.ID(),
 			Instance:   resource,
 		}
@@ -245,6 +260,10 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return err
 	}
 
+	if err := validateConfig(&a.desired.Spec); err != nil {
+		return err
+	}
+
 	parsedActual := AlloyDBInstanceSpec_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -267,7 +286,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	if len(updatePaths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		if *a.desired.Status.ExternalRef == "" {
+		if a.desired.Status.ExternalRef == nil {
 			// If it is the first reconciliation after switching to direct controller,
 			// or is an acquisition, then update Status to fill out the ExternalRef
 			// and ObservedState.
@@ -280,6 +299,13 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		}
 		return nil
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for _, path := range updatePaths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
+
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: updatePaths,
 	}
@@ -306,13 +332,64 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	if *a.desired.Status.ExternalRef == "" {
+	if a.desired.Status.ExternalRef == nil {
 		// If it is the first reconciliation after switching to direct controller,
 		// or is an acquisition with updates, then fill out the ExternalRef.
 		status.ExternalRef = direct.LazyPtr(a.id.String())
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
+
+// HELPER FUNCTION STARTS
+
+// Helper function to compare boolean pointers
+func boolPtrChanged(actual, desired *bool, basePath string, log klog.Logger) (string, bool) {
+	if desired == nil {
+		return "", false // Desired is not set, so no update for this field
+	}
+	if actual == nil || *actual != *desired {
+		log.V(2).Info(fmt.Sprintf("'%s' field is updated (-old +new)", basePath), "diff", cmp.Diff(actual, desired))
+		return basePath, true
+	}
+	return "", false
+}
+
+// Helper function to compare int32 pointers
+func int32PtrChanged(actual, desired *int32, basePath string, log klog.Logger) (string, bool) {
+	if desired == nil {
+		return "", false // Desired is not set, so no update for this field
+	}
+	if actual == nil || *actual != *desired {
+		log.V(2).Info(fmt.Sprintf("'%s' field is updated (-old +new)", basePath), "diff", cmp.Diff(actual, desired))
+		return basePath, true
+	}
+	return "", false
+}
+
+func unsignedInt32PtrChanged(actual, desired *uint32, basePath string, log klog.Logger) (string, bool) {
+	if desired == nil {
+		return "", false
+	}
+	if actual == nil || *actual != *desired {
+		log.V(2).Info(fmt.Sprintf("'%s' field is updated (-old +new)", basePath), "diff", cmp.Diff(actual, desired))
+		return basePath, true
+	}
+	return "", false
+}
+
+// Helper function to compare string pointers
+func stringPtrChanged(actual, desired *string, basePath string, log klog.Logger) (string, bool) {
+	if desired == nil {
+		return "", false // Desired is not set, so no update for this field
+	}
+	if actual == nil || *actual != *desired {
+		log.V(2).Info(fmt.Sprintf("'%s' field is updated (-old +new)", basePath), "diff", cmp.Diff(actual, desired))
+		return basePath, true
+	}
+	return "", false
+}
+
+// HELPER FUNCTION ENDS
 
 func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSpec) (updatePaths []string, err error) {
 	log := klog.FromContext(ctx)
@@ -325,6 +402,16 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 	if desired.AvailabilityType != nil && !reflect.DeepEqual(actual.AvailabilityType, desired.AvailabilityType) {
 		log.V(2).Info("'spec.availabilityType' field is updated (-old +new)", cmp.Diff(actual.AvailabilityType, desired.AvailabilityType))
 		updatePaths = append(updatePaths, "availability_type")
+	}
+	if desired.ConnectionPoolConfig != nil {
+		if desired.ConnectionPoolConfig.Enabled != nil && !reflect.DeepEqual(actual.ConnectionPoolConfig.Enabled, desired.ConnectionPoolConfig.Enabled) {
+			log.V(2).Info("'spec.connectionPoolConfig.enabled' field is updated (-old +new)", cmp.Diff(actual.ConnectionPoolConfig.Enabled, desired.ConnectionPoolConfig.Enabled))
+			updatePaths = append(updatePaths, "connection_pool_config.enabled")
+		}
+		if desired.ConnectionPoolConfig.Flags != nil && !reflect.DeepEqual(actual.ConnectionPoolConfig.Flags, desired.ConnectionPoolConfig.Flags) {
+			log.V(2).Info("'spec.connectionPoolConfig.flags' field is updated (-old +new)", cmp.Diff(actual.ConnectionPoolConfig.Flags, desired.ConnectionPoolConfig.Flags))
+			updatePaths = append(updatePaths, "connection_pool_config.flags")
+		}
 	}
 	// TODO: Test "copied" behavior for read pool
 	// TODO: Test "overridden" behavior for read pool
@@ -377,6 +464,69 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 			updatePaths = append(updatePaths, "read_pool_config.node_count")
 		}
 	}
+
+	// TODO clean the above as per below in later pr
+	if desired.ObservabilityInstanceConfig != nil {
+		actualObs := actual.ObservabilityInstanceConfig
+		if actualObs == nil {
+			actualObs = &krm.Instance_ObservabilityInstanceConfig{}
+		}
+		desiredObs := desired.ObservabilityInstanceConfig
+
+		if path, changed := boolPtrChanged(actualObs.Enabled, desiredObs.Enabled, "observability_config.enabled", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+		if path, changed := boolPtrChanged(actualObs.PreserveComments, desiredObs.PreserveComments, "observability_config.preserve_comments", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+		if path, changed := boolPtrChanged(actualObs.TrackWaitEvents, desiredObs.TrackWaitEvents, "observability_config.track_wait_events", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+		if path, changed := int32PtrChanged(actualObs.MaxQueryStringLength, desiredObs.MaxQueryStringLength, "observability_config.max_query_string_length", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+		if path, changed := boolPtrChanged(actualObs.RecordApplicationTags, desiredObs.RecordApplicationTags, "observability_config.record_application_tags", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+		if path, changed := int32PtrChanged(actualObs.QueryPlansPerMinute, desiredObs.QueryPlansPerMinute, "observability_config.query_plans_per_minute", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+		if path, changed := boolPtrChanged(actualObs.TrackActiveQueries, desiredObs.TrackActiveQueries, "observability_config.track_active_queries", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+		// TrackClientAcddress is in v1beta but is not in v1
+		if path, changed := boolPtrChanged(actualObs.TrackClientAddress, desiredObs.TrackClientAddress, "observability_config.track_client_address", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+		if path, changed := boolPtrChanged(actualObs.TrackClientAddress, desiredObs.TrackClientAddress, "observability_config.assistive_experiences_enabled", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+	}
+
+	if desired.QueryInsightsInstanceConfig != nil {
+		actualInsights := actual.QueryInsightsInstanceConfig
+		if actualInsights == nil {
+			actualInsights = &krm.Instance_QueryInsightsInstanceConfig{}
+		}
+
+		desiredInsights := desired.QueryInsightsInstanceConfig
+
+		if path, changed := boolPtrChanged(actualInsights.RecordApplicationTags, desiredInsights.RecordApplicationTags, "query_insights_config.record_application_tags", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+
+		if path, changed := boolPtrChanged(actualInsights.RecordClientAddress, desiredInsights.RecordClientAddress, "query_insights_config.record_client_address", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+
+		if path, changed := unsignedInt32PtrChanged(actualInsights.QueryStringLength, desiredInsights.QueryStringLength, "query_insights_config.query_string_length", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+		if path, changed := unsignedInt32PtrChanged(actualInsights.QueryPlansPerMinute, desiredInsights.QueryPlansPerMinute, "query_insights_config.query_plans_per_minute", log); changed {
+			updatePaths = append(updatePaths, path)
+		}
+	}
+
 	return updatePaths, nil
 }
 

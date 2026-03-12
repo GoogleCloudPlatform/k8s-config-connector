@@ -26,16 +26,25 @@ import (
 	"testing"
 	"time"
 
+	"k8s.io/apimachinery/pkg/runtime/schema"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/klog/v2"
 )
 
-func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) error {
+const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
+
+func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) {
+	visitor := buildKRMNormalizer(t, u, project, folderID, uniqueID)
+	if err := visitor.VisitUnstructured(u); err != nil {
+		t.Fatalf("failed to normalize KRM object: %v", err)
+	}
+}
+
+func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) *objectWalker {
 	replacements := NewReplacements()
 	findLinksInKRMObject(t, replacements, u)
 
@@ -52,12 +61,15 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		// Deliberately volatile, ignore
 		annotations["test.cnrm.cloud.google.com/reconcile-cookie"] = "(removed)"
 	}
+	if annotations["cnrm.cloud.google.com/last-changed-cookie"] != "" {
+		annotations["cnrm.cloud.google.com/last-changed-cookie"] = "normalized-cookie"
+	}
 	for k, v := range annotations {
 		annotations[k] = replacements.ApplyReplacements(v)
 	}
 	u.SetAnnotations(annotations)
 
-	visitor := newObjectWalker()
+	visitor := newObjectWalker(t)
 
 	// Apply replacements
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -70,6 +82,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.removePaths.Insert(".metadata.uid")
 
 	visitor.replacePaths[".metadata.deletionTimestamp"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.lastModifiedCookie"] = "normalized-cookie"
 	visitor.replacePaths[".status.creationTimestamp"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
@@ -115,12 +128,23 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Dataflow
 	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
 
-	//Specific to Dataproc
-	visitor.replacePaths[".status.observedState.stateHistory[].stateStartTime"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".status.observedState.stateTime"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".status.observedState.statusHistory[].stateStartTime"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".status.observedState.status.stateStartTime"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".status.observedState.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
+	// Specific to Dataproc
+	{
+		visitor.ReplacePath(".status.clusterUuid", "${clusterUuid}")
+		visitor.ReplacePath(".status.status.stateStartTime", PlaceholderTimestamp)
+		visitor.ReplacePath(".status.statusHistory[].stateStartTime", PlaceholderTimestamp)
+
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-present", "56789")
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-remaining", "56789")
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-total", "56789")
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-used", "56789")
+
+		visitor.replacePaths[".status.observedState.stateHistory[].stateStartTime"] = PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.stateTime"] = PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.statusHistory[].stateStartTime"] = PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.status.stateStartTime"] = PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
+	}
 
 	// Specific to Firestore
 	visitor.replacePaths[".status.observedState.earliestVersionTime"] = "1970-01-01T00:00:00Z"
@@ -360,6 +384,21 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to OrgPolicy
 	visitor.replacePaths[".status.observedState.spec.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.dryRunSpec.updateTime"] = "2024-04-01T12:34:56.123456Z"
+
+	// Specific to RunJob
+	visitor.replacePaths[".status.terminalCondition[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.creator"] = "test@google.com"
+	visitor.replacePaths[".status.lastModifier"] = "test@google.com"
+
+	// Specific to RunService
+	visitor.replacePaths[".status.terminalCondition.lastTransitionTime"] = "1970-01-01T00:00:00Z"
+
+	// Specific to Workflows
+	visitor.replacePaths[".status.observedState.validateTime"] = "1970-01-01T00:00:00Z"
+
+	// Specific to IAMServiceAccountKey
+	visitor.replacePaths[".status.validAfter"] = "1970-01-01T00:00:00Z"
 
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
@@ -396,16 +435,6 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			name, _, _ = unstructured.NestedString(u.Object, "status", "name")
 		}
 		tokens := strings.Split(name, "/")
-		if len(tokens) == 1 {
-			switch u.GetKind() {
-			case "TagsTagKey", "TagsTagValue":
-				// TODO: The mock TagKey server returns the correct format `tagKeys/{number}`, but the golden object `status.name`
-				// only has {number}. Need to triage the tf/dcl controller.
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, name, "${uniqueId}")
-				})
-			}
-		}
 		if len(tokens) >= 2 {
 			typeName := tokens[len(tokens)-2]
 			id := tokens[len(tokens)-1]
@@ -451,6 +480,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 					return strings.ReplaceAll(s, id, "${processorID}")
 				})
 			}
+			if typeName == "indexes" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${indexID}")
+				})
+			}
 		}
 
 		id, _, _ := unstructured.NestedString(u.Object, "status", "selfLinkWithId")
@@ -491,54 +525,60 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		if externalRef != "" {
 			tokens := strings.Split(externalRef, "/")
 			n := len(tokens)
-			typeName := tokens[len(tokens)-2]
-
-			switch typeName {
-			case "contacts":
-				// "projects/${projectNumber}/contacts/${contactId}"
-				needle := "contacts/" + tokens[len(tokens)-1]
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, needle, "contacts/${contactId}")
-				})
-			case "rules":
-				// Get firewall policy id from firewall policy rule's externalRef and replace it
-				// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
-				if n >= 3 {
-					firewallPolicyId := tokens[len(tokens)-3]
+			if n >= 2 {
+				typeName := tokens[len(tokens)-2]
+				switch typeName {
+				case "contacts":
+					// "projects/${projectNumber}/contacts/${contactId}"
+					needle := "contacts/" + tokens[len(tokens)-1]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, firewallPolicyId, "${firewallPolicyID}")
+						return strings.ReplaceAll(s, needle, "contacts/${contactId}")
 					})
-				}
-			case "processorVersions":
-				// Get processor id and version id from processor version's externalRef and replace it
-				// e.g. "projects/${projectId}/locations/us/processors/7f8f177e3b9cc6d9/processorVersions/1954ace3de6"
-				if n >= 3 {
-					processorId := tokens[len(tokens)-3]
-					processorVersionId := tokens[len(tokens)-1]
-					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, processorId, "${processorID}")
-					})
-					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, processorVersionId, "${processorVersionID}")
-					})
-				}
-			// Replace the server generated group id
-			case "groups":
-				// e.g. "groups/194f77d03ad"
-				groupId := tokens[len(tokens)-1]
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, groupId, "${groupID}")
-				})
-			case "memberships":
-				// e.g. "groups/194f77d03ad/memberships/196a3927214"
-				if n >= 3 {
-					groupId := tokens[len(tokens)-3]
+				case "rules":
+					// Get firewall policy id from firewall policy rule's externalRef and replace it
+					// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
+					if n >= 3 {
+						firewallPolicyId := tokens[len(tokens)-3]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, firewallPolicyId, "${firewallPolicyID}")
+						})
+					}
+				case "processorVersions":
+					// Get processor id and version id from processor version's externalRef and replace it
+					// e.g. "projects/${projectId}/locations/us/processors/7f8f177e3b9cc6d9/processorVersions/1954ace3de6"
+					if n >= 3 {
+						processorId := tokens[len(tokens)-3]
+						processorVersionId := tokens[len(tokens)-1]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, processorId, "${processorID}")
+						})
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, processorVersionId, "${processorVersionID}")
+						})
+					}
+				// Replace the server generated group id
+				case "groups":
+					// e.g. "groups/194f77d03ad"
+					groupId := tokens[len(tokens)-1]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, groupId, "${groupID}")
 					})
-					membershipId := tokens[len(tokens)-1]
+				case "memberships":
+					// e.g. "groups/194f77d03ad/memberships/196a3927214"
+					if n >= 3 {
+						groupId := tokens[len(tokens)-3]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, groupId, "${groupID}")
+						})
+						membershipId := tokens[len(tokens)-1]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, membershipId, "${membershipID}")
+						})
+					}
+				case "keyHandles":
+					uuid := tokens[len(tokens)-1]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, membershipId, "${membershipID}")
+						return strings.ReplaceAll(s, uuid, "1a1a1a-222b-3cc3-d444-e555ee555555")
 					})
 				}
 			}
@@ -601,7 +641,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		})
 	}
 
-	return visitor.VisitUnstructured(u)
+	return visitor
 }
 
 func setStringAtPath(m map[string]any, atPath string, newValue string) error {
@@ -621,6 +661,8 @@ func setStringAtPath(m map[string]any, atPath string, newValue string) error {
 }
 
 type objectWalker struct {
+	t *testing.T
+
 	removePaths              sets.Set[string]
 	sortSlices               sets.Set[string]
 	sortSlicesBy             []sortSliceBy
@@ -655,8 +697,9 @@ type stringReplacement struct {
 	Replace string
 }
 
-func newObjectWalker() *objectWalker {
+func newObjectWalker(t *testing.T) *objectWalker {
 	return &objectWalker{
+		t:                        t,
 		removePaths:              sets.New[string](),
 		sortSlices:               sets.New[string](),
 		sortAndDeduplicateSlices: sets.New[string](),
@@ -666,7 +709,7 @@ func newObjectWalker() *objectWalker {
 
 func (o *objectWalker) ReplacePath(path string, v any) {
 	if v2, found := o.replacePaths[path]; found && !reflect.DeepEqual(v, v2) {
-		klog.Fatalf("objectWalker has duplicate ReplacePath %q", path)
+		o.t.Fatalf("objectWalker has duplicate ReplacePath %q", path)
 	}
 
 	o.replacePaths[path] = v
@@ -680,7 +723,7 @@ func (o *objectWalker) ReplaceStringValue(oldValue string, newValue string) {
 				// Already have this replacement, no point adding it twice
 				return
 			}
-			klog.Fatalf("objectWalker has duplicate ReplaceStringValue %q=%q and %q=%q", oldValue, replacement.Replace, oldValue, newValue)
+			o.t.Fatalf("FAIL: objectWalker has duplicate ReplaceStringValue %q=%q and %q=%q", oldValue, replacement.Replace, oldValue, newValue)
 		}
 	}
 
@@ -858,6 +901,27 @@ func (o *objectWalker) RewriteURL(url string) (string, error) {
 	return v2, nil
 }
 
+func (o *objectWalker) RewriteHeader(headerKey string, headerValue string) (string, error) {
+	v2, err := o.visitString(headerValue, "{header}:"+headerKey)
+	if err != nil {
+		return "", err
+	}
+	return v2, nil
+}
+
+func (o *objectWalker) RewriteHeaders(headers http.Header) error {
+	for k, vv := range headers {
+		for i, v := range vv {
+			s, err := o.RewriteHeader(k, v)
+			if err != nil {
+				return fmt.Errorf("error normalizing header %q=%q: %w", k, v, err)
+			}
+			headers[k][i] = s
+		}
+	}
+	return nil
+}
+
 // findLinksInEvent looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
 func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEntry) {
 	linkPaths := sets.New(
@@ -978,33 +1042,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	events.RemoveHTTPResponseHeader("Etag")
 	events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
 	events.RemoveHTTPResponseHeader("Cache-Control")  // not really relevant to us
-
-	// Replace any expires headers with (rounded) relative offsets
-	for _, event := range events {
-		expires := event.Response.Header.Get("Expires")
-		if expires == "" {
-			continue
-		}
-
-		if expires == "Mon, 01 Jan 1990 00:00:00 GMT" {
-			// Magic value meaning no-cache; don't change
-			continue
-		}
-
-		expiresTime, err := time.Parse(http.TimeFormat, expires)
-		if err != nil {
-			t.Fatalf("parsing Expires header %q: %v", expires, err)
-		}
-		now := time.Now()
-		delta := expiresTime.Sub(now)
-		if delta > (55 * time.Minute) {
-			delta = delta.Round(time.Hour)
-			event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vh}", delta.Hours()))
-		} else {
-			delta = delta.Round(time.Minute)
-			event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vm}", delta.Minutes()))
-		}
-	}
+	events.RemoveHTTPResponseHeader("Expires")        // not behavioural
 
 	normalizeHTTPResponses(t, services, events)
 
@@ -1012,9 +1050,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
-		if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
-			t.Fatalf("error from normalizeObject: %v", err)
-		}
+		normalizeKRMObject(t, u, project, folderID, uniqueID)
 	})
 
 	// Apply replacements
@@ -1022,7 +1058,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 }
 
 func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer, events test.LogEntries) {
-	visitor := newObjectWalker()
+	visitor := newObjectWalker(t)
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
@@ -1143,7 +1179,6 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Specific to Sql
 	{
-		visitor.ReplacePath(".ipAddresses[].ipAddress", "10.1.2.3")
 		visitor.ReplacePath(".serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
 		visitor.ReplacePath(".serverCaCert.commonName", "common-name")
 		visitor.ReplacePath(".serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")
@@ -1246,7 +1281,7 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Run per-service replaceres
 	{
-		replacements := newObjectWalker()
+		replacements := newObjectWalker(t)
 
 		for _, entry := range events {
 			normalizer.ConfigureVisitor(entry.Request.URL, replacements)
@@ -1263,6 +1298,16 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 				t.Fatalf("error normalizing url %q: %v", event.Request.URL, err)
 			}
 			event.Request.URL = s
+		}
+
+		// Replace headers
+		for _, event := range events {
+			if err := replacements.RewriteHeaders(event.Request.Header); err != nil {
+				t.Fatalf("error normalizing request headers: %v", err)
+			}
+			if err := replacements.RewriteHeaders(event.Response.Header); err != nil {
+				t.Fatalf("error normalizing response headers: %v", err)
+			}
 		}
 
 		events.PrettifyJSON(func(requestURL string, obj map[string]any) {

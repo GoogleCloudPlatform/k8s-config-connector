@@ -1,0 +1,37 @@
+apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+kind: CertificateManagerCertificate
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: certificatemanagercertificate-kompanion-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: sample managed certificate for kcc
+  location: global
+  managed:
+    domains:
+    - '*.${uniqueId}.com'
+    - test.${uniqueId}.com
+    - test2.${uniqueId}.com
+    issuanceConfigRef:
+      external: projects/${projectId}/locations/global/certificateIssuanceConfigs/my-test-ic
+  projectRef:
+    external: ${projectId}
+  resourceID: certificatemanagercertificate-kompanion-${uniqueId}
+  scope: ALL_REGIONS
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2

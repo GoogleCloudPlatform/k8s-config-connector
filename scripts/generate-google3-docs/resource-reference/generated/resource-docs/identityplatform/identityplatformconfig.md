@@ -1559,7 +1559,10 @@ metadata:
   name: identityplatformconfig-dep
 spec:
   region: "us-west2"
-  runtime: "nodejs10"
+  # This field needs to be updated to a supported 1st gen version per the service team
+  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
+  # Deprecated runtime version will cause googleapis error
+  runtime: "nodejs20"
   availableMemoryMb: 128
   sourceArchiveUrl: "gs://aaa-dont-delete-dcl-cloud-functions-testing/http_trigger.zip"
   timeout: "60s"

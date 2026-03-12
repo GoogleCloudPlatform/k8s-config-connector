@@ -43,6 +43,10 @@ func (c *FakeVertexaiV1beta1) VertexAIIndexes(namespace string) v1beta1.VertexAI
 	return &FakeVertexAIIndexes{c, namespace}
 }
 
+func (c *FakeVertexaiV1beta1) VertexAIMetadataStores(namespace string) v1beta1.VertexAIMetadataStoreInterface {
+	return &FakeVertexAIMetadataStores{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeVertexaiV1beta1) RESTClient() rest.Interface {

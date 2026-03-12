@@ -32,6 +32,7 @@ import (
 type TpuV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	TPUNodesGetter
+	TPUVirtualMachinesGetter
 }
 
 // TpuV1alpha1Client is used to interact with features provided by the tpu.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type TpuV1alpha1Client struct {
 
 func (c *TpuV1alpha1Client) TPUNodes(namespace string) TPUNodeInterface {
 	return newTPUNodes(c, namespace)
+}
+
+func (c *TpuV1alpha1Client) TPUVirtualMachines(namespace string) TPUVirtualMachineInterface {
+	return newTPUVirtualMachines(c, namespace)
 }
 
 // NewForConfig creates a new TpuV1alpha1Client for the given config.

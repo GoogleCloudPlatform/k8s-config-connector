@@ -17,6 +17,7 @@ package mockresourcemanager
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
@@ -27,8 +28,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb_v1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v1"
 	pb_v3 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v3"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked privateca service.
 type MockService struct {
@@ -61,19 +67,26 @@ type TagBindingsServer struct {
 	pb_v3.UnimplementedTagBindingsServer
 }
 
+func NewProjectStore(storage storage.Storage) projects.ProjectStore {
+	return &ProjectsInternal{storage: storage}
+}
+
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.projectsInternal = &ProjectsInternal{MockService: s}
+	s.projectsInternal = env.Projects.(*ProjectsInternal)
 	s.projectsV1 = &ProjectsV1{MockService: s}
 	s.projectsV3 = &ProjectsV3{MockService: s}
 	s.tagKeys = &TagKeys{MockService: s}
 	s.tagValues = &TagValues{MockService: s}
 	s.tagBindings = &TagBindingsServer{MockService: s}
+
+	env.Projects = s.projectsInternal
+
 	return s
 }
 
@@ -82,7 +95,7 @@ func (s *MockService) GetProjectStore() projects.ProjectStore {
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"cloudresourcemanager.googleapis.com"}
+	return []string{"cloudresourcemanager.googleapis.com", "{region}-cloudresourcemanager.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
@@ -112,5 +125,20 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		response.Header().Del("Cache-Control")
 	}
 
-	return mux, nil
+	return &stripTrailingSlashHandler{mux}, nil
+}
+
+// stripTrailingSlashHandler is a middleware that removes trailing slashes from
+// the request URL path. This is necessary because the grpc-gateway mux performs
+// strict path matching, and clients (like gcloud) may inconsistently send
+// requests with a trailing slash. For example, this ensures that a request for
+// `/v3/tagBindings/` is correctly routed to the handler registered for
+// `/v3/tagBindings`.
+type stripTrailingSlashHandler struct {
+	handler http.Handler
+}
+
+func (h *stripTrailingSlashHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
+	h.handler.ServeHTTP(w, r)
 }

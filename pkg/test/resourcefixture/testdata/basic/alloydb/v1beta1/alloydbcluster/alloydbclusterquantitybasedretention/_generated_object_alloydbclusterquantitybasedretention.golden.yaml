@@ -30,7 +30,7 @@ spec:
   location: northamerica-northeast1
   networkConfig:
     networkRef:
-      name: computenetwork-${uniqueId}
+      name: ${networkID}
   projectRef:
     external: ${projectId}
 status:
@@ -52,7 +52,7 @@ status:
     - FRIDAY
     - SATURDAY
     - SUNDAY
-  databaseVersion: POSTGRES_15
+  databaseVersion: POSTGRES_16
   encryptionInfo:
   - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
   externalRef: projects/${projectId}/locations/northamerica-northeast1/clusters/alloydbcluster-${uniqueId}
@@ -60,4 +60,5 @@ status:
   observedGeneration: 2
   observedState:
     clusterType: PRIMARY
+    databaseVersion: POSTGRES_16
   uid: "12345678"

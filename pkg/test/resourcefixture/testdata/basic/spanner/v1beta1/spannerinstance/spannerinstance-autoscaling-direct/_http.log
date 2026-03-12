@@ -260,7 +260,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}
 
 {
-  "fieldMask": "displayName,defaultBackupScheduleType,autoscalingConfig",
+  "fieldMask": "displayName,autoscalingConfig",
   "instance": {
     "autoscalingConfig": {
       "autoscalingLimits": {
@@ -308,6 +308,7 @@ X-Xss-Protection: 0
       },
       "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
       "createTime": "2024-04-01T12:34:56.123456Z",
+      "defaultBackupScheduleType": 2,
       "displayName": "Autoscaling Instance Updated",
       "edition": 2,
       "instanceType": 1,
@@ -369,6 +370,7 @@ X-Xss-Protection: 0
       },
       "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
       "createTime": "2024-04-01T12:34:56.123456Z",
+      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Autoscaling Instance Updated",
       "edition": "ENTERPRISE",
       "instanceType": "PROVISIONED",
@@ -407,6 +409,7 @@ X-Xss-Protection: 0
     },
     "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Autoscaling Instance Updated",
     "edition": "ENTERPRISE",
     "instanceType": "PROVISIONED",
@@ -459,6 +462,7 @@ X-Xss-Protection: 0
   },
   "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultBackupScheduleType": 2,
   "displayName": "Autoscaling Instance Updated",
   "edition": 2,
   "instanceType": 1,

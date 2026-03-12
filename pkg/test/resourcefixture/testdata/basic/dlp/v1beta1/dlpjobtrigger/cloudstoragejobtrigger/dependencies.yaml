@@ -15,6 +15,8 @@
 apiVersion: dlp.cnrm.cloud.google.com/v1beta1
 kind: DLPStoredInfoType
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: dlpstoredinfotype-1-${uniqueId}
 spec:
   projectRef:
@@ -26,6 +28,8 @@ spec:
 apiVersion: dlp.cnrm.cloud.google.com/v1beta1
 kind: DLPStoredInfoType
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: dlpstoredinfotype-2-${uniqueId}
 spec:
   projectRef:
@@ -43,6 +47,7 @@ apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
   annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
     cnrm.cloud.google.com/deletion-policy: "abandon"
   name: iampolicymember-${uniqueId}
 spec:

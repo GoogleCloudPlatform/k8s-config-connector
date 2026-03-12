@@ -33,7 +33,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -41,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -82,7 +82,9 @@ func (m *dataStoreModel) client(ctx context.Context, projectID string) (*gcp.Dat
 	return gcpClient, err
 }
 
-func (m *dataStoreModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *dataStoreModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.DiscoveryEngineDataStore{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -196,9 +198,12 @@ func (a *dataStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	desired := direct.ProtoClone(a.desired)
 	desired.Name = a.id.String()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	// TODO(user): Update the field if applicable.
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(a.desired.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, a.desired.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 
@@ -206,6 +211,9 @@ func (a *dataStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
+
 	req := &pb.UpdateDataStoreRequest{
 		UpdateMask: updateMask,
 		DataStore:  desired,

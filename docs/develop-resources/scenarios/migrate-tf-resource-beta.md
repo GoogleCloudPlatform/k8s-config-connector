@@ -131,7 +131,7 @@ different Config Connector releases without code freeze.
 
 ## Switch to the direct controller (optional)
 
-Once the direct controller is fully implemented, you can swith to the direct
+Once the direct controller is fully implemented, you can switch to the direct
 controller.
 
 *   Remove the `cnrm.cloud.google.com/dcl2crd: "true"` or
@@ -139,6 +139,12 @@ controller.
     [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/0bbac86ace6ab2f4051b574f026d5fe47fa05b75/pkg/controller/direct/redis/cluster/roundtrip_test.go#L92).
     Run `dev/tasks/generate-crds` to update the CRDs, now all the API and
     controller have been migration to the direct approach.
+
+*   If you want to keep the existing controller (TF or DCL) available but make
+    Direct the default, you can add the
+    `cnrm.cloud.google.com/default-controller: "direct"` label to the CRD.
+    This is useful for gradual migration. The valid values for this label are
+    `tf`, `dcl`, and `direct`.
 
 *   Remove the `KCC_USE_DIRECT_RECONCILERS` flag.
 

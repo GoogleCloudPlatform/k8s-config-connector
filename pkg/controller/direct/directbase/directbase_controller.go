@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"golang.org/x/sync/semaphore"
@@ -69,7 +70,7 @@ func AddController(mgr manager.Manager, gvk schema.GroupVersionKind, model Model
 	if err != nil {
 		return err
 	}
-	return add(mgr, reconciler, deps.ReconcilePredicate)
+	return add(mgr, reconciler)
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
@@ -98,23 +99,19 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
-		jitterGenerator:    deps.JitterGenerator,
-		defaulters:         deps.Defaulters,
-		iamDeps:            deps.IAMAdapterDeps,
-		reconcilePredicate: deps.ReconcilePredicate,
+		jitterGenerator: deps.JitterGenerator,
+		defaulters:      deps.Defaulters,
+		iamDeps:         deps.IAMAdapterDeps,
 	}
 	return &r, nil
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler.
-func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.Predicate) error {
+func add(mgr manager.Manager, r *DirectReconciler) error {
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(r.gvk)
 
 	predicateList := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
-	if reconcilePredicate != nil {
-		predicateList = append(predicateList, reconcilePredicate)
-	}
 
 	controllerBuilder := builder.
 		ControllerManagedBy(mgr).
@@ -159,9 +156,8 @@ var _ reconcile.Reconciler = &DirectReconciler{}
 
 // Reconciler dependencies.
 type Deps struct {
-	Defaulters         []k8s.Defaulter
-	JitterGenerator    jitter.Generator
-	ReconcilePredicate predicate.Predicate
+	Defaulters      []k8s.Defaulter
+	JitterGenerator jitter.Generator
 
 	// There are Dependencies for Adapters in particular (not the reconcilers)
 	IAMAdapterDeps *IAMAdapterDeps
@@ -222,7 +218,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 
 	logger := log.FromContext(ctx)
 
-	logger.Info("Running reconcile", "resource", request.NamespacedName)
+	logger.V(1).Info("Running reconcile", "resource", request.NamespacedName)
 	startTime := time.Now()
 	ctx, cancel := context.WithTimeout(ctx, k8s.ReconcileDeadline)
 	defer cancel()
@@ -242,28 +238,20 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		return reconcile.Result{}, err
 	}
 
-	if r.reconcilePredicate != nil {
-		// We always simulate a Create event (we don't want to check update predicates, and we don't have the previous version anyway)
-		ev := event.TypedCreateEvent[client.Object]{Object: obj}
-		if !r.reconcilePredicate.Create(ev) {
-			logger.Info("skipping direct reconciliation; reconcileGate does not match object", "namespace", request.Namespace, "name", request.Name)
-			// Do not schedule periodic re-reconciliation
-			return reconcile.Result{}, nil
-		}
-	}
-
 	runCtx := &reconcileContext{
 		Reconciler:     r,
 		gvk:            r.gvk,
 		NamespacedName: request.NamespacedName,
 	}
+	structuredreporting.ReportReconcileStart(ctx, obj, k8s.ReconcilerTypeDirect)
+	defer structuredreporting.ReportReconcileEnd(ctx, obj, result, err, k8s.ReconcilerTypeDirect)
 
 	skip, err := resourceactuation.ShouldSkip(obj)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
 	if skip {
-		logger.Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", request.NamespacedName)
+		logger.V(2).Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", request.NamespacedName)
 		return reconcile.Result{}, nil
 	}
 
@@ -287,7 +275,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	if err != nil {
 		return reconcile.Result{}, err
 	}
-	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", jitteredPeriod)
+	logger.V(2).Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
@@ -304,7 +292,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 	case v1beta1.Reconciling:
 		logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", r.NamespacedName)
 	case v1beta1.Paused:
-		logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
+		logger.V(2).Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
 
 		// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling
 		if u.GetDeletionTimestamp().IsZero() {
@@ -324,7 +312,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		for _, defaulter := range r.Reconciler.defaulters {
 			changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeDirect, u)
 			if err != nil {
-				return false, fmt.Errorf("applying defaults: %w", err)
+				return false, fmt.Errorf("applying defaults in the directbase reconciler: %w", err)
 			}
 			if changed {
 				changeCount++
@@ -344,7 +332,11 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		adapter, adapteErr = m.IAMAdapterForObject(ctx, r.Reconciler.Client, u, r.Reconciler.iamDeps)
 	default:
 		// The default case handles any other type that implements the base model interface.
-		adapter, adapteErr = r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
+		op := &AdapterForObjectOperation{
+			Reader: r.Reconciler.Client,
+			Object: u,
+		}
+		adapter, adapteErr = r.Reconciler.model.AdapterForObject(ctx, op)
 	}
 	if adapteErr != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(adapteErr); ok {

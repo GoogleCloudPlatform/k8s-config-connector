@@ -29,13 +29,12 @@ func init() {
 
 func bigLakeTableFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Table{},
-		BigLakeTableSpec_FromProto, BigLakeTableSpec_ToProto,
-		BigLakeTableObservedState_FromProto, BigLakeTableObservedState_ToProto,
+		BigLakeTableSpec_v1beta1_FromProto, BigLakeTableSpec_v1beta1_ToProto,
+		BigLakeTableObservedState_v1beta1_FromProto, BigLakeTableObservedState_v1beta1_ToProto,
 	)
 
 	f.SpecFields.Insert(".type")
 	f.SpecFields.Insert(".hive_options")
-	f.SpecFields.Insert(".etag")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
@@ -43,6 +42,7 @@ func bigLakeTableFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".expire_time")
 
 	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_Etag()
 
 	return f
 }

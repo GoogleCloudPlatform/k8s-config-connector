@@ -15,6 +15,7 @@
 package preview
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -22,17 +23,20 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"sync"
 
 	"golang.org/x/oauth2"
+	"golang.org/x/time/rate"
 	"google.golang.org/grpc"
 	"k8s.io/klog/v2"
 )
 
 // BlockedGCPError is an error that occurs when a GCP API call is blocked.
 type BlockedGCPError struct {
-	Method string
-	URL    string
-	Body   string
+	Method     string
+	URL        string
+	Body       string
+	UpdateMask []string
 }
 
 var _ error = &BlockedGCPError{}
@@ -82,13 +86,24 @@ func ExtractBlockedGCPError(err error) (*BlockedGCPError, bool) {
 type interceptingGCPClient struct {
 	upstreamGCPClient *http.Client
 	authorization     oauth2.TokenSource
+	// qps and burst are the rate limiter settings.
+	qps   float64
+	burst int
+	// rateLimiterMutex is a mutex for rate limiters.
+	rateLimiterMutex *sync.Mutex
+	// rateLimiters is a map of rate limiters, keyed by host.
+	rateLimiters map[string]*rate.Limiter
 }
 
 // newInterceptingGCPClient creates a new interceptingGCPClient.
-func newInterceptingGCPClient(upstreamGCPClient *http.Client, authorization oauth2.TokenSource) *interceptingGCPClient {
+func newInterceptingGCPClient(upstreamGCPClient *http.Client, authorization oauth2.TokenSource, qps float64, burst int) *interceptingGCPClient {
 	return &interceptingGCPClient{
 		upstreamGCPClient: upstreamGCPClient,
 		authorization:     authorization,
+		qps:               qps,
+		burst:             burst,
+		rateLimiterMutex:  &sync.Mutex{},
+		rateLimiters:      make(map[string]*rate.Limiter),
 	}
 }
 
@@ -118,11 +133,26 @@ func (c *interceptingGCPClient) blockedHTTPMethod(req *http.Request) (*http.Resp
 			body = b
 		}
 	}
-	log.Info("blockedHTTPMethod", "req.method", req.Method, "req.url", req.URL.String())
+
+	// Try to format the body as JSON
+	var formattedBody bytes.Buffer
+	if err := json.Indent(&formattedBody, body, "", "  "); err == nil {
+		body = formattedBody.Bytes()
+	}
+
+	// url.Parse automatically handles URL decoding (e.g., %2C -> ,)
+	rawUpdateMask := req.URL.Query().Get("updateMask")
+	updateMask := []string{}
+	if rawUpdateMask != "" {
+		updateMask = strings.Split(rawUpdateMask, ",")
+	}
+
+	log.V(2).Info("blockedHTTPMethod", "req.method", req.Method, "req.url", req.URL.String())
 	return nil, BlockedGCPError{
-		Method: req.Method,
-		URL:    req.URL.String(),
-		Body:   string(body),
+		Method:     req.Method,
+		URL:        req.URL.String(),
+		Body:       string(body),
+		UpdateMask: updateMask,
 	}
 }
 
@@ -135,6 +165,15 @@ func (c *interceptingGCPClient) RoundTrip(req *http.Request) (*http.Response, er
 	if req.Method == "GET" {
 		requestIsAllowed = true
 	}
+	if c.qps > 0 {
+		limiter, err := c.getOrCreateRateLimiter(req.URL)
+		if err != nil {
+			return nil, err
+		}
+		if err := limiter.Wait(req.Context()); err != nil {
+			return nil, err
+		}
+	}
 
 	if requestIsAllowed {
 		if c.authorization != nil {
@@ -146,9 +185,9 @@ func (c *interceptingGCPClient) RoundTrip(req *http.Request) (*http.Response, er
 		}
 		response, err := c.upstreamGCPClient.Do(req)
 		if response != nil {
-			log.Info("forwarded request", "req.method", req.Method, "req.url", req.URL, "response.status", response.Status)
+			log.V(2).Info("forwarded request", "req.method", req.Method, "req.url", req.URL, "response.status", response.Status)
 		} else if err != nil {
-			log.Error(err, "error forwarding request", "req.method", req.Method, "req.url", req.URL)
+			log.V(0).Error(err, "error forwarding request", "req.method", req.Method, "req.url", req.URL)
 		}
 
 		return response, err

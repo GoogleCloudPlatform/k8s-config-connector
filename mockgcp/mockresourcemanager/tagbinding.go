@@ -22,6 +22,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"strconv"
 	"strings"
 
 	lropb "cloud.google.com/go/longrunning/autogen/longrunningpb"
@@ -34,75 +35,125 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-func (s *TagBindingsServer) normalizeParent(ctx context.Context, parent string) (string, error) {
-	if suffix, ok := strings.CutPrefix(parent, "//cloudresourcemanager.googleapis.com/projects/"); ok {
-		project, err := s.Projects.GetProjectByIDOrNumber(suffix)
-		if err != nil {
-			return "", err
+func (s *TagBindingsServer) normalizeParent(parent string) (string, error) {
+	tokens := strings.Split(parent, "/")
+	for i, token := range tokens {
+		if token == "projects" && i+1 < len(tokens) {
+			projectIDOrNumber := tokens[i+1]
+			// Optimisation: check if it is already a number
+			if _, err := strconv.ParseInt(projectIDOrNumber, 10, 64); err == nil {
+				continue
+			}
+			if projectIDOrNumber == "_" {
+				continue
+			}
+
+			project, err := s.Projects.GetProjectByIDOrNumber(projectIDOrNumber)
+			if err != nil {
+				return "", err
+			}
+			tokens[i+1] = fmt.Sprintf("%d", project.Number)
 		}
-		projectWithNumber := fmt.Sprintf("//cloudresourcemanager.googleapis.com/projects/%d", project.Number)
-		return projectWithNumber, nil
-	} else {
-		return "", status.Errorf(codes.InvalidArgument, "invalid parent")
 	}
+	return strings.Join(tokens, "/"), nil
 }
 
 func (s *TagBindingsServer) CreateTagBinding(ctx context.Context, req *pb.CreateTagBindingRequest) (*lropb.Operation, error) {
-	tagValue, err := s.tagValues.GetNamespacedTagValue(ctx, &pb.GetNamespacedTagValueRequest{
-		Name: req.GetTagBinding().GetTagValueNamespacedName(),
-	})
-	if err != nil {
-		return nil, err
+	var tagValue *pb.TagValue
+
+	// For methods that support TagValue namespaced name, only one of
+	// tag_value_namespaced_name or tag_value may be filled. Requests with both
+	// fields will be rejected.
+	if req.GetTagBinding().GetTagValue() != "" && req.GetTagBinding().GetTagValueNamespacedName() != "" {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid request: both TagValue and TagValueNamespacedName are set")
 	}
 
-	obj := &pb.TagBinding{}
+	if req.GetTagBinding().GetTagValue() != "" {
+		found, err := s.tagValues.GetTagValue(ctx, &pb.GetTagValueRequest{
+			Name: req.GetTagBinding().GetTagValue(),
+		})
+		if err != nil {
+			return nil, err
+		}
+		tagValue = found
+	} else if req.GetTagBinding().GetTagValueNamespacedName() != "" {
+		found, err := s.tagValues.GetNamespacedTagValue(ctx, &pb.GetNamespacedTagValueRequest{
+			Name: req.GetTagBinding().GetTagValueNamespacedName(),
+		})
+		if err != nil {
+			return nil, err
+		}
+		tagValue = found
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid request: must specify TagValue or TagValueNamespacedName")
+	}
+
+	obj := proto.Clone(req.TagBinding).(*pb.TagBinding)
 	obj.TagValue = tagValue.Name
 	obj.TagValueNamespacedName = tagValue.NamespacedName
 
-	normalizedParent, err := s.normalizeParent(ctx, req.GetTagBinding().GetParent())
+	parent := req.GetTagBinding().GetParent()
+	normalizedParent, err := s.normalizeParent(parent)
 	if err != nil {
 		return nil, err
 	}
 	obj.Parent = normalizedParent
-	obj.Name = fmt.Sprintf("tagBindings/%s/tagValues/%s", url.PathEscape(normalizedParent), strings.TrimPrefix(tagValue.Name, "tagValues/"))
+
+	obj.Name = fmt.Sprintf("tagBindings/%s/tagValues/%s", url.PathEscape(obj.Parent), strings.TrimPrefix(tagValue.Name, "tagValues/"))
 
 	fqn := obj.Name
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.DoneLRO(ctx, "", nil, obj)
+	lro, err := s.operations.DoneLRO(ctx, "", nil, obj)
+	if err != nil {
+		return nil, err
+	}
+	lro.Name = "" // Does not return LRO name
+	return lro, nil
 }
 
 func (s *TagBindingsServer) DeleteTagBinding(ctx context.Context, req *pb.DeleteTagBindingRequest) (*lropb.Operation, error) {
 	deleted := &pb.TagBinding{}
 
 	name := req.GetName()
-
-	tokens := strings.Split(name, "/")
-	if len(tokens) == 4 && tokens[0] == "tagBindings" && tokens[2] == "tagValues" {
-		// Normalize the parent
-		parent, err := url.PathUnescape(tokens[1])
-		if err != nil {
-			return nil, status.Errorf(codes.InvalidArgument, "invalid name %q", name)
+	// The `name` field is URL-encoded, but different clients do different things.
+	// gcloud seems to double-encode, terraform seems to single-encode.
+	// Try to unescape twice.
+	if unescaped, err := url.PathUnescape(name); err == nil {
+		name = unescaped
+		if unescaped, err := url.PathUnescape(name); err == nil {
+			name = unescaped
 		}
-		normalizedParent, err := s.normalizeParent(ctx, parent)
+	}
+
+	name = strings.TrimPrefix(name, "tagBindings/")
+	tokens := strings.Split(name, "/tagValues/")
+	if len(tokens) == 2 {
+		normalizedParent, err := s.normalizeParent(tokens[0])
 		if err != nil {
 			return nil, err
 		}
-		tokens[1] = url.PathEscape(normalizedParent)
+		name = "tagBindings/" + url.PathEscape(normalizedParent) + "/tagValues/" + tokens[1]
 	}
-	name = strings.Join(tokens, "/")
 
 	if err := s.storage.Delete(ctx, name, deleted); err != nil {
 		return nil, err
 	}
 
-	return s.operations.DoneLRO(ctx, "", nil, &emptypb.Empty{})
+	lro, err := s.operations.DoneLRO(ctx, "", nil, &emptypb.Empty{})
+	if err != nil {
+		return nil, err
+	}
+	lro.Name = "" // Does not return LRO name
+	return lro, nil
 }
 
 func (s *TagBindingsServer) ListTagBindings(ctx context.Context, req *pb.ListTagBindingsRequest) (*pb.ListTagBindingsResponse, error) {
-	findParent, err := s.normalizeParent(ctx, req.GetParent())
+	var err error
+	findParent := req.GetParent()
+	findParent, err = s.normalizeParent(req.GetParent())
 	if err != nil {
 		return nil, err
 	}
@@ -113,8 +164,6 @@ func (s *TagBindingsServer) ListTagBindings(ctx context.Context, req *pb.ListTag
 	if err := s.storage.List(ctx, tagBindingKind, storage.ListOptions{}, func(obj proto.Message) error {
 		tagBinding := obj.(*pb.TagBinding)
 		if tagBinding.Parent == findParent {
-			tagBinding.TagValueNamespacedName = "" // Not returned in list?
-
 			bindings = append(bindings, tagBinding)
 		}
 		return nil

@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	bigquery "cloud.google.com/go/bigquery"
 	"google.golang.org/api/option"
@@ -69,18 +70,21 @@ func (m *model) service(ctx context.Context, projectID string) (*bigquery.Client
 	return gcpService, err
 }
 
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.BigQueryDataset{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewDatasetIdentity(ctx, reader, obj)
+	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+	id := identity.(*krm.DatasetIdentity)
 
-	projectID := id.Parent().ProjectID
+	projectID := id.Project
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project ID")
 	}
@@ -114,10 +118,10 @@ type Adapter struct {
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting BigQueryDataset", "name", a.id.String())
 
-	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
 	datasetpb, err := dsHandler.Metadata(ctx)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -131,7 +135,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Dataset", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
@@ -150,12 +154,12 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		}
 		desiredDataset.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
 	}
-	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
 
 	if err := dsHandler.Create(ctx, desiredDataset); err != nil {
-		return fmt.Errorf("Error creating Dataset %s: %w", a.id.ID(), err)
+		return fmt.Errorf("Error creating Dataset %s: %w", a.id.Dataset, err)
 	}
-	log.V(2).Info("successfully created Dataset", "name", a.id.ID())
+	log.V(2).Info("successfully created Dataset", "name", a.id.Dataset)
 
 	// The bigquery go client Create() does not return the created dataset.
 	// Fetching the dataset metadata
@@ -164,7 +168,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		if direct.IsNotFound(err) {
 			return nil
 		}
-		return fmt.Errorf("Error getting the created BigQueryDataset %q: %w", a.id.ID(), err)
+		return fmt.Errorf("Error getting the created BigQueryDataset %q: %w", a.id.Dataset, err)
 	}
 	status := &krm.BigQueryDatasetStatus{}
 	status = BigQueryDatasetStatus_FromProto(mapCtx, createdMetadata)
@@ -192,7 +196,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Dataset", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
@@ -218,36 +222,45 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return fmt.Errorf("BigQueryDataset %s/%s location cannot be changed, actual: %s, desired: %s", u.GetNamespace(), u.GetName(), resource.Location, desired.Location)
 	}
 	// Find diff
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	updateMask := &fieldmaskpb.FieldMask{}
 	if desired.Description != "" && !reflect.DeepEqual(desired.Description, resource.Description) {
+		report.AddField("description", resource.Description, desired.Description)
 		resource.Description = desired.Description
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
 	if desired.Name != "" && !reflect.DeepEqual(desired.Name, resource.Name) {
+		report.AddField("friendly_name", resource.Name, desired.Name)
 		resource.Name = desired.Name
 		updateMask.Paths = append(updateMask.Paths, "friendly_name")
 	}
 	if desired.DefaultPartitionExpiration != 0 && !reflect.DeepEqual(desired.DefaultPartitionExpiration, resource.DefaultPartitionExpiration) {
+		report.AddField("default_partition_expiration", resource.DefaultPartitionExpiration, desired.DefaultPartitionExpiration)
 		resource.DefaultPartitionExpiration = desired.DefaultPartitionExpiration
 		updateMask.Paths = append(updateMask.Paths, "default_partition_expiration")
 	}
 	if desired.DefaultTableExpiration != 0 && !reflect.DeepEqual(desired.DefaultTableExpiration, resource.DefaultTableExpiration) {
+		report.AddField("default_table_expiration", resource.DefaultTableExpiration, desired.DefaultTableExpiration)
 		resource.DefaultTableExpiration = desired.DefaultTableExpiration
 		updateMask.Paths = append(updateMask.Paths, "default_table_expiration")
 	}
 	if desired.DefaultCollation != "" && !reflect.DeepEqual(desired.DefaultCollation, resource.DefaultCollation) {
+		report.AddField("default_collation", resource.DefaultCollation, desired.DefaultCollation)
 		resource.DefaultCollation = desired.DefaultCollation
 		updateMask.Paths = append(updateMask.Paths, "default_collation")
 	}
 	if desired.DefaultEncryptionConfig != nil && resource.DefaultEncryptionConfig != nil && !reflect.DeepEqual(desired.DefaultEncryptionConfig, resource.DefaultEncryptionConfig) {
+		report.AddField("default_encryption_configuration", resource.DefaultEncryptionConfig, desired.DefaultEncryptionConfig)
 		resource.DefaultEncryptionConfig.KMSKeyName = desired.DefaultEncryptionConfig.KMSKeyName
 		updateMask.Paths = append(updateMask.Paths, "default_encryption_configuration")
 	}
 	if desiredKRM.Spec.IsCaseInsensitive != nil && !reflect.DeepEqual(desired.IsCaseInsensitive, resource.IsCaseInsensitive) {
+		report.AddField("is_case_sensitive", resource.IsCaseInsensitive, desired.IsCaseInsensitive)
 		resource.IsCaseInsensitive = desired.IsCaseInsensitive
 		updateMask.Paths = append(updateMask.Paths, "is_case_sensitive")
 	}
 	if desired.StorageBillingModel != "" && !reflect.DeepEqual(desired.StorageBillingModel, resource.StorageBillingModel) {
+		report.AddField("storage_billing_model", resource.StorageBillingModel, desired.StorageBillingModel)
 		resource.StorageBillingModel = desired.StorageBillingModel
 		updateMask.Paths = append(updateMask.Paths, "storage_billing_model")
 	}
@@ -255,10 +268,12 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	// If the existing value is 168, it means that we did not set this field at creation and it defaults to 168.
 	// So if the desired value is 0, it means that we do not intend to update this field.
 	if desired.MaxTimeTravel != 0 && !reflect.DeepEqual(desired.MaxTimeTravel, resource.MaxTimeTravel) && (resource.MaxTimeTravel != 168 && desired.MaxTimeTravel != 0) {
+		report.AddField("max_time_travel", resource.MaxTimeTravel, desired.MaxTimeTravel)
 		resource.MaxTimeTravel = desired.MaxTimeTravel
 		updateMask.Paths = append(updateMask.Paths, "max_time_travel")
 	}
 	if desired.Access != nil && resource.Access != nil && len(desired.Access) > 0 && !reflect.DeepEqual(desired.Access, resource.Access) {
+		report.AddField("access", resource.Access, desired.Access)
 		for _, access := range desired.Access {
 			resource.Access = append(resource.Access, access)
 		}
@@ -267,6 +282,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return nil
 	}
 
+	structuredreporting.ReportDiff(ctx, report)
+
 	// Compute the dataset metadate for update request
 	datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
 	for k, v := range a.desired.GetObjectMeta().GetLabels() {
@@ -274,7 +291,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	datasetMetadataToUpdate.SetLabel("managed-by-cnrm", "true")
 	// Call update
-	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
 	updated, err := dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
 	if err != nil {
 		return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
@@ -302,7 +319,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 		return nil, mapCtx.Err()
 	}
 
-	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Parent().ProjectID}
+	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -313,23 +330,23 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Dataset", "name", a.id.String())
 
-	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
+	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
 	annotations := deleteOp.GetUnstructured().GetAnnotations()
 
 	// Support the existing annotation on delete.
 	if annotations["cnrm.cloud.google.com/delete-contents-on-destroy"] == "true" {
 		if err := dsHandler.DeleteWithContents(ctx); err != nil {
-			return false, fmt.Errorf("deleting Dataset %s: %w", a.id.ID(), err)
+			return false, fmt.Errorf("deleting Dataset %s: %w", a.id.Dataset, err)
 		}
 	} else {
 		if err := dsHandler.Delete(ctx); err != nil {
-			return false, fmt.Errorf("deleting Dataset %s: %w", a.id.ID(), err)
+			return false, fmt.Errorf("deleting Dataset %s: %w", a.id.Dataset, err)
 		}
 	}
-	log.V(2).Info("successfully deleted Dataset", "name", a.id.ID())
+	log.V(2).Info("successfully deleted Dataset", "name", a.id.Dataset)
 
 	return true, nil
 }

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// proto.service: mockgcp.cloud.bigquery.biglake.v1.Table
+// proto.service: google.cloud.bigquery.biglake.v1.MetastoreService
 // proto.message: google.cloud.bigquery.biglake.v1.Table
 
 package mockbigquerybiglake

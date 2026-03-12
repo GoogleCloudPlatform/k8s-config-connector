@@ -16,6 +16,7 @@ package structuredreporting
 
 import (
 	"context"
+	"sort"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
@@ -44,9 +45,36 @@ func (d *Diff) AddField(id string, old any, new any) {
 	d.Fields = append(d.Fields, DiffField{ID: id, Old: old, New: new})
 }
 
+// HasDiff returns true if the diff has any fields that differ.
+func (d *Diff) HasDiff() bool {
+	return len(d.Fields) > 0
+}
+
 // ReportDiff should be called by a controller when it detects diffs
 func ReportDiff(ctx context.Context, diff *Diff) {
 	if listener, ok := GetListenerFromContext(ctx); ok {
 		listener.OnDiff(ctx, diff)
 	}
+}
+
+func (d *Diff) AddDiff(other *Diff) *Diff {
+	if other == nil {
+		return d
+	}
+
+	for _, f := range other.Fields {
+		d.AddField(f.ID, f.Old, f.New)
+	}
+
+	return d
+}
+
+// FieldIDs returns the sorted list of field IDs that differ in this Diff
+func (d *Diff) FieldIDs() []string {
+	ids := make([]string, 0, len(d.Fields))
+	for _, f := range d.Fields {
+		ids = append(ids, f.ID)
+	}
+	sort.Strings(ids)
+	return ids
 }

@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -25,20 +25,16 @@ var ServiceNetworkingPeeredDNSDomainGVK = GroupVersion.WithKind("ServiceNetworki
 // ServiceNetworkingPeeredDNSDomainSpec defines the desired state of ServiceNetworkingPeeredDNSDomain
 // +kcc:spec:proto=mockgcp.cloud.servicenetworking.v1.PeeredDnsDomain
 type ServiceNetworkingPeeredDNSDomainSpec struct {
-	// The project that this resource belongs to.
-	// +required
-	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
-
 	// The ServiceNetworkingPeeredDNSDomain name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// The network that this resource belongs to.
+	// +required
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// The DNS domain name suffix e.g. `example.com.`. Cloud DNS requires that a DNS suffix ends with a trailing dot.
 	// +kcc:proto:field=mockgcp.cloud.servicenetworking.v1.PeeredDnsDomain.dns_suffix
 	DNSSuffix *string `json:"dnsSuffix,omitempty"`
-
-	// // Required. User assigned name for this resource. Must be unique within the consumer network. The name must be 1-63 characters long, must begin with a letter, end with a letter or digit, and only contain lowercase letters, digits or dashes.
-	// // +kcc:proto:field=mockgcp.cloud.servicenetworking.v1.PeeredDnsDomain.name
-	// Name *string `json:"name,omitempty"`
 }
 
 // ServiceNetworkingPeeredDNSDomainStatus defines the config connector machine state of ServiceNetworkingPeeredDNSDomain
@@ -66,7 +62,8 @@ type ServiceNetworkingPeeredDNSDomainObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpservicenetworkingpeereddnsdomain;gcpservicenetworkingpeereddnsdomains
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

@@ -86,7 +86,6 @@ func (c *StreamingClient) setHeaders(request *http.Request) error {
 
 // Get gets the requested object
 func (c *StreamingClient) Get(ctx context.Context, typeInfo *typeInfo, namespace, name string, dest Object) error {
-	log := klog.FromContext(ctx)
 
 	u := c.resourceURL(typeInfo.gvr, namespace, name)
 
@@ -99,7 +98,8 @@ func (c *StreamingClient) Get(ctx context.Context, typeInfo *typeInfo, namespace
 	}
 	request.Header.Set("Accept", "application/json")
 
-	log.Info("doing http request", "method", request.Method, "url", request.URL)
+	log := klog.FromContext(ctx)
+	log.V(2).Info("doing http request", "method", request.Method, "url", request.URL)
 	response, err := c.httpClient.Do(request)
 	if err != nil {
 		return fmt.Errorf("sending http request: %w", err)
@@ -123,10 +123,10 @@ func (c *StreamingClient) Get(ctx context.Context, typeInfo *typeInfo, namespace
 }
 
 // List lists the objects for the given type.
-func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, listener ListListener) error {
+func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, namespace string, listener ListListener) error {
 	log := klog.FromContext(ctx)
 
-	u := c.resourceURL(typeInfo.gvr, "", "")
+	u := c.resourceURL(typeInfo.gvr, namespace, "")
 
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func (c *StreamingClient) List(ctx context.Context, typeInfo *typeInfo, listener
 	}
 	request.Header.Set("Accept", "application/json")
 
-	log.Info("doing http request", "method", request.Method, "url", request.URL)
+	log.V(2).Info("doing http request", "method", request.Method, "url", request.URL)
 	response, err := c.httpClient.Do(request)
 	if err != nil {
 		return fmt.Errorf("sending http request: %w", err)
@@ -200,10 +200,10 @@ type WatchListener interface {
 }
 
 // Watch watches the given type.
-func (c *StreamingClient) Watch(ctx context.Context, typeInfo *typeInfo, watchOptions WatchOptions, listener WatchListener) error {
+func (c *StreamingClient) Watch(ctx context.Context, typeInfo *typeInfo, namespace string, watchOptions WatchOptions, listener WatchListener) error {
 	log := klog.FromContext(ctx)
 
-	u := c.resourceURL(typeInfo.gvr, "", "")
+	u := c.resourceURL(typeInfo.gvr, namespace, "")
 
 	q := u.Query()
 	q.Set("watch", "true")
@@ -224,7 +224,7 @@ func (c *StreamingClient) Watch(ctx context.Context, typeInfo *typeInfo, watchOp
 	}
 	request.Header.Set("Accept", "application/json")
 
-	log.Info("doing http request", "method", request.Method, "url", request.URL)
+	log.V(2).Info("doing http request", "method", request.Method, "url", request.URL)
 	response, err := c.httpClient.Do(request)
 	if err != nil {
 		return fmt.Errorf("sending http request: %w", err)
@@ -307,7 +307,7 @@ func (r *lineSplitReader) Read(p []byte) (int, error) {
 		}
 
 		r.buffer = r.buffer[:n]
-		klog.Infof("buffer is %v", string(r.buffer))
+		klog.V(4).Infof("buffer is %v", string(r.buffer))
 	}
 
 	// Only return up to the newline
@@ -324,7 +324,7 @@ func (r *lineSplitReader) Read(p []byte) (int, error) {
 		// release the buffer (maybe a sync pool would be faster)
 		r.buffer = nil
 	}
-	klog.Infof("returning %v", string(p[:n]))
+	klog.V(4).Infof("returning %v", string(p[:n]))
 
 	// If we sent a newline, pretend this is EOF
 	if nl != -1 && n == nl+1 {

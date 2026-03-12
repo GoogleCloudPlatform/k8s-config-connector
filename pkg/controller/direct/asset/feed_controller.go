@@ -16,7 +16,7 @@
 // proto.service: google.cloud.asset.v1.AssetService
 // proto.message: google.cloud.asset.v1.Feed
 // crd.type: AssetFeed
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package asset
 
@@ -35,13 +35,14 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -81,7 +82,9 @@ func (m *feedModel) client(ctx context.Context, projectID string) (*gcp.Client, 
 	return gcpClient, err
 }
 
-func (m *feedModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *feedModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.AssetFeed{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -242,6 +245,12 @@ func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	log.V(2).Info("updating asset feed fields", "paths", sets.List(paths))
 

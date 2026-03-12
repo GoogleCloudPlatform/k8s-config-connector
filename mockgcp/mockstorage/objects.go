@@ -44,7 +44,5 @@ func (s *objects) ListObjects(ctx context.Context, req *pb.ListObjectsRequest) (
 func (s *objects) GetObject(ctx context.Context, req *pb.GetObjectRequest) (*pb.Object, error) {
 	// A stub implementation, just to support deletion (for now)
 
-	httpmux.SetExpiresHeader(ctx, time.Now())
-
-	return nil, status.Errorf(codes.NotFound, "object not found")
+	return nil, status.Errorf(codes.NotFound, "No such object: %s/%s", req.GetBucket(), req.GetName())
 }

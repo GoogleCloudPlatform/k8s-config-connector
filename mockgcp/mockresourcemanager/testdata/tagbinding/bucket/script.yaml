@@ -1,0 +1,12 @@
+- exec: gcloud resource-manager tags keys create test-${uniqueId} --parent=projects/${projectId}
+- exec: gcloud resource-manager tags values create value1 --parent=${projectId}/test-${uniqueId}
+
+- exec: gcloud storage buckets create gs://kcctest-${uniqueId}/ --location us-east4
+
+- exec: gcloud resource-manager tags bindings create --parent=//storage.googleapis.com/projects/_/buckets/kcctest-${uniqueId} --location us-east4 --tag-value=${projectId}/test-${uniqueId}/value1
+- exec: gcloud resource-manager tags bindings list --parent=//storage.googleapis.com/projects/_/buckets/kcctest-${uniqueId} --location us-east4
+- exec: gcloud resource-manager tags bindings delete --parent=//storage.googleapis.com/projects/_/buckets/kcctest-${uniqueId} --location us-east4 --tag-value=${projectId}/test-${uniqueId}/value1  --quiet
+- exec: gcloud storage buckets delete gs://kcctest-${uniqueId}/ --quiet
+
+- exec: gcloud resource-manager tags values delete ${projectId}/test-${uniqueId}/value1 --quiet
+- exec: gcloud resource-manager tags keys delete ${projectId}/test-${uniqueId} --quiet

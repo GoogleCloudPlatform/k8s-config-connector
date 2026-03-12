@@ -15,6 +15,7 @@
 package direct
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"runtime"
@@ -27,8 +28,10 @@ import (
 	grpcStatus "google.golang.org/grpc/status"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
+	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/klog/v2"
 )
 
@@ -382,15 +385,19 @@ func SecondsString_ToProto(mapCtx *MapContext, in *string, fieldName string) *du
 	out := &durationpb.Duration{Seconds: seconds}
 	return out
 }
-func Int64Value_FromProto(mapCtx *MapContext, ts *wrapperspb.Int64Value) int64 {
-	if ts == nil {
-		return 0
+func Int64Value_FromProto(mapCtx *MapContext, in *wrapperspb.Int64Value) *int64 {
+	if in == nil {
+		return nil
 	}
-
-	return ts.GetValue()
+	out := in.GetValue()
+	return &out
 }
-func Int64Value_ToProto(mapCtx *MapContext, s int64) *wrapperspb.Int64Value {
-	return wrapperspb.Int64(s)
+func Int64Value_ToProto(mapCtx *MapContext, in *int64) *wrapperspb.Int64Value {
+	if in == nil {
+		return nil
+	}
+	out := wrapperspb.Int64(*in)
+	return out
 }
 
 func Float32ToString(mapCtx *MapContext, in float32) string {
@@ -526,4 +533,49 @@ func StringPtrToByteSlice(mapCtx *MapContext, in *string) []byte {
 		return nil
 	}
 	return []byte(*in)
+}
+
+func PtrInt64ToPtrUint64(in *int64) *uint64 {
+	if in == nil {
+		return nil
+	}
+	out := uint64(*in)
+	return &out
+}
+
+func PtrInt64ToPtrInt32(in *int64) *int32 {
+	if in == nil {
+		return nil
+	}
+	out := int32(*in)
+	return &out
+}
+
+func Struct_FromProto(mapCtx *MapContext, in *structpb.Struct) *apiextensionsv1.JSON {
+	if in == nil {
+		return nil
+	}
+	b, err := json.Marshal(in.AsMap())
+	if err != nil {
+		mapCtx.Errorf("marshalling structpb.Struct to json: %v", err)
+		return nil
+	}
+	return &apiextensionsv1.JSON{Raw: b}
+}
+
+func Struct_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Struct {
+	if in == nil {
+		return nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(in.Raw, &m); err != nil {
+		mapCtx.Errorf("unmarshalling json to map: %v", err)
+		return nil
+	}
+	s, err := structpb.NewStruct(m)
+	if err != nil {
+		mapCtx.Errorf("error converting map to structpb.Struct: %v", err)
+		return nil
+	}
+	return s
 }

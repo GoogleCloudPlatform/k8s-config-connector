@@ -18,9 +18,9 @@ package cloudbuild
 
 import (
 	pb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -83,7 +83,7 @@ func PrivatePoolV1Config_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePool
 	}
 	out := &krm.PrivatePoolV1Config{}
 	out.WorkerConfig = PrivatePoolV1Config_WorkerConfig_FromProto(mapCtx, in.GetWorkerConfig())
-	out.NetworkConfig = PrivatePoolV1Config_NetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
+	out.NetworkConfig = PrivatePoolV1Config_NetworkConfigSpec_FromProto(mapCtx, in.GetNetworkConfig())
 	return out
 }
 func PrivatePoolV1Config_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV1Config) *pb.PrivatePoolV1Config {
@@ -92,22 +92,22 @@ func PrivatePoolV1Config_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV
 	}
 	out := &pb.PrivatePoolV1Config{}
 	out.WorkerConfig = PrivatePoolV1Config_WorkerConfig_ToProto(mapCtx, in.WorkerConfig)
-	out.NetworkConfig = PrivatePoolV1Config_NetworkConfig_ToProto(mapCtx, in.NetworkConfig)
+	out.NetworkConfig = PrivatePoolV1Config_NetworkConfigSpec_ToProto(mapCtx, in.NetworkConfig)
 	return out
 }
-func PrivatePoolV1Config_NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config_NetworkConfig) *krm.PrivatePoolV1Config_NetworkConfigSpec {
+func PrivatePoolV1Config_NetworkConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePoolV1Config_NetworkConfig) *krm.PrivatePoolV1Config_NetworkConfigSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.PrivatePoolV1Config_NetworkConfigSpec{}
-	out.PeeredNetworkRef = refv1beta1.ComputeNetworkRef{
+	out.PeeredNetworkRef = computev1beta1.ComputeNetworkRef{
 		External: in.GetPeeredNetwork(),
 	}
 	out.EgressOption = direct.Enum_FromProto(mapCtx, in.EgressOption)
 	out.PeeredNetworkIPRange = direct.LazyPtr(in.GetPeeredNetworkIpRange())
 	return out
 }
-func PrivatePoolV1Config_NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV1Config_NetworkConfigSpec) *pb.PrivatePoolV1Config_NetworkConfig {
+func PrivatePoolV1Config_NetworkConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePoolV1Config_NetworkConfigSpec) *pb.PrivatePoolV1Config_NetworkConfig {
 	if in == nil {
 		return nil
 	}

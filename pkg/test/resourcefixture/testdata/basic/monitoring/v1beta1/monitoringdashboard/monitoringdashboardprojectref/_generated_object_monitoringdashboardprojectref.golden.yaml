@@ -7,7 +7,7 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-  name: monitoringdashboard-${uniqueId}
+  name: ${dashboardID}
   namespace: ${uniqueId}
 spec:
   columnLayout:
@@ -51,7 +51,7 @@ spec:
   displayName: monitoringdashboard updated
   projectRef:
     name: otherproject
-  resourceID: monitoringdashboard-${uniqueId}
+  resourceID: ${dashboardID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

@@ -1,21 +1,8 @@
-# Copyright 2023 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 fullname:
 - status
 shortname: status
-description: ""
+description: AccessContextManagerAccessLevelStatus defines the config connector machine
+  state of AccessContextManagerAccessLevel
 type: object
 format: ""
 requirementlevel: Optional
@@ -24,7 +11,7 @@ children:
   - status
   - conditions
   shortname: conditions
-  description: Conditions represent the latest available observation of the resource's
+  description: Conditions represent the latest available observations of the object's
     current state.
   type: list (object)
   format: ""
@@ -104,6 +91,17 @@ children:
   additionalproperties: []
 - fullname:
   - status
+  - externalRef
+  shortname: externalRef
+  description: A unique specifier for the AccessContextManagerAccessLevel resource
+    in GCP.
+  type: string
+  format: ""
+  requirementlevel: Optional
+  children: []
+  additionalproperties: []
+- fullname:
+  - status
   - observedGeneration
   shortname: observedGeneration
   description: ObservedGeneration is the generation of the resource that was most
@@ -111,6 +109,17 @@ children:
     then that means that the current reported status reflects the most recent desired
     state of the resource.
   type: integer
+  format: int64
+  requirementlevel: Optional
+  children: []
+  additionalproperties: []
+- fullname:
+  - status
+  - observedState
+  shortname: observedState
+  description: ObservedState is the state of the resource as most recently observed
+    in GCP.
+  type: object
   format: ""
   requirementlevel: Optional
   children: []

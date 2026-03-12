@@ -13,7 +13,7 @@ spec:
   location: us-east1
   networks:
   - networkRef:
-      name: computenetwork-${uniqueId}
+      name: ${networkID}
   projectRef:
     external: ${projectId}
   type: BACKUP_RESTORE

@@ -6,6 +6,7 @@ toolchain go1.24.6
 
 require (
 	github.com/spf13/cobra v1.8.1
+	golang.org/x/mod v0.33.0
 	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/yaml v1.4.0
 )

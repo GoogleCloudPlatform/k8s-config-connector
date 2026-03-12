@@ -26,13 +26,13 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/go-logr/logr"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -47,25 +47,7 @@ const (
 )
 
 func init() {
-	rg := &SecretReconcileGate{}
-	registry.RegisterModelWithReconcileGate(krm.SecretManagerSecretGVK, NewModel, rg)
-}
-
-type SecretReconcileGate struct {
-	optIn kccpredicate.OptInToDirectReconciliation
-}
-
-var _ kccpredicate.ReconcileGate = &SecretReconcileGate{}
-
-func (r *SecretReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
-	if r.optIn.ShouldReconcile(o) {
-		return true
-	}
-	obj := &krm.SecretManagerSecret{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
-		return false
-	}
-	return obj.Spec.Labels != nil
+	registry.RegisterModel(krm.SecretManagerSecretGVK, NewModel)
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -91,7 +73,9 @@ func (m *secretModel) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *secretModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *secretModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.SecretManagerSecret{}
 
 	copied := u.DeepCopy()
@@ -177,7 +161,7 @@ func normalizeExternal(ctx context.Context, reader client.Reader, src client.Obj
 }
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting SecretManagerSecret", "name", a.id)
 
 	req := &secretmanagerpb.GetSecretRequest{Name: a.id.String()}
@@ -227,7 +211,7 @@ func ComputeAnnotations(secret *krm.SecretManagerSecret, log *logr.Logger) map[s
 }
 
 func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Secret", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -282,7 +266,7 @@ func topicsEqual(desired []*krm.TopicRef, actual []*secretmanagerpb.Topic) bool 
 }
 
 func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Secret", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -307,6 +291,12 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	report := &structuredreporting.Diff{Object: op.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	req := &secretmanagerpb.UpdateSecretRequest{
 		UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
@@ -353,7 +343,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Secret", "name", a.id)
 
 	req := &secretmanagerpb.DeleteSecretRequest{Name: a.id.String()}

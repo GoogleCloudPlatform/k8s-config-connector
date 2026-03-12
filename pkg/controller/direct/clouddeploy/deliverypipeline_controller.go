@@ -18,13 +18,14 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/deploy/apiv1"
 	clouddeploypb "cloud.google.com/go/deploy/apiv1/deploypb"
@@ -36,11 +37,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
-	registry.RegisterModel(krm.CloudDeployDeliveryPipelineGVK, NewDeliveryPipelineModel)
+	registry.RegisterModel(krmv1beta1.CloudDeployDeliveryPipelineGVK, NewDeliveryPipelineModel)
 }
 
 func NewDeliveryPipelineModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -66,13 +66,15 @@ func (m *modelDeliveryPipeline) client(ctx context.Context) (*gcp.CloudDeployCli
 	return gcpClient, err
 }
 
-func (m *modelDeliveryPipeline) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.CloudDeployDeliveryPipeline{}
+func (m *modelDeliveryPipeline) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
+	obj := &krmv1beta1.CloudDeployDeliveryPipeline{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewDeliveryPipelineIdentity(ctx, reader, obj)
+	id, err := krmv1beta1.NewDeliveryPipelineIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -95,9 +97,9 @@ func (m *modelDeliveryPipeline) AdapterForURL(ctx context.Context, url string) (
 }
 
 type DeliveryPipelineAdapter struct {
-	id        *krm.DeliveryPipelineIdentity
+	id        *krmv1beta1.DeliveryPipelineIdentity
 	gcpClient *gcp.CloudDeployClient
-	desired   *krm.CloudDeployDeliveryPipeline
+	desired   *krmv1beta1.CloudDeployDeliveryPipeline
 	actual    *clouddeploypb.DeliveryPipeline
 }
 
@@ -151,7 +153,7 @@ func (a *DeliveryPipelineAdapter) Create(ctx context.Context, createOp *directba
 	}
 	log.V(2).Info("successfully created DeliveryPipeline", "name", a.id)
 
-	status := &krm.DeliveryPipelineStatus{}
+	status := &krmv1beta1.DeliveryPipelineStatus{}
 	status.ObservedState = DeliveryPipelineObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -181,6 +183,11 @@ func (a *DeliveryPipelineAdapter) Update(ctx context.Context, updateOp *directba
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
 
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
@@ -201,7 +208,7 @@ func (a *DeliveryPipelineAdapter) Update(ctx context.Context, updateOp *directba
 	}
 	log.V(2).Info("successfully updated DeliveryPipeline", "name", a.id)
 
-	status := &krm.DeliveryPipelineStatus{}
+	status := &krmv1beta1.DeliveryPipelineStatus{}
 	status.ObservedState = DeliveryPipelineObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -216,7 +223,7 @@ func (a *DeliveryPipelineAdapter) Export(ctx context.Context) (*unstructured.Uns
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.CloudDeployDeliveryPipeline{}
+	obj := &krmv1beta1.CloudDeployDeliveryPipeline{}
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(DeliveryPipelineSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
@@ -230,7 +237,7 @@ func (a *DeliveryPipelineAdapter) Export(ctx context.Context) (*unstructured.Uns
 	}
 
 	u.SetName(a.id.ID())
-	u.SetGroupVersionKind(krm.CloudDeployDeliveryPipelineGVK)
+	u.SetGroupVersionKind(krmv1beta1.CloudDeployDeliveryPipelineGVK)
 
 	u.Object = uObj
 	return u, nil

@@ -20,14 +20,21 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var _ identity.Identity = &EntryTypeIdentity{}
+
+const (
+	EntryTypeIDURL = parent.ProjectAndLocationURL + "/entryTypes/{{entrytypeID}}"
 )
 
 // EntryTypeIdentity defines the resource reference to DataplexEntryType, which "External" field
 // holds the GCP identifier for the KRM object.
 type EntryTypeIdentity struct {
-	parent *EntryTypeParent
+	parent *parent.ProjectAndLocationParent
 	id     string
 }
 
@@ -39,79 +46,57 @@ func (i *EntryTypeIdentity) ID() string {
 	return i.id
 }
 
-func (i *EntryTypeIdentity) Parent() *EntryTypeParent {
+func (i *EntryTypeIdentity) Parent() *parent.ProjectAndLocationParent {
 	return i.parent
 }
 
-type EntryTypeParent struct {
-	ProjectID string
-	Location  string
+func (i *EntryTypeIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/entryTypes/")
+	if len(tokens) != 2 {
+		return fmt.Errorf("format of DataplexEntryType external=%q was not known (use %s)", ref, EntryTypeIDURL)
+	}
+	i.parent = &parent.ProjectAndLocationParent{}
+	if err := i.parent.FromExternal(tokens[0]); err != nil {
+		return err
+	}
+	i.id = tokens[1]
+	if i.id == "" {
+		return fmt.Errorf("entryTypeID was empty in external=%q", ref)
+	}
+	return nil
 }
 
-func (p *EntryTypeParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
+var _ identity.Resource = &DataplexEntryType{}
 
-// New builds a EntryTypeIdentity from the Config Connector EntryType object.
-func NewEntryTypeIdentity(ctx context.Context, reader client.Reader, obj *DataplexEntryType) (*EntryTypeIdentity, error) {
+func (obj *DataplexEntryType) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	newIdentity := &EntryTypeIdentity{
+		parent: &parent.ProjectAndLocationParent{},
+	}
 
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
+	// Resolve Parent
+	if err := obj.Spec.ParentRef.Build(ctx, reader, obj.GetNamespace(), newIdentity.parent); err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
 	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
+	newIdentity.id = common.ValueOf(obj.Spec.ResourceID)
+	if newIdentity.id == "" {
+		newIdentity.id = obj.GetName()
 	}
-	if resourceID == "" {
+	if newIdentity.id == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseEntryTypeExternal(externalRef)
-		if err != nil {
-			return nil, err
+		statusIdentity := &EntryTypeIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		if statusIdentity.String() != newIdentity.String() {
+			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
 		}
 	}
-	return &EntryTypeIdentity{
-		parent: &EntryTypeParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
-}
-
-func ParseEntryTypeExternal(external string) (parent *EntryTypeParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entryTypes" {
-		return nil, "", fmt.Errorf("format of DataplexEntryType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/entryTypes/{{entrytypeID}})", external)
-	}
-	parent = &EntryTypeParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return newIdentity, nil
 }

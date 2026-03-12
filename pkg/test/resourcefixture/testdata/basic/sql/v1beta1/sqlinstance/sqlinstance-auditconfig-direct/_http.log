@@ -3,7 +3,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
@@ -48,7 +47,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
@@ -56,6 +54,7 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -94,13 +93,13 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -278,22 +277,24 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-auditconfig-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR",
+  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU19_GDR",
   "databaseVersion": "SQLSERVER_2022_EXPRESS",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
+  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU19_GDR.R20251019.02_03",
   "name": "sqlinstance-auditconfig-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -315,6 +316,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -330,6 +332,7 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -338,6 +341,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "sqlServerAuditConfig": {
@@ -395,6 +399,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-auditconfig-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "##MS_PolicyEventProcessingLogin##",
@@ -409,6 +414,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-auditconfig-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "##MS_PolicyTsqlExecutionLogin##",
@@ -423,6 +429,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-auditconfig-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "sqlserver",
@@ -459,22 +466,24 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-auditconfig-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR",
+  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU19_GDR",
   "databaseVersion": "SQLSERVER_2022_EXPRESS",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
+  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU19_GDR.R20251019.02_03",
   "name": "sqlinstance-auditconfig-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -496,6 +505,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -511,6 +521,7 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -519,6 +530,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "sqlServerAuditConfig": {
@@ -566,7 +578,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "databaseVersion": "SQLSERVER_2022_EXPRESS",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
+  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU19_GDR.R20251019.02_03",
   "name": "sqlinstance-auditconfig-direct-${uniqueId}",
   "region": "us-central1",
   "rootPassword": "1234!@#$asdf",
@@ -578,6 +590,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
@@ -686,22 +699,24 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-auditconfig-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR",
+  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU19_GDR",
   "databaseVersion": "SQLSERVER_2022_EXPRESS",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
+  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU19_GDR.R20251019.02_03",
   "name": "sqlinstance-auditconfig-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -723,6 +738,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -738,6 +754,7 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -746,6 +763,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "sqlServerAuditConfig": {
@@ -848,13 +866,13 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -893,7 +911,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -913,7 +930,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 204 No Content
 Content-Type: application/json
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin

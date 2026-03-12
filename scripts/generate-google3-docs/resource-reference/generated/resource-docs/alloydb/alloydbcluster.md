@@ -95,6 +95,7 @@ continuousBackupConfig:
       name: string
       namespace: string
   recoveryWindowDays: integer
+databaseVersion: string
 deletionPolicy: string
 displayName: string
 encryptionConfig:
@@ -503,6 +504,16 @@ secondaryConfig:
     </tr>
     <tr>
         <td>
+            <p><code>databaseVersion</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The database engine major version. This is an optional field and it is populated at the Cluster creation time. If a database version is not supplied at cluster creation time, then a default database version will be used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>deletionPolicy</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -788,7 +799,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -798,7 +809,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a ComputeNetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -808,7 +819,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a ComputeNetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -828,7 +839,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed ComputeNetwork resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}"{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -838,7 +849,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a ComputeNetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -848,7 +859,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a ComputeNetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1112,6 +1123,7 @@ name: string
 observedGeneration: integer
 observedState:
   clusterType: string
+  databaseVersion: string
 uid: string
 ```
 
@@ -1379,6 +1391,13 @@ uid: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The type of the cluster. This is an output-only field and it's populated at the Cluster creation time or the Cluster promotion time. The cluster type is determined by which RPC was used to create the cluster (i.e. `CreateCluster` vs. `CreateSecondaryCluster`{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.databaseVersion</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The database engine major version. This is an output-only field and it's populated at the Cluster creation time. This field cannot be changed after cluster creation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

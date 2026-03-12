@@ -39,11 +39,10 @@ type BigtableAuthorizedViewSpec struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.subset_view
 	SubsetView *AuthorizedView_SubsetView `json:"subsetView,omitempty"`
 
-	// The etag for this AuthorizedView.
-	//  If this is provided on update, it must match the server's etag. The server
-	//  returns ABORTED error on a mismatched etag.
+	// NOTYET: not supported in Config Connector reconciliation
+	// The etag for this `AuthorizedView` resource.
 	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 
 	// Set to true to make the AuthorizedView protected against deletion.
 	//  The parent Table and containing Instance cannot be deleted if an
@@ -77,7 +76,8 @@ type BigtableAuthorizedViewObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtableauthorizedview;gcpbigtableauthorizedviews
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

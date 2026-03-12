@@ -1,0 +1,3 @@
+- exec: gcloud iap oauth-brands create --application_title="Test Brand" --support_email="test@example.com" --project=${projectId}
+- exec: gcloud iap oauth-brands list --project=${projectId}
+- exec: gcloud iap oauth-brands describe projects/${projectNumber}/brands/${projectNumber} --project=${projectId}

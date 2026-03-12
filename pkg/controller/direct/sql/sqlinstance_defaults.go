@@ -22,7 +22,20 @@ import (
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
-func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+const (
+	// DefaultQueryPlansPerMinute is the default value for QueryPlansPerMinute.
+	// https://docs.cloud.google.com/sql/docs/mysql/admin-api/rest/v1/instances#insightsconfig
+	DefaultQueryPlansPerMinute = 5
+
+	// DefaultRetainedBackupsEnterprise is the default value for RetainedBackups for Enterprise edition.
+	// DefaultRetainedBackupsEnterprisePlus is the default value for RetainedBackups for Enterprise Plus edition.
+	// https://docs.cloud.google.com/sql/docs/mysql/backup-recovery/backup-options#sb-backup-retention
+	DefaultRetainedBackupsEnterprise     = 7
+	DefaultRetainedBackupsEnterprisePlus = 15
+)
+
+func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance, fieldMetadata map[string]*FieldMetadata) {
+	// Stage 1: Apply all client-side defaults as if no fields are unmanaged.
 	if in.Spec.InstanceType == nil {
 		// GCP default InstanceType is CLOUD_SQL_INSTANCE.
 		out.InstanceType = "CLOUD_SQL_INSTANCE"
@@ -47,10 +60,20 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		// If desired backupConfiguration is not specified and actual is disabled, use the actual.
 		out.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
 	}
+	// If backupConfiguration is specified and BackupRetentionSettings is not specified, apply default BackupRetentionSettings based on edition.
 	if in.Spec.Settings.BackupConfiguration != nil {
-		if in.Spec.Settings.BackupConfiguration.BackupRetentionSettings != nil && in.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit == nil {
-			// GCP default retentionUnit is COUNT.
+		if in.Spec.Settings.BackupConfiguration.BackupRetentionSettings == nil {
+			out.Settings.BackupConfiguration.BackupRetentionSettings = &api.BackupRetentionSettings{}
+		}
+		if out.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit == "" {
 			out.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit = "COUNT"
+		}
+		if out.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups == 0 {
+			if direct.ValueOf(in.Spec.Settings.Edition) == "ENTERPRISE_PLUS" {
+				out.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups = DefaultRetainedBackupsEnterprisePlus
+			} else {
+				out.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups = DefaultRetainedBackupsEnterprise
+			}
 		}
 	}
 	if in.Spec.Settings.ConnectorEnforcement == nil {
@@ -62,9 +85,15 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		out.Settings.DataDiskType = "PD_SSD"
 	}
 	if in.Spec.Settings.Edition == nil {
-		// GCP default Edition is ENTERPRISE.
+		// Apply client side GCP default Edition is ENTERPRISE.
 		out.Settings.Edition = "ENTERPRISE"
 	}
+	if in.Spec.Settings.InsightsConfig != nil {
+		if in.Spec.Settings.InsightsConfig.QueryPlansPerMinute == nil {
+			out.Settings.InsightsConfig.QueryPlansPerMinute = DefaultQueryPlansPerMinute
+		}
+	}
+
 	if in.Spec.Settings.IpConfiguration == nil {
 		// GCP default IpConfiguration.
 		out.Settings.IpConfiguration = &api.IpConfiguration{
@@ -118,5 +147,16 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 	if actual != nil {
 		// GCP API requires we set the current settings version, otherwise update will fail.
 		out.Settings.SettingsVersion = actual.Settings.SettingsVersion
+	}
+
+	// Stage 2: Preserve any fields that are unmanaged by the user.
+	// This generic loop will overwrite any defaults set in Stage 1.
+	if actual == nil {
+		return
+	}
+	for _, field := range fieldMetadata {
+		if field.isUnmanaged {
+			field.preserveActualValue(out, actual)
+		}
 	}
 }

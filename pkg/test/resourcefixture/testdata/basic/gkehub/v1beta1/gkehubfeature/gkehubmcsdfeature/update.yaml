@@ -20,7 +20,8 @@ metadata:
     label-one: value-two
 spec:
   projectRef:
-    name: mcsd-${uniqueId}
+    # hack to work around label-only changes not changing metadata.generation
+    external: ${TEST_DEPENDENT_NO_NETWORK_PROJECT_ID}
   location: global
   # The resourceID must be "multiclusterservicediscovery" if you want to use
   # multi-cluster service discovery feature.

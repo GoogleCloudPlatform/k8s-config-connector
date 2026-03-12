@@ -15,26 +15,18 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var BigLakeCatalogGVK = GroupVersion.WithKind("BigLakeCatalog")
 
-type Parent struct {
-	// Required. The location of the application.
-	Location string `json:"location,omitempty"`
-
-	// Required. The host project of the application.
-	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
-}
-
 // BigLakeCatalogSpec defines the desired state of BigLakeCatalog
 // +kcc:spec:proto=google.cloud.bigquery.biglake.v1.Catalog
 type BigLakeCatalogSpec struct {
 	// Required. Defines the parent path of the resource.
-	*Parent `json:",inline"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// The BigLakeCatalog name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -72,7 +64,8 @@ type BigLakeCatalogObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbiglakecatalog;gcpbiglakecatalogs
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

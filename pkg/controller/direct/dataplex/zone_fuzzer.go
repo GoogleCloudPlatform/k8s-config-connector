@@ -34,7 +34,6 @@ func dataplexZoneFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".type")
 	f.SpecFields.Insert(".discovery_spec")
@@ -47,6 +46,7 @@ func dataplexZoneFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".asset_status")
 
 	f.UnimplementedFields.Insert(".name") // special field
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

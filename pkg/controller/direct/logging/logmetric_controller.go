@@ -25,7 +25,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -34,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 const ctrlName = "logmetric-controller"
@@ -65,7 +65,9 @@ type logMetricAdapter struct {
 var _ directbase.Adapter = &logMetricAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *logMetricModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {
 		return nil, err
@@ -180,7 +182,7 @@ func (a *logMetricAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 func (a *logMetricAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating object", "u", u)
 
 	projectID := a.projectID
@@ -248,18 +250,23 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	latest := a.actual
 
 	if a.hasChanges(ctx, u) {
+		report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 		update := new(api.LogMetric)
 		*update = *a.actual
 
 		if direct.ValueOf(a.desired.Spec.Description) != a.actual.Description {
+			report.AddField("description", a.actual.Description, direct.ValueOf(a.desired.Spec.Description))
 			update.Description = direct.ValueOf(a.desired.Spec.Description)
 		}
 		if direct.ValueOf(a.desired.Spec.Disabled) != a.actual.Disabled {
+			report.AddField("disabled", a.actual.Disabled, direct.ValueOf(a.desired.Spec.Disabled))
 			update.Disabled = direct.ValueOf(a.desired.Spec.Disabled)
 		}
 		if a.desired.Spec.Filter != a.actual.Filter {
 			// todo acpana: revisit UX, err out if filter of desired is empty
 			if a.desired.Spec.Filter != "" {
+				report.AddField("filter", a.actual.Filter, a.desired.Spec.Filter)
 				update.Filter = a.desired.Spec.Filter
 			} else {
 				// filter is a REQUIRED field
@@ -269,23 +276,30 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 
 		desired := convertKCCtoAPI(&a.desired.Spec)
 		if !compareMetricDescriptors(desired.MetricDescriptor, a.actual.MetricDescriptor) {
+			report.AddField("metric_descriptor", a.actual.MetricDescriptor, desired.MetricDescriptor)
 			update.MetricDescriptor = desired.MetricDescriptor
 		}
 
 		if !reflect.DeepEqual(a.desired.Spec.LabelExtractors, a.actual.LabelExtractors) {
+			report.AddField("label_extractors", a.actual.LabelExtractors, a.desired.Spec.LabelExtractors)
 			update.LabelExtractors = a.desired.Spec.LabelExtractors
 		}
 
 		if !compareBucketOptions(a.desired.Spec.BucketOptions, a.actual.BucketOptions) {
+			report.AddField("bucket_options", a.actual.BucketOptions, a.desired.Spec.BucketOptions)
 			update.BucketOptions = convertKCCtoAPIForBucketOptions(a.desired.Spec.BucketOptions)
 		}
 
 		if direct.ValueOf(a.desired.Spec.ValueExtractor) != a.actual.ValueExtractor {
+			report.AddField("value_extractor", a.actual.ValueExtractor, direct.ValueOf(a.desired.Spec.ValueExtractor))
 			update.ValueExtractor = direct.ValueOf(a.desired.Spec.ValueExtractor)
 		}
 		if a.desired.Spec.LoggingLogBucketRef != nil && a.desired.Spec.LoggingLogBucketRef.External != a.actual.BucketName {
+			report.AddField("bucket_name", a.actual.BucketName, a.desired.Spec.LoggingLogBucketRef.External)
 			update.BucketName = a.desired.Spec.LoggingLogBucketRef.External
 		}
+
+		structuredreporting.ReportDiff(ctx, report)
 
 		diffs, err := ListFieldDiffs(a.actual, update)
 		if err != nil {

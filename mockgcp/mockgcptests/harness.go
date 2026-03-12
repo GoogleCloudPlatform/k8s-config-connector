@@ -85,6 +85,10 @@ func NewHarness(t *testing.T) *Harness {
 	return h
 }
 
+func (t *Harness) FolderID() string {
+	return testgcp.TestFolderID.Get()
+}
+
 // cleanup is called when the test cleans up
 func (t *Harness) cleanup() {
 
@@ -172,7 +176,6 @@ func (t *Harness) Init() {
 		testgcp.TestDependentNoNetworkProjectID.Set("mock-project")
 		testgcp.TestDependentOrgProjectID.Set("example-project-01")
 		testgcp.TestDependentFolderProjectID.Set("example-project-02")
-		testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
 		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
 		testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
 
@@ -204,8 +207,9 @@ func (t *Harness) Init() {
 			t.Fatalf("error reading created project: %v", err)
 		}
 		project := GCPProject{
-			ProjectID:     found.ProjectId,
-			ProjectNumber: found.ProjectNumber,
+			ProjectID:      found.ProjectId,
+			ProjectNumber:  found.ProjectNumber,
+			OrganizationID: testgcp.TestOrgID.Get(),
 		}
 		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
 		testgcp.TestKCCAttachedClusterPlatformVersion.Set("1.30.0-gke.1")
@@ -220,7 +224,6 @@ func (t *Harness) Init() {
 		// 	}
 		// 	testgcp.TestDependentOrgProjectID.Set("example-project-01")
 		// 	testgcp.TestDependentFolderProjectID.Set("example-project-02")
-		// 	testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
 		// 	testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
 		// 	testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
 		// 	testgcp.TestOrgID.Set("123450001")

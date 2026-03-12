@@ -20,6 +20,8 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
+./generate-proto.sh
+
 if [[ -z "${PROTO:-}" ]]; then
   echo "PROTO must be set. e.g. google.bigtable.admin.v2.Table"
   exit 1

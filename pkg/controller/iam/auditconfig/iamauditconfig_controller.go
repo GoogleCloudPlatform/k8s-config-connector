@@ -62,7 +62,7 @@ import (
 
 const controllerName = "iamauditconfig-controller"
 
-var logger = log.Log.WithName(controllerName)
+var logger = log.Log.WithName(controllerName).WithValues("controllerType", "legacy/handrolled")
 
 func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 	if deps.JitterGen == nil {

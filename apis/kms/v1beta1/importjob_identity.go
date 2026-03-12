@@ -19,15 +19,16 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // ImportJobIdentity defines the resource reference to KMSImportJob, which "External" field
 // holds the GCP identifier for the KRM object.
 type ImportJobIdentity struct {
-	parent *ImportJobParent
+	parent *KMSKeyRingIdentity
 	id     string
 }
 
@@ -39,38 +40,21 @@ func (i *ImportJobIdentity) ID() string {
 	return i.id
 }
 
-func (i *ImportJobIdentity) Parent() *ImportJobParent {
+func (i *ImportJobIdentity) Parent() *KMSKeyRingIdentity {
 	return i.parent
-}
-
-type ImportJobParent struct {
-	ProjectID string
-	Location  string
-	KeyRingID string
-}
-
-func (p *ImportJobParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/keyRings/" + p.KeyRingID
 }
 
 // New builds a ImportJobIdentity from the Config Connector ImportJob object.
 func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImportJob) (*ImportJobIdentity, error) {
 
 	// Get Parent
-	kmsKeyRing, err := refsv1beta1.ResolveKMSKeyRingRef(ctx, reader, obj, obj.Spec.KMSKeyRingRef)
+	kmsKeyRingExternal, err := obj.Spec.KMSKeyRingRef.NormalizedExternal(ctx, reader, obj.Namespace)
 	if err != nil {
 		return nil, err
 	}
-	var parent *ImportJobParent
-	tokens := strings.Split(kmsKeyRing.Ref.External, "/")
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "keyRings" {
-		parent = &ImportJobParent{
-			ProjectID: tokens[1],
-			Location:  tokens[3],
-			KeyRingID: tokens[5],
-		}
-	} else {
-		return nil, fmt.Errorf("format of KMSKeyRingRef external=%q was not known (use projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id])", kmsKeyRing.Ref.External)
+	kmsKeyRing, err := ParseKMSKeyRingExternal(kmsKeyRingExternal)
+	if err != nil {
+		return nil, err
 	}
 
 	// Get desired ID
@@ -84,16 +68,14 @@ func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImp
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	var actualParent *ImportJobParent
-	var actualResourceID string
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err = ParseImportJobExternal(externalRef)
+		actualParent, actualResourceID, err := ParseImportJobExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.String() != parent.String() {
-			return nil, fmt.Errorf("spec.kmsKeyRingRef changed, expect %s, got %s", actualParent.String(), kmsKeyRing.Ref.External)
+		if actualParent.String() != kmsKeyRing.String() {
+			return nil, fmt.Errorf("spec.kmsKeyRingRef changed, expect %s, got %s", actualParent.String(), kmsKeyRing.String())
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -101,21 +83,21 @@ func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImp
 		}
 	}
 	return &ImportJobIdentity{
-		parent: parent,
+		parent: kmsKeyRing,
 		id:     resourceID,
 	}, nil
 }
 
-func ParseImportJobExternal(external string) (parent *ImportJobParent, resourceID string, err error) {
+func ParseImportJobExternal(external string) (*KMSKeyRingIdentity, string, error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "keyRings" || tokens[6] != "importJobs" {
 		return nil, "", fmt.Errorf("format of KMSImportJob external=%q was not known (use projects/{{projectID}}/locations/{{location}}/keyRings/{{keyRingID}}/importJobs/{{importJobID}})", external)
 	}
-	parent = &ImportJobParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-		KeyRingID: tokens[5],
+	p := &KMSKeyRingIdentity{
+		Parent: &parent.ProjectAndLocationParent{
+			ProjectID: tokens[1], Location: tokens[3],
+		}, ID: tokens[5],
 	}
-	resourceID = tokens[7]
-	return parent, resourceID, nil
+	resourceID := tokens[7]
+	return p, resourceID, nil
 }

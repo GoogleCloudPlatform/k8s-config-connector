@@ -1,0 +1,56 @@
+apiVersion: batch.cnrm.cloud.google.com/v1alpha1
+kind: BatchJob
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    app.kubernetes.io/component: mock-component
+    app.kubernetes.io/instance: mock-instance
+    app.kubernetes.io/managed-by: configmanagement.gke.io
+    app.kubernetes.io/name: mock-app
+    app.kubernetes.io/part-of: mock-part-of
+    app.kubernetes.io/version: v1.0.0
+    applyset.kubernetes.io/id: mock-applyset-id
+    cnrm-test: "true"
+    configmanagement.gke.io/sync-name: mock-sync-name
+    configmanagement.gke.io/sync-namespace: mock-sync-namespace
+    custom-label: bar
+  name: batchjob-labels
+  namespace: ${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  taskGroups:
+  - parallelism: 1
+    taskCount: 1
+    taskSpec:
+      runnables:
+      - container:
+          commands:
+          - -c
+          - echo Hello world! This is task ${BATCH_TASK_INDEX}. This job has a total
+            of ${BATCH_TASK_COUNT} tasks.
+          entrypoint: /bin/sh
+          imageURI: gcr.io/google-containers/busybox
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/jobs/batchjob-labels
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    name: projects/${projectId}/locations/us-central1/jobs/batchjob-labels
+    status:
+      runDuration: 0s
+      state: QUEUED
+    taskGroups:
+    - name: projects/${projectId}/locations/us-central1/jobs/batchjob-labels/taskGroups/group0
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

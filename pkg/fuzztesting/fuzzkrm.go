@@ -15,7 +15,9 @@
 package fuzztesting
 
 import (
+	"fmt"
 	"math/rand"
+	"os"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -23,6 +25,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/testing/protocmp"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
@@ -60,6 +63,9 @@ type KRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any] struct {
 	UnimplementedFields sets.Set[string]
 	SpecFields          sets.Set[string]
 	StatusFields        sets.Set[string]
+
+	FilterSpec   func(in ProtoT)
+	FilterStatus func(in ProtoT)
 }
 
 // SpecField marks the specified fieldPath as round-tripping to/from the Spec
@@ -78,10 +84,21 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Internal(fi
 	f.UnimplementedFields.Insert(fieldPath)
 }
 
+// Unimplemented_Identity marks the specified fieldPath as not round-tripped,
+// and should be used for fields that are considered identity (URL) rather than being part of the object itself.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Identity(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
 // Unimplemented_LabelsAnnotations marks the specified fieldPath as not round-tripped,
 // and should be used for fields that are either labels or annotations
 func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_LabelsAnnotations(fieldPath string) {
 	f.UnimplementedFields.Insert(fieldPath)
+}
+
+// Unimplemented_Etag marks the 'etag' field as not round-tripped.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Etag() {
+	f.UnimplementedFields.Insert(".etag")
 }
 
 // Unimplemented_NotYetTriaged marks the specified fieldPath as not round-tripped,
@@ -122,6 +139,7 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzSpec(t *testing.T, se
 	fuzzer := NewFuzzTest(f.ProtoType, f.SpecFromProto, f.SpecToProto)
 	fuzzer.IgnoreFields = f.StatusFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
+	fuzzer.Filter = f.FilterSpec
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -129,6 +147,7 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzStatus(t *testing.T, 
 	fuzzer := NewFuzzTest(f.ProtoType, f.StatusFromProto, f.StatusToProto)
 	fuzzer.IgnoreFields = f.SpecFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
+	fuzzer.Filter = f.FilterStatus
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -161,6 +180,8 @@ type FuzzTest[ProtoT proto.Message, KRMType any] struct {
 
 	UnimplementedFields sets.Set[string]
 	IgnoreFields        sets.Set[string]
+
+	Filter func(in ProtoT)
 }
 
 func NewFuzzTest[ProtoT proto.Message, KRMType any](protoType ProtoT, fromProto func(ctx *direct.MapContext, in ProtoT) *KRMType, toProto func(ctx *direct.MapContext, in *KRMType) ProtoT) *FuzzTest[ProtoT, KRMType] {
@@ -189,14 +210,20 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	}
 	fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 
+	if f.Filter != nil {
+		f.Filter(p1)
+	}
+
 	ctx := &direct.MapContext{}
 	krm := f.FromProto(ctx, p1)
 	if ctx.Err() != nil {
+		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
 	}
 
 	p2 := f.ToProto(ctx, krm)
 	if ctx.Err() != nil {
+		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 	}
 
@@ -204,5 +231,62 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Logf("p2 = %v", prototext.Format(p2))
 		t.Errorf("roundtrip failed for KRM %T; diff:\n%s", krm, diff)
+		diffPaths := diffFieldPaths(p1, p2)
+		for _, diffPath := range diffPaths {
+			hint := fmt.Sprintf("Add `f.Unimplemented_NotYetTriaged(%q)` to the fuzzer for the proto type %v to mark this field as not yet triaged.", diffPath, f.ProtoType.ProtoReflect().Descriptor().FullName())
+			fmt.Fprintf(os.Stderr, "<hint_for_agent>%s</hint_for_agent>", hint)
+			break
+		}
 	}
+}
+
+// diffFieldPaths returns the field paths that differ between two proto messages.
+func diffFieldPaths(m1, m2 proto.Message) []string {
+	paths1 := sets.New[string]()
+	VisitValues(m1, func(path string, fd protoreflect.FieldDescriptor, v protoreflect.Value) protoreflect.Value {
+		paths1.Insert(path)
+		return v
+	})
+	paths2 := sets.New[string]()
+	VisitValues(m2, func(path string, fd protoreflect.FieldDescriptor, v protoreflect.Value) protoreflect.Value {
+		paths2.Insert(path)
+		return v
+	})
+	return paths1.Difference(paths2).UnsortedList()
+}
+
+// VisitValues is a helper function that visits all values in a proto message,
+// calling the provided function for each value.
+// It is useful for applying filters.
+func VisitValues(m proto.Message, fn func(path string, fd protoreflect.FieldDescriptor, v protoreflect.Value) protoreflect.Value) {
+	visitValues("", m.ProtoReflect(), fn)
+}
+
+func visitValues(parentPath string, m protoreflect.Message, fn func(path string, fd protoreflect.FieldDescriptor, v protoreflect.Value) protoreflect.Value) {
+	m.Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+		path := parentPath + "." + string(fd.Name())
+		v2 := fn(path, fd, v)
+		m.Set(fd, v2)
+
+		switch fd.Kind() {
+		case protoreflect.MessageKind, protoreflect.GroupKind:
+			if fd.IsList() {
+				list := v.List()
+				for i := 0; i < list.Len(); i++ {
+					visitValues(path+"[]", list.Get(i).Message(), fn)
+				}
+			} else if fd.IsMap() {
+				mapField := v.Map()
+				if fd.MapValue().Kind() == protoreflect.MessageKind {
+					mapField.Range(func(mapKey protoreflect.MapKey, mapValue protoreflect.Value) bool {
+						visitValues(path+"[key="+mapKey.String()+"]", mapValue.Message(), fn)
+						return true
+					})
+				}
+			} else {
+				visitValues(path, v.Message(), fn)
+			}
+		}
+		return true
+	})
 }

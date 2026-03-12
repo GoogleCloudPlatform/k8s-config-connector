@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -27,13 +26,13 @@ var StorageAnywhereCacheGVK = GroupVersion.WithKind("StorageAnywhereCache")
 type StorageAnywhereCacheSpec struct {
 	// Immutable. The reference to bucket where cache needs to be created.
 	// +required
-	BucketRef *refs.StorageBucketRef `json:"bucketRef"`
+	BucketRef *StorageBucketRef `json:"bucketRef"`
 
 	// Immutable. The zone in which the cache instance needs to be created. For example, us-central1-a.
 	// +required
 	Zone *string `json:"zone"`
 
-	// The AnywhereCacheID generated via backend, It can be used by users to manage an existing cache.
+	// The AnywhereCacheID generated via backend. It can be used by users to manage an existing cache.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// The desired state of the cache. Possible values include "running", "disabled", and "paused".
@@ -46,12 +45,12 @@ type StorageAnywhereCacheSpec struct {
 	DesiredState *string `json:"desiredState,omitempty"`
 
 	// Cache entry TTL (ranges between 1h to 7d). This is a cache-level config
-	//  that defines how long a cache entry can live. Defaults to "86400s"
+	//  that defines how long a cache entry can live. Defaults to "86400s".
 	//  TTL must be in whole seconds.
 	// +kubebuilder:default="86400s"
 	Ttl *string `json:"ttl,omitempty"`
 
-	// Cache admission policy. Valid values includes:
+	// Cache admission policy. Valid values include:
 	//  `admit-on-first-miss` and `admit-on-second-miss`. Defaults to
 	//  `admit-on-first-miss`.
 	// +kubebuilder:default=admit-on-first-miss
@@ -102,7 +101,9 @@ type StorageAnywhereCacheObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpstorageanywherecache;gcpstorageanywherecaches
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"internal.cloud.google.com/additional-versions=v1alpha1"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

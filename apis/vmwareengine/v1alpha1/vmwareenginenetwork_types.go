@@ -50,12 +50,13 @@ type VMwareEngineNetworkSpec struct {
 	// +required
 	Type *string `json:"type,omitempty"`
 
+	// NOTYET: not supported in Config Connector reconciliation
 	// Checksum that may be sent on update and delete requests to ensure that the
 	//  user-provided value is up to date before the server processes a request.
 	//  The server computes checksums based on the value of other fields in the
 	//  request.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.etag
-	Etag *string `json:"etag,omitempty"`
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Network.etag
+	// Etag *string `json:"etag,omitempty"`
 }
 
 // VMwareEngineNetworkStatus defines the config connector machine state of VMwareEngineNetwork
@@ -113,7 +114,8 @@ type VMwareEngineNetworkObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvmwareenginenetwork;gcpvmwareenginenetworks
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

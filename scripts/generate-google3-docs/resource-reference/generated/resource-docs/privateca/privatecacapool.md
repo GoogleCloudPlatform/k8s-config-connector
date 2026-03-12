@@ -132,6 +132,7 @@ issuancePolicy:
 location: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 publishingOptions:
@@ -165,7 +166,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. If specified, then only methods allowed in the IssuanceModes may be used to issue Certificates.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If specified, then only methods allowed in the [IssuanceModes][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.IssuanceModes] may be used to issue [Certificates][google.cloud.security.privateca.v1.Certificate].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -175,7 +176,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. When true, allows callers to create Certificates by specifying a CertificateConfig.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. When true, allows callers to create [Certificates][google.cloud.security.privateca.v1.Certificate] by specifying a [CertificateConfig][google.cloud.security.privateca.v1.CertificateConfig].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -185,7 +186,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. When true, allows callers to create Certificates by specifying a CSR.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. When true, allows callers to create [Certificates][google.cloud.security.privateca.v1.Certificate] by specifying a CSR.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -195,7 +196,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Optional. If any AllowedKeyType is specified, then the certificate request's public key must match one of the key types listed here. Otherwise, any key may be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If any [AllowedKeyType][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.AllowedKeyType] is specified, then the certificate request's public key must match one of the key types listed here. Otherwise, any key may be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -225,7 +226,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A signature algorithm that must be used. If this is omitted, any EC-based signature algorithm will be allowed. Possible values: EC_SIGNATURE_ALGORITHM_UNSPECIFIED, ECDSA_P256, ECDSA_P384, EDDSA_25519{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A signature algorithm that must be used. If this is omitted, any EC-based signature algorithm will be allowed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -245,7 +246,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Optional. The maximum allowed RSA modulus size, in bits. If this is not set, or if set to zero, the service will not enforce an explicit upper bound on RSA modulus sizes.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The maximum allowed RSA modulus size (inclusive), in bits. If this is not set, or if set to zero, the service will not enforce an explicit upper bound on RSA modulus sizes.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -255,7 +256,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Optional. The minimum allowed RSA modulus size, in bits. If this is not set, or if set to zero, the service-level min RSA modulus size will continue to apply.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The minimum allowed RSA modulus size (inclusive), in bits. If this is not set, or if set to zero, the service-level min RSA modulus size will continue to apply.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -265,7 +266,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. A set of X.509 values that will be applied to all certificates issued through this CaPool. If a certificate request includes conflicting values for the same properties, they will be overwritten by the values defined here. If a certificate request uses a CertificateTemplate that defines conflicting predefined_values for the same properties, the certificate issuance request will fail.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A set of X.509 values that will be applied to all certificates issued through this [CaPool][google.cloud.security.privateca.v1.CaPool]. If a certificate request includes conflicting values for the same properties, they will be overwritten by the values defined here. If a certificate request uses a [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate] that defines conflicting [predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values] for the same properties, the certificate issuance request will fail.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -285,7 +286,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}X509Extension{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -301,7 +302,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.additionalExtensions[].objectId</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -311,7 +312,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.additionalExtensions[].objectId.objectIdPath</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
@@ -321,7 +322,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.additionalExtensions[].objectId.objectIdPath[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -331,7 +332,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.additionalExtensions[].value</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -365,7 +366,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. Describes options in this X509Parameters that are relevant in a CA certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes options in this [X509Parameters][google.cloud.security.privateca.v1.X509Parameters] that are relevant in a CA certificate. If not specified, a default basic constraints extension with `is_ca=false` will be added for leaf certificates.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -375,7 +376,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Refers to the "CA" boolean field in the X.509 extension. When this value is missing, the basic constraints extension will be omitted from the certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -385,7 +386,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Optional. Refers to the path length restriction X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the CA certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Refers to the path length constraint field in the X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -585,7 +586,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message.{% endverbatim %}</p>
+            <p>{% verbatim %}Used to describe extended key usages that are not listed in the [KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1.KeyUsage.ExtendedKeyUsageOptions] message.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -601,7 +602,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.keyUsage.unknownExtendedKeyUsages[].objectIdPath</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
@@ -611,7 +612,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.keyUsage.unknownExtendedKeyUsages[].objectIdPath[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -641,7 +642,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.policyIds[].objectIdPath</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
@@ -651,7 +652,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.baselineValues.policyIds[].objectIdPath[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -665,27 +666,27 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. Describes constraints on identities that may appear in Certificates issued through this CaPool. If this is omitted, then this CaPool will not add restrictions on a certificate's identity.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes constraints on identities that may appear in [Certificates][google.cloud.security.privateca.v1.Certificate] issued through this [CaPool][google.cloud.security.privateca.v1.CaPool]. If this is omitted, then this [CaPool][google.cloud.security.privateca.v1.CaPool] will not add restrictions on a certificate's identity.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>issuancePolicy.identityConstraints.allowSubjectAltNamesPassthrough</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Required. If this is true, the SubjectAltNames extension may be copied from a certificate request into the signed certificate. Otherwise, the requested SubjectAltNames will be discarded.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. If this is true, the [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] extension may be copied from a certificate request into the signed certificate. Otherwise, the requested [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] will be discarded.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>issuancePolicy.identityConstraints.allowSubjectPassthrough</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Required. If this is true, the Subject field may be copied from a certificate request into the signed certificate. Otherwise, the requested Subject will be discarded.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. If this is true, the [Subject][google.cloud.security.privateca.v1.Subject] field may be copied from a certificate request into the signed certificate. Otherwise, the requested [Subject][google.cloud.security.privateca.v1.Subject] will be discarded.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -745,7 +746,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The maximum lifetime allowed for issued Certificates. Note that if the issuing CertificateAuthority expires before a Certificate's requested maximum_lifetime, the effective lifetime will be explicitly truncated to match it.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The maximum lifetime allowed for issued [Certificates][google.cloud.security.privateca.v1.Certificate]. Note that if the issuing [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] expires before a [Certificate][google.cloud.security.privateca.v1.Certificate] resource's requested maximum_lifetime, the effective lifetime will be explicitly truncated to match it.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -755,7 +756,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. Describes the set of X.509 extensions that may appear in a Certificate issued through this CaPool. If a certificate request sets extensions that don't appear in the passthrough_extensions, those extensions will be dropped. If a certificate request uses a CertificateTemplate with predefined_values that don't appear here, the certificate issuance request will fail. If this is omitted, then this CaPool will not add restrictions on a certificate's X.509 extensions. These constraints do not apply to X.509 extensions set in this CaPool's baseline_values.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes the set of X.509 extensions that may appear in a [Certificate][google.cloud.security.privateca.v1.Certificate] issued through this [CaPool][google.cloud.security.privateca.v1.CaPool]. If a certificate request sets extensions that don't appear in the [passthrough_extensions][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.passthrough_extensions], those extensions will be dropped. If a certificate request uses a [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate] with [predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values] that don't appear here, the certificate issuance request will fail. If this is omitted, then this [CaPool][google.cloud.security.privateca.v1.CaPool] will not add restrictions on a certificate's X.509 extensions. These constraints do not apply to X.509 extensions set in this [CaPool][google.cloud.security.privateca.v1.CaPool]'s [baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -765,7 +766,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Optional. A set of ObjectIds identifying custom X.509 extensions. Will be combined with known_extensions to determine the full set of X.509 extensions.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A set of [ObjectIds][google.cloud.security.privateca.v1.ObjectId] identifying custom X.509 extensions. Will be combined with [known_extensions][google.cloud.security.privateca.v1.CertificateExtensionConstraints.known_extensions] to determine the full set of X.509 extensions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -781,7 +782,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.passthroughExtensions.additionalExtensions[].objectIdPath</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (integer)</code></p>
@@ -791,7 +792,7 @@ tier: string
     <tr>
         <td>
             <p><code>issuancePolicy.passthroughExtensions.additionalExtensions[].objectIdPath[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -805,7 +806,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. A set of named X.509 extensions. Will be combined with additional_extensions to determine the full set of X.509 extensions.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A set of named X.509 extensions. Will be combined with [additional_extensions][google.cloud.security.privateca.v1.CertificateExtensionConstraints.additional_extensions] to determine the full set of X.509 extensions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -825,7 +826,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The location for the resource{% endverbatim %}</p>
+            <p>{% verbatim %}The location of this resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -835,7 +836,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The Project that this resource belongs to.{% endverbatim %}</p>
+            <p>{% verbatim %}The project that this resource belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -845,9 +846,17 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -857,7 +866,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -867,7 +876,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -887,7 +896,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. When true, publishes each CertificateAuthority's CA certificate and includes its URL in the "Authority Information Access" X.509 extension in all issued Certificates. If this is false, the CA certificate will not be published and the corresponding X.509 extension will not be written in issued certificates.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. When true, publishes each [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s CA certificate and includes its URL in the "Authority Information Access" X.509 extension in all issued [Certificates][google.cloud.security.privateca.v1.Certificate]. If this is false, the CA certificate will not be published and the corresponding X.509 extension will not be written in issued certificates.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -897,7 +906,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. When true, publishes each CertificateAuthority's CRL and includes its URL in the "CRL Distribution Points" X.509 extension in all issued Certificates. If this is false, CRLs will not be published and the corresponding X.509 extension will not be written in issued certificates. CRLs will expire 7 days from their creation. However, we will rebuild daily. CRLs are also rebuilt shortly after a certificate is revoked.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. When true, publishes each [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s CRL and includes its URL in the "CRL Distribution Points" X.509 extension in all issued [Certificates][google.cloud.security.privateca.v1.Certificate]. If this is false, CRLs will not be published and the corresponding X.509 extension will not be written in issued certificates. CRLs will expire 7 days from their creation. However, we will rebuild daily. CRLs are also rebuilt shortly after a certificate is revoked.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -907,24 +916,22 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The PrivateCACAPool name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>tier</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Required. Immutable. The Tier of this CaPool. Possible values: TIER_UNSPECIFIED, ENTERPRISE, DEVOPS{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Immutable. The Tier of this CaPool. Possible values: TIER_UNSPECIFIED, ENTERPRISE, DEVOPS{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
 </table>
 
-
-<p>* Field is required when parent field is specified</p>
 
 
 ### Status
@@ -950,7 +957,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

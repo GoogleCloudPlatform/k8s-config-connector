@@ -20,7 +20,6 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/operator
 
-source ./scripts/fetch_ext_bins.sh && \
-	fetch_tools && \
-	setup_envs
+. ${REPO_ROOT}/dev/tasks/setup-envtest
+
 make test

@@ -37,9 +37,16 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".status.stateStartTime", "2024-04-01T12:34:56.123456Z")
 
 	// metrics are volatile and more "data plane"
-	replacements.RemovePath(".metrics")
-	replacements.RemovePath(".response.metrics")
-	replacements.RemovePath(".clusters[].metrics")
+	for _, metric := range []string{
+		"dfs-capacity-present",
+		"dfs-capacity-remaining",
+		"dfs-capacity-total",
+		"dfs-capacity-used"} {
+
+		replacements.ReplacePath(".metrics.hdfsMetrics."+metric, 12345)
+		replacements.ReplacePath(".response.metrics.hdfsMetrics."+metric, 12345)
+		replacements.ReplacePath(".clusters[].metrics.hdfsMetrics."+metric, 12345)
+	}
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

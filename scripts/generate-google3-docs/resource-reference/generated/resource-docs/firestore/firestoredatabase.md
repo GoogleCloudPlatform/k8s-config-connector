@@ -62,6 +62,7 @@
 #### Schema
 ```yaml
 concurrencyMode: string
+deleteProtectionState: string
 locationID: string
 pointInTimeRecoveryEnablement: string
 projectRef:
@@ -87,6 +88,16 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The concurrency control mode to use for this database. See https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases#concurrencymode for more info.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>deleteProtectionState</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}State of delete protection for the database.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

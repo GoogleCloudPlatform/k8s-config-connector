@@ -17,12 +17,15 @@ limitations under the License.
 package writer
 
 import (
+	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
+	"fmt"
 	"time"
 
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook/cert/generator"
@@ -108,27 +111,35 @@ type certReadWriter interface {
 // additional verifications to ensure compatibility with Kubernetes
 // and it's default HTTP client.
 func validCert(certs *generator.Artifacts, dnsName string) bool {
+	ctx := context.TODO()
+	log := klog.FromContext(ctx)
+
 	if certs == nil {
+		log.Error(fmt.Errorf("certs is nil"), "certs is nil")
 		return false
 	}
 
 	// Verify key and cert are valid pair
 	_, err := tls.X509KeyPair(certs.Cert, certs.Key)
 	if err != nil {
+		log.Error(err, "failed to parse key pair")
 		return false
 	}
 
 	// Verify cert is good for desired DNS name and signed by CA and will be valid for desired period of time.
 	pool := x509.NewCertPool()
 	if !pool.AppendCertsFromPEM(certs.CACert) {
+		log.Error(fmt.Errorf("failed to append caCert"), "failed to append caCert to pool")
 		return false
 	}
 	block, _ := pem.Decode([]byte(certs.Cert))
 	if block == nil {
+		log.Error(fmt.Errorf("failed to decode cert"), "failed to decode cert")
 		return false
 	}
 	cert, err := x509.ParseCertificate(block.Bytes)
 	if err != nil {
+		log.Error(err, "failed to parse cert")
 		return false
 	}
 	ops := x509.VerifyOptions{
@@ -138,9 +149,15 @@ func validCert(certs *generator.Artifacts, dnsName string) bool {
 	}
 	_, err = cert.Verify(ops)
 	if err != nil {
+		log.Error(err, "failed to verify cert")
 		return false
 	}
-	return DoesCertificateWorkWithK8sAPIClient(cert)
+	if !DoesCertificateWorkWithK8sAPIClient(cert) {
+		log.Error(fmt.Errorf("certificate is not compatible with Kubernetes HTTP clients"), "certificate is not compatible with Kubernetes HTTP clients")
+		return false
+	}
+
+	return true
 }
 
 // DoesCertificateWorkWithK8sAPIClient returns false if the certificate

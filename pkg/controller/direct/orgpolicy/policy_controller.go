@@ -29,12 +29,12 @@ import (
 
 	orgpolicypb "cloud.google.com/go/orgpolicy/apiv2/orgpolicypb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -64,7 +64,9 @@ func (m *modelPolicy) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *modelPolicy) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelPolicy) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.OrgPolicyPolicy{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -167,6 +169,19 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		return mapCtx.Err()
 	}
 
+	if proto.Equal(a.actual.GetSpec(), desiredPb.GetSpec()) && proto.Equal(a.actual.GetDryRunSpec(), desiredPb.GetDryRunSpec()) {
+		log.V(2).Info("Policy is already up to date", "name", a.id)
+		// The resource is already up to date, but we still need to update the status
+		// to reflect the actual state from the backend.
+		status := &krm.OrgPolicyPolicyStatus{}
+		status.ObservedState = OrgPolicyPolicyObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		status.ExternalRef = direct.LazyPtr(a.id.String())
+		return updateOp.UpdateStatus(ctx, status, nil)
+	}
+
 	req := &orgpolicypb.UpdatePolicyRequest{
 		Policy: desiredPb,
 	}
@@ -187,6 +202,7 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 

@@ -24,17 +24,17 @@ import (
 )
 
 type artifactRegistryName struct {
-	Project              *projects.ProjectData
-	Location             string
-	ArtifactRegistryName string
+	Project    *projects.ProjectData
+	Location   string
+	Repository string
 }
 
 func (n *artifactRegistryName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/repositories/" + n.ArtifactRegistryName
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/repositories/" + n.Repository
 }
 
-// parseCAPoolName parses a string into a caPoolName.
-// The expected form is projects/<projectID>/locations/<region>/repositories/<ArtifactRegistryName>
+// parseArtifactRegistryName parses a string into a artifactRegistryName.
+// The expected form is projects/<projectID>/locations/<region>/repositories/<repositoryName>
 func (s *MockService) parseArtifactRegistryName(name string) (*artifactRegistryName, error) {
 	tokens := strings.Split(name, "/")
 
@@ -45,9 +45,9 @@ func (s *MockService) parseArtifactRegistryName(name string) (*artifactRegistryN
 		}
 
 		name := &artifactRegistryName{
-			Project:              project,
-			Location:             tokens[3],
-			ArtifactRegistryName: tokens[5],
+			Project:    project,
+			Location:   tokens[3],
+			Repository: tokens[5],
 		}
 
 		return name, nil

@@ -21,7 +21,6 @@ import (
 
 	gcp "cloud.google.com/go/storage/control/apiv2"
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -37,7 +36,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -79,7 +77,9 @@ func (m *modelAnywhereCache) client(ctx context.Context) (*gcp.StorageControlCli
 	return gcpClient, err
 }
 
-func (m *modelAnywhereCache) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelAnywhereCache) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.StorageAnywhereCache{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -369,7 +369,7 @@ func (a *AnywhereCacheAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.BucketRef = &refs.StorageBucketRef{External: a.id.Parent().String()}
+	obj.Spec.BucketRef = &krm.StorageBucketRef{External: a.id.Parent().String()}
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

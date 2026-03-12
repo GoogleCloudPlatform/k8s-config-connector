@@ -76,7 +76,7 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 	return out
 }
 
-func KMSAutokeyConfig_FromFields(mapCtx *direct.MapContext, id *krm.KMSAutokeyConfigIdentity, keyProject *refs.Project) *pb.AutokeyConfig {
+func KMSAutokeyConfig_FromFields(mapCtx *direct.MapContext, id *krm.KMSAutokeyConfigIdentity, keyProject *refs.ProjectIdentity) *pb.AutokeyConfig {
 	out := &pb.AutokeyConfig{}
 	out.Name = id.String()
 	if keyProject != nil {

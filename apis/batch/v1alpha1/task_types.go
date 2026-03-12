@@ -15,11 +15,22 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var BatchTaskGVK = GroupVersion.WithKind("BatchTask")
+
+type Parent struct {
+	// Immutable. The location where the alloydb cluster should reside.
+	// +required
+	Location *string `json:"location,omitempty"`
+
+	// The project that this resource belongs to.
+	// +required
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
 
 // BatchTaskSpec defines the desired state of BatchTask
 // +kcc:spec:proto=google.cloud.batch.v1.Task
@@ -63,7 +74,8 @@ type BatchTaskObservedState struct {
 // TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpbatchtask;gcpbatchtasks
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

@@ -25,8 +25,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/spanner/admin/instance/apiv1"
 
@@ -36,7 +36,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -44,26 +43,7 @@ const (
 )
 
 func init() {
-	rg := &InstanceReconcileGate{}
-	registry.RegisterModelWithReconcileGate(krm.SpannerInstanceGVK, NewSpannerInstanceModel, rg)
-}
-
-type InstanceReconcileGate struct {
-	optIn kccpredicate.OptInToDirectReconciliation
-}
-
-var _ kccpredicate.ReconcileGate = &InstanceReconcileGate{}
-
-func (r *InstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
-	if r.optIn.ShouldReconcile(o) {
-		return true
-	}
-	obj := &krm.SpannerInstance{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
-		return false
-	}
-	// If the fields supported by on the direct controller exist, use direct controller.
-	return obj.Spec.DefaultBackupScheduleType != nil || obj.Spec.Labels != nil || obj.Spec.Edition != nil || obj.Spec.AutoscalingConfig != nil
+	registry.RegisterModel(krm.SpannerInstanceGVK, NewSpannerInstanceModel)
 }
 
 func NewSpannerInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -76,7 +56,9 @@ type modelSpannerInstance struct {
 	config *config.ControllerConfig
 }
 
-func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.SpannerInstance{}
 	copied := u.DeepCopy()
 	if err := label.ComputeLabels(copied); err != nil {
@@ -130,7 +112,7 @@ type SpannerInstanceAdapter struct {
 var _ directbase.Adapter = &SpannerInstanceAdapter{}
 
 func (a *SpannerInstanceAdapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting SpannerInstance", "name", a.id)
 
 	req := &spannerpb.GetInstanceRequest{Name: a.id.String()}
@@ -147,7 +129,7 @@ func (a *SpannerInstanceAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -172,7 +154,7 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 	req := &spannerpb.CreateInstanceRequest{
 		InstanceId: a.id.ID(),
 		Instance:   resource,
-		Parent:     a.id.Parent().String(),
+		Parent:     a.id.Parent(),
 	}
 	op, err := a.gcpClient.CreateInstance(ctx, req)
 	if err != nil {
@@ -195,7 +177,7 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 }
 
 func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
 	if err := a.SpecValidation(); err != nil {
@@ -210,26 +192,33 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, desired.Spec.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	// If node count is unset, the field become unmanaged.
 	// If autoscaling is set, this field become output-only.
 	if a.desired.Spec.AutoscalingConfig == nil && a.desired.Spec.NumNodes != nil && !reflect.DeepEqual(resource.NodeCount, a.actual.NodeCount) {
+		report.AddField("node_count", a.actual.NodeCount, desired.Spec.NumNodes)
 		updateMask.Paths = append(updateMask.Paths, "node_count")
 	}
 	// If processing unit is unset, the field become unmanaged.
 	// If autoscaling is set, this field become output-only.
 	if a.desired.Spec.AutoscalingConfig == nil && a.desired.Spec.ProcessingUnits != nil && !reflect.DeepEqual(resource.ProcessingUnits, a.actual.ProcessingUnits) {
+		report.AddField("processing_units", a.actual.ProcessingUnits, desired.Spec.ProcessingUnits)
 		updateMask.Paths = append(updateMask.Paths, "processing_units")
 	}
 	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, desired.Spec.Labels)
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
-	if !reflect.DeepEqual(resource.DefaultBackupScheduleType, a.actual.DefaultBackupScheduleType) {
+	// if defaultBackupScheduleType is not set in spec, the field become unmanaged.
+	if a.desired.Spec.DefaultBackupScheduleType != nil && !reflect.DeepEqual(resource.DefaultBackupScheduleType, a.actual.DefaultBackupScheduleType) {
+		report.AddField("default_backup_schedule_type", a.actual.DefaultBackupScheduleType, desired.Spec.DefaultBackupScheduleType)
 		updateMask.Paths = append(updateMask.Paths, "default_backup_schedule_type")
 	}
 
@@ -238,12 +227,14 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 		return err
 	}
 	if len(autoscaling_path) > 0 {
+		report.AddField("autoscaling_config", a.actual.AutoscalingConfig, desired.Spec.AutoscalingConfig)
 		updateMask.Paths = append(updateMask.Paths, "autoscaling_config")
 	}
 
 	var editionDowngrade = false
 	// If edition field is specified, the field become unmanaged.
 	if desired.Spec.Edition != nil && !reflect.DeepEqual(resource.Edition, a.actual.Edition) {
+		report.AddField("edition", a.actual.Edition, desired.Spec.Edition)
 		// Upgrading Edition to higher tier can be done along with other fields.
 		if resource.Edition > a.actual.Edition {
 			updateMask.Paths = append(updateMask.Paths, "edition")
@@ -256,6 +247,8 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	var updated *spannerpb.Instance
 	if len(updateMask.Paths) > 0 {
@@ -327,7 +320,7 @@ func (a *SpannerInstanceAdapter) Export(ctx context.Context) (*unstructured.Unst
 
 // Delete implements the Adapter interface.
 func (a *SpannerInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Instance", "name", a.id)
 
 	req := &spannerpb.DeleteInstanceRequest{Name: a.id.String()}

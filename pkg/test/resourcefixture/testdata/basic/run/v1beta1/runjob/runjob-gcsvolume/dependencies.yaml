@@ -1,0 +1,19 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: storagebucket-1-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/force-destroy: "true"
+spec:
+  location: us-central1
+  uniformBucketLevelAccess: true
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: storagebucket-2-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/force-destroy: "true"
+spec:
+  location: us-central1
+  uniformBucketLevelAccess: true

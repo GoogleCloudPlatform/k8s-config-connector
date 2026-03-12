@@ -17,6 +17,7 @@ package structuredreporting
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
@@ -53,7 +54,7 @@ type Listener interface {
 	// OnDiff is called when a controller calls ReportDiffs
 	OnDiff(ctx context.Context, diffs *Diff)
 	// OnReconcileStart is called when a controller calls ReportReconcileStart
-	OnReconcileStart(ctx context.Context, u *unstructured.Unstructured)
+	OnReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType)
 	// OnReconcileEnd is called when a controller calls ReportReconcileEnd
-	OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error)
+	OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType)
 }

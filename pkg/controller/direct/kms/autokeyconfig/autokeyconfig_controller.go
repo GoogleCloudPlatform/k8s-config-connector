@@ -35,7 +35,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -69,7 +68,9 @@ func (m *model) client(ctx context.Context) (*gcp.AutokeyAdminClient, error) {
 	return gcpClient, err
 }
 
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.KMSAutokeyConfig{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -79,7 +80,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err != nil {
 		return nil, fmt.Errorf("unable to resolve folder for autokeyConfig name: %s, err: %w", obj.GetName(), err)
 	}
-	var keyProject *refs.Project
+	var keyProject *refs.ProjectIdentity
 	if obj.Spec.KeyProjectRef != nil {
 		var err error
 		keyProject, err = refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.KeyProjectRef)
@@ -106,7 +107,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 
 type Adapter struct {
 	id                *krm.KMSAutokeyConfigIdentity
-	desiredKeyProject *refs.Project
+	desiredKeyProject *refs.ProjectIdentity
 	gcpClient         *gcp.AutokeyAdminClient
 	desired           *krm.KMSAutokeyConfig
 	actual            *kmspb.AutokeyConfig
@@ -117,7 +118,7 @@ var _ directbase.Adapter = &Adapter{}
 // Find return true if AutokeyConfig exist and user has permission to read it.
 // Else it will return false and error.
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting KMSAutokeyConfig", "name", a.id)
 
 	req := &kmspb.GetAutokeyConfigRequest{Name: a.id.String()}
@@ -131,14 +132,14 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("Create operation not supported for AutokeyConfig resource.")
 	return fmt.Errorf("Create operation not supported for AutokeyConfig resource")
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating AutokeyConfig", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -163,7 +164,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 }
 
 func (a *Adapter) updateAutokeyConfig(ctx context.Context, resource *kmspb.AutokeyConfig) (*kmspb.AutokeyConfig, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	// To populate a.actual calling a.Find()
 	isExist, err := a.Find(ctx)
 	if !isExist {
@@ -221,7 +222,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // To make this KCC operation effective, as part of KCC AutokeyConfig deletion we will update the AutokeyConfig resource in GCP with empty key_project which will prevent further use of AutokeyConfig.
 // Because of the above decision we will update the observedstate for AutokeyConfig with state = UNINITIALIZED
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting AutokeyConfig", "name", a.id)
 	_, err := a.Find(ctx)
 	if err != nil {

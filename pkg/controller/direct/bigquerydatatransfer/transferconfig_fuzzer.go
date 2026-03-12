@@ -24,10 +24,10 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(bigQueryDataTransferConfigFuzzer())
+	fuzztesting.RegisterKRMFuzzer(dataTransferConfigFuzzer())
 }
 
-func bigQueryDataTransferConfigFuzzer() fuzztesting.KRMFuzzer {
+func dataTransferConfigFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.TransferConfig{},
 		BigQueryDataTransferConfigSpec_FromProto, BigQueryDataTransferConfigSpec_ToProto,
 		BigQueryDataTransferConfigObservedState_FromProto, BigQueryDataTransferConfigObservedState_ToProto,

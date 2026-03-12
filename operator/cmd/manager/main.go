@@ -30,7 +30,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
 
 	flag "github.com/spf13/pflag"
-	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"

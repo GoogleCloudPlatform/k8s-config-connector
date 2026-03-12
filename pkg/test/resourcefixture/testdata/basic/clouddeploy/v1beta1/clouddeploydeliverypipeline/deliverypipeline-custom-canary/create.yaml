@@ -1,0 +1,27 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1beta1
+kind: CloudDeployDeliveryPipeline
+metadata:
+  name: clouddeploydeliverypipeline-full-3-${uniqueId}
+  annotations:
+    key1: "value1"
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west1
+  serialPipeline:
+    stages:
+      - targetID: "my-fake-target-3"
+        strategy:
+          canary:
+            canaryDeployment:
+              predeploy:
+                actions: ["predeploy-action-1"]
+              postdeploy:
+                actions: ["postdeploy-action-1"]
+            runtimeConfig:
+              kubernetes:
+                serviceNetworking:
+                  deployment: "my-deployment"
+                  service: "my-service"
+                  disablePodOverprovisioning: false
+                  podSelectorLabel: "app=my-app"

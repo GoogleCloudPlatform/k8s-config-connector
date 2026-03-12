@@ -21,7 +21,6 @@ package storagecontrol
 
 import (
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -63,7 +62,7 @@ func StorageAnywhereCacheSpec_FromProto(mapCtx *direct.MapContext, in *pb.Anywhe
 			return nil
 		}
 
-		out.BucketRef = &refs.StorageBucketRef{External: parent.String()}
+		out.BucketRef = &krm.StorageBucketRef{External: parent.String()}
 		out.ResourceID = &resourceID
 	}
 	out.Zone = direct.LazyPtr(in.GetZone())

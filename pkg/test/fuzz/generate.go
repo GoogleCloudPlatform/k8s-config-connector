@@ -67,8 +67,8 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 		field := fields.Get(i)
 
 		if field.IsList() {
-			count := randStream.Intn(10)
-			// Bias heavily to zero
+			count := randStream.Intn(20)
+			// Bias heavily to zero; we don't want to create infinitely large messages
 			if count > 4 {
 				count = 0
 			}

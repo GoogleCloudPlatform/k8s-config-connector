@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	bigquery "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
 
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -31,14 +31,14 @@ type SelectedResource struct {
 	// Format:
 	//  `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
 	//  Example:"projects/test_project/datasets/test_dataset/tables/test_table"
-	TableRef *refv1beta1.BigQueryTableRef `json:"tableRef,omitempty"`
+	TableRef *bigqueryv1beta1.BigQueryTableRef `json:"tableRef,omitempty"`
 }
 
 type BigQueryDatasetSource struct {
 	// +required
 	// Resource name of the dataset source for this listing.
 	//  e.g. `projects/myproject/datasets/123`
-	DatasetRef *bigquery.DatasetRef `json:"datasetRef,omitempty"`
+	DatasetRef *bigqueryv1beta1.DatasetRef `json:"datasetRef,omitempty"`
 
 	// Optional. Resources in this dataset that are selectively shared.
 	//  If this field is empty, then the entire dataset (all resources) are
@@ -177,7 +177,8 @@ type BigQueryAnalyticsHubListingObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryanalyticshublisting;gcpbigqueryanalyticshublistings
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

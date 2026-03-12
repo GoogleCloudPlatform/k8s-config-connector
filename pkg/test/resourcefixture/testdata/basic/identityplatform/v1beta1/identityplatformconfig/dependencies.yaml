@@ -15,6 +15,8 @@
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Folder
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: "folder-${uniqueId}"
 spec:
   displayName: Default Tenant Location
@@ -24,10 +26,15 @@ spec:
 apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
 kind: CloudFunctionsFunction
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: cloudfunctionsfunction-1-${uniqueId}
 spec:
   region: "us-west2"
-  runtime: "nodejs10"
+  # This field needs to be updated to a supported 1st gen version per the service team
+  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
+  # Deprecated runtime version will cause googleapis error
+  runtime: "nodejs20"
   availableMemoryMb: 128
   sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
   timeout: "60s"
@@ -42,10 +49,15 @@ spec:
 apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
 kind: CloudFunctionsFunction
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: cloudfunctionsfunction-2-${uniqueId}
 spec:
   region: "us-west2"
-  runtime: "nodejs10"
+  # This field needs to be updated to a supported 1st gen version per the service team
+  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
+  # Deprecated runtime version will cause googleapis error
+  runtime: "nodejs20"
   availableMemoryMb: 128
   sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
   timeout: "60s"

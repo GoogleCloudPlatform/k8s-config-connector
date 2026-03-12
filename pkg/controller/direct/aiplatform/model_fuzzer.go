@@ -58,7 +58,6 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".container_spec")
 	f.SpecFields.Insert(".artifact_uri")
 	f.SpecFields.Insert(".explanation_spec")
-	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".data_stats")
 	f.SpecFields.Insert(".encryption_spec")
@@ -76,6 +75,8 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".deployed_models")
 	f.StatusFields.Insert(".model_source_info")
 	f.StatusFields.Insert(".metadata_artifact")
+
+	f.Unimplemented_Etag()
 
 	return f
 }

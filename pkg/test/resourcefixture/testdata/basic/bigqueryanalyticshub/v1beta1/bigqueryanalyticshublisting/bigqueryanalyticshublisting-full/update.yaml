@@ -35,6 +35,13 @@ spec:
     bigQueryDatasetSource:
       datasetRef:
         name: bigquerydataset${uniqueId}
+      # Selective sharing is only supported for data clean rooms
+      # (via sharingEnvironmentConfig field of BigQueryAnalyticsHubDataExchange,
+      # See https://cloud.google.com/bigquery/docs/data-clean-rooms#create_a_data_clean_room),
+      # which is not currently supported by Config Connector.
+      # selectedResources:
+      #   - tableRef:
+      #      name: bigquerytable${uniqueId}
       restrictedExportPolicy:
         enabled: true
         restrictDirectTableAccess: true

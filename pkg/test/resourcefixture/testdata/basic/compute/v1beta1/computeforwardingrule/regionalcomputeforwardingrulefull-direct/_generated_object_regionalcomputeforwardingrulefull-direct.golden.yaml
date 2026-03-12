@@ -12,13 +12,13 @@ metadata:
   labels:
     cnrm-test: "true"
     label-one: value-two
-  name: computeregionalforwardingrule-${uniqueId}
+  name: ${forwardingRuleID}
   namespace: ${uniqueId}
 spec:
   allPorts: true
   allowGlobalAccess: false
   backendServiceRef:
-    name: computebackendservice-${uniqueId}
+    name: ${backendServiceID}
   description: A regional forwarding rule
   ipAddress:
     ip: 10.128.8.8
@@ -28,11 +28,11 @@ spec:
   loadBalancingScheme: INTERNAL
   location: us-central1
   networkRef:
-    name: customnetwork
+    name: ${networkID}
   networkTier: PREMIUM
   serviceLabel: label
   subnetworkRef:
-    name: customsubnetwork
+    name: ${subnetworkID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -41,7 +41,7 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
-  externalRef: //compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingrules/computeregionalforwardingrule-${uniqueId}
+  externalRef: projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
   labelFingerprint: abcdef0123A=
   observedGeneration: 2
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}

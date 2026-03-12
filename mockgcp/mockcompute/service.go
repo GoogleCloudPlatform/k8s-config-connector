@@ -100,9 +100,12 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterGlobalAddressesServer(grpcServer, &GlobalAddressesV1{MockService: s})
 	pb.RegisterSslCertificatesServer(grpcServer, &GlobalSSLCertificatesV1{MockService: s})
 	pb.RegisterRegionSslCertificatesServer(grpcServer, &RegionalSSLCertificatesV1{MockService: s})
+	pb.RegisterSslPoliciesServer(grpcServer, &GlobalSslPolicyV1{MockService: s})
 	pb.RegisterTargetSslProxiesServer(grpcServer, &TargetSslProxyV1{MockService: s})
 	pb.RegisterTargetTcpProxiesServer(grpcServer, &GlobalTargetTcpProxyV1{MockService: s})
 	pb.RegisterRegionTargetTcpProxiesServer(grpcServer, &RegionalTargetTcpProxyV1{MockService: s})
+
+	pb.RegisterRegionNetworkEndpointGroupsServer(grpcServer, &RegionNetworkEndpointGroupV1{MockService: s})
 
 	pb.RegisterRoutesServer(grpcServer, &RoutesV1{MockService: s})
 
@@ -116,6 +119,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterImagesServer(grpcServer, &ImagesV1{MockService: s})
 
 	pb.RegisterInstancesServer(grpcServer, &InstancesV1{MockService: s})
+	pb.RegisterInstanceTemplatesServer(grpcServer, &InstanceTemplatesV1{MockService: s})
 
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
 
@@ -183,6 +187,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterRegionTargetHttpsProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterSslPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterTargetSslProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
@@ -259,6 +266,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	if err := pb.RegisterRegionNetworkEndpointGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
 	if err := pb.RegisterServiceAttachmentsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
@@ -267,6 +278,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterInstancesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterInstanceTemplatesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterZonesHandler(ctx, mux.ServeMux, conn); err != nil {

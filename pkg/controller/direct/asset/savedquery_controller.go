@@ -37,13 +37,15 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1beta1"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -83,7 +85,9 @@ func (m *savedQueryModel) client(ctx context.Context, projectID string) (*gcp.Cl
 	return gcpClient, err
 }
 
-func (m *savedQueryModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *savedQueryModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.AssetSavedQuery{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -204,7 +208,7 @@ func (a *savedQueryAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -252,6 +256,12 @@ func (a *savedQueryAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range mutablePathsSet {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
+
 	updateMaskPaths := mutablePathsSet.UnsortedList() // Get the slice for the field mask
 	log.V(2).Info("updating asset saved query fields", "paths", updateMaskPaths)
 
@@ -282,6 +292,7 @@ func (a *savedQueryAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 

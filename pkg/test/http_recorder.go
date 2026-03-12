@@ -52,10 +52,48 @@ func (e *LogEntry) VisitRequestStringValues(callback func(path, value string)) {
 
 	obj := make(map[string]any)
 	if err := json.Unmarshal([]byte(body), &obj); err != nil {
-		klog.Fatalf("error from json.Unmarshal(%q): %v", body, err)
+		klog.Errorf("error from json.Unmarshal for %v (%q): %v", e.URL(), body, err)
 		return
 	}
 	visitStringValues(obj, "", callback)
+}
+
+// ParseResponseInto attempts to parse the response into the provided dest value
+func (e *LogEntry) ParseResponseInto(dest any) bool {
+	body := e.Response.Body
+	if body == "" {
+		return false
+	}
+
+	if err := json.Unmarshal([]byte(body), dest); err != nil {
+		klog.Errorf("error from json.Unmarshal for %v into %T (%q): %v", e.URL(), dest, body, err)
+		return false
+	}
+	return true
+}
+
+// GetResponseStringValue gets a string value from the response body
+func (e *LogEntry) GetResponseStringValue(path string) (string, bool) {
+	body := e.Response.Body
+	if body == "" {
+		return "", false
+	}
+
+	obj := make(map[string]any)
+	if err := json.Unmarshal([]byte(body), &obj); err != nil {
+		klog.Errorf("error from json.Unmarshal for %v (%q): %v", e.URL(), body, err)
+		return "", false
+	}
+	var result string
+	var found bool
+	callback := func(p, v string) {
+		if p == path {
+			result = v
+			found = true
+		}
+	}
+	visitStringValues(obj, "", callback)
+	return result, found
 }
 
 // VisitResponseStringValues calls callback for any string values in the response body
@@ -286,7 +324,7 @@ func prettifyJSON(s string, url string, mutators ...JSONMutator) string {
 
 	obj := make(map[string]any)
 	if err := json.Unmarshal([]byte(s), &obj); err != nil {
-		klog.Fatalf("error from json.Unmarshal(%q): %v", s, err)
+		klog.Errorf("error from json.Unmarshal for %v (%q): %v", url, s, err)
 		return s
 	}
 
@@ -346,21 +384,27 @@ func (s *Request) ReplaceQueryParameter(key string, value string) {
 	s.URL = base + "?" + strings.Join(parameters, "&")
 }
 
+// ParseBody parses the body as JSON and returns it as a map
+// If the body is empty or cannot be parsed, nil is returned
 func (r *Response) ParseBody() map[string]any {
 	return parseBody(r.Body)
 }
 
+// ParseBody parses the body as JSON and returns it as a map
+// If the body is empty or cannot be parsed, nil is returned
 func (r *Request) ParseBody() map[string]any {
 	return parseBody(r.Body)
 }
 
-func parseBody(s string) map[string]any {
-	if s == "" {
+// parseBody parses the body as JSON and returns it as a map
+// If the body is empty or cannot be parsed, nil is returned
+func parseBody(body string) map[string]any {
+	if body == "" {
 		return nil
 	}
 	obj := make(map[string]any)
-	if err := json.Unmarshal([]byte(s), &obj); err != nil {
-		klog.Fatalf("error from json.Unmarshal(%q): %v", s, err)
+	if err := json.Unmarshal([]byte(body), &obj); err != nil {
+		klog.Errorf("error from json.Unmarshal(%q): %v", body, err)
 		return nil
 	}
 

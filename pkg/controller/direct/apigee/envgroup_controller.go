@@ -26,16 +26,14 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	api "google.golang.org/api/apigee/v1"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-const ctrlName = "apigee-envgroup-controller"
 
 func init() {
 	registry.RegisterModel(krm.ApigeeEnvgroupGVK, NewApigeeEnvgroupModel)
@@ -51,7 +49,9 @@ type modelApigeeEnvgroup struct {
 	config *config.ControllerConfig
 }
 
-func (m *modelApigeeEnvgroup) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelApigeeEnvgroup) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {
 		return nil, err
@@ -104,7 +104,7 @@ var _ directbase.Adapter = &Adapter{}
 // Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("getting ApigeeEnvgroup", "name", a.id)
 
 	envgroup, err := a.envgroupsClient.Get(a.fullyQualifiedName()).Context(ctx).Do()
@@ -121,7 +121,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ApigeeEnvgroup", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -157,7 +157,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("patching ApigeeEnvgroup", a.fullyQualifiedName())
 	mapCtx := &direct.MapContext{}
 	updateMask := fieldmaskpb.FieldMask{}
@@ -167,9 +167,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	// Sorts the Hostname lists so that the comparison is deterministic
 	if !reflect.DeepEqual(asSortedCopy(req.Hostnames), asSortedCopy(a.actual.Hostnames)) {
-		log.V(2).Info("change detected: hostnames")
+		report.AddField("hostnames", a.actual.Hostnames, req.Hostnames)
 		updateMask.Paths = append(updateMask.Paths, "hostnames")
 	}
 
@@ -182,6 +184,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	clusterName := a.id.String()
 	op, err := a.envgroupsClient.Patch(clusterName, req).UpdateMask(strings.Join(updateMask.Paths, ",")).Context(ctx).Do()
@@ -234,7 +238,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting ApigeeEnvgroup", "name", a.id)
 
 	op, err := a.envgroupsClient.Delete(a.fullyQualifiedName()).Context(ctx).Do()

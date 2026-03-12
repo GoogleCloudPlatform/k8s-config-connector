@@ -17,12 +17,15 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &AspectTypeRef{}
+var _ refsv1beta1.Ref = &AspectTypeRef{}
 var DataplexAspectTypeGVK = GroupVersion.WithKind("DataplexAspectType")
 
 // AspectTypeRef defines the resource reference to DataplexAspectTypeRef, which "External" field
@@ -33,20 +36,45 @@ type AspectTypeRef struct {
 	External string `json:"external,omitempty"`
 
 	/* NOTYET
-	// The name of a DataplexEntryType resource.
+	// The name of a DataplexAspectType resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a DataplexEntryType resource.
+	// The namespace of a DataplexAspectType resource.
 	Namespace string `json:"namespace,omitempty"`
 	*/
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on DataplexAspectTypeRef.
-// If the "External" is given in the other resource's spec.DataplexAspectTypeRefRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual DataplexAspectTypeRef object from the cluster.
-func (r *AspectTypeRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External == "" {
-		return "", fmt.Errorf("external should be specified on %s reference", DataplexAspectTypeGVK.Kind)
+func (r *AspectTypeRef) GetGVK() schema.GroupVersionKind {
+	return DataplexAspectTypeGVK
+}
+
+func (r *AspectTypeRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{}
+}
+
+func (r *AspectTypeRef) GetExternal() string {
+	return r.External
+}
+
+func (r *AspectTypeRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *AspectTypeRef) ValidateExternal(ref string) error {
+	if ref == "" {
+		return fmt.Errorf("external reference is empty")
 	}
-	return r.External, nil
+	// Format: projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}
+	tokens := strings.Split(ref, "/")
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "aspectTypes" {
+		return fmt.Errorf("format of DataplexAspectType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}})", ref)
+	}
+	return nil
+}
+
+func (r *AspectTypeRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External == "" {
+		return fmt.Errorf("external reference must be specified for %s", DataplexAspectTypeGVK.Kind)
+	}
+	return r.ValidateExternal(r.External)
 }

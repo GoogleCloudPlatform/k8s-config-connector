@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/dataform/apiv1beta1"
 	dataformpb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
@@ -65,7 +66,9 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.DataformRepository{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -201,7 +204,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating object", "u", u)
 
 	desired := a.desired.DeepCopy()
@@ -231,6 +234,8 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	updateMask := &fieldmaskpb.FieldMask{}
 
 	if a.desired.Spec.GitRemoteSettings != nil {
@@ -241,6 +246,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		}
 
 		if !reflect.DeepEqual(protoDesired, a.actual.GitRemoteSettings) {
+			report.AddField("git_remote_settings", a.actual.GitRemoteSettings, protoDesired)
 			updateMask.Paths = append(updateMask.Paths, "git_remote_settings")
 		}
 	}
@@ -253,19 +259,43 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		}
 
 		if !reflect.DeepEqual(protoDesired, a.actual.WorkspaceCompilationOverrides) {
+			report.AddField("workspace_compilation_overrides", a.actual.WorkspaceCompilationOverrides, protoDesired)
 			updateMask.Paths = append(updateMask.Paths, "workspace_compilation_overrides")
 		}
 	}
 
 	if a.desired.Spec.NpmrcEnvironmentVariablesSecretVersionRef != nil {
 		if !reflect.DeepEqual(a.desired.Spec.NpmrcEnvironmentVariablesSecretVersionRef.External, a.actual.NpmrcEnvironmentVariablesSecretVersion) {
+			report.AddField("npmrc_environment_variables_secret_version", a.actual.NpmrcEnvironmentVariablesSecretVersion, a.desired.Spec.NpmrcEnvironmentVariablesSecretVersionRef.External)
 			updateMask.Paths = append(updateMask.Paths, "npmrc_environment_variables_secret_version")
 		}
 	}
 
 	if a.desired.Spec.SetAuthenticatedUserAdmin != a.actual.SetAuthenticatedUserAdmin {
+		report.AddField("set_authenticated_user_admin", a.actual.SetAuthenticatedUserAdmin, a.desired.Spec.SetAuthenticatedUserAdmin)
 		updateMask.Paths = append(updateMask.Paths, "set_authenticated_user_admin")
 	}
+
+	if direct.ValueOf(a.desired.Spec.DisplayName) != a.actual.DisplayName {
+		report.AddField("display_name", a.actual.DisplayName, direct.ValueOf(a.desired.Spec.DisplayName))
+		updateMask.Paths = append(updateMask.Paths, "display_name")
+	}
+
+	if a.desired.Spec.ServiceAccountRef != nil {
+		if !reflect.DeepEqual(a.desired.Spec.ServiceAccountRef.External, a.actual.ServiceAccount) {
+			report.AddField("service_account", a.actual.ServiceAccount, a.desired.Spec.ServiceAccountRef.External)
+			updateMask.Paths = append(updateMask.Paths, "service_account")
+		}
+	}
+
+	if len(updateMask.Paths) == 0 {
+		// no-op, just update obj status
+		status := &krm.DataformRepositoryStatus{}
+		status.ExternalRef = a.id.AsExternalRef()
+		return setStatus(u, status)
+	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	desired := a.desired.DeepCopy()
 	mapCtx := &direct.MapContext{}

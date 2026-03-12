@@ -22,7 +22,7 @@ spec:
   resourceID: vpcac${uniqueId}
   subnet:
     nameRef:
-      name: computesubnetwork-${uniqueId}
+      name: ${subnetworkID}
     projectRef:
       name: project-${uniqueId}
 status:

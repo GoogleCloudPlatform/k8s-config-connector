@@ -17,6 +17,7 @@ package mockgcptests
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"io/fs"
 	"os"
@@ -36,8 +37,10 @@ import (
 type Placeholders struct {
 	ProjectID        string
 	ProjectNumber    int64
+	OrganizationID   string
 	UniqueID         string
 	BillingAccountID string
+	FolderID         string
 }
 
 func TestScripts(t *testing.T) {
@@ -69,18 +72,26 @@ func TestScripts(t *testing.T) {
 			h.Init()
 
 			project := h.Project
+			folderID := h.FolderID()
+			organizationID := testgcp.TestOrgID.Get()
+
 			testDir := filepath.Join(baseDir, scriptPath)
 			placeholders := Placeholders{
 				ProjectID:        project.ProjectID,
 				ProjectNumber:    project.ProjectNumber,
+				OrganizationID:   project.OrganizationID,
 				UniqueID:         uniqueID,
 				BillingAccountID: testgcp.TestBillingAccountID.Get(),
+				FolderID:         folderID,
 			}
 			script := loadScript(t, testDir, placeholders)
 
 			h.StartProxy(ctx)
 
 			var httpEvents []*test.LogEntry
+
+			// scriptEnv holds environment variables set by steps in the script.
+			scriptEnv := map[string]string{}
 
 			for _, step := range script.Steps {
 				stepCmd := ""
@@ -116,14 +127,69 @@ func TestScripts(t *testing.T) {
 					cmd.Env = append(cmd.Env, "CLOUDSDK_CORE_PROJECT="+h.Project.ProjectID)
 					gcloudConfig := h.proxy.BuildGcloudConfig(h.ProxyEndpoint, h.MockGCP)
 					cmd.Env = append(cmd.Env, gcloudConfig.EnvVars...)
+
+					for k, v := range scriptEnv {
+						cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
+					}
+
 					cmd.Dir = testDir
 
 					t.Logf("executing step type: %s  cmd: %q", stepType, stepCmd)
+					exitCode := 0
+
 					if err := cmd.Run(); err != nil {
+						var exitError *exec.ExitError
+						if errors.As(err, &exitError) {
+							exitCode = exitError.ExitCode()
+						}
+
+						if exitCode == step.ExpectExitCode {
+							t.Logf("command exited with expected exit code %d", exitCode)
+						} else {
+							t.Logf("stdout: %v", stdout.String())
+							t.Logf("stderr: %v", stderr.String())
+							t.Logf("exitCode: %v", exitCode)
+
+							t.Errorf("error running step type: %s  cmd: %q: %v", stepType, stepCmd, err)
+						}
+					}
+
+					if exitCode != step.ExpectExitCode {
 						t.Logf("stdout: %v", stdout.String())
 						t.Logf("stderr: %v", stderr.String())
 
-						t.Errorf("error running step type: %s  cmd: %q: %v", stepType, stepCmd, err)
+						t.Errorf("unexpected exit code  %v running step type: %s  cmd: %q", exitCode, stepType, stepCmd)
+					}
+
+					if step.SetEnv != "" {
+						if !strings.Contains(step.SetEnv, "{{") {
+							envVarName := step.SetEnv
+							envVarValue := strings.TrimSpace(stdout.String())
+							t.Logf("setting env var %q to %q", envVarName, envVarValue)
+							scriptEnv[envVarName] = envVarValue
+						} else {
+							// We match something like projects/{{PROJECT_ID}}/databases/{{DATABASE_ID}}/backupSchedules/{{BACKUPSCHEDULE_ID}}
+							// Currently we _only_ match URLs
+							tokens := strings.Split(step.SetEnv, "/")
+							stdoutStr := strings.TrimSpace(stdout.String())
+							valueTokens := strings.Split(stdoutStr, "/")
+							if len(tokens) != len(valueTokens) {
+								t.Errorf("cannot extract env vars from output %q using pattern %q", stdoutStr, step.SetEnv)
+							} else {
+								for i, token := range tokens {
+									if strings.HasPrefix(token, "{{") && strings.HasSuffix(token, "}}") {
+										envVarName := strings.TrimSuffix(strings.TrimPrefix(token, "{{"), "}}")
+										envVarValue := valueTokens[i]
+										t.Logf("setting env var %q to %q", envVarName, envVarValue)
+										scriptEnv[envVarName] = envVarValue
+									} else {
+										if token != valueTokens[i] {
+											t.Errorf("cannot extract env vars from output %q using pattern %q", stdoutStr, step.SetEnv)
+										}
+									}
+								}
+							}
+						}
 					}
 
 					if captureEvents {
@@ -149,9 +215,6 @@ func TestScripts(t *testing.T) {
 					httpEvent.Request.RemoveHeader("Content-Length")
 					httpEvent.Response.RemoveHeader("Content-Length")
 				}
-
-				folderID := ""
-				organizationID := ""
 
 				e2e.NormalizeHTTPLog(t, httpEvents, h.RegisteredServices(), testgcp.GCPProject{ProjectID: h.Project.ProjectID, ProjectNumber: h.Project.ProjectNumber}, uniqueID, folderID, organizationID)
 
@@ -195,9 +258,13 @@ type Script struct {
 }
 
 type Step struct {
-	Exec string `json:"exec"`
-	Pre  string `json:"pre"`
-	Post string `json:"post"`
+	Exec   string `json:"exec"`
+	Pre    string `json:"pre"`
+	Post   string `json:"post"`
+	SetEnv string `json:"setEnv"`
+
+	// ExpectExitCode is the expected exit code for the command. Defaults to 0 if not specified.
+	ExpectExitCode int `json:"expectExitCode,omitempty"`
 }
 
 func loadScript(t *testing.T, dir string, placeholders Placeholders) *Script {
@@ -225,6 +292,8 @@ func ReplaceTestVars(t *testing.T, b []byte, placeholders Placeholders) []byte {
 	s = strings.Replace(s, "${uniqueId}", placeholders.UniqueID, -1)
 	s = strings.Replace(s, "${projectId}", placeholders.ProjectID, -1)
 	s = strings.Replace(s, "${projectNumber}", strconv.FormatInt(placeholders.ProjectNumber, 10), -1)
+	s = strings.Replace(s, "${organizationId}", placeholders.OrganizationID, -1)
 	s = strings.Replace(s, "${BILLING_ACCOUNT_ID}", placeholders.BillingAccountID, -1)
+	s = strings.Replace(s, "${folderId}", placeholders.FolderID, -1)
 	return []byte(s)
 }

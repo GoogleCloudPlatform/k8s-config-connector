@@ -210,7 +210,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}
 
 {
-  "fieldMask": "displayName,processingUnits,defaultBackupScheduleType",
+  "fieldMask": "displayName,processingUnits",
   "instance": {
     "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
     "displayName": "Spanner Instance Updated",
@@ -238,6 +238,7 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
       "createTime": "2024-04-01T12:34:56.123456Z",
+      "defaultBackupScheduleType": 2,
       "displayName": "Spanner Instance Updated",
       "edition": 1,
       "instanceType": 1,
@@ -289,6 +290,7 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
       "createTime": "2024-04-01T12:34:56.123456Z",
+      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Spanner Instance Updated",
       "edition": "STANDARD",
       "instanceType": "PROVISIONED",
@@ -317,6 +319,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Spanner Instance Updated",
     "edition": "STANDARD",
     "instanceType": "PROVISIONED",
@@ -359,6 +362,7 @@ X-Xss-Protection: 0
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultBackupScheduleType": 2,
   "displayName": "Spanner Instance Updated",
   "edition": 1,
   "instanceType": 1,

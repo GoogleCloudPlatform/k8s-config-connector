@@ -24,8 +24,6 @@ BIN_DIR=bin
 CONFIG_CONNECTOR_BINARY_NAME=config-connector
 
 # dependency versions
-KUBEBUILDER_VERSION=2.3.1
-KUBEAPISERVER_VERSION=1.21.0
 KUSTOMIZE_VERSION=3.5.4
 
 # Supported GCP services API endpoints in Config Connector
@@ -74,6 +72,7 @@ SUPPORTED_SERVICES=(
   eventarc.googleapis.com
   file.googleapis.com
   firestore.googleapis.com
+  geminicloudassist.googleapis.com
   gkebackup.googleapis.com
   gkeconnect.googleapis.com
   gkehub.googleapis.com
@@ -87,6 +86,7 @@ SUPPORTED_SERVICES=(
   managedkafka.googleapis.com
   monitoring.googleapis.com
   memcache.googleapis.com
+  memorystore.googleapis.com
   networkconnectivity.googleapis.com
   networksecurity.googleapis.com
   networkservices.googleapis.com
@@ -123,6 +123,8 @@ LONG_RUNNING_CRUD_TESTS_REGEX="basicalloydbbackup|\
 basicalloydbinstance|\
 basicalloydbsecondarycluster|\
 basicalloydbsecondaryinstance|\
+restorebackupalloydbcluster|\
+restorecontinuesbackupalloydbcluster|\
 cidrconnector|\
 cloudidsendpoint|\
 configcontrollerinstance|\
@@ -166,6 +168,7 @@ basic-node-pool|\
 cloudidsendpoint|\
 datafusioninstance|\
 gkehubmembership|\
+memorystore|\
 managedkafkacluster-basic|\
 managedkafkacluster-cmek|\
 managedkafkatopic|\

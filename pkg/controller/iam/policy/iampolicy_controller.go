@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -62,7 +63,7 @@ import (
 
 const controllerName = "iampolicy-controller"
 
-var logger = log.Log.WithName(controllerName)
+var logger = log.Log.WithName(controllerName).WithValues("controllerType", "legacy/handrolled")
 
 // Add creates a new IAM Policy Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and start it when the Manager is started.
@@ -148,7 +149,7 @@ type reconcileContext struct {
 
 // Reconcile checks k8s for the current state of the resource.
 func (r *ReconcileIAMPolicy) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
-	logger.Info("Running reconcile", "resource", request.NamespacedName)
+	logger.V(1).Info("Running reconcile", "resource", request.NamespacedName)
 	startTime := time.Now()
 	ctx, cancel := context.WithTimeout(ctx, k8s.ReconcileDeadline)
 	defer cancel()
@@ -177,6 +178,16 @@ func (r *ReconcileIAMPolicy) Reconcile(ctx context.Context, request reconcile.Re
 		Ctx:            ctx,
 		NamespacedName: request.NamespacedName,
 	}
+	uObj := &unstructured.Unstructured{}
+	uObj.Object, err = runtime.DefaultUnstructuredConverter.ToUnstructured(policy)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	uObj.SetNamespace(policy.GetNamespace())
+	uObj.SetName(policy.GetName())
+	uObj.SetGroupVersionKind(iamv1beta1.IAMPolicyGVK)
+	structuredreporting.ReportReconcileStart(ctx, uObj, k8s.ReconcilerTypeIAMPolicy)
+	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err, k8s.ReconcilerTypeIAMPolicy)
 	requeue, err := runCtx.doReconcile(policy)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -264,7 +275,8 @@ func (r *reconcileContext) doReconcile(policy *iamv1beta1.IAMPolicy) (requeue bo
 		}
 		return false, r.handleDeleted(policy)
 	}
-	if _, err := r.Reconciler.iamClient.GetPolicy(r.Ctx, policy); err != nil {
+	oldIAMPolicy, err := r.Reconciler.iamClient.GetPolicy(r.Ctx, policy)
+	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policy))
 			return r.handleUnresolvableDeps(policy, unwrappedErr)
@@ -274,6 +286,12 @@ func (r *reconcileContext) doReconcile(policy *iamv1beta1.IAMPolicy) (requeue bo
 	k8s.EnsureFinalizers(policy, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
 	// set the etag to an empty string, since IAMPolicy is the authoritative intent, KCC wants to overwrite the underlying policy regardless
 	policy.Spec.Etag = ""
+
+	diff := iamv1beta1.IAMPolicySpecDiffers(&oldIAMPolicy.Spec, &policy.Spec)
+	if diff.HasDiff() {
+		structuredreporting.ReportDiff(r.Ctx, diff)
+	}
+
 	if _, err = r.Reconciler.iamClient.SetPolicy(r.Ctx, policy); err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policy))

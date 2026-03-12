@@ -35,7 +35,6 @@ func dataplexTaskFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".trigger_spec")
 	f.SpecFields.Insert(".execution_spec")
 	f.SpecFields.Insert(".spark")
@@ -48,6 +47,7 @@ func dataplexTaskFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".execution_status")
 
 	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

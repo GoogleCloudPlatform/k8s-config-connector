@@ -35,10 +35,15 @@ type NamespacedControllerResource struct {
 
 // NamespacedControllerResourceSpec is the specification of the resource customization for containers of
 // a namespaced config connector controller.
+// +kubebuilder:validation:XValidation:rule="!has(self.verticalPodAutoscalerMode) || self.verticalPodAutoscalerMode == 'Disabled' || !has(self.containers) || size(self.containers) == 0",message="VerticalPodAutoscalerMode cannot be Enabled when Containers are specified"
 type NamespacedControllerResourceSpec struct {
 	// The list of containers whose resource requirements to be customized.
-	// Required
-	Containers []ContainerResourceSpec `json:"containers"`
+	// +optional
+	Containers []ContainerResourceSpec `json:"containers,omitempty"`
+	// VerticalPodAutoscalerMode indicates the mode of Vertical Pod Autoscaler for the controller.
+	// +optional
+	// +kubebuilder:default=Disabled
+	VerticalPodAutoscalerMode *VPAMode `json:"verticalPodAutoscalerMode,omitempty"`
 }
 
 // NamespacedControllerResourceStatus defines the observed state of NamespacedControllerResource.
@@ -53,6 +58,10 @@ type NamespacedControllerResourceList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NamespacedControllerResource `json:"items"`
+}
+
+func (c *NamespacedControllerResource) GetCommonStatus() addonv1alpha1.CommonStatus {
+	return c.Status.CommonStatus
 }
 
 func (c *NamespacedControllerResource) SetCommonStatus(s addonv1alpha1.CommonStatus) {

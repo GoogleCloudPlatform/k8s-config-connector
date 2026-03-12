@@ -27,7 +27,6 @@ import (
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	monitoredres "google.golang.org/genproto/googleapis/api/monitoredres"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -133,15 +132,15 @@ func TimeSeriesQuery_TimeSeriesQueryLanguage_ToProto(mapCtx *direct.MapContext, 
 	}
 }
 
-func LogsPanel_ResourceNames_FromProto(mapCtx *direct.MapContext, in []string) []v1alpha1.ResourceRef {
+func LogsPanel_ResourceNames_FromProto(mapCtx *direct.MapContext, in []string) []krm.LogsPanelResourceRef {
 	if in == nil {
 		return nil
 	}
-	var out []v1alpha1.ResourceRef
+	var out []krm.LogsPanelResourceRef
 	for _, v := range in {
 		tokens := strings.Split(v, "/")
 		if len(tokens) == 2 && tokens[0] == "projects" {
-			out = append(out, v1alpha1.ResourceRef{
+			out = append(out, krm.LogsPanelResourceRef{
 				Kind:     "Project",
 				External: v,
 			})
@@ -152,7 +151,7 @@ func LogsPanel_ResourceNames_FromProto(mapCtx *direct.MapContext, in []string) [
 	return out
 }
 
-func LogsPanel_ResourceNames_ToProto(mapCtx *direct.MapContext, in []v1alpha1.ResourceRef) []string {
+func LogsPanel_ResourceNames_ToProto(mapCtx *direct.MapContext, in []krm.LogsPanelResourceRef) []string {
 	if in == nil {
 		return nil
 	}

@@ -16,8 +16,6 @@
 // proto.service: google.cloud.vmwareengine.v1.VmwareEngine
 // proto.message: google.cloud.vmwareengine.v1.ExternalAddress
 // crd.type: VMwareEngineExternalAddress
-// crd.version: v1alpha1
-
 package vmwareengine
 
 import (
@@ -33,11 +31,12 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
 func init() {
@@ -54,7 +53,9 @@ type externalAddressModel struct {
 	config config.ControllerConfig
 }
 
-func (m *externalAddressModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *externalAddressModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.VMwareEngineExternalAddress{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -160,12 +161,16 @@ func (a *externalAddressAdapter) Update(ctx context.Context, updateOp *directbas
 		return mapCtx.Err()
 	}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+
 	paths := []string{}
 	// UpdateMask for ExternalAddress allows updating description and internal_ip
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, resource.Description)
 		paths = append(paths, "description")
 	}
 	if desired.Spec.InternalIP != nil && !reflect.DeepEqual(resource.InternalIp, a.actual.InternalIp) {
+		report.AddField("internal_ip", a.actual.InternalIp, resource.InternalIp)
 		paths = append(paths, "internal_ip")
 	}
 
@@ -174,6 +179,7 @@ func (a *externalAddressAdapter) Update(ctx context.Context, updateOp *directbas
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateExternalAddressRequest{
 			ExternalAddress: resource,
@@ -207,7 +213,7 @@ func (a *externalAddressAdapter) Export(ctx context.Context) (*unstructured.Unst
 
 	obj := &krm.VMwareEngineExternalAddress{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(VMwareEngineExternalAddressSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = *VMwareEngineExternalAddressSpec_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

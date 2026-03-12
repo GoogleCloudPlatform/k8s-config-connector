@@ -17,11 +17,11 @@ package backupdr
 import (
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BackupDRBackupVaultObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultObservedState {
+func BackupDRBackupVaultObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultObservedState {
 	if in == nil {
 		return nil
 	}
@@ -38,7 +38,7 @@ func BackupDRBackupVaultObservedState_v1alpha1_FromProto(mapCtx *direct.MapConte
 	out.UID = direct.LazyPtr(in.GetUid())
 	return out
 }
-func BackupDRBackupVaultObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultObservedState) *pb.BackupVault {
+func BackupDRBackupVaultObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultObservedState) *pb.BackupVault {
 	if in == nil {
 		return nil
 	}
@@ -55,14 +55,13 @@ func BackupDRBackupVaultObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.Etag = in.Etag
 	return out
 }
-func BackupDRBackupVaultSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultSpec) *pb.BackupVault {
+func BackupDRBackupVaultSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultSpec) *pb.BackupVault {
 	if in == nil {
 		return nil
 	}
 	out := &pb.BackupVault{}
 	// MISSING: Name
 	out.Description = in.Description
-	out.Labels = in.Labels
 	out.BackupMinimumEnforcedRetentionDuration = direct.StringDuration_ToProto(mapCtx, in.BackupMinimumEnforcedRetentionDuration)
 	out.EffectiveTime = direct.StringTimestamp_ToProto(mapCtx, in.EffectiveTime)
 	// MISSING: Uid

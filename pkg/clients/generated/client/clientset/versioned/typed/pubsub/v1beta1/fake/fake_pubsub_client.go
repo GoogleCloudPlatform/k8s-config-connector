@@ -35,6 +35,10 @@ func (c *FakePubsubV1beta1) PubSubSchemas(namespace string) v1beta1.PubSubSchema
 	return &FakePubSubSchemas{c, namespace}
 }
 
+func (c *FakePubsubV1beta1) PubSubSnapshots(namespace string) v1beta1.PubSubSnapshotInterface {
+	return &FakePubSubSnapshots{c, namespace}
+}
+
 func (c *FakePubsubV1beta1) PubSubSubscriptions(namespace string) v1beta1.PubSubSubscriptionInterface {
 	return &FakePubSubSubscriptions{c, namespace}
 }

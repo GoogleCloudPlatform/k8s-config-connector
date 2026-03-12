@@ -15,6 +15,8 @@
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: bigquerydataset1${uniqueId}
 spec:
   location: us-central1
@@ -22,6 +24,8 @@ spec:
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: bigquerydataset2${uniqueId}
 spec:
   location: us-central1
@@ -29,6 +33,8 @@ spec:
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
 metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: bigquerytable${uniqueId}
 spec:
   datasetRef:

@@ -20,7 +20,7 @@ spec:
     external: projects/${projectId}
   region: us-west2
   resourceID: cloudfunctionsfunction-${uniqueId}
-  runtime: nodejs10
+  runtime: nodejs20
   sourceArchiveUrl: gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip
   timeout: 120s
 status:

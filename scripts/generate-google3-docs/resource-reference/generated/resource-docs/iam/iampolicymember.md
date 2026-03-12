@@ -51,7 +51,7 @@ Note: Updating <code>spec</code> is not allowed.
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/iam/reference/rest/v1/iamPolicies">/iam/reference/rest/v1/iamPolicies</a></td>
+<td><a href="/iam/docs/reference/rest/v1/iamPolicies">/iam/docs/reference/rest/v1/iamPolicies</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
@@ -605,7 +605,7 @@ role: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}BigQueryConnectionConnection whose service account is to be bound to the role. Use the Type field to specifie the connection type. For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`. For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`. For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`.{% endverbatim %}</p>
+            <p>{% verbatim %}BigQueryConnectionConnection whose service account is to be bound to the role. Use the Type field to specify the connection type. For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`. For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`. For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

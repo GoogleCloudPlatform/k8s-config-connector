@@ -34,8 +34,11 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -57,20 +60,38 @@ type zoneModel struct {
 	config *config.ControllerConfig
 }
 
-func (m *zoneModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *zoneModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.DataplexZone{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewZoneIdentity(ctx, reader, obj)
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	copied := obj.DeepCopy()
+	mapCtx := &direct.MapContext{}
+	desired := DataplexZoneSpec_ToProto(mapCtx, &copied.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+
+	idI, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
+	}
+	id, ok := idI.(*krm.ZoneIdentity)
+	if !ok {
+		return nil, fmt.Errorf("unexpected identity type %T", idI)
 	}
 
 	zoneAdapter := &zoneAdapter{
 		id:      id,
-		desired: obj,
+		desired: desired,
 		reader:  reader,
 	}
 
@@ -96,7 +117,7 @@ func (m *zoneModel) AdapterForURL(ctx context.Context, url string) (directbase.A
 type zoneAdapter struct {
 	gcpClient *gcp.Client
 	id        *krm.ZoneIdentity
-	desired   *krm.DataplexZone
+	desired   *pb.Zone
 	actual    *pb.Zone
 	reader    client.Reader
 }
@@ -125,18 +146,9 @@ func (a *zoneAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating dataplex zone", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
-	desired := a.desired.DeepCopy()
-	desired.Name = a.id.String()
-
-	zone := DataplexZoneSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	req := &pb.CreateZoneRequest{
-		Parent: a.id.Parent(),
-		Zone:   zone,
+		Parent: a.id.Parent().String(),
+		Zone:   a.desired,
 		ZoneId: a.id.ID(),
 	}
 	op, err := a.gcpClient.CreateZone(ctx, req)
@@ -150,7 +162,7 @@ func (a *zoneAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	}
 
 	log.V(2).Info("successfully created dataplex zone in gcp", "name", a.id)
-
+	mapCtx := &direct.MapContext{}
 	status := &krm.DataplexZoneStatus{}
 	status.ObservedState = DataplexZoneObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -164,23 +176,22 @@ func (a *zoneAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating dataplex zone", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	zone := DataplexZoneSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	zone := a.desired
 	zone.Name = a.id.String()
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(zone.DisplayName, a.actual.DisplayName) {
+		report.AddField("display_name", a.actual.DisplayName, zone.DisplayName)
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	if !reflect.DeepEqual(zone.Description, a.actual.Description) {
+		report.AddField("description", a.actual.Description, zone.Description)
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
 	if !reflect.DeepEqual(zone.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, zone.Labels)
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
@@ -197,10 +208,12 @@ func (a *zoneAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	}
 	if zone.DiscoverySpec != nil {
 		if !cmp.Equal(zone.DiscoverySpec, a.actual.DiscoverySpec, cmpopts.IgnoreUnexported(pb.Zone_DiscoverySpec{}, pb.Zone_DiscoverySpec_CsvOptions{}, pb.Zone_DiscoverySpec_JsonOptions{})) {
+			report.AddField("discovery_spec", a.actual.DiscoverySpec, zone.DiscoverySpec)
 			updateMask.Paths = append(updateMask.Paths, "discovery_spec")
 		}
 	} else {
 		if !cmp.Equal(emptyDiscoverySpec, a.actual.DiscoverySpec, cmpopts.IgnoreUnexported(pb.Zone_DiscoverySpec{}, pb.Zone_DiscoverySpec_CsvOptions{}, pb.Zone_DiscoverySpec_JsonOptions{})) {
+			report.AddField("discovery_spec", a.actual.DiscoverySpec, emptyDiscoverySpec)
 			updateMask.Paths = append(updateMask.Paths, "discovery_spec")
 		}
 	}
@@ -214,6 +227,7 @@ func (a *zoneAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		structuredreporting.ReportDiff(ctx, report)
 		log.V(2).Info("updating fields", "name", a.id, "paths", updateMask.Paths)
 		req := &pb.UpdateZoneRequest{
 			UpdateMask: updateMask,
@@ -230,6 +244,7 @@ func (a *zoneAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		log.V(2).Info("successfully updated dataplex zone", "name", a.id)
 	}
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.DataplexZoneStatus{}
 	status.ObservedState = DataplexZoneObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {

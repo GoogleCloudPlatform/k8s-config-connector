@@ -1,0 +1,470 @@
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-3-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "deliveryPipeline \"projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "deliveryPipeline \"projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines?%24alt=json%3Benum-encoding%3Dint&deliveryPipelineId=clouddeploydeliverypipeline-full-3-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1
+
+{
+  "serialPipeline": {
+    "stages": [
+      {
+        "strategy": {
+          "canary": {
+            "canaryDeployment": {
+              "postdeploy": {
+                "actions": [
+                  "postdeploy-action-1"
+                ]
+              },
+              "predeploy": {
+                "actions": [
+                  "predeploy-action-1"
+                ]
+              }
+            },
+            "runtimeConfig": {
+              "kubernetes": {
+                "serviceNetworking": {
+                  "deployment": "my-deployment",
+                  "podSelectorLabel": "app=my-app",
+                  "service": "my-service"
+                }
+              }
+            }
+          }
+        },
+        "targetId": "my-fake-target-3"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.DeliveryPipeline",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}",
+    "serialPipeline": {
+      "stages": [
+        {
+          "strategy": {
+            "canary": {
+              "canaryDeployment": {
+                "postdeploy": {
+                  "actions": [
+                    "postdeploy-action-1"
+                  ]
+                },
+                "predeploy": {
+                  "actions": [
+                    "predeploy-action-1"
+                  ]
+                }
+              },
+              "runtimeConfig": {
+                "kubernetes": {
+                  "serviceNetworking": {
+                    "deployment": "my-deployment",
+                    "podSelectorLabel": "app=my-app",
+                    "service": "my-service"
+                  }
+                }
+              }
+            }
+          },
+          "targetId": "my-fake-target-3"
+        }
+      ]
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-3-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "strategy": {
+          "canary": {
+            "canaryDeployment": {
+              "postdeploy": {
+                "actions": [
+                  "postdeploy-action-1"
+                ]
+              },
+              "predeploy": {
+                "actions": [
+                  "predeploy-action-1"
+                ]
+              }
+            },
+            "runtimeConfig": {
+              "kubernetes": {
+                "serviceNetworking": {
+                  "deployment": "my-deployment",
+                  "podSelectorLabel": "app=my-app",
+                  "service": "my-service"
+                }
+              }
+            }
+          }
+        },
+        "targetId": "my-fake-target-3"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=name%2CserialPipeline.stages
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: delivery_pipeline.name=projects%2F${projectId}%2Flocations%2Fus-west1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-3-${uniqueId}
+
+{
+  "name": "projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "strategy": {
+          "canary": {
+            "canaryDeployment": {
+              "postdeploy": {
+                "actions": [
+                  "postdeploy-action-2"
+                ]
+              },
+              "predeploy": {
+                "actions": [
+                  "predeploy-action-2"
+                ]
+              }
+            },
+            "runtimeConfig": {
+              "kubernetes": {
+                "serviceNetworking": {
+                  "deployment": "my-deployment",
+                  "disablePodOverprovisioning": true,
+                  "podSelectorLabel": "app=my-app-updated",
+                  "service": "my-service"
+                }
+              }
+            }
+          }
+        },
+        "targetId": "my-fake-target-3"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.DeliveryPipeline",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}",
+    "serialPipeline": {
+      "stages": [
+        {
+          "strategy": {
+            "canary": {
+              "canaryDeployment": {
+                "postdeploy": {
+                  "actions": [
+                    "postdeploy-action-2"
+                  ]
+                },
+                "predeploy": {
+                  "actions": [
+                    "predeploy-action-2"
+                  ]
+                }
+              },
+              "runtimeConfig": {
+                "kubernetes": {
+                  "serviceNetworking": {
+                    "deployment": "my-deployment",
+                    "disablePodOverprovisioning": true,
+                    "podSelectorLabel": "app=my-app-updated",
+                    "service": "my-service"
+                  }
+                }
+              }
+            }
+          },
+          "targetId": "my-fake-target-3"
+        }
+      ]
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-3-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}",
+  "serialPipeline": {
+    "stages": [
+      {
+        "strategy": {
+          "canary": {
+            "canaryDeployment": {
+              "postdeploy": {
+                "actions": [
+                  "postdeploy-action-2"
+                ]
+              },
+              "predeploy": {
+                "actions": [
+                  "predeploy-action-2"
+                ]
+              }
+            },
+            "runtimeConfig": {
+              "kubernetes": {
+                "serviceNetworking": {
+                  "deployment": "my-deployment",
+                  "disablePodOverprovisioning": true,
+                  "podSelectorLabel": "app=my-app-updated",
+                  "service": "my-service"
+                }
+              }
+            }
+          }
+        },
+        "targetId": "my-fake-target-3"
+      }
+    ]
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-full-3-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/deliveryPipelines/clouddeploydeliverypipeline-full-3-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

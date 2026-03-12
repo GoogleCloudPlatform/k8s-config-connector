@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigquery/datatransfer/apiv1"
 	bigquerydatatransferpb "cloud.google.com/go/bigquery/datatransfer/apiv1/datatransferpb"
@@ -35,7 +36,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
@@ -69,7 +69,9 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.BigQueryDataTransferConfig{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -112,18 +114,18 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 	// Resolve BigQueryDataSet Ref
 	if obj.Spec.DatasetRef != nil {
-		dataset, err := obj.Spec.DatasetRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-		if err != nil {
+		if err := obj.Spec.DatasetRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 			return nil, err
 		}
+		dataset := obj.Spec.DatasetRef.External
 
 		// for backwards compatibility and to satisfy the GCP API constraints, we must overrite the
 		// external reference in the payloads to just the resource ID of the dataset.
-		_, id, err := bigquerykrmapi.ParseDatasetExternal(dataset)
-		if err != nil {
+		datasetID := &bigquerykrmapi.DatasetIdentity{}
+		if err := datasetID.FromExternal(dataset); err != nil {
 			return nil, err
 		}
-		obj.Spec.DatasetRef.External = id
+		obj.Spec.DatasetRef.External = datasetID.Dataset
 	}
 
 	// Resolve KMSCryptoKey Ref
@@ -296,41 +298,51 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	// Find diff
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(desired.DataRefreshWindowDays, actual.DataRefreshWindowDays) {
+		report.AddField("data_refresh_window_days", actual.DataRefreshWindowDays, desired.DataRefreshWindowDays)
 		resource.DataRefreshWindowDays = desired.DataRefreshWindowDays
 		updateMask.Paths = append(updateMask.Paths, "data_refresh_window_days")
 	}
 	if !reflect.DeepEqual(desired.Disabled, actual.Disabled) {
+		report.AddField("disabled", actual.Disabled, desired.Disabled)
 		resource.Disabled = desired.Disabled
 		updateMask.Paths = append(updateMask.Paths, "disabled")
 	}
 	if !reflect.DeepEqual(desired.DisplayName, actual.DisplayName) {
+		report.AddField("display_name", actual.DisplayName, desired.DisplayName)
 		resource.DisplayName = desired.DisplayName
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	if desired.EmailPreferences != nil && !reflect.DeepEqual(desired.EmailPreferences, actual.EmailPreferences) {
+		report.AddField("email_preferences", actual.EmailPreferences, desired.EmailPreferences)
 		resource.EmailPreferences = desired.EmailPreferences
 		updateMask.Paths = append(updateMask.Paths, "email_preferences")
 	}
 	if desired.EncryptionConfiguration != nil && !reflect.DeepEqual(desired.EncryptionConfiguration, actual.EncryptionConfiguration) {
+		report.AddField("encryption_configuration", actual.EncryptionConfiguration, desired.EncryptionConfiguration)
 		resource.EncryptionConfiguration = desired.EncryptionConfiguration
 		updateMask.Paths = append(updateMask.Paths, "encryption_configuration")
 	}
 	if !reflect.DeepEqual(desired.NotificationPubsubTopic, actual.NotificationPubsubTopic) {
+		report.AddField("notification_pubsub_topic", actual.NotificationPubsubTopic, desired.NotificationPubsubTopic)
 		resource.NotificationPubsubTopic = desired.NotificationPubsubTopic
 		updateMask.Paths = append(updateMask.Paths, "notification_pubsub_topic")
 	}
 	if desired.Params != nil && !reflect.DeepEqual(desired.Params, actual.Params) {
 		// TODO: sensitive fields maybe masked by the service, leading to constant diff.
+		report.AddField("params", actual.Params, desired.Params)
 		resource.Params = desired.Params
 		updateMask.Paths = append(updateMask.Paths, "params")
 	}
 	if !reflect.DeepEqual(desired.Schedule, actual.Schedule) {
+		report.AddField("schedule", actual.Schedule, desired.Schedule)
 		resource.Schedule = desired.Schedule
 		updateMask.Paths = append(updateMask.Paths, "schedule")
 	}
 	if desired.ScheduleOptions != nil && !reflect.DeepEqual(desired.ScheduleOptions, actual.ScheduleOptions) {
+		report.AddField("schedule_options", actual.ScheduleOptions, desired.ScheduleOptions)
 		resource.ScheduleOptions = desired.ScheduleOptions
 		updateMask.Paths = append(updateMask.Paths, "schedule_options")
 	}
@@ -338,6 +350,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if len(updateMask.Paths) == 0 {
 		return nil
 	}
+
+	structuredreporting.ReportDiff(ctx, report)
 
 	resource.Name = a.id.FullyQualifiedName() // need to pass service generated ID to GCP API to identify the GCP resource
 	req := &bigquerydatatransferpb.UpdateTransferConfigRequest{

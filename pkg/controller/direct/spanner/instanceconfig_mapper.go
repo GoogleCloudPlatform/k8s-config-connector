@@ -87,7 +87,6 @@ func SpannerInstanceConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Insta
 		out.BaseConfigRef = &krm.InstanceConfigRef{External: in.BaseConfig}
 	}
 	out.Labels = in.Labels
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.LeaderOptions = in.LeaderOptions
 	return out
 }
@@ -103,7 +102,6 @@ func SpannerInstanceConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Spanne
 		out.BaseConfig = in.BaseConfigRef.External
 	}
 	out.Labels = in.Labels
-	out.Etag = direct.ValueOf(in.Etag)
 	out.LeaderOptions = in.LeaderOptions
 	return out
 }

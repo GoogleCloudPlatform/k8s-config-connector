@@ -16,12 +16,11 @@
 set -o errexit
 set -o nounset
 set -o pipefail
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-source ${REPO_ROOT}/scripts/shared-vars-public.sh
 cd ${REPO_ROOT}
-source ${REPO_ROOT}/scripts/fetch_ext_bins.sh && \
-	fetch_tools && \
-	setup_envs
+
+. ${REPO_ROOT}/dev/tasks/setup-envtest
 
 cd ${REPO_ROOT}/
 echo "Running e2e fixtures test with vcr replay mode..."

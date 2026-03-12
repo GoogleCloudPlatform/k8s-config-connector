@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -67,7 +68,7 @@ import (
 
 const controllerName = "iampartialpolicy-controller"
 
-var logger = log.Log.WithName(controllerName)
+var logger = log.Log.WithName(controllerName).WithValues("controllerType", "legacy/handrolled")
 
 // Add creates a new IAM Partial Policy Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and start it when the Manager is started.
@@ -167,7 +168,7 @@ type reconcileContext struct {
 func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
 	log := klog.FromContext(ctx)
 
-	logger.Info("Running reconcile", "resource", request.NamespacedName)
+	logger.V(1).Info("Running reconcile", "resource", request.NamespacedName)
 	startTime := time.Now()
 	ctx, cancel := context.WithTimeout(ctx, k8s.ReconcileDeadline)
 	defer cancel()
@@ -196,6 +197,16 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 		Ctx:            ctx,
 		NamespacedName: request.NamespacedName,
 	}
+	uObj := &unstructured.Unstructured{}
+	uObj.Object, err = runtime.DefaultUnstructuredConverter.ToUnstructured(policy)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	uObj.SetNamespace(policy.GetNamespace())
+	uObj.SetName(policy.GetName())
+	uObj.SetGroupVersionKind(iamv1beta1.IAMPartialPolicyGVK)
+	structuredreporting.ReportReconcileStart(ctx, uObj, k8s.ReconcilerTypeIAMPartialPolicy)
+	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err, k8s.ReconcilerTypeIAMPartialPolicy)
 	requeue, err := runCtx.doReconcile(policy)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -253,7 +264,7 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 	case v1beta1.Reconciling:
 		logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", r.NamespacedName)
 	case v1beta1.Paused:
-		logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
+		logger.V(2).Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
 
 		// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling
 		if pp.GetDeletionTimestamp().IsZero() {
@@ -296,6 +307,12 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 		return false, r.handleUpdateFailed(pp, fmt.Errorf("error computing partial policy: %w", err))
 	}
 	desiredPolicy := toDesiredPolicy(desiredPartialPolicy, iamPolicy)
+
+	diff := iamv1beta1.IAMPolicySpecDiffers(&desiredPolicy.Spec, &iamPolicy.Spec)
+	if diff.HasDiff() {
+		structuredreporting.ReportDiff(r.Ctx, diff)
+	}
+
 	if _, err = r.Reconciler.iamClient.SetPolicy(r.Ctx, desiredPolicy); err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(pp))

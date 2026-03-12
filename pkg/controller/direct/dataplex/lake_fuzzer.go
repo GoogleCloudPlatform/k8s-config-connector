@@ -34,7 +34,6 @@ func dataplexLakeFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".metastore")
 
@@ -47,6 +46,7 @@ func dataplexLakeFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".metastore_status")
 
 	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

@@ -17,16 +17,18 @@ package sql
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
-	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -51,6 +53,9 @@ func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQ
 		return err
 	}
 	if err := resolveSourceSQLInstanceRef(ctx, kube, obj); err != nil {
+		return err
+	}
+	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
 		return err
 	}
 	return nil
@@ -222,18 +227,10 @@ func resolvePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *krm.
 		return nil
 	}
 
-	resRef := obj.Spec.Settings.IpConfiguration.PrivateNetworkRef
-	netRef := &refs.ComputeNetworkRef{
-		External:  resRef.External,
-		Name:      resRef.Name,
-		Namespace: resRef.Namespace,
-	}
-	if err := netRef.Normalize(ctx, kube, obj); err != nil {
+	netRef := obj.Spec.Settings.IpConfiguration.PrivateNetworkRef
+	if err := netRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
 		return err
 	}
-
-	obj.Spec.Settings.IpConfiguration.PrivateNetworkRef.External = netRef.External
-
 	return nil
 }
 
@@ -246,43 +243,17 @@ func resolveAuditLogBucketRef(ctx context.Context, kube client.Reader, obj *krm.
 		return fmt.Errorf("must specify bucket for audit config")
 	}
 
-	bucketRef := obj.Spec.Settings.SqlServerAuditConfig.BucketRef
-
-	if bucketRef.External != "" && bucketRef.Name != "" {
-		return fmt.Errorf("cannot specify both spec.settings.sqlServerAuditConfig.bucketRef.external and spec.settings.sqlServerAuditConfig.bucketRef.name")
+	ref := obj.Spec.Settings.SqlServerAuditConfig.BucketRef
+	if err := ref.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
+		return err
 	}
+	external := ref.External
 
-	if bucketRef.External != "" {
-		return nil
-	} else if bucketRef.Name != "" {
-		if bucketRef.Namespace == "" {
-			bucketRef.Namespace = obj.Namespace
-		}
-
-		key := types.NamespacedName{
-			Namespace: bucketRef.Namespace,
-			Name:      bucketRef.Name,
-		}
-
-		bucket := &unstructured.Unstructured{}
-		bucket.SetGroupVersionKind(storagev1beta1.StorageBucketGVK)
-		if err := kube.Get(ctx, key, bucket); err != nil {
-			if apierrors.IsNotFound(err) {
-				return k8s.NewReferenceNotFoundError(storagev1beta1.StorageBucketGVK, key)
-			}
-			return fmt.Errorf("error reading referenced StorageBucket %v: %w", key, err)
-		}
-
-		storageBucketName, err := refs.GetResourceID(bucket)
-		if err != nil {
-			return err
-		}
-		obj.Spec.Settings.SqlServerAuditConfig.BucketRef.External = "gs://" + storageBucketName
-
-		return nil
-	} else {
-		return fmt.Errorf("must specify either spec.settings.sqlServerAuditConfig.bucketRef.external or spec.settings.sqlServerAuditConfig.bucketRef.name")
-	}
+	// refine external to the API required format
+	tokens := strings.Split(external, "/")
+	storageBucketName := tokens[len(tokens)-1]
+	obj.Spec.Settings.SqlServerAuditConfig.BucketRef.External = "gs://" + storageBucketName
+	return nil
 }
 
 func resolveSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {

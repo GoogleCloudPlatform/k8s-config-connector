@@ -18,13 +18,14 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/bigquery/biglake/apiv1"
 	bigquerybiglakepb "cloud.google.com/go/bigquery/biglake/apiv1/biglakepb"
@@ -35,11 +36,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
-	registry.RegisterModel(krm.BigLakeTableGVK, NewTableModel)
+	registry.RegisterModel(krmv1beta1.BigLakeTableGVK, NewTableModel)
 }
 
 func NewTableModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -65,16 +65,28 @@ func (m *modelTable) client(ctx context.Context) (*gcp.MetastoreClient, error) {
 	return gcpClient, err
 }
 
-func (m *modelTable) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.BigLakeTable{}
+func (m *modelTable) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
+	obj := &krmv1beta1.BigLakeTable{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewTableIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+
+	copied := obj.DeepCopy()
+	desired := BigLakeTableSpec_v1beta1_ToProto(mapCtx, &copied.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	// if the proto `desired` has field "labels". we should do `desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
 	// Get bigquerybiglake GCP client
 	gcpClient, err := m.client(ctx)
@@ -82,9 +94,9 @@ func (m *modelTable) AdapterForObject(ctx context.Context, reader client.Reader,
 		return nil, err
 	}
 	return &TableAdapter{
-		id:        id,
+		id:        id.(*krmv1beta1.TableIdentity),
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desired,
 	}, nil
 }
 
@@ -94,9 +106,9 @@ func (m *modelTable) AdapterForURL(ctx context.Context, url string) (directbase.
 }
 
 type TableAdapter struct {
-	id        *krm.TableIdentity
+	id        *krmv1beta1.TableIdentity
 	gcpClient *gcp.MetastoreClient
-	desired   *krm.BigLakeTable
+	desired   *bigquerybiglakepb.Table
 	actual    *bigquerybiglakepb.Table
 }
 
@@ -127,17 +139,9 @@ func (a *TableAdapter) Find(ctx context.Context) (bool, error) {
 func (a *TableAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Table", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := BigLakeTableSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	req := &bigquerybiglakepb.CreateTableRequest{
 		Parent:  a.id.Parent().String(),
-		Table:   resource,
+		Table:   a.desired,
 		TableId: a.id.ID(),
 	}
 	created, err := a.gcpClient.CreateTable(ctx, req)
@@ -146,8 +150,9 @@ func (a *TableAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	}
 	log.V(2).Info("successfully created Table", "name", a.id)
 
-	status := &krm.BigLakeTableStatus{}
-	status.ObservedState = BigLakeTableObservedState_FromProto(mapCtx, created)
+	mapCtx := &direct.MapContext{}
+	status := &krmv1beta1.BigLakeTableStatus{}
+	status.ObservedState = BigLakeTableObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -159,16 +164,10 @@ func (a *TableAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Table", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desiredPb := BigLakeTableSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 
 	paths := make(sets.Set[string])
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err = common.CompareProtoMessage(a.desired, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -177,14 +176,21 @@ func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for path := range paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
+
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
 	}
-	desiredPb.Name = a.id.String()
+	a.desired.Name = a.id.String()
 
 	req := &bigquerybiglakepb.UpdateTableRequest{
 		UpdateMask: updateMask,
-		Table:      desiredPb,
+		Table:      a.desired,
 	}
 	updated, err := a.gcpClient.UpdateTable(ctx, req)
 	if err != nil {
@@ -193,8 +199,10 @@ func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 
 	log.V(2).Info("successfully updated Table", "name", a.id)
 
-	status := &krm.BigLakeTableStatus{}
-	status.ObservedState = BigLakeTableObservedState_FromProto(mapCtx, updated)
+	mapCtx := &direct.MapContext{}
+
+	status := &krmv1beta1.BigLakeTableStatus{}
+	status.ObservedState = BigLakeTableObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -208,21 +216,28 @@ func (a *TableAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.BigLakeTable{}
+	obj := &krmv1beta1.BigLakeTable{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BigLakeTableSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BigLakeTableSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = direct.LazyPtr(a.id.Parent().Location)
+	externalRef := a.actual.GetName()
+	var id *krmv1beta1.TableIdentity
+	if err := id.FromExternal(externalRef); err != nil {
+		return nil, fmt.Errorf("parsing external ref %q: %w", externalRef, err)
+	}
+	obj.Spec.ParentRef = &krmv1alpha1.BigQueryBigLakeDatabaseRef{
+		External: id.Parent().String(),
+	}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.SetName(a.id.ID())
-	u.SetGroupVersionKind(krm.BigLakeTableGVK)
+	u.SetGroupVersionKind(krmv1beta1.BigLakeTableGVK)
 
 	u.Object = uObj
 	return u, nil

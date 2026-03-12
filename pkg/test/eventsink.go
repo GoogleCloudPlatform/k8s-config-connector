@@ -154,7 +154,7 @@ func (r *DirectoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) 
 func (r *DirectoryEventSink) writeToFile(p string, entry *LogEntry) error {
 	b, err := yaml.Marshal(entry)
 	if err != nil {
-		klog.Warningf("failed to marshal data as yaml in DirectoryEventSink: %v", err)
+		klog.Warningf("failed to marshal entry for %v as yaml in DirectoryEventSink: %v", entry.URL(), err)
 		// As a special fallback, write it in JSON so we can try to understand what is going wrong here
 		b, err = json.MarshalIndent(entry, "", "  ")
 		if err != nil {

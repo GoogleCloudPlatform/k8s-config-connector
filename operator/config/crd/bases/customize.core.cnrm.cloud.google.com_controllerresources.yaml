@@ -97,13 +97,32 @@ spec:
                   - resources
                   type: object
                 type: array
+              metadataHost:
+                description: |-
+                  MetadataHost overrides the GCP metadata server hostname (injected as GCE_METADATA_HOST).
+                  Useful for IPv6-only clusters where the default 169.254.169.254 is unreachable.
+                type: string
               replicas:
                 description: |-
                   The number of desired replicas of the config connector controller.
                   This field takes effect only if the controller name is "cnrm-webhook-manager".
                 format: int64
                 type: integer
+              verticalPodAutoscalerMode:
+                default: Disabled
+                description: VerticalPodAutoscalerMode indicates the mode of Vertical
+                  Pod Autoscaler for the controller.
+                enum:
+                - Enabled
+                - Disabled
+                type: string
             type: object
+            x-kubernetes-validations:
+            - message: VerticalPodAutoscalerMode cannot be Enabled when Containers
+                are specified
+              rule: '!has(self.verticalPodAutoscalerMode) || self.verticalPodAutoscalerMode
+                == ''Disabled'' || !has(self.containers) || size(self.containers)
+                == 0'
           status:
             description: ControllerResourceStatus defines the observed state of ControllerResource.
             properties:
@@ -213,13 +232,32 @@ spec:
                   - resources
                   type: object
                 type: array
+              metadataHost:
+                description: |-
+                  MetadataHost overrides the GCP metadata server hostname (injected as GCE_METADATA_HOST).
+                  Useful for IPv6-only clusters where the default 169.254.169.254 is unreachable.
+                type: string
               replicas:
                 description: |-
                   The number of desired replicas of the config connector controller.
                   This field takes effect only if the controller name is "cnrm-webhook-manager".
                 format: int64
                 type: integer
+              verticalPodAutoscalerMode:
+                default: Disabled
+                description: VerticalPodAutoscalerMode indicates the mode of Vertical
+                  Pod Autoscaler for the controller.
+                enum:
+                - Enabled
+                - Disabled
+                type: string
             type: object
+            x-kubernetes-validations:
+            - message: VerticalPodAutoscalerMode cannot be Enabled when Containers
+                are specified
+              rule: '!has(self.verticalPodAutoscalerMode) || self.verticalPodAutoscalerMode
+                == ''Disabled'' || !has(self.containers) || size(self.containers)
+                == 0'
           status:
             description: ControllerResourceStatus defines the observed state of ControllerResource.
             properties:

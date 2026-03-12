@@ -16,6 +16,7 @@ package mockcontainer
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -63,7 +64,7 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 
 	obj.SelfLink = buildSelfLink(ctx, fqn)
 
-	if err := s.populateNodePoolDefaults(cluster, obj); err != nil {
+	if err := s.populateNodePoolDefaults(name.Project, cluster, obj); err != nil {
 		return nil, err
 	}
 
@@ -81,7 +82,7 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 	})
 }
 
-func (s *ClusterManagerV1) populateNodePoolDefaults(cluster *pb.Cluster, obj *pb.NodePool) error {
+func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectData, cluster *pb.Cluster, obj *pb.NodePool) error {
 	obj.Status = pb.NodePool_RUNNING
 	if obj.Version == "" {
 		obj.Version = cluster.CurrentNodeVersion
@@ -96,6 +97,17 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(cluster *pb.Cluster, obj *pb
 
 	if obj.InitialNodeCount == 0 {
 		obj.InitialNodeCount = 1
+	}
+
+	if obj.InstanceGroupUrls == nil {
+		zone, err := locationToZone(cluster.Location)
+		if err != nil {
+			return err
+		}
+
+		obj.InstanceGroupUrls = []string{
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef-%s-grp", project.ID, zone, obj.Name),
+		}
 	}
 
 	if obj.Management == nil {
@@ -129,7 +141,7 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(cluster *pb.Cluster, obj *pb
 		obj.NetworkConfig = &pb.NodeNetworkConfig{}
 	}
 	if obj.NetworkConfig.EnablePrivateNodes == nil {
-		obj.NetworkConfig.EnablePrivateNodes = PtrTo(false)
+		obj.NetworkConfig.EnablePrivateNodes = cluster.NetworkConfig.DefaultEnablePrivateNodes
 	}
 	if obj.NetworkConfig.PodIpv4CidrBlock == "" {
 		obj.NetworkConfig.PodIpv4CidrBlock = "10.92.0.0/14"
@@ -139,6 +151,9 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(cluster *pb.Cluster, obj *pb
 	}
 	if obj.NetworkConfig.PodRange == "" {
 		obj.NetworkConfig.PodRange = obj.Name + "-pods-12345678"
+	}
+	if obj.NetworkConfig.Subnetwork == "" {
+		obj.NetworkConfig.Subnetwork = cluster.NetworkConfig.Subnetwork
 	}
 
 	if obj.PodIpv4CidrSize == 0 {
@@ -157,15 +172,46 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(cluster *pb.Cluster, obj *pb
 }
 
 func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
+
+	// Disk Size / Type
 	if obj.DiskSizeGb == 0 {
 		obj.DiskSizeGb = 100
 	}
 	if obj.DiskType == "" {
-		obj.DiskType = "pd-balanced"
+		if strings.HasPrefix(obj.MachineType, "n4-") {
+			obj.DiskType = "hyperdisk-balanced"
+		} else {
+			obj.DiskType = "pd-balanced"
+		}
+	}
+
+	if obj.BootDisk == nil {
+		obj.BootDisk = &pb.BootDisk{}
+	}
+	if obj.BootDisk.DiskType == "" {
+		obj.BootDisk.DiskType = obj.DiskType
+	}
+	if obj.BootDisk.SizeGb == 0 {
+		obj.BootDisk.SizeGb = int64(obj.DiskSizeGb)
+	}
+
+	// EffectiveCgroupMode
+	if obj.EffectiveCgroupMode == pb.NodeConfig_EFFECTIVE_CGROUP_MODE_UNSPECIFIED {
+		obj.EffectiveCgroupMode = pb.NodeConfig_EFFECTIVE_CGROUP_MODE_V2
 	}
 
 	if obj.ImageType == "" {
 		obj.ImageType = "COS_CONTAINERD"
+	}
+
+	if obj.KubeletConfig == nil {
+		obj.KubeletConfig = &pb.NodeKubeletConfig{}
+	}
+	if obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
+		obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
+	}
+	if obj.KubeletConfig.MaxParallelImagePulls == 0 {
+		obj.KubeletConfig.MaxParallelImagePulls = 2
 	}
 
 	if obj.MachineType == "" {
@@ -190,6 +236,11 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 			"https://www.googleapis.com/auth/trace.append",
 		}
 	}
+
+	if obj.ResourceLabels == nil {
+		obj.ResourceLabels = make(map[string]string)
+	}
+	obj.ResourceLabels["goog-gke-node-pool-provisioning-model"] = "on-demand"
 
 	if obj.ServiceAccount == "" {
 		obj.ServiceAccount = "default"

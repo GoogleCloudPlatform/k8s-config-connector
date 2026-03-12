@@ -16,12 +16,18 @@ package preview
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"sync"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/client-go/dynamic"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -40,12 +46,22 @@ type GKNN struct {
 type Recorder struct {
 	mutex   sync.Mutex
 	objects map[GKNN]*objectInfo
+
+	reconcileTrackerMutex sync.Mutex
+	// Track if a resource has been reconciled.
+	ReconciledResources map[GKNN]bool
+	// Number of resources has not been reconciled.
+	RemainResourcesCount int
+	// reconciledResults of the preview.
+	reconciledResults *RecorderReconciledResults
 }
 
 // NewRecorder creates a new Recorder.
 func NewRecorder() *Recorder {
 	return &Recorder{
-		objects: make(map[GKNN]*objectInfo),
+		objects:              make(map[GKNN]*objectInfo),
+		ReconciledResources:  make(map[GKNN]bool),
+		RemainResourcesCount: 0,
 	}
 }
 
@@ -65,6 +81,8 @@ type event struct {
 	gcpAction *gcpAction
 	// object is the object that was reconciled
 	object *unstructured.Unstructured
+	// the type of reconciler that the manager is using
+	reconcilerType k8s.ReconcilerType
 }
 
 type EventType string
@@ -95,10 +113,11 @@ const (
 
 // gcpAction holds a GCP action that was recorded
 type gcpAction struct {
-	method string
-	url    string
-	body   string
-	action Action
+	Method     string
+	URL        string
+	Body       string
+	Action     Action
+	UpdateMask []string
 }
 
 // NewStructuredReportingListener creates a new StructuredReportingListener.
@@ -121,13 +140,13 @@ func (l *structuredReportingListener) OnError(ctx context.Context, err error, ar
 }
 
 // OnReconcileStart is called by the structured reporting subsystem when a reconcile starts.
-func (l *structuredReportingListener) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured) {
-	l.recorder.recordReconcileStart(ctx, u)
+func (l *structuredReportingListener) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
+	l.recorder.recordReconcileStart(ctx, u, t)
 }
 
 // OnReconcileEnd is called by the structured reporting subsystem when a reconcile ends.
-func (l *structuredReportingListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
-	l.recorder.recordReconcileEnd(ctx, u, result, err)
+func (l *structuredReportingListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
+	l.recorder.recordReconcileEnd(ctx, u, result, err, t)
 }
 
 // OnDiff is called by the structured reporting subsystem when a diff occurs.
@@ -155,7 +174,11 @@ func (r *Recorder) recordDiff(ctx context.Context, diff *structuredreporting.Dif
 		gknn = gknnFromUnstructured(u)
 	}
 
-	log.Info("recordDiffs", "gknn", gknn)
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
+	}
+
+	log.V(1).Info("recordDiffs", "gknn", gknn)
 
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
@@ -165,25 +188,44 @@ func (r *Recorder) recordDiff(ctx context.Context, diff *structuredreporting.Dif
 }
 
 // recordReconcileStart captures the reconcile start into our recorder.
-func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Unstructured) {
+func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
 	gknn := gknnFromUnstructured(u)
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
+	}
 
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
-		eventType: EventTypeReconcileStart,
-		object:    u.DeepCopy(),
+		eventType:      EventTypeReconcileStart,
+		object:         u.DeepCopy(),
+		reconcilerType: t,
 	})
 }
 
 // recordReconcileEnd captures the reconcile end into our recorder.
-func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
 	gknn := gknnFromUnstructured(u)
+
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
+	}
 
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
-		eventType: EventTypeReconcileEnd,
-		object:    u.DeepCopy(),
+		eventType:      EventTypeReconcileEnd,
+		object:         u.DeepCopy(),
+		reconcilerType: t,
 	})
+	r.reconcileTrackerMutex.Lock()
+	defer r.reconcileTrackerMutex.Unlock()
+	r.ReconciledResources[gknn] = true
+	r.RemainResourcesCount--
+}
+
+func (r *Recorder) GKNNDoneReconcile(gknn GKNN) bool {
+	r.reconcileTrackerMutex.Lock()
+	defer r.reconcileTrackerMutex.Unlock()
+	return r.ReconciledResources[gknn]
 }
 
 func gknnFromUnstructured(u *unstructured.Unstructured) GKNN {
@@ -197,7 +239,7 @@ func gknnFromUnstructured(u *unstructured.Unstructured) GKNN {
 
 // recordKubeAction captures the kube action into our recorder.
 func (r *Recorder) recordKubeAction(ctx context.Context, method string, args []any, action Action) {
-	klog.Infof("recordKubeAction %v %v %v", method, args, action)
+	klog.V(1).Infof("recordKubeAction %v %v %v", method, args, action)
 	var gknn GKNN
 
 	kubeAction := &kubeAction{
@@ -228,6 +270,10 @@ func (r *Recorder) recordKubeAction(ctx context.Context, method string, args []a
 		}
 	}
 
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
+	}
+
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
 		eventType:  EventTypeKubeAction,
@@ -241,10 +287,11 @@ func (r *Recorder) recordGCPAction(ctx context.Context, err *BlockedGCPError, ar
 	var gknn GKNN
 
 	gcpAction := &gcpAction{
-		method: err.Method,
-		body:   err.Body,
-		url:    err.URL,
-		action: action,
+		Method:     err.Method,
+		Body:       err.Body,
+		URL:        err.URL,
+		Action:     action,
+		UpdateMask: err.UpdateMask,
 	}
 
 	for _, arg := range args {
@@ -260,6 +307,10 @@ func (r *Recorder) recordGCPAction(ctx context.Context, err *BlockedGCPError, ar
 		default:
 			klog.Fatalf("unhandled arg type %T", arg)
 		}
+	}
+
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
 	}
 
 	info := r.getObjectInfo(gknn)
@@ -281,4 +332,116 @@ func (r *Recorder) getObjectInfo(gknn GKNN) *objectInfo {
 		r.objects[gknn] = info
 	}
 	return info
+}
+
+func (r *Recorder) DoneReconciling() bool {
+	r.reconcileTrackerMutex.Lock()
+	defer r.reconcileTrackerMutex.Unlock()
+	return r.RemainResourcesCount == 0
+}
+
+// TODO: Implement concurrent worker by GVRs.
+func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config, namespace string) error {
+	log := klog.FromContext(ctx)
+	log.V(0).Info("Preloading the list of resources to reconcile")
+	// Make a copy of config to increase QPS and burst.
+	// This would not effect the config for the Manager.
+	config = rest.CopyConfig(config)
+
+	if config.QPS == 0 {
+		config.QPS = 100
+		config.Burst = 20
+	}
+	clientset, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		return fmt.Errorf("error creating Kubernetes clientset: %w", err)
+	}
+
+	discoveryClient := clientset.Discovery()
+	dynamicClient, err := dynamic.NewForConfig(config)
+	if err != nil {
+		return fmt.Errorf("error creating dynamic client: %w", err)
+	}
+	apiResourceLists, err := discoveryClient.ServerPreferredResources()
+	if err != nil {
+		return fmt.Errorf("failed to get preferred resources: %w", err)
+	}
+	for _, apiResourceList := range apiResourceLists {
+		if !strings.Contains(apiResourceList.GroupVersion, ".cnrm.cloud.google.com/") {
+			continue
+		}
+
+		apiResourceListGroupVersion, err := schema.ParseGroupVersion(apiResourceList.GroupVersion)
+		if err != nil {
+			log.V(1).Info("skipping unparseable groupVersion", apiResourceList.GroupVersion)
+			continue
+		}
+		for _, apiResource := range apiResourceList.APIResources {
+			if !apiResource.Namespaced {
+				continue
+			}
+			if !contains(apiResource.Verbs, "list") {
+				continue
+			}
+			gvr := schema.GroupVersionResource{
+				Group:    apiResource.Group,
+				Version:  apiResource.Version,
+				Resource: apiResource.Name,
+			}
+			if gvr.Group == "" {
+				gvr.Group = apiResourceListGroupVersion.Group
+			}
+			if gvr.Version == "" {
+				gvr.Version = apiResourceListGroupVersion.Version
+			}
+			// Not tracking CC and CCC objects.
+			if strings.HasSuffix(gvr.Group, "core.cnrm.cloud.google.com") {
+				continue
+			}
+			var resources *unstructured.UnstructuredList
+			if namespace != "" {
+				resources, err = dynamicClient.Resource(gvr).Namespace(namespace).List(ctx, metav1.ListOptions{})
+				if err != nil {
+					return fmt.Errorf("fetching gvr %s resources: %w", gvr, err)
+				}
+			} else {
+				resources, err = dynamicClient.Resource(gvr).List(ctx, metav1.ListOptions{})
+				if err != nil {
+					return fmt.Errorf("fetching gvr %s resources: %w", gvr, err)
+				}
+			}
+			for _, resource := range resources.Items {
+				r.ReconciledResources[GKNN{
+					Group:     gvr.Group,
+					Kind:      resource.GetKind(),
+					Namespace: resource.GetNamespace(),
+					Name:      resource.GetName(),
+				}] = false
+			}
+			r.RemainResourcesCount += len(resources.Items)
+		}
+	}
+	log.V(0).Info("Successfully preloaded the list of resources to reconcile", "count", r.RemainResourcesCount)
+	return nil
+}
+
+func (recorder *Recorder) SummaryReport(summaryFile string) error {
+	return recorder.getOrCreateSummary().SummaryReport(summaryFile)
+}
+
+func (recorder *Recorder) getOrCreateSummary() *RecorderReconciledResults {
+	if recorder.reconciledResults == nil {
+		recorder.reconciledResults = recorder.GenerateRecorderReconciledResults()
+	}
+	return recorder.reconciledResults
+}
+
+// contains checks if a slice contains a specific string.
+func contains(slice []string, str string) bool {
+	for _, s := range slice {
+		if strings.EqualFold(s, str) {
+			return true
+		}
+	}
+	return false
 }

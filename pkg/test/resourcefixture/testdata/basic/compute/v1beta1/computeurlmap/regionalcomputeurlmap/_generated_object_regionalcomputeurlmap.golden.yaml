@@ -11,12 +11,12 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-  name: computeurlmap-${uniqueId}
+  name: ${urlMapID}
   namespace: ${uniqueId}
 spec:
   defaultService:
     backendServiceRef:
-      name: computebackendservice-${uniqueId}
+      name: ${backendServiceID}
   description: updated regional URLMap
   hostRule:
   - hosts:
@@ -26,7 +26,7 @@ spec:
   pathMatcher:
   - defaultService:
       backendServiceRef:
-        name: computebackendservice-${uniqueId}
+        name: ${backendServiceID}
     name: allpaths
     pathRule:
     - paths:
@@ -55,7 +55,7 @@ spec:
             percentage: 7.8
         requestMirrorPolicy:
           backendServiceRef:
-            name: computebackendservice-${uniqueId}
+            name: ${backendServiceID}
         retryPolicy:
           numRetries: 4
           perTryTimeout:
@@ -71,7 +71,7 @@ spec:
           pathPrefixRewrite: A replacement path
         weightedBackendServices:
         - backendServiceRef:
-            name: computebackendservice-${uniqueId}
+            name: ${backendServiceID}
           headerAction:
             requestHeadersToAdd:
             - headerName: AddMe
@@ -86,13 +86,13 @@ spec:
             responseHeadersToRemove:
             - RemoveMe
           weight: 400
-  resourceID: computeurlmap-${uniqueId}
+  resourceID: ${urlMapID}
   test:
   - host: hi.com
     path: /home
     service:
       backendServiceRef:
-        name: computebackendservice-${uniqueId}
+        name: ${backendServiceID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -101,6 +101,7 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
+  fingerprint: abcdef0123A=
   mapId: 1111111111111111
   observedGeneration: 3
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}

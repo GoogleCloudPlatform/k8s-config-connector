@@ -27,7 +27,7 @@ popd
 # For efficiency, we generate CRDs only once at the end
 export SKIP_GENERATE_CRDS=1
 
-for f in $(find apis -name "generate.sh"); do
+for f in $(find apis -name "generate.sh" | sort); do
     # Skip some generate.sh scripts that are not up to date
     # TODO: Fix these!
 

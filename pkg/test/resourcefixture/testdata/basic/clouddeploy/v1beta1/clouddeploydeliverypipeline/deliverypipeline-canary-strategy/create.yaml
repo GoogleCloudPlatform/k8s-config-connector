@@ -1,0 +1,34 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1beta1
+kind: CloudDeployDeliveryPipeline
+metadata:
+  name: clouddeploydeliverypipeline-full-2-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-east1
+  serialPipeline:
+    stages:
+      - targetID: "my-fake-target-2"
+        deployParameters:
+          - values:
+              key1: "value1"
+            matchTargetLabels:
+              label1: "val1"
+        strategy:
+          canary:
+            customCanaryDeployment:
+              phaseConfigs:
+                - phaseID: "phase1"
+                  percentage: 50
+                  profiles: ["profile1"]
+                  verify: true
+                  predeploy:
+                    actions: ["predeploy-action"]
+                  postdeploy:
+                    actions: ["postdeploy-action"]
+            runtimeConfig:
+              cloudRun:
+                automaticTrafficControl: true
+                canaryRevisionTags: ["canary"]
+                priorRevisionTags: ["prior"]
+                stableRevisionTags: ["stable"]

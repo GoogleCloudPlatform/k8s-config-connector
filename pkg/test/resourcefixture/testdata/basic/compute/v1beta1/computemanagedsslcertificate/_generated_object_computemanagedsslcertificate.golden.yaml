@@ -10,7 +10,7 @@ metadata:
   generation: 1
   labels:
     cnrm-test: "true"
-  name: computemanagedsslcertificate-${uniqueId}
+  name: ${sslCertificateID}
   namespace: ${uniqueId}
 spec:
   managed:
@@ -18,7 +18,7 @@ spec:
     - sslcert.fixture.club.
   projectRef:
     external: ${projectId}
-  resourceID: computemanagedsslcertificate-${uniqueId}
+  resourceID: ${sslCertificateID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -30,4 +30,4 @@ status:
   observedState:
     certificateID: 1111111111111111
     creationTimestamp: "1970-01-01T00:00:00Z"
-    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computemanagedsslcertificate-${uniqueId}
+    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}

@@ -27,8 +27,9 @@ import (
 )
 
 type GCPProject struct {
-	ProjectID     string
-	ProjectNumber int64
+	ProjectID      string
+	ProjectNumber  int64
+	OrganizationID string
 }
 
 // GetDefaultProject returns the ID of user's configured default GCP project.
@@ -38,11 +39,25 @@ func GetDefaultProject(t *testing.T) GCPProject {
 
 	projectID := GetDefaultProjectID(t)
 
-	projectNumber, err := GetProjectNumber(ctx, projectID)
+	projectInfo, err := GetProjectInfo(ctx, projectID)
 	if err != nil {
 		t.Fatalf("error getting project number for %q: %v", projectID, err)
 	}
-	return GCPProject{ProjectID: projectID, ProjectNumber: projectNumber}
+
+	ancestry, err := GetProjectAncestry(ctx, projectID)
+	if err != nil {
+		t.Fatalf("error getting project ancestry for %q: %v", projectID, err)
+	}
+
+	var organizationID string
+	for _, ancestor := range ancestry.Ancestor {
+		if ancestor.ResourceId.Type == "organization" {
+			organizationID = strings.TrimPrefix(ancestor.ResourceId.Id, "organizations/")
+			break
+		}
+	}
+
+	return GCPProject{ProjectID: projectID, ProjectNumber: projectInfo.ProjectNumber, OrganizationID: organizationID}
 }
 
 // GetDefaultProjectID returns the ID of user's configured default GCP project.
@@ -71,17 +86,33 @@ func NewCloudResourceManagerClient(ctx context.Context) (*cloudresourcemanager.S
 	return client, nil
 }
 
-func GetProjectNumber(ctx context.Context, projectID string) (int64, error) {
+// GetProjectInfo returns the full project for the given project ID.
+func GetProjectInfo(ctx context.Context, projectID string) (*cloudresourcemanager.Project, error) {
 	client, err := NewCloudResourceManagerClient(ctx)
 	if err != nil {
-		return 0, fmt.Errorf("error creating resource manager client: %w", err)
+		return nil, fmt.Errorf("error creating resource manager client: %w", err)
 	}
-	project, err := client.Projects.Get(projectID).Do()
+	project, err := client.Projects.Get(projectID).Context(ctx).Do()
 	if err != nil {
-		return 0, fmt.Errorf("error getting project with id %q: %w", projectID, err)
+		return nil, fmt.Errorf("error getting project with id %q: %w", projectID, err)
 	}
 
-	return project.ProjectNumber, nil
+	return project, nil
+}
+
+// GetProjectAncestry returns the project ancestry for the given project ID.
+func GetProjectAncestry(ctx context.Context, projectID string) (*cloudresourcemanager.GetAncestryResponse, error) {
+	client, err := NewCloudResourceManagerClient(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("error creating resource manager client: %w", err)
+	}
+	req := &cloudresourcemanager.GetAncestryRequest{}
+	ancestry, err := client.Projects.GetAncestry(projectID, req).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("error getting project ancestry for project %q: %w", projectID, err)
+	}
+
+	return ancestry, nil
 }
 
 const (

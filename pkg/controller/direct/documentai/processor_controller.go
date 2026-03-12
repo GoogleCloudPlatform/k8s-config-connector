@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/documentai/apiv1"
 	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
@@ -32,7 +33,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -62,7 +62,9 @@ func (m *modelProcessor) client(ctx context.Context) (*gcp.DocumentProcessorClie
 	return gcpClient, err
 }
 
-func (m *modelProcessor) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelProcessor) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	obj := &krm.DocumentAIProcessor{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -127,7 +129,7 @@ func (a *ProcessorAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := DocumentAIProcessorSpec_ToProto(mapCtx, &desired.Spec)
+	resource := DocumentAIProcessorSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -143,7 +145,7 @@ func (a *ProcessorAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log.V(2).Info("successfully created Processor", "name", a.id)
 
 	status := &krm.DocumentAIProcessorStatus{}
-	status.ObservedState = DocumentAIProcessorObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DocumentAIProcessorObservedState_v1alpha1_FromProto(mapCtx, created)
 	// TODO: is the default version also an output field?
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -158,7 +160,7 @@ func (a *ProcessorAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log.V(2).Info("updating Processor", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := DocumentAIProcessorSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := DocumentAIProcessorSpec_v1alpha1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -179,12 +181,16 @@ func (a *ProcessorAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	if desiredPb.DefaultProcessorVersion == a.actual.DefaultProcessorVersion {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.DocumentAIProcessorStatus{}
-		status.ObservedState = DocumentAIProcessorObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = DocumentAIProcessorObservedState_v1alpha1_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	report.AddField("default_processor_version", a.actual.DefaultProcessorVersion, desiredPb.DefaultProcessorVersion)
+	structuredreporting.ReportDiff(ctx, report)
 
 	req := &pb.SetDefaultProcessorVersionRequest{
 		Processor:               a.id.String(),
@@ -207,7 +213,7 @@ func (a *ProcessorAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	}
 
 	status := &krm.DocumentAIProcessorStatus{}
-	status.ObservedState = DocumentAIProcessorObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DocumentAIProcessorObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -223,7 +229,7 @@ func (a *ProcessorAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 
 	obj := &krm.DocumentAIProcessor{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DocumentAIProcessorSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DocumentAIProcessorSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

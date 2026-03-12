@@ -20,7 +20,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/klog/v2"
@@ -36,7 +35,6 @@ type registration struct {
 	gvk     schema.GroupVersionKind
 	factory ModelFactoryFunc
 	model   directbase.Model
-	rg      predicate.ReconcileGate
 }
 
 type ModelFactoryFunc func(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error)
@@ -47,11 +45,6 @@ func GetModel(gk schema.GroupKind) (directbase.Model, error) {
 		return nil, fmt.Errorf("no model registered for %s", gk)
 	}
 	return registration.model, nil
-}
-
-func GetReconcileGate(gk schema.GroupKind) predicate.ReconcileGate {
-	registration := singleton.registrations[gk]
-	return registration.rg
 }
 
 func PreferredGVK(gk schema.GroupKind) (schema.GroupVersionKind, bool) {
@@ -93,18 +86,15 @@ func Init(ctx context.Context, config *config.ControllerConfig) error {
 }
 
 func RegisterModel(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc) {
-	rg := &predicate.OptInToDirectReconciliation{}
-	RegisterModelWithReconcileGate(gvk, modelFn, rg)
-}
-
-func RegisterModelWithReconcileGate(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc, rg predicate.ReconcileGate) {
 	if singleton.registrations == nil {
 		singleton.registrations = make(map[schema.GroupKind]*registration)
+	}
+	if singleton.registrations[gvk.GroupKind()] != nil {
+		klog.Fatalf("Model for %s already registered", gvk.GroupKind())
 	}
 	singleton.registrations[gvk.GroupKind()] = &registration{
 		gvk:     gvk,
 		factory: modelFn,
-		rg:      rg,
 	}
 }
 
@@ -160,7 +150,11 @@ func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 		return false, nil
 	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 		return false, nil
+		// case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
+		// 	// https://cloud.google.com/run/docs/reference/iam/roles
+		// 	return true, nil
 	}
+
 	klog.Warningf("groupKind %v is not recognized as a direct kind for SupportsIAM check", groupKind)
 	return false, nil
 }
