@@ -62,7 +62,7 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="\$(git rev-parse --show-toplevel)"
-source "\${REPO_ROOT}/scripts/set-x-tools-version.sh"
+source "\${REPO_ROOT}/dev/tools/goimports.sh"
 cd \${REPO_ROOT}/dev/tools/controllerbuilder
 EOF
 

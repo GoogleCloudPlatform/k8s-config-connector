@@ -20,7 +20,7 @@ set -o pipefail
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 REPO_ROOT="${SCRIPT_DIR}/../../.."
-source "${REPO_ROOT}/scripts/set-x-tools-version.sh"
+source "${REPO_ROOT}/dev/tools/goimports.sh"
 
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
