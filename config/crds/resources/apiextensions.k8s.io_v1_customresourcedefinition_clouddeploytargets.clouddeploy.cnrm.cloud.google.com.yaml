@@ -489,12 +489,11 @@ spec:
               multiTarget:
                 description: Information specifying a multi-target.
                 properties:
-                  targets:
+                  targetRefs:
                     description: Required. The target_ids of this multiTarget.
                     items:
-                      description: CloudDeployTargetRef defines the resource reference
-                        to CloudDeployTarget, which "External" field holds the GCP
-                        identifier for the KRM object.
+                      description: A resource reference to CloudDeployTarget, which
+                        "External" field holds the GCP identifier for the KRM object.
                       oneOf:
                       - not:
                           required:

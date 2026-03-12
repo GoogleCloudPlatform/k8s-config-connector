@@ -28,7 +28,7 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &CloudDeployTargetRef{}
 
-// CloudDeployTargetRef defines the resource reference to CloudDeployTarget, which "External" field
+// A resource reference to CloudDeployTarget, which "External" field
 // holds the GCP identifier for the KRM object.
 type CloudDeployTargetRef struct {
 	// A reference to an externally managed CloudDeployTarget resource.
