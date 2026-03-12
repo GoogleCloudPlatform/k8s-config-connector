@@ -28,4 +28,4 @@ go run . generate-types --config ${REPO_ROOT}/apis/managedkafka/v1beta1/generate
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/managedkafka/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@v0.39.0 -w  pkg/controller/direct/managedkafka/
