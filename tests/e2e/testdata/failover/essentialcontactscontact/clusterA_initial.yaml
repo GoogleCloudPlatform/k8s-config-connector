@@ -1,0 +1,34 @@
+apiVersion: essentialcontacts.cnrm.cloud.google.com/v1beta1
+kind: EssentialContactsContact
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"essentialcontacts.cnrm.cloud.google.com/v1beta1","kind":"EssentialContactsContact","metadata":{"annotations":{},"name":"essentialcontactscontact-mcl-28322","namespace":"cnrm-system"},"spec":{"email":"mcl-test@test.com","languageTag":"en","notificationCategorySubscriptions":["BILLING"],"projectRef":{"external":"mock-project"}}}
+  creationTimestamp: "2026-03-05T20:36:07Z"
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  name: essentialcontactscontact-mcl-28322
+  namespace: cnrm-system
+  resourceVersion: "555"
+  uid: cf4b0ea9-6450-437e-8890-688ac66122a9
+spec:
+  email: mcl-test@test.com
+  languageTag: en
+  notificationCategorySubscriptions:
+  - BILLING
+  projectRef:
+    external: mock-project
+status:
+  conditions:
+  - lastTransitionTime: "2026-03-05T20:36:07Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/518915279/contacts/7
+  observedGeneration: 1
+  observedState:
+    validateTime: "2026-03-05T20:36:07.566182987Z"
+    validationState: VALID
