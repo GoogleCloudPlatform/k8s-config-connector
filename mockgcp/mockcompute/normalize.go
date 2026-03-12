@@ -17,7 +17,6 @@ package mockcompute
 import (
 	"context"
 	"fmt"
-	"net/url"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/regions"
