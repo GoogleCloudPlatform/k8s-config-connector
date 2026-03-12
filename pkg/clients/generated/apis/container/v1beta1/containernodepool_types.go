@@ -114,6 +114,10 @@ type NodepoolEphemeralStorageConfig struct {
 }
 
 type NodepoolEphemeralStorageLocalSsdConfig struct {
+	/* Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces. */
+	// +optional
+	DataCacheCount *int64 `json:"dataCacheCount,omitempty"`
+
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	LocalSsdCount int64 `json:"localSsdCount"`
 }

@@ -118,7 +118,7 @@ type ClusterAuthenticatorGroupsConfig struct {
 }
 
 type ClusterAutoProvisioningDefaults struct {
-	/* Immutable. The Customer Managed Encryption Key used to encrypt the
+	/* The Customer Managed Encryption Key used to encrypt the
 	boot disk attached to each node in the node pool. */
 	// +optional
 	BootDiskKMSKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSKeyRef,omitempty"`
@@ -319,6 +319,10 @@ type ClusterEphemeralStorageConfig struct {
 }
 
 type ClusterEphemeralStorageLocalSsdConfig struct {
+	/* Immutable. Number of local SSDs to be utilized for GKE Data Cache. Uses NVMe interfaces. */
+	// +optional
+	DataCacheCount *int64 `json:"dataCacheCount,omitempty"`
+
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	LocalSsdCount int64 `json:"localSsdCount"`
 }
