@@ -113,5 +113,8 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".source.cloud_run_revision.service_uri")
 	f.Unimplemented_NotYetTriaged(".probing_details.probed_all_devices")
 
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].hybrid_subnet")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].hybrid_subnet")
+
 	return f
 }
