@@ -1,9 +1,17 @@
-GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fkeys%2Fapikeyskey${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -22,8 +30,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys?$alt=json%3Benum-encoding%3Dint&keyId=apikeyskey${uniqueId}
+POST https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys?%24alt=json%3Benum-encoding%3Dint&keyId=apikeyskey${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 {
@@ -42,6 +51,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -50,12 +66,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fkeys%2Fapikeyskey${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "Example Display Name",
@@ -74,8 +98,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=displayName,restrictions
+PATCH https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2Crestrictions
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: key.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fkeys%2Fapikeyskey${uniqueId}
 
 {
@@ -96,6 +121,13 @@ X-Goog-Request-Params: key.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fk
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -104,12 +136,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fkeys%2Fapikeyskey${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "Example Display Name - Updated",
@@ -129,12 +169,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fkeys%2Fapikeyskey${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "operations/${operationID}"
@@ -144,10 +192,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://apikeys.googleapis.com/v2/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=operations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,

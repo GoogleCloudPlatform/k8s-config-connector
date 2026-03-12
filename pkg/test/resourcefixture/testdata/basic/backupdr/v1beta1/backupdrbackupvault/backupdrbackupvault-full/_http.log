@@ -1,9 +1,17 @@
-GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -15,8 +23,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults?$alt=json%3Benum-encoding%3Dint&backupVaultId=backupdrbackupvault-full-${uniqueId}
+POST https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults?%24alt=json%3Benum-encoding%3Dint&backupVaultId=backupdrbackupvault-full-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -33,6 +42,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -49,10 +65,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -89,12 +113,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "accessRestriction": 2,
@@ -118,8 +150,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=description,labels,backupMinimumEnforcedRetentionDuration,effectiveTime
+PATCH https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels%2CbackupMinimumEnforcedRetentionDuration%2CeffectiveTime
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: backup_vault.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
 
 {
@@ -139,6 +172,13 @@ X-Goog-Request-Params: backup_vault.name=projects%2F${projectId}%2Flocations%2Fu
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -155,10 +195,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -196,12 +244,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "accessRestriction": 2,
@@ -226,12 +282,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -248,10 +312,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,

@@ -1,5 +1,6 @@
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "contentMatchers": [
@@ -42,6 +43,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "checkerType": "STATIC_IP_CHECKERS",
@@ -88,9 +96,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "checkerType": "STATIC_IP_CHECKERS",
@@ -135,8 +151,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json&updateMask=displayName,httpCheck.authInfo.password,httpCheck.authInfo.username,httpCheck.body,httpCheck.headers,httpCheck.path,httpCheck.port,httpCheck.validateSsl,period,selectedRegions
+PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json&updateMask=displayName%2ChttpCheck.authInfo.password%2ChttpCheck.authInfo.username%2ChttpCheck.body%2ChttpCheck.headers%2ChttpCheck.path%2ChttpCheck.port%2ChttpCheck.validateSsl%2Cperiod%2CselectedRegions
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "contentMatchers": [
@@ -176,6 +193,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "checkerType": "STATIC_IP_CHECKERS",
@@ -226,9 +250,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "checkerType": "STATIC_IP_CHECKERS",
@@ -279,9 +311,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -289,9 +329,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {

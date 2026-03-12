@@ -11,6 +11,9 @@ Content-Type: application/json
 200 OK
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -51,6 +54,9 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "acl": [
@@ -167,6 +173,9 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "items": [
@@ -289,4 +298,7 @@ Connection: keep-alive
 204 No Content
 Content-Type: application/json
 Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 

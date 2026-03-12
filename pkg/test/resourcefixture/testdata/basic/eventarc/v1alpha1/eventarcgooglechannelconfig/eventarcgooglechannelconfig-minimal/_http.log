@@ -1,9 +1,17 @@
-GET https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/googleChannelConfig?$alt=json%3Benum-encoding%3Dint
+GET https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/googleChannelConfig?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FgoogleChannelConfig
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/test-key-ring/cryptoKeys/test-crypto-key",
@@ -13,8 +21,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/googleChannelConfig?$alt=json%3Benum-encoding%3Dint&updateMask=cryptoKeyName
+PATCH https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/googleChannelConfig?%24alt=json%3Benum-encoding%3Dint&updateMask=cryptoKeyName
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: google_channel_config.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FgoogleChannelConfig
 
 {
@@ -23,6 +32,13 @@ X-Goog-Request-Params: google_channel_config.name=projects%2F${projectId}%2Floca
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectId}/locations/us-central1/googleChannelConfig",
@@ -31,12 +47,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/googleChannelConfig?$alt=json%3Benum-encoding%3Dint
+GET https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/googleChannelConfig?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FgoogleChannelConfig
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectId}/locations/us-central1/googleChannelConfig",

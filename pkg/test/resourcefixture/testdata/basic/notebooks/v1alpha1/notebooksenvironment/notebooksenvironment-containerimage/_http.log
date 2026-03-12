@@ -1,9 +1,17 @@
-GET https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1-a%2Fenvironments%2Fnotebooksenvironment-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -15,8 +23,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-west1-a/environments?$alt=json%3Benum-encoding%3Dint&environmentId=notebooksenvironment-${uniqueId}
+POST https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-west1-a/environments?%24alt=json%3Benum-encoding%3Dint&environmentId=notebooksenvironment-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1-a
 
 {
@@ -27,6 +36,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1-a
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": false,
@@ -46,10 +62,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-west1-a/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1-a%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -76,12 +100,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1-a%2Fenvironments%2Fnotebooksenvironment-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "containerImage": {
@@ -93,12 +125,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-west1-a/environments/notebooksenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1-a%2Fenvironments%2Fnotebooksenvironment-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": false,
@@ -118,10 +158,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-west1-a/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1-a%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,

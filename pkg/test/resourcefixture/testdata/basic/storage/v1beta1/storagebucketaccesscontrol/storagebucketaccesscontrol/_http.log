@@ -1,8 +1,13 @@
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "error": {
@@ -22,6 +27,8 @@ Pragma: no-cache
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 {
   "iamConfiguration": {
@@ -44,6 +51,9 @@ Content-Type: application/json
 200 OK
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -82,9 +92,14 @@ Pragma: no-cache
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -123,9 +138,14 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -164,9 +184,14 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -206,10 +231,14 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
 Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "error": {
@@ -229,6 +258,7 @@ Pragma: no-cache
 
 POST https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl?alt=json
 Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -239,6 +269,9 @@ Content-Type: application/json
 200 OK
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -254,9 +287,13 @@ Pragma: no-cache
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
 Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -272,9 +309,13 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
 Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -290,6 +331,7 @@ Content-Type: application/json; charset=UTF-8
 
 PUT https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
 Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -300,6 +342,9 @@ Content-Type: application/json
 200 OK
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -315,9 +360,13 @@ Pragma: no-cache
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
 Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -332,9 +381,14 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -374,9 +428,13 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
 Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -391,9 +449,14 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "kind": "storage#objects"
@@ -402,20 +465,29 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 204 No Content
 Content-Type: application/json
 Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 
 ---
 
 DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
 Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "error": {

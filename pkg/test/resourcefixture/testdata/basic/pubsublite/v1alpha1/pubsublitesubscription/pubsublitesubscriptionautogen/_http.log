@@ -1,8 +1,16 @@
 GET https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1-a/topics/pubsublitetopic${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -23,6 +31,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1-a/topics?alt=json&topicId=pubsublitetopic${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "partitionConfig": {
@@ -39,6 +48,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectId}/locations/us-central1-a/topics/pubsublitetopic${uniqueId}",
@@ -58,9 +74,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1-a/topics/pubsublitetopic${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectId}/locations/us-central1-a/topics/pubsublitetopic${uniqueId}",
@@ -80,9 +104,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1-a/subscriptions/pubsublitesubscription${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -103,6 +135,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1-a/subscriptions?alt=json&subscriptionId=pubsublitesubscription${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "deliveryConfig": {
@@ -113,6 +146,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "deliveryConfig": {
@@ -126,9 +166,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1-a/subscriptions/pubsublitesubscription${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "deliveryConfig": {
@@ -142,9 +190,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1-a/subscriptions/pubsublitesubscription${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -152,9 +208,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1-a/topics/pubsublitetopic${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectId}/locations/us-central1-a/topics/pubsublitetopic${uniqueId}",
@@ -174,8 +238,16 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1-a/topics/pubsublitetopic${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

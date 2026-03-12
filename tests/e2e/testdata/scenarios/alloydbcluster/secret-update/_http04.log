@@ -1,8 +1,16 @@
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "automatedBackupPolicy": {
@@ -59,9 +67,9 @@ Content-Type: application/json; charset=UTF-8
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
-  "network": "projects/${projectNumber}/global/networks/${networkID}",
+  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/${networkID}"
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
   },
   "state": "READY",
   "subscriptionType": "STANDARD",
@@ -73,6 +81,7 @@ Content-Type: application/json; charset=UTF-8
 
 PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}?alt=json&updateMask=initialUser
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "automatedBackupPolicy": {
@@ -110,14 +119,21 @@ Content-Type: application/json
   "labels": {
     "managed-by-cnrm": "true"
   },
-  "network": "projects/${projectNumber}/global/networks/${networkID}",
+  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/${networkID}"
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
   }
 }
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -134,9 +150,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -205,9 +229,9 @@ Content-Type: application/json; charset=UTF-8
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
-    "network": "projects/${projectNumber}/global/networks/${networkID}",
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
     "networkConfig": {
-      "network": "projects/${projectNumber}/global/networks/${networkID}"
+      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
     },
     "state": "READY",
     "subscriptionType": "STANDARD",
@@ -220,9 +244,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "automatedBackupPolicy": {
@@ -279,9 +311,9 @@ Content-Type: application/json; charset=UTF-8
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
-  "network": "projects/${projectNumber}/global/networks/${networkID}",
+  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/${networkID}"
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
   },
   "state": "READY",
   "subscriptionType": "STANDARD",

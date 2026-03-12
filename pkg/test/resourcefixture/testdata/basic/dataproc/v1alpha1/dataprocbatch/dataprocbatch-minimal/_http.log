@@ -1,9 +1,18 @@
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fbatches%2Fdataprocbatch-minimal-${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -15,9 +24,11 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/batches?$alt=json%3Benum-encoding%3Dint&batchId=dataprocbatch-minimal-${uniqueId}
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/batches?%24alt=json%3Benum-encoding%3Dint&batchId=dataprocbatch-minimal-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+X-Goog-User-Project: ${projectId}
 
 {
   "labels": {
@@ -31,6 +42,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -59,10 +77,19 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -148,12 +175,21 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fbatches%2Fdataprocbatch-minimal-${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -211,11 +247,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fbatches%2Fdataprocbatch-minimal-${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

@@ -1,9 +1,18 @@
 GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 403 Forbidden
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -17,7 +26,9 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates?tagTemplateId=dctt_${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+X-Goog-User-Project: ${projectId}
 
 {
   "displayName": "TestTagTemplate",
@@ -34,6 +45,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "TestTagTemplate",
@@ -54,10 +72,19 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "TestTagTemplate",
@@ -78,7 +105,9 @@ Content-Type: application/json; charset=UTF-8
 
 PATCH https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}?updateMask=displayName
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: tag_template.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 {
   "displayName": "UpdatedTagTemplate",
@@ -96,6 +125,13 @@ X-Goog-Request-Params: tag_template.name=projects%2F${projectId}%2Flocations%2Fu
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "UpdatedTagTemplate",
@@ -116,10 +152,19 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "UpdatedTagTemplate",
@@ -140,9 +185,18 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}?force=true
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

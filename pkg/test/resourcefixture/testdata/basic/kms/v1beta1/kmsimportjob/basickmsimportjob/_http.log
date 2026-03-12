@@ -1,8 +1,16 @@
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -16,9 +24,17 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -29,9 +45,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -40,12 +64,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyring-${uniqueId}/importJobs/kmsimportjob-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyring-${uniqueId}/importJobs/kmsimportjob-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FkeyRings%2Fkmskeyring-${uniqueId}%2FimportJobs%2Fkmsimportjob-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -57,8 +89,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyring-${uniqueId}/importJobs?$alt=json%3Benum-encoding%3Dint&importJobId=kmsimportjob-${uniqueId}
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyring-${uniqueId}/importJobs?%24alt=json%3Benum-encoding%3Dint&importJobId=kmsimportjob-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2%2FkeyRings%2Fkmskeyring-${uniqueId}
 
 {
@@ -68,6 +101,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2%2Fk
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -80,12 +120,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyring-${uniqueId}/importJobs/kmsimportjob-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyring-${uniqueId}/importJobs/kmsimportjob-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FkeyRings%2Fkmskeyring-${uniqueId}%2FimportJobs%2Fkmsimportjob-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "attestation": {
@@ -120,9 +168,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west2/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
