@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// proto.message: google.identity.accesscontextmanager.v1.ServicePerimeter
-// api.group: accesscontextmanager.cnrm.cloud.google.com
+// proto.message: google.cloud.orgpolicy.v2.Policy
+// api.group: orgpolicy.cnrm.cloud.google.com
 
 package accesscontextmanager
 

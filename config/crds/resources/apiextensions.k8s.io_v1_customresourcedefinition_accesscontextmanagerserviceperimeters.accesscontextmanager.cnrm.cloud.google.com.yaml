@@ -190,6 +190,8 @@ spec:
                                 minProperties: 1
                                 properties:
                                   serviceAccountRef:
+                                    description: A reference to an IAMServiceAccount
+                                      resource.
                                     oneOf:
                                     - not:
                                         required:
@@ -219,6 +221,8 @@ spec:
                                         type: string
                                     type: object
                                   user:
+                                    description: A user identity, should represent
+                                      individual user or service account only.
                                     type: string
                                 type: object
                               type: array
@@ -257,6 +261,8 @@ spec:
                                       will allow all methods AND permissions for the
                                       service specified in 'serviceName'.
                                     items:
+                                      maxProperties: 1
+                                      minProperties: 1
                                       properties:
                                         method:
                                           description: Value for 'method' should be
@@ -293,6 +299,8 @@ spec:
                                       only projects in the form "projects/{project_number}".
                                       A request matches if it contains a resource
                                       in this list.
+                                    maxProperties: 1
+                                    minProperties: 1
                                     oneOf:
                                     - not:
                                         required:
@@ -349,6 +357,8 @@ spec:
                                 minProperties: 1
                                 properties:
                                   serviceAccountRef:
+                                    description: A reference to an IAMServiceAccount
+                                      resource.
                                     oneOf:
                                     - not:
                                         required:
@@ -378,6 +388,8 @@ spec:
                                         type: string
                                     type: object
                                   user:
+                                    description: A user identity, should represent
+                                      individual user or service account only.
                                     type: string
                                 type: object
                               type: array
@@ -392,9 +404,12 @@ spec:
                               description: Sources that this 'IngressPolicy' authorizes
                                 access from.
                               items:
+                                maxProperties: 1
+                                minProperties: 1
                                 properties:
                                   accessLevelRef:
-                                    description: A reference to an AccessLevel resource.
+                                    description: (Optional) A reference to an AccessLevel
+                                      resource that is allowed to ingress the perimeter.
                                     oneOf:
                                     - not:
                                         required:
@@ -432,6 +447,8 @@ spec:
                                       The project may be in any Google Cloud organization,
                                       not just the organization that the perimeter
                                       is defined in.
+                                    maxProperties: 1
+                                    minProperties: 1
                                     oneOf:
                                     - not:
                                         required:
@@ -483,6 +500,8 @@ spec:
                                       will allow all methods AND permissions for the
                                       service specified in 'serviceName'.
                                     items:
+                                      maxProperties: 1
+                                      minProperties: 1
                                       properties:
                                         method:
                                           description: Value for 'method' should be
@@ -523,6 +542,8 @@ spec:
                                       allowed to be accessed by sources defined in
                                       the corresponding IngressFrom. A request matches
                                       if it contains a resource in this list.
+                                    maxProperties: 1
+                                    minProperties: 1
                                     oneOf:
                                     - not:
                                         required:
@@ -566,6 +587,8 @@ spec:
                           description: (Optional) A list of GCP resources that are
                             inside of the service perimeter. Currently only projects
                             are allowed.
+                          maxProperties: 1
+                          minProperties: 1
                           oneOf:
                           - not:
                               required:
@@ -686,6 +709,8 @@ spec:
                                 minProperties: 1
                                 properties:
                                   serviceAccountRef:
+                                    description: A reference to an IAMServiceAccount
+                                      resource.
                                     oneOf:
                                     - not:
                                         required:
@@ -715,6 +740,8 @@ spec:
                                         type: string
                                     type: object
                                   user:
+                                    description: A user identity, should represent
+                                      individual user or service account only.
                                     type: string
                                 type: object
                               type: array
@@ -753,6 +780,8 @@ spec:
                                       will allow all methods AND permissions for the
                                       service specified in 'serviceName'.
                                     items:
+                                      maxProperties: 1
+                                      minProperties: 1
                                       properties:
                                         method:
                                           description: Value for 'method' should be
@@ -789,6 +818,8 @@ spec:
                                       only projects in the form "projects/{project_number}".
                                       A request matches if it contains a resource
                                       in this list.
+                                    maxProperties: 1
+                                    minProperties: 1
                                     oneOf:
                                     - not:
                                         required:
@@ -845,6 +876,8 @@ spec:
                                 minProperties: 1
                                 properties:
                                   serviceAccountRef:
+                                    description: A reference to an IAMServiceAccount
+                                      resource.
                                     oneOf:
                                     - not:
                                         required:
@@ -874,6 +907,8 @@ spec:
                                         type: string
                                     type: object
                                   user:
+                                    description: A user identity, should represent
+                                      individual user or service account only.
                                     type: string
                                 type: object
                               type: array
@@ -888,9 +923,12 @@ spec:
                               description: Sources that this 'IngressPolicy' authorizes
                                 access from.
                               items:
+                                maxProperties: 1
+                                minProperties: 1
                                 properties:
                                   accessLevelRef:
-                                    description: A reference to an AccessLevel resource.
+                                    description: (Optional) A reference to an AccessLevel
+                                      resource that is allowed to ingress the perimeter.
                                     oneOf:
                                     - not:
                                         required:
@@ -928,6 +966,8 @@ spec:
                                       The project may be in any Google Cloud organization,
                                       not just the organization that the perimeter
                                       is defined in.
+                                    maxProperties: 1
+                                    minProperties: 1
                                     oneOf:
                                     - not:
                                         required:
@@ -979,6 +1019,8 @@ spec:
                                       will allow all methods AND permissions for the
                                       service specified in 'serviceName'.
                                     items:
+                                      maxProperties: 1
+                                      minProperties: 1
                                       properties:
                                         method:
                                           description: Value for 'method' should be
@@ -1019,6 +1061,8 @@ spec:
                                       allowed to be accessed by sources defined in
                                       the corresponding IngressFrom. A request matches
                                       if it contains a resource in this list.
+                                    maxProperties: 1
+                                    minProperties: 1
                                     oneOf:
                                     - not:
                                         required:
@@ -1062,6 +1106,8 @@ spec:
                           description: (Optional) A list of GCP resources that are
                             inside of the service perimeter. Currently only projects
                             are allowed.
+                          maxProperties: 1
+                          minProperties: 1
                           oneOf:
                           - not:
                               required:
