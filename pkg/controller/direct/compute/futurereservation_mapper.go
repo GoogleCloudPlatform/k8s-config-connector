@@ -198,8 +198,7 @@ func ComputeFutureReservationObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.Kind = in.Kind
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithID = in.SelfLinkWithId
-	out.SpecificSkuProperties = FutureReservationStatusSpecificSkuProperties_FromProto(mapCtx, in.GetStatus().GetSpecificSkuProperties())
-	// MISSING: Status
+	out.Status = FutureReservationStatus_v1beta1_FromProto(mapCtx, in.GetStatus())
 	out.Zone = in.Zone
 	return out
 }
@@ -213,10 +212,7 @@ func ComputeFutureReservationObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.Kind = in.Kind
 	out.SelfLink = in.SelfLink
 	out.SelfLinkWithId = in.SelfLinkWithID
-	if oneof := FutureReservationStatusSpecificSkuProperties_ToProto(mapCtx, in.SpecificSkuProperties); oneof != nil {
-		out.SpecificSkuProperties = &pb.FutureReservationSpecificSKUProperties{SourceInstanceTemplate: oneof.SourceInstanceTemplateId}
-	}
-	// MISSING: Status
+	out.Status = FutureReservationStatus_v1beta1_ToProto(mapCtx, in.Status)
 	out.Zone = in.Zone
 	return out
 }

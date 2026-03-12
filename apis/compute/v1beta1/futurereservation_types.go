@@ -137,39 +137,6 @@ type ComputeFutureReservationStatus struct {
 // ComputeFutureReservationObservedState is the state of the ComputeFutureReservation resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.compute.v1beta.FutureReservation
 type ComputeFutureReservationObservedState struct {
-	// [Output Only] The current status of the requested amendment.
-	//  Check the AmendmentStatus enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.amendment_status
-	AmendmentStatus *string `json:"amendmentStatus,omitempty"`
-
-	// Fully qualified urls of the automatically created reservations at start_time.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.auto_created_reservations
-	AutoCreatedReservations []string `json:"autoCreatedReservations,omitempty"`
-
-	// [Output Only] Represents the existing matching usage for the future reservation.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.existing_matching_usage_info
-	ExistingMatchingUsageInfo *FutureReservationStatusExistingMatchingUsageInfo `json:"existingMatchingUsageInfo,omitempty"`
-
-	// This count indicates the fulfilled capacity so far. This is set during "PROVISIONING" state. This count also includes capacity delivered as part of existing matching reservations.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.fulfilled_count
-	FulfilledCount *int64 `json:"fulfilledCount,omitempty"`
-
-	// [Output Only] This field represents the future reservation before an amendment was requested. If the amendment is declined, the Future Reservation will be reverted to the last known good state. The last known good state is not set when updating a future reservation whose Procurement Status is DRAFTING.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.last_known_good_state
-	LastKnownGoodState *FutureReservationStatusLastKnownGoodState `json:"lastKnownGoodState,omitempty"`
-
-	// Time when Future Reservation would become LOCKED, after which no modifications to Future Reservation will be allowed. Applicable only after the Future Reservation is in the APPROVED state. The lock_time is an RFC3339 string. The procurement_status will transition to PROCURING state at this time.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.lock_time
-	LockTime *string `json:"lockTime,omitempty"`
-
-	// Current state of this Future Reservation
-	//  Check the ProcurementStatus enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.procurement_status
-	ProcurementStatus *string `json:"procurementStatus,omitempty"`
-
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.specific_sku_properties
-	SpecificSkuProperties *FutureReservationStatusSpecificSkuProperties `json:"specificSkuProperties,omitempty"`
-
 	// [Output Only] The creation timestamp for this future reservation in RFC3339 text format.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
@@ -193,6 +160,9 @@ type ComputeFutureReservationObservedState struct {
 	// [Output Only] URL of the Zone where this future reservation resides.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.zone
 	Zone *string `json:"zone,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.status
+	Status *FutureReservationStatus `json:"status,omitempty"`
 }
 
 // +genclient

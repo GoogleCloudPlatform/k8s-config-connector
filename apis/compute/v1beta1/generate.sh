@@ -23,6 +23,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
+# Generate types for v1
 go run . generate-types \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1  \
@@ -32,9 +33,28 @@ go run . generate-types \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetTcpProxy:TargetTcpProxy
 
+mv ../../../apis/compute/v1beta1/types.generated.go ../../../apis/compute/v1beta1/types.generated.v1.go
+
+# Generate types for v1beta (FutureReservation)
+go run . generate-types \
+  --service google.cloud.compute.v1beta \
+  --api-version compute.cnrm.cloud.google.com/v1beta1  \
+  --resource ComputeFutureReservation:FutureReservation
+
+mv ../../../apis/compute/v1beta1/types.generated.go ../../../apis/compute/v1beta1/types.generated.v1beta.go
+
+# Merge them
+python3 ${REPO_ROOT}/dev/tasks/merge-generated-types.py \
+    ../../../apis/compute/v1beta1/types.generated.v1.go \
+    ../../../apis/compute/v1beta1/types.generated.v1beta.go \
+    ../../../apis/compute/v1beta1/types.generated.go
+
+rm ../../../apis/compute/v1beta1/types.generated.v1.go ../../../apis/compute/v1beta1/types.generated.v1beta.go
+
+# Generate mappers for both services
 go run . generate-mapper \
     --multiversion \
-    --service google.cloud.compute.v1 \
+    --service google.cloud.compute.v1,google.cloud.compute.v1beta \
     --api-version compute.cnrm.cloud.google.com/v1beta1
 
 cd ${REPO_ROOT}
