@@ -41,7 +41,7 @@ var abandonOnDeleteCheckKind = map[string]bool{
 	"BigtableInstance":  true,
 	"ContainerCluster":  true,
 	"ContainerNodePool": true,
-	"KMSKeyRing":         true,
+	"KMSKeyRing":        true,
 	"KMSCryptoKey":      true,
 	"RedisCluster":      true,
 	"SpannerDatabase":   true,
