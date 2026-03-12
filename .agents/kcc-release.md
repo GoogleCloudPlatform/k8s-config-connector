@@ -15,7 +15,8 @@
 ---
 name: KCC Release
 description: Kick starts the KCC release process by running the generation script.
-schedule: "0 8 * * TUE"
+<!-- schedule: "0 8 * * TUE" -->
+schedule: @daily <!-- use daily for testing, change back to "0 8 * * TUE" after testing -->
 ---
 
 # Role
