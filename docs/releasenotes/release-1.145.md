@@ -6,6 +6,9 @@
 
 ## New Beta Resources (Direct Reconciler):
 
+*   [`ComputeFutureReservation`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computefuturereservation)
+    *   Manage [future reservations](https://cloud.google.com/compute/docs/instances/future-reservations-overview) provisioning.
+
 *   [`ComputeSecurityPolicy`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computesecuritypolicy)
     *   Manage Google Cloud Armor security policies.
 
