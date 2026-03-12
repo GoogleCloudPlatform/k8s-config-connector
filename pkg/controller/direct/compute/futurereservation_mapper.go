@@ -52,6 +52,9 @@ func AllocationAggregateReservation_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.ReservedResources = direct.Slice_FromProto(mapCtx, in.ReservedResources, AllocationAggregateReservationReservedResourceInfo_FromProto)
 	out.VMFamily = in.VmFamily
 	out.WorkloadType = in.WorkloadType
+	out.HostCount = in.HostCount
+	out.InUseHostCount = in.InUseHostCount
+	out.InUseInstanceCount = in.InUseInstanceCount
 	return out
 }
 func AllocationAggregateReservation_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AllocationAggregateReservation) *pb.AllocationAggregateReservation {
@@ -63,6 +66,9 @@ func AllocationAggregateReservation_ToProto(mapCtx *direct.MapContext, in *krmv1
 	out.ReservedResources = direct.Slice_ToProto(mapCtx, in.ReservedResources, AllocationAggregateReservationReservedResourceInfo_ToProto)
 	out.VmFamily = in.VMFamily
 	out.WorkloadType = in.WorkloadType
+	out.HostCount = in.HostCount
+	out.InUseHostCount = in.InUseHostCount
+	out.InUseInstanceCount = in.InUseInstanceCount
 	return out
 }
 func AllocationAggregateReservationReservedResourceInfo_FromProto(mapCtx *direct.MapContext, in *pb.AllocationAggregateReservationReservedResourceInfo) *krmv1beta1.AllocationAggregateReservationReservedResourceInfo {
@@ -227,6 +233,7 @@ func ComputeFutureReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Fu
 	out.AutoDeleteAutoCreatedReservations = in.AutoDeleteAutoCreatedReservations
 	out.CommitmentInfo = FutureReservationCommitmentInfo_FromProto(mapCtx, in.GetCommitmentInfo())
 	out.DeploymentType = in.DeploymentType
+	out.ProtectionTier = in.ProtectionTier
 	out.Description = in.Description
 	out.EnableEmergentMaintenance = in.EnableEmergentMaintenance
 	out.Name = in.Name
@@ -271,6 +278,7 @@ func ComputeFutureReservationSpec_ToProto(mapCtx *direct.MapContext, in *krmv1be
 		}
 	}
 	out.DeploymentType = in.DeploymentType
+	out.ProtectionTier = in.ProtectionTier
 	out.Description = in.Description
 	out.EnableEmergentMaintenance = in.EnableEmergentMaintenance
 	out.Name = in.Name

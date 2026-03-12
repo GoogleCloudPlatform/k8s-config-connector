@@ -66,6 +66,15 @@ spec:
               aggregateReservation:
                 description: Aggregate reservation details for the future reservation.
                 properties:
+                  hostCount:
+                    format: int32
+                    type: integer
+                  inUseHostCount:
+                    format: int32
+                    type: integer
+                  inUseInstanceCount:
+                    format: int32
+                    type: integer
                   inUseResources:
                     description: '[Output only] List of resources currently in use.'
                     items:
@@ -239,6 +248,8 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+              protectionTier:
+                type: string
               reservationMode:
                 description: The reservation mode which determines reservation-termination
                   behavior and expected pricing. Check the ReservationMode enum for

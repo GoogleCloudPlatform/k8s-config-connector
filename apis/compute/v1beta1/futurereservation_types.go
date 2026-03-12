@@ -66,6 +66,9 @@ type ComputeFutureReservationSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.deployment_type
 	DeploymentType *string `json:"deploymentType,omitempty"`
 
+	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.protection_tier
+	ProtectionTier *string `json:"protectionTier,omitempty"`
+
 	// An optional description of this resource. Provide this property when you create the future reservation.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.description
 	Description *string `json:"description,omitempty"`
@@ -196,4 +199,34 @@ type ComputeFutureReservationList struct {
 
 func init() {
 	SchemeBuilder.Register(&ComputeFutureReservation{}, &ComputeFutureReservationList{})
+}
+
+// +kcc:proto=google.cloud.compute.v1beta.AllocationAggregateReservation
+type AllocationAggregateReservation struct {
+	// [Output only] List of resources currently in use.
+	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.in_use_resources
+	InUseResources []AllocationAggregateReservationReservedResourceInfo `json:"inUseResources,omitempty"`
+
+	// List of reserved resources (CPUs, memory, accelerators).
+	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.reserved_resources
+	ReservedResources []AllocationAggregateReservationReservedResourceInfo `json:"reservedResources,omitempty"`
+
+	// The VM family that all instances scheduled against this reservation must belong to.
+	//  Check the VmFamily enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.vm_family
+	VMFamily *string `json:"vmFamily,omitempty"`
+
+	// The workload type of the instances that will target this reservation.
+	//  Check the WorkloadType enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.workload_type
+	WorkloadType *string `json:"workloadType,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.host_count
+	HostCount *int32 `json:"hostCount,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.in_use_host_count
+	InUseHostCount *int32 `json:"inUseHostCount,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1beta.AllocationAggregateReservation.in_use_instance_count
+	InUseInstanceCount *int32 `json:"inUseInstanceCount,omitempty"`
 }
