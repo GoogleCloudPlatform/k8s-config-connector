@@ -235,7 +235,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		makeFieldsUnmanaged(table, a.unmanagedFields)
 		makeFieldsUnmanaged(a.actual, a.unmanagedFields)
 	}
-	eq, err := TableEq(a.actual, table)
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	eq, err := TableEq(a.actual, table, report)
 
 	if err != nil {
 		return err
@@ -245,9 +246,6 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		log.Info("no diff detected for Table", "name", a.id)
 		return a.UpdateStatusForUpdate(ctx, updateOp, a.actual)
 	}
-
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	report.AddField("spec", a.actual, table)
 	structuredreporting.ReportDiff(ctx, report)
 
 	a.customTableLogic(table)
