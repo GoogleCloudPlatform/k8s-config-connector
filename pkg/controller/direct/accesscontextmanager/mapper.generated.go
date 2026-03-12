@@ -22,11 +22,38 @@ package accesscontextmanager
 
 import (
 	pb "cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb"
+	krmaccesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	typepb "google.golang.org/genproto/googleapis/identity/accesscontextmanager/type"
 )
 
+func AccessContextManagerAccessLevelConditionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krmaccesscontextmanagerv1alpha1.AccessContextManagerAccessLevelConditionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmaccesscontextmanagerv1alpha1.AccessContextManagerAccessLevelConditionSpec{}
+	out.IPSubnetworks = in.IpSubnetworks
+	out.DevicePolicy = AccessLevelConditionDevicePolicy_FromProto(mapCtx, in.GetDevicePolicy())
+	out.RequiredAccessLevels = in.RequiredAccessLevels
+	out.Negate = direct.LazyPtr(in.GetNegate())
+	out.Members = in.Members
+	out.Regions = in.Regions
+	return out
+}
+func AccessContextManagerAccessLevelConditionSpec_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1alpha1.AccessContextManagerAccessLevelConditionSpec) *pb.Condition {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Condition{}
+	out.IpSubnetworks = in.IPSubnetworks
+	out.DevicePolicy = AccessLevelConditionDevicePolicy_ToProto(mapCtx, in.DevicePolicy)
+	out.RequiredAccessLevels = in.RequiredAccessLevels
+	out.Negate = direct.ValueOf(in.Negate)
+	out.Members = in.Members
+	out.Regions = in.Regions
+	return out
+}
 func AccessContextManagerAccessLevelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessLevel) *krm.AccessContextManagerAccessLevelObservedState {
 	if in == nil {
 		return nil
@@ -131,6 +158,52 @@ func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Etag
+	return out
+}
+func AccessLevelConditionDevicePolicy_FromProto(mapCtx *direct.MapContext, in *pb.DevicePolicy) *krmaccesscontextmanagerv1alpha1.AccessLevelConditionDevicePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmaccesscontextmanagerv1alpha1.AccessLevelConditionDevicePolicy{}
+	out.RequireScreenlock = direct.LazyPtr(in.GetRequireScreenlock())
+	out.AllowedEncryptionStatuses = direct.EnumSlice_FromProto(mapCtx, in.AllowedEncryptionStatuses)
+	out.OSConstraints = direct.Slice_FromProto(mapCtx, in.OsConstraints, AccessLevelConditionOsConstraints_FromProto)
+	out.AllowedDeviceManagementLevels = direct.EnumSlice_FromProto(mapCtx, in.AllowedDeviceManagementLevels)
+	out.RequireAdminApproval = direct.LazyPtr(in.GetRequireAdminApproval())
+	out.RequireCorpOwned = direct.LazyPtr(in.GetRequireCorpOwned())
+	return out
+}
+func AccessLevelConditionDevicePolicy_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1alpha1.AccessLevelConditionDevicePolicy) *pb.DevicePolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DevicePolicy{}
+	out.RequireScreenlock = direct.ValueOf(in.RequireScreenlock)
+	out.AllowedEncryptionStatuses = direct.EnumSlice_ToProto[typepb.DeviceEncryptionStatus](mapCtx, in.AllowedEncryptionStatuses)
+	out.OsConstraints = direct.Slice_ToProto(mapCtx, in.OSConstraints, AccessLevelConditionOsConstraints_ToProto)
+	out.AllowedDeviceManagementLevels = direct.EnumSlice_ToProto[typepb.DeviceManagementLevel](mapCtx, in.AllowedDeviceManagementLevels)
+	out.RequireAdminApproval = direct.ValueOf(in.RequireAdminApproval)
+	out.RequireCorpOwned = direct.ValueOf(in.RequireCorpOwned)
+	return out
+}
+func AccessLevelConditionOsConstraints_FromProto(mapCtx *direct.MapContext, in *pb.OsConstraint) *krmaccesscontextmanagerv1alpha1.AccessLevelConditionOsConstraints {
+	if in == nil {
+		return nil
+	}
+	out := &krmaccesscontextmanagerv1alpha1.AccessLevelConditionOsConstraints{}
+	out.OSType = direct.Enum_FromProto(mapCtx, in.GetOsType())
+	out.MinimumVersion = direct.LazyPtr(in.GetMinimumVersion())
+	// MISSING: RequireVerifiedChromeOS
+	return out
+}
+func AccessLevelConditionOsConstraints_ToProto(mapCtx *direct.MapContext, in *krmaccesscontextmanagerv1alpha1.AccessLevelConditionOsConstraints) *pb.OsConstraint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OsConstraint{}
+	out.OsType = direct.Enum_ToProto[typepb.OsType](mapCtx, in.OSType)
+	out.MinimumVersion = direct.ValueOf(in.MinimumVersion)
+	// MISSING: RequireVerifiedChromeOS
 	return out
 }
 func AccessLevelCustom_FromProto(mapCtx *direct.MapContext, in *pb.CustomLevel) *krm.AccessLevelCustom {
