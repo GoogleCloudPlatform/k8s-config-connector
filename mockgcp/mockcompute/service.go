@@ -126,9 +126,12 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterRoutesHandler,
-		pb.RegisterReservationsHandler)
+		pb.RegisterRoutesHandler)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterReservationsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
@@ -314,11 +317,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		// This is needed because the Compute API (and Terraform) can send multiple 'paths' parameters,
 		// but our generated proto has 'paths' as a single string field, and grpc-gateway fails
 		// if it sees multiple values for a non-repeated field.
-		q := u2.Query()
-		if paths := q["paths"]; len(paths) > 1 {
-			q.Set("paths", strings.Join(paths, ","))
-			u2.RawQuery = q.Encode()
-			changed = true
+		if r.URL.Query().Has("paths") {
+			q := u2.Query()
+			if paths := q["paths"]; len(paths) > 1 {
+				q.Set("paths", strings.Join(paths, ","))
+				u2.RawQuery = q.Encode()
+				changed = true
+			}
 		}
 
 		if changed {
