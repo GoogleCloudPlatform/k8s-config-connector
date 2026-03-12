@@ -66,6 +66,84 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              shareSettings:
+                description: The share setting for reservations.
+                properties:
+                  projectMap:
+                    description: A map of project number and project config. This
+                      is only valid when shareType's value is SPECIFIC_PROJECTS.
+                    items:
+                      properties:
+                        idRef:
+                          description: The key of this project config in the parent
+                            map.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: The `name` field of a `Project`
+                                resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
+                        projectIDRef:
+                          description: |-
+                            The project id/number should be the same as the key of this project
+                            config in the project map.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: The `name` field of a `Project`
+                                resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
+                      required:
+                      - idRef
+                      type: object
+                    type: array
+                  shareType:
+                    description: 'Type of sharing for this shared-reservation Possible
+                      values: ["LOCAL", "SPECIFIC_PROJECTS"].'
+                    type: string
+                type: object
               specificReservation:
                 description: Reservation for instances with specific machine shapes.
                 properties:

@@ -37,4 +37,4 @@ go run . generate-mapper --service google.cloud.resourcemanager.v3 --api-version
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/tags/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@v0.29.0 -w  pkg/controller/direct/tags/

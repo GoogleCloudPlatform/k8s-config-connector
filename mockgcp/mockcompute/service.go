@@ -121,12 +121,17 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterInstanceTemplatesServer(grpcServer, &InstanceTemplatesV1{MockService: s})
 
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
+	pb.RegisterReservationsServer(grpcServer, &ReservationsV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterRoutesHandler)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterReservationsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
@@ -301,9 +306,34 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	// I'm sure eventually we'll find something that needs special handling.
 	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
 		u := r.URL
+		u2 := *u
+		changed := false
 		if strings.HasPrefix(u.Path, "/compute/beta/") {
-			u2 := *u
 			u2.Path = "/compute/v1/" + strings.TrimPrefix(u.Path, "/compute/beta/")
+			changed = true
+		}
+
+		// Merge multiple 'paths' query parameters into a single comma-separated 'paths' parameter.
+		// This is needed because the Compute API (and Terraform) can send multiple 'paths' parameters,
+		// but our generated proto has 'paths' as a single string field, and grpc-gateway fails
+		// if it sees multiple values for a non-repeated field.
+		if r.URL.Query().Has("paths") {
+			q := u2.Query()
+			if paths := q["paths"]; len(paths) > 1 {
+				// We avoid q.Encode() because it sorts query parameters alphabetically,
+				// which would cause diffs in the HTTP logs for many tests.
+				// Instead we do a surgical replacement.
+				joinedPaths := strings.Join(paths, ",")
+				u2.RawQuery = strings.ReplaceAll(u2.RawQuery, "paths="+paths[0], "paths="+joinedPaths)
+				for _, p := range paths[1:] {
+					u2.RawQuery = strings.ReplaceAll(u2.RawQuery, "&paths="+p, "")
+					u2.RawQuery = strings.ReplaceAll(u2.RawQuery, "paths="+p+"&", "")
+				}
+				changed = true
+			}
+		}
+
+		if changed {
 			r = httpmux.RewriteRequest(r, &u2)
 		}
 
