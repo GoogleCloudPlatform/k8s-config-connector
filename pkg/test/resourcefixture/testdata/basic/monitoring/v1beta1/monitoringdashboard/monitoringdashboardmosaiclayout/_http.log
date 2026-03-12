@@ -906,25 +906,6 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -990,6 +971,152 @@ X-Xss-Protection: 0
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "monitoringdashboard-mosaiclayout",
+  "etag": "abcdef0123A=",
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "height": 1,
+        "widget": {
+          "id": "singleViewGroupWidget1",
+          "singleViewGroup": {},
+          "title": "SingleViewGroup Widget"
+        },
+        "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content",
+            "format": 1,
+            "style": {}
+          }
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "alertChart": {
+            "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+          },
+          "title": "AlertChart Widget"
+        },
+        "width": 12,
+        "yPos": 3
+      },
+      {
+        "height": 1,
+        "widget": {
+          "errorReportingPanel": {
+            "projectNames": [
+              "projects/project1",
+              "projects/project2"
+            ],
+            "services": [
+              "foo",
+              "bar"
+            ],
+            "versions": [
+              "v1"
+            ]
+          },
+          "title": "ErrorReporting Widget"
+        },
+        "width": 12,
+        "yPos": 4
+      },
+      {
+        "height": 1,
+        "widget": {
+          "incidentList": {
+            "monitoredResources": [
+              {
+                "labels": {
+                  "instance_id": "12345678901234",
+                  "project_id": "my-project",
+                  "zone": "us-central1-a"
+                },
+                "type": "gce_instance"
+              }
+            ],
+            "policyNames": [
+              "alertPolicies/${alertPolicyID}"
+            ]
+          },
+          "title": "IncidentList Widget"
+        },
+        "width": 12,
+        "yPos": 5
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

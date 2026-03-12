@@ -1,3 +1,28 @@
+GET https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2Fother${uniqueId}%2Fdashboards%2F${dashboardID}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Project 'other${uniqueId}' not found or permission denied.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
 GET https://cloudresourcemanager.googleapis.com/v1/projects/other${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -15,6 +40,107 @@ X-Xss-Protection: 0
   "error": {
     "code": 403,
     "message": "The caller does not have permission",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2Fother${uniqueId}
+
+{
+  "columnLayout": {
+    "columns": [
+      {
+        "weight": "2",
+        "widgets": [
+          {
+            "title": "Widget 1",
+            "xyChart": {
+              "dataSets": [
+                {
+                  "plotType": 1,
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "perSeriesAligner": 2
+                      },
+                      "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
+                    },
+                    "unitOverride": "1"
+                  }
+                }
+              ],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": 1
+              }
+            }
+          },
+          {
+            "text": {
+              "content": "Widget 2",
+              "format": 1
+            }
+          },
+          {
+            "title": "Widget 3",
+            "xyChart": {
+              "dataSets": [
+                {
+                  "plotType": 3,
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "perSeriesAligner": 2
+                      },
+                      "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
+                    },
+                    "unitOverride": "1"
+                  }
+                }
+              ],
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": 1
+              }
+            }
+          },
+          {
+            "logsPanel": {
+              "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\"",
+              "resourceNames": [
+                "projects/other${uniqueId}"
+              ]
+            },
+            "title": "Widget 4"
+          }
+        ]
+      }
+    ]
+  },
+  "displayName": "monitoringdashboard-sample",
+  "name": "projects/other${uniqueId}/dashboards/${dashboardID}"
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Project 'other${uniqueId}' not found or permission denied.",
     "status": "PERMISSION_DENIED"
   }
 }
@@ -50,101 +176,6 @@ X-Xss-Protection: 0
 
 {
   "name": "operations/${operationID}"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
-    "gettable": true,
-    "ready": true
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
-    "lifecycleState": "ACTIVE",
-    "name": "A monitored project",
-    "parent": {
-      "id": "${folderID}",
-      "type": "folder"
-    },
-    "projectId": "other${uniqueId}",
-    "projectNumber": "${projectNumber}"
-  }
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/other${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "A monitored project",
-  "parent": {
-    "id": "${folderID}",
-    "type": "folder"
-  },
-  "projectId": "other${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://cloudbilling.googleapis.com/v1/projects/other${uniqueId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "billingAccountName": "",
-  "billingEnabled": false,
-  "name": "projects/other${uniqueId}/billingInfo",
-  "projectId": "other${uniqueId}"
 }
 
 ---
@@ -618,6 +649,101 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
+    "gettable": true,
+    "ready": true
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lifecycleState": "ACTIVE",
+    "name": "A monitored project",
+    "parent": {
+      "id": "${folderID}",
+      "type": "folder"
+    },
+    "projectId": "other${uniqueId}",
+    "projectNumber": "${projectNumber}"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/other${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "A monitored project",
+  "parent": {
+    "id": "${folderID}",
+    "type": "folder"
+  },
+  "projectId": "other${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/other${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/other${uniqueId}/billingInfo",
+  "projectId": "other${uniqueId}"
+}
+
+---
+
 GET https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -977,25 +1103,6 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2Fother${uniqueId}%2Fdashboards%2F${dashboardID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
 GET https://cloudresourcemanager.googleapis.com/v1/projects/other${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1051,6 +1158,119 @@ X-Xss-Protection: 0
 
 DELETE https://cloudresourcemanager.googleapis.com/v1/projects/other${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2Fother${uniqueId}%2Fdashboards%2F${dashboardID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "columnLayout": {
+    "columns": [
+      {
+        "weight": "2",
+        "widgets": [
+          {
+            "title": "Widget 1",
+            "xyChart": {
+              "dataSets": [
+                {
+                  "plotType": 1,
+                  "targetAxis": 1,
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "perSeriesAligner": 2
+                      },
+                      "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
+                    },
+                    "unitOverride": "1"
+                  }
+                }
+              ],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": 1
+              }
+            }
+          },
+          {
+            "text": {
+              "content": "Widget 2",
+              "format": 1,
+              "style": {}
+            }
+          },
+          {
+            "title": "Widget 3",
+            "xyChart": {
+              "dataSets": [
+                {
+                  "plotType": 3,
+                  "targetAxis": 1,
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "perSeriesAligner": 2
+                      },
+                      "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
+                    },
+                    "unitOverride": "1"
+                  }
+                }
+              ],
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": 1
+              }
+            }
+          },
+          {
+            "logsPanel": {
+              "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
+            },
+            "title": "Widget 4"
+          }
+        ]
+      }
+    ]
+  },
+  "displayName": "monitoringdashboard updated",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2Fother${uniqueId}%2Fdashboards%2F${dashboardID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

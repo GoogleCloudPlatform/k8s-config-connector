@@ -88,6 +88,7 @@ func dashboardFuzzer() fuzztesting.KRMFuzzer {
 
 		// Resource names need to be in a special format.
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".logs_panel.resource_names") // the proto 'resource_names' needs to be a special format.
+		fuzzer.UnimplementedFields.Insert(widgetPath + ".id")
 	}
 
 	fuzzer.StatusFields.Insert(".etag")
