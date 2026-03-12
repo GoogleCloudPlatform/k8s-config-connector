@@ -1,5 +1,6 @@
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/groups?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "displayName": "sample-group",
@@ -9,6 +10,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "sample-group",
@@ -21,9 +29,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "sample-group",
@@ -36,6 +52,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "displayName": "tcp-uptime-check",
@@ -52,6 +69,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "checkerType": "STATIC_IP_CHECKERS",
@@ -72,9 +96,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "checkerType": "STATIC_IP_CHECKERS",
@@ -93,8 +125,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json&updateMask=displayName,timeout
+PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json&updateMask=displayName%2Ctimeout
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "displayName": "updated-tcp-uptime-check",
@@ -108,6 +141,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "checkerType": "STATIC_IP_CHECKERS",
@@ -128,9 +168,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "checkerType": "STATIC_IP_CHECKERS",
@@ -151,9 +199,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -161,9 +217,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -177,9 +241,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "sample-group",
@@ -192,9 +264,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -202,9 +282,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {

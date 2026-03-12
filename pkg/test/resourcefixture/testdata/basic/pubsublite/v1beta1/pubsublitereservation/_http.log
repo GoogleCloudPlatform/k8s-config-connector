@@ -1,8 +1,16 @@
 GET https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -23,6 +31,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1/reservations?alt=json&reservationId=pubsublitereservation-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "throughputCapacity": 2
@@ -30,6 +39,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}",
@@ -40,9 +56,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}",
@@ -53,6 +77,7 @@ Content-Type: application/json; charset=UTF-8
 
 PATCH https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}?alt=json&updateMask=throughputCapacity
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "throughputCapacity": 3
@@ -60,6 +85,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}",
@@ -70,9 +102,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}",
@@ -83,8 +123,16 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

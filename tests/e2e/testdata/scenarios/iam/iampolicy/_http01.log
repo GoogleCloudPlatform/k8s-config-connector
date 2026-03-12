@@ -1,7 +1,15 @@
 GET https://iam.googleapis.com/v1/projects/iampartialpolicy-dep-project/serviceAccounts/iampartialpolicy-dep-project-b@iampartialpolicy-dep-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -22,6 +30,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://iam.googleapis.com/v1/projects/iampartialpolicy-dep-project/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "accountId": "iampartialpolicy-dep-project-b",
@@ -30,6 +39,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "email": "iampartialpolicy-dep-project-b@iampartialpolicy-dep-project.iam.gserviceaccount.com",
@@ -43,9 +59,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://iam.googleapis.com/v1/projects/iampartialpolicy-dep-project/serviceAccounts/iampartialpolicy-dep-project-b@iampartialpolicy-dep-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "email": "iampartialpolicy-dep-project-b@iampartialpolicy-dep-project.iam.gserviceaccount.com",

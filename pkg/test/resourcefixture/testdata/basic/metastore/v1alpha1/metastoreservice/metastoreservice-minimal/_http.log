@@ -1,9 +1,17 @@
-GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmetastoreservice-minimal-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -15,14 +23,22 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services?$alt=json%3Benum-encoding%3Dint&serviceId=metastoreservice-minimal-${uniqueId}
+POST https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services?%24alt=json%3Benum-encoding%3Dint&serviceId=metastoreservice-minimal-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -39,10 +55,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -88,12 +112,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmetastoreservice-minimal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "artifactGcsUri": "gs://gcs-bucket-metastoreservice-minimal-${uniqueId}",
@@ -126,8 +158,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=tier
+PATCH https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=tier
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: service.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmetastoreservice-minimal-${uniqueId}
 
 {
@@ -137,6 +170,13 @@ X-Goog-Request-Params: service.name=projects%2F${projectId}%2Flocations%2Fus-cen
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -153,10 +193,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -202,12 +250,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmetastoreservice-minimal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "artifactGcsUri": "gs://gcs-bucket-metastoreservice-minimal-${uniqueId}",
@@ -240,12 +296,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmetastoreservice-minimal-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -262,10 +326,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,

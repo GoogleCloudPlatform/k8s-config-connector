@@ -1,8 +1,16 @@
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -16,9 +24,17 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -29,9 +45,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -41,9 +65,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A="
@@ -53,6 +85,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -77,6 +110,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -100,9 +140,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -127,6 +175,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -163,6 +212,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -198,9 +254,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -237,6 +301,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -247,6 +312,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
@@ -256,9 +328,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
@@ -269,9 +349,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",

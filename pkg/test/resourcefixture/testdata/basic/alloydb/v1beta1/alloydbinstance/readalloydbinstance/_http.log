@@ -1,8 +1,16 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -22,6 +30,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "autoCreateSubnetworks": true,
@@ -31,6 +40,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -50,9 +66,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -74,9 +98,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "autoCreateSubnetworks": true,
@@ -136,9 +168,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -152,6 +192,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters?alt=json&clusterId=alloydbcluster${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "clusterType": "PRIMARY",
@@ -167,6 +208,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": false,
@@ -185,9 +233,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -274,9 +330,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "automatedBackupPolicy": {
@@ -349,9 +413,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -371,6 +443,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "addressType": "INTERNAL",
@@ -386,6 +459,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -405,9 +485,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -429,9 +517,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "address": "8.8.8.8",
@@ -455,6 +551,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}/setLabels?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -466,6 +563,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -482,9 +586,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "address": "8.8.8.8",
@@ -507,9 +619,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -521,18 +641,34 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2F${networkID}&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -545,6 +681,7 @@ Content-Type: application/json; charset=UTF-8
 
 PATCH https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections/-?alt=json&force=true&prettyPrint=false&updateMask=reservedPeeringRanges
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "network": "projects/${projectNumber}/global/networks/${networkID}",
@@ -555,6 +692,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "operations/${operationID}"
@@ -563,9 +707,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://servicenetworking.googleapis.com/v1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -584,9 +736,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -598,9 +758,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2F${networkID}&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "connections": [
@@ -617,12 +785,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Fclusters%2Falloydbcluster${uniqueId}%2Finstances%2Falloydbinstance${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -634,8 +810,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances?$alt=json%3Benum-encoding%3Dint&instanceId=alloydbinstance${uniqueId}
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=alloydbinstance${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Fclusters%2Falloydbcluster${uniqueId}
 
 {
@@ -651,6 +828,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-south
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": false,
@@ -669,10 +853,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -741,12 +933,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbreadinstance${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbreadinstance${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Fclusters%2Falloydbcluster${uniqueId}%2Finstances%2Falloydbreadinstance${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -758,8 +958,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances?$alt=json%3Benum-encoding%3Dint&instanceId=alloydbreadinstance${uniqueId}
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=alloydbreadinstance${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Fclusters%2Falloydbcluster${uniqueId}
 
 {
@@ -778,6 +979,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-south
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": false,
@@ -796,10 +1004,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -862,12 +1078,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbreadinstance${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbreadinstance${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Fclusters%2Falloydbcluster${uniqueId}%2Finstances%2Falloydbreadinstance${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "clientConnectionConfig": {
@@ -916,8 +1140,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbreadinstance${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=readPoolConfig.nodeCount
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbreadinstance${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=readPoolConfig.nodeCount
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Fclusters%2Falloydbcluster${uniqueId}%2Finstances%2Falloydbreadinstance${uniqueId}
 
 {
@@ -938,6 +1163,13 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Flocations%2Feurop
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": false,
@@ -956,10 +1188,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -1022,12 +1262,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbreadinstance${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbreadinstance${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Fclusters%2Falloydbcluster${uniqueId}%2Finstances%2Falloydbreadinstance${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "clientConnectionConfig": {
@@ -1076,12 +1324,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbreadinstance${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbreadinstance${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Fclusters%2Falloydbcluster${uniqueId}%2Finstances%2Falloydbreadinstance${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": false,
@@ -1100,10 +1356,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -1124,12 +1388,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Fclusters%2Falloydbcluster${uniqueId}%2Finstances%2Falloydbinstance${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "availabilityType": 2,
@@ -1184,12 +1456,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}/instances/alloydbinstance${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Fclusters%2Falloydbcluster${uniqueId}%2Finstances%2Falloydbinstance${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": false,
@@ -1208,10 +1488,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-southwest1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -1233,9 +1521,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -1247,9 +1543,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2F${networkID}&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "connections": [
@@ -1267,9 +1571,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -1282,6 +1594,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectNumber}/global/networks/${networkID}/removePeering?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "name": "servicenetworking-googleapis-com"
@@ -1289,6 +1602,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -1304,9 +1624,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1324,9 +1652,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "address": "8.8.8.8",
@@ -1350,9 +1686,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -1372,9 +1716,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1396,9 +1748,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "automatedBackupPolicy": {
@@ -1471,9 +1831,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": false,
@@ -1492,9 +1860,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-southwest1/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -1517,9 +1893,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "autoCreateSubnetworks": true,
@@ -1579,9 +1963,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -1601,9 +1993,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",

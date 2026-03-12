@@ -1,9 +1,17 @@
-GET https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis/apigatewayapi${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis/apigatewayapi${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fapis%2Fapigatewayapi${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -22,8 +30,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis?$alt=json%3Benum-encoding%3Dint&apiId=apigatewayapi${uniqueId}
+POST https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis?%24alt=json%3Benum-encoding%3Dint&apiId=apigatewayapi${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 {
@@ -35,6 +44,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -51,10 +67,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -84,12 +108,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis/apigatewayapi${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis/apigatewayapi${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fapis%2Fapigatewayapi${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -106,12 +138,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis/apigatewayapi${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis/apigatewayapi${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fapis%2Fapigatewayapi${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -128,10 +168,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,

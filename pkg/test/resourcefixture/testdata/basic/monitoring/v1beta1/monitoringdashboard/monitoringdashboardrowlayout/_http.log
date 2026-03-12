@@ -1,5 +1,6 @@
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "combiner": "AND_WITH_MATCHING_RESOURCE",
@@ -39,6 +40,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "combiner": "AND_WITH_MATCHING_RESOURCE",
@@ -90,9 +98,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "combiner": "AND_WITH_MATCHING_RESOURCE",
@@ -142,12 +158,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?$alt=json%3Benum-encoding%3Dint
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -159,8 +183,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?$alt=json%3Benum-encoding%3Dint
+POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
@@ -179,6 +204,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "monitoringdashboard-full",
@@ -197,12 +229,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?$alt=json%3Benum-encoding%3Dint
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "monitoringdashboard-full",
@@ -221,8 +261,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?$alt=json%3Benum-encoding%3Dint
+PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 {
@@ -242,6 +283,13 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "monitoringdashboard-full",
@@ -260,12 +308,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?$alt=json%3Benum-encoding%3Dint
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "monitoringdashboard-full",
@@ -284,12 +340,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?$alt=json%3Benum-encoding%3Dint
+DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -297,9 +361,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "combiner": "AND_WITH_MATCHING_RESOURCE",
@@ -351,8 +423,16 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

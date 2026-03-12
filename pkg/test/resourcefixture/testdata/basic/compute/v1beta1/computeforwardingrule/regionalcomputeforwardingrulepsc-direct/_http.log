@@ -1,7 +1,15 @@
 GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 403 Forbidden
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -15,6 +23,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:testIamPermissions?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "permissions": [
@@ -24,6 +33,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "permissions": [
@@ -35,6 +51,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -51,6 +68,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "operations/${operationID}"
@@ -60,9 +84,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -94,6 +126,7 @@ Content-Type: application/json; charset=UTF-8
 
 PUT https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "billingAccountName": "billingAccounts/${billingAccountID}"
@@ -101,6 +134,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingAccountName": "billingAccounts/${billingAccountID}",
@@ -112,9 +152,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingAccountName": "billingAccounts/${billingAccountID}",
@@ -126,9 +174,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -149,9 +205,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingAccountName": "billingAccounts/${billingAccountID}",
@@ -162,10 +226,18 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname,nextPageToken&filter=state:ENABLED&prettyPrint=false
+GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -173,11 +245,19 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/compute.googleapis.com:enable?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "operations/${operationID}"
@@ -187,9 +267,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -210,10 +298,18 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname,nextPageToken&filter=state:ENABLED&prettyPrint=false
+GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "services": [
@@ -227,9 +323,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -249,6 +353,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "autoCreateSubnetworks": false,
@@ -259,6 +364,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -278,9 +390,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -302,9 +422,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "autoCreateSubnetworks": false,
@@ -322,9 +450,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -344,6 +480,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "ipCidrRange": "10.0.0.0/16",
@@ -357,6 +494,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -377,9 +521,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -402,9 +554,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -431,9 +591,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -453,6 +621,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/addresses?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "addressType": "INTERNAL",
@@ -467,6 +636,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -487,9 +663,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -512,9 +696,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "address": "8.8.8.8",
@@ -540,6 +732,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/addresses/${addressID}/setLabels?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -551,6 +744,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -567,9 +767,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "address": "8.8.8.8",
@@ -595,9 +803,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -617,6 +833,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "autoCreateSubnetworks": false,
@@ -627,6 +844,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -646,9 +870,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -670,9 +902,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "autoCreateSubnetworks": false,
@@ -690,9 +930,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -712,6 +960,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "ipCidrRange": "10.0.0.0/16",
@@ -725,6 +974,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -745,9 +1001,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -770,9 +1034,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -799,9 +1071,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -821,6 +1101,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "ipCidrRange": "10.1.0.0/16",
@@ -835,6 +1116,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -855,9 +1143,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -880,9 +1176,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -909,9 +1213,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -931,6 +1243,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "backends": null,
@@ -952,31 +1265,86 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}",
+  "user": "user@example.com"
 }
 
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
+  "affinityCookieTtlSec": 0,
   "connectionDraining": {
     "drainingTimeoutSec": 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
@@ -986,21 +1354,31 @@ Content-Type: application/json; charset=UTF-8
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL",
   "name": "${backendServiceID}",
-  "region": "projects/example-project-01/global/regions/us-central1",
+  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE",
   "subsetting": {
     "policy": "NONE"
-  }
+  },
+  "timeoutSec": 30
 }
 
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=example-project-01&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -1020,6 +1398,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=example-project-01&region=us-central1
 
 {
@@ -1038,6 +1417,13 @@ X-Goog-Request-Params: project=example-project-01&region=us-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -1059,10 +1445,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=example-project-01&region=us-central1&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1085,12 +1479,21 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=example-project-01&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "TCP",
   "allPorts": true,
   "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}",
@@ -1106,6 +1509,7 @@ Content-Type: application/json; charset=UTF-8
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
@@ -1113,6 +1517,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=example-project-01&region=us-central1&resource=${forwardingRuleID}
 
 {
@@ -1125,6 +1530,13 @@ X-Goog-Request-Params: project=example-project-01&region=us-central1&resource=${
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1147,12 +1559,21 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=example-project-01&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "TCP",
   "allPorts": true,
   "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}",
@@ -1172,6 +1593,7 @@ Content-Type: application/json; charset=UTF-8
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
@@ -1179,9 +1601,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -1201,6 +1631,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/serviceAttachments?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "connectionPreference": "ACCEPT_AUTOMATIC",
@@ -1215,6 +1646,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -1236,9 +1674,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1261,9 +1707,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "connectionPreference": "ACCEPT_AUTOMATIC",
@@ -1284,10 +1738,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -1307,6 +1769,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=us-central1
 
 {
@@ -1321,6 +1784,13 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -1342,10 +1812,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=us-central1&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1368,10 +1846,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
@@ -1388,6 +1874,7 @@ Content-Type: application/json; charset=UTF-8
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "target": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/serviceAttachments/computeserviceattachment-${uniqueId}"
 }
 
@@ -1395,6 +1882,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=us-central1&resource=${forwardingRuleID}
 
 {
@@ -1408,6 +1896,13 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1&resource=${forwar
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1430,10 +1925,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
@@ -1455,6 +1958,7 @@ Content-Type: application/json; charset=UTF-8
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "target": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/serviceAttachments/computeserviceattachment-${uniqueId}"
 }
 
@@ -1462,6 +1966,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=us-central1&resource=${forwardingRuleID}
 
 {
@@ -1475,6 +1980,13 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1&resource=${forwar
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1497,10 +2009,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
@@ -1522,6 +2042,7 @@ Content-Type: application/json; charset=UTF-8
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "target": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/serviceAttachments/computeserviceattachment-${uniqueId}"
 }
 
@@ -1529,10 +2050,18 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -1554,10 +2083,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=us-central1&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1580,9 +2117,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "connectionPreference": "ACCEPT_AUTOMATIC",
@@ -1603,9 +2148,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -1627,9 +2180,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1652,9 +2213,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/serviceAttachments/${serviceAttachmentID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -1674,12 +2243,21 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=example-project-01&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
+  "IPAddress": "8.8.8.8",
   "IPProtocol": "TCP",
   "allPorts": true,
   "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}",
@@ -1699,6 +2277,7 @@ Content-Type: application/json; charset=UTF-8
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
@@ -1706,10 +2285,18 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=example-project-01&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -1731,10 +2318,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=example-project-01&region=us-central1&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1757,15 +2352,26 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
+  "affinityCookieTtlSec": 0,
   "connectionDraining": {
     "drainingTimeoutSec": 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "fingerprint": "abcdef0123A=",
   "iap": {
     "enabled": false,
     "oauth2ClientId": "",
@@ -1775,39 +2381,94 @@ Content-Type: application/json; charset=UTF-8
   "kind": "compute#backendService",
   "loadBalancingScheme": "INTERNAL",
   "name": "${backendServiceID}",
-  "region": "projects/example-project-01/global/regions/us-central1",
+  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE",
   "subsetting": {
     "policy": "NONE"
-  }
+  },
+  "timeoutSec": 30
 }
 
 ---
 
 DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "delete",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/${backendServiceID}",
+  "user": "user@example.com"
 }
 
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -1834,9 +2495,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -1857,9 +2526,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1882,9 +2559,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -1911,9 +2596,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -1934,9 +2627,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -1959,9 +2660,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "autoCreateSubnetworks": false,
@@ -1979,9 +2688,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -2001,9 +2718,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -2025,9 +2750,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "address": "8.8.8.8",
@@ -2053,9 +2786,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -2076,9 +2817,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -2101,9 +2850,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -2130,9 +2887,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -2153,9 +2918,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -2178,9 +2951,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "autoCreateSubnetworks": false,
@@ -2198,9 +2979,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://compute.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -2220,9 +3009,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/example-project-01/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",

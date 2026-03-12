@@ -1,7 +1,15 @@
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -22,6 +30,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "accountId": "df-sa1-${uniqueId}",
@@ -32,6 +41,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "Dataform SA 1",
@@ -46,9 +62,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "Dataform SA 1",
@@ -63,9 +87,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -86,6 +118,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "accountId": "df-sa2-${uniqueId}",
@@ -96,6 +129,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "Dataform SA 2",
@@ -110,9 +150,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "Dataform SA 2",
@@ -128,9 +176,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/df-secret-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -144,6 +200,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=df-secret-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -157,6 +214,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -175,9 +239,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/df-secret-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -196,6 +268,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}:addVersion?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "payload": {
@@ -205,6 +278,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -220,9 +300,17 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:enable?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -238,9 +326,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -256,9 +352,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1",
@@ -272,9 +376,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -290,9 +402,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1",
@@ -306,6 +426,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}:addVersion?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "payload": {
@@ -315,6 +436,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -330,9 +458,17 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:enable?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -348,9 +484,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -366,9 +510,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:access?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2",
@@ -382,9 +534,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -400,9 +560,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:access?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2",
@@ -414,8 +582,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 404 Not Found
@@ -429,8 +598,9 @@ Content-Type: application/json
 
 ---
 
-POST https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories?$alt=json%3Benum-encoding%3Dint&repositoryId=df-full-${uniqueId}
+POST https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=df-full-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
 
 {
@@ -474,8 +644,9 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 200 OK
@@ -505,8 +676,9 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-PATCH https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?$alt=json%3Benum-encoding%3Dint&updateMask=gitRemoteSettings,workspaceCompilationOverrides,setAuthenticatedUserAdmin,displayName,serviceAccount
+PATCH https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=gitRemoteSettings%2CworkspaceCompilationOverrides%2CsetAuthenticatedUserAdmin%2CdisplayName%2CserviceAccount
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: repository.name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 {
@@ -552,8 +724,9 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 200 OK
@@ -583,8 +756,9 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-DELETE https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 200 OK
@@ -598,9 +772,17 @@ Grpc-Metadata-X-Http-Code: 204
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -616,9 +798,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:access?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2",
@@ -632,9 +822,17 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:destroy?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -651,9 +849,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -669,9 +875,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1",
@@ -685,9 +899,17 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:destroy?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -704,9 +926,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/df-secret-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -725,18 +955,34 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/df-secret-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "Dataform SA 2",
@@ -751,18 +997,34 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "Dataform SA 1",
@@ -777,8 +1039,16 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

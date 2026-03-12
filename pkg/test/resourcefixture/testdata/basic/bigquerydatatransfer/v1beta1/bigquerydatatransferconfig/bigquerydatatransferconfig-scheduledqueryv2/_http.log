@@ -1,8 +1,16 @@
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -23,6 +31,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "datasetReference": {
@@ -37,6 +46,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "access": [
@@ -79,9 +95,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "access": [
@@ -124,9 +148,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -147,6 +179,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "externalDataConfiguration": {
@@ -172,6 +205,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
@@ -286,9 +326,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
@@ -404,9 +452,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -420,6 +476,7 @@ Content-Type: application/json; charset=UTF-8
 
 PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -430,6 +487,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "labels": {
@@ -443,9 +507,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "labels": {
@@ -459,9 +531,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -475,6 +555,7 @@ Content-Type: application/json; charset=UTF-8
 
 PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -485,6 +566,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "labels": {
@@ -498,9 +586,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "labels": {
@@ -514,9 +610,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -530,6 +634,7 @@ Content-Type: application/json; charset=UTF-8
 
 PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "ackDeadlineSeconds": 15,
@@ -545,6 +650,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "ackDeadlineSeconds": 15,
@@ -566,9 +678,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -582,9 +702,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "ackDeadlineSeconds": 15,
@@ -606,9 +734,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -622,6 +758,7 @@ Content-Type: application/json; charset=UTF-8
 
 PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "ackDeadlineSeconds": 20,
@@ -638,6 +775,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "ackDeadlineSeconds": 20,
@@ -660,9 +804,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -676,9 +828,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "ackDeadlineSeconds": 20,
@@ -700,9 +860,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -723,6 +891,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "accountId": "gsa-${uniqueId}",
@@ -733,6 +902,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "Test GSA for big query data transfer config",
@@ -747,9 +923,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "Test GSA for big query data transfer config",
@@ -763,8 +947,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs?$alt=json%3Benum-encoding%3Dint&serviceAccountName=gsa-${uniqueId}%40${projectId}.iam.gserviceaccount.com
+POST https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs?%24alt=json%3Benum-encoding%3Dint&serviceAccountName=gsa-${uniqueId}%40${projectId}.iam.gserviceaccount.com
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -787,6 +972,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "dataSourceId": "google_cloud_storage",
@@ -816,12 +1008,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?$alt=json%3Benum-encoding%3Dint
+GET https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "dataSourceId": "google_cloud_storage",
@@ -851,8 +1051,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?$alt=json%3Benum-encoding%3Dint&serviceAccountName=gsa-${uniqueId}%40${projectId}.iam.gserviceaccount.com&updateMask=params
+PATCH https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint&serviceAccountName=gsa-${uniqueId}%40${projectId}.iam.gserviceaccount.com&updateMask=params
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: transfer_config.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
 
 {
@@ -883,6 +1084,13 @@ X-Goog-Request-Params: transfer_config.name=projects%2F${projectId}%2Flocations%
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "dataSourceId": "google_cloud_storage",
@@ -912,12 +1120,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?$alt=json%3Benum-encoding%3Dint
+GET https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "dataSourceId": "google_cloud_storage",
@@ -947,21 +1163,37 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?$alt=json%3Benum-encoding%3Dint
+DELETE https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtransferConfigs%2F${transferConfigID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "displayName": "Test GSA for big query data transfer config",
@@ -976,9 +1208,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -986,9 +1226,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "ackDeadlineSeconds": 20,
@@ -1011,9 +1259,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}-2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -1021,9 +1277,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "ackDeadlineSeconds": 15,
@@ -1045,9 +1309,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -1055,9 +1327,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "labels": {
@@ -1071,9 +1351,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}-2?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -1081,9 +1369,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "labels": {
@@ -1097,18 +1393,34 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
@@ -1223,18 +1535,34 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "access": [
@@ -1278,6 +1606,14 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0

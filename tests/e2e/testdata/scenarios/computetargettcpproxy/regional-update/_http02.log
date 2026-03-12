@@ -1,9 +1,17 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=europe-west4&target_tcp_proxy=${targetTcpProxyID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -23,6 +31,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/targetTcpProxies
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=europe-west4
 
 {
@@ -30,11 +39,18 @@ X-Goog-Request-Params: project=${projectId}&region=europe-west4
   "name": "${targetTcpProxyID}",
   "proxyHeader": "NONE",
   "region": "europe-west4",
-  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/${backendServiceID}"
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}"
 }
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -56,10 +72,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=europe-west4&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -82,10 +106,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/targetTcpProxies/${targetTcpProxyID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&region=europe-west4&target_tcp_proxy=${targetTcpProxyID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -96,5 +128,5 @@ Content-Type: application/json; charset=UTF-8
   "proxyHeader": "NONE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/targetTcpProxies/${targetTcpProxyID}",
-  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/${backendServiceID}"
+  "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/backendServices/computebackendservice-${uniqueId}"
 }

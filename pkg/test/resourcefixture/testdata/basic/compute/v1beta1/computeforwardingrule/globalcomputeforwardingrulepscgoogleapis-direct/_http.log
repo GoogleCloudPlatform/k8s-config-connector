@@ -1,8 +1,16 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "autoCreateSubnetworks": true,
@@ -63,9 +71,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -85,6 +101,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "address": "8.8.8.8",
@@ -100,6 +117,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -119,9 +143,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -143,9 +175,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "address": "8.8.8.8",
@@ -168,6 +208,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}/setLabels?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -179,6 +220,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -195,9 +243,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "address": "8.8.8.8",
@@ -220,10 +276,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -243,6 +307,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}
 
 {
@@ -256,6 +321,13 @@ X-Goog-Request-Params: project=${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -276,10 +348,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -301,10 +381,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
@@ -333,6 +421,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setLabels
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&resource=${forwardingRuleID}
 
 {
@@ -346,6 +435,13 @@ X-Goog-Request-Params: project=${projectId}&resource=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -367,10 +463,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
@@ -404,6 +508,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}/setLabels
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&resource=${forwardingRuleID}
 
 {
@@ -417,6 +522,13 @@ X-Goog-Request-Params: project=${projectId}&resource=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
@@ -438,10 +550,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "IPAddress": "8.8.8.8",
@@ -475,10 +595,18 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
@@ -499,10 +627,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project=${projectId}&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "endTime": "2024-04-01T12:34:56.123456Z",

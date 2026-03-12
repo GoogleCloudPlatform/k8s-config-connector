@@ -1,8 +1,16 @@
 GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -16,6 +24,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets?alt=json&bucketId=logginglogbucket-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "analyticsEnabled": true,
@@ -27,6 +36,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "analyticsEnabled": true,
@@ -42,9 +58,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "analyticsEnabled": true,
@@ -58,12 +82,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Flogginglogbucket-${uniqueId}%2Flinks%2Flogginglink${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -75,8 +107,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links?$alt=json%3Benum-encoding%3Dint&linkId=logginglink${uniqueId}
+POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links?%24alt=json%3Benum-encoding%3Dint&linkId=logginglink${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Flogginglogbucket-${uniqueId}
 
 {
@@ -85,6 +118,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuc
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -103,10 +143,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://logging.googleapis.com/v2/projects/${projectNumber}/locations/global/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -135,12 +183,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Flogginglogbucket-${uniqueId}%2Flinks%2Flogginglink${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bigqueryDataset": {
@@ -154,12 +210,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fbuckets%2Flogginglogbucket-${uniqueId}%2Flinks%2Flogginglink${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -177,10 +241,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://logging.googleapis.com/v2/projects/${projectNumber}/locations/global/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -203,9 +275,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "analyticsEnabled": true,
@@ -221,8 +301,16 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

@@ -1,5 +1,6 @@
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "displayName": "monitoringnotificationchannel1-${uniqueId}",
@@ -16,6 +17,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationRecord": {
@@ -43,9 +51,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationRecord": {
@@ -73,6 +89,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "displayName": "monitoringnotificationchannel2-${uniqueId}",
@@ -89,6 +106,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationRecord": {
@@ -116,9 +140,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationRecord": {
@@ -146,6 +178,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "displayName": "monitoringnotificationchannel3-${uniqueId}",
@@ -162,6 +195,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationRecord": {
@@ -189,9 +229,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationRecord": {
@@ -219,6 +267,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "combiner": "AND_WITH_MATCHING_RESOURCE",
@@ -267,6 +316,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "combiner": "AND_WITH_MATCHING_RESOURCE",
@@ -327,9 +383,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "combiner": "AND_WITH_MATCHING_RESOURCE",
@@ -388,8 +452,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json&updateMask=displayName,combiner,enabled,conditions,notificationChannels,documentation,severity
+PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json&updateMask=displayName%2Ccombiner%2Cenabled%2Cconditions%2CnotificationChannels%2Cdocumentation%2Cseverity
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "combiner": "OR",
@@ -439,6 +504,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "combiner": "OR",
@@ -499,9 +571,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "combiner": "OR",
@@ -562,9 +642,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -572,9 +660,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationRecord": {
@@ -602,9 +698,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=false
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -612,9 +716,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationRecord": {
@@ -642,9 +754,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=false
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -652,9 +772,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "creationRecord": {
@@ -682,8 +810,16 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=false
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

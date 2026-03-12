@@ -1,7 +1,15 @@
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 403 Forbidden
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -15,6 +23,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -31,6 +40,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "operations/${operationID}"
@@ -40,9 +56,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -73,9 +97,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -96,9 +128,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingAccountName": "",
@@ -110,9 +150,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -133,9 +181,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingAccountName": "",
@@ -147,9 +203,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project2-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 403 Forbidden
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -163,6 +227,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -179,6 +244,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "operations/${operationID}"
@@ -188,9 +260,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -221,9 +301,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project2-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -244,9 +332,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project2-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingAccountName": "",
@@ -258,9 +354,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project2-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -281,9 +385,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project2-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingAccountName": "",
@@ -294,12 +406,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?$alt=json%3Benum-encoding%3Dint
+GET https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=folders%2F${folderID}%2FautokeyConfig
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "state": 3
@@ -307,8 +427,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?$alt=json%3Benum-encoding%3Dint&updateMask=keyProject
+PATCH https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint&updateMask=keyProject
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 
 {
@@ -318,6 +439,13 @@ X-Goog-Request-Params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "keyProject": "projects/project-${uniqueId}",
@@ -327,12 +455,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?$alt=json%3Benum-encoding%3Dint
+GET https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=folders%2F${folderID}%2FautokeyConfig
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "keyProject": "projects/project-${uniqueId}",
@@ -342,8 +478,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?$alt=json%3Benum-encoding%3Dint&updateMask=keyProject
+PATCH https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint&updateMask=keyProject
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 
 {
@@ -353,6 +490,13 @@ X-Goog-Request-Params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "keyProject": "projects/project2-${uniqueId}",
@@ -362,12 +506,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?$alt=json%3Benum-encoding%3Dint
+GET https://cloudkms.googleapis.com/v1/folders/${folderID}/autokeyConfig?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=folders%2F${folderID}%2FautokeyConfig
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "keyProject": "projects/project2-${uniqueId}",
@@ -378,9 +530,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project2-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -401,9 +561,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project2-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingAccountName": "",
@@ -415,18 +583,34 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 DELETE https://cloudresourcemanager.googleapis.com/v1/projects/project2-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -447,9 +631,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingAccountName": "",
@@ -461,8 +653,16 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 DELETE https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

@@ -1,8 +1,16 @@
 GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -16,6 +24,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://apigee.googleapis.com/v1/organizations/${organizationID}/environments?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "description": "Test environment for IAM tests",
@@ -28,6 +37,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -51,9 +67,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "description": "Test environment for IAM tests",
@@ -66,9 +90,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A="
@@ -78,6 +110,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}:setIamPolicy?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "policy": {
@@ -97,6 +130,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -116,9 +156,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -138,6 +186,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}:setIamPolicy?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "policy": {
@@ -164,6 +213,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -190,9 +246,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -219,6 +283,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}:setIamPolicy?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "policy": {
@@ -230,6 +295,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
@@ -240,9 +312,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "description": "Test environment for IAM tests",
@@ -255,9 +335,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -277,9 +365,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {

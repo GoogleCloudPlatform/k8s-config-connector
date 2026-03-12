@@ -242,9 +242,17 @@ OK
 
 GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -258,6 +266,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles?alt=json&appProfileId=bigtableappprofile-${uniqueId}&ignoreWarnings=true
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "Initial description.",
@@ -272,6 +281,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "description": "Initial description.",
@@ -289,9 +305,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "description": "Initial description.",
@@ -307,8 +331,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json&ignoreWarnings=true&updateMask=description,multiClusterRoutingUseAny,standardIsolation
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json&ignoreWarnings=true&updateMask=description%2CmultiClusterRoutingUseAny%2CstandardIsolation
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "Updated description.",
@@ -325,6 +350,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -352,9 +384,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "description": "Updated description.",
@@ -374,9 +414,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json&ignoreWarnings=true
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 

@@ -1,9 +1,17 @@
-GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fssminstance-dep-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -15,14 +23,22 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?$alt=json%3Benum-encoding%3Dint&instanceId=ssminstance-dep-${uniqueId}
+POST https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=ssminstance-dep-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -39,10 +55,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -72,12 +96,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fssmrepository-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -89,12 +121,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?$alt=json%3Benum-encoding%3Dint
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -106,8 +146,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories?$alt=json%3Benum-encoding%3Dint&repositoryId=ssmrepository-${uniqueId}
+POST https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=ssmrepository-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -116,6 +157,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -143,12 +191,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fssmrepository-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -163,12 +219,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/ssmrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Frepositories%2Fssmrepository-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -188,12 +252,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fssminstance-dep-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -210,12 +282,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fssminstance-dep-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -232,10 +312,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,

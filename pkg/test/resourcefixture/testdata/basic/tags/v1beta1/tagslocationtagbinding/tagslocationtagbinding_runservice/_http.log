@@ -1,8 +1,16 @@
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -16,6 +24,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services?alt=json&serviceId=runservice-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "ingress": "INGRESS_TRAFFIC_ALL",
@@ -50,6 +59,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -112,9 +128,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -232,9 +256,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -294,6 +326,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "For keyname resources.",
@@ -303,6 +336,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -315,9 +355,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -342,9 +390,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -361,6 +417,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudresourcemanager.googleapis.com/v3/tagValues?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "For valuename resources.",
@@ -370,6 +427,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -382,9 +446,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -409,9 +481,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -426,8 +506,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings?$alt=json%3Benum-encoding%3Dint
+POST https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "parent": "//run.googleapis.com/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
@@ -436,6 +517,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -450,11 +538,19 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings?$alt=json%3Benum-encoding%3Dint&parent=%2F%2Frun.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Frunservice-${uniqueId}
+GET https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Frun.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Frunservice-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "tagBindings": [
@@ -469,12 +565,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?$alt=json%3Benum-encoding%3Dint
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -486,11 +590,19 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings?$alt=json%3Benum-encoding%3Dint&parent=%2F%2Frun.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Frunservice-${uniqueId}
+GET https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Frun.googleapis.com%2Fprojects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Frunservice-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "tagBindings": [
@@ -505,12 +617,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Frun.googleapis.com%252Fprojects%252F${projectNumber}%252Flocations%252Fus-central1%252Fservices%252Frunservice-${uniqueId}/tagValues/${tagValueID}?$alt=json%3Benum-encoding%3Dint
+DELETE https://us-central1-cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Frun.googleapis.com%252Fprojects%252F${projectNumber}%252Flocations%252Fus-central1%252Fservices%252Frunservice-${uniqueId}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=tagBindings%2F%252F%252Frun.googleapis.com%252Fprojects%252F${projectNumber}%252Flocations%252Fus-central1%252Fservices%252Frunservice-${uniqueId}%2FtagValues%2F${tagValueID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -523,9 +643,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -542,9 +670,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -557,9 +693,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -584,9 +728,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -603,9 +755,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -618,9 +778,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -645,9 +813,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -707,9 +883,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -772,9 +956,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,

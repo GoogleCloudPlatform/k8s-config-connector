@@ -1,8 +1,16 @@
 GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -16,6 +24,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/endpoints?alt=json&endpointId=vertexaiendpoint-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "example vertex AI endpoint",
@@ -28,6 +37,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -44,9 +60,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -74,9 +98,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -93,8 +125,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}?alt=json&updateMask=displayName,description,labels
+PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}?alt=json&updateMask=displayName%2Cdescription%2Clabels
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "example vertex AI endpoint with labels",
@@ -108,6 +141,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -127,9 +167,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -149,9 +197,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,

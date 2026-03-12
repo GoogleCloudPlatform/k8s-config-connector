@@ -1,6 +1,8 @@
-POST https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts?$alt=json%3Benum-encoding%3Dint
+POST https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}
+X-Goog-User-Project: ${projectId}
 
 {
   "email": "bill-alerts@test.com",
@@ -12,6 +14,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "email": "bill-alerts@test.com",
@@ -26,12 +35,21 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?$alt=json%3Benum-encoding%3Dint
+GET https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fcontacts%2F7
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "email": "bill-alerts@test.com",
@@ -46,9 +64,11 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?$alt=json%3Benum-encoding%3Dint&updateMask=notificationCategorySubscriptions
+PATCH https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?%24alt=json%3Benum-encoding%3Dint&updateMask=notificationCategorySubscriptions
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: contact.name=projects%2F${projectId}%2Fcontacts%2F7
+X-Goog-User-Project: ${projectId}
 
 {
   "email": "all-alerts@test.com",
@@ -61,6 +81,13 @@ X-Goog-Request-Params: contact.name=projects%2F${projectId}%2Fcontacts%2F7
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "email": "bill-alerts@test.com",
@@ -75,12 +102,21 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?$alt=json%3Benum-encoding%3Dint
+GET https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fcontacts%2F7
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "email": "bill-alerts@test.com",
@@ -95,11 +131,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?$alt=json%3Benum-encoding%3Dint
+DELETE https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fcontacts%2F7
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

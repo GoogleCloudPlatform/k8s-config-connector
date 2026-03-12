@@ -1,8 +1,16 @@
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -16,9 +24,17 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings?alt=json&keyRingId=key-ring-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -29,9 +45,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -42,9 +66,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -58,6 +90,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -69,6 +102,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -97,9 +137,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -127,9 +175,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A="
@@ -139,6 +195,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -157,6 +214,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -174,9 +238,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -193,12 +265,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fssminstance-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -210,8 +290,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?$alt=json%3Benum-encoding%3Dint&instanceId=ssminstance-${uniqueId}
+POST https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=ssminstance-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -220,6 +301,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -236,10 +324,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -270,12 +366,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fssminstance-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -293,12 +397,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-DELETE https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}?$alt=json%3Benum-encoding%3Dint
+DELETE https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fssminstance-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -315,10 +427,18 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -339,9 +459,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -360,6 +488,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -370,6 +499,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
@@ -379,9 +515,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
@@ -392,9 +536,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -422,9 +574,17 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "cryptoKeyVersions": [
@@ -444,11 +604,19 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
@@ -464,9 +632,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/key-ring-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",

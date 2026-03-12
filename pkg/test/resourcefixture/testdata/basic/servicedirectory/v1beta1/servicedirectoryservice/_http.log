@@ -1,8 +1,16 @@
 GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -16,6 +24,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces?alt=json&namespaceId=servicedirectorynamespace-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -26,6 +35,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "labels": {
@@ -39,9 +55,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "labels": {
@@ -55,9 +79,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -71,6 +103,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services?alt=json&serviceId=servicedirectoryservice-${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "metadata": {
@@ -82,6 +115,13 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -96,9 +136,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -113,9 +161,17 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 
@@ -123,9 +179,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "labels": {
@@ -139,8 +203,16 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

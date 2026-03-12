@@ -1,9 +1,16 @@
 GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -17,6 +24,7 @@ Content-Type: application/json; charset=UTF-8
 
 POST https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges?dataExchangeId=bigqueryanalyticshubdataexchange${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2FUS
 
 {
@@ -26,6 +34,12 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2FUS
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "discoveryType": "DISCOVERY_TYPE_PRIVATE",
@@ -41,10 +55,17 @@ Content-Type: application/json; charset=UTF-8
 
 GET https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "discoveryType": "DISCOVERY_TYPE_PRIVATE",
@@ -60,9 +81,16 @@ Content-Type: application/json; charset=UTF-8
 
 DELETE https://analyticshub.googleapis.com/v1/projects/${projectId}/locations/US/dataExchanges/bigqueryanalyticshubdataexchange${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2FUS%2FdataExchanges%2Fbigqueryanalyticshubdataexchange${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}

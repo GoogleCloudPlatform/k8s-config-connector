@@ -1,9 +1,18 @@
-GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?$alt=json%3Benum-encoding%3Dint
+GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FquotaAdjusterSettings
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "enablement": 3,
@@ -14,9 +23,11 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?$alt=json%3Benum-encoding%3Dint&updateMask=enablement
+PATCH https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?%24alt=json%3Benum-encoding%3Dint&updateMask=enablement
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: quota_adjuster_settings.name=projects%2F${projectId}%2Flocations%2Fglobal%2FquotaAdjusterSettings
+X-Goog-User-Project: ${projectId}
 
 {
   "enablement": 2,
@@ -26,6 +37,13 @@ X-Goog-Request-Params: quota_adjuster_settings.name=projects%2F${projectId}%2Flo
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "enablement": 2,
@@ -36,12 +54,21 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?$alt=json%3Benum-encoding%3Dint
+GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FquotaAdjusterSettings
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "enablement": 2,
@@ -52,9 +79,11 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PATCH https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?$alt=json%3Benum-encoding%3Dint&updateMask=enablement
+PATCH https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?%24alt=json%3Benum-encoding%3Dint&updateMask=enablement
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: quota_adjuster_settings.name=projects%2F${projectId}%2Flocations%2Fglobal%2FquotaAdjusterSettings
+X-Goog-User-Project: ${projectId}
 
 {
   "enablement": 3,
@@ -64,6 +93,13 @@ X-Goog-Request-Params: quota_adjuster_settings.name=projects%2F${projectId}%2Flo
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "enablement": 3,
@@ -74,12 +110,21 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?$alt=json%3Benum-encoding%3Dint
+GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FquotaAdjusterSettings
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "enablement": 3,

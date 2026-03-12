@@ -1,8 +1,12 @@
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "error": {
@@ -22,6 +26,7 @@ Pragma: no-cache
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "iamConfiguration": {
@@ -43,6 +48,9 @@ Content-Type: application/json
 200 OK
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -81,9 +89,13 @@ Pragma: no-cache
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -121,8 +133,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/flexTemplates:launch?$alt=json%3Benum-encoding%3Dint
+POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/flexTemplates:launch?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project_id=${projectId}&location=us-central1
 
 {
@@ -146,6 +159,13 @@ X-Goog-Request-Params: project_id=${projectId}&location=us-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "job": {
@@ -161,12 +181,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?$alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project_id=${projectId}&location=us-central1&job_id=${jobID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -187,12 +215,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?$alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project_id=${projectId}&location=us-central1&job_id=${jobID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -356,8 +392,9 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?$alt=json%3Benum-encoding%3Dint
+PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project_id=${projectId}&location=us-central1&job_id=${jobID}
 
 {
@@ -366,6 +403,13 @@ X-Goog-Request-Params: project_id=${projectId}&location=us-central1&job_id=${job
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "type": 1
@@ -373,12 +417,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?$alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project_id=${projectId}&location=us-central1&job_id=${jobID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -543,12 +595,20 @@ Content-Type: application/json; charset=UTF-8
 
 ---
 
-GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?$alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
+GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project_id=${projectId}&location=us-central1&job_id=${jobID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -713,9 +773,13 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
@@ -754,9 +818,13 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
 
 {
   "kind": "storage#objects",
@@ -769,7 +837,11 @@ Content-Type: application/json; charset=UTF-8
 ---
 
 DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json
 Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
