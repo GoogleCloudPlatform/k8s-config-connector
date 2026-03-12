@@ -214,6 +214,12 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 		obj.KubeletConfig.MaxParallelImagePulls = 2
 	}
 
+	if obj.ConfidentialNodes != nil && obj.ConfidentialNodes.Enabled {
+		if obj.ConfidentialNodes.ConfidentialInstanceType == pb.ConfidentialNodes_CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED {
+			obj.ConfidentialNodes.ConfidentialInstanceType = pb.ConfidentialNodes_SEV
+		}
+	}
+
 	if obj.MachineType == "" {
 		obj.MachineType = "e2-medium"
 	}
