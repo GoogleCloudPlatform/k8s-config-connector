@@ -910,7 +910,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     },
     "config": {
       "confidentialNodes": {
-        "confidentialInstanceType": "SEV",
         "enabled": true
       },
       "loggingConfig": {

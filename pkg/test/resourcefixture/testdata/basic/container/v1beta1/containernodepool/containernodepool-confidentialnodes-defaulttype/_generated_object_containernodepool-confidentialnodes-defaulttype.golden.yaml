@@ -23,7 +23,6 @@ spec:
   location: us-central1-a
   nodeConfig:
     confidentialNodes:
-      confidentialInstanceType: SEV
       enabled: true
     machineType: n2d-standard-2
     taint:
