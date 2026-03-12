@@ -320,8 +320,15 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		if r.URL.Query().Has("paths") {
 			q := u2.Query()
 			if paths := q["paths"]; len(paths) > 1 {
-				q.Set("paths", strings.Join(paths, ","))
-				u2.RawQuery = q.Encode()
+				// We avoid q.Encode() because it sorts query parameters alphabetically,
+				// which would cause diffs in the HTTP logs for many tests.
+				// Instead we do a surgical replacement.
+				joinedPaths := strings.Join(paths, ",")
+				u2.RawQuery = strings.ReplaceAll(u2.RawQuery, "paths="+paths[0], "paths="+joinedPaths)
+				for _, p := range paths[1:] {
+					u2.RawQuery = strings.ReplaceAll(u2.RawQuery, "&paths="+p, "")
+					u2.RawQuery = strings.ReplaceAll(u2.RawQuery, "paths="+p+"&", "")
+				}
 				changed = true
 			}
 		}
