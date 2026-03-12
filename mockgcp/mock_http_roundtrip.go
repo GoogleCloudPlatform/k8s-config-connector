@@ -47,6 +47,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudquota"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudtasks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcomposer"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontainer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontaineranalysis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataform"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataplex"

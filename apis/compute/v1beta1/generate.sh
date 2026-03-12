@@ -23,6 +23,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
+# Generate types for v1 resources
 go run . generate-types \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1  \
@@ -32,9 +33,22 @@ go run . generate-types \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetTcpProxy:TargetTcpProxy
 
+# Move to a temporary file to avoid overwrite
+mv ${REPO_ROOT}/apis/compute/v1beta1/types.generated.go ${REPO_ROOT}/apis/compute/v1beta1/types.v1.generated.go
+
+# Generate types for v1beta resources
+go run . generate-types \
+  --service google.cloud.compute.v1beta \
+  --api-version compute.cnrm.cloud.google.com/v1beta1  \
+  --resource ComputeFutureReservation:FutureReservation
+
+# Rename it too
+mv ${REPO_ROOT}/apis/compute/v1beta1/types.generated.go ${REPO_ROOT}/apis/compute/v1beta1/types.v1beta.generated.go
+
+# Generate mappers for both
 go run . generate-mapper \
     --multiversion \
-    --service google.cloud.compute.v1 \
+    --service google.cloud.compute.v1,google.cloud.compute.v1beta \
     --api-version compute.cnrm.cloud.google.com/v1beta1
 
 cd ${REPO_ROOT}
