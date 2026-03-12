@@ -162,13 +162,5 @@ func isGetOperation(event mockgcpregistry.Event) bool {
 
 // isComputeAPI returns true if this is a compute URL
 func isComputeAPI(event mockgcpregistry.Event) bool {
-	u, err := url.Parse(event.URL())
-	if err != nil {
-		klog.Fatalf("cannot parse URL %q", event.URL())
-	}
-	switch u.Host {
-	case "compute.googleapis.com", "servicenetworking.googleapis.com", "networkservices.googleapis.com", "networkconnectivity.googleapis.com":
-		return true
-	}
-	return false
+	return strings.Contains(event.URL(), "compute.googleapis.com")
 }
