@@ -35,4 +35,4 @@ go run . generate-mapper --service google.cloud.alloydb.v1beta --api-version all
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/alloydb/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@v0.42.0 -w  pkg/controller/direct/alloydb/
