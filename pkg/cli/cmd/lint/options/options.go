@@ -16,7 +16,6 @@ package options
 
 import (
 	"fmt"
-	"sort"
 
 	"github.com/spf13/pflag"
 )
@@ -42,7 +41,7 @@ var abandonOnDeleteCheckKind = map[string]bool{
 	"BigtableInstance":  true,
 	"ContainerCluster":  true,
 	"ContainerNodePool": true,
-	"KMKeyRing":         true,
+	"KMSKeyRing":         true,
 	"KMSCryptoKey":      true,
 	"RedisCluster":      true,
 	"SpannerDatabase":   true,
@@ -97,19 +96,6 @@ func (o *Options) Validate() (map[string]bool, error) {
 
 	for _, kind := range o.IgnoreResources {
 		delete(kindsToLintMap, kind)
-	}
-
-	if o.Verbose > 0 {
-		// Collect the keys to be linted so we can sort them for stable output.
-		var kindsToLint []string
-		for kind := range kindsToLintMap {
-			kindsToLint = append(kindsToLint, kind)
-		}
-		sort.Strings(kindsToLint)
-		fmt.Println("Running lint on the following resource kinds:")
-		for _, kind := range kindsToLint {
-			fmt.Printf("* %s\n", kind)
-		}
 	}
 
 	if o.WorkerRoutines <= 0 || o.WorkerRoutines > 100 {

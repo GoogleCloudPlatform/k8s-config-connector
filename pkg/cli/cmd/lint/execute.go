@@ -17,7 +17,7 @@ package lint
 import (
 	"context"
 	"fmt"
-	"log"
+	"io"
 	"sort"
 	"strings"
 	"sync"
@@ -34,10 +34,23 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func Execute(ctx context.Context, opts *options.Options) error {
-	kindsToLint, err := opts.Validate()
+func Execute(ctx context.Context, stdout, stderr io.Writer, opts *options.Options) error {
+	kindsToLintMap, err := opts.Validate()
 	if err != nil {
 		return err
+	}
+
+	if opts.Verbose > 0 {
+		// Collect the keys to be linted so we can sort them for stable output.
+		var kindsToLint []string
+		for kind := range kindsToLintMap {
+			kindsToLint = append(kindsToLint, kind)
+		}
+		sort.Strings(kindsToLint)
+		fmt.Fprintln(stdout, "Running lint on the following resource kinds:")
+		for _, kind := range kindsToLint {
+			fmt.Fprintf(stdout, "* %s\n", kind)
+		}
 	}
 
 	config, err := getRESTConfig(ctx, opts)
@@ -57,7 +70,7 @@ func Execute(ctx context.Context, opts *options.Options) error {
 
 	discoveryClient := clientset.Discovery()
 	var resources []schema.GroupVersionResource
-	resources, err = getResourcesWithKindFilter(discoveryClient, resources, kindsToLint)
+	resources, err = getResourcesWithKindFilter(discoveryClient, resources, kindsToLintMap)
 	if err != nil {
 		return fmt.Errorf("error fetching resources: %w", err)
 	}
@@ -78,7 +91,7 @@ func Execute(ctx context.Context, opts *options.Options) error {
 	perNamespace := len(opts.TargetNamespaces) > 0
 	if perNamespace {
 		for _, ns := range namespaces.Items {
-			if shouldExclude(ns.Name, opts.IgnoreNamespaces, opts.TargetNamespaces) {
+			if shouldExclude(ns.Name, opts.IgnoreNamespaces, opts.TargetNamespaces, opts.Verbose, stderr) {
 				continue
 			}
 
@@ -92,15 +105,17 @@ func Execute(ctx context.Context, opts *options.Options) error {
 	} else {
 		for _, resource := range resources {
 			q.AddTask(&lintResourcesTask{
-				Result:        r,
-				Resources:     []schema.GroupVersionResource{resource},
-				DynamicClient: dynamicClient,
+				Result:           r,
+				Resources:        []schema.GroupVersionResource{resource},
+				DynamicClient:    dynamicClient,
+				IgnoreNamespaces: opts.IgnoreNamespaces,
+				TargetNamespaces: opts.TargetNamespaces,
 			})
 		}
 	}
 
 	if opts.Verbose > 0 {
-		log.Printf("Starting worker threads to process Config Connector objects")
+		fmt.Fprintln(stderr, "Starting worker threads to process Config Connector objects")
 	}
 
 	var wg sync.WaitGroup
@@ -130,11 +145,11 @@ func Execute(ctx context.Context, opts *options.Options) error {
 
 	if len(errs) > 0 {
 		for _, err := range errs {
-			log.Printf("Error: %v", err)
+			fmt.Fprintf(stderr, "Error: %v\n", err)
 		}
 	}
 
-	r.Print()
+	r.Print(stdout)
 	return nil
 }
 
@@ -150,10 +165,12 @@ func getRESTConfig(ctx context.Context, opts *options.Options) (*rest.Config, er
 		&clientcmd.ConfigOverrides{}).ClientConfig()
 }
 
-func shouldExclude(name string, excludes []string, includes []string) bool {
+func shouldExclude(name string, excludes []string, includes []string, verbose int, stderr io.Writer) bool {
 	for _, exclude := range excludes {
-		if strings.Contains(name, exclude) {
-			log.Printf("Excluding %s as it contains %s", name, exclude)
+		if strings.HasPrefix(name, exclude) {
+			if verbose > 1 && stderr != nil {
+				fmt.Fprintf(stderr, "Excluding %s as it matches prefix %s\n", name, exclude)
+			}
 			return true
 		}
 	}
@@ -163,13 +180,17 @@ func shouldExclude(name string, excludes []string, includes []string) bool {
 	}
 
 	for _, include := range includes {
-		if strings.Contains(name, include) {
-			log.Printf("Including %s as it contains %s", name, include)
+		if strings.HasPrefix(name, include) {
+			if verbose > 1 && stderr != nil {
+				fmt.Fprintf(stderr, "Including %s as it matches prefix %s\n", name, include)
+			}
 			return false
 		}
 	}
 
-	log.Printf("Excluding %s as nothing targets it %v", name, includes)
+	if verbose > 1 && stderr != nil {
+		fmt.Fprintf(stderr, "Excluding %s as it does not match any target prefix %v\n", name, includes)
+	}
 	return true
 }
 
@@ -218,14 +239,20 @@ func getResourcesWithKindFilter(discoveryClient discovery.DiscoveryInterface, re
 		}
 	}
 	sort.Slice(resources, func(i, j int) bool {
-		return resources[i].String() < resources[j].String()
+		if resources[i].Group != resources[j].Group {
+			return resources[i].Group < resources[j].Group
+		}
+		if resources[i].Version != resources[j].Version {
+			return resources[i].Version < resources[j].Version
+		}
+		return resources[i].Resource < resources[j].Resource
 	})
 	return resources, nil
 }
 
 func contains(slice []string, str string) bool {
 	for _, s := range slice {
-		if strings.ToLower(s) == strings.ToLower(str) {
+		if strings.EqualFold(s, str) {
 			return true
 		}
 	}
@@ -238,16 +265,35 @@ type Result struct {
 	resources map[string]map[string][]string
 }
 
-func (r *Result) Print() {
-	log.Println("Following Resources should include `cnrm.cloud.google.com/deletion-policy: abandon` annotation")
+func (r *Result) Print(w io.Writer) {
+	fmt.Fprintln(w, "Following Resources should include `cnrm.cloud.google.com/deletion-policy: abandon` annotation")
 	r.lock.Lock()
 	defer r.lock.Unlock()
-	for ns, nsMap := range r.resources {
-		log.Printf("Namespace: %s\n", ns)
-		for gk, ids := range nsMap {
-			log.Printf("Group Kind: %s\n", gk)
+
+	// Sort namespaces for stable output
+	namespaces := make([]string, 0, len(r.resources))
+	for ns := range r.resources {
+		namespaces = append(namespaces, ns)
+	}
+	sort.Strings(namespaces)
+
+	for _, ns := range namespaces {
+		nsMap := r.resources[ns]
+		fmt.Fprintf(w, "Namespace: %s\n", ns)
+
+		// Sort GroupKinds for stable output
+		gks := make([]string, 0, len(nsMap))
+		for gk := range nsMap {
+			gks = append(gks, gk)
+		}
+		sort.Strings(gks)
+
+		for _, gk := range gks {
+			ids := nsMap[gk]
+			fmt.Fprintf(w, "Group Kind: %s\n", gk)
+			sort.Strings(ids)
 			for _, id := range ids {
-				log.Printf("- %s\n", id)
+				fmt.Fprintf(w, "- %s\n", id)
 			}
 		}
 	}
@@ -283,6 +329,9 @@ type lintResourcesTask struct {
 	DynamicClient dynamic.Interface
 
 	Resources []schema.GroupVersionResource
+
+	IgnoreNamespaces []string
+	TargetNamespaces []string
 }
 
 func (t *lintResourcesTask) Run(ctx context.Context) error {
@@ -304,9 +353,15 @@ func (t *lintResourcesTask) Run(ctx context.Context) error {
 		}
 
 		for _, r := range resources.Items {
-			if !(r.GetAnnotations()["cnrm.cloud.google.com/deletion-policy"] == "abandon") {
+			ns := r.GetNamespace()
+			if t.Namespace == "" {
+				if shouldExclude(ns, t.IgnoreNamespaces, t.TargetNamespaces, 0, nil) {
+					continue
+				}
+			}
+			if r.GetAnnotations()["cnrm.cloud.google.com/deletion-policy"] != "abandon" {
 				gk := gvr.Resource + "." + gvr.Group
-				t.Result.addNewResource(t.Namespace, gk, r.GetName())
+				t.Result.addNewResource(ns, gk, r.GetName())
 			}
 		}
 	}
@@ -332,6 +387,7 @@ func (n *taskQueue) GetWork() Task {
 	}
 
 	workItem := n.tasks[0]
+	n.tasks[0] = nil
 	n.tasks = n.tasks[1:]
 
 	return workItem

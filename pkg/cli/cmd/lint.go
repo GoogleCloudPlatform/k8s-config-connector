@@ -46,7 +46,7 @@ func NewLintCmd() *cobra.Command {
 		Short:   "lint Config Connector resources",
 		Example: lintExamples,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return lint.Execute(cmd.Context(), opts)
+			return lint.Execute(cmd.Context(), cmd.OutOrStdout(), cmd.ErrOrStderr(), opts)
 		},
 		Args: cobra.ExactArgs(0),
 	}
