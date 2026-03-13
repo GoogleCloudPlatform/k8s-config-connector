@@ -45,6 +45,7 @@ type AlloyDBUserSpec struct {
 }
 
 // AlloyDBUserStatus defines the config connector machine state of AlloyDBUser
+// +kcc:status:proto=google.cloud.alloydb.v1beta.User
 type AlloyDBUserStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */

@@ -53,21 +53,3 @@ func AlloyDBUserSpec_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm.Allo
 	out.UserType = direct.Enum_FromProto(mapCtx, in.GetUserType())
 	return out
 }
-
-func AlloyDBUserStatus_FromProto(mapCtx *direct.MapContext, in *pb.User) *krm.AlloyDBUserStatus {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AlloyDBUserStatus{}
-	out.Name = direct.LazyPtr(in.GetName())
-	return out
-}
-
-func AlloyDBUserStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBUserStatus) *pb.User {
-	if in == nil {
-		return nil
-	}
-	out := &pb.User{}
-	out.Name = direct.ValueOf(in.Name)
-	return out
-}
