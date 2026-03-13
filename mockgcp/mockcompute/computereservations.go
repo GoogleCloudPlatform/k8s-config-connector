@@ -88,15 +88,7 @@ func (s *ReservationsV1) Insert(ctx context.Context, req *pb.InsertReservationRe
 		return nil, err
 	}
 
-	op := &pb.Operation{
-		TargetId:      obj.Id,
-		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("insert"),
-		User:          PtrTo("user@example.com"),
-	}
-	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
-		return obj, nil
-	})
+	return s.newLRO(ctx, name.Project.ID)
 }
 
 func (s *ReservationsV1) Update(ctx context.Context, req *pb.UpdateReservationRequest) (*pb.Operation, error) {
@@ -161,15 +153,7 @@ func (s *ReservationsV1) Update(ctx context.Context, req *pb.UpdateReservationRe
 		return nil, err
 	}
 
-	op := &pb.Operation{
-		TargetId:      obj.Id,
-		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("update"),
-		User:          PtrTo("user@example.com"),
-	}
-	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
-		return obj, nil
-	})
+	return s.newLRO(ctx, name.Project.ID)
 }
 
 func (s *ReservationsV1) Delete(ctx context.Context, req *pb.DeleteReservationRequest) (*pb.Operation, error) {
@@ -186,15 +170,7 @@ func (s *ReservationsV1) Delete(ctx context.Context, req *pb.DeleteReservationRe
 		return nil, err
 	}
 
-	op := &pb.Operation{
-		TargetId:      deleted.Id,
-		TargetLink:    deleted.SelfLink,
-		OperationType: PtrTo("delete"),
-		User:          PtrTo("user@example.com"),
-	}
-	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
-		return deleted, nil
-	})
+	return s.newLRO(ctx, name.Project.ID)
 }
 
 type zonalReservationName struct {
