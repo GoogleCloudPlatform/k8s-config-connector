@@ -19,6 +19,7 @@ import (
 	"reflect"
 	"sort"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	bigquery "google.golang.org/api/bigquery/v2"
 )
 
@@ -72,7 +73,7 @@ func sortSchemaFields(fields []*bigquery.TableFieldSchema) {
 	})
 }
 
-func tableFieldsSchemaEqual(desired, actual []*bigquery.TableFieldSchema) (bool, error) {
+func tableFieldsSchemaEqual(desired, actual []*bigquery.TableFieldSchema, prefix string, diff *structuredreporting.Diff) (bool, error) {
 	if len(desired) == 0 && len(actual) == 0 {
 		return true, nil
 	}
@@ -84,6 +85,7 @@ func tableFieldsSchemaEqual(desired, actual []*bigquery.TableFieldSchema) (bool,
 
 	}
 	if len(desired) != len(actual) {
+		diff.AddField(prefix, desired, actual)
 		return false, nil
 	}
 	// The fields from API can be in a different order.
@@ -91,49 +93,65 @@ func tableFieldsSchemaEqual(desired, actual []*bigquery.TableFieldSchema) (bool,
 	sortSchemaFields(desired)
 	sortSchemaFields(actual)
 	for i := range desired {
+		fieldName := desired[i].Name
+		fieldPrefix := fmt.Sprintf("%s[%s]", prefix, fieldName)
 		if !reflect.DeepEqual(desired[i].Categories, actual[i].Categories) {
+			diff.AddField(fieldPrefix+".categories", desired[i].Categories, actual[i].Categories)
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].Collation, actual[i].Collation) {
+			diff.AddField(fieldPrefix+".collation", desired[i].Collation, actual[i].Collation)
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].DefaultValueExpression, actual[i].DefaultValueExpression) {
+			diff.AddField(fieldPrefix+".defaultValueExpression", desired[i].DefaultValueExpression, actual[i].DefaultValueExpression)
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].Description, actual[i].Description) {
+			diff.AddField(fieldPrefix+".description", desired[i].Description, actual[i].Description)
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].ForeignTypeDefinition, actual[i].ForeignTypeDefinition) {
+			diff.AddField(fieldPrefix+".foreignTypeDefinition", desired[i].ForeignTypeDefinition, actual[i].ForeignTypeDefinition)
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].MaxLength, actual[i].MaxLength) {
+			diff.AddField(fieldPrefix+".maxLength", desired[i].MaxLength, actual[i].MaxLength)
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].Mode, actual[i].Mode) {
+			diff.AddField(fieldPrefix+".mode", desired[i].Mode, actual[i].Mode)
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].Name, actual[i].Name) {
+			diff.AddField(fieldPrefix+".name", desired[i].Name, actual[i].Name)
 			return false, nil
 		}
 		if !policyTagsEqual(desired[i].PolicyTags, actual[i].PolicyTags) {
+			diff.AddField(fieldPrefix+".policyTags", desired[i].PolicyTags, actual[i].PolicyTags)
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].Precision, actual[i].Precision) {
+			diff.AddField(fieldPrefix+".precision", desired[i].Precision, actual[i].Precision)
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].RangeElementType, actual[i].RangeElementType) {
+			diff.AddField(fieldPrefix+".rangeElementType", desired[i].RangeElementType, actual[i].RangeElementType)
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].RoundingMode, actual[i].RoundingMode) {
+			diff.AddField(fieldPrefix+".roundingMode", desired[i].RoundingMode, actual[i].RoundingMode)
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].Scale, actual[i].Scale) {
+			diff.AddField(fieldPrefix+".scale", desired[i].Scale, actual[i].Scale)
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].Type, actual[i].Type) {
+			diff.AddField(fieldPrefix+".type", desired[i].Type, actual[i].Type)
 			return false, nil
 		}
-		eq, err := tableFieldsSchemaEqual(desired[i].Fields, actual[i].Fields)
+		eq, err := tableFieldsSchemaEqual(desired[i].Fields, actual[i].Fields, fieldPrefix+".fields", diff)
 		if err != nil {
 			return false, err
 		}
@@ -144,161 +162,196 @@ func tableFieldsSchemaEqual(desired, actual []*bigquery.TableFieldSchema) (bool,
 	return true, nil
 }
 
-func externalDataConfigurationEqual(a, b *bigquery.ExternalDataConfiguration) (bool, error) {
+func externalDataConfigurationEqual(a, b *bigquery.ExternalDataConfiguration, prefix string, diff *structuredreporting.Diff) (bool, error) {
 	if a == nil && b == nil {
 		return true, nil
 	}
 	if a == nil || b == nil {
+		diff.AddField(prefix, a, b)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.Autodetect, b.Autodetect) {
+		diff.AddField(prefix+".autodetect", a.Autodetect, b.Autodetect)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.AvroOptions, b.AvroOptions) {
+		diff.AddField(prefix+".avroOptions", a.AvroOptions, b.AvroOptions)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.Compression, b.Compression) {
+		diff.AddField(prefix+".compression", a.Compression, b.Compression)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.ConnectionId, b.ConnectionId) {
+		diff.AddField(prefix+".connectionId", a.ConnectionId, b.ConnectionId)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.CsvOptions, b.CsvOptions) {
+		diff.AddField(prefix+".csvOptions", a.CsvOptions, b.CsvOptions)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.GoogleSheetsOptions, b.GoogleSheetsOptions) {
+		diff.AddField(prefix+".googleSheetsOptions", a.GoogleSheetsOptions, b.GoogleSheetsOptions)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.HivePartitioningOptions, b.HivePartitioningOptions) {
+		diff.AddField(prefix+".hivePartitioningOptions", a.HivePartitioningOptions, b.HivePartitioningOptions)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.IgnoreUnknownValues, b.IgnoreUnknownValues) {
+		diff.AddField(prefix+".ignoreUnknownValues", a.IgnoreUnknownValues, b.IgnoreUnknownValues)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.JsonOptions, b.JsonOptions) {
+		diff.AddField(prefix+".jsonOptions", a.JsonOptions, b.JsonOptions)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.MaxBadRecords, b.MaxBadRecords) {
+		diff.AddField(prefix+".maxBadRecords", a.MaxBadRecords, b.MaxBadRecords)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.MetadataCacheMode, b.MetadataCacheMode) {
+		diff.AddField(prefix+".metadataCacheMode", a.MetadataCacheMode, b.MetadataCacheMode)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.ParquetOptions, b.ParquetOptions) {
+		diff.AddField(prefix+".parquetOptions", a.ParquetOptions, b.ParquetOptions)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.SourceFormat, b.SourceFormat) {
+		diff.AddField(prefix+".sourceFormat", a.SourceFormat, b.SourceFormat)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.SourceUris, b.SourceUris) {
+		diff.AddField(prefix+".sourceUris", a.SourceUris, b.SourceUris)
 		return false, nil
 	}
 
-	equal, err := tableSchemaEq(a.Schema, b.Schema)
+	equal, err := tableSchemaEq(a.Schema, b.Schema, prefix+".schema", diff)
 	if err != nil {
 		return false, err
 	}
 	return equal, nil
 }
 
-func materializedViewEq(a, b *bigquery.MaterializedViewDefinition) bool {
+func materializedViewEq(a, b *bigquery.MaterializedViewDefinition, prefix string, diff *structuredreporting.Diff) bool {
 	if a == nil && b == nil {
 		return true
 	}
 	if a == nil || b == nil {
+		diff.AddField(prefix, a, b)
 		return false
 	}
 	if !reflect.DeepEqual(a.AllowNonIncrementalDefinition, b.AllowNonIncrementalDefinition) {
+		diff.AddField(prefix+".allowNonIncrementalDefinition", a.AllowNonIncrementalDefinition, b.AllowNonIncrementalDefinition)
 		return false
 	}
 	if !reflect.DeepEqual(a.EnableRefresh, b.EnableRefresh) {
+		diff.AddField(prefix+".enableRefresh", a.EnableRefresh, b.EnableRefresh)
 		return false
 	}
 	if !reflect.DeepEqual(a.Query, b.Query) {
+		diff.AddField(prefix+".query", a.Query, b.Query)
 		return false
 	}
 	if !reflect.DeepEqual(a.MaxStaleness, b.MaxStaleness) {
+		diff.AddField(prefix+".maxStaleness", a.MaxStaleness, b.MaxStaleness)
 		return false
 	}
 	if !reflect.DeepEqual(a.RefreshIntervalMs, b.RefreshIntervalMs) {
+		diff.AddField(prefix+".refreshIntervalMs", a.RefreshIntervalMs, b.RefreshIntervalMs)
 		return false
 	}
 	return true
 }
 
-func tableSchemaEq(a, b *bigquery.TableSchema) (bool, error) {
+func tableSchemaEq(a, b *bigquery.TableSchema, prefix string, diff *structuredreporting.Diff) (bool, error) {
 	if a == nil && b == nil {
 		return true, nil
 	}
 	if a == nil || b == nil {
+		diff.AddField(prefix, a, b)
 		return false, nil
 	}
-	return tableFieldsSchemaEqual(a.Fields, b.Fields)
+	return tableFieldsSchemaEqual(a.Fields, b.Fields, prefix+".fields", diff)
 }
 
-func viewEq(a, b *bigquery.ViewDefinition) bool {
+func viewEq(a, b *bigquery.ViewDefinition, prefix string, diff *structuredreporting.Diff) bool {
 	if a == nil && b == nil {
 		return true
 	}
 	if a == nil || b == nil {
+		diff.AddField(prefix, a, b)
 		return false
 	}
 	if !reflect.DeepEqual(a.Query, b.Query) {
+		diff.AddField(prefix+".query", a.Query, b.Query)
 		return false
 	}
 	if !reflect.DeepEqual(a.UseLegacySql, b.UseLegacySql) {
+		diff.AddField(prefix+".useLegacySql", a.UseLegacySql, b.UseLegacySql)
 		return false
 	}
 	return true
 }
 
-func TableEq(a, b *bigquery.Table) (bool, error) {
+func TableEq(a, b *bigquery.Table, diff *structuredreporting.Diff) (bool, error) {
 	if a == nil && b == nil {
 		return true, nil
 	}
 	if !reflect.DeepEqual(a.Clustering, b.Clustering) {
+		diff.AddField("clustering", a.Clustering, b.Clustering)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.Description, b.Description) {
+		diff.AddField("description", a.Description, b.Description)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.EncryptionConfiguration, b.EncryptionConfiguration) {
+		diff.AddField("encryptionConfiguration", a.EncryptionConfiguration, b.EncryptionConfiguration)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.ExpirationTime, b.ExpirationTime) {
+		diff.AddField("expirationTime", a.ExpirationTime, b.ExpirationTime)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.FriendlyName, b.FriendlyName) {
+		diff.AddField("friendlyName", a.FriendlyName, b.FriendlyName)
 		return false, nil
 	}
-	if !materializedViewEq(a.MaterializedView, b.MaterializedView) {
+	if !materializedViewEq(a.MaterializedView, b.MaterializedView, "materializedView", diff) {
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.MaxStaleness, b.MaxStaleness) {
+		diff.AddField("maxStaleness", a.MaxStaleness, b.MaxStaleness)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.RangePartitioning, b.RangePartitioning) {
+		diff.AddField("rangePartitioning", a.RangePartitioning, b.RangePartitioning)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.RequirePartitionFilter, b.RequirePartitionFilter) {
+		diff.AddField("requirePartitionFilter", a.RequirePartitionFilter, b.RequirePartitionFilter)
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.TableConstraints, b.TableConstraints) {
+		diff.AddField("tableConstraints", a.TableConstraints, b.TableConstraints)
 		return false, nil
 	}
 
-	if !viewEq(a.View, b.View) {
+	if !viewEq(a.View, b.View, "view", diff) {
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.Labels, b.Labels) {
+		diff.AddField("labels", a.Labels, b.Labels)
 		return false, nil
 	}
-	equal, err := tableSchemaEq(a.Schema, b.Schema)
+	equal, err := tableSchemaEq(a.Schema, b.Schema, "schema", diff)
 	if err != nil {
 		return false, err
 	}
 	if !equal {
 		return false, nil
 	}
-	return externalDataConfigurationEqual(a.ExternalDataConfiguration, b.ExternalDataConfiguration)
+	return externalDataConfigurationEqual(a.ExternalDataConfiguration, b.ExternalDataConfiguration, "externalDataConfiguration", diff)
 }
