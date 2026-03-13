@@ -40,4 +40,7 @@ status:
     type: Ready
   observedGeneration: 3
   observedState:
+    nodeConfig:
+      confidentialNodes:
+        confidentialInstanceType: SEV
     version: 1.30.5-gke.1014001
