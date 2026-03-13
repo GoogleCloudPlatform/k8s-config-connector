@@ -113,12 +113,17 @@ func resolveContainerClusterNodeVersion(r *Resource, config map[string]interface
 	if err != nil {
 		return fmt.Errorf("error determining if release channel is set: %w", err)
 	}
-	if !found || releaseChannel == nil {
-		// Release channel is not specified, so no special behavior required.
-		return nil
-	}
-	if err := removeFromConfigIfNotApplied(r, config, "nodeVersion"); err != nil {
-		return fmt.Errorf("error resolving node version in config: %w", err)
+
+	// If the user opts to remove the default node pool, specifying a node version
+	// is also restricted by Terraform.
+	removeDefaultNodePoolDirective := "remove-default-node-pool"
+	removeDefaultNodePoolKey := k8s.FormatAnnotation(removeDefaultNodePoolDirective)
+	removeDefaultNodePool, _ := k8s.GetAnnotation(removeDefaultNodePoolKey, r)
+
+	if removeDefaultNodePool == "true" || (found && releaseChannel != nil) {
+		if err := removeFromConfigIfNotApplied(r, config, "nodeVersion"); err != nil {
+			return fmt.Errorf("error resolving node version in config: %w", err)
+		}
 	}
 	return nil
 }
@@ -150,6 +155,7 @@ func resolveContainerNodePoolVersion(r *Resource, config map[string]interface{})
 // resource. So in this case, we need to manually clean up `nodeConfig` field.
 func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.InstanceState, config map[string]interface{}) error {
 	removeDefaultNodePoolDirective := "remove-default-node-pool"
+	allowNodeConfigOverrideAnnotation := "remove-default-node-pool-allow-node-config"
 	nodeConfigFieldInTFState := "node_config"
 	nodeConfigFieldInKRMConfig := text.SnakeCaseToLowerCamelCase(nodeConfigFieldInTFState)
 
@@ -165,6 +171,22 @@ func resolveContainerClusterNodeConfig(r *Resource, liveState *terraform.Instanc
 		return fmt.Errorf("error resolving field '%v' in 'ContainerCluster': %w", nodeConfigFieldInKRMConfig, err)
 	}
 	if exists {
+		return nil
+	}
+
+	// If the resource is being created, we MUST NOT strip node_config, because the user may have specified
+	// important settings like network tags that are required for the temporary default pool to connect
+	// to the master during provisioning.
+	if liveState.ID == "" {
+		return nil
+	}
+
+	// Opt-in logic to allow specifying nodeConfig for the temporary default pool
+	// (unblocking OrgPolicies/custom requirements) without causing a permanent
+	// reconciliation loop once GKE deletes the pool.
+	allowNodeConfigOverrideKey := k8s.FormatAnnotation(allowNodeConfigOverrideAnnotation)
+	if override, ok := k8s.GetAnnotation(allowNodeConfigOverrideKey, r); ok && override == "true" {
+		unstructured.RemoveNestedField(config, nodeConfigFieldInKRMConfig)
 		return nil
 	}
 
