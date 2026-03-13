@@ -781,8 +781,10 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 	if v, ok := nodeConfig["ephemeral_storage_local_ssd_config"]; ok && len(v.([]interface{})) > 0 {
 		conf := v.([]interface{})[0].(map[string]interface{})
 		nc.EphemeralStorageLocalSsdConfig = &container.EphemeralStorageLocalSsdConfig{
-			LocalSsdCount:  int64(conf["local_ssd_count"].(int)),
-			DataCacheCount: int64(conf["data_cache_count"].(int)),
+			LocalSsdCount: int64(conf["local_ssd_count"].(int)),
+		}
+		if v, ok := conf["data_cache_count"]; ok {
+			nc.EphemeralStorageLocalSsdConfig.DataCacheCount = int64(v.(int))
 		}
 	}
 
