@@ -72,6 +72,37 @@ type RedisClusterSpec struct {
 
 	// Optional. The delete operation will fail when the value is set to true.
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
+
+	// Optional. Cross cluster replication config.
+	CrossClusterReplicationConfig *CrossClusterReplicationConfig `json:"crossClusterReplicationConfig,omitempty"`
+}
+
+// CrossClusterReplicationConfig configures cross cluster replication.
+type CrossClusterReplicationConfig struct {
+	// The role of the cluster in cross cluster replication.
+	// +optional
+	ClusterRole *string `json:"clusterRole,omitempty"`
+
+	// Details of the primary cluster that is used as the replication source for
+	// this secondary cluster.
+	//
+	// This field is only set for a secondary cluster.
+	// +optional
+	PrimaryCluster *CrossClusterReplicationConfig_RemoteCluster `json:"primaryCluster,omitempty"`
+
+	// List of secondary clusters that are replicating from this primary cluster.
+	//
+	// This field is only set for a primary cluster.
+	// +optional
+	SecondaryClusters []CrossClusterReplicationConfig_RemoteCluster `json:"secondaryClusters,omitempty"`
+}
+
+// CrossClusterReplicationConfig_RemoteCluster configures the remote cluster in cross cluster replication.
+type CrossClusterReplicationConfig_RemoteCluster struct {
+	// The full resource path of the remote cluster in
+	// the format: projects/<project>/locations/<region>/clusters/<cluster-id>
+	// +optional
+	ClusterRef *refs.RedisClusterRef `json:"clusterRef,omitempty"`
 }
 
 type PscConfigSpec struct {
@@ -133,6 +164,48 @@ type RedisClusterObservedState struct {
 	// Output only. Precise value of redis memory size in GB for the entire
 	//  cluster.
 	PreciseSizeGb *float64 `json:"preciseSizeGb,omitempty"`
+
+	// Output only. Cross cluster replication config.
+	CrossClusterReplicationConfig *CrossClusterReplicationConfigObservedState `json:"crossClusterReplicationConfig,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig
+type CrossClusterReplicationConfigObservedState struct {
+	// Output only. An output only view of all the member clusters participating
+	// in the cross cluster replication. This view will be provided by every
+	// member cluster irrespective of its cluster role(primary or secondary).
+	//
+	// A primary cluster can provide information about all the secondary clusters
+	// replicating from it. However, a secondary cluster only knows about the
+	// primary cluster from which it is replicating. However, for scenarios, where
+	// the primary cluster is unavailable(e.g. regional outage), a GetCluster
+	// request can be sent to any other member cluster and this field will list
+	// all the member clusters participating in cross cluster replication.
+	Membership *CrossClusterReplicationConfig_MembershipObservedState `json:"membership,omitempty"`
+
+	// Output only. The last time cross cluster replication config was updated.
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.Membership
+type CrossClusterReplicationConfig_MembershipObservedState struct {
+	// Output only. The primary cluster that acts as the source of replication
+	// for the secondary clusters.
+	PrimaryCluster *CrossClusterReplicationConfig_RemoteClusterObservedState `json:"primaryCluster,omitempty"`
+
+	// Output only. The list of secondary clusters replicating from the primary
+	// cluster.
+	SecondaryClusters []CrossClusterReplicationConfig_RemoteClusterObservedState `json:"secondaryClusters,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.RemoteCluster
+type CrossClusterReplicationConfig_RemoteClusterObservedState struct {
+	// The full resource path of the remote cluster in
+	// the format: projects/<project>/locations/<region>/clusters/<cluster-id>
+	Cluster *string `json:"cluster,omitempty"`
+
+	// Output only. The unique identifier of the remote cluster.
+	Uid *string `json:"uid,omitempty"`
 }
 
 // +genclient
