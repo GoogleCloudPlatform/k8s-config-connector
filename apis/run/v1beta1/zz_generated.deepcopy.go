@@ -22,6 +22,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -98,11 +99,11 @@ func (in *CloudSQLInstance) DeepCopyInto(out *CloudSQLInstance) {
 	*out = *in
 	if in.InstanceRefs != nil {
 		in, out := &in.InstanceRefs, &out.InstanceRefs
-		*out = make([]*refsv1beta1.SQLInstanceRef, len(*in))
+		*out = make([]*sqlv1beta1.SQLInstanceRef, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {
 				in, out := &(*in)[i], &(*out)[i]
-				*out = new(refsv1beta1.SQLInstanceRef)
+				*out = new(sqlv1beta1.SQLInstanceRef)
 				**out = **in
 			}
 		}

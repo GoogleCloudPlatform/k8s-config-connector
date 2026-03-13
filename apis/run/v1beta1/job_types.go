@@ -18,6 +18,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -212,9 +213,9 @@ type CloudSQLInstance struct {
 	//  https://console.cloud.google.com/sql/instances. Visit
 	//  https://cloud.google.com/sql/docs/mysql/connect-run for more information on
 	//  how to connect Cloud SQL and Cloud Run. Format:
-	//  {project}:{location}:{instance}
+	//  projects/{{projectID}}/instances/{{instanceID}}
 	// +kcc:proto:field=google.cloud.run.v2.CloudSqlInstance.instances
-	InstanceRefs []*refs.SQLInstanceRef `json:"instanceRefs,omitempty"`
+	InstanceRefs []*sqlv1beta1.SQLInstanceRef `json:"instanceRefs,omitempty"`
 }
 
 // +kcc:proto=google.cloud.run.v2.Container
