@@ -14,6 +14,7 @@ require (
 	cloud.google.com/go/analytics v0.30.1
 	cloud.google.com/go/apigateway v1.7.7
 	cloud.google.com/go/batch v1.14.0
+	cloud.google.com/go/bigquery v1.72.0
 	cloud.google.com/go/bigtable v1.41.0
 	cloud.google.com/go/billing v1.21.0
 	cloud.google.com/go/clouddms v1.8.8
@@ -27,6 +28,8 @@ require (
 	cloud.google.com/go/iap v1.11.3
 	cloud.google.com/go/logging v1.13.1
 	cloud.google.com/go/longrunning v0.7.0
+	cloud.google.com/go/managedkafka v0.8.1
+	cloud.google.com/go/netapp v1.11.0
 	cloud.google.com/go/networksecurity v0.11.0
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.12.7
@@ -34,6 +37,7 @@ require (
 	cloud.google.com/go/osconfig v1.15.1
 	cloud.google.com/go/recaptchaenterprise/v2 v2.21.0
 	cloud.google.com/go/storage v1.58.0
+	cloud.google.com/go/workflows v1.14.3
 	github.com/GoogleCloudPlatform/k8s-config-connector v1.129.2
 	github.com/golang/protobuf v1.5.4
 	github.com/google/uuid v1.6.0
@@ -46,7 +50,7 @@ require (
 	google.golang.org/grpc v1.77.0
 	google.golang.org/protobuf v1.36.11
 	k8s.io/api v0.33.0
-	k8s.io/apimachinery v0.33.0
+	k8s.io/apimachinery v0.33.9
 	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/controller-runtime v0.20.4
 	sigs.k8s.io/yaml v1.4.0
