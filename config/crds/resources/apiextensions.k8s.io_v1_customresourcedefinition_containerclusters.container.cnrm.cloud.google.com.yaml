@@ -1869,18 +1869,6 @@ spec:
               observedState:
                 description: The observed state of the underlying GCP resource.
                 properties:
-                  confidentialNodes:
-                    description: 'Immutable. Configuration for the confidential nodes
-                      feature, which makes nodes run on confidential VMs. Warning:
-                      This configuration can''t be changed (or added/removed) after
-                      cluster creation without deleting and recreating the entire
-                      cluster.'
-                    properties:
-                      confidentialInstanceType:
-                        description: Immutable. Confidential instance type for the
-                          cluster nodes. Valid values are SEV and SEV_SNP.
-                        type: string
-                    type: object
                   controlPlaneEndpointsConfig:
                     description: Configuration for all of the cluster's control plane
                       endpoints. Currently supports only DNS endpoint configuration
@@ -1912,22 +1900,6 @@ spec:
                         description: Base64 encoded public certificate that is the
                           root of trust for the cluster.
                         type: string
-                    type: object
-                  nodeConfig:
-                    description: Immutable. The configuration of the nodepool.
-                    properties:
-                      confidentialNodes:
-                        description: 'Immutable. Configuration for the confidential
-                          nodes feature, which makes nodes run on confidential VMs.
-                          Warning: This configuration can''t be changed (or added/removed)
-                          after pool creation without deleting and recreating the
-                          entire pool.'
-                        properties:
-                          confidentialInstanceType:
-                            description: Immutable. Confidential instance type for
-                              the cluster nodes. Valid values are SEV and SEV_SNP.
-                            type: string
-                        type: object
                     type: object
                   privateClusterConfig:
                     description: Configuration for private clusters, clusters with
