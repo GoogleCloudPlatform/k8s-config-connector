@@ -97,6 +97,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterAddressesServer(grpcServer, &RegionalAddressesV1{MockService: s})
 	pb.RegisterGlobalAddressesServer(grpcServer, &GlobalAddressesV1{MockService: s})
+	pb.RegisterPublicDelegatedPrefixesServer(grpcServer, &PublicDelegatedPrefixesV1{MockService: s})
+	pb.RegisterGlobalPublicDelegatedPrefixesServer(grpcServer, &GlobalPublicDelegatedPrefixesV1{MockService: s})
 	pb.RegisterSslCertificatesServer(grpcServer, &GlobalSSLCertificatesV1{MockService: s})
 	pb.RegisterRegionSslCertificatesServer(grpcServer, &RegionalSSLCertificatesV1{MockService: s})
 	pb.RegisterSslPoliciesServer(grpcServer, &GlobalSslPolicyV1{MockService: s})
@@ -107,6 +109,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterRegionNetworkEndpointGroupsServer(grpcServer, &RegionNetworkEndpointGroupV1{MockService: s})
 
 	pb.RegisterRoutesServer(grpcServer, &RoutesV1{MockService: s})
+	pb.RegisterPublicAdvertisedPrefixesServer(grpcServer, &PublicAdvertisedPrefixesV1{MockService: s})
 
 	pb.RegisterServiceAttachmentsServer(grpcServer, &RegionalServiceAttachmentV1{MockService: s})
 
@@ -166,6 +169,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterTargetVpnGatewaysHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterPublicAdvertisedPrefixesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
@@ -244,6 +250,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterGlobalAddressesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterPublicDelegatedPrefixesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterGlobalPublicDelegatedPrefixesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 

@@ -24,9 +24,270 @@ import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ComputeAddressObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeAddressObservedState{}
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: Users
+	return out
+}
+func ComputeAddressObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressObservedState) *pb.Address {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Address{}
+	// MISSING: CreationTimestamp
+	// MISSING: ID
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	// MISSING: Users
+	return out
+}
+func ComputeAddressSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Address) *krm.ComputeAddressSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeAddressSpec{}
+	out.Address = in.Address
+	out.AddressType = in.AddressType
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	out.IPVersion = in.IpVersion
+	out.IPV6EndpointType = in.Ipv6EndpointType
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krm.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.NetworkTier = in.NetworkTier
+	out.PrefixLength = in.PrefixLength
+	out.Purpose = in.Purpose
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	// MISSING: Users
+	return out
+}
+func ComputeAddressSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeAddressSpec) *pb.Address {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Address{}
+	out.Address = in.Address
+	out.AddressType = in.AddressType
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: ID
+	out.IpVersion = in.IPVersion
+	out.Ipv6EndpointType = in.IPV6EndpointType
+	// MISSING: Kind
+	// MISSING: LabelFingerprint
+	// MISSING: Labels
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = &in.NetworkRef.External
+	}
+	out.NetworkTier = in.NetworkTier
+	out.PrefixLength = in.PrefixLength
+	out.Purpose = in.Purpose
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = &in.SubnetworkRef.External
+	}
+	// MISSING: Users
+	return out
+}
+func ComputePublicAdvertisedPrefixObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PublicAdvertisedPrefix) *krm.ComputePublicAdvertisedPrefixObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputePublicAdvertisedPrefixObservedState{}
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PdpScope
+	// MISSING: PublicDelegatedPrefixs
+	out.SelfLink = in.SelfLink
+	out.SharedSecret = in.SharedSecret
+	out.Status = in.Status
+	return out
+}
+func ComputePublicAdvertisedPrefixObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputePublicAdvertisedPrefixObservedState) *pb.PublicAdvertisedPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicAdvertisedPrefix{}
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	out.Fingerprint = in.Fingerprint
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PdpScope
+	// MISSING: PublicDelegatedPrefixs
+	out.SelfLink = in.SelfLink
+	out.SharedSecret = in.SharedSecret
+	out.Status = in.Status
+	return out
+}
+func ComputePublicAdvertisedPrefixSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PublicAdvertisedPrefix) *krm.ComputePublicAdvertisedPrefixSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputePublicAdvertisedPrefixSpec{}
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DNSVerificationIP = in.DnsVerificationIp
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// (near miss): "IPCIDRRange" vs "IPCidrRange"
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PdpScope
+	// MISSING: PublicDelegatedPrefixs
+	return out
+}
+func ComputePublicAdvertisedPrefixSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputePublicAdvertisedPrefixSpec) *pb.PublicAdvertisedPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicAdvertisedPrefix{}
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	out.DnsVerificationIp = in.DNSVerificationIP
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// (near miss): "IPCIDRRange" vs "IPCidrRange"
+	// MISSING: Kind
+	// MISSING: Name
+	// MISSING: PdpScope
+	// MISSING: PublicDelegatedPrefixs
+	return out
+}
+func ComputePublicDelegatedPrefixObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PublicDelegatedPrefix) *krm.ComputePublicDelegatedPrefixObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputePublicDelegatedPrefixObservedState{}
+	// MISSING: AllocatablePrefixLength
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// MISSING: IsLiveMigration
+	// MISSING: Kind
+	// MISSING: Mode
+	// MISSING: Name
+	// MISSING: PublicDelegatedSubPrefixs
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	return out
+}
+func ComputePublicDelegatedPrefixObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputePublicDelegatedPrefixObservedState) *pb.PublicDelegatedPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicDelegatedPrefix{}
+	// MISSING: AllocatablePrefixLength
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// MISSING: IsLiveMigration
+	// MISSING: Kind
+	// MISSING: Mode
+	// MISSING: Name
+	// MISSING: PublicDelegatedSubPrefixs
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	return out
+}
+func ComputePublicDelegatedPrefixSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PublicDelegatedPrefix) *krm.ComputePublicDelegatedPrefixSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputePublicDelegatedPrefixSpec{}
+	// MISSING: AllocatablePrefixLength
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// (near miss): "IPCIDRRange" vs "IPCidrRange"
+	// MISSING: IsLiveMigration
+	// MISSING: Kind
+	// MISSING: Mode
+	// MISSING: Name
+	// MISSING: ParentPrefix
+	// MISSING: PublicDelegatedSubPrefixs
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	return out
+}
+func ComputePublicDelegatedPrefixSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputePublicDelegatedPrefixSpec) *pb.PublicDelegatedPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicDelegatedPrefix{}
+	// MISSING: AllocatablePrefixLength
+	// MISSING: ByoipAPIVersion
+	// MISSING: CreationTimestamp
+	out.Description = in.Description
+	// MISSING: Fingerprint
+	// MISSING: ID
+	// MISSING: IPCIDRRange
+	// (near miss): "IPCIDRRange" vs "IPCidrRange"
+	// MISSING: IsLiveMigration
+	// MISSING: Kind
+	// MISSING: Mode
+	// MISSING: Name
+	// MISSING: ParentPrefix
+	// MISSING: PublicDelegatedSubPrefixs
+	// MISSING: Region
+	// MISSING: SelfLink
+	// MISSING: Status
+	return out
+}
 func ComputeSecurityPolicyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyObservedState {
 	if in == nil {
 		return nil
@@ -515,6 +776,38 @@ func NetworkAttachmentConnectedEndpoint_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.Status = in.Status
 	out.Subnetwork = in.Subnetwork
 	out.SubnetworkCidrRange = in.SubnetworkCIDRRange
+	return out
+}
+func PublicDelegatedPrefixPublicDelegatedSubPrefix_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PublicDelegatedPrefixPublicDelegatedSubPrefix) *krm.PublicDelegatedPrefixPublicDelegatedSubPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PublicDelegatedPrefixPublicDelegatedSubPrefix{}
+	out.AllocatablePrefixLength = in.AllocatablePrefixLength
+	out.DelegateeProject = in.DelegateeProject
+	out.Description = in.Description
+	out.IPCIDRRange = in.IpCidrRange
+	out.IsAddress = in.IsAddress
+	out.Mode = in.Mode
+	out.Name = in.Name
+	out.Region = in.Region
+	out.Status = in.Status
+	return out
+}
+func PublicDelegatedPrefixPublicDelegatedSubPrefix_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PublicDelegatedPrefixPublicDelegatedSubPrefix) *pb.PublicDelegatedPrefixPublicDelegatedSubPrefix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublicDelegatedPrefixPublicDelegatedSubPrefix{}
+	out.AllocatablePrefixLength = in.AllocatablePrefixLength
+	out.DelegateeProject = in.DelegateeProject
+	out.Description = in.Description
+	out.IpCidrRange = in.IPCIDRRange
+	out.IsAddress = in.IsAddress
+	out.Mode = in.Mode
+	out.Name = in.Name
+	out.Region = in.Region
+	out.Status = in.Status
 	return out
 }
 func SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig) *krm.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig {
