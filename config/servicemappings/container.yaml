@@ -48,6 +48,8 @@ spec:
         - master_auth.cluster_ca_certificate
         - private_cluster_config.private_endpoint
         - private_cluster_config.public_endpoint
+        - confidential_nodes.confidential_instance_type
+        - node_config.confidential_nodes.confidential_instance_type
       containers:
         - type: project
           tfField: project
@@ -138,6 +140,7 @@ spec:
         targetField: name
       observedFields:
         - version
+        - node_config.confidential_nodes.confidential_instance_type
       resourceReferences:
         - key: clusterRef
           tfField: cluster
