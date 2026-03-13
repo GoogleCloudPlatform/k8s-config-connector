@@ -547,8 +547,10 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
 
-	if err := ResolveSQLInstanceRefs(ctx, kube, obj); err != nil {
-		return nil, err
+	if !op.IsDeleting() {
+		if err := ResolveSQLInstanceRefs(ctx, kube, obj); err != nil {
+			return nil, err
+		}
 	}
 
 	if obj.Spec.Settings.Edition != nil {
