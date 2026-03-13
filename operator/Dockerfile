@@ -22,19 +22,23 @@ FROM golang:1.26.1 AS builder
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
 COPY operator/pkg/      operator/pkg/
 COPY operator/cmd/      operator/cmd/
+COPY operator/config/ operator/config/
 COPY operator/channels/ operator/channels/
 COPY operator/autopilot-channels/ operator/autopilot-channels/
 COPY apis/ apis/
+COPY dev/tasks/      dev/tasks/
 COPY dev/metadata/   dev/metadata/
 COPY mockgcp/ mockgcp/
 COPY pkg/ pkg/
 COPY third_party/ third_party/
 COPY version/ version/
 COPY config/ config/
-COPY scripts/resource-autogen/ scripts/resource-autogen/
-COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
+COPY scripts/ scripts/
 COPY go.mod  go.mod
 COPY go.sum  go.sum
+
+# Generate channel manifests
+RUN dev/tasks/generate-channels
 
 # Build the binary from source
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
@@ -60,6 +64,7 @@ COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/
 RUN chown 1000 -R /configconnector-operator
 
 # Copy the directory into a thin, distroless image (go/gke-distroless)
+ARG GKE_DISTROLESS_IMG=gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
 FROM ${GKE_DISTROLESS_IMG} AS final
 WORKDIR /configconnector-operator/
 COPY --from=packager /configconnector-operator /configconnector-operator

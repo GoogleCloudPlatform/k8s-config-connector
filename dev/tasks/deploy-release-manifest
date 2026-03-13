@@ -21,6 +21,8 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
+# Generate channel manifests
+dev/tasks/generate-channels
 
 BUILD_DIR="${REPO_ROOT}/.build"
 mkdir -p "${BUILD_DIR}"
