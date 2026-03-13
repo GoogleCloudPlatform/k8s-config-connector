@@ -108,6 +108,41 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 					listVal.Append(protoreflect.ValueOfUint32(v))
 				}
 
+			case protoreflect.Int64Kind:
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					v := randStream.Int63()
+					listVal.Append(protoreflect.ValueOfInt64(v))
+				}
+
+			case protoreflect.Uint64Kind:
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					v := randStream.Uint64()
+					listVal.Append(protoreflect.ValueOfUint64(v))
+				}
+
+			case protoreflect.BoolKind:
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					v := randStream.Intn(2) == 1
+					listVal.Append(protoreflect.ValueOfBool(v))
+				}
+
+			case protoreflect.FloatKind:
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					v := randStream.Float32()
+					listVal.Append(protoreflect.ValueOfFloat32(v))
+				}
+
+			case protoreflect.DoubleKind:
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					v := randStream.NormFloat64()
+					listVal.Append(protoreflect.ValueOfFloat64(v))
+				}
+
 			case protoreflect.BytesKind:
 				listVal := msg.Mutable(field).List()
 				for j := 0; j < count; j++ {
@@ -349,34 +384,16 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					}
 					Visit(path+"[]", el.Message(), setter, visitor)
 				}
-			case protoreflect.StringKind:
-				for j := 0; j < count; j++ {
-					el := listVal.Get(j)
-					setter := func(v protoreflect.Value) {
-						listVal.Set(j, v)
-					}
-					visitor.VisitPrimitive(path+"[]", el, setter)
-				}
-
-			case protoreflect.EnumKind:
-				for j := 0; j < count; j++ {
-					el := listVal.Get(j)
-					setter := func(v protoreflect.Value) {
-						listVal.Set(j, v)
-					}
-					visitor.VisitPrimitive(path+"[]", el, setter)
-				}
-
-			case protoreflect.Int32Kind:
-				for j := 0; j < count; j++ {
-					el := listVal.Get(j)
-					setter := func(v protoreflect.Value) {
-						listVal.Set(j, v)
-					}
-					visitor.VisitPrimitive(path+"[]", el, setter)
-				}
-
-			case protoreflect.BytesKind:
+			case protoreflect.BoolKind,
+				protoreflect.DoubleKind,
+				protoreflect.FloatKind,
+				protoreflect.Int32Kind,
+				protoreflect.Uint32Kind,
+				protoreflect.Int64Kind,
+				protoreflect.Uint64Kind,
+				protoreflect.StringKind,
+				protoreflect.BytesKind,
+				protoreflect.EnumKind:
 				for j := 0; j < count; j++ {
 					el := listVal.Get(j)
 					setter := func(v protoreflect.Value) {
