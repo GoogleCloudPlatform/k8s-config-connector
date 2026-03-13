@@ -127,16 +127,16 @@ func CloudBuildTriggerSpec_Build_FromProto(mapCtx *direct.MapContext, in *pb.Bui
 	out.Step = make([]krm.CloudBuildTriggerSpec_Build_StepItem, len(in.Steps))
 	for i, step := range in.Steps {
 		out.Step[i] = krm.CloudBuildTriggerSpec_Build_StepItem{
-			Name:       direct.LazyPtr(step.Name),
-			Args:       step.Args,
-			Env:        step.Env,
-			Dir:        direct.LazyPtr(step.Dir),
-			Id:         direct.LazyPtr(step.Id),
-			WaitFor:    step.WaitFor,
-			Entrypoint: direct.LazyPtr(step.Entrypoint),
-			SecretEnv:  step.SecretEnv,
-			Timeout:    direct.StringDuration_FromProto(mapCtx, step.Timeout),
-			Script:     direct.LazyPtr(step.Script),
+			Name:         direct.LazyPtr(step.Name),
+			Args:         step.Args,
+			Env:          step.Env,
+			Dir:          direct.LazyPtr(step.Dir),
+			Id:           direct.LazyPtr(step.Id),
+			WaitFor:      step.WaitFor,
+			Entrypoint:   direct.LazyPtr(step.Entrypoint),
+			SecretEnv:    step.SecretEnv,
+			Timeout:      direct.StringDuration_FromProto(mapCtx, step.Timeout),
+			Script:       direct.LazyPtr(step.Script),
 			AllowFailure: direct.LazyPtr(step.AllowFailure),
 		}
 		if len(step.AllowExitCodes) > 0 {
@@ -186,16 +186,16 @@ func CloudBuildTriggerSpec_Build_ToProto(mapCtx *direct.MapContext, in *krm.Clou
 	out.Steps = make([]*pb.BuildStep, len(in.Step))
 	for i, step := range in.Step {
 		out.Steps[i] = &pb.BuildStep{
-			Name:       direct.ValueOf(step.Name),
-			Args:       step.Args,
-			Env:        step.Env,
-			Dir:        direct.ValueOf(step.Dir),
-			Id:         direct.ValueOf(step.Id),
-			WaitFor:    step.WaitFor,
-			Entrypoint: direct.ValueOf(step.Entrypoint),
-			SecretEnv:  step.SecretEnv,
-			Timeout:    direct.StringDuration_ToProto(mapCtx, step.Timeout),
-			Script:     direct.ValueOf(step.Script),
+			Name:         direct.ValueOf(step.Name),
+			Args:         step.Args,
+			Env:          step.Env,
+			Dir:          direct.ValueOf(step.Dir),
+			Id:           direct.ValueOf(step.Id),
+			WaitFor:      step.WaitFor,
+			Entrypoint:   direct.ValueOf(step.Entrypoint),
+			SecretEnv:    step.SecretEnv,
+			Timeout:      direct.StringDuration_ToProto(mapCtx, step.Timeout),
+			Script:       direct.ValueOf(step.Script),
 			AllowFailure: direct.ValueOf(step.AllowFailure),
 		}
 		if len(step.AllowExitCodes) > 0 {
