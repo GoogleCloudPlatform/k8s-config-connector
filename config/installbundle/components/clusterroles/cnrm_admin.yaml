@@ -8,6 +8,18 @@ metadata:
   name: admin
 rules:
 - apiGroups:
+  - ""
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - accesscontextmanager.cnrm.cloud.google.com
   resources:
   - '*'
