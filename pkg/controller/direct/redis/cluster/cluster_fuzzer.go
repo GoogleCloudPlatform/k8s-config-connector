@@ -40,7 +40,6 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".psc_connections[].psc_connection_status")
 	f.UnimplementedFields.Insert(".psc_connections[].service_attachment")
 	f.UnimplementedFields.Insert(".psc_connections[].connection_type")
-	f.UnimplementedFields.Insert(".cross_cluster_replication_config")
 	f.UnimplementedFields.Insert(".kms_key")
 	f.UnimplementedFields.Insert(".maintenance_policy")
 	f.UnimplementedFields.Insert(".maintenance_schedule")
@@ -57,7 +56,6 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".psc_connections[].psc_connection_status")
 	f.UnimplementedFields.Insert(".psc_connections[].service_attachment")
 	f.UnimplementedFields.Insert(".psc_connections[].connection_type")
-	f.UnimplementedFields.Insert(".cross_cluster_replication_config")
 	f.UnimplementedFields.Insert(".kms_key")
 	f.UnimplementedFields.Insert(".maintenance_policy")
 	f.UnimplementedFields.Insert(".maintenance_schedule")
@@ -77,6 +75,9 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".replica_count")
 	f.SpecFields.Insert(".zone_distribution_config")
 	f.SpecFields.Insert(".deletion_protection_enabled")
+	f.SpecFields.Insert(".cross_cluster_replication_config.cluster_role")
+	f.SpecFields.Insert(".cross_cluster_replication_config.primary_cluster")
+	f.SpecFields.Insert(".cross_cluster_replication_config.secondary_clusters")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".state")
@@ -86,6 +87,10 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".psc_connections")
 	f.StatusFields.Insert(".state_info")
 	f.StatusFields.Insert(".precise_size_gb")
+	f.StatusFields.Insert(".cross_cluster_replication_config.update_time")
+	f.StatusFields.Insert(".cross_cluster_replication_config.membership")
+	f.StatusFields.Insert(".cross_cluster_replication_config.primary_cluster.uid")
+	f.StatusFields.Insert(".cross_cluster_replication_config.secondary_clusters[].uid")
 
 	return f
 }

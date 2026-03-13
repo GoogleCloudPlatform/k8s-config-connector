@@ -184,6 +184,7 @@ func RedisClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clust
 	out.PscConnections = direct.Slice_FromProto(mapCtx, in.PscConnections, PscConnection_FromProto)
 	out.StateInfo = Cluster_StateInfo_FromProto(mapCtx, in.GetStateInfo())
 	out.PreciseSizeGb = in.PreciseSizeGb
+	out.CrossClusterReplicationConfig = CrossClusterReplicationConfigObservedState_FromProto(mapCtx, in.GetCrossClusterReplicationConfig())
 	return out
 }
 func RedisClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterObservedState) *pb.Cluster {
@@ -200,6 +201,7 @@ func RedisClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RedisC
 	out.PscConnections = direct.Slice_ToProto(mapCtx, in.PscConnections, PscConnection_ToProto)
 	out.StateInfo = Cluster_StateInfo_ToProto(mapCtx, in.StateInfo)
 	out.PreciseSizeGb = in.PreciseSizeGb
+	out.CrossClusterReplicationConfig = CrossClusterReplicationConfigObservedState_ToProto(mapCtx, in.CrossClusterReplicationConfig)
 	return out
 }
 func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.RedisClusterSpec {
@@ -218,6 +220,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	out.RedisConfigs = in.RedisConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
+	out.CrossClusterReplicationConfig = CrossClusterReplicationConfig_FromProto(mapCtx, in.GetCrossClusterReplicationConfig())
 	return out
 }
 func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpec) *pb.Cluster {
@@ -236,6 +239,7 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 	out.RedisConfigs = in.RedisConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
+	out.CrossClusterReplicationConfig = CrossClusterReplicationConfig_ToProto(mapCtx, in.CrossClusterReplicationConfig)
 	return out
 }
 func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDistributionConfig) *krm.ZoneDistributionConfig {
