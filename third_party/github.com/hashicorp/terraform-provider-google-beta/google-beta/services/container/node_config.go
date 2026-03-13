@@ -644,6 +644,7 @@ func schemaNodeConfig() *schema.Schema {
 							"confidential_instance_type": {
 								Type:        schema.TypeString,
 								Optional:    true,
+								Computed:    true,
 								ForceNew:    true,
 								Description: `Confidential instance type for the cluster nodes. Valid values are SEV and SEV_SNP.`,
 							},
