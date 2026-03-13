@@ -21,6 +21,8 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"regexp"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -59,9 +61,22 @@ first character must be a lowercase letter, and all following
 characters must be a dash, lowercase letter, or digit, except the last
 character, which cannot be a dash.`,
 			},
+			"certificate_manager_certificates": {
+				Type:             schema.TypeList,
+				Optional:         true,
+				DiffSuppressFunc: tpgresource.CompareResourceNames,
+				Description: `URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer.
+Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
+sslCertificates and certificateManagerCertificates fields can not be defined together.
+Accepted format is '//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificates/{resourceName}' or just the self_link 'projects/{project}/locations/{location}/certificates/{resourceName}'`,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+				ConflictsWith: []string{"ssl_certificates"},
+			},
 			"ssl_certificates": {
 				Type:     schema.TypeList,
-				Required: true,
+				Optional: true,
 				Description: `A list of RegionSslCertificate resources that are used to authenticate
 connections between users and the load balancer. Currently, exactly
 one SSL certificate must be specified.`,
@@ -69,6 +84,7 @@ one SSL certificate must be specified.`,
 					Type:             schema.TypeString,
 					DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				},
+				ConflictsWith: []string{"certificate_manager_certificates"},
 			},
 			"url_map": {
 				Type:             schema.TypeString,
@@ -146,6 +162,12 @@ func resourceComputeRegionTargetHttpsProxyCreate(d *schema.ResourceData, meta in
 	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
+	certificateManagerCertificatesProp, err := expandComputeRegionTargetHttpsProxyCertificateManagerCertificates(d.Get("certificate_manager_certificates"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("certificate_manager_certificates"); !tpgresource.IsEmptyValue(reflect.ValueOf(certificateManagerCertificatesProp)) && (ok || !reflect.DeepEqual(v, certificateManagerCertificatesProp)) {
+		obj["certificateManagerCertificates"] = certificateManagerCertificatesProp
+	}
 	sslCertificatesProp, err := expandComputeRegionTargetHttpsProxySslCertificates(d.Get("ssl_certificates"), d, config)
 	if err != nil {
 		return err
@@ -169,6 +191,11 @@ func resourceComputeRegionTargetHttpsProxyCreate(d *schema.ResourceData, meta in
 		return err
 	} else if v, ok := d.GetOkExists("region"); !tpgresource.IsEmptyValue(reflect.ValueOf(regionProp)) && (ok || !reflect.DeepEqual(v, regionProp)) {
 		obj["region"] = regionProp
+	}
+
+	obj, err = resourceComputeRegionTargetHttpsProxyEncoder(d, meta, obj)
+	if err != nil {
+		return err
 	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/targetHttpsProxies")
@@ -261,6 +288,11 @@ func resourceComputeRegionTargetHttpsProxyRead(d *schema.ResourceData, meta inte
 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeRegionTargetHttpsProxy %q", d.Id()))
 	}
 
+	res, err = resourceComputeRegionTargetHttpsProxyDecoder(d, meta, res)
+	if err != nil {
+		return err
+	}
+
 	if err := d.Set("project", project); err != nil {
 		return fmt.Errorf("Error reading RegionTargetHttpsProxy: %s", err)
 	}
@@ -275,6 +307,9 @@ func resourceComputeRegionTargetHttpsProxyRead(d *schema.ResourceData, meta inte
 		return fmt.Errorf("Error reading RegionTargetHttpsProxy: %s", err)
 	}
 	if err := d.Set("name", flattenComputeRegionTargetHttpsProxyName(res["name"], d, config)); err != nil {
+		return fmt.Errorf("Error reading RegionTargetHttpsProxy: %s", err)
+	}
+	if err := d.Set("certificate_manager_certificates", flattenComputeRegionTargetHttpsProxyCertificateManagerCertificates(res["certificateManagerCertificates"], d, config)); err != nil {
 		return fmt.Errorf("Error reading RegionTargetHttpsProxy: %s", err)
 	}
 	if err := d.Set("ssl_certificates", flattenComputeRegionTargetHttpsProxySslCertificates(res["sslCertificates"], d, config)); err != nil {
@@ -313,14 +348,25 @@ func resourceComputeRegionTargetHttpsProxyUpdate(d *schema.ResourceData, meta in
 
 	d.Partial(true)
 
-	if d.HasChange("ssl_certificates") {
+	if d.HasChange("certificate_manager_certificates") || d.HasChange("ssl_certificates") {
 		obj := make(map[string]interface{})
 
+		certificateManagerCertificatesProp, err := expandComputeRegionTargetHttpsProxyCertificateManagerCertificates(d.Get("certificate_manager_certificates"), d, config)
+		if err != nil {
+			return err
+		} else if v, ok := d.GetOkExists("certificate_manager_certificates"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, certificateManagerCertificatesProp)) {
+			obj["certificateManagerCertificates"] = certificateManagerCertificatesProp
+		}
 		sslCertificatesProp, err := expandComputeRegionTargetHttpsProxySslCertificates(d.Get("ssl_certificates"), d, config)
 		if err != nil {
 			return err
 		} else if v, ok := d.GetOkExists("ssl_certificates"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sslCertificatesProp)) {
 			obj["sslCertificates"] = sslCertificatesProp
+		}
+
+		obj, err = resourceComputeRegionTargetHttpsProxyEncoder(d, meta, obj)
+		if err != nil {
+			return err
 		}
 
 		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/targetHttpsProxies/{{name}}/setSslCertificates")
@@ -580,4 +626,48 @@ func expandComputeRegionTargetHttpsProxyRegion(v interface{}, d tpgresource.Terr
 		return nil, fmt.Errorf("Invalid value for region: %s", err)
 	}
 	return f.RelativeLink(), nil
+}
+
+func flattenComputeRegionTargetHttpsProxyCertificateManagerCertificates(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func expandComputeRegionTargetHttpsProxyCertificateManagerCertificates(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	req := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		if raw == nil {
+			return nil, fmt.Errorf("Invalid value for certificate_manager_certificates: nil")
+		}
+		if strings.HasPrefix(raw.(string), "//certificatemanager.googleapis.com/") {
+			req = append(req, raw.(string))
+		} else if strings.HasPrefix(raw.(string), "projects/") {
+			self_link := "https://certificatemanager.googleapis.com/v1/" + raw.(string)
+			req = append(req, self_link)
+		} else {
+			return nil, fmt.Errorf("Invalid value for certificate_manager_certificates: %v is an invalid format for a certificateManagerCertificate resource", raw.(string))
+		}
+	}
+	return req, nil
+}
+
+func resourceComputeRegionTargetHttpsProxyEncoder(d *schema.ResourceData, meta interface{}, obj map[string]interface{}) (map[string]interface{}, error) {
+	if _, ok := obj["certificateManagerCertificates"]; ok {
+		log.Printf("[DEBUG] converting the field CertificateManagerCertificates to sslCertificates before sending the request")
+		obj["sslCertificates"] = obj["certificateManagerCertificates"]
+		delete(obj, "certificateManagerCertificates")
+	}
+	return obj, nil
+}
+
+func resourceComputeRegionTargetHttpsProxyDecoder(d *schema.ResourceData, meta interface{}, res map[string]interface{}) (map[string]interface{}, error) {
+	if sslCertificates, ok := res["sslCertificates"].([]interface{}); ok && len(sslCertificates) > 0 {
+		regPat, _ := regexp.Compile("//certificatemanager.googleapis.com/projects/(.*)/locations/(.*)/certificates/(.*)")
+		if regPat.MatchString(sslCertificates[0].(string)) {
+			log.Printf("[DEBUG] The field sslCertificates contains certificateManagerCertificates, the field name will be converted to certificateManagerCertificates")
+			res["certificateManagerCertificates"] = res["sslCertificates"]
+			delete(res, "sslCertificates")
+		}
+	}
+	return res, nil
 }
