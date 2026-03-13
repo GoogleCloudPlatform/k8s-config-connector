@@ -19,5 +19,273 @@
 // proto.service: google.identity.accesscontextmanager.v1
 // resource: AccessContextManagerAccessPolicy:AccessPolicy
 // resource: AccessContextManagerAccessLevel:AccessLevel
+// resource: AccessContextManagerServicePerimeterResource:ServicePerimeter
 
 package v1beta1
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig
+type ServicePerimeterConfig struct {
+	// A list of Google Cloud resources that are inside of the service perimeter.
+	//  Currently only projects are allowed. Format: `projects/{project_number}`
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.resources
+	Resources []string `json:"resources,omitempty"`
+
+	// A list of `AccessLevel` resource names that allow resources within the
+	//  `ServicePerimeter` to be accessed from the internet. `AccessLevels` listed
+	//  must be in the same policy as this `ServicePerimeter`. Referencing a
+	//  nonexistent `AccessLevel` is a syntax error. If no `AccessLevel` names are
+	//  listed, resources within the perimeter can only be accessed via Google
+	//  Cloud calls with request origins within the perimeter. Example:
+	//  `"accessPolicies/MY_POLICY/accessLevels/MY_LEVEL"`.
+	//  For Service Perimeter Bridge, must be empty.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.access_levels
+	AccessLevels []string `json:"accessLevels,omitempty"`
+
+	// Google Cloud services that are subject to the Service Perimeter
+	//  restrictions. For example, if `storage.googleapis.com` is specified, access
+	//  to the storage buckets inside the perimeter must meet the perimeter's
+	//  access restrictions.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.restricted_services
+	RestrictedServices []string `json:"restrictedServices,omitempty"`
+
+	// Configuration for APIs allowed within Perimeter.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.vpc_accessible_services
+	VPCAccessibleServices *ServicePerimeterConfig_VPCAccessibleServices `json:"vpcAccessibleServices,omitempty"`
+
+	// List of [IngressPolicies]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]
+	//  to apply to the perimeter. A perimeter may have multiple [IngressPolicies]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy],
+	//  each of which is evaluated separately. Access is granted if any [Ingress
+	//  Policy]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]
+	//  grants it. Must be empty for a perimeter bridge.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ingress_policies
+	IngressPolicies []ServicePerimeterConfig_IngressPolicy `json:"ingressPolicies,omitempty"`
+
+	// List of [EgressPolicies]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]
+	//  to apply to the perimeter. A perimeter may have multiple [EgressPolicies]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy],
+	//  each of which is evaluated separately. Access is granted if any
+	//  [EgressPolicy]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]
+	//  grants it. Must be empty for a perimeter bridge.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.egress_policies
+	EgressPolicies []ServicePerimeterConfig_EgressPolicy `json:"egressPolicies,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation
+type ServicePerimeterConfig_APIOperation struct {
+	// The name of the API whose methods or permissions the [IngressPolicy]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]
+	//  or [EgressPolicy]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]
+	//  want to allow. A single [ApiOperation]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation]
+	//  with `service_name` field set to `*` will allow all methods AND
+	//  permissions for all services.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation.service_name
+	ServiceName *string `json:"serviceName,omitempty"`
+
+	// API methods or permissions to allow. Method or permission must belong to
+	//  the service specified by `service_name` field. A single [MethodSelector]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.MethodSelector]
+	//  entry with `*` specified for the `method` field will allow all methods
+	//  AND permissions for the service specified in `service_name`.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation.method_selectors
+	MethodSelectors []ServicePerimeterConfig_MethodSelector `json:"methodSelectors,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom
+type ServicePerimeterConfig_EgressFrom struct {
+	// A list of identities that are allowed access through this [EgressPolicy].
+	//  Should be in the format of email address. The email address should
+	//  represent individual user or service account only.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom.identities
+	Identities []string `json:"identities,omitempty"`
+
+	// Specifies the type of identities that are allowed access to outside the
+	//  perimeter. If left unspecified, then members of `identities` field will
+	//  be allowed access.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom.identity_type
+	IdentityType *string `json:"identityType,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy
+type ServicePerimeterConfig_EgressPolicy struct {
+	// Defines conditions on the source of a request causing this [EgressPolicy]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]
+	//  to apply.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy.egress_from
+	EgressFrom *ServicePerimeterConfig_EgressFrom `json:"egressFrom,omitempty"`
+
+	// Defines the conditions on the [ApiOperation]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation]
+	//  and destination resources that cause this [EgressPolicy]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]
+	//  to apply.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy.egress_to
+	EgressTo *ServicePerimeterConfig_EgressTo `json:"egressTo,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressTo
+type ServicePerimeterConfig_EgressTo struct {
+	// A list of resources, currently only projects in the form
+	//  `projects/<projectnumber>`, that are allowed to be accessed by sources
+	//  defined in the corresponding [EgressFrom]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom].
+	//  A request matches if it contains a resource in this list.  If `*` is
+	//  specified for `resources`, then this [EgressTo]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressTo]
+	//  rule will authorize access to all resources outside the perimeter.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressTo.resources
+	Resources []string `json:"resources,omitempty"`
+
+	// A list of [ApiOperations]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation]
+	//  allowed to be performed by the sources specified in the corresponding
+	//  [EgressFrom]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom].
+	//  A request matches if it uses an operation/service in this list.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressTo.operations
+	Operations []ServicePerimeterConfig_APIOperation `json:"operations,omitempty"`
+
+	// A list of external resources that are allowed to be accessed. Only AWS
+	//  and Azure resources are supported. For Amazon S3, the supported format is
+	//  s3://BUCKET_NAME. For Azure Storage, the supported format is
+	//  azure://myaccount.blob.core.windows.net/CONTAINER_NAME. A request matches
+	//  if it contains an external resource in this list (Example:
+	//  s3://bucket/path). Currently '*' is not allowed.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressTo.external_resources
+	ExternalResources []string `json:"externalResources,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom
+type ServicePerimeterConfig_IngressFrom struct {
+	// Sources that this [IngressPolicy]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]
+	//  authorizes access from.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom.sources
+	Sources []ServicePerimeterConfig_IngressSource `json:"sources,omitempty"`
+
+	// A list of identities that are allowed access through this ingress
+	//  policy. Should be in the format of email address. The email address
+	//  should represent individual user or service account only.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom.identities
+	Identities []string `json:"identities,omitempty"`
+
+	// Specifies the type of identities that are allowed access from outside the
+	//  perimeter. If left unspecified, then members of `identities` field will
+	//  be allowed access.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom.identity_type
+	IdentityType *string `json:"identityType,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy
+type ServicePerimeterConfig_IngressPolicy struct {
+	// Defines the conditions on the source of a request causing this
+	//  [IngressPolicy]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]
+	//  to apply.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy.ingress_from
+	IngressFrom *ServicePerimeterConfig_IngressFrom `json:"ingressFrom,omitempty"`
+
+	// Defines the conditions on the [ApiOperation]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation]
+	//  and request destination that cause this [IngressPolicy]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]
+	//  to apply.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy.ingress_to
+	IngressTo *ServicePerimeterConfig_IngressTo `json:"ingressTo,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressSource
+type ServicePerimeterConfig_IngressSource struct {
+	// An [AccessLevel]
+	//  [google.identity.accesscontextmanager.v1.AccessLevel] resource
+	//  name that allow resources within the [ServicePerimeters]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeter] to be
+	//  accessed from the internet. [AccessLevels]
+	//  [google.identity.accesscontextmanager.v1.AccessLevel] listed must
+	//  be in the same policy as this [ServicePerimeter]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeter].
+	//  Referencing a nonexistent [AccessLevel]
+	//  [google.identity.accesscontextmanager.v1.AccessLevel] will cause
+	//  an error. If no [AccessLevel]
+	//  [google.identity.accesscontextmanager.v1.AccessLevel] names are
+	//  listed, resources within the perimeter can only be accessed via Google
+	//  Cloud calls with request origins within the perimeter. Example:
+	//  `accessPolicies/MY_POLICY/accessLevels/MY_LEVEL`. If a single `*` is
+	//  specified for `access_level`, then all [IngressSources]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressSource]
+	//  will be allowed.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressSource.access_level
+	AccessLevel *string `json:"accessLevel,omitempty"`
+
+	// A Google Cloud resource that is allowed to ingress the perimeter.
+	//  Requests from these resources will be allowed to access perimeter data.
+	//  Currently only projects are allowed.
+	//  Format: `projects/{project_number}`
+	//  The project may be in any Google Cloud organization, not just the
+	//  organization that the perimeter is defined in. `*` is not allowed, the
+	//  case of allowing all Google Cloud resources only is not supported.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressSource.resource
+	Resource *string `json:"resource,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressTo
+type ServicePerimeterConfig_IngressTo struct {
+	// A list of [ApiOperations]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation]
+	//  allowed to be performed by the sources specified in corresponding
+	//  [IngressFrom]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom]
+	//  in this [ServicePerimeter]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeter].
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressTo.operations
+	Operations []ServicePerimeterConfig_APIOperation `json:"operations,omitempty"`
+
+	// A list of resources, currently only projects in the form
+	//  `projects/<projectnumber>`, protected by this [ServicePerimeter]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeter] that are
+	//  allowed to be accessed by sources defined in the corresponding
+	//  [IngressFrom]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom].
+	//  If a single `*` is specified, then access to all resources inside the
+	//  perimeter are allowed.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressTo.resources
+	Resources []string `json:"resources,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.MethodSelector
+type ServicePerimeterConfig_MethodSelector struct {
+	// Value for `method` should be a valid method name for the corresponding
+	//  `service_name` in [ApiOperation]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation].
+	//  If `*` used as value for `method`, then ALL methods and permissions are
+	//  allowed.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.MethodSelector.method
+	Method *string `json:"method,omitempty"`
+
+	// Value for `permission` should be a valid Cloud IAM permission for the
+	//  corresponding `service_name` in [ApiOperation]
+	//  [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation].
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.MethodSelector.permission
+	Permission *string `json:"permission,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.VpcAccessibleServices
+type ServicePerimeterConfig_VPCAccessibleServices struct {
+	// Whether to restrict API calls within the Service Perimeter to the list of
+	//  APIs specified in 'allowed_services'.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.VpcAccessibleServices.enable_restriction
+	EnableRestriction *bool `json:"enableRestriction,omitempty"`
+
+	// The list of APIs usable within the Service Perimeter. Must be empty
+	//  unless 'enable_restriction' is True. You can specify a list of individual
+	//  services, as well as include the 'RESTRICTED-SERVICES' value, which
+	//  automatically includes all of the services protected by the perimeter.
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.ServicePerimeterConfig.VpcAccessibleServices.allowed_services
+	AllowedServices []string `json:"allowedServices,omitempty"`
+}
