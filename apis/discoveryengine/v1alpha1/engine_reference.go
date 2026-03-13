@@ -124,14 +124,14 @@ func NewDiscoveryEngineEngineRef(ctx context.Context, reader client.Reader, obj 
 			},
 			Collection: collectionID,
 		},
-		DataStore: resourceID,
+		Engine: resourceID,
 	}
 
 	// Validate the status.externalRef, if set
 	externalRef := valueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusID, err := ParseDiscoveryEngineDataStoreExternal(externalRef)
+		statusID, err := parseDiscoveryEngineEngineExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -160,16 +160,12 @@ func NewDiscoveryEngineEngineRef(ctx context.Context, reader client.Reader, obj 
 // DiscoveryEngineEngineID is the resolved identifier for a DiscoveryEngineEngine
 type DiscoveryEngineEngineID struct {
 	*CollectionLink
-	DataStore string
+	Engine string
 }
 
-// func (p *DiscoveryEngineEngineParent) String() string {
-// 	return "projects/" + p.ProjectID + "/locations/" + p.Location
-// }
-
-// func asDiscoveryEngineEngineExternal(parent *DiscoveryEngineEngineParent, resourceID string) (external string) {
-// 	return parent.String() + "/engines/" + resourceID
-// }
+func (p *DiscoveryEngineEngineID) String() string {
+	return p.CollectionLink.String() + "/engines/" + p.Engine
+}
 
 func parseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngineID, error) {
 	s := strings.TrimPrefix(external, "//discoveryengine.googleapis.com/")
@@ -186,7 +182,7 @@ func parseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngine
 		}
 		return &DiscoveryEngineEngineID{
 			CollectionLink: collection,
-			DataStore:      tokens[7],
+			Engine:         tokens[7],
 		}, nil
 	}
 	return nil, fmt.Errorf("format of DiscoveryEngineEngine external=%q was not known (use projects/{{projectId}}/locations/{{location}}/collections/{{collectionID}}/engines/{{engineID}})", external)
