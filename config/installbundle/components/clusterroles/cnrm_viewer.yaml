@@ -7,14 +7,6 @@ metadata:
   name: viewer
 rules:
 - apiGroups:
-  - ""
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
   - accesscontextmanager.cnrm.cloud.google.com
   resources:
   - '*'

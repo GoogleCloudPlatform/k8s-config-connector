@@ -21,6 +21,8 @@
 
 package v1beta1
 
+/* found existing non-generated go type "AcceleratorConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.AcceleratorConfig
 type AcceleratorConfig struct {
 	// Full URL, partial URI, or short name of the accelerator type resource to
@@ -46,6 +48,9 @@ type AcceleratorConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.AcceleratorConfig.accelerator_count
 	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "AutoscalingConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.AutoscalingConfig
 type AutoscalingConfig struct {
@@ -61,6 +66,7 @@ type AutoscalingConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.AutoscalingConfig.policy_uri
 	PolicyURI *string `json:"policyURI,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dataproc.v1.AuxiliaryNodeGroup
 type AuxiliaryNodeGroup struct {
@@ -77,6 +83,8 @@ type AuxiliaryNodeGroup struct {
 	NodeGroupID *string `json:"nodeGroupID,omitempty"`
 }
 
+/* found existing non-generated go type "AuxiliaryServicesConfig", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.AuxiliaryServicesConfig
 type AuxiliaryServicesConfig struct {
 	// Optional. The Hive Metastore configuration for this workload.
@@ -87,6 +95,9 @@ type AuxiliaryServicesConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.AuxiliaryServicesConfig.spark_history_server_config
 	SparkHistoryServerConfig *SparkHistoryServerConfig `json:"sparkHistoryServerConfig,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Cluster", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.Cluster
 type Cluster struct {
@@ -131,6 +142,9 @@ type Cluster struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.Cluster.labels
 	Labels map[string]string `json:"labels,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "ClusterConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.ClusterConfig
 type ClusterConfig struct {
@@ -239,6 +253,9 @@ type ClusterConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.auxiliary_node_groups
 	AuxiliaryNodeGroups []AuxiliaryNodeGroup `json:"auxiliaryNodeGroups,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "ClusterMetrics", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.ClusterMetrics
 type ClusterMetrics struct {
@@ -250,10 +267,16 @@ type ClusterMetrics struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterMetrics.yarn_metrics
 	YarnMetrics map[string]int64 `json:"yarnMetrics,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "ClusterStatus", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.ClusterStatus
 type ClusterStatus struct {
 }
+*/
+
+/* found existing non-generated go type "ConfidentialInstanceConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.ConfidentialInstanceConfig
 type ConfidentialInstanceConfig struct {
@@ -262,6 +285,9 @@ type ConfidentialInstanceConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.ConfidentialInstanceConfig.enable_confidential_compute
 	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "DataprocMetricConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.DataprocMetricConfig
 type DataprocMetricConfig struct {
@@ -269,6 +295,9 @@ type DataprocMetricConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.DataprocMetricConfig.metrics
 	Metrics []DataprocMetricConfig_Metric `json:"metrics,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "DataprocMetricConfig_Metric", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.DataprocMetricConfig.Metric
 type DataprocMetricConfig_Metric struct {
@@ -311,6 +340,9 @@ type DataprocMetricConfig_Metric struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.DataprocMetricConfig.Metric.metric_overrides
 	MetricOverrides []string `json:"metricOverrides,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "DiskConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.DiskConfig
 type DiskConfig struct {
@@ -359,6 +391,9 @@ type DiskConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.DiskConfig.boot_disk_provisioned_throughput
 	BootDiskProvisionedThroughput *int64 `json:"bootDiskProvisionedThroughput,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "EncryptionConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.EncryptionConfig
 type EncryptionConfig struct {
@@ -399,6 +434,9 @@ type EncryptionConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.EncryptionConfig.kms_key
 	KMSKey *string `json:"kmsKey,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "EndpointConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.EndpointConfig
 type EndpointConfig struct {
@@ -408,6 +446,9 @@ type EndpointConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.EndpointConfig.enable_http_port_access
 	EnableHTTPPortAccess *bool `json:"enableHTTPPortAccess,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GceClusterConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.GceClusterConfig
 type GCEClusterConfig struct {
@@ -533,6 +574,9 @@ type GCEClusterConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.GceClusterConfig.confidential_instance_config
 	ConfidentialInstanceConfig *ConfidentialInstanceConfig `json:"confidentialInstanceConfig,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GkeClusterConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.GkeClusterConfig
 type GKEClusterConfig struct {
@@ -552,6 +596,9 @@ type GKEClusterConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.GkeClusterConfig.node_pool_target
 	NodePoolTarget []GKENodePoolTarget `json:"nodePoolTarget,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GkeNodePoolConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolConfig
 type GKENodePoolConfig struct {
@@ -578,6 +625,9 @@ type GKENodePoolConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.GkeNodePoolConfig.autoscaling
 	Autoscaling *GKENodePoolConfig_GKENodePoolAutoscalingConfig `json:"autoscaling,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodeConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodeConfig
 type GKENodePoolConfig_GKENodeConfig struct {
@@ -640,6 +690,9 @@ type GKENodePoolConfig_GKENodeConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodeConfig.spot
 	Spot *bool `json:"spot,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodePoolAcceleratorConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodePoolAcceleratorConfig
 type GKENodePoolConfig_GKENodePoolAcceleratorConfig struct {
@@ -657,6 +710,9 @@ type GKENodePoolConfig_GKENodePoolAcceleratorConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodePoolAcceleratorConfig.gpu_partition_size
 	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodePoolAutoscalingConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodePoolAutoscalingConfig
 type GKENodePoolConfig_GKENodePoolAutoscalingConfig struct {
@@ -671,6 +727,9 @@ type GKENodePoolConfig_GKENodePoolAutoscalingConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.GkeNodePoolConfig.GkeNodePoolAutoscalingConfig.max_node_count
 	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.GkeNodePoolTarget", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.GkeNodePoolTarget
 type GKENodePoolTarget struct {
@@ -699,6 +758,9 @@ type GKENodePoolTarget struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.GkeNodePoolTarget.node_pool_config
 	NodePoolConfig *GKENodePoolConfig `json:"nodePoolConfig,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "IdentityConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.IdentityConfig
 type IdentityConfig struct {
@@ -706,6 +768,7 @@ type IdentityConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.IdentityConfig.user_service_account_mapping
 	UserServiceAccountMapping map[string]string `json:"userServiceAccountMapping,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
 type InstanceFlexibilityPolicy struct {
@@ -761,6 +824,8 @@ type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix.standard_capacity_percent_above_base
 	StandardCapacityPercentAboveBase *int32 `json:"standardCapacityPercentAboveBase,omitempty"`
 }
+
+/* found existing non-generated go type "InstanceGroupConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfig struct {
@@ -862,6 +927,9 @@ type InstanceGroupConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.startup_config
 	StartupConfig *StartupConfig `json:"startupConfig,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "InstanceReference", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.InstanceReference
 type InstanceReference struct {
@@ -881,6 +949,9 @@ type InstanceReference struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceReference.public_ecies_key
 	PublicEciesKey *string `json:"publicEciesKey,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "KerberosConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.KerberosConfig
 type KerberosConfig struct {
@@ -966,6 +1037,9 @@ type KerberosConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.KerberosConfig.realm
 	Realm *string `json:"realm,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "KubernetesClusterConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.KubernetesClusterConfig
 type KubernetesClusterConfig struct {
@@ -985,6 +1059,9 @@ type KubernetesClusterConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.KubernetesClusterConfig.kubernetes_software_config
 	KubernetesSoftwareConfig *KubernetesSoftwareConfig `json:"kubernetesSoftwareConfig,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "KubernetesSoftwareConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.KubernetesSoftwareConfig
 type KubernetesSoftwareConfig struct {
@@ -1008,6 +1085,9 @@ type KubernetesSoftwareConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.KubernetesSoftwareConfig.properties
 	Properties map[string]string `json:"properties,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "LifecycleConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.LifecycleConfig
 type LifecycleConfig struct {
@@ -1032,10 +1112,16 @@ type LifecycleConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.LifecycleConfig.auto_delete_ttl
 	AutoDeleteTTL *string `json:"autoDeleteTTL,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "ManagedGroupConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfig struct {
 }
+*/
+
+/* found existing non-generated go type "MetastoreConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.MetastoreConfig
 type MetastoreConfig struct {
@@ -1047,6 +1133,7 @@ type MetastoreConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.MetastoreConfig.dataproc_metastore_service
 	DataprocMetastoreService *string `json:"dataprocMetastoreService,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dataproc.v1.NodeGroup
 type NodeGroup struct {
@@ -1074,6 +1161,8 @@ type NodeGroup struct {
 	Labels map[string]string `json:"labels,omitempty"`
 }
 
+/* found existing non-generated go type "NodeGroupAffinity", skipping
+
 // +kcc:proto=google.cloud.dataproc.v1.NodeGroupAffinity
 type NodeGroupAffinity struct {
 	// Required. The URI of a
@@ -1089,6 +1178,9 @@ type NodeGroupAffinity struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroupAffinity.node_group_uri
 	NodeGroupURI *string `json:"nodeGroupURI,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "NodeInitializationAction", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.NodeInitializationAction
 type NodeInitializationAction struct {
@@ -1106,6 +1198,9 @@ type NodeInitializationAction struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeInitializationAction.execution_timeout
 	ExecutionTimeout *string `json:"executionTimeout,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "ReservationAffinity", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.ReservationAffinity
 type ReservationAffinity struct {
@@ -1121,6 +1216,9 @@ type ReservationAffinity struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.ReservationAffinity.values
 	Values []string `json:"values,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "SecurityConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.SecurityConfig
 type SecurityConfig struct {
@@ -1133,6 +1231,9 @@ type SecurityConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.SecurityConfig.identity_config
 	IdentityConfig *IdentityConfig `json:"identityConfig,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "ShieldedInstanceConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.ShieldedInstanceConfig
 type ShieldedInstanceConfig struct {
@@ -1148,6 +1249,9 @@ type ShieldedInstanceConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.ShieldedInstanceConfig.enable_integrity_monitoring
 	EnableIntegrityMonitoring *bool `json:"enableIntegrityMonitoring,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "SoftwareConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.SoftwareConfig
 type SoftwareConfig struct {
@@ -1186,6 +1290,9 @@ type SoftwareConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.SoftwareConfig.optional_components
 	OptionalComponents []string `json:"optionalComponents,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "SparkHistoryServerConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.SparkHistoryServerConfig
 type SparkHistoryServerConfig struct {
@@ -1198,6 +1305,7 @@ type SparkHistoryServerConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.SparkHistoryServerConfig.dataproc_cluster
 	DataprocCluster *string `json:"dataprocCluster,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.dataproc.v1.StartupConfig
 type StartupConfig struct {
@@ -1210,6 +1318,8 @@ type StartupConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.StartupConfig.required_registration_fraction
 	RequiredRegistrationFraction *float64 `json:"requiredRegistrationFraction,omitempty"`
 }
+
+/* found existing non-generated go type "VirtualClusterConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.VirtualClusterConfig
 type VirtualClusterConfig struct {
@@ -1236,6 +1346,9 @@ type VirtualClusterConfig struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.VirtualClusterConfig.auxiliary_services_config
 	AuxiliaryServicesConfig *AuxiliaryServicesConfig `json:"auxiliaryServicesConfig,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Cluster", skipping
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.Cluster
 type ClusterObservedState struct {
@@ -1267,6 +1380,9 @@ type ClusterObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.Cluster.metrics
 	Metrics *ClusterMetrics `json:"metrics,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "ClusterConfigObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.ClusterConfig
 type ClusterConfigObservedState struct {
@@ -1283,6 +1399,9 @@ type ClusterConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.endpoint_config
 	EndpointConfig *EndpointConfigObservedState `json:"endpointConfig,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ClusterStatus", skipping
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.ClusterStatus
 type ClusterStatusObservedState struct {
@@ -1304,6 +1423,9 @@ type ClusterStatusObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterStatus.substate
 	Substate *string `json:"substate,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "EndpointConfigObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.EndpointConfig
 type EndpointConfigObservedState struct {
@@ -1312,6 +1434,7 @@ type EndpointConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.EndpointConfig.http_ports
 	HTTPPorts map[string]string `json:"httpPorts,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
 type InstanceFlexibilityPolicyObservedState struct {
@@ -1330,6 +1453,8 @@ type InstanceFlexibilityPolicy_InstanceSelectionResultObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult.vm_count
 	VMCount *int32 `json:"vmCount,omitempty"`
 }
+
+/* found existing non-generated go type "InstanceGroupConfigObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.InstanceGroupConfig
 type InstanceGroupConfigObservedState struct {
@@ -1358,6 +1483,9 @@ type InstanceGroupConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.instance_flexibility_policy
 	InstanceFlexibilityPolicy *InstanceFlexibilityPolicyObservedState `json:"instanceFlexibilityPolicy,omitempty"`
 }
+*/
+
+/* found existing non-generated go type "LifecycleConfigObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.LifecycleConfig
 type LifecycleConfigObservedState struct {
@@ -1368,6 +1496,9 @@ type LifecycleConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.LifecycleConfig.idle_start_time
 	IdleStartTime *string `json:"idleStartTime,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ManagedGroupConfig", skipping
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.ManagedGroupConfig
 type ManagedGroupConfigObservedState struct {
@@ -1385,3 +1516,4 @@ type ManagedGroupConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.ManagedGroupConfig.instance_group_manager_uri
 	InstanceGroupManagerURI *string `json:"instanceGroupManagerURI,omitempty"`
 }
+*/
