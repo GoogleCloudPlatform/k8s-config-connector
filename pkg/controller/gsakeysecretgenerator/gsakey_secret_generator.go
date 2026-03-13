@@ -96,7 +96,7 @@ type ReconcileSecret struct {
 }
 
 func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Request) (reconcile.Result, error) {
-	logger.Info("starting reconcile", "resource", request.NamespacedName)
+	logger.V(2).Info("starting reconcile", "resource", request.NamespacedName)
 	u := &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"kind":       r.kind,
