@@ -107,6 +107,7 @@ var _ directbase.Adapter = &MaterializedViewAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *MaterializedViewAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("getting BigtableMaterializedView", "name", a.id)
 
 	materializedViewInfo, err := a.gcpClient.MaterializedViewInfo(ctx, a.id.ParentInstanceIdString(), a.id.ID())
@@ -130,6 +131,7 @@ func (a *MaterializedViewAdapter) Find(ctx context.Context) (bool, error) {
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *MaterializedViewAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("creating MaterializedView", "name", a.id)
 
 	desired := a.desired.DeepCopy()
@@ -155,6 +157,7 @@ func (a *MaterializedViewAdapter) Create(ctx context.Context, createOp *directba
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("updating MaterializedView", "name", a.id)
 
 	spec := a.desired.Spec
@@ -168,30 +171,35 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-	} else {
-		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
-		structuredreporting.ReportDiff(ctx, report)
-
-		spec := a.desired.Spec
-		spec.Query = &a.actual.Query // immutable
-		if !slices.Contains(updateMask.Paths, "deletion_protection") {
-			spec.DeletionProtection = &a.actual.DeletionProtection
+		if a.desired.Status.ExternalRef == nil {
+			status := &krm.BigtableMaterializedViewStatus{}
+			status.ExternalRef = direct.LazyPtr(a.id.String())
+			return updateOp.UpdateStatus(ctx, status, nil)
 		}
-
-		mapCtx := &direct.MapContext{}
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-		mv := BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx, &spec)
-		mv.Name = a.id.ID()
-		desiredmaterializedviewinfo := BigtableMaterializedView_ToBigtableMaterializedViewInfo(mv)
-
-		err := a.gcpClient.UpdateMaterializedView(ctx, a.id.ParentInstanceIdString(), *desiredmaterializedviewinfo)
-		if err != nil {
-			return fmt.Errorf("updating MaterializedView %s: %w", a.id, err)
-		}
-		log.V(2).Info("successfully updated MaterializedView", "name", a.id)
+		return nil
 	}
+
+	log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
+	structuredreporting.ReportDiff(ctx, report)
+
+	spec = a.desired.Spec
+	spec.Query = &a.actual.Query // immutable
+	if !slices.Contains(updateMask.Paths, "deletion_protection") {
+		spec.DeletionProtection = &a.actual.DeletionProtection
+	}
+
+	mapCtx := &direct.MapContext{}
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	mv := BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx, &spec)
+	mv.Name = a.id.ID()
+	desiredmaterializedviewinfo := BigtableMaterializedView_ToBigtableMaterializedViewInfo(mv)
+
+	if err := a.gcpClient.UpdateMaterializedView(ctx, a.id.ParentInstanceIdString(), *desiredmaterializedviewinfo); err != nil {
+		return fmt.Errorf("updating MaterializedView %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully updated MaterializedView", "name", a.id)
 
 	status := &krm.BigtableMaterializedViewStatus{}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
@@ -200,6 +208,7 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 
 // Export maps the GCP object to a Config Connector resource `spec`.
 func (a *MaterializedViewAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	defer a.gcpClient.Close()
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
@@ -229,6 +238,7 @@ func (a *MaterializedViewAdapter) Export(ctx context.Context) (*unstructured.Uns
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *MaterializedViewAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
+	defer a.gcpClient.Close()
 	log.V(2).Info("deleting MaterializedView", "name", a.id)
 
 	err := a.gcpClient.DeleteMaterializedView(ctx, a.id.ParentInstanceIdString(), a.id.ID())
