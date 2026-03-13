@@ -266,6 +266,14 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "bigquery.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "BigQueryDatasetAccess",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "bigquery.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "BigQueryDatasetAccess",
 	}: {
