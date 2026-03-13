@@ -1,3 +1,33 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}' was not found"
+  }
+}
+
+---
+
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -18,6 +48,109 @@ X-Xss-Protection: 0
     "message": "service \"projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "cloudRun": {
+    "service": "runservice-${uniqueId}"
+  },
+  "name": "${networkEndpointGroupID}",
+  "networkEndpointType": "SERVERLESS",
+  "region": "projects/${projectId}/global/regions/us-central1"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.regionNetworkEndpointGroups.insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkEndpointGroupID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.regionNetworkEndpointGroups.insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkEndpointGroupID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudRun": {
+    "service": "runservice-${uniqueId}"
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#networkEndpointGroup",
+  "name": "${networkEndpointGroupID}",
+  "networkEndpointType": "SERVERLESS",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}",
+  "size": 0
 }
 
 ---
@@ -328,7 +461,7 @@ GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-c
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -337,66 +470,26 @@ Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}' was not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The resource 'projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}' was not found"
-  }
-}
-
----
-
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "cloudRun": {
     "service": "runservice-${uniqueId}"
   },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#networkEndpointGroup",
   "name": "${networkEndpointGroupID}",
   "networkEndpointType": "SERVERLESS",
-  "region": "projects/${projectId}/global/regions/us-central1"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "compute.regionNetworkEndpointGroups.insert",
-  "progress": 0,
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkEndpointGroupID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}",
-  "user": "user@example.com"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}",
+  "size": 0
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -409,20 +502,57 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "compute.regionNetworkEndpointGroups.insert",
-  "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkEndpointGroupID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEndpointGroups/${networkEndpointGroupID}",
-  "user": "user@example.com"
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "ingress": "INGRESS_TRAFFIC_ALL",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifier": "test@google.com",
+  "launchStage": "GA",
+  "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+  "template": {
+    "containers": [
+      {
+        "env": [
+          {
+            "name": "FOO",
+            "value": "bar]"
+          }
+        ],
+        "image": "gcr.io/cloudrun/hello",
+        "resources": {
+          "limits": {
+            "cpu": "1000m",
+            "memory": "512Mi"
+          }
+        }
+      }
+    ],
+    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+    "maxInstanceRequestConcurrency": 80,
+    "scaling": {
+      "maxInstanceCount": 2
+    },
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "timeout": "300s"
+  },
+  "terminalCondition": {
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
+    "state": "CONDITION_SUCCEEDED",
+    "type": "Ready"
+  },
+  "traffic": [
+    {
+      "percent": 100,
+      "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+    }
+  ],
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

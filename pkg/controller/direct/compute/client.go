@@ -84,8 +84,32 @@ func (m *gcpClient) newNetworkAttachmentsClient(ctx context.Context) (*compute.N
 	}
 	client, err := compute.NewNetworkAttachmentsRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building compute networkEdgeSecurityServices client: %w", err)
+		return nil, fmt.Errorf("building compute networkAttachments client: %w", err)
 
+	}
+	return client, err
+}
+
+func (m *gcpClient) newNetworksClient(ctx context.Context) (*compute.NetworksClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewNetworksRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute networks client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newRoutesClient(ctx context.Context) (*compute.RoutesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewRoutesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute routes client: %w", err)
 	}
 	return client, err
 }
