@@ -1,0 +1,39 @@
+apiVersion: memorystore.cnrm.cloud.google.com/v1alpha1
+kind: MemorystoreInstanceBackup
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: memorystoreinstancebackup-1-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  instanceRef:
+    name: memorystoreinstance-1-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/backupCollections/backupCollection-memorystoreinstance-1-${uniqueId}/backups/memorystoreinstancebackup-1-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    backupFiles:
+    - createTime: "2024-04-01T12:34:56.123456Z"
+      fileName: file-memorystoreinstancebackup-1-${uniqueId}.rdb
+      sizeBytes: 141
+    backupType: ON_DEMAND
+    createTime: "1970-01-01T00:00:00Z"
+    engineVersion: VALKEY_7_2
+    expireTime: "2024-04-01T12:34:56.123456Z"
+    instance: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-1-${uniqueId}
+    instanceUid: instance-memorystoreinstance-1-${uniqueId}
+    nodeType: SHARED_CORE_NANO
+    shardCount: 1
+    state: ACTIVE
+    totalSizeBytes: 141
+    uid: 0123456789abcdef

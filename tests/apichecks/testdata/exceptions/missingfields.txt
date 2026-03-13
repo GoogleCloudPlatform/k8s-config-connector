@@ -571,6 +571,8 @@
 [missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceDirectoryRegistrations[].namespace" is not set in unstructured objects
 [missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceDirectoryRegistrations[].service" is not set in unstructured objects
 [missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceIpRanges[]" is not set in unstructured objects
+[missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.target.memorystoreInstanceServiceAttachmentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=computeforwardingrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.target.memorystoreInstanceServiceAttachmentRef.memorystoreInstanceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.grpcHealthCheck.grpcServiceName" is not set in unstructured objects
 [missing_field] crd=computehealthchecks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.grpcHealthCheck.port" is not set in unstructured objects
@@ -2257,6 +2259,14 @@
 [missing_field] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.weeklyMaintenanceWindow[].startTime.seconds" is not set in unstructured objects
 [missing_field] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".spec.memcacheParameters.id" is not set in unstructured objects
 [missing_field] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".spec.memcacheVersion" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.minutes" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.nanos" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.seconds" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.endpoints[].connections[].pscAutoConnection.port" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.gcsSource.uris[]" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.weeklyMaintenanceWindow[].startTime.minutes" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.weeklyMaintenanceWindow[].startTime.nanos" is not set in unstructured objects
+[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.weeklyMaintenanceWindow[].startTime.seconds" is not set in unstructured objects
 [missing_field] crd=monitoringalertpolicies.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.alertStrategy.autoClose" is not set in unstructured objects
 [missing_field] crd=monitoringalertpolicies.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.alertStrategy.notificationChannelStrategy[].notificationChannelNames[]" is not set in unstructured objects
 [missing_field] crd=monitoringalertpolicies.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.alertStrategy.notificationChannelStrategy[].renotifyInterval" is not set in unstructured objects

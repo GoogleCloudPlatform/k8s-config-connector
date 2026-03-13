@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,24 +17,13 @@ kind: MemorystoreInstance
 metadata:
   name: memorystore-${uniqueId}
 spec:
-  shardCount: 6
-  location: us-central1
-  projectRef:
-    external: ${projectId}
-  replicaCount: 2
-  nodeType: STANDARD_SMALL
-  transitEncryptionMode: SERVER_AUTHENTICATION
   authorizationMode: IAM_AUTH
-  engineVersion: VALKEY_7_2
-  engineConfigs:
-    maxmemory-policy: volatile-ttl
-  zoneDistributionConfig:
-    mode: SINGLE_ZONE
-    zone: us-central1-b
-  persistenceConfig:
-    mode: AOF
-    aofConfig:
-      appendFsync: EVERY_SEC
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    retention: 86400s
+    fixedFrequencySchedule:
+      startTime:
+        hours: 1
   deletionProtectionEnabled: true
   endpoints:
   - connections:
@@ -43,7 +32,29 @@ spec:
             external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
           projectRef:
             external: ${projectId}
-  mode: CLUSTER
+  engineConfigs:
+    maxmemory-policy: volatile-ttl
+  engineVersion: VALKEY_7_2
   labels:
     key1: val1
     key2: val2
+  location: us-central1
+  maintenancePolicy:
+    weeklyMaintenanceWindow:
+      - day: WEDNESDAY
+        startTime:
+          hours: 3
+  mode: CLUSTER
+  nodeType: SHARED_CORE_NANO
+  persistenceConfig:
+    mode: AOF
+    aofConfig:
+      appendFsync: EVERY_SEC
+  projectRef:
+    external: ${projectId}
+  replicaCount: 1
+  shardCount: 1
+  transitEncryptionMode: SERVER_AUTHENTICATION
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-b

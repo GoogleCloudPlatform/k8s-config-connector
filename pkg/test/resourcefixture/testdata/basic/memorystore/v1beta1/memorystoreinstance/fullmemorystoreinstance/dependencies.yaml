@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,13 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+    cnrm.cloud.google.com/project-id: "${projectId}"
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computenetwork-${uniqueId}
 spec:
-  description: Test network for the project
   autoCreateSubnetworks: false
+  routingMode: REGIONAL
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
@@ -30,9 +32,9 @@ metadata:
   name: computesubnetwork-${uniqueId}
 spec:
   ipCidrRange: 10.128.0.0/20
-  region: us-central1
   networkRef:
     external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+  region: us-central1
 ---
 apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
 kind: NetworkConnectivityServiceConnectionPolicy
@@ -43,13 +45,13 @@ metadata:
   labels:
     label-one: "value-one"
 spec:
-  projectRef:
-    external: projects/${projectId}
-  location: us-central1
-  serviceClass: "gcp-memorystore"
   description: "Service Connection Policy for Memorystore"
+  location: us-central1
   networkRef:
     name: computenetwork-${uniqueId}
+  projectRef:
+    external: projects/${projectId}
   pscConfig:
     subnetworkRefs:
     - name: computesubnetwork-${uniqueId}
+  serviceClass: "gcp-memorystore"

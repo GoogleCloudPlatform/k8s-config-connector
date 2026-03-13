@@ -1,0 +1,221 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
+kind: MemorystoreInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: memorystoreinstance-1-${uniqueId}
+spec:
+  endpoints:
+  - connections:
+    - pscAutoConnection:
+          networkRef:
+            external: projects/${projectId}/global/networks/default
+          projectRef:
+            external: ${projectId}
+  location: us-central1
+  nodeType: SHARED_CORE_NANO
+  projectRef:
+    external: ${projectId}
+  replicaCount: 0
+  shardCount: 1
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-a
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+    cnrm.cloud.google.com/project-id: "${projectId}"
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computenetwork-1-${uniqueId}
+spec:
+  autoCreateSubnetworks: false
+  routingMode: REGIONAL
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computesubnetwork-1-${uniqueId}
+spec:
+  ipCidrRange: 10.0.0.248/29
+  networkRef:
+    name: computenetwork-1-${uniqueId}
+  region: us-central1
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computesubnetwork-2-${uniqueId}
+spec:
+  ipCidrRange: 10.0.1.248/29
+  networkRef:
+    name: computenetwork-1-${uniqueId}
+  region: us-central1
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeaddress-1a-${uniqueId}
+spec:
+  addressType: INTERNAL
+  location: us-central1
+  purpose: GCE_ENDPOINT
+  subnetworkRef:
+    name: computesubnetwork-1-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeaddress-1b-${uniqueId}
+spec:
+  addressType: INTERNAL
+  location: us-central1
+  purpose: GCE_ENDPOINT
+  subnetworkRef:
+    name: computesubnetwork-1-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeaddress-2a-${uniqueId}
+spec:
+  addressType: INTERNAL
+  location: us-central1
+  purpose: GCE_ENDPOINT
+  subnetworkRef:
+    name: computesubnetwork-2-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeaddress-2b-${uniqueId}
+spec:
+  addressType: INTERNAL
+  location: us-central1
+  purpose: GCE_ENDPOINT
+  subnetworkRef:
+    name: computesubnetwork-2-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeforwardingrule-1a-${uniqueId}
+spec:
+  allowPscGlobalAccess: true
+  ipAddress:
+    addressRef:
+      external: projects/${projectId}/regions/us-central1/addresses/computeaddress-1a-${uniqueId}
+  loadBalancingScheme: ""
+  location: us-central1
+  networkRef:
+    name: computenetwork-1-${uniqueId}
+  subnetworkRef:
+    name: computesubnetwork-1-${uniqueId}
+  target:
+    memorystoreInstanceServiceAttachmentRef:
+      memorystoreInstanceRef:
+        name: memorystoreinstance-1-${uniqueId}
+      pscAttachmentDetailsIndex: 0
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeforwardingrule-1b-${uniqueId}
+spec:
+  allowPscGlobalAccess: true
+  ipAddress:
+    addressRef:
+      external: projects/${projectId}/regions/us-central1/addresses/computeaddress-1b-${uniqueId}
+  loadBalancingScheme: ""
+  location: us-central1
+  networkRef:
+    name: computenetwork-1-${uniqueId}
+  subnetworkRef:
+    name: computesubnetwork-1-${uniqueId}
+  target:
+    memorystoreInstanceServiceAttachmentRef:
+      memorystoreInstanceRef:
+        name: memorystoreinstance-1-${uniqueId}
+      pscAttachmentDetailsIndex: 1
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeforwardingrule-2a-${uniqueId}
+spec:
+  allowPscGlobalAccess: true
+  ipAddress:
+    addressRef:
+      external: projects/${projectId}/regions/us-central1/addresses/computeaddress-2a-${uniqueId}
+  loadBalancingScheme: ""
+  location: us-central1
+  networkRef:
+    name: computenetwork-1-${uniqueId}
+  subnetworkRef:
+    name: computesubnetwork-2-${uniqueId}
+  target:
+    memorystoreInstanceServiceAttachmentRef:
+      memorystoreInstanceRef:
+        name: memorystoreinstance-1-${uniqueId}
+      pscAttachmentDetailsIndex: 0
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeforwardingrule-2b-${uniqueId}
+spec:
+  allowPscGlobalAccess: true
+  ipAddress:
+    addressRef:
+      external: projects/${projectId}/regions/us-central1/addresses/computeaddress-2b-${uniqueId}
+  loadBalancingScheme: ""
+  location: us-central1
+  networkRef:
+    name: computenetwork-1-${uniqueId}
+  subnetworkRef:
+    name: computesubnetwork-2-${uniqueId}
+  target:
+    memorystoreInstanceServiceAttachmentRef:
+      memorystoreInstanceRef:
+        name: memorystoreinstance-1-${uniqueId}
+      pscAttachmentDetailsIndex: 1

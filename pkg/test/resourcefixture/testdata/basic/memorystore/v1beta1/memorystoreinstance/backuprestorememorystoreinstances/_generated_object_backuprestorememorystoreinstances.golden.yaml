@@ -1,0 +1,52 @@
+apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
+kind: MemorystoreInstance
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: memorystoreinstance-2-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    fixedFrequencySchedule:
+      startTime:
+        hours: 1
+    retention: 86500s
+  location: us-central1
+  managedBackupSource:
+    backupRef:
+      name: memorystoreinstancebackup-1-${uniqueId}
+  mode: CLUSTER_DISABLED
+  nodeType: SHARED_CORE_NANO
+  projectRef:
+    external: ${projectId}
+  replicaCount: 0
+  shardCount: 1
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-c
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/instances/memorystoreinstance-2-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    nodeConfig:
+      sizeGB: 1.4
+    pscAttachmentDetails:
+    - connectionType: CONNECTION_TYPE_PRIMARY
+      serviceAttachment: projects/tp-memorystoreinstance-2-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-2-${uniqueId}
+    - connectionType: CONNECTION_TYPE_READER
+      serviceAttachment: projects/tp-memorystoreinstance-2-${uniqueId}/regions/us-central1/serviceAttachments/sa-memorystoreinstance-2-${uniqueId}-2
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
